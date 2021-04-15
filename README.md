@@ -1,3 +1,3 @@
-# @neuralegion/service-lib-template
+# @neuralegion/har-sdk
 
 Service lib description

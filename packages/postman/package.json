@@ -1,0 +1,32 @@
+{
+  "name": "@neuralegion/postman2har",
+  "version": "0.0.0",
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NeuraLegion/har-sdk.git"
+  },
+  "author": {
+    "name": "Artem Derevnjuk",
+    "email": "artem.derevnjuk@neuralegion.com"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/NeuraLegion/har-sdk/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist/**"
+  ],
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "homepage": "https://github.com/NeuraLegion/har-sdk#readme",
+  "scripts": {
+    "build": "npm run clean && npm run compile && npm run copy",
+    "compile": "tsc -p tsconfig.json",
+    "clean": "rimraf ../../dist/postman",
+    "copy": "copyfiles -f ../../LICENSE package.json README.md ../../dist/postman"
+  }
+}

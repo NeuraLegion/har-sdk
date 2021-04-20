@@ -40,9 +40,6 @@
     "@types/faker": "^5.1.5",
     "@types/har-format": "^1.2.5",
     "@types/mime-types": "^2.1.0",
-    "@types/semver": "^7.3.4",
-    "@typescript-eslint/parser": "^4.22.0",
-    "eslint-import-resolver-typescript": "^2.4.0",
-    "eslint-plugin-import": "^2.22.1"
+    "@types/semver": "^7.3.4"
   }
 }

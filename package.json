@@ -40,7 +40,7 @@
   "scripts": {
     "lerna": "lerna",
     "semantic-release": "semantic-release",
-    "lint": "eslint -c .eslintrc 'packages/**/*.ts'",
+    "lint": "eslint -c .eslintrc.js 'packages/**/*.ts'",
     "format": "prettier --check 'packages/**/*.ts'",
     "test": "cross-env TS_NODE_PROJECT=./tsconfig.spec.json mocha -r ts-node/register -r tsconfig-paths/register tests/**/*.spec.ts",
     "clean": "lerna run clean",
@@ -69,6 +69,7 @@
     "debug": "^4.3.1",
     "eslint": "^7.24.0",
     "eslint-config-prettier": "^8.2.0",
+    "eslint-import-resolver-typescript": "^2.4.0",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-prefer-arrow": "^1.2.3",
     "husky": "^6.0.0",

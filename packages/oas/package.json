@@ -1,5 +1,5 @@
 {
-  "name": "@neuralegion/postman2har",
+  "name": "@neuralegion/oas2har",
   "version": "0.0.0",
   "private": false,
   "repository": {
@@ -26,23 +26,7 @@
   "scripts": {
     "build": "npm run clean && npm run compile && npm run copy",
     "compile": "tsc -p tsconfig.json",
-    "clean": "rimraf ../../dist/postman",
-    "copy": "copyfiles -f ../../LICENSE package.json README.md ../../dist/postman"
-  },
-  "dependencies": {
-    "ajv": "^6.12.6",
-    "faker": "^5.1.0",
-    "mime-types": "^2.1.27",
-    "semver": "^7.3.4",
-    "tslib": "~2.0.3"
-  },
-  "devDependencies": {
-    "@types/faker": "^5.1.5",
-    "@types/har-format": "^1.2.5",
-    "@types/mime-types": "^2.1.0",
-    "@types/semver": "^7.3.4",
-    "@typescript-eslint/parser": "^4.22.0",
-    "eslint-import-resolver-typescript": "^2.4.0",
-    "eslint-plugin-import": "^2.22.1"
+    "clean": "rimraf ../../dist/oas",
+    "copy": "copyfiles -f ../../LICENSE package.json README.md ../../dist/oas"
   }
 }

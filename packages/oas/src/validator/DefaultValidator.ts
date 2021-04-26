@@ -46,10 +46,10 @@ export class DefaultValidator implements Validator {
     });
   }
 
-  public async verify(collection: OAS.Collection): Promise<void> {
-    ok(collection, 'The specification is not provided.');
-    this.validateVersion(collection);
-    await this.validateSpec(collection);
+  public async verify(spec: OAS.Collection): Promise<void> {
+    ok(spec, 'The specification is not provided.');
+    this.validateVersion(spec);
+    await this.validateSpec(spec);
   }
 
   private async validateSpec(spec: OAS.Collection): Promise<void> {

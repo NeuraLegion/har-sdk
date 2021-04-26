@@ -33,12 +33,18 @@
     "@neuralegion/openapi-sampler": "^0.7.2",
     "ajv": "^6.12.6",
     "js-yaml": "^4.1.0",
+    "jstoxml": "^2.0.5",
     "openapi-schemas": "^2.0.4",
-    "semver": "^7.3.5"
+    "openapi-types": "^8.0.0",
+    "qs": "^6.10.1",
+    "semver": "^7.3.5",
+    "url-template": "^2.0.8"
   },
   "devDependencies": {
     "@types/har-format": "^1.2.5",
     "@types/js-yaml": "^4.0.0",
-    "@types/semver": "^7.3.4"
+    "@types/qs": "^6.9.6",
+    "@types/semver": "^7.3.4",
+    "@types/url-template": "^2.0.28"
   }
 }

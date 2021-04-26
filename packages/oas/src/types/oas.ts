@@ -1,4 +1,10 @@
+import { OpenAPIV2, OpenAPIV3 } from 'openapi-types';
+
 // eslint-disable-next-line @typescript-eslint/no-namespace
 export declare namespace OAS {
-  type Collection = Record<string, any>;
+  type Collection = OpenAPIV2.Document | OpenAPIV3.Document;
+  type PathItemObject =
+    | OpenAPIV2.PathItemObject
+    | OpenAPIV3.PathItemObject
+    | undefined;
 }

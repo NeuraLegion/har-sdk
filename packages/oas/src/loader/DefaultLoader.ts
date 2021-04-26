@@ -9,10 +9,10 @@ export class DefaultLoader implements Loader {
   public async load(path: string): Promise<OAS.Collection> {
     ok(path, 'Path is not provided.');
 
-    const ext = extname(path.toLowerCase());
-    const content = await this.read(path);
+    const ext: string = extname(path.toLowerCase());
+    const content: string = await this.read(path);
 
-    if (ext === '.yml' || ext === '.yaml') {
+    if (['.yml', '.yaml'].includes(ext)) {
       return yaml.load(content) as OAS.Collection;
     }
 

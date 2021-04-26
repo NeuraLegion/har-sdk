@@ -23,7 +23,6 @@ interface HarRequest {
 }
 
 export class DefaultConverter implements Converter {
-  // private readonly variables: ReadonlyArray<Postman.Variable>;
   private readonly REGEX_EXTRACT_VARS = /{([^{}]*?)}/g;
   private readonly VARS_SUBREPLACE_LIMIT = 30;
   private readonly BOUNDARY = '956888039105887155673143';
@@ -32,18 +31,7 @@ export class DefaultConverter implements Converter {
   constructor(
     private readonly validator: Validator,
     private readonly loader: Loader
-  ) // private readonly parserFactory: VariableParserFactory,
-  // options: {
-  //   environment?: Record<string, string>;
-  // }
-  {
-    // this.variables = Object.entries(options?.environment ?? {}).map(
-    //   ([key, value]: [string, string]) => ({
-    //     key,
-    //     value
-    //   })
-    // );
-  }
+  ) {}
 
   public async convert(
     collection: OAS.Collection | string
@@ -492,11 +480,11 @@ export class DefaultConverter implements Converter {
     for (const obj of securityObj) {
       const secScheme = Object.keys(obj)[0];
       const secDefinition = definedSchemes[secScheme];
-      const authType = secDefinition.type.toLowerCase();
+      const authType = secDefinition.type?.toLowerCase();
       switch (authType) {
         case 'http':
           // eslint-disable-next-line no-case-declarations
-          const authScheme = secDefinition.scheme.toLowerCase();
+          const authScheme = secDefinition.scheme?.toLowerCase();
           switch (authScheme) {
             case 'bearer':
               oauthDef = secScheme;
@@ -527,7 +515,7 @@ export class DefaultConverter implements Converter {
       });
     } else if (apiKeyAuthDef) {
       headers.push({
-        name: apiKeyAuthDef.name.toLowerCase(),
+        name: apiKeyAuthDef.name?.toLowerCase(),
         value: 'REPLACE_KEY_VALUE'
       });
     } else if (oauthDef) {

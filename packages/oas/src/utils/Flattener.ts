@@ -35,28 +35,20 @@ export class Flattener {
 
     config.verify();
 
-    // eslint-disable-next-line arrow-body-style
-    const paths = (
-      ob: Record<string, any> = {},
-      head: string = ''
-    ): string[] => {
-      return Object.entries(ob).reduce(
-        (product, [key, value]: [string, any]) => {
-          const fullPath = config.format(head, key);
+    const paths = (ob: Record<string, any> = {}, head: string = ''): string[] =>
+      Object.entries(ob).reduce((product, [key, value]: [string, any]) => {
+        const fullPath = config.format(head, key);
 
-          return isObject(value)
-            ? product.concat(paths(value, fullPath))
-            : product.concat(fullPath, value.toString());
-        },
-        []
-      );
-    };
+        return isObject(value)
+          ? product.concat(paths(value, fullPath))
+          : product.concat(fullPath, value.toString());
+      }, []);
 
     return paths(obj);
   }
 
   public static toFlattenObject(
-    ob: Record<string, any>,
+    obj: Record<string, any>,
     options?: Record<string, any>
   ): Record<string, any> {
     const config = Flattener.flattenConfig(options);
@@ -65,28 +57,19 @@ export class Flattener {
 
     const toReturn = {};
 
-    // eslint-disable-next-line no-restricted-syntax
-    for (const i in ob) {
-      // eslint-disable-next-line no-prototype-builtins
-      if (!ob.hasOwnProperty(i)) {
-        continue;
-      }
+    const objKeys = Object.keys(obj);
+    for (const key of objKeys) {
+      if (typeof obj[key] == 'object' && obj[key] !== null) {
+        const flatObject = Flattener.toFlattenObject(obj[key]);
 
-      if (typeof ob[i] == 'object' && ob[i] !== null) {
-        const flatObject = Flattener.toFlattenObject(ob[i]);
-
-        // TODO: check the loop
-        // for (const x in flatObject) {
-        //   // eslint-disable-next-line no-prototype-builtins
-        //   if (!flatObject.hasOwnProperty(x)) {
-        //     continue;
-        //   }
-
-        //   const fullPath = config.format(i, x);
-        //   toReturn[fullPath] = flatObject[x];
-        // }
+        const flatObjectKeys = Object.keys(flatObject);
+        // eslint-disable-next-line max-depth
+        for (const fObjectKey of flatObjectKeys) {
+          const fullPath = config.format(key, fObjectKey);
+          toReturn[fullPath] = flatObject[fObjectKey];
+        }
       } else {
-        toReturn[i] = ob[i];
+        toReturn[key] = obj[key];
       }
     }
 

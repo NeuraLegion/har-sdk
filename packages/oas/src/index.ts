@@ -1,6 +1,5 @@
 import { DefaultValidator } from './validator';
 import { DefaultConverter } from './converter';
-// import { DefaultGenerators, DefaultVariableParserFactory } from './parser';
 import { OAS } from './types/oas';
 import { DefaultLoader } from './loader';
 import Har from 'har-format';
@@ -13,15 +12,7 @@ export const oas2har = async (
 
   const validator: DefaultValidator = new DefaultValidator();
   const loader: DefaultLoader = new DefaultLoader();
-  // const generators: DefaultGenerators = new DefaultGenerators();
-  // const parserFactory: DefaultVariableParserFactory = new DefaultVariableParserFactory(
-  //   generators
-  // );
-  const converter: DefaultConverter = new DefaultConverter(
-    validator,
-    loader
-    // parserFactory,
-  );
+  const converter: DefaultConverter = new DefaultConverter(validator, loader);
 
   return converter.convert(collection);
 };

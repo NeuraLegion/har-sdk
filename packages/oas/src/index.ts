@@ -6,7 +6,7 @@ import Har from 'har-format';
 import { ok } from 'assert';
 
 export const oas2har = async (
-  collection: OAS.Collection
+  collection: OAS.Collection | string
 ): Promise<Har.Request[]> => {
   ok(collection, `Please provide a valid OAS Collection.`);
 

@@ -8,9 +8,10 @@ import { resolveRef } from '../utils/resolveRef';
 import { isObject } from '../utils/isObject';
 import { normalizeUrl } from '../utils/normalizeUrl';
 import { Flattener } from '../utils/Flattener';
+import { Versioning } from '../utils/Versioning';
 import { Request, QueryString, Header, PostData } from 'har-format';
 import template from 'url-template';
-import { OpenAPIV2, OpenAPIV3 } from 'openapi-types';
+import { OpenAPIV3 } from 'openapi-types';
 import { toXML } from 'jstoxml';
 import { sample } from '@neuralegion/openapi-sampler';
 import querystring from 'qs';
@@ -53,13 +54,12 @@ export class DefaultConverter implements Converter {
     const harList: HarRequest[] = [];
 
     for (const [path, pathMethods] of Object.entries(spec.paths)) {
-      // TODO: parse any
       const methods: [string, any][] = Object.entries(pathMethods).filter(
         ([method, _payload]: [string, any]) =>
           !method.toLowerCase().startsWith('x-swagger-router-controller')
       );
 
-      for (const [method, pld] of methods) {
+      for (const [method] of methods) {
         const url: string =
           StringHelper.removeTrailingSlash(baseUrl) +
           '/' +
@@ -139,7 +139,7 @@ export class DefaultConverter implements Converter {
             if (pathObj.consumes && pathObj.consumes.length) {
               consumes = pathObj.consumes;
             } else if (
-              this.isV2(spec) &&
+              Versioning.isV2(spec) &&
               spec.consumes &&
               spec.consumes.length
             ) {
@@ -463,9 +463,9 @@ export class DefaultConverter implements Converter {
     }
 
     let definedSchemes;
-    if (this.isV2(spec) && spec.securityDefinitions) {
+    if (Versioning.isV2(spec) && spec.securityDefinitions) {
       definedSchemes = spec.securityDefinitions;
-    } else if (this.isV3(spec) && spec.components) {
+    } else if (Versioning.isV3(spec) && spec.components) {
       definedSchemes = spec.components.securitySchemes;
     }
 
@@ -632,13 +632,11 @@ export class DefaultConverter implements Converter {
     const params = {};
 
     if (typeof spec.paths[path][method].parameters !== 'undefined') {
-      return '';
-    }
-
-    for (const param of spec.paths[path][method].parameters) {
-      if (param?.in.toLowerCase() === 'path') {
-        const data = sample(param.schema || param, {}, spec);
-        Object.assign(params, { [param.name]: data });
+      for (const param of spec.paths[path][method].parameters) {
+        if (param?.in.toLowerCase() === 'path') {
+          const data = sample(param.schema || param, {}, spec);
+          Object.assign(params, { [param.name]: data });
+        }
       }
     }
 
@@ -667,7 +665,7 @@ export class DefaultConverter implements Converter {
   }
 
   private parseUrls(spec: OAS.Collection): string[] {
-    if (this.isV3(spec) && spec.servers?.length) {
+    if (Versioning.isV3(spec) && spec.servers?.length) {
       return spec.servers.map((server: OpenAPIV3.ServerObject) => {
         const variables = server.variables || {};
 
@@ -700,7 +698,7 @@ export class DefaultConverter implements Converter {
       });
     }
 
-    if (this.isV2(spec) && spec.host) {
+    if (Versioning.isV2(spec) && spec.host) {
       const basePath: string =
         typeof spec.basePath !== 'undefined'
           ? StringHelper.removeLeadingSlash(spec.basePath)
@@ -716,13 +714,5 @@ export class DefaultConverter implements Converter {
     }
 
     return [];
-  }
-
-  private isV3(spec: OAS.Collection): spec is OpenAPIV3.Document {
-    return (spec as OpenAPIV3.Document).openapi !== undefined;
-  }
-
-  private isV2(spec: OAS.Collection): spec is OpenAPIV2.Document {
-    return (spec as OpenAPIV2.Document).swagger !== undefined;
   }
 }

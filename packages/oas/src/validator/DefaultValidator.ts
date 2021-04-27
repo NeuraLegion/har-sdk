@@ -1,5 +1,6 @@
 import { Validator } from './Validator';
 import { OAS } from '../types/oas';
+import { Versioning } from '../utils/Versioning';
 import Ajv, { ValidateFunction } from 'ajv';
 import { openapi, JsonSchema } from 'openapi-schemas';
 import semver from 'semver';
@@ -9,8 +10,7 @@ export class DefaultValidator implements Validator {
   private readonly MIN_ALLOWED_VERSION = '2.0.0';
 
   private readonly META_SCHEMAS: ReadonlyArray<string> = [
-    'ajv/lib/refs/json-schema-draft-04.json',
-    'ajv/lib/refs/json-schema-draft-07.json'
+    'ajv/lib/refs/json-schema-draft-04.json'
   ];
   private readonly VERSION_SCHEMA_MAP = {
     2: openapi.v2.id,
@@ -87,7 +87,11 @@ export class DefaultValidator implements Validator {
   }
 
   private getVersion(spec: OAS.Collection): string {
-    let version = (spec.openapi || spec.swagger || '').trim();
+    // let version = (Versioning.isV3(spec) spec.openapi || spec.swagger || '').trim();
+    let version = (Versioning.isV3(spec)
+      ? spec.openapi
+      : spec.swagger || ''
+    ).trim();
 
     ok(version, 'Cannot determine version of specification.');
 

@@ -3,7 +3,7 @@ module.exports = {
     mocha: true
   },
   ignorePatterns: ['!**/*'],
-  extends: ['../../../.eslintrc.js'],
+  extends: ['../.eslintrc.js'],
   overrides: [
     {
       files: ['*.ts'],

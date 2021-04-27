@@ -1,8 +1,7 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "outDir": "../../dist/oas/dist",
-    "typeRoots": ["node_modules/@types"]
+    "outDir": "../../dist/oas/dist"
   },
   "include": [
     "src/**/*"

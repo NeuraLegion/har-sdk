@@ -25,7 +25,12 @@ export class DefaultCapture implements Capture {
     let startHrtime = process.hrtime();
 
     return this.capturePromiseEntry(requestConfig, harConfig, dnsCache).then(
-      ([request, error, response, remoteAddress]: any[]) => {
+      ([request, error, response, remoteAddress]: [
+        Request.Request,
+        any,
+        Request.Response,
+        string
+      ]) => {
         const [isRedirect, redirectError, redirectUrl]: [
           boolean,
           Record<string, string> | null,
@@ -78,11 +83,11 @@ export class DefaultCapture implements Capture {
     );
   }
 
-  private capturePromiseEntry(
+  private async capturePromiseEntry(
     requestConfig: Request.OptionsWithUrl,
     harConfig: CaptureHar.Options,
     dnsCache: Record<string, string>
-  ): Promise<[any, any, any, string]> {
+  ): Promise<[any, any, Request.Response, string]> {
     const options = Object.assign({}, requestConfig, {
       resolveWithFullResponse: true,
       simple: false,

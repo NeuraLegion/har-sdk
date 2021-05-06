@@ -20,8 +20,7 @@ export declare namespace CaptureHar {
   }
 
   type Part = string | Buffer | Readable;
-  type FormData = Record<
-    string,
+  type FromDataType =
     | Part
     | Part[]
     | {
@@ -30,8 +29,9 @@ export declare namespace CaptureHar {
           filename: string;
           contentType: string;
         };
-      }
-  >;
+      };
+
+  type FormData = Record<string, FromDataType>;
 
   interface Request extends Request.Request {
     formData?: FormData;

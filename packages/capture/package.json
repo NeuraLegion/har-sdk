@@ -27,7 +27,7 @@
     "build": "npm run clean && npm run compile && npm run copy",
     "compile": "tsc -p tsconfig.json",
     "clean": "rimraf ../../dist/capture",
-    "test": "cross-env TS_NODE_PROJECT=./tsconfig.spec.json mocha -r ts-node/register -r tsconfig-paths/register tests/**/*.spec.ts",
+    "tests": "cross-env TS_NODE_PROJECT=./tsconfig.spec.json mocha -r ts-node/register -r tsconfig-paths/register tests/**/*.spec.ts",
     "copy": "copyfiles -f ../../LICENSE package.json README.md ../../dist/capture"
   },
   "dependencies": {

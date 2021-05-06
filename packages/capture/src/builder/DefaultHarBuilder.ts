@@ -231,7 +231,7 @@ export class DefaultHarBuilder implements HarBuilder {
 
   private convertFormData(
     name: string,
-    param: CaptureHar.Part | CaptureHar.Part[],
+    param: CaptureHar.FromDataType,
     params: Har.Param[]
   ): void {
     switch (typeof param) {
@@ -283,8 +283,8 @@ export class DefaultHarBuilder implements HarBuilder {
 
       return {
         params,
-        mimeType: 'multipart/form-data',
-        text: this.convertFormDataToText(params, boundary)
+        mimeType: 'multipart/form-data'
+        // text: this.convertFormDataToText(params, boundary)
       };
     }
   }

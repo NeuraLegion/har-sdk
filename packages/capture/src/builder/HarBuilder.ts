@@ -12,7 +12,7 @@ export interface BuilderEntryParams {
   request?: Request.Request;
   response: Request.Response;
   error: any;
-  harConfig: CaptureHar.Options;
+  harConfig?: CaptureHar.Options;
   redirectUrl: string;
   meta: BuilderEntryMeta;
 }

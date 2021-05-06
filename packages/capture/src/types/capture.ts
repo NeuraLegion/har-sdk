@@ -33,7 +33,7 @@ export declare namespace CaptureHar {
       }
   >;
 
-  export interface Request extends Request.Request {
+  interface Request extends Request.Request {
     formData?: FormData;
     req?: {
       _headers?: Request.Headers;

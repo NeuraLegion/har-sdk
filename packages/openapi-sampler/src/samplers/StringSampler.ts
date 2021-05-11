@@ -1,11 +1,11 @@
 import { ensureLength, toRFCDateTime } from '../utils';
-import { OpenAPISampler } from '../types/openapi-sampler';
+import { OAPISampler } from '../types/openapi-sampler';
 import { Sampler } from './Sampler';
 import faker from 'faker';
 import randexp from 'randexp';
 
-export class StringSampler extends Sampler {
-  public sample(schema: OpenAPISampler.Schema): any {
+export class StringSampler implements Sampler {
+  public sample(schema: OAPISampler.Schema): any {
     const format = schema.pattern ? 'pattern' : schema.format || 'default';
     const sampler = stringFormats[format] || defaultSample;
 
@@ -13,15 +13,12 @@ export class StringSampler extends Sampler {
   }
 }
 
-function emailSample() {
-  return faker.internet.email().toLowerCase();
-}
+const emailSample = () => faker.internet.email().toLowerCase();
 
-function passwordSample(min: number, max: number) {
-  return ensureLength(faker.internet.password(), min, max);
-}
+const passwordSample = (min: number, max: number) =>
+  ensureLength(faker.internet.password(), min, max);
 
-function commonDateTimeSample(min: number, max: number, omitTime?: boolean) {
+const commonDateTimeSample = (min: number, max: number, omitTime?: boolean) => {
   const res = toRFCDateTime(new Date(), omitTime, false);
 
   if (res.length < min) {
@@ -37,49 +34,32 @@ function commonDateTimeSample(min: number, max: number, omitTime?: boolean) {
   }
 
   return res;
-}
+};
 
-function dateTimeSample(min: number, max: number) {
-  return commonDateTimeSample(min, max);
-}
+const dateTimeSample = (min: number, max: number) =>
+  commonDateTimeSample(min, max);
 
-function dateSample(min: number, max: number) {
-  return commonDateTimeSample(min, max, true);
-}
+const dateSample = (min: number, max: number) =>
+  commonDateTimeSample(min, max, true);
 
-function defaultSample(min: number, max: number) {
-  return ensureLength(faker.lorem.word(), min, max);
-}
+const defaultSample = (min: number, max: number) =>
+  ensureLength(faker.lorem.word(), min, max);
 
-function ipv4Sample() {
-  return faker.internet.ip();
-}
+const ipv4Sample = () => faker.internet.ip();
 
-function ipv6Sample() {
-  return faker.internet.ipv6();
-}
+const ipv6Sample = () => faker.internet.ipv6();
 
-function hostnameSample() {
-  return faker.internet.domainName();
-}
+const hostnameSample = () => faker.internet.domainName();
 
-function uriSample() {
-  return faker.internet.url();
-}
+const uriSample = () => faker.internet.url();
 
-function binarySample() {
-  return toBase64(faker.random.words(3));
-}
+const binarySample = () => toBase64(faker.random.words(3));
 
-function uuidSample() {
-  return faker.random.uuid();
-}
+const uuidSample = () => faker.random.uuid();
 
-function toBase64(data: any) {
-  return Buffer.from(data).toString('base64');
-}
+const toBase64 = (data: any) => Buffer.from(data).toString('base64');
 
-function patternSample(min: number, max: number, pattern: string | RegExp) {
+const patternSample = (min: number, max: number, pattern: string | RegExp) => {
   const res = new randexp(pattern).gen();
 
   if (res.length < min) {
@@ -95,7 +75,7 @@ function patternSample(min: number, max: number, pattern: string | RegExp) {
   }
 
   return res;
-}
+};
 
 const stringFormats = {
   'email': emailSample,

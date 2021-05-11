@@ -31,7 +31,7 @@
     "copy": "copyfiles -f ../../LICENSE package.json README.md ../../dist/oas"
   },
   "dependencies": {
-    "@neuralegion/openapi-sampler": "^0.7.2",
+    "@neuralegion/openapi-sampler": "^0.0.0",
     "ajv": "^6.12.6",
     "js-yaml": "^4.1.0",
     "jstoxml": "^2.0.5",
@@ -44,6 +44,7 @@
   "devDependencies": {
     "@types/har-format": "^1.2.5",
     "@types/js-yaml": "^4.0.0",
+    "@types/node": "^15.0.2",
     "@types/qs": "^6.9.6",
     "@types/semver": "^7.3.4",
     "@types/url-template": "^2.0.28"

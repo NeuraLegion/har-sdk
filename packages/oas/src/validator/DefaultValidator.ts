@@ -1,6 +1,6 @@
 import { Validator } from './Validator';
-import { OAS } from '../types/oas';
-import { Versioning } from '../utils/Versioning';
+import { Collection } from '../converter';
+import { isV3 } from '../utils/versionHelpers';
 import Ajv, { ValidateFunction } from 'ajv';
 import { openapi, JsonSchema } from 'openapi-schemas';
 import semver from 'semver';
@@ -46,13 +46,13 @@ export class DefaultValidator implements Validator {
     });
   }
 
-  public async verify(spec: OAS.Collection): Promise<void> {
+  public async verify(spec: Collection): Promise<void> {
     ok(spec, 'The specification is not provided.');
     this.validateVersion(spec);
     await this.validateSpec(spec);
   }
 
-  private async validateSpec(spec: OAS.Collection): Promise<void> {
+  private async validateSpec(spec: Collection): Promise<void> {
     const version = this.getVersion(spec);
 
     const schemaNotFound =
@@ -76,7 +76,7 @@ export class DefaultValidator implements Validator {
     }
   }
 
-  private validateVersion(spec: OAS.Collection): void {
+  private validateVersion(spec: Collection): void {
     const version = this.getVersion(spec);
 
     if (!semver.gte(version, this.MIN_ALLOWED_VERSION)) {
@@ -86,12 +86,9 @@ export class DefaultValidator implements Validator {
     }
   }
 
-  private getVersion(spec: OAS.Collection): string {
+  private getVersion(spec: Collection): string {
     // let version = (Versioning.isV3(spec) spec.openapi || spec.swagger || '').trim();
-    let version = (Versioning.isV3(spec)
-      ? spec.openapi
-      : spec.swagger || ''
-    ).trim();
+    let version = (isV3(spec) ? spec.openapi : spec.swagger || '').trim();
 
     ok(version, 'Cannot determine version of specification.');
 

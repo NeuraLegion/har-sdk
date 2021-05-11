@@ -1,5 +1,5 @@
-import { OAS } from '../types/oas';
+import { Collection } from '../converter';
 
 export interface Loader {
-  load(path: string): Promise<OAS.Collection>;
+  load(path: string): Promise<Collection>;
 }

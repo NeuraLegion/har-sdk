@@ -1,7 +1,7 @@
 import { OpenAPIV2, OpenAPIV3, IJsonSchema } from 'openapi-types';
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
-export declare namespace OpenAPISampler {
+export declare namespace OAPISampler {
   type Specification = OpenAPIV2.Document | OpenAPIV3.Document;
 
   interface Schema extends IJsonSchema {
@@ -14,5 +14,12 @@ export declare namespace OpenAPISampler {
     skipWriteOnly: boolean;
     skipNonRequired: boolean;
     quiet: boolean;
+  }
+
+  interface Sample {
+    type?: string | string[];
+    value: any;
+    readOnly?: boolean;
+    writeOnly?: boolean;
   }
 }

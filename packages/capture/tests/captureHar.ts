@@ -3,8 +3,6 @@ import { har as validateHar } from 'har-validator';
 import { CaptureHar } from '../src/types/capture';
 import Request from 'request';
 
-console.log(validateHar);
-
 export const captureHar = (
   requestConfig: Request.OptionsWithUrl | string,
   harConfig?: CaptureHar.Options

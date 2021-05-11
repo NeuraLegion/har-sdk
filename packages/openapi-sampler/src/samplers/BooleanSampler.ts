@@ -1,12 +1,12 @@
-import { OpenAPISampler } from '../types/openapi-sampler';
+import { OAPISampler } from '../types/openapi-sampler';
 import { Sampler } from './Sampler';
 import faker from 'faker';
 
-export class BooleanSampler extends Sampler {
+export class BooleanSampler implements Sampler {
   public sample(
-    _schema: OpenAPISampler.Schema,
-    _spec?: OpenAPISampler.Specification,
-    _options?: OpenAPISampler.Options
+    _schema: OAPISampler.Schema,
+    _spec?: OAPISampler.Specification,
+    _options?: OAPISampler.Options
   ): boolean {
     return faker.random.boolean();
   }

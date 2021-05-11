@@ -1,10 +1,10 @@
-import { OpenAPISampler } from '../types/openapi-sampler';
+import { OAPISampler } from '../types/openapi-sampler';
 
 export interface Traverse {
   clearCache(): void;
   traverse(
-    schema: OpenAPISampler.Schema,
-    options: OpenAPISampler.Options,
-    spec: OpenAPISampler.Specification
-  ): Record<string, any>;
+    schema: OAPISampler.Schema,
+    options: OAPISampler.Options,
+    spec: OAPISampler.Specification
+  ): OAPISampler.Sample;
 }

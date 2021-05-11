@@ -1,14 +1,16 @@
 /* eslint-disable max-depth */
-import { Converter } from './Converter';
+import { Collection, Converter } from './Converter';
 import { Validator } from '../validator';
-import { OAS } from '../types/oas';
 import { Loader } from '../loader';
-import { StringHelper } from '../utils/StringHelper';
 import { resolveRef } from '../utils/resolveRef';
 import { isObject } from '../utils/isObject';
 import { normalizeUrl } from '../utils/normalizeUrl';
 import { Flattener } from '../utils/Flattener';
-import { Versioning } from '../utils/Versioning';
+import {
+  removeLeadingSlash,
+  removeTrailingSlash
+} from '../utils/stringHelpers';
+import { isV2, isV3 } from '../utils/versionHelpers';
 import { Request, QueryString, Header, PostData } from 'har-format';
 import template from 'url-template';
 import { OpenAPIV3 } from 'openapi-types';
@@ -31,13 +33,12 @@ export class DefaultConverter implements Converter {
 
   constructor(
     private readonly validator: Validator,
-    private readonly loader: Loader
+    private readonly loader: Loader,
+    private readonly flattener: Flattener
   ) {}
 
-  public async convert(
-    collection: OAS.Collection | string
-  ): Promise<Request[]> {
-    const spec: OAS.Collection =
+  public async convert(collection: Collection | string): Promise<Request[]> {
+    const spec: Collection =
       typeof collection === 'string'
         ? await this.loader.load(collection)
         : collection;
@@ -50,7 +51,7 @@ export class DefaultConverter implements Converter {
     return requests.map((x: HarRequest) => x.har);
   }
 
-  private parseSwaggerDoc(spec: OAS.Collection, baseUrl: string): HarRequest[] {
+  private parseSwaggerDoc(spec: Collection, baseUrl: string): HarRequest[] {
     const harList: HarRequest[] = [];
 
     for (const [path, pathMethods] of Object.entries(spec.paths)) {
@@ -61,9 +62,7 @@ export class DefaultConverter implements Converter {
 
       for (const [method] of methods) {
         const url: string =
-          StringHelper.removeTrailingSlash(baseUrl) +
-          '/' +
-          StringHelper.removeLeadingSlash(path);
+          removeTrailingSlash(baseUrl) + '/' + removeLeadingSlash(path);
         const har = this.createHar(spec, baseUrl, path, method);
 
         harList.push({
@@ -80,7 +79,7 @@ export class DefaultConverter implements Converter {
   }
 
   private createHar(
-    spec: OAS.Collection,
+    spec: Collection,
     baseUrl: string,
     path: string,
     method: string,
@@ -118,7 +117,7 @@ export class DefaultConverter implements Converter {
 
   // eslint-disable-next-line complexity
   private getPayload(
-    spec: OAS.Collection,
+    spec: Collection,
     path: string,
     method: string
   ): PostData | null {
@@ -138,11 +137,7 @@ export class DefaultConverter implements Converter {
 
             if (pathObj.consumes && pathObj.consumes.length) {
               consumes = pathObj.consumes;
-            } else if (
-              Versioning.isV2(spec) &&
-              spec.consumes &&
-              spec.consumes.length
-            ) {
+            } else if (isV2(spec) && spec.consumes && spec.consumes.length) {
               consumes = spec.consumes;
             }
 
@@ -152,7 +147,7 @@ export class DefaultConverter implements Converter {
             });
 
             return this.encodePayload(data, paramContentType);
-          } catch (err) {
+          } catch {
             return null;
           }
         }
@@ -342,7 +337,7 @@ export class DefaultConverter implements Converter {
 
   // eslint-disable-next-line complexity
   private getQueryStrings(
-    spec: OAS.Collection,
+    spec: Collection,
     path: string,
     method: string,
     values: Record<string, string> = {}
@@ -395,7 +390,7 @@ export class DefaultConverter implements Converter {
 
   // eslint-disable-next-line complexity
   private getHeadersArray(
-    spec: OAS.Collection,
+    spec: Collection,
     path: string,
     method: string
   ): Header[] {
@@ -463,9 +458,9 @@ export class DefaultConverter implements Converter {
     }
 
     let definedSchemes;
-    if (Versioning.isV2(spec) && spec.securityDefinitions) {
+    if (isV2(spec) && spec.securityDefinitions) {
       definedSchemes = spec.securityDefinitions;
-    } else if (Versioning.isV3(spec) && spec.components) {
+    } else if (isV3(spec) && spec.components) {
       definedSchemes = spec.components.securitySchemes;
     }
 
@@ -480,11 +475,11 @@ export class DefaultConverter implements Converter {
     for (const obj of securityObj) {
       const secScheme = Object.keys(obj)[0];
       const secDefinition = definedSchemes[secScheme];
-      const authType = secDefinition.type?.toLowerCase();
+      const authType = (secDefinition as any).type?.toLowerCase();
       switch (authType) {
         case 'http':
           // eslint-disable-next-line no-case-declarations
-          const authScheme = secDefinition.scheme?.toLowerCase();
+          const authScheme = (secDefinition as any).scheme?.toLowerCase();
           switch (authScheme) {
             case 'bearer':
               oauthDef = secScheme;
@@ -498,7 +493,7 @@ export class DefaultConverter implements Converter {
           basicAuthDef = secScheme;
           break;
         case 'apikey':
-          if (secDefinition.in === 'header') {
+          if ((secDefinition as any).in === 'header') {
             apiKeyAuthDef = secDefinition;
           }
           break;
@@ -515,7 +510,7 @@ export class DefaultConverter implements Converter {
       });
     } else if (apiKeyAuthDef) {
       headers.push({
-        name: apiKeyAuthDef.name?.toLowerCase(),
+        name: (apiKeyAuthDef as any).name?.toLowerCase(),
         value: 'REPLACE_KEY_VALUE'
       });
     } else if (oauthDef) {
@@ -561,7 +556,7 @@ export class DefaultConverter implements Converter {
       if (Array.isArray(val)) {
         return val.join(delimiter);
       } else if (isObject(val)) {
-        return Flattener.toFlattenArray(val).join(delimiter);
+        return this.flattener.toFlattenArray(val).join(delimiter);
       }
 
       return val;
@@ -604,7 +599,9 @@ export class DefaultConverter implements Converter {
     let values: Record<string, string>[];
 
     if (isObject(value)) {
-      const flatten = Flattener.toFlattenObject(value, { format: 'indices' });
+      const flatten = this.flattener.toFlattenObject(value, {
+        format: 'indices'
+      });
       values = Object.entries(flatten).map(([n, x]: any[]) => ({
         name: n,
         value: x + ''
@@ -624,7 +621,7 @@ export class DefaultConverter implements Converter {
   }
 
   private serializePath(
-    spec: OAS.Collection,
+    spec: Collection,
     path: string,
     method: string
   ): string {
@@ -643,7 +640,7 @@ export class DefaultConverter implements Converter {
     return templateUrl.expand(params);
   }
 
-  private getBaseUrl(spec: OAS.Collection): string {
+  private getBaseUrl(spec: Collection): string {
     const urls: string[] = this.parseUrls(spec);
 
     if (!Array.isArray(urls) || !urls.length) {
@@ -664,12 +661,12 @@ export class DefaultConverter implements Converter {
     });
   }
 
-  private parseUrls(spec: OAS.Collection): string[] {
-    if (Versioning.isV3(spec) && spec.servers?.length) {
+  private parseUrls(spec: Collection): string[] {
+    if (isV3(spec) && spec.servers?.length) {
       return spec.servers.map((server: OpenAPIV3.ServerObject) => {
         const variables = server.variables || {};
 
-        let urlString: string = StringHelper.removeTrailingSlash(server.url);
+        let urlString: string = removeTrailingSlash(server.url);
         let substitutions = 0;
         let replacements = 0;
 
@@ -698,18 +695,17 @@ export class DefaultConverter implements Converter {
       });
     }
 
-    if (Versioning.isV2(spec) && spec.host) {
+    if (isV2(spec) && spec.host) {
       const basePath: string =
         typeof spec.basePath !== 'undefined'
-          ? StringHelper.removeLeadingSlash(spec.basePath)
+          ? removeLeadingSlash(spec.basePath)
           : '';
-      const host: string = StringHelper.removeTrailingSlash(spec.host);
+      const host: string = removeTrailingSlash(spec.host);
       const schemes: string[] =
         typeof spec.schemes !== 'undefined' ? spec.schemes : ['https'];
 
       return schemes.map(
-        (x: string) =>
-          x + '://' + StringHelper.removeTrailingSlash(host + '/' + basePath)
+        (x: string) => x + '://' + removeTrailingSlash(host + '/' + basePath)
       );
     }
 

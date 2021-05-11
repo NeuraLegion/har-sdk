@@ -1,5 +1,5 @@
-import * as Har from 'har-format';
-import * as Request from 'request';
+import Har from 'har-format';
+import Request from 'request';
 import { Readable } from 'stream';
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -19,17 +19,17 @@ export declare namespace CaptureHar {
     maxContentLength?: number;
   }
 
-  type Part = string | Buffer | Readable;
-  type FromDataType =
-    | Part
-    | Part[]
-    | {
-        value: Part;
-        options?: {
-          filename: string;
-          contentType: string;
-        };
-      };
+  interface FromDataValue {
+    value: Part;
+    options?: {
+      filename: string;
+      contentType: string;
+    };
+  }
+
+  type Part = string | Buffer | Readable | FromDataValue;
+
+  type FromDataType = Part | Part[];
 
   type FormData = Record<string, FromDataType>;
 
@@ -38,5 +38,29 @@ export declare namespace CaptureHar {
     req?: {
       _headers?: Request.Headers;
     };
+  }
+
+  interface HarPostDataText {
+    text: string;
+    params?: Har.Param[];
+  }
+
+  type HarPostData = Har.PostDataCommon &
+    (Har.PostDataParams | HarPostDataText);
+
+  interface HarRequest extends Omit<Har.Request, 'postData'> {
+    postData?: HarPostData;
+  }
+
+  interface HarEntry extends Omit<Har.Entry, 'request'> {
+    request?: HarRequest;
+  }
+
+  interface HarLog extends Omit<Har.Log, 'entries'> {
+    entries: HarEntry[];
+  }
+
+  interface Har extends Omit<Har.Har, 'log'> {
+    log: HarLog;
   }
 }

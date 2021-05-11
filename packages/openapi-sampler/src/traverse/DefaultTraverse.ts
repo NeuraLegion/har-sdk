@@ -1,4 +1,4 @@
-import { OpenAPISampler } from '../types/openapi-sampler';
+import { OAPISampler } from '../types/openapi-sampler';
 import { Traverse } from './Traverse';
 import { mergeDeep } from '../utils';
 import { Sampler } from '../samplers/Sampler';
@@ -50,10 +50,10 @@ export class DefaultTraverse implements Traverse {
 
   // eslint-disable-next-line complexity
   public traverse(
-    schema: OpenAPISampler.Schema,
-    options: OpenAPISampler.Options,
-    spec: OpenAPISampler.Specification
-  ): Record<string, any> {
+    schema: OAPISampler.Schema,
+    options: OAPISampler.Options,
+    spec: OAPISampler.Specification
+  ): OAPISampler.Sample {
     if (!this.samplers || this.samplers.size === 0) {
       throw Error('Samplers are not set!');
     }
@@ -73,7 +73,7 @@ export class DefaultTraverse implements Traverse {
 
       const referenced = JsonPointer.get(spec, ref);
 
-      let result;
+      let result: OAPISampler.Sample;
 
       if (!this.refCache[ref]) {
         this.refCache[ref] = true;
@@ -169,7 +169,7 @@ export class DefaultTraverse implements Traverse {
     };
   }
 
-  private inferType(schema: OpenAPISampler.Schema): string | null {
+  private inferType(schema: OAPISampler.Schema): string | null {
     if (schema.type) {
       return schema.type as string;
     }
@@ -190,11 +190,11 @@ export class DefaultTraverse implements Traverse {
 
   // eslint-disable-next-line complexity
   private allOfSample(
-    into: OpenAPISampler.Schema,
-    children: OpenAPISampler.Schema[],
-    options: OpenAPISampler.Options,
-    spec: OpenAPISampler.Specification
-  ) {
+    into: OAPISampler.Schema,
+    children: OAPISampler.Schema[],
+    options: OAPISampler.Options,
+    spec: OAPISampler.Specification
+  ): OAPISampler.Sample {
     const res = this.traverse(into, options, spec);
     const subSamples = [];
 

@@ -1,11 +1,9 @@
-import { DefaultHarBuilder, HarBuilder } from './builder';
+import { DefaultHarBuilder } from './builder';
 import { DefaultParser } from './parser';
 import { CaptureHar } from './types/capture';
-import pkg from '../../../package.json';
-import { Capture } from './capture/Capture';
+import pkg from '../package.json';
 import { DefaultCapture } from './capture/DefaultCapture';
 import Request from 'request';
-import { Har } from 'har-format';
 
 const buildRequestConfig = (
   requestConfig: Request.OptionsWithUrl | string
@@ -20,10 +18,10 @@ const buildRequestConfig = (
 export const captureHar = async (
   requestConfig: Request.OptionsWithUrl | string,
   harConfig?: CaptureHar.Options
-): Promise<Har> => {
+): Promise<CaptureHar.Har> => {
   const parser = new DefaultParser();
-  const builder: HarBuilder = new DefaultHarBuilder(parser);
-  const capture: Capture = new DefaultCapture(builder, parser);
+  const builder = new DefaultHarBuilder(parser);
+  const capture = new DefaultCapture(builder, parser);
 
   const entries = await capture.captureEntries(
     buildRequestConfig(requestConfig),

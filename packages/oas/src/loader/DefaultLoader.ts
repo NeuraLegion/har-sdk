@@ -1,19 +1,24 @@
 import { Loader } from './Loader';
-import { OAS } from '../types/oas';
+import { Collection } from '../converter';
 import yaml from 'js-yaml';
-import { readFile } from 'fs/promises';
+import fs from 'fs';
+import { promisify } from 'util';
 import { extname } from 'path';
 import { ok } from 'assert';
 
+const readFile = promisify(fs.readFile);
+
 export class DefaultLoader implements Loader {
-  public async load(path: string): Promise<OAS.Collection> {
+  private readonly supportedExtensions: string[] = ['.yml', '.yaml'];
+
+  public async load(path: string): Promise<Collection> {
     ok(path, 'Path is not provided.');
 
-    const ext: string = extname(path.toLowerCase());
+    const ext: string = extname(path);
     const content: string = await this.read(path);
 
-    if (['.yml', '.yaml'].includes(ext)) {
-      return yaml.load(content) as OAS.Collection;
+    if (this.supportedExtensions.includes(ext.toLowerCase())) {
+      return yaml.load(content) as Collection;
     }
 
     return JSON.parse(content);

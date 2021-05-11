@@ -55,7 +55,7 @@ Available options:
 
 ## Example
 ```js
-const OpenAPISampler = require('.');
+import OpenAPISampler from '.';
 OpenAPISampler.sample({
   type: 'object',
   properties: {

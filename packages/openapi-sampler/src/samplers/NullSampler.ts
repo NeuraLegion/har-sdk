@@ -1,16 +1,11 @@
-import { Traverse } from '../traverse';
-import { OpenAPISampler } from '../types/openapi-sampler';
+import { OAPISampler } from '../types/openapi-sampler';
 import { Sampler } from './Sampler';
 
-export class NullSampler extends Sampler {
-  constructor(traverse: Traverse) {
-    super(traverse);
-  }
-
+export class NullSampler implements Sampler {
   public sample(
-    _schema: OpenAPISampler.Schema,
-    _spec?: OpenAPISampler.Specification,
-    _options?: OpenAPISampler.Options
+    _schema: OAPISampler.Schema,
+    _spec?: OAPISampler.Specification,
+    _options?: OAPISampler.Options
   ): null {
     return null;
   }

@@ -1,7 +1,5 @@
 # capture-har
 
-**THIS REPO HAS BEEN DEPRECATED. THE DEVELOPMENT HAS MOVED TO A NEW REPOSITORY: https://github.com/NeuraLegion/har-recorder**
-
 Fetch requests in HAR format
 
 This module makes a request and captures it as a [HAR](http://www.softwareishard.com/blog/har-12-spec/) object.
@@ -14,23 +12,14 @@ It can now be also used in stream mode. This means that it will stream data even
 
 ```js
 // Promise mode
-const captureHar = require('@neuralegion/capture-har');
+import captureHar from '@neuralegion/capture-har';
+
 captureHar({
   url: 'http://www.google.com'
 }, { withContent: false })
   .then(har => {
     console.log(JSON.stringify(har, null, 2));
   });
-
-// Stream mode
-const CaptureHar = require('@neuralegion/capture-har').CaptureHar;
-const captureHar = new CaptureHar(require('request'));
-captureHar.start({ url: 'http://www.google.com' })
-  .on('data', data => // data event will contain the response body as it is received)
-  .on('end', () => {
-    const har = captureHar.stop();
-    // har will contain the HAR object
-    })
 ```
 
 The result of code this can be found in [example.json](https://github.com/Woorank/capture-har/blob/master/example.json).

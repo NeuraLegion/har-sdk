@@ -1,5 +1,5 @@
-import { OAS } from '../types/oas';
+import { Collection } from '../converter';
 
 export interface Validator {
-  verify(collection: OAS.Collection): Promise<void | never>;
+  verify(collection: Collection): Promise<void | never>;
 }

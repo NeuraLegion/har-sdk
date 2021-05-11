@@ -1,13 +1,13 @@
-import { OpenAPISampler } from '../types/openapi-sampler';
+import { OAPISampler } from '../types/openapi-sampler';
 import { Sampler } from './Sampler';
 
-export class NumberSampler extends Sampler {
+export class NumberSampler implements Sampler {
   private readonly DECIMALS = 2;
   private readonly MAX_VALUE = Number.MAX_SAFE_INTEGER;
   private readonly MIN_VALUE = Number.MIN_SAFE_INTEGER;
 
   // eslint-disable-next-line complexity
-  public sample(schema: OpenAPISampler.Schema): any {
+  public sample(schema: OAPISampler.Schema): any {
     const type = schema.type ? schema.type : 'number';
     const isInt = type === 'integer';
 

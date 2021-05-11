@@ -1,7 +1,56 @@
 import { isObject } from './isObject';
 
 export class Flattener {
-  public static flattenConfig(options?: Record<string, any>): any {
+  public toFlattenArray(
+    obj: Record<string, any>,
+    options?: Record<string, any>
+  ): string[] {
+    const config = this.flattenConfig(options);
+
+    config.verify();
+
+    const paths = (ob: Record<string, any> = {}, head: string = ''): string[] =>
+      Object.entries(ob).reduce((product, [key, value]: [string, any]) => {
+        const fullPath = config.format(head, key);
+
+        return isObject(value)
+          ? product.concat(paths(value, fullPath))
+          : product.concat(fullPath, value.toString());
+      }, []);
+
+    return paths(obj);
+  }
+
+  public toFlattenObject(
+    obj: Record<string, any>,
+    options?: Record<string, any>
+  ): Record<string, any> {
+    const config = this.flattenConfig(options);
+
+    config.verify();
+
+    const toReturn = {};
+
+    const objKeys = Object.keys(obj);
+    for (const key of objKeys) {
+      if (typeof obj[key] == 'object' && obj[key] !== null) {
+        const flatObject = this.toFlattenObject(obj[key]);
+
+        const flatObjectKeys = Object.keys(flatObject);
+        // eslint-disable-next-line max-depth
+        for (const fObjectKey of flatObjectKeys) {
+          const fullPath = config.format(key, fObjectKey);
+          toReturn[fullPath] = flatObject[fObjectKey];
+        }
+      } else {
+        toReturn[key] = obj[key];
+      }
+    }
+
+    return toReturn;
+  }
+
+  private flattenConfig(options?: Record<string, any>): any {
     return {
       _options: Object.assign({ format: 'dots' }, options),
       ALLOWED_FORMATS: new Set(['indices', 'dots']),
@@ -25,54 +74,5 @@ export class Flattener {
         }
       }
     };
-  }
-
-  public static toFlattenArray(
-    obj: Record<string, any>,
-    options?: Record<string, any>
-  ): string[] {
-    const config = Flattener.flattenConfig(options);
-
-    config.verify();
-
-    const paths = (ob: Record<string, any> = {}, head: string = ''): string[] =>
-      Object.entries(ob).reduce((product, [key, value]: [string, any]) => {
-        const fullPath = config.format(head, key);
-
-        return isObject(value)
-          ? product.concat(paths(value, fullPath))
-          : product.concat(fullPath, value.toString());
-      }, []);
-
-    return paths(obj);
-  }
-
-  public static toFlattenObject(
-    obj: Record<string, any>,
-    options?: Record<string, any>
-  ): Record<string, any> {
-    const config = Flattener.flattenConfig(options);
-
-    config.verify();
-
-    const toReturn = {};
-
-    const objKeys = Object.keys(obj);
-    for (const key of objKeys) {
-      if (typeof obj[key] == 'object' && obj[key] !== null) {
-        const flatObject = Flattener.toFlattenObject(obj[key]);
-
-        const flatObjectKeys = Object.keys(flatObject);
-        // eslint-disable-next-line max-depth
-        for (const fObjectKey of flatObjectKeys) {
-          const fullPath = config.format(key, fObjectKey);
-          toReturn[fullPath] = flatObject[fObjectKey];
-        }
-      } else {
-        toReturn[key] = obj[key];
-      }
-    }
-
-    return toReturn;
   }
 }

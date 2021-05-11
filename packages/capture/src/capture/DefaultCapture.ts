@@ -4,12 +4,13 @@ import { Parser } from '../parser';
 import { HarBuilder } from '../builder';
 import * as Request from 'request';
 import requestPromise from 'request-promise';
-import { Entry } from 'har-format';
 import net from 'net';
 import { parse as urlParse } from 'url';
-// import dns from 'dns';
+import dns from 'dns';
 
 export class DefaultCapture implements Capture {
+  private dnsCache: Record<string, string> = {};
+
   constructor(
     private readonly builder: HarBuilder,
     private readonly parser: Parser
@@ -18,13 +19,12 @@ export class DefaultCapture implements Capture {
   public async captureEntries(
     requestConfig: Request.OptionsWithUrl,
     harConfig: CaptureHar.Options,
-    dnsCache: Record<string, string> = {},
     depth: number = 1
-  ): Promise<Entry[]> {
+  ): Promise<CaptureHar.HarEntry[]> {
     let startTime = Date.now();
     let startHrtime = process.hrtime();
 
-    return this.capturePromiseEntry(requestConfig, harConfig, dnsCache).then(
+    return this.capturePromiseEntry(requestConfig, harConfig).then(
       ([request, error, response, remoteAddress]: [
         Request.Request,
         any,
@@ -73,7 +73,6 @@ export class DefaultCapture implements Capture {
           return this.captureEntries(
             redirectConfig,
             harConfig,
-            dnsCache,
             depth + 1
           ).then((entries) => [entry].concat(entries));
         } else {
@@ -85,21 +84,30 @@ export class DefaultCapture implements Capture {
 
   private async capturePromiseEntry(
     requestConfig: Request.OptionsWithUrl,
-    harConfig: CaptureHar.Options,
-    dnsCache: Record<string, string>
-  ): Promise<[any, any, Request.Response, string]> {
+    harConfig: CaptureHar.Options
+  ): Promise<[Request.Request, any, Request.Response, string]> {
+    const dnsCache = this.dnsCache;
+
     const options = Object.assign({}, requestConfig, {
       resolveWithFullResponse: true,
       simple: false,
-      followRedirect: false
-      // lookup(host: string, opts: Record<string, any>, cb: (err: any, ip: string, addressType: string) => any) {
-      //   const lookupFn = requestConfig.lookup || dns.lookup;
+      followRedirect: false,
+      lookup(
+        host: string,
+        opts: Record<string, any>,
+        cb: (err: any, ip: string, addressType: string) => any
+      ) {
+        const lookupFn = (requestConfig as any).lookup || dns.lookup;
 
-      //   return lookupFn(host, opts, (err: any, ip: string, addressType: string) => {
-      //     dnsCache.remoteAddress = ip;
-      //     cb(err, ip, addressType);
-      //   });
-      // }
+        return lookupFn(
+          host,
+          opts,
+          (err: any, ip: string, addressType: string) => {
+            dnsCache.remoteAddress = ip;
+            cb(err, ip, addressType);
+          }
+        );
+      }
     });
 
     const reqObject = requestPromise(options);
@@ -113,7 +121,7 @@ export class DefaultCapture implements Capture {
         reqObject.abort();
 
         const error = new RangeError('Maximum response size exceeded');
-        error.code = 'MAX_RES_BODY_SIZE';
+        (error as any).code = 'MAX_RES_BODY_SIZE';
 
         reqObject.emit('error', error);
       }
@@ -129,7 +137,7 @@ export class DefaultCapture implements Capture {
           reqObject.abort();
 
           const error = new RangeError('Maximum response size exceeded');
-          error.code = 'MAX_RES_BODY_SIZE';
+          (error as any).code = 'MAX_RES_BODY_SIZE';
 
           reqObject.emit('error', error);
         }
@@ -139,7 +147,7 @@ export class DefaultCapture implements Capture {
     if (typeof options.timeout === 'number') {
       const globalTimeout = setTimeout(() => {
         const err = new Error('global ETIMEDOUT');
-        err.code = 'ETIMEDOUT';
+        (err as any).code = 'ETIMEDOUT';
         reqObject.abort();
         reqObject.emit('error', err);
       }, options.timeout);
@@ -148,16 +156,21 @@ export class DefaultCapture implements Capture {
     }
 
     if (net.isIP(reqObject.uri.hostname)) {
-      dnsCache.remoteAddress = reqObject.uri.hostname;
+      this.dnsCache.remoteAddress = reqObject.uri.hostname;
     }
 
     return reqObject.then(
-      (response: any) => [reqObject, null, response, dnsCache.remoteAddress],
+      (response: any) => [
+        reqObject,
+        null,
+        response,
+        this.dnsCache.remoteAddress
+      ],
       (error: any) => [
         reqObject,
         error.cause,
         error.response,
-        dnsCache.remoteAddress
+        this.dnsCache.remoteAddress
       ]
     );
   }

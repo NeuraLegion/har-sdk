@@ -106,14 +106,13 @@ describe('Capture HAR', async () => {
     assert.nestedPropertyVal(
       har,
       'log.entries[0].response._error.code',
-      'EAI_AGAIN'
+      'ENOTFOUND'
     );
     assert.nestedPropertyVal(
       har,
       'log.entries[0].response._error.message',
-      'getaddrinfo EAI_AGAIN x'
+      'getaddrinfo ENOTFOUND x'
     );
-    // assert.notNestedPropertyVal(har, 'log.entries[0].response._error.stack');
     assert.nestedPropertyVal(
       har,
       'log.entries[0].response.content.mimeType',

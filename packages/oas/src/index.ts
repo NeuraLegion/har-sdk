@@ -1,20 +1,23 @@
 import { DefaultValidator } from './validator';
-import { DefaultConverter } from './converter';
-import { OAS } from './types/oas';
+import { Collection, DefaultConverter } from './converter';
 import { DefaultLoader } from './loader';
+import { Flattener } from './utils/Flattener';
 import Har from 'har-format';
 import { ok } from 'assert';
 
 export const oas2har = async (
-  collection: OAS.Collection | string
+  collection: Collection | string
 ): Promise<Har.Request[]> => {
   ok(collection, `Please provide a valid OAS Collection.`);
 
-  const validator: DefaultValidator = new DefaultValidator();
-  const loader: DefaultLoader = new DefaultLoader();
-  const converter: DefaultConverter = new DefaultConverter(validator, loader);
+  const validator = new DefaultValidator();
+  const loader = new DefaultLoader();
+  const flattener = new Flattener();
+  const converter: DefaultConverter = new DefaultConverter(
+    validator,
+    loader,
+    flattener
+  );
 
   return converter.convert(collection);
 };
-
-export { OAS } from './types/oas';

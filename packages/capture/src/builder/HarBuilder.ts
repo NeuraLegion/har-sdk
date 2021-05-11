@@ -1,6 +1,5 @@
 import { CaptureHar } from '../types/capture';
-import * as Har from 'har-format';
-import * as Request from 'request';
+import Request from 'request';
 
 export interface BuilderEntryMeta {
   startTime: number;
@@ -18,6 +17,6 @@ export interface BuilderEntryParams {
 }
 
 export interface HarBuilder {
-  buildHarEntry(params: BuilderEntryParams): Har.Entry;
+  buildHarEntry(params: BuilderEntryParams): CaptureHar.HarEntry;
   buildHarConfig(harConfig: CaptureHar.Options): CaptureHar.Options;
 }

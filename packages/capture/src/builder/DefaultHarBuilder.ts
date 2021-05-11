@@ -2,8 +2,9 @@ import { CaptureHar } from '../types/capture';
 import { BuilderEntryParams, HarBuilder } from './HarBuilder';
 import { Parser } from '../parser';
 import { transformBinaryToUtf8 } from '../utils';
-import * as Har from 'har-format';
-import * as Request from 'request';
+import { isReadable } from '../utils/isReadable';
+import Har from 'har-format';
+import Request from 'request';
 import tough from 'tough-cookie';
 import contentType from 'content-type';
 import querystring from 'querystring';
@@ -20,7 +21,7 @@ export class DefaultHarBuilder implements HarBuilder {
     harConfig,
     redirectUrl,
     meta
-  }: BuilderEntryParams): Har.Entry {
+  }: BuilderEntryParams): CaptureHar.HarEntry {
     return {
       startedDateTime: new Date(meta.startTime).toISOString(),
       time: meta.duration,
@@ -52,41 +53,7 @@ export class DefaultHarBuilder implements HarBuilder {
     );
   }
 
-  private buildHarCookie(cookie: tough.Cookie): Har.Cookie {
-    const harCookie: Har.Cookie = {
-      name: cookie.key,
-      value: cookie.value,
-      httpOnly: cookie.httpOnly,
-      secure: cookie.secure
-    };
-
-    if (cookie.path) {
-      harCookie.path = cookie.path;
-    }
-
-    if (cookie.domain) {
-      harCookie.domain = cookie.domain;
-    }
-
-    if (cookie.expires instanceof Date) {
-      harCookie.expires = cookie.expires.toISOString();
-    }
-
-    return harCookie;
-  }
-
-  private buildHarCookies(cookies: string[]): Har.Cookie[] {
-    if (!cookies) {
-      return [];
-    }
-
-    return cookies
-      .map((cookie) => tough.parse(cookie))
-      .filter((cookie) => cookie)
-      .map((cookie) => this.buildHarCookie(cookie));
-  }
-
-  private buildHarRequest(request: CaptureHar.Request): Har.Request {
+  private buildHarRequest(request: CaptureHar.Request): CaptureHar.HarRequest {
     return {
       method: (request.method && request.method.toUpperCase()) || '',
       url: (request.uri && request.uri.href) || '',
@@ -143,6 +110,40 @@ export class DefaultHarBuilder implements HarBuilder {
     }
 
     return harResponse;
+  }
+
+  private buildHarCookie(cookie: tough.Cookie): Har.Cookie {
+    const harCookie: Har.Cookie = {
+      name: cookie.key,
+      value: cookie.value,
+      httpOnly: cookie.httpOnly,
+      secure: cookie.secure
+    };
+
+    if (cookie.path) {
+      harCookie.path = cookie.path;
+    }
+
+    if (cookie.domain) {
+      harCookie.domain = cookie.domain;
+    }
+
+    if (cookie.expires instanceof Date) {
+      harCookie.expires = cookie.expires.toISOString();
+    }
+
+    return harCookie;
+  }
+
+  private buildHarCookies(cookies: string[]): Har.Cookie[] {
+    if (!cookies) {
+      return [];
+    }
+
+    return cookies
+      .map((cookie) => tough.parse(cookie))
+      .filter((cookie) => cookie)
+      .map((cookie) => this.buildHarCookie(cookie));
   }
 
   private buildFlattenedNameValueMap(
@@ -240,7 +241,7 @@ export class DefaultHarBuilder implements HarBuilder {
           param.forEach((x) => this.convertFormData(name, x, params));
         } else if (Buffer.isBuffer(param)) {
           params.push({ name, value: param.toString('utf8') });
-        } else if (param.options) {
+        } else if (isReadable(param)) {
           const value = Buffer.isBuffer(param.value)
             ? param.value.toString('utf8')
             : (param.value || '').toString();
@@ -261,7 +262,9 @@ export class DefaultHarBuilder implements HarBuilder {
     }
   }
 
-  private buildHarPostData(request: CaptureHar.Request): Har.PostData {
+  private buildHarPostData(
+    request: CaptureHar.Request
+  ): CaptureHar.HarPostData {
     if (request.body) {
       return {
         mimeType: this.getMimeType(request),
@@ -278,21 +281,23 @@ export class DefaultHarBuilder implements HarBuilder {
       });
 
       const header = request.getHeader('content-type');
-      const boundary = header.split(' ')[1].split('=')[1];
-      // boundary = boundary.split("=")[1]
+      let boundary = header.split(' ')[1];
+      boundary = boundary.split('=')[1];
 
       return {
         params,
-        mimeType: 'multipart/form-data'
-        // text: this.convertFormDataToText(params, boundary)
+        mimeType: 'multipart/form-data',
+        text: this.convertFormDataToText(params, boundary)
       };
     }
   }
 
-  private getMimeType(response: Request.Response | Request.Request): string {
+  private getMimeType(
+    response: Request.Response | Request.Request | string
+  ): string {
     try {
       return contentType.parse(response).type;
-    } catch (e) {
+    } catch {
       return 'x-unknown';
     }
   }

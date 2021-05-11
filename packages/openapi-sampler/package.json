@@ -1,5 +1,5 @@
 {
-  "name": "@neuralegion/openapi-sampler",
+  "name": "@har-sdk/openapi-sampler",
   "version": "0.0.0",
   "private": false,
   "repository": {
@@ -26,9 +26,10 @@
   "scripts": {
     "build": "npm run clean && npm run compile && npm run copy",
     "compile": "tsc -p tsconfig.json",
+    "lint": "eslint -c .eslintrc.js src",
     "clean": "rimraf ../../dist/openapi-sampler",
     "copy": "copyfiles -f ../../LICENSE package.json README.md ../../dist/openapi-sampler",
-    "test": "cross-env TS_NODE_PROJECT=./tsconfig.spec.json mocha -r ts-node/register -r tsconfig-paths/register tests/**/*.spec.ts"
+    "test": "cross-env TS_NODE_PROJECT=./tsconfig.spec.json mocha -r ts-node/register -r tsconfig-paths/register src/**/*.spec.ts"
   },
   "dependencies": {
     "faker": "^5.5.3",

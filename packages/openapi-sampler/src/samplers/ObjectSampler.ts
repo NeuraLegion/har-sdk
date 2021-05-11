@@ -27,7 +27,6 @@ export class ObjectSampler implements Sampler {
 
       Object.keys(schema.properties).forEach((propertyName) => {
         // skip before traverse that could be costly
-        // eslint-disable-next-line no-prototype-builtins
         if (
           options.skipNonRequired &&
           // eslint-disable-next-line no-prototype-builtins

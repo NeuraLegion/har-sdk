@@ -1,9 +1,10 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "outDir": "../../dist/openapi-sampler/dist"
+    "outDir": "../../dist/openapi-sampler/dist",
+    "baseUrl": ".",
+    "rootDir": ".",
+    "composite": true
   },
-  "include": [
-    "src/**/*"
-  ]
+  "exclude": ["node_modules", "dist", "**/*.spec.ts"]
 }

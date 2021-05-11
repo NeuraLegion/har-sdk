@@ -1,5 +1,5 @@
 {
-  "name": "@neuralegion/capture-har",
+  "name": "@har-skd/capture",
   "version": "0.0.0",
   "private": false,
   "repository": {
@@ -26,19 +26,21 @@
   "scripts": {
     "build": "npm run clean && npm run compile && npm run copy",
     "compile": "tsc -p tsconfig.json",
+    "lint": "eslint -c .eslintrc.js src",
     "clean": "rimraf ../../dist/capture",
     "test": "cross-env TS_NODE_PROJECT=./tsconfig.spec.json mocha -r ts-node/register -r tsconfig-paths/register tests/**/*.spec.ts",
     "copy": "copyfiles -f ../../LICENSE package.json README.md ../../dist/capture"
   },
   "dependencies": {
-    "@types/har-format": "^1.2.5",
     "content-type": "^1.0.4",
+    "har-validator": "^5.1.5",
     "querystring": "^0.2.1",
     "request": "^2.88.2",
     "request-promise": "^4.2.6",
     "tough-cookie": "^4.0.0"
   },
   "devDependencies": {
+    "@types/har-format": "^1.2.5",
     "@types/content-type": "^1.1.3",
     "@types/request-promise": "^4.1.47"
   }

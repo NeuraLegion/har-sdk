@@ -4,9 +4,7 @@
     "outDir": "./dist/tests",
     "module": "commonjs",
     "types": ["mocha", "node"],
-    "target": "es5",
-    "noImplicitAny": false
+    "target": "es5"
   },
-  "include": ["tests/**/*.spec.ts"],
-  "exclude": ["node_modules", "dist"]
+  "include": ["tests/**/*.spec.ts"]
 }

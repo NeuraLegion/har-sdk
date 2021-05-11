@@ -1,9 +1,10 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "outDir": "../../dist/capture/dist"
+    "outDir": "../../dist/capture/dist",
+    "baseUrl": ".",
+    "rootDir": ".",
+    "composite": true
   },
-  "include": [
-    "src/**/*"
-  ]
+  "exclude": ["node_modules", "dist", "**/*.spec.ts"]
 }

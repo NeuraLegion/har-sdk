@@ -1,5 +1,5 @@
 {
-  "name": "@neuralegion/postman2har",
+  "name": "@har-sdk/postman",
   "version": "0.0.0",
   "private": false,
   "repository": {
@@ -26,6 +26,7 @@
   "scripts": {
     "build": "npm run clean && npm run compile && npm run copy",
     "compile": "tsc -p tsconfig.json",
+    "lint": "eslint -c .eslintrc.js src",
     "clean": "rimraf ../../dist/postman",
     "copy": "copyfiles -f ../../LICENSE package.json README.md ../../dist/postman"
   },

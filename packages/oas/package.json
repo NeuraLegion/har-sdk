@@ -1,5 +1,5 @@
 {
-  "name": "@neuralegion/oas2har",
+  "name": "@har-sdk/oas",
   "version": "0.0.0",
   "private": false,
   "repository": {
@@ -26,12 +26,13 @@
   "scripts": {
     "build": "npm run clean && npm run compile && npm run copy",
     "compile": "tsc -p tsconfig.json",
+    "lint": "eslint -c .eslintrc.js src",
     "clean": "rimraf ../../dist/oas",
     "test": "cross-env TS_NODE_PROJECT=./tsconfig.spec.json mocha -r ts-node/register -r tsconfig-paths/register tests/**/*.spec.ts",
     "copy": "copyfiles -f ../../LICENSE package.json README.md ../../dist/oas"
   },
   "dependencies": {
-    "@neuralegion/openapi-sampler": "^0.0.0",
+    "@har-sdk/openapi-sampler": "*",
     "ajv": "^6.12.6",
     "js-yaml": "^4.1.0",
     "jstoxml": "^2.0.5",

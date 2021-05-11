@@ -1,14 +1,13 @@
+import { DefaultTraverse } from '../traverse';
+import { ArraySampler } from './ArraySampler';
+import { NumberSampler } from './NumberSampler';
+import { ObjectSampler } from './ObjectSampler';
+import { StringSampler } from './StringSampler';
+import { Sampler } from './Sampler';
+import { BooleanSampler } from './BooleanSampler';
+import { NullSampler } from './NullSampler';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { expect } from 'chai';
-import { DefaultTraverse } from '../../src/traverse';
-import {
-  Sampler,
-  ArraySampler,
-  BooleanSampler,
-  NullSampler,
-  NumberSampler,
-  ObjectSampler,
-  StringSampler
-} from '../../src/samplers';
 
 describe('Array sampler', async () => {
   let sampler: Sampler;
@@ -55,6 +54,7 @@ describe('Array sampler', async () => {
       items: [{ type: 'number' }, { type: 'string' }, {}]
     });
 
+    // eslint-disable-next-line @typescript-eslint/typedef
     const [integerValue, stringValue, unknownValue] = res;
 
     expect(typeof integerValue).to.equal('number');

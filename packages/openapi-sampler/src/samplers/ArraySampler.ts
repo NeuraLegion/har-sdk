@@ -9,7 +9,7 @@ export class ArraySampler implements Sampler {
     schema: OAPISampler.Schema,
     spec?: OAPISampler.Specification,
     options?: OAPISampler.Options
-  ): Record<string, any>[] {
+  ): any[] {
     let arrayLength = schema.minItems || 1;
 
     if (Array.isArray(schema.items)) {
@@ -24,7 +24,7 @@ export class ArraySampler implements Sampler {
       return schema.items || {};
     };
 
-    const res: Record<string, any>[] = [];
+    const res: any[] = [];
 
     if (!schema.items) {
       return res;
@@ -32,7 +32,7 @@ export class ArraySampler implements Sampler {
 
     for (let i = 0; i < arrayLength; i++) {
       const itemSchema = itemSchemaGetter(i);
-      res.push(this.traverse.traverse(itemSchema, options, spec));
+      res.push(this.traverse.traverse(itemSchema, options, spec).value);
     }
 
     return res;

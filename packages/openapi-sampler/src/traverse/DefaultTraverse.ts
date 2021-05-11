@@ -169,7 +169,7 @@ export class DefaultTraverse implements Traverse {
     };
   }
 
-  private inferType(schema: OAPISampler.Schema): string | null {
+  private inferType(schema: OAPISampler.Schema): string {
     if (schema.type) {
       return schema.type as string;
     }
@@ -185,7 +185,7 @@ export class DefaultTraverse implements Traverse {
       }
     }
 
-    return null;
+    return 'null';
   }
 
   // eslint-disable-next-line complexity

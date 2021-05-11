@@ -1,6 +1,14 @@
 import { expect } from 'chai';
 import { DefaultTraverse } from '../../src/traverse';
-import { Sampler, ArraySampler } from '../../src/samplers';
+import {
+  Sampler,
+  ArraySampler,
+  BooleanSampler,
+  NullSampler,
+  NumberSampler,
+  ObjectSampler,
+  StringSampler
+} from '../../src/samplers';
 
 describe('Array sampler', async () => {
   let sampler: Sampler;
@@ -12,6 +20,12 @@ describe('Array sampler', async () => {
 
     const SAMPLER_MAP = new Map<string, Sampler>();
     SAMPLER_MAP.set('array', sampler);
+    SAMPLER_MAP.set('boolean', new BooleanSampler());
+    SAMPLER_MAP.set('null', new NullSampler());
+    SAMPLER_MAP.set('integer', new NumberSampler());
+    SAMPLER_MAP.set('number', new NumberSampler());
+    SAMPLER_MAP.set('object', new ObjectSampler(traverse));
+    SAMPLER_MAP.set('string', new StringSampler());
 
     traverse.samplers = SAMPLER_MAP;
   });

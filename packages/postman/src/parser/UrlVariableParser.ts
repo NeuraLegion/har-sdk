@@ -1,6 +1,6 @@
 import { BaseVariableParser } from './BaseVariableParser';
 import { Generators } from './Generators';
-import { Postman } from '../types/postman';
+import { Postman } from '../postman';
 
 export class UrlVariableParser extends BaseVariableParser {
   private readonly PATH_VARIABLE_IDENTIFIER = ':';
@@ -18,7 +18,7 @@ export class UrlVariableParser extends BaseVariableParser {
         this.normalizeKey(value)
       );
 
-      if (variable && typeof variable === 'function') {
+      if (typeof variable === 'function') {
         variable = {
           value: variable()?.toString()
         };

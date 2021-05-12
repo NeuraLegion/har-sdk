@@ -24,12 +24,12 @@
   "typings": "dist/index.d.ts",
   "homepage": "https://github.com/NeuraLegion/har-sdk#readme",
   "scripts": {
-    "build": "npm run clean && npm run compile && npm run copy",
-    "compile": "tsc -p tsconfig.json",
-    "lint": "eslint -c .eslintrc.js src",
-    "clean": "rimraf ../../dist/openapi-sampler",
-    "copy": "copyfiles -f ../../LICENSE package.json README.md ../../dist/openapi-sampler",
-    "test": "cross-env TS_NODE_PROJECT=./tsconfig.spec.json mocha -r ts-node/register -r tsconfig-paths/register src/**/*.spec.ts"
+    "prebuild": "npm run compile -- --clean",
+    "build": "npm run compile",
+    "compile": "tsc -b tsconfig.build.json",
+    "lint": "eslint -c .eslintrc.js --ignore-path ../../.eslintignore . --ext ts --fix",
+    "format": "prettier --ignore-path ../../.prettierignore --check **/*.ts",
+    "test": "mocha -r ts-node/register -r tsconfig-paths/register src/**/*.spec.ts"
   },
   "dependencies": {
     "faker": "^5.5.3",

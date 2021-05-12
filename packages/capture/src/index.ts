@@ -1,8 +1,8 @@
 import { DefaultHarBuilder } from './builder';
 import { DefaultParser } from './parser';
 import { CaptureHar } from './types/capture';
-import pkg from '../package.json';
 import { DefaultCapture } from './capture/DefaultCapture';
+import pkg from '../package.json';
 import Request from 'request';
 
 const buildRequestConfig = (

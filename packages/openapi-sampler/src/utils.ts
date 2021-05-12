@@ -6,7 +6,8 @@ const pad = (number: number) => {
   return number;
 };
 
-const isObject = <T>(obj: T): boolean => obj && typeof obj === 'object';
+const isObject = <T extends Record<string, unknown>>(obj: T): obj is T =>
+  obj && typeof obj === 'object';
 
 export const toRFCDateTime = (
   date: Date,

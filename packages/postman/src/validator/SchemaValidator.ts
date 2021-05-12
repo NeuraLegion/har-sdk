@@ -1,5 +1,5 @@
 import { Validator } from './Validator';
-import { Postman } from '../types/postman';
+import { Postman } from '../postman';
 import Ajv, { ValidateFunction } from 'ajv';
 import { ok } from 'assert';
 import { join, parse } from 'path';

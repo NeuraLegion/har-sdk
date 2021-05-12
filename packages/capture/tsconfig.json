@@ -1,10 +1,10 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "outDir": "../../dist/capture/dist",
     "baseUrl": ".",
     "rootDir": ".",
-    "composite": true
+    "composite": true,
+    "typeRoots": ["node_modules/@types", "typings"]
   },
-  "exclude": ["node_modules", "dist", "**/*.spec.ts"]
+  "include": ["src", "package.json", "tests"]
 }

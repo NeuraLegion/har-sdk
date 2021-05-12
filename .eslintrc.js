@@ -2,9 +2,10 @@ module.exports = {
   root: true,
   env: {
     es6: true,
-    node: true
+    node: true,
+    mocha: true
   },
-  "ignorePatterns": ["packages/**/*"],
+  ignorePatterns: ['packages/**/*'],
   overrides: [
     {
       files: ['*.ts'],
@@ -21,7 +22,6 @@ module.exports = {
           typescript: {}
         }
       },
-      parser: '@typescript-eslint/parser',
       parserOptions: {
         createDefaultProgram: true
       },
@@ -155,7 +155,7 @@ module.exports = {
         'import/no-extraneous-dependencies': [
           'error',
           {
-            devDependencies: false,
+            devDependencies: ['**/*.spec.ts', 'tests/**/*.ts'],
             optionalDependencies: false,
             peerDependencies: false
           }

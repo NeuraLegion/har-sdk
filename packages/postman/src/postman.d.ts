@@ -1,5 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-namespace
-export declare namespace Postman {
+export namespace Postman {
   interface Description {
     content: string;
     type?: string;

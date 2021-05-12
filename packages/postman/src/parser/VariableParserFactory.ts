@@ -1,5 +1,5 @@
 import { VariableParser } from './VariableParser';
-import { Postman } from '../types/postman';
+import { Postman } from '../postman';
 
 export interface VariableParserFactory {
   createEnvVariableParser(variables: Postman.Variable[]): VariableParser;

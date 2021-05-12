@@ -1,20 +1,13 @@
 module.exports = {
-  ignorePatterns: ['!**/*', 'node_modules'],
+  ignorePatterns: ['!**/*'],
   extends: ['../../.eslintrc.js'],
   overrides: [
     {
       files: ['*.ts'],
       parserOptions: {
-        sourceType: 'module',
         project: ['./tsconfig.json'],
-        tsconfigRootDir: __dirname
+        tsconfigRootDir: __dirname,
       },
-      rules: {
-        'import/no-extraneous-dependencies': [
-          'error',
-          { devDependencies: ['**/*.spec.ts'] }
-        ]
-      }
-    }
+    },
   ]
 };

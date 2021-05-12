@@ -1,14 +1,14 @@
-import { Traverse } from '../traverse';
-import { OAPISampler } from '../types/openapi-sampler';
+import { Options, Traverse } from '../traverse';
 import { Sampler } from './Sampler';
+import { OpenAPIV2, OpenAPIV3 } from 'openapi-types';
 
 export class ArraySampler implements Sampler {
   constructor(private readonly traverse: Traverse) {}
 
   public sample(
-    schema: OAPISampler.Schema,
-    spec?: OAPISampler.Specification,
-    options?: OAPISampler.Options
+    schema: OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject,
+    spec?: OpenAPIV3.Document & OpenAPIV2.Document,
+    options?: Options
   ): any[] {
     let arrayLength = schema.minItems || 1;
 

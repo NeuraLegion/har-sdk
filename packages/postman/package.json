@@ -24,11 +24,11 @@
   "typings": "dist/index.d.ts",
   "homepage": "https://github.com/NeuraLegion/har-sdk#readme",
   "scripts": {
-    "build": "npm run clean && npm run compile && npm run copy",
-    "compile": "tsc -p tsconfig.json",
-    "lint": "eslint -c .eslintrc.js src",
-    "clean": "rimraf ../../dist/postman",
-    "copy": "copyfiles -f ../../LICENSE package.json README.md ../../dist/postman"
+    "prebuild": "npm run compile -- --clean",
+    "build": "npm run compile",
+    "lint": "eslint -c .eslintrc.js --ignore-path ../../.eslintignore . --ext ts --fix",
+    "format": "prettier --ignore-path ../../.prettierignore --check **/*.ts",
+    "compile": "tsc -b tsconfig.build.json"
   },
   "dependencies": {
     "ajv": "^6.12.6",

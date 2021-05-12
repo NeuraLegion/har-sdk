@@ -11,11 +11,11 @@ import {
   removeTrailingSlash
 } from '../utils/stringHelpers';
 import { isV2, isV3 } from '../utils/versionHelpers';
+import { sample } from '@har-sdk/openapi-sampler';
 import { Request, QueryString, Header, PostData } from 'har-format';
 import template from 'url-template';
 import { OpenAPIV3 } from 'openapi-types';
 import { toXML } from 'jstoxml';
-import { sample } from '@neuralegion/openapi-sampler';
 import querystring from 'qs';
 
 interface HarRequest {

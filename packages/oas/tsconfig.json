@@ -1,15 +1,15 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "outDir": "../../dist/oas/dist",
     "baseUrl": ".",
     "rootDir": ".",
-    "composite": true
+    "composite": true,
+    "typeRoots": ["node_modules/@types", "typings"]
   },
-  "exclude": ["node_modules", "dist", "**/*.spec.ts"],
   "references": [
     {
       "path": "../openapi-sampler"
     }
-  ]
+  ],
+  "include": ["src", "tests"]
 }

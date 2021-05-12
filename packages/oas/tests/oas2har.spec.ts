@@ -1,9 +1,9 @@
 import githubSwagger from './github_swagger.json';
 import { oas2har } from '../src';
 import Har from 'har-format';
-import { resolve } from 'path';
 import { expect } from 'chai';
 import { OpenAPIV2 } from 'openapi-types';
+import { resolve } from 'path';
 
 describe('OAS 2 HAR', async () => {
   it('GitHub swagger v2 JSON to HAR', async () => {

@@ -1,7 +1,7 @@
 import { Converter } from './Converter';
 import { Validator } from '../validator';
 import { VariableParser, VariableParserFactory } from '../parser';
-import { Postman } from '../types/postman';
+import { Postman } from '../postman';
 import Har from 'har-format';
 import { lookup } from 'mime-types';
 import { ok } from 'assert';
@@ -326,7 +326,7 @@ export class DefaultConverter implements Converter {
       params: Array.isArray(body.formdata)
         ? body.formdata.map((x: Postman.FormParam) => {
             const fileName: string | undefined = x.src
-              ? basename(Array.isArray(x.src) ? x.src.pop() : x.src)
+              ? basename(Array.isArray(x.src) ? x.src.pop() ?? '' : x.src)
               : undefined;
 
             const extension: string | undefined = fileName
@@ -359,7 +359,7 @@ export class DefaultConverter implements Converter {
         value: parser.parse(x.value ?? '')
       }));
     } else {
-      params = Object.entries<string>(parseQS(body.urlencoded ?? '')).map(
+      params = Object.entries(parseQS(body.urlencoded ?? '')).map(
         // eslint-disable-next-line @typescript-eslint/typedef
         ([name, value]) => ({
           name,

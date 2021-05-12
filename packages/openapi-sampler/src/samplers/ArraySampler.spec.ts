@@ -6,7 +6,6 @@ import { StringSampler } from './StringSampler';
 import { Sampler } from './Sampler';
 import { BooleanSampler } from './BooleanSampler';
 import { NullSampler } from './NullSampler';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { expect } from 'chai';
 
 describe('Array sampler', async () => {

@@ -1,30 +1,8 @@
 {
+  "extends": "./tsconfig.build.json",
   "compilerOptions": {
     "baseUrl": ".",
-    "outDir": "dist",
-    "target": "es2015",
-    "lib": ["es2016"],
-    "newLine": "LF",
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "strict": true,
-    "strictNullChecks": false,
-    "sourceMap": true,
-    "skipLibCheck": true,
-    "importHelpers": true,
-    "downlevelIteration": true,
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "noEmitOnError": true,
-    "noUnusedLocals": true,
-    "noFallthroughCasesInSwitch": true,
-    "noUnusedParameters": true,
-    "forceConsistentCasingInFileNames": true,
-    "suppressImplicitAnyIndexErrors": true,
-    "allowSyntheticDefaultImports": true,
-    "typeRoots": ["node_modules/@types", "typings"],
+    "noEmit": true,
     // https://github.com/RyanCavanaugh/learn-a/#tsconfigsettingsjson
     "composite": true,
     "declaration": true,
@@ -33,12 +11,6 @@
       "@har-sdk/*": ["packages/*/src"]
     }
   },
-  "exclude": [
-    "**/node_modules",
-    "**/.*/",
-    "**/dist",
-    "**/*.spec.ts"
-  ],
   "references": [
     { "path": "packages/capture" },
     { "path": "packages/openapi-sampler" }

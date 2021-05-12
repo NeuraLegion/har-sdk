@@ -1,5 +1,5 @@
 import { Validator } from './Validator';
-import { Postman } from '../types/postman';
+import { Postman } from '../postman';
 import semver from 'semver';
 import { ok } from 'assert';
 

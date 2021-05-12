@@ -1,14 +1,11 @@
-import { assert } from 'chai';
 import { Server } from './mocks/Server';
 import { captureHar } from './captureHar';
+import { assert } from 'chai';
 
 describe('Capture HAR', async () => {
   const server: Server = new Server();
 
-  afterEach(() => {
-    console.log('Stop server');
-    server.stop();
-  });
+  afterEach(() => server.stop());
 
   it('Captures simple requests', async () => {
     await server.start(3000, (_req, res) => {

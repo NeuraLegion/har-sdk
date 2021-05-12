@@ -1,9 +1,9 @@
-import { OAPISampler } from '../types/openapi-sampler';
-import { Traverse } from './Traverse';
+import { Options, Sample, Traverse } from './Traverse';
 import { mergeDeep } from '../utils';
-import { Sampler } from '../samplers/Sampler';
+import { Sampler } from '../samplers';
 import JsonPointer from 'json-pointer';
 import faker from 'faker';
+import { OpenAPIV2, OpenAPIV3 } from 'openapi-types';
 
 const schemaKeywordTypes = {
   multipleOf: 'number',
@@ -50,49 +50,20 @@ export class DefaultTraverse implements Traverse {
 
   // eslint-disable-next-line complexity
   public traverse(
-    schema: OAPISampler.Schema,
-    options: OAPISampler.Options,
-    spec: OAPISampler.Specification
-  ): OAPISampler.Sample {
+    schema:
+      | OpenAPIV3.ReferenceObject
+      | OpenAPIV2.ReferenceObject
+      | OpenAPIV3.SchemaObject
+      | OpenAPIV2.SchemaObject,
+    options: Options,
+    spec: OpenAPIV2.Document | OpenAPIV3.Document
+  ): Sample {
     if (!this.samplers || this.samplers.size === 0) {
       throw Error('Samplers are not set!');
     }
 
     if (schema.$ref) {
-      if (!spec) {
-        throw new Error(
-          'Your schema contains $ref. You must provide specification in the third parameter.'
-        );
-      }
-
-      let ref = decodeURIComponent(schema.$ref);
-
-      if (ref.startsWith('#')) {
-        ref = ref.substring(1);
-      }
-
-      const referenced = JsonPointer.get(spec, ref);
-
-      let result: OAPISampler.Sample;
-
-      if (!this.refCache[ref]) {
-        this.refCache[ref] = true;
-        result = this.traverse(referenced, options, spec);
-        this.refCache[ref] = false;
-      } else {
-        const referencedType = this.inferType(referenced);
-
-        result = {
-          value:
-            referencedType === 'object'
-              ? {}
-              : referencedType === 'array'
-              ? []
-              : undefined
-        };
-      }
-
-      return result;
+      return this.inferRef(spec, schema, options);
     }
 
     if (schema.example !== undefined) {
@@ -113,7 +84,7 @@ export class DefaultTraverse implements Traverse {
       );
     }
 
-    if (schema.oneOf && schema.oneOf?.length) {
+    if (schema.oneOf && schema.oneOf.length) {
       if (schema.anyOf && !options.quiet) {
         // eslint-disable-next-line no-console
         console.warn(
@@ -128,7 +99,7 @@ export class DefaultTraverse implements Traverse {
       );
     }
 
-    if (schema.anyOf && schema.anyOf?.length) {
+    if (schema.anyOf && schema.anyOf.length) {
       return this.traverse(
         faker.random.arrayElement(schema.anyOf),
         options,
@@ -169,7 +140,50 @@ export class DefaultTraverse implements Traverse {
     };
   }
 
-  private inferType(schema: OAPISampler.Schema): string {
+  private inferRef(
+    spec: OpenAPIV2.Document | OpenAPIV3.Document,
+    schema: OpenAPIV3.ReferenceObject | OpenAPIV2.ReferenceObject,
+    options: Options
+  ): Sample {
+    if (!spec) {
+      throw new Error(
+        'Your schema contains $ref. You must provide specification in the third parameter.'
+      );
+    }
+
+    let ref = decodeURIComponent(schema.$ref);
+
+    if (ref.startsWith('#')) {
+      ref = ref.substring(1);
+    }
+
+    const referenced = JsonPointer.get(spec, ref);
+
+    let result: Sample;
+
+    if (!this.refCache[ref]) {
+      this.refCache[ref] = true;
+      result = this.traverse(referenced, options, spec);
+      this.refCache[ref] = false;
+    } else {
+      const referencedType = this.inferType(referenced);
+
+      result = {
+        value:
+          referencedType === 'object'
+            ? {}
+            : referencedType === 'array'
+            ? []
+            : undefined
+      };
+    }
+
+    return result;
+  }
+
+  private inferType(
+    schema: OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject
+  ): string {
     if (schema.type) {
       return schema.type as string;
     }
@@ -190,11 +204,20 @@ export class DefaultTraverse implements Traverse {
 
   // eslint-disable-next-line complexity
   private allOfSample(
-    into: OAPISampler.Schema,
-    children: OAPISampler.Schema[],
-    options: OAPISampler.Options,
-    spec: OAPISampler.Specification
-  ): OAPISampler.Sample {
+    into:
+      | OpenAPIV3.ReferenceObject
+      | OpenAPIV2.ReferenceObject
+      | OpenAPIV3.SchemaObject
+      | OpenAPIV2.SchemaObject,
+    children: (
+      | OpenAPIV3.ReferenceObject
+      | OpenAPIV2.ReferenceObject
+      | OpenAPIV3.SchemaObject
+      | OpenAPIV2.SchemaObject
+    )[],
+    options: Options,
+    spec: OpenAPIV2.Document | OpenAPIV3.Document
+  ): Sample {
     const res = this.traverse(into, options, spec);
     const subSamples = [];
 

@@ -1,6 +1,6 @@
 import { VariableParser } from './VariableParser';
 import { Generators } from './Generators';
-import { Postman } from '../types/postman';
+import { Postman } from '../postman';
 
 export abstract class BaseVariableParser implements VariableParser {
   protected constructor(

@@ -35,19 +35,17 @@
   "files": [
     "dist/**"
   ],
-  "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
   "scripts": {
     "lerna": "lerna",
     "semantic-release": "semantic-release",
     "build": "lerna run build",
     "build:changed": "lerna run --since origin/master --include-dependents build",
-    "lint": "lerna exec -- eslint . --ext .js,.jsx,.ts,.tsx",
-    "lint:changed": "lerna exec --since origin/master --include-dependents -- eslint . --ext .ts",
+    "lint": "lerna run lint",
+    "lint:changed": "lerna run --since origin/master --include-dependents lint",
     "test": "lerna run test",
     "test:changed": "lerna run --since origin/master --include-dependents test",
-    "format": "prettier --check '{packages,tests}/**/*.ts'",
-    "clean": "lerna run clean",
+    "format": "lerna run format",
+    "format:changed": "lerna run --since origin/master --include-dependents format",
     "release": "npm run build && lerna publish from-package --contents dist --force-publish",
     "prepare": "is-ci || husky install"
   },

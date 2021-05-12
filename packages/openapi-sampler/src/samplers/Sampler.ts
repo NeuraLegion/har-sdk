@@ -1,9 +1,10 @@
-import { OAPISampler } from '../types/openapi-sampler';
+import { Options } from '../traverse';
+import { OpenAPIV2, OpenAPIV3 } from 'openapi-types';
 
 export interface Sampler {
   sample(
-    schema: OAPISampler.Schema,
-    spec?: OAPISampler.Specification,
-    options?: OAPISampler.Options
+    schema: OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject,
+    spec?: OpenAPIV3.Document & OpenAPIV2.Document,
+    options?: Options
   ): any;
 }

@@ -1,7 +1,7 @@
 import { Replacer } from './Replacer';
 import { BaseVariableParser } from './BaseVariableParser';
 import { Generators } from './Generators';
-import { Postman } from '../types/postman';
+import { Postman } from '../postman';
 
 export class EnvVariableParser extends BaseVariableParser {
   private readonly REGEX_EXTRACT_VARS = /{{([^{}]*?)}}/g;
@@ -30,7 +30,7 @@ export class EnvVariableParser extends BaseVariableParser {
   private replace(match: string, token: string): string {
     let variable: Postman.Variable | (() => any) | undefined = this.find(token);
 
-    if (variable && typeof variable === 'function') {
+    if (typeof variable === 'function') {
       variable = {
         value: variable()?.toString()
       };

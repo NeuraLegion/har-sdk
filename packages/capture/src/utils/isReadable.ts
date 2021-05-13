@@ -1,6 +1,4 @@
-import { CaptureHar } from '../types/capture';
+import { FromDataValue, Part } from '../builder';
 
-export const isReadable = (
-  part: CaptureHar.Part
-): part is CaptureHar.FromDataValue =>
-  (part as CaptureHar.FromDataValue).options !== undefined;
+export const isReadable = (part: Part): part is FromDataValue =>
+  (part as FromDataValue).options !== undefined;

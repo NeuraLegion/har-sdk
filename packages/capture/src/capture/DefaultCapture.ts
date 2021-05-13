@@ -1,7 +1,6 @@
 import { Capture } from './Capture';
-import { CaptureHar } from '../types/capture';
 import { Parser } from '../parser';
-import { HarBuilder } from '../builder';
+import { HarBuilder, HarEntry, Options } from '../builder';
 import * as Request from 'request';
 import requestPromise from 'request-promise';
 import net from 'net';
@@ -18,9 +17,9 @@ export class DefaultCapture implements Capture {
 
   public async captureEntries(
     requestConfig: Request.OptionsWithUrl,
-    harConfig: CaptureHar.Options,
+    harConfig: Options,
     depth: number = 1
-  ): Promise<CaptureHar.HarEntry[]> {
+  ): Promise<HarEntry[]> {
     let startTime = Date.now();
     let startHrtime = process.hrtime();
 
@@ -84,7 +83,7 @@ export class DefaultCapture implements Capture {
 
   private async capturePromiseEntry(
     requestConfig: Request.OptionsWithUrl,
-    harConfig: CaptureHar.Options
+    harConfig: Options
   ): Promise<[Request.Request, any, Request.Response, string]> {
     const dnsCache = this.dnsCache;
 

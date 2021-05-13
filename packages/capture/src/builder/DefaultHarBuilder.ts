@@ -1,10 +1,19 @@
-import { CaptureHar } from '../types/capture';
-import { BuilderEntryParams, HarBuilder } from './HarBuilder';
+import {
+  BuilderEntryParams,
+  FromDataType,
+  HarBuilder,
+  HarEntry,
+  HarPostData,
+  HarRequest,
+  HarResponse,
+  Options,
+  Request
+} from './HarBuilder';
 import { Parser } from '../parser';
 import { transformBinaryToUtf8 } from '../utils';
 import { isReadable } from '../utils/isReadable';
 import Har from 'har-format';
-import Request from 'request';
+import { Headers, Response } from 'request';
 import tough from 'tough-cookie';
 import contentType from 'content-type';
 import querystring from 'querystring';
@@ -21,7 +30,7 @@ export class DefaultHarBuilder implements HarBuilder {
     harConfig,
     redirectUrl,
     meta
-  }: BuilderEntryParams): CaptureHar.HarEntry {
+  }: BuilderEntryParams): HarEntry {
     return {
       startedDateTime: new Date(meta.startTime).toISOString(),
       time: meta.duration,
@@ -42,7 +51,7 @@ export class DefaultHarBuilder implements HarBuilder {
     };
   }
 
-  public buildHarConfig(harConfig: CaptureHar.Options): CaptureHar.Options {
+  public buildHarConfig(harConfig: Options): Options {
     return Object.assign(
       {},
       {
@@ -53,7 +62,7 @@ export class DefaultHarBuilder implements HarBuilder {
     );
   }
 
-  private buildHarRequest(request: CaptureHar.Request): CaptureHar.HarRequest {
+  private buildHarRequest(request: Request): HarRequest {
     return {
       method: (request.method && request.method.toUpperCase()) || '',
       url: (request.uri && request.uri.href) || '',
@@ -81,7 +90,7 @@ export class DefaultHarBuilder implements HarBuilder {
     harConfig,
     redirectUrl,
     meta
-  }: BuilderEntryParams): CaptureHar.HarResponse {
+  }: BuilderEntryParams): HarResponse {
     const setCookieHeader =
       response?.headers && response.headers['set-cookie']
         ? Array.isArray(response.headers['set-cookie'])
@@ -89,7 +98,7 @@ export class DefaultHarBuilder implements HarBuilder {
           : [response.headers['set-cookie']]
         : [];
 
-    const harResponse: CaptureHar.HarResponse = {
+    const harResponse: HarResponse = {
       status: response?.statusCode && !error ? response.statusCode : 0,
       statusText: response?.statusMessage || '',
       httpVersion: this.parser.parseHttpVersion(response),
@@ -171,7 +180,7 @@ export class DefaultHarBuilder implements HarBuilder {
     }, []);
   }
 
-  private buildHarHeaders(headers: Request.Headers): Har.Header[] {
+  private buildHarHeaders(headers: Headers): Har.Header[] {
     return (this.buildFlattenedNameValueMap(
       headers
     ) as unknown) as Har.Header[];
@@ -232,7 +241,7 @@ export class DefaultHarBuilder implements HarBuilder {
 
   private convertFormData(
     name: string,
-    param: CaptureHar.FromDataType,
+    param: FromDataType,
     params: Har.Param[]
   ): void {
     switch (typeof param) {
@@ -262,9 +271,7 @@ export class DefaultHarBuilder implements HarBuilder {
     }
   }
 
-  private buildHarPostData(
-    request: CaptureHar.Request
-  ): CaptureHar.HarPostData {
+  private buildHarPostData(request: Request): HarPostData {
     if (request.body) {
       return {
         mimeType: this.getMimeType(request),
@@ -292,9 +299,7 @@ export class DefaultHarBuilder implements HarBuilder {
     }
   }
 
-  private getMimeType(
-    response: Request.Response | Request.Request | string
-  ): string {
+  private getMimeType(response: Response | Request | string): string {
     try {
       return contentType.parse(response).type;
     } catch {
@@ -302,10 +307,7 @@ export class DefaultHarBuilder implements HarBuilder {
     }
   }
 
-  private buildHarContent(
-    response: Request.Response,
-    harConfig: CaptureHar.Options
-  ): Har.Content {
+  private buildHarContent(response: Response, harConfig: Options): Har.Content {
     if (!response) {
       return { size: 0, mimeType: 'x-unknown' };
     }

@@ -1,9 +1,9 @@
-import { CaptureHar } from '../types/capture';
+import { HarEntry, Options } from '../builder';
 import * as Request from 'request';
 
 export interface Capture {
   captureEntries(
     requestConfig: Request.OptionsWithUrl,
-    harConfig?: CaptureHar.Options
-  ): Promise<CaptureHar.HarEntry[]>;
+    harConfig?: Options
+  ): Promise<HarEntry[]>;
 }

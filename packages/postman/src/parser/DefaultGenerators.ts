@@ -562,12 +562,12 @@ export class DefaultGenerators implements Generators {
 
   // A random 36-character UUID
   public randomUUID(): string {
-    return faker.random.uuid();
+    return faker.datatype.uuid();
   }
 
   // A random boolean value (true/false)
   public randomBoolean(): boolean {
-    return faker.random.boolean();
+    return faker.datatype.boolean();
   }
 
   // A random word

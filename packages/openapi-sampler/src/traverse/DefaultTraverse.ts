@@ -62,7 +62,7 @@ export class DefaultTraverse implements Traverse {
       throw Error('Samplers are not set!');
     }
 
-    if (schema.$ref) {
+    if ((schema as OpenAPIV3.ReferenceObject).$ref) {
       return this.inferRef(spec, schema, options);
     }
 

@@ -152,14 +152,6 @@ module.exports = {
         'import/no-self-import': 'error',
         'import/no-absolute-path': 'error',
         'import/no-duplicates': 'error',
-        'import/no-extraneous-dependencies': [
-          'error',
-          {
-            devDependencies: ['**/*.spec.ts', 'tests/**/*.ts'],
-            optionalDependencies: false,
-            peerDependencies: false
-          }
-        ],
         'import/no-useless-path-segments': [
           'error',
           {

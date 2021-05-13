@@ -11,5 +11,5 @@
       "path": "../openapi-sampler"
     }
   ],
-  "include": ["src", "tests"]
+  "include": ["src"]
 }

@@ -2,8 +2,9 @@ import { Validator } from './Validator';
 import { Collection } from '../converter';
 import { isV3 } from '../utils/versionHelpers';
 import Ajv, { ValidateFunction } from 'ajv';
-import { openapi, JsonSchema } from 'openapi-schemas';
+import { openapi } from 'openapi-schemas';
 import semver from 'semver';
+import { IJsonSchema } from 'openapi-types';
 import { ok } from 'assert';
 
 export class DefaultValidator implements Validator {
@@ -16,7 +17,7 @@ export class DefaultValidator implements Validator {
     2: openapi.v2.id,
     3: openapi.v3.id
   };
-  private readonly PATH_TO_SCHEMAS: ReadonlyArray<JsonSchema> = [
+  private readonly PATH_TO_SCHEMAS: ReadonlyArray<IJsonSchema> = [
     openapi.v2,
     openapi.v3
   ];
@@ -41,7 +42,7 @@ export class DefaultValidator implements Validator {
     );
     (this.ajv as any)._refs['http://json-schema.org/schema'] =
       'http://json-schema.org/draft-04/schema'; // optional, using unversioned URI is out of spec
-    this.PATH_TO_SCHEMAS.forEach((schema: JsonSchema) => {
+    this.PATH_TO_SCHEMAS.forEach((schema: IJsonSchema) => {
       this.ajv.addSchema(schema);
     });
   }

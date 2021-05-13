@@ -1,0 +1,7 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "types": ["mocha", "node", "har-validator"]
+  },
+  "include": ["src", "tests"]
+}

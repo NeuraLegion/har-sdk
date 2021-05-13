@@ -1,13 +1,12 @@
-import { Options, Traverse } from '../traverse';
-import { Sampler } from './Sampler';
-import { OpenAPIV2, OpenAPIV3 } from 'openapi-types';
+import { Options, Specification, Traverse } from '../traverse';
+import { Sampler, SamplerSchema } from './Sampler';
 
 export class ObjectSampler implements Sampler {
   constructor(private readonly traverse: Traverse) {}
 
   public sample(
-    schema: OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject,
-    spec?: OpenAPIV3.Document & OpenAPIV2.Document,
+    schema: SamplerSchema,
+    spec?: Specification,
     options?: Options
   ): Record<string, any> {
     const res: Record<string, any> = {};

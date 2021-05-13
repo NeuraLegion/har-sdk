@@ -1,6 +1,6 @@
-import { Options, Sample, Traverse } from './Traverse';
+import { Options, Sample, Schema, Specification, Traverse } from './Traverse';
 import { mergeDeep } from '../utils';
-import { Sampler } from '../samplers';
+import { Sampler, SamplerSchema } from '../samplers';
 import JsonPointer from 'json-pointer';
 import faker from 'faker';
 import { OpenAPIV2, OpenAPIV3 } from 'openapi-types';
@@ -50,23 +50,19 @@ export class DefaultTraverse implements Traverse {
 
   // eslint-disable-next-line complexity
   public traverse(
-    schema:
-      | OpenAPIV3.ReferenceObject
-      | OpenAPIV2.ReferenceObject
-      | OpenAPIV3.SchemaObject
-      | OpenAPIV2.SchemaObject,
-    options: Options,
-    spec: OpenAPIV2.Document | OpenAPIV3.Document
+    schema: Schema,
+    options?: Options,
+    spec?: Specification
   ): Sample {
     if (!this.samplers || this.samplers.size === 0) {
       throw Error('Samplers are not set!');
     }
 
-    if ((schema as OpenAPIV3.ReferenceObject).$ref) {
+    if (this.isRefExists(schema)) {
       return this.inferRef(spec, schema, options);
     }
 
-    if (schema.example !== undefined) {
+    if (this.isExampleExists(schema)) {
       return {
         value: schema.example,
         readOnly: schema.readOnly,
@@ -77,8 +73,17 @@ export class DefaultTraverse implements Traverse {
 
     if (schema.allOf) {
       return this.allOfSample(
-        { ...schema, allOf: undefined },
-        schema.allOf,
+        { ...schema, allOf: undefined } as
+          | OpenAPIV3.ReferenceObject
+          | OpenAPIV2.ReferenceObject
+          | OpenAPIV3.SchemaObject
+          | OpenAPIV2.SchemaObject,
+        schema.allOf as (
+          | OpenAPIV3.ReferenceObject
+          | OpenAPIV2.ReferenceObject
+          | OpenAPIV3.SchemaObject
+          | OpenAPIV2.SchemaObject
+        )[],
         options,
         spec
       );
@@ -110,38 +115,42 @@ export class DefaultTraverse implements Traverse {
     let example: any;
     let type: string;
 
-    if (schema.default !== undefined) {
+    if (this.isDefaultExists(schema)) {
       example = schema.default;
-    } else if (schema.const !== undefined) {
-      example = schema.const;
+    } else if ((schema as any).const !== undefined) {
+      example = (schema as any).const;
     } else if (schema.enum && schema.enum.length) {
       example = faker.random.arrayElement(schema.enum);
-    } else if (schema.examples && schema.examples.length) {
-      example = faker.random.arrayElement(schema.examples);
+    } else if ((schema as any).examples && (schema as any).examples.length) {
+      example = faker.random.arrayElement((schema as any).examples);
     } else {
       type = schema.type as string;
 
       if (!type) {
-        type = this.inferType(schema);
+        type = this.inferType(
+          schema as OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject
+        );
       }
 
       const sampler = this.samplers.get(type);
 
       if (sampler) {
-        example = sampler.sample(schema, spec, options);
+        example = sampler.sample(schema as SamplerSchema, spec, options);
       }
     }
 
     return {
       type,
       value: example,
-      readOnly: schema.readOnly,
-      writeOnly: schema.writeOnly
+      readOnly: (schema as OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject)
+        .readOnly,
+      writeOnly: (schema as OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject)
+        .writeOnly
     };
   }
 
   private inferRef(
-    spec: OpenAPIV2.Document | OpenAPIV3.Document,
+    spec: Specification,
     schema: OpenAPIV3.ReferenceObject | OpenAPIV2.ReferenceObject,
     options: Options
   ): Sample {
@@ -216,7 +225,7 @@ export class DefaultTraverse implements Traverse {
       | OpenAPIV2.SchemaObject
     )[],
     options: Options,
-    spec: OpenAPIV2.Document | OpenAPIV3.Document
+    spec: Specification
   ): Sample {
     const res = this.traverse(into, options, spec);
     const subSamples = [];
@@ -266,5 +275,32 @@ export class DefaultTraverse implements Traverse {
     }
 
     return res;
+  }
+
+  private isRefExists(
+    schema: Schema
+  ): schema is OpenAPIV3.ReferenceObject | OpenAPIV2.ReferenceObject {
+    return (
+      (schema as OpenAPIV3.ReferenceObject | OpenAPIV2.ReferenceObject).$ref !==
+      undefined
+    );
+  }
+
+  private isExampleExists(
+    schema: Schema
+  ): schema is OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject {
+    return (
+      (schema as OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject).example !==
+      undefined
+    );
+  }
+
+  private isDefaultExists(
+    schema: Schema
+  ): schema is OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject {
+    return (
+      (schema as OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject).default !==
+      undefined
+    );
   }
 }

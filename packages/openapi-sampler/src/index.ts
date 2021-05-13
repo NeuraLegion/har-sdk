@@ -7,21 +7,15 @@ import {
   Sampler,
   StringSampler
 } from './samplers';
-import { DefaultTraverse, Options } from './traverse';
-import { IJsonSchema, OpenAPIV2, OpenAPIV3 } from 'openapi-types';
+import { DefaultTraverse, Options, Schema, Specification } from './traverse';
 
 export const SAMPLER_MAP: Map<string, Sampler> = new Map();
 
 export const sample = (
-  schema:
-    | OpenAPIV3.ReferenceObject
-    | OpenAPIV2.ReferenceObject
-    | OpenAPIV3.SchemaObject
-    | OpenAPIV2.SchemaObject
-    | IJsonSchema,
-  options: Options,
-  spec: OpenAPIV2.Document | OpenAPIV3.Document
-): unknown | undefined => {
+  schema: Schema,
+  options?: Options,
+  spec?: Specification
+): any | undefined => {
   const opts = Object.assign({}, { skipReadOnly: false }, options);
 
   const traverse = new DefaultTraverse();

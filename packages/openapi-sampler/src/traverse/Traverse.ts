@@ -1,29 +1,30 @@
-import { OpenAPIV2, OpenAPIV3 } from 'openapi-types';
+import { IJsonSchema, OpenAPIV2, OpenAPIV3 } from 'openapi-types';
 
 export interface Options {
-  skipReadOnly: boolean;
-  skipWriteOnly: boolean;
-  skipNonRequired: boolean;
-  quiet: boolean;
+  skipReadOnly?: boolean;
+  skipWriteOnly?: boolean;
+  skipNonRequired?: boolean;
+  quiet?: boolean;
 }
 
 export interface Sample {
-  value: unknown;
+  value: any;
   type?: string | string[];
   readOnly?: boolean;
   writeOnly?: boolean;
 }
 
+export type Schema =
+  | OpenAPIV3.ReferenceObject
+  | OpenAPIV2.ReferenceObject
+  | OpenAPIV3.SchemaObject
+  | OpenAPIV2.SchemaObject
+  | IJsonSchema;
+
+export type Specification = OpenAPIV2.Document | OpenAPIV3.Document;
+
 export interface Traverse {
   clearCache(): void;
 
-  traverse(
-    schema:
-      | OpenAPIV3.ReferenceObject
-      | OpenAPIV2.ReferenceObject
-      | OpenAPIV3.SchemaObject
-      | OpenAPIV2.SchemaObject,
-    options: Options,
-    spec: OpenAPIV2.Document | OpenAPIV3.Document
-  ): Sample;
+  traverse(schema: Schema, options: Options, spec: Specification): Sample;
 }

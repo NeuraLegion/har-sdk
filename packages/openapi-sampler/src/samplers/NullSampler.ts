@@ -1,10 +1,7 @@
-import { Sampler } from './Sampler';
-import { OpenAPIV2, OpenAPIV3 } from 'openapi-types';
+import { Sampler, SamplerSchema } from './Sampler';
 
 export class NullSampler implements Sampler {
-  public sample(
-    _schema: OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject
-  ): null {
+  public sample(_schema: SamplerSchema): null {
     return null;
   }
 }

@@ -1,32 +1,32 @@
-import { Options, Traverse } from '../traverse';
-import { Sampler } from './Sampler';
+import { Options, Sample, Specification, Traverse } from '../traverse';
+import { Sampler, SamplerSchema } from './Sampler';
 import { OpenAPIV2, OpenAPIV3 } from 'openapi-types';
 
 export class ArraySampler implements Sampler {
   constructor(private readonly traverse: Traverse) {}
 
   public sample(
-    schema: OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject,
-    spec?: OpenAPIV3.Document & OpenAPIV2.Document,
+    schema: SamplerSchema,
+    spec?: Specification,
     options?: Options
   ): any[] {
     let arrayLength = schema.minItems || 1;
 
-    if (Array.isArray(schema.items)) {
+    if (this.isItemsExists(schema) && Array.isArray(schema.items)) {
       arrayLength = Math.max(arrayLength, schema.items.length);
     }
 
     const itemSchemaGetter = (itemNumber: number) => {
-      if (Array.isArray(schema.items)) {
+      if (this.isItemsExists(schema) && Array.isArray(schema.items)) {
         return schema.items[itemNumber] || {};
       }
 
-      return schema.items || {};
+      return this.isItemsExists(schema) ? schema.items : {};
     };
 
-    const res: any[] = [];
+    const res: Sample[] = [];
 
-    if (!schema.items) {
+    if (!this.isItemsExists(schema)) {
       return res;
     }
 
@@ -36,5 +36,14 @@ export class ArraySampler implements Sampler {
     }
 
     return res;
+  }
+
+  private isItemsExists(
+    schema: SamplerSchema
+  ): schema is OpenAPIV2.SchemaObject | OpenAPIV3.ArraySchemaObject {
+    return (
+      (schema as OpenAPIV2.SchemaObject | OpenAPIV3.ArraySchemaObject).items !==
+      undefined
+    );
   }
 }

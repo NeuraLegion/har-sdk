@@ -5,7 +5,7 @@ import { assert } from 'chai';
 describe('Capture HAR', async () => {
   const server: Server = new Server();
 
-  afterEach(() => server.stop());
+  afterEach(async () => server.isRunning() && (await server.stop()));
 
   it('Captures simple requests', async () => {
     await server.start(3000, (_req, res) => {

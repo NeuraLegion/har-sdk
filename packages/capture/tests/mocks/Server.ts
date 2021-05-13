@@ -20,8 +20,12 @@ export class Server {
   }
 
   public async stop(): Promise<void> {
-    await new Promise((resolve, reject) =>
-      this.server.close((err?: Error) => (err ? reject(err) : resolve(true)))
-    );
+    await new Promise((resolve, reject) => {
+      this.server.close((err?: Error) => (err ? reject(err) : resolve(true)));
+    });
+  }
+
+  public isRunning(): boolean {
+    return this.server.listening;
   }
 }

@@ -18,7 +18,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: npx lerna bootstrap --hoist
-      - run: npm run format:changed
-      - run: npm run lint:changed
-      - run: npm run build:changed
-      - run: npm run test:changed
+      - run: npx lerna run format
+      - run: npx lerna run lint
+      - run: npx lerna run build
+      - run: npx lerna run test

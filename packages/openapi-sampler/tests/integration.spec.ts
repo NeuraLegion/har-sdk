@@ -23,6 +23,7 @@ describe('Integration', () => {
       };
       result = sample(schema);
       expected = 'number';
+
       expect(typeof result).to.deep.equal(expected);
     });
 

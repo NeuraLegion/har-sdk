@@ -1,6 +1,6 @@
 import { Options, Sample, Schema, Specification, Traverse } from './Traverse';
 import { mergeDeep } from '../utils';
-import { Sampler, SamplerSchema } from '../samplers';
+import { Sampler, OpenAPISchema } from '../samplers';
 import JsonPointer from 'json-pointer';
 import faker from 'faker';
 import { OpenAPIV2, OpenAPIV3 } from 'openapi-types';
@@ -135,7 +135,7 @@ export class DefaultTraverse implements Traverse {
       const sampler = this.samplers.get(type || 'null');
 
       if (sampler) {
-        example = sampler.sample(schema as SamplerSchema, spec, options);
+        example = sampler.sample(schema as OpenAPISchema, spec, options);
       }
     }
 

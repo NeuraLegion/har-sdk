@@ -1,5 +1,4 @@
 import { sample } from '../src';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { Schema } from '../src/traverse';
 import { expect } from 'chai';
 
@@ -515,80 +514,6 @@ describe('Integration', () => {
   });
 
   describe('$refs', () => {
-    // it('should follow $ref', () => {
-    //   schema = {
-    //     $ref: '#/defs/Schema'
-    //   };
-    //   const spec = {
-    //     defs: {
-    //       Schema: {
-    //         type: 'object',
-    //         properties: {
-    //           a: {
-    //             type: 'string'
-    //           }
-    //         }
-    //       }
-    //     }
-    //   };
-    //   result = sample(schema, {}, spec);
-    //   expect(typeof result.a).to.equal('string');
-    // });
-
-    // it('should not follow circular $ref', function () {
-    //   schema = {
-    //     $ref: '#/defs/Schema'
-    //   };
-    //   const spec = {
-    //     defs: {
-    //       str: {
-    //         type: 'string'
-    //       },
-    //       Schema: {
-    //         type: 'object',
-    //         properties: {
-    //           a: {
-    //             $ref: '#/defs/str'
-    //           },
-    //           b: {
-    //             $ref: '#/defs/Schema'
-    //           }
-    //         }
-    //       }
-    //     }
-    //   };
-    //   result = sample(schema, {}, spec);
-    //   expect(result.b).to.deep.equal({});
-    //   expect(typeof result.a).to.equal('string');
-    // });
-
-    // it('should not follow circular $ref if more than one in properties', () => {
-    //   schema = {
-    //     $ref: '#/defs/Schema'
-    //   };
-    //   const spec = {
-    //     defs: {
-    //       Schema: {
-    //         type: 'object',
-    //         properties: {
-    //           a: {
-    //             $ref: '#/defs/Schema'
-    //           },
-    //           b: {
-    //             $ref: '#/defs/Schema'
-    //           }
-    //         }
-    //       }
-    //     }
-    //   };
-    //   result = sample(schema, {}, spec);
-    //   expected = {
-    //     a: {},
-    //     b: {}
-    //   };
-    //   expect(result).to.deep.equal(expected);
-    // });
-
     it('should throw if schema has $ref and spec is not provided', () => {
       schema = {
         $ref: '#/defs/Schema'
@@ -598,34 +523,5 @@ describe('Integration', () => {
         /You must provide specification in the third parameter/
       );
     });
-
-    // it('should ignore readOnly params if referenced', () => {
-    //   schema = {
-    //     type: 'object',
-    //     properties: {
-    //       a: {
-    //         allOf: [
-    //           { $ref: '#/defs/Prop' }
-    //         ],
-    //         description: 'prop A'
-    //       },
-    //       b: {
-    //         type: 'string'
-    //       }
-    //     }
-    //   };
-
-    //   const spec = {
-    //     defs: {
-    //       Prop: {
-    //         type: 'string',
-    //         readOnly: true
-    //       }
-    //     }
-    //   };
-
-    //   result = sample(schema, { skipReadOnly: true }, spec);
-    //   expect(typeof result.b).to.deep.equal('string');
-    // });
   });
 });

@@ -1,7 +1,7 @@
-import { Sampler, SamplerSchema } from './Sampler';
+import { Sampler, OpenAPISchema } from './Sampler';
 
 export class NullSampler implements Sampler {
-  public sample(_schema: SamplerSchema): null {
+  public sample(_schema: OpenAPISchema): null {
     return null;
   }
 }

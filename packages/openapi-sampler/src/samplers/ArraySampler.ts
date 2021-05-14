@@ -1,12 +1,12 @@
 import { Options, Sample, Specification, Traverse } from '../traverse';
-import { Sampler, SamplerSchema } from './Sampler';
+import { Sampler, OpenAPISchema } from './Sampler';
 import { OpenAPIV2, OpenAPIV3 } from 'openapi-types';
 
 export class ArraySampler implements Sampler {
   constructor(private readonly traverse: Traverse) {}
 
   public sample(
-    schema: SamplerSchema,
+    schema: OpenAPISchema,
     spec?: Specification,
     options?: Options
   ): any[] {
@@ -39,7 +39,7 @@ export class ArraySampler implements Sampler {
   }
 
   private isItemsExists(
-    schema: SamplerSchema
+    schema: OpenAPISchema
   ): schema is OpenAPIV2.SchemaObject | OpenAPIV3.ArraySchemaObject {
     return (
       (schema as OpenAPIV2.SchemaObject | OpenAPIV3.ArraySchemaObject).items !==

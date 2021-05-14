@@ -1,11 +1,11 @@
 import { Options, Specification, Traverse } from '../traverse';
-import { Sampler, SamplerSchema } from './Sampler';
+import { Sampler, OpenAPISchema } from './Sampler';
 
 export class ObjectSampler implements Sampler {
   constructor(private readonly traverse: Traverse) {}
 
   public sample(
-    schema: SamplerSchema,
+    schema: OpenAPISchema,
     spec?: Specification,
     options?: Options
   ): Record<string, any> {

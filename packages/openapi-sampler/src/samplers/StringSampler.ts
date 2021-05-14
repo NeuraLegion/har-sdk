@@ -1,10 +1,10 @@
 import { ensureLength, toRFCDateTime } from '../utils';
-import { Sampler, SamplerSchema } from './Sampler';
+import { Sampler, OpenAPISchema } from './Sampler';
 import faker from 'faker';
 import randexp from 'randexp';
 
 export class StringSampler implements Sampler {
-  public sample(schema: SamplerSchema): any {
+  public sample(schema: OpenAPISchema): any {
     const format = schema.pattern ? 'pattern' : schema.format || 'default';
     const sampler = stringFormats[format] || defaultSample;
 

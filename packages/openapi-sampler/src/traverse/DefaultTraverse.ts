@@ -132,7 +132,7 @@ export class DefaultTraverse implements Traverse {
         );
       }
 
-      const sampler = this.samplers.get(type);
+      const sampler = this.samplers.get(type || 'null');
 
       if (sampler) {
         example = sampler.sample(schema as SamplerSchema, spec, options);
@@ -208,7 +208,7 @@ export class DefaultTraverse implements Traverse {
       }
     }
 
-    return 'null';
+    return null;
   }
 
   // eslint-disable-next-line complexity

@@ -17,8 +17,8 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - run: npm ci -q
-      - run: npm run format
-      - run: npm run lint
-      - run: npm run build
-      - run: npm run test
+      - run: npx lerna bootstrap --hoist
+      - run: npx lerna run format
+      - run: npx lerna run lint
+      - run: npx lerna run build
+      - run: npx lerna run test

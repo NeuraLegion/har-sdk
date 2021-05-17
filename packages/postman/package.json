@@ -32,15 +32,14 @@
   },
   "dependencies": {
     "ajv": "^6.12.6",
-    "faker": "^5.1.0",
+    "faker": "^5.5.3",
     "mime-types": "^2.1.27",
-    "semver": "^7.3.4",
-    "tslib": "~2.0.3"
+    "semver": "^7.3.5"
   },
   "devDependencies": {
-    "@types/faker": "^5.1.5",
+    "@types/faker": "^5.5.3",
     "@types/har-format": "^1.2.5",
     "@types/mime-types": "^2.1.0",
-    "@types/semver": "^7.3.4"
+    "@types/semver": "^7.3.5"
   }
 }

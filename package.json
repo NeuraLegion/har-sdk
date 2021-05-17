@@ -38,7 +38,7 @@
   "scripts": {
     "lerna": "lerna",
     "bootstrap": "lerna bootstrap --hoist",
-    "semantic-release": "semantic-release",
+    "semantic-release": "multi-semantic-release",
     "build": "lerna run build",
     "build:changed": "lerna run --since origin/master --include-dependents build",
     "lint": "lerna run lint",
@@ -79,6 +79,7 @@
     "lerna": "^4.0.0",
     "lint-staged": "^10.5.4",
     "mocha": "~8.3.2",
+    "multi-semantic-release": "^2.8.0",
     "nyc": "~15.1.0",
     "prettier": "^2.2.1",
     "rimraf": "^3.0.2",

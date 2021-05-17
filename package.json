@@ -38,7 +38,7 @@
   "scripts": {
     "lerna": "lerna",
     "bootstrap": "lerna bootstrap --hoist",
-    "semantic-release": "semantic-release",
+    "semantic-release": "multi-semantic-release",
     "build": "lerna run build",
     "build:changed": "lerna run --since origin/master --include-dependents build",
     "lint": "lerna run lint",

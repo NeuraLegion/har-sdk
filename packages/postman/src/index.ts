@@ -13,12 +13,10 @@ export const postman2har = async (
 ): Promise<Har.Request[]> => {
   ok(collection, `Please provide a valid Postman Collection.`);
 
-  const validator: DefaultValidator = new DefaultValidator();
-  const generators: DefaultGenerators = new DefaultGenerators();
-  const parserFactory: DefaultVariableParserFactory = new DefaultVariableParserFactory(
-    generators
-  );
-  const converter: DefaultConverter = new DefaultConverter(
+  const validator = new DefaultValidator();
+  const generators = new DefaultGenerators();
+  const parserFactory = new DefaultVariableParserFactory(generators);
+  const converter = new DefaultConverter(
     validator,
     parserFactory,
     options ?? {}

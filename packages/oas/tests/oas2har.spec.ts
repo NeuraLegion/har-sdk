@@ -8,7 +8,7 @@ import { resolve } from 'path';
 describe('OAS 2 HAR', async () => {
   it('GitHub swagger v2 JSON to HAR', async () => {
     const [firstRequest]: Har.Request[] = await oas2har(
-      (githubSwagger as unknown) as OpenAPIV2.Document
+      githubSwagger as unknown as OpenAPIV2.Document
     );
 
     expect(firstRequest.method).to.equal('GET');

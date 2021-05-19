@@ -2,6 +2,7 @@
   "extends": "../../tsconfig.build.json",
   "compilerOptions": {
     "outDir": "./dist",
+    "resolveJsonModule": false,
     "typeRoots": ["node_modules/@types", "typings"]
   },
   "include": ["src", "package.json"]

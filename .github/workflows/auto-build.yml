@@ -65,7 +65,7 @@ jobs:
             ${{ runner.os }}-npm-
 
       - run: npm ci -q --ignore-scripts && npm run bootstrap
-      - run: npm run build:changed
+      - run: npm run build
       - run: npm run semantic-release
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

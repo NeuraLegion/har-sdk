@@ -31,6 +31,14 @@
     "format": "prettier --ignore-path ../../.prettierignore --check **/*.ts",
     "test": "cross-env TS_NODE_PROJECT=tests/tsconfig.json mocha -r ts-node/register -r tsconfig-paths/register tests/**/*.spec.ts"
   },
+  "keywords": [
+    "swagger",
+    "oas",
+    "yml",
+    "yaml",
+    "har",
+    "json"
+  ],
   "dependencies": {
     "@har-sdk/openapi-sampler": "*",
     "ajv": "^6.12.6",

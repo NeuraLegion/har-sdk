@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "rootDir": ".",
+    "composite": true,
+    "typeRoots": ["node_modules/@types", "typings"]
+  },
+  "include": ["src", "package.json", "tests"]
+}

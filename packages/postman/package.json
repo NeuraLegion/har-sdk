@@ -1,5 +1,5 @@
 {
-  "name": "@neuralegion/postman2har",
+  "name": "@har-sdk/postman",
   "version": "0.0.0",
   "private": false,
   "repository": {
@@ -18,15 +18,31 @@
     "access": "public"
   },
   "files": [
-    "dist/**"
+    "dist/**",
+    "schemas/**"
   ],
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "homepage": "https://github.com/NeuraLegion/har-sdk#readme",
   "scripts": {
-    "build": "npm run clean && npm run compile && npm run copy",
-    "compile": "tsc -p tsconfig.json",
-    "clean": "rimraf ../../dist/postman",
-    "copy": "copyfiles -f ../../LICENSE package.json README.md ../../dist/postman"
+    "prebuild": "npm run compile -- --clean",
+    "build": "npm run compile",
+    "lint": "eslint -c .eslintrc.js --ignore-path ../../.eslintignore . --ext ts --fix",
+    "format": "prettier --ignore-path ../../.prettierignore --check **/*.ts",
+    "compile": "tsc -b tsconfig.build.json"
+  },
+  "dependencies": {
+    "ajv": "^6.12.6",
+    "faker": "^5.5.3",
+    "mime-types": "^2.1.27",
+    "semver": "^7.3.5",
+    "tslib": "~2.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^14.14.45",
+    "@types/faker": "^5.5.3",
+    "@types/har-format": "^1.2.5",
+    "@types/mime-types": "^2.1.0",
+    "@types/semver": "^7.3.5"
   }
 }

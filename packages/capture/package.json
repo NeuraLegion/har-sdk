@@ -31,6 +31,12 @@
     "format": "prettier --ignore-path ../../.prettierignore --check **/*.ts",
     "test": "cross-env TS_NODE_PROJECT=tests/tsconfig.json mocha -r ts-node/register -r tsconfig-paths/register tests/**/*.spec.ts"
   },
+  "keywords": [
+    "capture",
+    "har",
+    "request",
+    "generator"
+  ],
   "dependencies": {
     "content-type": "^1.0.4",
     "querystring": "^0.2.1",

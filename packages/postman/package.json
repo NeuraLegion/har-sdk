@@ -21,6 +21,13 @@
     "dist/**",
     "schemas/**"
   ],
+  "keywords": [
+    "postman",
+    "har",
+    "api",
+    "har",
+    "json"
+  ],
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "homepage": "https://github.com/NeuraLegion/har-sdk#readme",

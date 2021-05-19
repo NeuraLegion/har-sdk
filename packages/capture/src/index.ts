@@ -1,7 +1,6 @@
 import { DefaultHarBuilder, Har, Options } from './builder';
 import { DefaultParser } from './parser';
-import { DefaultCapture } from './capture/DefaultCapture';
-import pkg from '../package.json';
+import { DefaultCapture } from './capture';
 import Request from 'request';
 
 const buildRequestConfig = (
@@ -26,6 +25,9 @@ export const captureHar = async (
     buildRequestConfig(requestConfig),
     builder.buildHarConfig(harConfig)
   );
+
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const pkg = require('../package.json');
 
   return {
     log: {

@@ -1,6 +1,7 @@
 import { Converter } from './Converter';
 import { VariableParser, VariableParserFactory } from '../parser';
-import { Validator, Postman } from '@har-sdk/validator';
+import { Validator } from '@har-sdk/validator';
+import { Postman } from '@har-sdk/types';
 import Har from 'har-format';
 import { lookup } from 'mime-types';
 import { ok } from 'assert';

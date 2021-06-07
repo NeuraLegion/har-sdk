@@ -1,5 +1,5 @@
 import { Validator } from './Validator';
-import { Postman } from '../collection';
+import { Postman } from '@har-sdk/types';
 import Ajv, { ValidateFunction } from 'ajv';
 import semver from 'semver';
 import { ok } from 'assert';

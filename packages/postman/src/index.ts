@@ -1,6 +1,7 @@
 import { DefaultConverter } from './converter';
 import { DefaultGenerators, DefaultVariableParserFactory } from './parser';
-import { PostmanValidator, Postman } from '@har-sdk/validator';
+import { PostmanValidator } from '@har-sdk/validator';
+import { Postman } from '@har-sdk/types';
 import Har from 'har-format';
 import { ok } from 'assert';
 

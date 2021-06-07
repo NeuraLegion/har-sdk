@@ -8,8 +8,8 @@ import {
   removeLeadingSlash,
   removeTrailingSlash
 } from '../utils/stringHelpers';
-import { isV2, isV3 } from '../utils/versionHelpers';
-import { Validator, OAS } from '@har-sdk/validator';
+import { Validator } from '@har-sdk/validator';
+import { OpenAPI, isOASV2, isOASV3 } from '@har-sdk/types';
 import { sample } from '@har-sdk/openapi-sampler';
 import { Request, QueryString, Header, PostData } from 'har-format';
 import template from 'url-template';
@@ -36,7 +36,7 @@ export class DefaultConverter implements Converter {
     private readonly flattener: Flattener
   ) {}
 
-  public async convert(spec: OAS.Document): Promise<Request[]> {
+  public async convert(spec: OpenAPI.Document): Promise<Request[]> {
     await this.validator.verify(spec);
 
     const baseUrl: string = normalizeUrl(this.getBaseUrl(spec));
@@ -45,7 +45,10 @@ export class DefaultConverter implements Converter {
     return requests.map((x: HarRequest) => x.har);
   }
 
-  private parseSwaggerDoc(spec: OAS.Document, baseUrl: string): HarRequest[] {
+  private parseSwaggerDoc(
+    spec: OpenAPI.Document,
+    baseUrl: string
+  ): HarRequest[] {
     const harList: HarRequest[] = [];
 
     for (const [path, pathMethods] of Object.entries(spec.paths)) {
@@ -73,7 +76,7 @@ export class DefaultConverter implements Converter {
   }
 
   private createHar(
-    spec: OAS.Document,
+    spec: OpenAPI.Document,
     baseUrl: string,
     path: string,
     method: string,
@@ -111,7 +114,7 @@ export class DefaultConverter implements Converter {
 
   // eslint-disable-next-line complexity
   private getPayload(
-    spec: OAS.Document,
+    spec: OpenAPI.Document,
     path: string,
     method: string
   ): PostData | null {
@@ -131,7 +134,7 @@ export class DefaultConverter implements Converter {
 
             if (pathObj.consumes && pathObj.consumes.length) {
               consumes = pathObj.consumes;
-            } else if (isV2(spec) && spec.consumes && spec.consumes.length) {
+            } else if (isOASV2(spec) && spec.consumes && spec.consumes.length) {
               consumes = spec.consumes;
             }
 
@@ -324,7 +327,7 @@ export class DefaultConverter implements Converter {
 
   // eslint-disable-next-line complexity
   private getQueryStrings(
-    spec: OAS.Document,
+    spec: OpenAPI.Document,
     path: string,
     method: string,
     values: Record<string, string> = {}
@@ -377,7 +380,7 @@ export class DefaultConverter implements Converter {
 
   // eslint-disable-next-line complexity
   private getHeadersArray(
-    spec: OAS.Document,
+    spec: OpenAPI.Document,
     path: string,
     method: string
   ): Header[] {
@@ -445,9 +448,9 @@ export class DefaultConverter implements Converter {
     }
 
     let definedSchemes;
-    if (isV2(spec) && spec.securityDefinitions) {
+    if (isOASV2(spec) && spec.securityDefinitions) {
       definedSchemes = spec.securityDefinitions;
-    } else if (isV3(spec) && spec.components) {
+    } else if (isOASV3(spec) && spec.components) {
       definedSchemes = spec.components.securitySchemes;
     }
 
@@ -608,7 +611,7 @@ export class DefaultConverter implements Converter {
   }
 
   private serializePath(
-    spec: OAS.Document,
+    spec: OpenAPI.Document,
     path: string,
     method: string
   ): string {
@@ -627,7 +630,7 @@ export class DefaultConverter implements Converter {
     return templateUrl.expand(params);
   }
 
-  private getBaseUrl(spec: OAS.Document): string {
+  private getBaseUrl(spec: OpenAPI.Document): string {
     const urls: string[] = this.parseUrls(spec);
 
     if (!Array.isArray(urls) || !urls.length) {
@@ -648,8 +651,8 @@ export class DefaultConverter implements Converter {
     });
   }
 
-  private parseUrls(spec: OAS.Document): string[] {
-    if (isV3(spec) && spec.servers?.length) {
+  private parseUrls(spec: OpenAPI.Document): string[] {
+    if (isOASV3(spec) && spec.servers?.length) {
       return spec.servers.map((server: OpenAPIV3.ServerObject) => {
         const variables = server.variables || {};
 
@@ -682,7 +685,7 @@ export class DefaultConverter implements Converter {
       });
     }
 
-    if (isV2(spec) && spec.host) {
+    if (isOASV2(spec) && spec.host) {
       const basePath: string =
         typeof spec.basePath !== 'undefined'
           ? removeLeadingSlash(spec.basePath)

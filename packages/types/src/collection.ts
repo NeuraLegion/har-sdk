@@ -1,12 +1,10 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 import { OpenAPI } from 'openapi-types';
 
-export namespace Collection {
-  export type Document = OAS.Document | Postman.Document;
-}
+export * from 'openapi-types';
 
-export namespace OAS {
-  export type Document = OpenAPI.Document;
+export namespace Collection {
+  export type Document = OpenAPI.Document | Postman.Document;
 }
 
 export namespace Postman {

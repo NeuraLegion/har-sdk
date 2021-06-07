@@ -39,15 +39,15 @@
     "faker"
   ],
   "dependencies": {
+    "@har-sdk/types": "*",
     "faker": "^5.5.3",
     "json-pointer": "^0.6.1",
-    "openapi-types": "^8.0.0",
     "randexp": "^0.5.3",
     "tslib": "~2.2.0"
   },
   "devDependencies": {
-    "@types/node": "^14.14.45",
     "@types/faker": "^5.5.3",
-    "@types/json-pointer": "^1.0.30"
+    "@types/json-pointer": "^1.0.30",
+    "@types/node": "^14.14.45"
   }
 }

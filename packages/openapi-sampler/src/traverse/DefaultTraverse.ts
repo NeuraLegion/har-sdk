@@ -3,7 +3,7 @@ import { mergeDeep } from '../utils';
 import { Sampler, OpenAPISchema } from '../samplers';
 import JsonPointer from 'json-pointer';
 import faker from 'faker';
-import { OpenAPIV2, OpenAPIV3 } from 'openapi-types';
+import { OpenAPIV2, OpenAPIV3 } from '@har-sdk/types';
 
 const schemaKeywordTypes = {
   multipleOf: 'number',

@@ -39,6 +39,7 @@
     "compile": "tsc -b tsconfig.build.json"
   },
   "dependencies": {
+    "@har-sdk/types": "*",
     "@har-sdk/validator": "*",
     "ajv": "^6.12.6",
     "faker": "^5.5.3",

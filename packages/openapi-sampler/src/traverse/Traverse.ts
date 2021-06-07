@@ -1,4 +1,4 @@
-import { IJsonSchema, OpenAPIV2, OpenAPIV3 } from 'openapi-types';
+import { IJsonSchema, OpenAPI, OpenAPIV2, OpenAPIV3 } from '@har-sdk/types';
 
 export interface Options {
   skipReadOnly?: boolean;
@@ -21,7 +21,7 @@ export type Schema =
   | OpenAPIV2.SchemaObject
   | IJsonSchema;
 
-export type Specification = OpenAPIV2.Document | OpenAPIV3.Document;
+export type Specification = OpenAPI.Document;
 
 export interface Traverse {
   clearCache(): void;

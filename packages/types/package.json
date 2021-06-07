@@ -1,5 +1,5 @@
 {
-  "name": "@har-sdk/validator",
+  "name": "@har-sdk/types",
   "version": "0.0.0",
   "private": false,
   "repository": {
@@ -33,21 +33,14 @@
   },
   "keywords": [
     "swagger",
-    "validator",
+    "postman",
+    "types",
     "yml",
     "yaml",
     "har",
     "json"
   ],
   "dependencies": {
-    "@har-sdk/types": "*",
-    "ajv": "^6.12.6",
-    "openapi-schemas": "^2.1.0",
-    "semver": "^7.3.5",
-    "tslib": "~2.2.0"
-  },
-  "devDependencies": {
-    "@types/node": "^14.14.45",
-    "@types/semver": "^7.3.6"
+    "openapi-types": "^9.0.3"
   }
 }

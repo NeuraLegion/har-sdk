@@ -5,10 +5,5 @@
     "rootDir": ".",
     "composite": true
   },
-  "references": [
-    {
-      "path": "../validator"
-    }
-  ],
   "include": ["src", "schemas", "tests"]
 }

@@ -1,5 +1,5 @@
 {
-  "name": "@har-sdk/postman",
+  "name": "@har-sdk/validator",
   "version": "0.0.0",
   "private": false,
   "repository": {
@@ -18,15 +18,7 @@
     "access": "public"
   },
   "files": [
-    "dist/**",
-    "schemas/**"
-  ],
-  "keywords": [
-    "postman",
-    "har",
-    "api",
-    "har",
-    "json"
+    "dist/**"
   ],
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -34,23 +26,28 @@
   "scripts": {
     "prebuild": "npm run compile -- --clean",
     "build": "npm run compile",
+    "compile": "tsc -b tsconfig.build.json",
     "lint": "eslint -c .eslintrc.js --ignore-path ../../.eslintignore . --ext ts --fix",
     "format": "prettier --ignore-path ../../.prettierignore --check **/*.ts",
-    "compile": "tsc -b tsconfig.build.json"
+    "test": "cross-env TS_NODE_PROJECT=tests/tsconfig.json mocha -r ts-node/register -r tsconfig-paths/register tests/**/*.spec.ts"
   },
+  "keywords": [
+    "swagger",
+    "validator",
+    "yml",
+    "yaml",
+    "har",
+    "json"
+  ],
   "dependencies": {
-    "@har-sdk/validator": "*",
     "ajv": "^6.12.6",
-    "faker": "^5.5.3",
-    "mime-types": "^2.1.27",
+    "openapi-schemas": "^2.1.0",
+    "openapi-types": "^9.0.3",
     "semver": "^7.3.5",
     "tslib": "~2.2.0"
   },
   "devDependencies": {
-    "@types/faker": "^5.5.3",
-    "@types/har-format": "^1.2.5",
-    "@types/mime-types": "^2.1.0",
     "@types/node": "^14.14.45",
-    "@types/semver": "^7.3.5"
+    "@types/semver": "^7.3.6"
   }
 }

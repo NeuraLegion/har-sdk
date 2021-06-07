@@ -59,9 +59,8 @@ export class DefaultCapture implements Capture {
             url: entry.response.redirectURL
           });
 
-          const customHostHeaderName = this.getCustomHostHeaderName(
-            requestConfig
-          );
+          const customHostHeaderName =
+            this.getCustomHostHeaderName(requestConfig);
 
           if (customHostHeaderName) {
             redirectConfig.headers[customHostHeaderName] = urlParse(
@@ -69,11 +68,9 @@ export class DefaultCapture implements Capture {
             ).host;
           }
 
-          return this.captureEntries(
-            redirectConfig,
-            harConfig,
-            depth + 1
-          ).then((entries) => [entry].concat(entries));
+          return this.captureEntries(redirectConfig, harConfig, depth + 1).then(
+            (entries) => [entry].concat(entries)
+          );
         } else {
           return [entry];
         }
@@ -113,6 +110,7 @@ export class DefaultCapture implements Capture {
 
     reqObject.on('response', (res) => {
       if (!harConfig.withContent) {
+        res.destroy();
         reqObject.end();
       } else if (
         parseInt(res.headers['content-length'], 10) > harConfig.maxContentLength
@@ -187,10 +185,8 @@ export class DefaultCapture implements Capture {
       return [false, null, ''];
     }
 
-    const [parseError, redirectUrl]: [
-      Record<string, string> | null,
-      string
-    ] = this.parser.parseRedirectUrl(response);
+    const [parseError, redirectUrl]: [Record<string, string> | null, string] =
+      this.parser.parseRedirectUrl(response);
 
     if (parseError) {
       return [false, parseError, redirectUrl];

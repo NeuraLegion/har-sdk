@@ -9,6 +9,9 @@
   "references": [
     {
       "path": "../openapi-sampler"
+    },
+    {
+      "path": "../validator"
     }
   ],
   "include": ["src"]

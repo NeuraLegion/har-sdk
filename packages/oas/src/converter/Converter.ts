@@ -1,8 +1,6 @@
 import HarV1 from 'har-format';
-import { OpenAPIV2, OpenAPIV3 } from 'openapi-types';
-
-export type Collection = OpenAPIV2.Document | OpenAPIV3.Document;
+import { OAS } from '@har-sdk/validator';
 
 export interface Converter {
-  convert(collection: Collection): Promise<HarV1.Request[]>;
+  convert(collection: OAS.Document): Promise<HarV1.Request[]>;
 }

@@ -14,14 +14,23 @@ export class DefaultParser implements Parser {
     response: Response
   ): [Record<string, string> | null, string] {
     if (response && response.statusCode >= 300 && response.statusCode < 400) {
-      const location = transformBinaryToUtf8(response.headers['location']);
+      let location = transformBinaryToUtf8(response.headers['location']);
 
       if (location) {
+        location = decodeURIComponent(location);
+
+        const hasRelativeProtocol = location.startsWith('//');
+        const isRelativeUrl = !hasRelativeProtocol && /^\.*\//.test(location);
         const base = response.request.uri;
 
         // eslint-disable-next-line max-depth
         try {
-          return [null, new URL(location, base.href).href];
+          return [
+            null,
+            isRelativeUrl
+              ? new URL(location, base.href).href
+              : new URL(location).href
+          ];
         } catch (err) {
           return [
             {

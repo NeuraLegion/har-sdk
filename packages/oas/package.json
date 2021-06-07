@@ -41,22 +41,19 @@
   ],
   "dependencies": {
     "@har-sdk/openapi-sampler": "*",
-    "ajv": "^6.12.6",
-    "js-yaml": "^4.1.0",
+    "@har-sdk/validator": "*",
     "jstoxml": "^2.0.5",
-    "openapi-schemas": "^2.0.4",
     "openapi-types": "^8.0.0",
     "qs": "^6.10.1",
-    "semver": "^7.3.5",
-    "url-template": "^2.0.8",
-    "tslib": "~2.2.0"
+    "tslib": "~2.2.0",
+    "url-template": "^2.0.8"
   },
   "devDependencies": {
     "@types/har-format": "^1.2.5",
     "@types/js-yaml": "^4.0.0",
+    "js-yaml": "^4.1.0",
     "@types/node": "^14.14.45",
     "@types/qs": "^6.9.6",
-    "@types/semver": "^7.3.5",
     "@types/url-template": "^2.0.28"
   }
 }

@@ -1,5 +1,5 @@
 import { VariableParser } from './VariableParser';
-import { Postman } from '../postman';
+import { Postman } from '@har-sdk/validator';
 
 export interface VariableParserFactory {
   createEnvVariableParser(variables: Postman.Variable[]): VariableParser;

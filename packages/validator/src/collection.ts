@@ -10,33 +10,33 @@ export namespace OAS {
 }
 
 export namespace Postman {
-  interface Description {
+  export interface Description {
     content: string;
     type?: string;
   }
 
-  interface PropertyBaseDefinition {
+  export interface PropertyBaseDefinition {
     description?: string | Description;
   }
 
-  interface Version extends PropertyBaseDefinition {
+  export interface Version extends PropertyBaseDefinition {
     identifier?: string;
     major: number;
     minor: number;
     patch: number;
   }
 
-  interface Property extends PropertyBaseDefinition {
+  export interface Property extends PropertyBaseDefinition {
     id?: string;
     name?: string;
     disabled?: boolean;
   }
 
-  interface UrlMatchPattern {
+  export interface UrlMatchPattern {
     pattern?: string;
   }
 
-  interface Certificate extends Property {
+  export interface Certificate extends Property {
     matches?: string[] | UrlMatchPattern[];
     key?:
       | {
@@ -51,17 +51,17 @@ export namespace Postman {
     passphrase?: string;
   }
 
-  interface Variable extends Property {
+  export interface Variable extends Property {
     value?: any;
     type?: string;
     key?: string;
   }
 
-  interface VariableScope {
+  export interface VariableScope {
     variable: Variable[];
   }
 
-  interface Cookie {
+  export interface Cookie {
     key?: string;
     value?: string;
     expires?: string;
@@ -78,20 +78,20 @@ export namespace Postman {
     }[];
   }
 
-  interface FormParam extends Property {
+  export interface FormParam extends Property {
     key: string;
     value?: string;
     contentType?: string;
     src?: string[] | string;
   }
 
-  interface Header extends Property {
+  export interface Header extends Property {
     key: string;
     value?: string;
     system?: boolean;
   }
 
-  interface ProxyConfig extends Property {
+  export interface ProxyConfig extends Property {
     match?:
       | string
       | {
@@ -103,13 +103,13 @@ export namespace Postman {
     tunnel?: boolean;
   }
 
-  interface QueryParam extends Property {
+  export interface QueryParam extends Property {
     key: string;
     value?: string;
     system?: boolean;
   }
 
-  interface Url extends PropertyBaseDefinition, VariableScope {
+  export interface Url extends PropertyBaseDefinition, VariableScope {
     raw?: string;
     auth?: {
       user?: string;
@@ -131,7 +131,7 @@ export namespace Postman {
     query?: QueryParam[];
   }
 
-  interface RequestBody extends PropertyBaseDefinition {
+  export interface RequestBody extends PropertyBaseDefinition {
     mode?: 'raw' | 'urlencoded' | 'formdata' | 'file' | 'graphql';
     raw?: string;
     graphql?: Record<string, any>;
@@ -151,7 +151,7 @@ export namespace Postman {
     >;
   }
 
-  interface RequestAuth extends Property {
+  export interface RequestAuth extends Property {
     type:
       | 'apikey'
       | 'awsv4'
@@ -177,7 +177,7 @@ export namespace Postman {
     oauth2?: Variable[];
   }
 
-  interface Request extends Property {
+  export interface Request extends Property {
     url: string | Url;
     method?:
       | (
@@ -205,7 +205,7 @@ export namespace Postman {
     certificate?: Certificate;
   }
 
-  interface Response extends Property {
+  export interface Response extends Property {
     body?: string;
     code: number;
     cookie: Cookie[];
@@ -216,24 +216,24 @@ export namespace Postman {
     responseSize?: number;
   }
 
-  interface Script extends Property {
+  export interface Script extends Property {
     type?: string;
     src?: Url;
     exec?: string[] | string;
   }
 
-  interface Event extends Property {
+  export interface Event extends Property {
     listen?: string;
     script: string | string[] | Script;
   }
 
-  interface Item extends Property, VariableScope {
+  export interface Item extends Property, VariableScope {
     request?: Request;
     response?: Response[];
     event?: Event[];
   }
 
-  interface ItemGroup extends Property, VariableScope {
+  export interface ItemGroup extends Property, VariableScope {
     item: (Item | ItemGroup)[];
     auth?: RequestAuth;
     event?: Event[];

@@ -3,7 +3,7 @@ import { oas2har } from '../src';
 import yaml from 'js-yaml';
 import Har from 'har-format';
 import { expect } from 'chai';
-import { OpenAPIV2, OpenAPIV3 } from 'openapi-types';
+import { OpenAPIV2, OpenAPIV3 } from '@har-sdk/types';
 import { resolve } from 'path';
 import fs from 'fs';
 import { promisify } from 'util';

@@ -8,10 +8,13 @@
   },
   "references": [
     {
-      "path": "../openapi-sampler"
+      "path": "../openapi-sampler/tsconfig.json"
     },
     {
-      "path": "../validator"
+      "path": "../validator/tsconfig.json"
+    },
+    {
+      "path": "../types/tsconfig.json"
     }
   ],
   "include": ["src"]

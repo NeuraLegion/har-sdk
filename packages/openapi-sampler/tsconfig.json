@@ -5,5 +5,10 @@
     "rootDir": ".",
     "composite": true
   },
+  "references": [
+    {
+      "path": "../types/tsconfig.json"
+    }
+  ],
   "include": ["src"]
 }

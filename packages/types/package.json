@@ -28,8 +28,7 @@
     "build": "npm run compile",
     "compile": "tsc -b tsconfig.build.json",
     "lint": "eslint -c .eslintrc.js --ignore-path ../../.eslintignore . --ext ts --fix",
-    "format": "prettier --ignore-path ../../.prettierignore --check **/*.ts",
-    "test": "cross-env TS_NODE_PROJECT=tests/tsconfig.json mocha -r ts-node/register -r tsconfig-paths/register tests/**/*.spec.ts"
+    "format": "prettier --ignore-path ../../.prettierignore --check **/*.ts"
   },
   "keywords": [
     "swagger",

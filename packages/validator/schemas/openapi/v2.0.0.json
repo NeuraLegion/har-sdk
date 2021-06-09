@@ -6,7 +6,8 @@
   "required": [
     "swagger",
     "info",
-    "paths"
+    "paths",
+    "host"
   ],
   "additionalProperties": false,
   "patternProperties": {

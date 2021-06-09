@@ -79,7 +79,7 @@ export class DefaultValidator implements Validator {
 
       const major = semver.major(version);
 
-      return this.VERSION_SCHEMA_MAP[major];
+      return this.VERSION_SCHEMA_MAP[major] || '';
     }
   }
 }

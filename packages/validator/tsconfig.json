@@ -7,7 +7,7 @@
   },
   "references": [
     {
-      "path": "../types/tsconfig.json"
+      "path": "../types"
     }
   ],
   "include": ["src", "schemas", "tests"]

@@ -41,7 +41,8 @@
   ],
   "dependencies": {
     "@har-sdk/types": "*",
-    "ajv": "^6.12.6",
+    "ajv": "^8.6.0",
+    "ajv-formats": "^2.1.0",
     "openapi-schemas": "^2.1.0",
     "semver": "^7.3.5",
     "tslib": "~2.2.0"

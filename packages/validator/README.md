@@ -1,6 +1,6 @@
 # @har-sdk/validator
 
-short description
+A validator for OpenAPI and Postman documents.
 
 ## Setup
 

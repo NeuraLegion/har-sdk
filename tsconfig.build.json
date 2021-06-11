@@ -3,7 +3,7 @@
     "target": "es2019",
     "lib": ["es2020"],
     "newLine": "LF",
-    "module": "commonjs",
+    "module": "es2015",
     "moduleResolution": "node",
     "declaration": true,
     "emitDecoratorMetadata": true,

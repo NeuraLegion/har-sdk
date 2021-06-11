@@ -1,6 +1,6 @@
 import { DefaultConverter } from './converter';
 import { DefaultGenerators, DefaultVariableParserFactory } from './parser';
-import { DefaultValidator } from '@har-sdk/validator';
+import { PostmanValidator } from '@har-sdk/validator';
 import { Postman } from '@har-sdk/types';
 import Har from 'har-format';
 import { ok } from 'assert';
@@ -13,7 +13,7 @@ export const postman2har = async (
 ): Promise<Har.Request[]> => {
   ok(collection, `Please provide a valid Postman Collection.`);
 
-  const validator = new DefaultValidator();
+  const validator = new PostmanValidator();
   const generators = new DefaultGenerators();
   const parserFactory = new DefaultVariableParserFactory(generators);
   const converter = new DefaultConverter(

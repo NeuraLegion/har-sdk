@@ -5,16 +5,6 @@ export * from 'openapi-types';
 
 export namespace Collection {
   export type Document = OpenAPI.Document | Postman.Document;
-
-  export interface Info {
-    version: string;
-    type: Type;
-  }
-
-  export enum Type {
-    POSTMAN = 'POSTMAN',
-    OPENAPI = 'OPENAPI'
-  }
 }
 
 export namespace Postman {

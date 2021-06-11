@@ -31,7 +31,7 @@ export class DefaultConverter implements Converter {
     /^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$/;
 
   constructor(
-    private readonly validator: Validator,
+    private readonly validator: Validator<OpenAPI.Document>,
     private readonly flattener: Flattener
   ) {}
 

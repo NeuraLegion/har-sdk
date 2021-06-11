@@ -2,9 +2,9 @@ import { Collection } from '@har-sdk/types';
 import { ErrorObject } from 'ajv';
 
 export interface ValidatorResult {
-  errors: ErrorObject[];
+  errors: Partial<ErrorObject>[];
 }
 
-export interface Validator {
-  verify(document: Collection.Document): Promise<ValidatorResult>;
+export interface Validator<T extends Collection.Document> {
+  verify(document: T): Promise<ValidatorResult>;
 }

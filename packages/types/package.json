@@ -41,5 +41,6 @@
   ],
   "dependencies": {
     "openapi-types": "^9.0.3"
-  }
+  },
+  "devDependencies": {}
 }

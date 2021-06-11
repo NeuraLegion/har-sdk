@@ -19,7 +19,7 @@ export class DefaultConverter implements Converter {
   private readonly DEFAULT_PROTOCOL = 'https';
 
   constructor(
-    private readonly validator: Validator,
+    private readonly validator: Validator<Postman.Document>,
     private readonly parserFactory: VariableParserFactory,
     options: {
       environment?: Record<string, string>;

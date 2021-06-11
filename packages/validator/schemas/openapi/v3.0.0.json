@@ -2,6 +2,7 @@
   "title": "A JSON Schema for OpenAPI 3.0.",
   "$id": "http://openapis.org/v3/schema.json#",
   "$schema": "http://json-schema.org/draft-07/schema#",
+  "$async": true,
   "type": "object",
   "description": "This is the root document object of the OpenAPI document.",
   "required": [

@@ -1,7 +1,6 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://schema.getpostman.com/json/collection/v2.0.0/",
-  "$async": true,
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "https://schema.getpostman.com/json/collection/v2.0.0/",
   "type": "object",
   "properties": {
     "info": {
@@ -50,7 +49,7 @@
     "auth": {
       "type": "object",
       "title": "Auth",
-      "$id": "#/definitions/auth",
+      "id": "#/definitions/auth",
       "description": "Represents authentication helpers provided by Postman",
       "properties": {
         "type": {
@@ -126,7 +125,7 @@
       ]
     },
     "certificate-list": {
-      "$id": "#/definitions/certificate-list",
+      "id": "#/definitions/certificate-list",
       "title": "Certificate List",
       "description": "A representation of a list of ssl certificates",
       "type": "array",
@@ -135,7 +134,7 @@
       }
     },
     "certificate": {
-      "$id": "#/definitions/certificate",
+      "id": "#/definitions/certificate",
       "title": "Certificate",
       "description": "A representation of an ssl certificate",
       "type": "object",
@@ -177,7 +176,7 @@
       }
     },
     "cookie-list": {
-      "$id": "#/definitions/cookie-list",
+      "id": "#/definitions/cookie-list",
       "title": "Certificate List",
       "description": "A representation of a list of cookies",
       "type": "array",
@@ -188,7 +187,7 @@
     "cookie": {
       "type": "object",
       "title": "Cookie",
-      "$id": "#/definitions/cookie",
+      "id": "#/definitions/cookie",
       "description": "A Cookie, that follows the [Google Chrome format](https://developer.chrome.com/extensions/cookies)",
       "properties": {
         "domain": {
@@ -196,9 +195,13 @@
           "description": "The domain for which this cookie is valid."
         },
         "expires": {
-          "type": [
-            "string",
-            "null"
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
           ],
           "description": "When the cookie expires."
         },
@@ -244,8 +247,8 @@
       ]
     },
     "description": {
-      "$schema": "http://json-schema.org/draft-07/schema#",
-      "$id": "#/definitions/description",
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "id": "#/definitions/description",
       "description": "A Description can be a raw text, or be an object, which holds the description along with its format.",
       "oneOf": [
         {
@@ -274,18 +277,18 @@
       ]
     },
     "event-list": {
-      "$id": "#/definitions/event-list",
+      "id": "#/definitions/event-list",
       "title": "Event List",
       "type": "array",
-      "$schema": "http://json-schema.org/draft-07/schema#",
+      "$schema": "http://json-schema.org/draft-04/schema#",
       "description": "Postman allows you to configure scripts to run when specific events occur. These scripts are stored here, and can be referenced in the collection by their ID.",
       "items": {
         "$ref": "#/definitions/event"
       }
     },
     "event": {
-      "$schema": "http://json-schema.org/draft-07/schema#",
-      "$id": "#/definitions/event",
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "id": "#/definitions/event",
       "title": "Event",
       "description": "Defines a script associated with an associated event name",
       "type": "object",
@@ -312,7 +315,7 @@
       ]
     },
     "header-list": {
-      "$id": "#/definitions/header-list",
+      "id": "#/definitions/header-list",
       "title": "Header List",
       "description": "A representation for a list of headers",
       "type": "array",
@@ -323,7 +326,7 @@
     "header": {
       "type": "object",
       "title": "Header",
-      "$id": "#/definitions/header",
+      "id": "#/definitions/header",
       "description": "Represents a single HTTP Header",
       "properties": {
         "key": {
@@ -349,8 +352,8 @@
       ]
     },
     "info": {
-      "$schema": "http://json-schema.org/draft-07/schema#",
-      "$id": "#/definitions/info",
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "id": "#/definitions/info",
       "title": "Information",
       "description": "Detailed description of the info block",
       "type": "object",
@@ -381,9 +384,9 @@
       ]
     },
     "item-group": {
-      "$schema": "http://json-schema.org/draft-07/schema#",
+      "$schema": "http://json-schema.org/draft-04/schema#",
       "title": "Folder",
-      "$id": "#/definitions/item-group",
+      "id": "#/definitions/item-group",
       "description": "One of the primary goals of Postman is to organize the development of APIs. To this end, it is necessary to be able to group requests together. This can be achived using 'Folders'. A folder just is an ordered set of requests.",
       "type": "object",
       "properties": {
@@ -434,10 +437,10 @@
       ]
     },
     "item": {
-      "$schema": "http://json-schema.org/draft-07/schema#",
+      "$schema": "http://json-schema.org/draft-04/schema#",
       "type": "object",
       "title": "Item",
-      "$id": "#/definitions/item",
+      "id": "#/definitions/item",
       "description": "Items are entities which contain an actual HTTP request, and sample responses attached to it.",
       "properties": {
         "id": {
@@ -476,15 +479,15 @@
       ]
     },
     "protocol-profile-behavior": {
-      "$schema": "http://json-schema.org/draft-07/schema#",
+      "$schema": "http://json-schema.org/draft-04/schema#",
       "type": "object",
       "title": "Protocol Profile Behavior",
-      "$id": "#/definitions/protocol-profile-behavior",
+      "id": "#/definitions/protocol-profile-behavior",
       "description": "Set of configurations used to alter the usual behavior of sending the request"
     },
     "proxy-config": {
-      "$schema": "http://json-schema.org/draft-07/schema#",
-      "$id": "#/definitions/proxy-config",
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "id": "#/definitions/proxy-config",
       "title": "Proxy Config",
       "description": "Using the Proxy, you can configure your custom proxy into the postman for particular url match",
       "type": "object",
@@ -517,8 +520,8 @@
       }
     },
     "request": {
-      "$schema": "http://json-schema.org/draft-07/schema#",
-      "$id": "#/definitions/request",
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "id": "#/definitions/request",
       "title": "Request",
       "description": "A request represents an HTTP request. If a string, the string is assumed to be the request URL and the method is assumed to be 'GET'.",
       "oneOf": [
@@ -606,9 +609,6 @@
                     "raw": {
                       "type": "string"
                     },
-                    "graphql": {
-                      "type": "object"
-                    },
                     "urlencoded": {
                       "type": "array",
                       "items": {
@@ -655,7 +655,9 @@
                               },
                               "type": {
                                 "type": "string",
-                                "const": "text"
+                                "enum": [
+                                  "text"
+                                ]
                               },
                               "contentType": {
                                 "type": "string",
@@ -675,10 +677,16 @@
                                 "type": "string"
                               },
                               "src": {
-                                "type": [
-                                  "array",
-                                  "string",
-                                  "null"
+                                "oneOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "array"
+                                  },
+                                  {
+                                    "type": "null"
+                                  }
                                 ]
                               },
                               "disabled": {
@@ -688,7 +696,9 @@
                               },
                               "type": {
                                 "type": "string",
-                                "const": "file"
+                                "enum": [
+                                  "file"
+                                ]
                               },
                               "contentType": {
                                 "type": "string",
@@ -725,6 +735,9 @@
                         }
                       }
                     },
+                    "graphql": {
+                      "type": "object"
+                    },
                     "options": {
                       "type": "object",
                       "description": "Additional configurations and options set for various body modes."
@@ -749,8 +762,8 @@
       ]
     },
     "response": {
-      "$schema": "http://json-schema.org/draft-07/schema#",
-      "$id": "#/definitions/response",
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "id": "#/definitions/response",
       "title": "Response",
       "description": "A response represents an HTTP response.",
       "properties": {
@@ -764,18 +777,28 @@
         "responseTime": {
           "title": "ResponseTime",
           "description": "The time taken by the request to complete. If a number, the unit is milliseconds. If the response is manually created, this can be set to `null`.",
-          "type": [
-            "null",
-            "string",
-            "number"
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            }
           ]
         },
         "timings": {
           "title": "Response Timings",
           "description": "Set of timing information related to request and response in milliseconds",
-          "type": [
-            "object",
-            "null"
+          "oneOf": [
+            {
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
           ]
         },
         "header": {
@@ -829,8 +852,8 @@
       }
     },
     "script": {
-      "$schema": "http://json-schema.org/draft-07/schema#",
-      "$id": "#/definitions/script",
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "id": "#/definitions/script",
       "title": "Script",
       "type": "object",
       "description": "A script is a snippet of Javascript code that can be used to to perform setup or teardown operations on a particular response.",
@@ -867,9 +890,9 @@
       }
     },
     "url": {
-      "$schema": "http://json-schema.org/draft-07/schema#",
+      "$schema": "http://json-schema.org/draft-04/schema#",
       "description": "If object, contains the complete broken-down URL for this request. If string, contains the literal request URL.",
-      "$id": "#/definitions/url",
+      "id": "#/definitions/url",
       "title": "Url",
       "oneOf": [
         {
@@ -940,15 +963,23 @@
                 "title": "QueryParam",
                 "properties": {
                   "key": {
-                    "type": [
-                      "string",
-                      "null"
+                    "oneOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
                     ]
                   },
                   "value": {
-                    "type": [
-                      "string",
-                      "null"
+                    "oneOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
                     ]
                   },
                   "disabled": {
@@ -981,8 +1012,8 @@
       ]
     },
     "variable-list": {
-      "$schema": "http://json-schema.org/draft-07/schema#",
-      "$id": "#/definitions/variable-list",
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "id": "#/definitions/variable-list",
       "title": "Variable List",
       "description": "Collection variables allow you to define a set of variables, that are a *part of the collection*, as opposed to environments, which are separate entities.\n*Note: Collection variables must not contain any sensitive information.*",
       "type": "array",
@@ -991,8 +1022,8 @@
       }
     },
     "variable": {
-      "$schema": "http://json-schema.org/draft-07/schema#",
-      "$id": "#/definitions/variable",
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "id": "#/definitions/variable",
       "title": "Variable",
       "description": "Using variables in your Postman requests eliminates the need to duplicate requests, which can save a lot of time. Variables can be defined, and referenced to from any part of a request.",
       "type": "object",
@@ -1055,8 +1086,8 @@
       ]
     },
     "version": {
-      "$schema": "http://json-schema.org/draft-07/schema#",
-      "$id": "#/definitions/version",
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "id": "#/definitions/version",
       "title": "Collection Version",
       "description": "Postman allows you to version your collections as they grow, and this field holds the version number. While optional, it is recommended that you use this field to its fullest extent!",
       "oneOf": [

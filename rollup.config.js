@@ -19,7 +19,7 @@ export default {
     commonjs({ include: 'node_modules/**'}),
     typescript({
       tsconfig: './tsconfig.build.json',
-      sourceMap: false,
+      sourceMap: false
     }),
   ],
 };

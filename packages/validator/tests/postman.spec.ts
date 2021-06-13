@@ -1,4 +1,4 @@
-import nexplotPostman from './NexPloit_api.postman.json';
+import nexplotPostman from './nexploit_postman.json';
 import { PostmanValidator } from '../src';
 import { Postman } from '@har-sdk/types';
 import { expect } from 'chai';

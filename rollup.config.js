@@ -1,5 +1,5 @@
 import typescript from '@rollup/plugin-typescript';
-import commonjs from 'rollup-plugin-commonjs';
+import commonjs from '@rollup/plugin-commonjs';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import json from '@rollup/plugin-json';
 
@@ -11,12 +11,12 @@ export default {
   },
   output: [
     { format: 'umd', file: './dist/bundle.umd.js', name: 'validator' },
-    { format: 'es', file: './dist/bundle.es.js' }
+    { format: 'es', file: './dist/index.js' }
   ],
   plugins: [
     json(),
     nodeResolve(),
-    commonjs({ include: 'node_modules/**'}),
+    commonjs({ include: 'node_modules/**' }),
     typescript({
       tsconfig: './tsconfig.build.json',
       sourceMap: false

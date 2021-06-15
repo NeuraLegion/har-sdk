@@ -1,4 +1,5 @@
 import githubSwagger from './github_swagger.json';
+// import githubSwagger from './petstore_swagger.json';
 import { OASValidator } from '../src';
 import yaml from 'js-yaml';
 import { OpenAPIV2, OpenAPIV3 } from '@har-sdk/types';
@@ -17,6 +18,8 @@ describe('OASValidator', async () => {
       const result = await validator.verify(
         githubSwagger as unknown as OpenAPIV2.Document
       );
+      // eslint-disable-next-line no-console
+      console.log(result.errors);
       expect(result.errors.length).to.be.equal(0);
     });
 

@@ -27,12 +27,13 @@
     "har",
     "json"
   ],
-  "main": "dist/index.js",
+  "main": "./dist/bundle.umd.js",
+  "module": "./dist/index.js",
   "typings": "dist/index.d.ts",
   "homepage": "https://github.com/NeuraLegion/har-sdk#readme",
   "scripts": {
     "prebuild": "npm run compile -- --clean",
-    "build": "npm run compile",
+    "build": "npm run compile && rollup -c ../../rollup.config.js",
     "lint": "eslint -c .eslintrc.js --ignore-path ../../.eslintignore . --ext ts --fix",
     "format": "prettier --ignore-path ../../.prettierignore --check **/*.ts",
     "compile": "tsc -b tsconfig.build.json"

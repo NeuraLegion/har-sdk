@@ -1,8 +1,7 @@
 import { Validator, ValidatorResult } from './Validator';
-import Ajv, { ValidateFunction } from 'ajv';
+import Ajv, { AnySchema, ValidateFunction } from 'ajv';
 import addFormats from 'ajv-formats';
 import { Collection } from '@har-sdk/types';
-import { join } from 'path';
 
 export abstract class BaseValidator<T extends Collection.Document>
   implements Validator<T>
@@ -43,11 +42,7 @@ export abstract class BaseValidator<T extends Collection.Document>
     }
   }
 
-  protected loadSchemas(pathsToSchemas: ReadonlyArray<string>): void {
-    pathsToSchemas.forEach((x: string) => {
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
-      const schema = require(join('../../', x));
-      this.ajv.addSchema(schema);
-    });
+  protected loadSchemas(schema: AnySchema | AnySchema[]): void {
+    this.ajv.addSchema(schema);
   }
 }

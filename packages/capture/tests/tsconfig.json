@@ -2,7 +2,7 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "types": ["mocha", "node", "har-validator"],
-    "module": "CommonJS"
+    "module": "commonjs"
   },
   "include": ["src", "tests"]
 }

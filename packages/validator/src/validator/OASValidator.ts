@@ -1,14 +1,11 @@
 import { BaseValidator } from './BaseValidator';
+import schemaV2 from '../schemas/openapi/v2.0.0.json';
+import schemaV3 from '../schemas/openapi/v3.0.0.json';
 import { isOASV3, OpenAPI } from '@har-sdk/types';
 import semver from 'semver';
 
 export class OASValidator extends BaseValidator<OpenAPI.Document> {
   private readonly MIN_ALLOWED_VERSION = '2.0.0';
-
-  private readonly PATH_TO_SCHEMAS: ReadonlyArray<string> = [
-    'schemas/openapi/v2.0.0.json',
-    'schemas/openapi/v3.0.0.json'
-  ];
 
   private readonly VERSION_SCHEMA_MAP = {
     2: 'http://swagger.io/v2/schema.json#',
@@ -17,7 +14,7 @@ export class OASValidator extends BaseValidator<OpenAPI.Document> {
 
   constructor() {
     super();
-    this.loadSchemas(this.PATH_TO_SCHEMAS);
+    this.loadSchemas([schemaV2, schemaV3]);
   }
 
   protected getSchemaId(document: OpenAPI.Document): string {

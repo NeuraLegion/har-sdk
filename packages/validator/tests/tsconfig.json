@@ -3,5 +3,5 @@
   "compilerOptions": {
     "types": ["mocha", "node"]
   },
-  "include": ["src", "tests"]
+  "include": ["src", "schemas", "tests"]
 }

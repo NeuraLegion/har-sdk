@@ -6,5 +6,5 @@
     "composite": true,
     "typeRoots": ["node_modules/@types", "typings"]
   },
-  "include": ["src", "package.json", "tests"]
+  "include": ["src", "package.json"]
 }

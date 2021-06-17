@@ -1,6 +1,6 @@
 import typescript from 'rollup-plugin-typescript2';
 import commonjs from '@rollup/plugin-commonjs';
-import { nodeResolve } from '@rollup/plugin-node-resolve';
+import resolve from '@rollup/plugin-node-resolve';
 import json from '@rollup/plugin-json';
 import analyze from 'rollup-plugin-analyzer'
 
@@ -18,12 +18,12 @@ export default {
   ],
   plugins: [
     json(),
-    nodeResolve(),
+    resolve(),
     commonjs({ include: 'node_modules/**' }),
     typescript({
       tsconfig: 'tsconfig.build.json',
       useTsconfigDeclarationDir: true
     }),
-    analyze(),
+    ...(process.env.ANALYZE === 'true' ? [analyze()] : []),
   ],
 };

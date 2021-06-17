@@ -1,12 +1,4 @@
 /* eslint-disable @typescript-eslint/no-namespace */
-import { OpenAPI } from 'openapi-types';
-
-export * from 'openapi-types';
-
-export namespace Collection {
-  export type Document = OpenAPI.Document | Postman.Document;
-}
-
 export namespace Postman {
   export interface Description {
     content: string;

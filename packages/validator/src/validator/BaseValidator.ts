@@ -1,20 +1,25 @@
-import { Validator, ValidatorResult } from './Validator';
-import Ajv, { AnySchema, ValidateFunction } from 'ajv';
+import { Validator, ValidatorResult, Document } from './Validator';
+import Ajv, { AnySchema, AsyncSchema, ValidateFunction } from 'ajv';
 import addFormats from 'ajv-formats';
-import { Collection } from '@har-sdk/types';
 
-export abstract class BaseValidator<T extends Collection.Document>
+export abstract class BaseValidator<T extends Document>
   implements Validator<T>
 {
   private readonly ajv: Ajv;
 
-  constructor() {
+  protected constructor(schema: AnySchema | AnySchema[]) {
     this.ajv = new Ajv({
       allErrors: true,
       strict: false
     });
 
     addFormats(this.ajv);
+
+    (Array.isArray(schema) ? schema : [schema]).forEach((s) =>
+      this.verifySchema(s)
+    );
+
+    this.ajv.addSchema(schema);
   }
 
   protected abstract getSchemaId(document: T): string;
@@ -32,17 +37,27 @@ export abstract class BaseValidator<T extends Collection.Document>
     try {
       await validate(document);
 
-      return { errors: [] };
+      return {
+        errors: [],
+        valid: true
+      };
     } catch (err) {
       if (!(err instanceof Ajv.ValidationError)) {
         throw err;
       }
 
-      return { errors: err.errors };
+      return {
+        errors: err.errors,
+        valid: false
+      };
     }
   }
 
-  protected loadSchemas(schema: AnySchema | AnySchema[]): void {
-    this.ajv.addSchema(schema);
+  private verifySchema(schema: AnySchema): void {
+    if (!(schema as AsyncSchema).$async) {
+      throw Error(
+        'Invalid schema: the schema should support an asynchronous validation. Set the "$async" parameter in the schema. Look at https://ajv.js.org/guide/async-validation.html#asynchronous-validation for more details l'
+      );
+    }
   }
 }

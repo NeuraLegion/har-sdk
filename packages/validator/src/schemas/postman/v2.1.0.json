@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://schema.getpostman.com/json/collection/v2.1.0/",
+  "$id": "https://schema.getpostman.com/json/draft-07/collection/v2.1.0/",
   "$async": true,
   "type": "object",
   "properties": {
@@ -195,7 +195,7 @@
         "matches": {
           "description": "A list of Url match pattern strings, to identify Urls this certificate can be used for.",
           "type": "array",
-          "item": {
+          "items": {
             "type": "string",
             "description": "An Url match pattern string"
           }
@@ -686,7 +686,7 @@
                       "items": {
                         "type": "object",
                         "title": "FormParameter",
-                        "oneOf": [
+                        "anyOf": [
                           {
                             "properties": {
                               "key": {

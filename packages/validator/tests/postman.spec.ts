@@ -1,24 +1,25 @@
-import nexplotPostman from './nexploit_postman.json';
+import nexplotPostman from './nexploitPostman.json';
 import { PostmanValidator } from '../src';
 import { Postman } from '@har-sdk/types';
-import { expect } from 'chai';
+import 'chai/register-should';
 
-describe('PostmanValidator', async () => {
+describe('PostmanValidator', () => {
   const validator = new PostmanValidator();
 
-  describe('verify', async () => {
-    it('Valid JSON', async () => {
+  describe('verify', () => {
+    it('should successfully validate postman document', async () => {
       const result = await validator.verify(
         nexplotPostman as unknown as Postman.Document
       );
-      expect(result.errors.length).to.be.equal(0);
+      result.errors.should.be.empty;
     });
 
-    it('Invalid JSON: cannot determine version of document', async () => {
+    it('Should throw error - cannot determine version of document', async () => {
       const apiDoc = {
         info: {
-          title: 'Some valid API document',
-          version: '1.0.0'
+          name: 'Some valid API document',
+          schema:
+            'https://schema.getpostman.com/json/collection/v1.0.0/collection.json'
         },
         paths: {}
       };
@@ -26,18 +27,18 @@ describe('PostmanValidator', async () => {
       try {
         await validator.verify(apiDoc as unknown as Postman.Document);
       } catch (err) {
-        expect(err.message).to.be.equal(
+        err.message.should.be.equal(
           'Cannot determine version of schema. Schema ID is missed.'
         );
       }
     });
 
-    it('Invalid JSON: invalid document', async () => {
+    it('Should throw error - invalid document', async () => {
       const apiDoc = {
         info: {
           title: 'Some valid API document',
-          schema: 'https://schema.getpostman.com/json/collection/v2.0.0/#',
-          version: '2.0.0'
+          schema:
+            'https://schema.getpostman.com/json/collection/v2.1.0/collection.json'
         }
       };
       const errors = [
@@ -64,7 +65,7 @@ describe('PostmanValidator', async () => {
       const result = await validator.verify(
         apiDoc as unknown as Postman.Document
       );
-      expect(result.errors).to.deep.equal(errors);
+      result.errors.should.deep.eq(errors);
     });
   });
 });

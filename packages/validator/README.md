@@ -31,4 +31,4 @@ const result = await validator.verify(apiDoc);
 - **result** (_required_) - `object`
   - **errors** (_required_) - `array`
     - **error** (_optional_) - `object`
-    [Error Object](https://ajv.js.org/api.html#error-objects)
+    here is full description of [Error Object](https://ajv.js.org/api.html#error-objects)

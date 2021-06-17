@@ -7,14 +7,13 @@ import semver from 'semver';
 export class OASValidator extends BaseValidator<OpenAPI.Document> {
   private readonly MIN_ALLOWED_VERSION = '2.0.0';
 
-  private readonly VERSION_SCHEMA_MAP = {
+  private readonly VERSION_SCHEMA_MAP: Readonly<Record<2 | 3, string>> = {
     2: 'http://swagger.io/v2/schema.json#',
     3: 'http://openapis.org/v3/schema.json#'
   };
 
   constructor() {
-    super();
-    this.loadSchemas([schemaV2, schemaV3]);
+    super([schemaV2, schemaV3]);
   }
 
   protected getSchemaId(document: OpenAPI.Document): string {

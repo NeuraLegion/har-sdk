@@ -1,8 +1,7 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
-    "types": ["mocha", "node", "jstoxml"],
-    "module": "CommonJS"
+    "types": ["mocha", "node", "jstoxml"]
   },
   "include": ["src", "tests"]
 }

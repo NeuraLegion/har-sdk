@@ -1,59 +1,38 @@
-import githubSwagger from './github_swagger.json';
-// import githubSwagger from './petstore_swagger.json';
+import githubSwagger from './githubSwagger.json';
 import { OASValidator } from '../src';
 import yaml from 'js-yaml';
 import { OpenAPIV2, OpenAPIV3 } from '@har-sdk/types';
-import { expect } from 'chai';
 import { resolve } from 'path';
 import fs from 'fs';
 import { promisify } from 'util';
+import 'chai/register-should';
 
 const readFile = promisify(fs.readFile);
 
-describe('OASValidator', async () => {
+describe('OASValidator', () => {
   const validator = new OASValidator();
 
-  describe('verify', async () => {
+  describe('verify', () => {
     it('should successfully validate GitHub swagger v2 JSON', async () => {
       const result = await validator.verify(
         githubSwagger as unknown as OpenAPIV2.Document
       );
-      // eslint-disable-next-line no-console
-      console.log(result.errors);
-      expect(result.errors.length).to.be.equal(0);
+      result.errors.should.be.empty;
     });
 
     it('should successfully validate Petstore OpenApi v3 YAML', async () => {
       const content: string = await readFile(
-        resolve('./tests/petstore_oas.yaml'),
+        resolve('./tests/petstoreOas.yaml'),
         'utf8'
       );
 
       const result = await validator.verify(
         yaml.load(content) as OpenAPIV3.Document
       );
-      expect(result.errors.length).to.be.equal(0);
+      result.errors.should.be.empty;
     });
 
-    it('V2 invalid JSON: cannot determine version of document', async () => {
-      const apiDoc = {
-        info: {
-          title: 'Some valid API document',
-          version: '1.0.0'
-        },
-        paths: {}
-      };
-
-      try {
-        await validator.verify(apiDoc as unknown as OpenAPIV2.Document);
-      } catch (err) {
-        expect(err.message).to.be.equal(
-          'Cannot determine version of schema. Schema ID is missed.'
-        );
-      }
-    });
-
-    it('V2 invalid JSON: invalid version', async () => {
+    it('should throw error - Cannot determine version of schema. Schema ID is missed.', async () => {
       const apiDoc = {
         swagger: '1.0.0',
         info: {
@@ -66,13 +45,13 @@ describe('OASValidator', async () => {
       try {
         await validator.verify(apiDoc as unknown as OpenAPIV2.Document);
       } catch (err) {
-        expect(err.message).to.be.equal(
+        err.message.should.be.equal(
           'Cannot determine version of schema. Schema ID is missed.'
         );
       }
     });
 
-    it('V2 invalid JSON: invalid host', async () => {
+    it('should throw error - must have required property host', async () => {
       const apiDoc = {
         swagger: '2.0',
         info: {
@@ -96,10 +75,10 @@ describe('OASValidator', async () => {
       const result = await validator.verify(
         apiDoc as unknown as OpenAPIV2.Document
       );
-      expect(result.errors).to.deep.equal(errors);
+      result.errors.should.deep.eq(errors);
     });
 
-    it('V3 invalid JSON: invalid servers', async () => {
+    it('should throw error - must have required property servers', async () => {
       const apiDoc = {
         openapi: '3.0.0',
         info: {
@@ -123,10 +102,10 @@ describe('OASValidator', async () => {
       const result = await validator.verify(
         apiDoc as unknown as OpenAPIV3.Document
       );
-      expect(result.errors).to.deep.equal(errors);
+      result.errors.should.deep.eq(errors);
     });
 
-    it('V3 invalid JSON: invalid server url', async () => {
+    it('should throw error - must have required property url', async () => {
       const apiDoc = {
         openapi: '3.0.0',
         servers: [{}],
@@ -151,7 +130,7 @@ describe('OASValidator', async () => {
       const result = await validator.verify(
         apiDoc as unknown as OpenAPIV3.Document
       );
-      expect(result.errors).to.deep.equal(errors);
+      result.errors.should.deep.eq(errors);
     });
   });
 });

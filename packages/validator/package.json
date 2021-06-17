@@ -26,11 +26,12 @@
   "homepage": "https://github.com/NeuraLegion/har-sdk#readme",
   "scripts": {
     "prebuild": "npm run compile -- --clean",
-    "build": "npm run compile && rollup -c ../../rollup.config.js",
+    "build": "npm run compile && npm run bundle",
+    "bundle": "rollup -c ../../rollup.config.js ",
     "compile": "tsc -b tsconfig.build.json",
     "lint": "eslint -c .eslintrc.js --ignore-path ../../.eslintignore . --ext ts --fix",
     "format": "prettier --ignore-path ../../.prettierignore --check **/*.ts",
-    "test": "cross-env TS_NODE_PROJECT=tests/tsconfig.json mocha -r ts-node/register -r tsconfig-paths/register tests/**/*.spec.ts"
+    "test": "mocha -r ts-node/register -r tsconfig-paths/register tests/**/*.spec.ts"
   },
   "keywords": [
     "swagger",

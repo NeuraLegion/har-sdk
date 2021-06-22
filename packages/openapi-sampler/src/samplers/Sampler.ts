@@ -1,5 +1,5 @@
 import { Options, Specification } from '../traverse';
-import { OpenAPIV2, OpenAPIV3 } from 'openapi-types';
+import { OpenAPIV2, OpenAPIV3 } from '@har-sdk/types';
 
 export type OpenAPISchema = OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject;
 

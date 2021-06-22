@@ -1,6 +1,6 @@
 import { VariableParser } from './VariableParser';
 import { Generators } from './Generators';
-import { Postman } from '../postman';
+import { Postman } from '@har-sdk/types';
 
 export abstract class BaseVariableParser implements VariableParser {
   protected constructor(

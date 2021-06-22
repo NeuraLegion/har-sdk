@@ -1,6 +1,6 @@
 import { BaseVariableParser } from './BaseVariableParser';
 import { Generators } from './Generators';
-import { Postman } from '../postman';
+import { Postman } from '@har-sdk/types';
 
 export class UrlVariableParser extends BaseVariableParser {
   private readonly PATH_VARIABLE_IDENTIFIER = ':';

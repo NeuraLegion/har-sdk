@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "rootDir": ".",
+    "composite": true
+  },
+  "references": [
+    {
+      "path": "../types"
+    }
+  ],
+  "include": ["src", "tests"]
+}

@@ -1,7 +1,7 @@
 import { Converter } from './Converter';
-import { Validator } from '../validator';
 import { VariableParser, VariableParserFactory } from '../parser';
-import { Postman } from '../postman';
+import { Validator } from '@har-sdk/validator';
+import { Postman } from '@har-sdk/types';
 import Har from 'har-format';
 import { lookup } from 'mime-types';
 import { ok } from 'assert';
@@ -19,7 +19,7 @@ export class DefaultConverter implements Converter {
   private readonly DEFAULT_PROTOCOL = 'https';
 
   constructor(
-    private readonly validator: Validator,
+    private readonly validator: Validator<Postman.Document>,
     private readonly parserFactory: VariableParserFactory,
     options: {
       environment?: Record<string, string>;
@@ -33,7 +33,7 @@ export class DefaultConverter implements Converter {
     );
   }
 
-  public async convert(collection: Postman.Collection): Promise<Har.Request[]> {
+  public async convert(collection: Postman.Document): Promise<Har.Request[]> {
     await this.validator.verify(collection);
 
     return this.traverse(collection, [...this.variables]);
@@ -165,9 +165,8 @@ export class DefaultConverter implements Converter {
     const target: AuthLocation =
       AuthLocation[(options.addTokenTo ?? 'header').toUpperCase()];
 
-    const parser: VariableParser = this.parserFactory.createEnvVariableParser(
-      variables
-    );
+    const parser: VariableParser =
+      this.parserFactory.createEnvVariableParser(variables);
 
     if (target === AuthLocation.QUERY) {
       request.queryString.push({
@@ -193,9 +192,8 @@ export class DefaultConverter implements Converter {
     options: Record<string, string>,
     variables: Postman.Variable[]
   ): void {
-    const parser: VariableParser = this.parserFactory.createEnvVariableParser(
-      variables
-    );
+    const parser: VariableParser =
+      this.parserFactory.createEnvVariableParser(variables);
     const idx: number = request.headers.findIndex(
       (x: Har.Header) => x.name.toLowerCase() === 'authorization'
     );
@@ -222,9 +220,8 @@ export class DefaultConverter implements Converter {
     options: Record<string, string>,
     variables: Postman.Variable[]
   ) {
-    const parser: VariableParser = this.parserFactory.createEnvVariableParser(
-      variables
-    );
+    const parser: VariableParser =
+      this.parserFactory.createEnvVariableParser(variables);
     const idx: number = request.headers.findIndex(
       (x: Har.Header) => x.name.toLowerCase() === 'authorization'
     );
@@ -251,9 +248,8 @@ export class DefaultConverter implements Converter {
     options: Record<string, string>,
     variables: Postman.Variable[]
   ): void {
-    const parser: VariableParser = this.parserFactory.createEnvVariableParser(
-      variables
-    );
+    const parser: VariableParser =
+      this.parserFactory.createEnvVariableParser(variables);
 
     const target: AuthLocation =
       AuthLocation[(options.addTokenTo ?? 'header').toUpperCase()];
@@ -277,9 +273,8 @@ export class DefaultConverter implements Converter {
     body: Postman.RequestBody,
     variables: Postman.Variable[]
   ): Har.PostData {
-    const parser: VariableParser = this.parserFactory.createEnvVariableParser(
-      variables
-    );
+    const parser: VariableParser =
+      this.parserFactory.createEnvVariableParser(variables);
 
     switch (body.mode) {
       case 'raw':
@@ -380,11 +375,11 @@ export class DefaultConverter implements Converter {
             )
           );
 
-    return ({
+    return {
       text,
       params,
       mimeType: 'application/x-www-form-urlencoded'
-    } as unknown) as Har.PostData;
+    } as unknown as Har.PostData;
   }
 
   private rawBody(
@@ -420,9 +415,8 @@ export class DefaultConverter implements Converter {
     headers: Postman.Header[] | string,
     variables: Postman.Variable[]
   ): Har.Header[] {
-    const parser: VariableParser = this.parserFactory.createEnvVariableParser(
-      variables
-    );
+    const parser: VariableParser =
+      this.parserFactory.createEnvVariableParser(variables);
 
     if (Array.isArray(headers)) {
       return headers.map((x: Postman.Header) => ({
@@ -448,9 +442,11 @@ export class DefaultConverter implements Converter {
     variables: Postman.Variable[]
   ): string {
     const subVariables = typeof value === 'string' ? [] : value.variable;
-    const envParser: VariableParser = this.parserFactory.createEnvVariableParser(
-      [...(subVariables ?? []), ...variables]
-    );
+    const envParser: VariableParser =
+      this.parserFactory.createEnvVariableParser([
+        ...(subVariables ?? []),
+        ...variables
+      ]);
 
     if (typeof value === 'string') {
       return envParser.parse(value);
@@ -520,9 +516,8 @@ export class DefaultConverter implements Converter {
       protocol = env.parse(protocol)?.replace(/:?$/, ':');
     }
 
-    const fragments: VariableParser = this.parserFactory.createUrlVariableParser(
-      url.variable
-    );
+    const fragments: VariableParser =
+      this.parserFactory.createUrlVariableParser(url.variable);
 
     let pathname: string = Array.isArray(url.path)
       ? url.path
@@ -585,9 +580,8 @@ export class DefaultConverter implements Converter {
       return [];
     }
 
-    const envParser: VariableParser = this.parserFactory.createEnvVariableParser(
-      variables
-    );
+    const envParser: VariableParser =
+      this.parserFactory.createEnvVariableParser(variables);
 
     return Object.entries(query).map(
       ([name, value]: [string, undefined | string | string[]]) => ({

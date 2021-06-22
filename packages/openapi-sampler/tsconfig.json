@@ -5,5 +5,10 @@
     "rootDir": ".",
     "composite": true
   },
+  "references": [
+    {
+      "path": "../types"
+    }
+  ],
   "include": ["src"]
 }

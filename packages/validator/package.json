@@ -1,0 +1,57 @@
+{
+  "name": "@har-sdk/validator",
+  "version": "0.0.0",
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NeuraLegion/har-sdk.git"
+  },
+  "author": {
+    "name": "Artem Derevnjuk",
+    "email": "artem.derevnjuk@neuralegion.com"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/NeuraLegion/har-sdk/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist/**"
+  ],
+  "main": "./dist/bundle.umd.js",
+  "module": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
+  "homepage": "https://github.com/NeuraLegion/har-sdk#readme",
+  "scripts": {
+    "prebuild": "npm run compile -- --clean",
+    "build": "npm run compile && npm run bundle",
+    "bundle": "rollup -c ../../rollup.config.js ",
+    "compile": "tsc -b tsconfig.build.json",
+    "lint": "eslint -c .eslintrc.js --ignore-path ../../.eslintignore . --ext ts --fix",
+    "format": "prettier --ignore-path ../../.prettierignore --check **/*.ts",
+    "test": "mocha -r ts-node/register -r tsconfig-paths/register tests/**/*.spec.ts"
+  },
+  "keywords": [
+    "swagger",
+    "validator",
+    "yml",
+    "yaml",
+    "har",
+    "json"
+  ],
+  "dependencies": {
+    "@har-sdk/types": "*",
+    "ajv": "^8.6.0",
+    "ajv-formats": "^2.1.0",
+    "semver": "^7.3.5",
+    "tslib": "~2.2.0"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.1",
+    "@types/node": "^14.14.45",
+    "@types/semver": "^7.3.6",
+    "js-yaml": "^4.1.0"
+  }
+}

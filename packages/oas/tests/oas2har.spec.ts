@@ -1,9 +1,14 @@
 import githubSwagger from './github_swagger.json';
 import { oas2har } from '../src';
+import yaml from 'js-yaml';
 import Har from 'har-format';
 import { expect } from 'chai';
-import { OpenAPIV2 } from 'openapi-types';
+import { OpenAPIV2, OpenAPIV3 } from '@har-sdk/types';
 import { resolve } from 'path';
+import fs from 'fs';
+import { promisify } from 'util';
+
+const readFile = promisify(fs.readFile);
 
 describe('OAS 2 HAR', async () => {
   it('GitHub swagger v2 JSON to HAR', async () => {
@@ -17,8 +22,13 @@ describe('OAS 2 HAR', async () => {
   });
 
   it('Petstore OpenApi v3 YAML to JSON converts to HAR', async () => {
+    const content: string = await readFile(
+      resolve('./tests/petstore_oas.yaml'),
+      'utf8'
+    );
+
     const [firstRequest]: Har.Request[] = await oas2har(
-      resolve('./tests/petstore_oas.yaml')
+      yaml.load(content) as OpenAPIV3.Document
     );
 
     expect(firstRequest.method).to.equal('PUT');

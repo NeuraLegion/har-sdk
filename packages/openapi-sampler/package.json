@@ -20,12 +20,14 @@
   "files": [
     "dist/**"
   ],
-  "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
+  "main": "./dist/bundle.umd.js",
+  "module": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
   "homepage": "https://github.com/NeuraLegion/har-sdk#readme",
   "scripts": {
     "prebuild": "npm run compile -- --clean",
-    "build": "npm run compile",
+    "build": "npm run compile && npm run bundle",
+    "bundle": "rollup -c ../../rollup.config.js",
     "compile": "tsc -b tsconfig.build.json",
     "lint": "eslint -c .eslintrc.js --ignore-path ../../.eslintignore . --ext ts --fix",
     "format": "prettier --ignore-path ../../.prettierignore --check **/*.ts",
@@ -39,15 +41,15 @@
     "faker"
   ],
   "dependencies": {
+    "@har-sdk/types": "*",
     "faker": "^5.5.3",
     "json-pointer": "^0.6.1",
-    "openapi-types": "^8.0.0",
     "randexp": "^0.5.3",
     "tslib": "~2.2.0"
   },
   "devDependencies": {
-    "@types/node": "^14.14.45",
     "@types/faker": "^5.5.3",
-    "@types/json-pointer": "^1.0.30"
+    "@types/json-pointer": "^1.0.30",
+    "@types/node": "^14.14.45"
   }
 }

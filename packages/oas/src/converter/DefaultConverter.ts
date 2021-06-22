@@ -1,7 +1,5 @@
 /* eslint-disable max-depth */
-import { Collection, Converter } from './Converter';
-import { Validator } from '../validator';
-import { Loader } from '../loader';
+import { Converter } from './Converter';
 import { resolveRef } from '../utils/resolveRef';
 import { isObject } from '../utils/isObject';
 import { normalizeUrl } from '../utils/normalizeUrl';
@@ -10,11 +8,11 @@ import {
   removeLeadingSlash,
   removeTrailingSlash
 } from '../utils/stringHelpers';
-import { isV2, isV3 } from '../utils/versionHelpers';
+import { Validator } from '@har-sdk/validator';
+import { OpenAPI, OpenAPIV3, isOASV2, isOASV3 } from '@har-sdk/types';
 import { sample } from '@har-sdk/openapi-sampler';
 import { Request, QueryString, Header, PostData } from 'har-format';
 import template from 'url-template';
-import { OpenAPIV3 } from 'openapi-types';
 import { toXML } from 'jstoxml';
 import querystring from 'qs';
 
@@ -29,20 +27,15 @@ export class DefaultConverter implements Converter {
   private readonly REGEX_EXTRACT_VARS = /{([^{}]*?)}/g;
   private readonly VARS_SUBREPLACE_LIMIT = 30;
   private readonly BOUNDARY = '956888039105887155673143';
-  private readonly BASE64_PATTERN = /^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$/;
+  private readonly BASE64_PATTERN =
+    /^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$/;
 
   constructor(
-    private readonly validator: Validator,
-    private readonly loader: Loader,
+    private readonly validator: Validator<OpenAPI.Document>,
     private readonly flattener: Flattener
   ) {}
 
-  public async convert(collection: Collection | string): Promise<Request[]> {
-    const spec: Collection =
-      typeof collection === 'string'
-        ? await this.loader.load(collection)
-        : collection;
-
+  public async convert(spec: OpenAPI.Document): Promise<Request[]> {
     await this.validator.verify(spec);
 
     const baseUrl: string = normalizeUrl(this.getBaseUrl(spec));
@@ -51,7 +44,10 @@ export class DefaultConverter implements Converter {
     return requests.map((x: HarRequest) => x.har);
   }
 
-  private parseSwaggerDoc(spec: Collection, baseUrl: string): HarRequest[] {
+  private parseSwaggerDoc(
+    spec: OpenAPI.Document,
+    baseUrl: string
+  ): HarRequest[] {
     const harList: HarRequest[] = [];
 
     for (const [path, pathMethods] of Object.entries(spec.paths)) {
@@ -79,7 +75,7 @@ export class DefaultConverter implements Converter {
   }
 
   private createHar(
-    spec: Collection,
+    spec: OpenAPI.Document,
     baseUrl: string,
     path: string,
     method: string,
@@ -117,7 +113,7 @@ export class DefaultConverter implements Converter {
 
   // eslint-disable-next-line complexity
   private getPayload(
-    spec: Collection,
+    spec: OpenAPI.Document,
     path: string,
     method: string
   ): PostData | null {
@@ -137,7 +133,7 @@ export class DefaultConverter implements Converter {
 
             if (pathObj.consumes && pathObj.consumes.length) {
               consumes = pathObj.consumes;
-            } else if (isV2(spec) && spec.consumes && spec.consumes.length) {
+            } else if (isOASV2(spec) && spec.consumes && spec.consumes.length) {
               consumes = spec.consumes;
             }
 
@@ -282,14 +278,7 @@ export class DefaultConverter implements Converter {
       case 'image/png':
       case 'image/*':
         return Buffer.from([
-          0x89,
-          0x50,
-          0x4e,
-          0x47,
-          0x0d,
-          0x0a,
-          0x1a,
-          0x0a
+          0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a
         ]).toString('base64');
 
       default:
@@ -337,7 +326,7 @@ export class DefaultConverter implements Converter {
 
   // eslint-disable-next-line complexity
   private getQueryStrings(
-    spec: Collection,
+    spec: OpenAPI.Document,
     path: string,
     method: string,
     values: Record<string, string> = {}
@@ -390,7 +379,7 @@ export class DefaultConverter implements Converter {
 
   // eslint-disable-next-line complexity
   private getHeadersArray(
-    spec: Collection,
+    spec: OpenAPI.Document,
     path: string,
     method: string
   ): Header[] {
@@ -458,9 +447,9 @@ export class DefaultConverter implements Converter {
     }
 
     let definedSchemes;
-    if (isV2(spec) && spec.securityDefinitions) {
+    if (isOASV2(spec) && spec.securityDefinitions) {
       definedSchemes = spec.securityDefinitions;
-    } else if (isV3(spec) && spec.components) {
+    } else if (isOASV3(spec) && spec.components) {
       definedSchemes = spec.components.securitySchemes;
     }
 
@@ -621,7 +610,7 @@ export class DefaultConverter implements Converter {
   }
 
   private serializePath(
-    spec: Collection,
+    spec: OpenAPI.Document,
     path: string,
     method: string
   ): string {
@@ -640,7 +629,7 @@ export class DefaultConverter implements Converter {
     return templateUrl.expand(params);
   }
 
-  private getBaseUrl(spec: Collection): string {
+  private getBaseUrl(spec: OpenAPI.Document): string {
     const urls: string[] = this.parseUrls(spec);
 
     if (!Array.isArray(urls) || !urls.length) {
@@ -661,8 +650,8 @@ export class DefaultConverter implements Converter {
     });
   }
 
-  private parseUrls(spec: Collection): string[] {
-    if (isV3(spec) && spec.servers?.length) {
+  private parseUrls(spec: OpenAPI.Document): string[] {
+    if (isOASV3(spec) && spec.servers?.length) {
       return spec.servers.map((server: OpenAPIV3.ServerObject) => {
         const variables = server.variables || {};
 
@@ -695,7 +684,7 @@ export class DefaultConverter implements Converter {
       });
     }
 
-    if (isV2(spec) && spec.host) {
+    if (isOASV2(spec) && spec.host) {
       const basePath: string =
         typeof spec.basePath !== 'undefined'
           ? removeLeadingSlash(spec.basePath)

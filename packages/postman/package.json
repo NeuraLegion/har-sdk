@@ -18,8 +18,7 @@
     "access": "public"
   },
   "files": [
-    "dist/**",
-    "schemas/**"
+    "dist/**"
   ],
   "keywords": [
     "postman",
@@ -28,17 +27,21 @@
     "har",
     "json"
   ],
-  "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
+  "main": "./dist/bundle.umd.js",
+  "module": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
   "homepage": "https://github.com/NeuraLegion/har-sdk#readme",
   "scripts": {
     "prebuild": "npm run compile -- --clean",
-    "build": "npm run compile",
+    "build": "npm run compile && npm run bundle",
+    "bundle": "rollup -c ../../rollup.config.js",
     "lint": "eslint -c .eslintrc.js --ignore-path ../../.eslintignore . --ext ts --fix",
     "format": "prettier --ignore-path ../../.prettierignore --check **/*.ts",
     "compile": "tsc -b tsconfig.build.json"
   },
   "dependencies": {
+    "@har-sdk/types": "*",
+    "@har-sdk/validator": "*",
     "ajv": "^6.12.6",
     "faker": "^5.5.3",
     "mime-types": "^2.1.27",
@@ -46,10 +49,10 @@
     "tslib": "~2.2.0"
   },
   "devDependencies": {
-    "@types/node": "^14.14.45",
     "@types/faker": "^5.5.3",
     "@types/har-format": "^1.2.5",
     "@types/mime-types": "^2.1.0",
+    "@types/node": "^14.14.45",
     "@types/semver": "^7.3.5"
   }
 }

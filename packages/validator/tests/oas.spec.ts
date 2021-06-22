@@ -32,7 +32,7 @@ describe('OASValidator', () => {
       result.errors.should.be.empty;
     });
 
-    it('should throw error - Cannot determine version of schema. Schema ID is missed.', async () => {
+    it('should throw error if cannot determine version of schema because of schema ID is missed.', async () => {
       const apiDoc = {
         swagger: '1.0.0',
         info: {
@@ -51,7 +51,7 @@ describe('OASValidator', () => {
       }
     });
 
-    it('should throw error - must have required property host', async () => {
+    it("should throw error if property 'host' does not exist", async () => {
       const apiDoc = {
         swagger: '2.0',
         info: {
@@ -78,7 +78,7 @@ describe('OASValidator', () => {
       result.errors.should.deep.eq(errors);
     });
 
-    it('should throw error - must have required property servers', async () => {
+    it("should throw error if property 'servers' does not exist", async () => {
       const apiDoc = {
         openapi: '3.0.0',
         info: {
@@ -105,7 +105,7 @@ describe('OASValidator', () => {
       result.errors.should.deep.eq(errors);
     });
 
-    it('should throw error - must have required property url', async () => {
+    it("should throw error if property 'url' does not exist", async () => {
       const apiDoc = {
         openapi: '3.0.0',
         servers: [{}],

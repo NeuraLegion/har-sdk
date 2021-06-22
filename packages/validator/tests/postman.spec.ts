@@ -14,7 +14,7 @@ describe('PostmanValidator', () => {
       result.errors.should.be.empty;
     });
 
-    it('Should throw error - cannot determine version of document', async () => {
+    it('should throw error if cannot determine version of document', async () => {
       const apiDoc = {
         info: {
           name: 'Some valid API document',
@@ -33,7 +33,7 @@ describe('PostmanValidator', () => {
       }
     });
 
-    it('Should throw error - invalid document', async () => {
+    it('should throw error if document is invalid', async () => {
       const apiDoc = {
         info: {
           title: 'Some valid API document',

@@ -1,14 +1,9 @@
 import { sample } from '../src';
-import { Schema } from '../src/traverse';
-import { expect } from 'chai';
+import 'chai/register-should';
 
 describe('oneOf and anyOf', () => {
-  let schema: Schema;
-  let result;
-  let expected;
-
   it('should support oneOf', () => {
-    schema = {
+    const schema = {
       oneOf: [
         {
           type: 'string'
@@ -18,13 +13,12 @@ describe('oneOf and anyOf', () => {
         }
       ]
     };
-    result = sample(schema);
-    expected = ['string', 'number'];
-    expect(typeof result).to.be.oneOf(expected);
+    const result = sample(schema);
+    (typeof result).should.be.oneOf(['string', 'number']);
   });
 
   it('should support anyOf', () => {
-    schema = {
+    const schema = {
       anyOf: [
         {
           type: 'string'
@@ -34,13 +28,12 @@ describe('oneOf and anyOf', () => {
         }
       ]
     };
-    result = sample(schema);
-    expected = ['string', 'number'];
-    expect(typeof result).to.be.oneOf(expected);
+    const result = sample(schema);
+    (typeof result).should.be.oneOf(['string', 'number']);
   });
 
   it('should prefer oneOf if anyOf and oneOf are on the same level ', () => {
-    schema = {
+    const schema = {
       anyOf: [
         {
           type: 'string'
@@ -52,7 +45,7 @@ describe('oneOf and anyOf', () => {
         }
       ]
     };
-    result = sample(schema);
-    expect(typeof result).to.equal('number');
+    const result = sample(schema);
+    result.should.be.a('number');
   });
 });

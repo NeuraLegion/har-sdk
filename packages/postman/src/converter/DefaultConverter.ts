@@ -4,9 +4,9 @@ import { Validator } from '@har-sdk/validator';
 import { Postman } from '@har-sdk/types';
 import Har from 'har-format';
 import { lookup } from 'mime-types';
+import { parse as parseQS, stringify } from 'qs';
 import { ok } from 'assert';
 import { format, parse, URL, UrlObject } from 'url';
-import { parse as parseQS, ParsedUrlQuery, stringify } from 'querystring';
 import { basename, extname } from 'path';
 
 export enum AuthLocation {
@@ -354,7 +354,12 @@ export class DefaultConverter implements Converter {
         value: parser.parse(x.value ?? '')
       }));
     } else {
-      params = Object.entries(parseQS(body.urlencoded ?? '')).map(
+      params = Object.entries(
+        parseQS(body.urlencoded ?? '') as Record<
+          string,
+          undefined | string | string[]
+        >
+      ).map(
         // eslint-disable-next-line @typescript-eslint/typedef
         ([name, value]) => ({
           name,
@@ -553,7 +558,9 @@ export class DefaultConverter implements Converter {
     };
   }
 
-  private prepareQueries(url: Postman.Url): ParsedUrlQuery | undefined {
+  private prepareQueries(
+    url: Postman.Url
+  ): Record<string, undefined | string | string[]> | undefined {
     return Array.isArray(url.query)
       ? Object.fromEntries(
           url.query.map((x: Postman.QueryParam) => [
@@ -568,7 +575,7 @@ export class DefaultConverter implements Converter {
     url: Postman.Url | string,
     variables: Postman.Variable[]
   ): Har.QueryString[] {
-    let query: ParsedUrlQuery | undefined;
+    let query: Record<string, undefined | string | string[]> | undefined;
 
     if (typeof url === 'string') {
       query = parse(url, true).query;

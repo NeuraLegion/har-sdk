@@ -1,14 +1,9 @@
-import { sample } from '../src';
-import { Schema } from '../src/traverse';
-import { expect } from 'chai';
+import { sample, Schema } from '../src';
+import 'chai/register-should';
 
 describe('AllOf', () => {
-  let schema: Schema;
-  let result;
-  let expected;
-
   it('should sample schema with allOf', () => {
-    schema = {
+    const schema = {
       allOf: [
         {
           type: 'object',
@@ -30,16 +25,16 @@ describe('AllOf', () => {
         }
       ]
     };
-    result = sample(schema);
-    expected = {
+    const result = sample(schema);
+    const expected = {
       title: 'string',
       amount: 1
     };
-    expect(result).to.deep.equal(expected);
+    result.should.deep.equal(expected);
   });
 
   it('should throw for schemas with allOf with different types', () => {
-    schema = {
+    const schema = {
       allOf: [
         {
           type: 'string'
@@ -54,12 +49,12 @@ describe('AllOf', () => {
           }
         }
       ]
-    } as Schema;
-    expect(() => sample(schema)).to.throw();
+    };
+    (() => sample(schema)).should.throw();
   });
 
   it('deep array', () => {
-    schema = {
+    const schema = {
       allOf: [
         {
           type: 'object',
@@ -91,19 +86,12 @@ describe('AllOf', () => {
       ]
     };
 
-    expected = {
-      arr: [
-        {
-          name: 'string'
-        }
-      ]
-    };
-    result = sample(schema);
-    expect(Array.isArray(result.arr)).to.equal(true);
+    const result = sample(schema);
+    result.arr.should.be.instanceOf(Array);
   });
 
   it('should return array of at least two numbers after allOf merge', () => {
-    schema = {
+    const schema = {
       allOf: [
         {
           type: 'array',
@@ -118,13 +106,13 @@ describe('AllOf', () => {
       ]
     };
 
-    result = sample(schema);
-    expect(Array.isArray(result)).to.be.equal(true);
-    expect(result.length).to.be.equal(2);
+    const result = sample(schema);
+    result.should.be.instanceOf(Array);
+    result.length.should.equal(2);
   });
 
   it('should create an array of strings', () => {
-    schema = {
+    const schema = {
       allOf: [
         {
           type: 'array',
@@ -145,14 +133,14 @@ describe('AllOf', () => {
         }
       ]
     };
-    result = sample(schema);
+    const result = sample(schema);
 
-    expect(result.length).to.be.equal(3);
-    expect(typeof result[0]).to.be.equal('string');
+    result.length.should.equal(3);
+    result[0].should.be.a('string');
   });
 
   it('should not be confused by subschema without type', () => {
-    schema = {
+    const schema = {
       type: 'string',
       allOf: [
         {
@@ -160,13 +148,12 @@ describe('AllOf', () => {
         }
       ]
     };
-    result = sample(schema);
-    // expected = 'string';
-    expect(typeof result).to.equal('string');
+    const result = sample(schema);
+    result.should.be.a('string');
   });
 
   it('should not throw for array allOf', () => {
-    schema = {
+    const schema = {
       type: 'array',
       allOf: [
         {
@@ -176,13 +163,13 @@ describe('AllOf', () => {
           }
         }
       ]
-    } as Schema;
-    result = sample(schema);
-    expect(result).to.be.an('array');
+    };
+    const result = sample(schema);
+    result.should.be.an('array');
   });
 
   it('should sample schema with allOf even if some type is not specified', () => {
-    schema = {
+    let schema: Schema = {
       properties: {
         title: {
           type: 'string',
@@ -200,13 +187,13 @@ describe('AllOf', () => {
           }
         }
       ]
-    } as Schema;
-    result = sample(schema);
-    expected = {
+    };
+    let result = sample(schema);
+    const expected = {
       title: 'string',
       amount: 1
     };
-    expect(result).to.deep.equal(expected);
+    result.should.deep.equal(expected);
 
     schema = {
       type: 'object',
@@ -226,14 +213,14 @@ describe('AllOf', () => {
           }
         }
       ]
-    } as Schema;
+    } as unknown as Schema;
     result = sample(schema);
-    expect(typeof result.title).to.equal('string');
-    expect(result.amount).to.equal(1);
+    result.title.should.a('string');
+    result.amount.should.equal(1);
   });
 
   it('should merge deep properties', () => {
-    schema = {
+    const schema = {
       type: 'object',
       allOf: [
         {
@@ -265,9 +252,9 @@ describe('AllOf', () => {
       ]
     };
 
-    result = sample(schema);
+    const result = sample(schema);
 
-    expect(typeof result.parent.child1).to.equal('string');
-    expect(typeof result.parent.child2).to.equal('number');
+    result.parent.child1.should.a('string');
+    result.parent.child2.should.a('number');
   });
 });

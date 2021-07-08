@@ -1,13 +1,9 @@
 import { sample } from '../src';
-import { Schema } from '../src/traverse';
-import { expect } from 'chai';
+import 'chai/register-should';
 
 describe('Detection', () => {
-  let schema: Schema;
-  let result;
-
   it('should detect autodetect types based on props', () => {
-    schema = {
+    const schema = {
       properties: {
         a: {
           minimum: 10
@@ -17,8 +13,8 @@ describe('Detection', () => {
         }
       }
     };
-    result = sample(schema);
-    expect(result.a > 10).to.equal(true);
-    expect(typeof result.b).to.equal('string');
+    const result = sample(schema);
+    (result.a > 10).should.equal(true);
+    result.b.should.be.a('string');
   });
 });

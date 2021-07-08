@@ -21,19 +21,19 @@
     "dist/**"
   ],
   "main": "./dist/bundle.umd.js",
-  "module": "./dist/index.js",
-  "typings": "./dist/index.d.ts",
+  "module": "./dist/bundle.esm5.js",
+  "es2015": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "homepage": "https://github.com/NeuraLegion/har-sdk#readme",
   "scripts": {
     "prebuild": "npm run compile -- --clean",
     "build": "npm run compile && npm run bundle",
     "bundle": "rollup -c ../../rollup.config.js",
     "compile": "tsc -b tsconfig.build.json",
-    "lint": "eslint -c .eslintrc.js --ignore-path ../../.eslintignore . --ext ts --fix",
-    "format": "prettier --ignore-path ../../.prettierignore --check **/*.ts",
-    "test": "cross-env TS_NODE_PROJECT=tests/tsconfig.json NODE_ENV=test mocha tests/**/*.spec.ts",
-    "coverage": "nyc npm t -- --reporter xunit --reporter-options output=.mocha/testspec.xunit.xml",
-    "prepare": "npm run build"
+    "lint": "eslint --ignore-path ../../.eslintignore .",
+    "format": "prettier --ignore-path ../../.prettierignore --check .",
+    "test": "NODE_ENV=test mocha tests/**/*.spec.ts",
+    "coverage": "nyc npm t -- --reporter xunit --reporter-options output=.mocha/testspec.xunit.xml"
   },
   "keywords": [
     "swagger",
@@ -44,20 +44,19 @@
     "json"
   ],
   "dependencies": {
-    "@har-sdk/openapi-sampler": "*",
-    "@har-sdk/types": "*",
-    "@har-sdk/validator": "*",
-    "jstoxml": "^2.0.5",
-    "openapi-types": "^8.0.0",
+    "@har-sdk/openapi-sampler": "^1.1.0",
+    "@har-sdk/types": "^1.0.0",
+    "@har-sdk/validator": "^1.0.0",
+    "jstoxml": "^2.1.0",
     "qs": "^6.10.1",
     "tslib": "~2.2.0",
     "url-template": "^2.0.8"
   },
   "devDependencies": {
-    "@types/har-format": "^1.2.5",
-    "@types/js-yaml": "^4.0.0",
-    "@types/node": "^14.14.45",
-    "@types/qs": "^6.9.6",
+    "@types/har-format": "^1.2.7",
+    "@types/js-yaml": "^4.0.2",
+    "@types/jstoxml": "^2.0.1",
+    "@types/qs": "^6.9.7",
     "@types/url-template": "^2.0.28",
     "js-yaml": "^4.1.0"
   }

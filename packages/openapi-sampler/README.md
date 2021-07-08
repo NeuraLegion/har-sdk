@@ -3,6 +3,7 @@
 Tool for generation samples based on OpenAPI payload/response schema
 
 ## Features
+
 - deterministic (given a particular input, will always produce the same output)
 - Supports `allOf`
 - Supports `additionalProperties`
@@ -44,31 +45,36 @@ import { sample } from '@har-sdk/openapi-sampler';
 ## Usage
 
 #### `sample(schema, [options], [spec])`
+
 - **schema** (_required_) - `object`
-A [OpenAPI Schema Object](http://swagger.io/specification/#schemaObject)
+  A [OpenAPI Schema Object](http://swagger.io/specification/#schemaObject)
 - **options** (_optional_) - `object`
-Available options:
+  Available options:
   - **skipNonRequired** - `boolean`
-  Don't include non-required object properties not specified in [`required` property of the schema object](https://swagger.io/docs/specification/data-models/data-types/#required)
+    Don't include non-required object properties not specified in [`required` property of the schema object](https://swagger.io/docs/specification/data-models/data-types/#required)
   - **skipReadOnly** - `boolean`
-  Don't include `readOnly` object properties
+    Don't include `readOnly` object properties
   - **skipWriteOnly** - `boolean`
-  Don't include `writeOnly` object properties
+    Don't include `writeOnly` object properties
   - **quiet** - `boolean`
-  Don't log console warning messages
+    Don't log console warning messages
 - **spec** - whole specification where the schema is taken from. Required only when schema may contain `$ref`. **spec** must not contain any external references
 
 ## Example
+
 ```ts
 import { sample } from '@har-sdk/openapi-sampler';
 
-sample({
-  type: 'object',
-  properties: {
-    a: {type: 'integer', minimum: 10},
-    b: {type: 'string', format: 'password', minLength: 10},
-    c: {type: 'boolean', readOnly: true}
-  }
-}, {skipReadOnly: true});
+sample(
+  {
+    type: 'object',
+    properties: {
+      a: { type: 'integer', minimum: 10 },
+      b: { type: 'string', format: 'password', minLength: 10 },
+      c: { type: 'boolean', readOnly: true }
+    }
+  },
+  { skipReadOnly: true }
+);
 // { a: 10, b: 'pa$$word_q' }
 ```

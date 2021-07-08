@@ -2,20 +2,7 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "baseUrl": ".",
-    "rootDir": ".",
-    "composite": true,
-    "typeRoots": ["node_modules/@types", "typings"]
+    "rootDir": "."
   },
-  "references": [
-    {
-      "path": "../openapi-sampler"
-    },
-    {
-      "path": "../validator"
-    },
-    {
-      "path": "../types"
-    }
-  ],
-  "include": ["src"]
+  "include": ["src/**/*", "tests/**/*"]
 }

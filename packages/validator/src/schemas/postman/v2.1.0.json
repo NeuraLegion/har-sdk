@@ -42,10 +42,7 @@
       "$ref": "#/definitions/protocol-profile-behavior"
     }
   },
-  "required": [
-    "info",
-    "item"
-  ],
+  "required": ["info", "item"],
   "definitions": {
     "auth-attribute": {
       "type": "object",
@@ -61,9 +58,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "key"
-      ]
+      "required": ["key"]
     },
     "auth": {
       "type": "object",
@@ -169,9 +164,7 @@
           }
         }
       },
-      "required": [
-        "type"
-      ]
+      "required": ["type"]
     },
     "certificate-list": {
       "$id": "#/definitions/certificate-list",
@@ -244,10 +237,7 @@
           "description": "The domain for which this cookie is valid."
         },
         "expires": {
-          "type": [
-            "string",
-            "null"
-          ],
+          "type": ["string", "null"],
           "description": "When the cookie expires."
         },
         "maxAge": {
@@ -286,10 +276,7 @@
           "description": "Custom attributes for a cookie go here, such as the [Priority Field](https://code.google.com/p/chromium/issues/detail?id=232693)"
         }
       },
-      "required": [
-        "domain",
-        "path"
-      ]
+      "required": ["domain", "path"]
     },
     "description": {
       "$schema": "http://json-schema.org/draft-07/schema#",
@@ -355,9 +342,7 @@
           "description": "Indicates whether the event is disabled. If absent, the event is assumed to be enabled."
         }
       },
-      "required": [
-        "listen"
-      ]
+      "required": ["listen"]
     },
     "header-list": {
       "$id": "#/definitions/header-list",
@@ -391,10 +376,7 @@
           "$ref": "#/definitions/description"
         }
       },
-      "required": [
-        "key",
-        "value"
-      ]
+      "required": ["key", "value"]
     },
     "info": {
       "$schema": "http://json-schema.org/draft-07/schema#",
@@ -423,10 +405,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "name",
-        "schema"
-      ]
+      "required": ["name", "schema"]
     },
     "item-group": {
       "$schema": "http://json-schema.org/draft-07/schema#",
@@ -477,9 +456,7 @@
           "$ref": "#/definitions/protocol-profile-behavior"
         }
       },
-      "required": [
-        "item"
-      ]
+      "required": ["item"]
     },
     "item": {
       "type": "object",
@@ -518,9 +495,7 @@
           "$ref": "#/definitions/protocol-profile-behavior"
         }
       },
-      "required": [
-        "request"
-      ]
+      "required": ["request"]
     },
     "protocol-profile-behavior": {
       "$schema": "http://json-schema.org/draft-07/schema#",
@@ -676,9 +651,7 @@
                             "$ref": "#/definitions/description"
                           }
                         },
-                        "required": [
-                          "key"
-                        ]
+                        "required": ["key"]
                       }
                     },
                     "formdata": {
@@ -712,9 +685,7 @@
                                 "$ref": "#/definitions/description"
                               }
                             },
-                            "required": [
-                              "key"
-                            ]
+                            "required": ["key"]
                           },
                           {
                             "properties": {
@@ -722,11 +693,7 @@
                                 "type": "string"
                               },
                               "src": {
-                                "type": [
-                                  "array",
-                                  "string",
-                                  "null"
-                                ]
+                                "type": ["array", "string", "null"]
                               },
                               "disabled": {
                                 "type": "boolean",
@@ -745,9 +712,7 @@
                                 "$ref": "#/definitions/description"
                               }
                             },
-                            "required": [
-                              "key"
-                            ]
+                            "required": ["key"]
                           }
                         ]
                       }
@@ -810,20 +775,13 @@
         },
         "responseTime": {
           "title": "ResponseTime",
-          "type": [
-            "null",
-            "string",
-            "number"
-          ],
+          "type": ["null", "string", "number"],
           "description": "The time taken by the request to complete. If a number, the unit is milliseconds. If the response is manually created, this can be set to `null`."
         },
         "timings": {
           "title": "Response Timings",
           "description": "Set of timing information related to request and response in milliseconds",
-          "type": [
-            "object",
-            "null"
-          ]
+          "type": ["object", "null"]
         },
         "header": {
           "title": "Headers",
@@ -845,10 +803,7 @@
               }
             },
             {
-              "type": [
-                "string",
-                "null"
-              ]
+              "type": ["string", "null"]
             }
           ]
         },
@@ -859,10 +814,7 @@
           }
         },
         "body": {
-          "type": [
-            "null",
-            "string"
-          ],
+          "type": ["null", "string"],
           "description": "The raw text of the response."
         },
         "status": {
@@ -987,16 +939,10 @@
                 "title": "QueryParam",
                 "properties": {
                   "key": {
-                    "type": [
-                      "string",
-                      "null"
-                    ]
+                    "type": ["string", "null"]
                   },
                   "value": {
-                    "type": [
-                      "string",
-                      "null"
-                    ]
+                    "type": ["string", "null"]
                   },
                   "disabled": {
                     "type": "boolean",
@@ -1058,12 +1004,7 @@
         "type": {
           "description": "A variable may have multiple types. This field specifies the type of the variable.",
           "type": "string",
-          "enum": [
-            "string",
-            "boolean",
-            "any",
-            "number"
-          ]
+          "enum": ["string", "boolean", "any", "number"]
         },
         "name": {
           "type": "string",
@@ -1084,20 +1025,13 @@
       },
       "anyOf": [
         {
-          "required": [
-            "id"
-          ]
+          "required": ["id"]
         },
         {
-          "required": [
-            "key"
-          ]
+          "required": ["key"]
         },
         {
-          "required": [
-            "id",
-            "key"
-          ]
+          "required": ["id", "key"]
         }
       ]
     },
@@ -1132,11 +1066,7 @@
             },
             "meta": {}
           },
-          "required": [
-            "major",
-            "minor",
-            "patch"
-          ]
+          "required": ["major", "minor", "patch"]
         },
         {
           "type": "string"

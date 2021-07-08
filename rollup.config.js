@@ -8,10 +8,6 @@ const pkg = require(`${process.cwd()}/package.json`);
 
 export default {
   input: 'src/index.ts',
-  external: [],
-  watch: {
-    include: 'src/**'
-  },
   output: [
     { format: 'umd', file: pkg.main, name: pkg.name },
     { format: 'es', file: pkg.module }
@@ -21,8 +17,8 @@ export default {
     resolve({ preferBuiltins: false }),
     commonjs({ include: 'node_modules/**' }),
     typescript({
-      tsconfig: 'tsconfig.build.json',
-      useTsconfigDeclarationDir: true
+      clean: true,
+      tsconfig: 'tsconfig.build.json'
     }),
     ...(process.env.ANALYZE === 'true' ? [analyze()] : [])
   ]

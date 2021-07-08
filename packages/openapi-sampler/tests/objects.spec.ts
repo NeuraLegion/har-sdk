@@ -1,22 +1,17 @@
 import { sample } from '../src';
 import { Schema } from '../src/traverse';
-import { expect } from 'chai';
+import 'chai/register-should';
 
 describe('Objects', () => {
-  let schema: Schema;
-  let result;
-  let expected;
-
   it('should sample object without properties', () => {
-    schema = {
+    const schema = {
       type: 'object'
     };
-    result = sample(schema);
-    expected = {};
-    expect(result).to.deep.equal(expected);
+    const result = sample(schema);
+    result.should.deep.equal({});
   });
   it('should sample object with property', () => {
-    schema = {
+    const schema = {
       type: 'object',
       properties: {
         title: {
@@ -24,11 +19,11 @@ describe('Objects', () => {
         }
       }
     };
-    result = sample(schema);
-    expect(typeof result.title).to.deep.equal('string');
+    const result = sample(schema);
+    result.title.should.be.a('string');
   });
   it('should sample object with property with default value', () => {
-    schema = {
+    const schema = {
       type: 'object',
       properties: {
         title: {
@@ -37,14 +32,13 @@ describe('Objects', () => {
         }
       }
     } as Schema;
-    result = sample(schema);
-    expected = {
+    const result = sample(schema);
+    result.should.deep.equal({
       title: 'Example'
-    };
-    expect(result).to.deep.equal(expected);
+    });
   });
   it('should sample object with more than one property', () => {
-    schema = {
+    const schema = {
       type: 'object',
       properties: {
         title: {
@@ -57,15 +51,14 @@ describe('Objects', () => {
         }
       }
     } as Schema;
-    result = sample(schema);
-    expected = {
+    const result = sample(schema);
+    result.should.deep.equal({
       title: 'Example',
       amount: 10
-    };
-    expect(result).to.deep.equal(expected);
+    });
   });
   it('should sample both properties and additionalProperties', () => {
-    schema = {
+    const schema = {
       type: 'object',
       properties: {
         test: {
@@ -76,13 +69,9 @@ describe('Objects', () => {
         type: 'number'
       }
     };
-    result = sample(schema);
-    expected = {
-      property1: 0,
-      property2: 0
-    };
-    expect(typeof result.test).to.equal('string');
-    expect(typeof result.property1).to.equal('number');
-    expect(typeof result.property2).to.equal('number');
+    const result = sample(schema);
+    result.test.should.be.a('string');
+    result.property1.should.be.a('number');
+    result.property2.should.be.a('number');
   });
 });

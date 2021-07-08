@@ -2,8 +2,8 @@
   "extends": "../../tsconfig.build.json",
   "compilerOptions": {
     "outDir": "./dist",
-    "resolveJsonModule": false,
-    "typeRoots": ["node_modules/@types", "typings"]
+    "declarationDir": "./dist"
   },
-  "include": ["src", "package.json"]
+  "include": ["src/**/*"],
+  "exclude": ["src/**/*.spec.ts", "tests/**/*"]
 }

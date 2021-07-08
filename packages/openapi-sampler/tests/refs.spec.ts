@@ -1,16 +1,13 @@
 import { sample } from '../src';
-import { Schema } from '../src/traverse';
-import { expect } from 'chai';
+import 'chai/register-should';
 
 describe('$refs', () => {
-  let schema: Schema;
-
   it('should throw if schema has $ref and spec is not provided', () => {
-    schema = {
+    const schema = {
       $ref: '#/defs/Schema'
     };
 
-    expect(() => sample(schema)).to.throw(
+    (() => sample(schema)).should.throw(
       /You must provide specification in the third parameter/
     );
   });

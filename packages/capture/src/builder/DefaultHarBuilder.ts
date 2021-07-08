@@ -10,16 +10,16 @@ import {
   Request
 } from './HarBuilder';
 import { Parser } from '../parser';
-import { transformBinaryToUtf8 } from '../utils';
-import { isReadable } from '../utils/isReadable';
+import { isReadable, transformBinaryToUtf8 } from '../utils';
 import Har from 'har-format';
 import { Headers, Response } from 'request';
 import tough from 'tough-cookie';
 import contentType from 'content-type';
-import querystring from 'querystring';
+import querystring from 'qs';
 
 export class DefaultHarBuilder implements HarBuilder {
-  private readonly BASE64_PATTERN = /^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$/;
+  private readonly BASE64_PATTERN =
+    /^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$/;
 
   constructor(private readonly parser: Parser) {}
 
@@ -181,15 +181,13 @@ export class DefaultHarBuilder implements HarBuilder {
   }
 
   private buildHarHeaders(headers: Headers): Har.Header[] {
-    return (this.buildFlattenedNameValueMap(
-      headers
-    ) as unknown) as Har.Header[];
+    return this.buildFlattenedNameValueMap(headers) as unknown as Har.Header[];
   }
 
   private buildHarQuery(query: string): Har.QueryString[] {
-    return (this.buildFlattenedNameValueMap(
-      querystring.parse(query)
-    ) as unknown) as Har.QueryString[];
+    return this.buildFlattenedNameValueMap(
+      querystring.parse(query) as Record<string, undefined | string | string[]>
+    ) as unknown as Har.QueryString[];
   }
 
   private getMultipartContentType(param: Har.Param): string {

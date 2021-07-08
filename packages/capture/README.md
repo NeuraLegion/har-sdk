@@ -19,12 +19,14 @@ npm i --save @har-sdk/capture
 ```ts
 import { captureHar } from '@har-sdk/capture';
 
-captureHar({
-  url: 'http://www.google.com'
-}, { withContent: false })
-  .then(har => {
-    console.log(JSON.stringify(har, null, 2));
-  });
+captureHar(
+  {
+    url: 'http://www.google.com'
+  },
+  { withContent: false }
+).then((har) => {
+  console.log(JSON.stringify(har, null, 2));
+});
 ```
 
 #### `requestOptions`

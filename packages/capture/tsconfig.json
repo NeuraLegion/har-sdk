@@ -2,9 +2,7 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "baseUrl": ".",
-    "rootDir": ".",
-    "composite": true,
-    "typeRoots": ["node_modules/@types", "typings"]
+    "rootDir": "."
   },
-  "include": ["src", "package.json"]
+  "include": ["src/**/*", "tests/**/*"]
 }

@@ -1,13 +1,11 @@
-import githubSwagger from './githubSwagger.json';
+import githubSwagger from './github.swagger.json';
 import { OASValidator } from '../src';
 import yaml from 'js-yaml';
 import { OpenAPIV2, OpenAPIV3 } from '@har-sdk/types';
 import { resolve } from 'path';
-import fs from 'fs';
+import { readFile } from 'fs';
 import { promisify } from 'util';
 import 'chai/register-should';
-
-const readFile = promisify(fs.readFile);
 
 describe('OASValidator', () => {
   const validator = new OASValidator();
@@ -21,8 +19,8 @@ describe('OASValidator', () => {
     });
 
     it('should successfully validate Petstore OpenApi v3 YAML', async () => {
-      const content: string = await readFile(
-        resolve('./tests/petstoreOas.yaml'),
+      const content: string = await promisify(readFile)(
+        resolve('./tests/petstore.oas.yaml'),
         'utf8'
       );
 

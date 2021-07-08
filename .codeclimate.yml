@@ -1,0 +1,35 @@
+version: "2"
+checks:
+  argument-count:
+    config:
+      threshold: 4
+  complex-logic:
+    config:
+      threshold: 10
+  file-lines:
+    config:
+      threshold: 500
+  method-complexity:
+    config:
+      threshold: 5
+  method-count:
+    enabled: false
+  method-lines:
+    config:
+      threshold: 25
+  nested-control-flow:
+    config:
+      threshold: 3
+  return-statements:
+    config:
+      threshold: 4
+plugins:
+  eslint:
+    enabled: true
+    config:
+      config: .eslintrc.js
+exclude_patterns:
+  - "**/dist/"
+  - "**/node_modules/"
+  - "**/*.spec.ts"
+  - "**/tests/"

@@ -1,6 +1,6 @@
 import { Server } from './mocks/Server';
-import { captureHar } from './captureHar';
-import { assert } from 'chai';
+import { captureHar } from '../src';
+import 'chai/register-should';
 
 describe('Capture HAR', () => {
   const server: Server = new Server();
@@ -12,37 +12,31 @@ describe('Capture HAR', () => {
 
     const har = await captureHar({ url: `http://localhost:${address.port}` });
 
-    assert.nestedPropertyVal(har, 'log.entries[0].request.method', 'GET');
-    assert.nestedPropertyVal(
-      har,
+    har.should.have.nested.property('log.entries[0].request.method', 'GET');
+    har.should.have.nested.property(
       'log.entries[0].request.url',
       `http://localhost:${address.port}/`
     );
-    assert.nestedPropertyVal(
-      har,
+    har.should.have.nested.property(
       'log.entries[0].request.headers[0].name',
       'host'
     );
-    assert.nestedPropertyVal(
-      har,
+    har.should.have.nested.property(
       'log.entries[0].request.headers[0].value',
       `localhost:${address.port}`
     );
 
-    assert.nestedPropertyVal(har, 'log.entries[0].response.status', 200);
-    assert.nestedPropertyVal(har, 'log.entries[0].response.content.size', 4);
-    assert.nestedPropertyVal(
-      har,
+    har.should.have.nested.property('log.entries[0].response.status', 200);
+    har.should.have.nested.property('log.entries[0].response.content.size', 4);
+    har.should.have.nested.property(
       'log.entries[0].response.content.mimeType',
       'x-unknown'
     );
-    assert.nestedPropertyVal(
-      har,
+    har.should.have.nested.property(
       'log.entries[0].response.content.text',
       'body'
     );
-    assert.nestedPropertyVal(
-      har,
+    har.should.have.nested.property(
       'log.entries[0].response._remoteAddress',
       '127.0.0.1'
     );
@@ -53,8 +47,7 @@ describe('Capture HAR', () => {
 
     const har = await captureHar(`http://localhost:${address.port}`);
 
-    assert.nestedPropertyVal(
-      har,
+    har.should.have.nested.property(
       'log.entries[0].request.url',
       `http://localhost:${address.port}/`
     );
@@ -67,23 +60,19 @@ describe('Capture HAR', () => {
       url: `http://localhost:${address.port}?param1=value1&param2=value2`
     });
 
-    assert.nestedPropertyVal(
-      har,
+    har.should.have.nested.property(
       'log.entries[0].request.queryString[0].name',
       'param1'
     );
-    assert.nestedPropertyVal(
-      har,
+    har.should.have.nested.property(
       'log.entries[0].request.queryString[0].value',
       'value1'
     );
-    assert.nestedPropertyVal(
-      har,
+    har.should.have.nested.property(
       'log.entries[0].request.queryString[1].name',
       'param2'
     );
-    assert.nestedPropertyVal(
-      har,
+    har.should.have.nested.property(
       'log.entries[0].request.queryString[1].value',
       'value2'
     );
@@ -92,22 +81,17 @@ describe('Capture HAR', () => {
   it('Handles ENOTFOUND (DNS level error)', async () => {
     const har = await captureHar({ url: 'http://x' });
 
-    assert.nestedPropertyVal(har, 'log.entries[0].request.method', 'GET');
-    assert.nestedPropertyVal(har, 'log.entries[0].request.url', 'http://x/');
+    har.should.have.nested.property('log.entries[0].request.method', 'GET');
+    har.should.have.nested.property('log.entries[0].request.url', 'http://x/');
 
-    assert.nestedPropertyVal(har, 'log.entries[0].response.status', 0);
-    assert.nestedPropertyVal(
-      har,
-      'log.entries[0].response._error.code',
-      'EAI_AGAIN'
-    );
-    assert.nestedPropertyVal(
-      har,
-      'log.entries[0].response._error.message',
-      'getaddrinfo EAI_AGAIN x'
-    );
-    assert.nestedPropertyVal(
-      har,
+    har.should.have.nested.property('log.entries[0].response.status', 0);
+    har.should.have.nested
+      .property('log.entries[0].response._error.code')
+      .oneOf(['EAI_AGAIN', 'ENOTFOUND']);
+    har.should.have.nested
+      .property('log.entries[0].response._error.message')
+      .oneOf(['getaddrinfo EAI_AGAIN x', 'getaddrinfo ENOTFOUND x']);
+    har.should.have.nested.property(
       'log.entries[0].response.content.mimeType',
       'x-unknown'
     );

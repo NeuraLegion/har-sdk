@@ -1,31 +1,33 @@
 import https from 'https';
 import http from 'http';
 import { once } from 'events';
+import { AddressInfo } from 'net';
 
 export class Server {
   private server: http.Server;
 
   public async start(
-    port: number,
     handler: http.RequestListener,
     protocol: 'http' | 'https' = 'http'
-  ): Promise<Server> {
+  ): Promise<AddressInfo> {
     this.server = (protocol === 'http' ? http : https).createServer(handler);
 
-    process.nextTick(() => this.server.listen(port));
+    process.nextTick(() => this.server.listen());
 
     await once(this.server, 'listening');
 
-    return this;
+    return this.server.address() as AddressInfo;
   }
 
   public async stop(): Promise<void> {
-    await new Promise((resolve, reject) => {
-      this.server.close((err?: Error) => (err ? reject(err) : resolve(true)));
-    });
+    if (this.server?.listening) {
+      await new Promise<void>((resolve, reject) =>
+        this.server.close((err?: Error) => (err ? reject(err) : resolve(null)))
+      );
+    }
   }
 
   public isRunning(): boolean {
-    return this.server.listening;
+    return !!this.server?.listening;
   }
 }

@@ -31,6 +31,11 @@
   },
   "scripts": {
     "lerna": "lerna",
+    "concurrently": "concurrently",
+    "cross-env": "cross-env",
+    "husky": "husky",
+    "nyc": "nyc",
+    "codecov": "codecov",
     "bootstrap": "lerna bootstrap --ci",
     "semantic-release": "multi-semantic-release",
     "build": "lerna run build",
@@ -39,9 +44,13 @@
     "lint:changed": "lerna run --since origin/master --include-dependents lint",
     "test": "lerna run test",
     "test:changed": "lerna run --since origin/master --include-dependents test",
+    "coverage": "lerna run coverage",
+    "coverage:all": "nyc npm t",
+    "coverage:changed": "lerna run --since origin/master --include-dependents coverage",
     "format": "lerna run format",
     "format:changed": "lerna run --since origin/master --include-dependents format",
-    "prepare": "is-ci || husky install"
+    "prepare": "is-ci || husky install",
+    "report-coverage": "codecov -f .coverage/lcov.info"
   },
   "homepage": "https://github.com/NeuraLegion/har-sdk#readme",
   "devDependencies": {
@@ -59,6 +68,7 @@
     "@typescript-eslint/parser": "^4.22.0",
     "chai": "~4.3.4",
     "chai-as-promised": "~7.1.1",
+    "codecov": "^3.8.2",
     "copyfiles": "^2.4.1",
     "cross-env": "^7.0.3",
     "eslint": "^7.24.0",

@@ -2,23 +2,21 @@ import { Server } from './mocks/Server';
 import { captureHar } from './captureHar';
 import { assert } from 'chai';
 
-describe('Capture HAR', async () => {
+describe('Capture HAR', () => {
   const server: Server = new Server();
 
-  afterEach(async () => server.isRunning() && (await server.stop()));
+  beforeEach(() => server.stop());
 
   it('Captures simple requests', async () => {
-    await server.start(3000, (_req, res) => {
-      res.end('body');
-    });
+    const address = await server.start((_, res) => res.end('body'));
 
-    const har = await captureHar({ url: 'http://localhost:3000' });
+    const har = await captureHar({ url: `http://localhost:${address.port}` });
 
     assert.nestedPropertyVal(har, 'log.entries[0].request.method', 'GET');
     assert.nestedPropertyVal(
       har,
       'log.entries[0].request.url',
-      'http://localhost:3000/'
+      `http://localhost:${address.port}/`
     );
     assert.nestedPropertyVal(
       har,
@@ -28,7 +26,7 @@ describe('Capture HAR', async () => {
     assert.nestedPropertyVal(
       har,
       'log.entries[0].request.headers[0].value',
-      'localhost:3000'
+      `localhost:${address.port}`
     );
 
     assert.nestedPropertyVal(har, 'log.entries[0].response.status', 200);
@@ -51,24 +49,22 @@ describe('Capture HAR', async () => {
   });
 
   it('Accepts a url directly', async () => {
-    await server.start(3000, (_req, res) => {
-      res.end('body');
-    });
+    const address = await server.start((_, res) => res.end('body'));
 
-    const har = await captureHar('http://localhost:3000');
+    const har = await captureHar(`http://localhost:${address.port}`);
 
     assert.nestedPropertyVal(
       har,
       'log.entries[0].request.url',
-      'http://localhost:3000/'
+      `http://localhost:${address.port}/`
     );
   });
 
   it('Parses querystring', async () => {
-    await server.start(3000, (_req, res) => res.end());
+    const address = await server.start((_, res) => res.end('body'));
 
     const har = await captureHar({
-      url: 'http://localhost:3000?param1=value1&param2=value2'
+      url: `http://localhost:${address.port}?param1=value1&param2=value2`
     });
 
     assert.nestedPropertyVal(

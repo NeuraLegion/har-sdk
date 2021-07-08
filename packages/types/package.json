@@ -30,7 +30,8 @@
     "bundle": "rollup -c ../../rollup.config.js",
     "compile": "tsc -b tsconfig.build.json",
     "lint": "eslint -c .eslintrc.js --ignore-path ../../.eslintignore . --ext ts --fix",
-    "format": "prettier --ignore-path ../../.prettierignore --check **/*.ts"
+    "format": "prettier --ignore-path ../../.prettierignore --check **/*.ts",
+    "prepare": "npm run build"
   },
   "keywords": [
     "swagger",

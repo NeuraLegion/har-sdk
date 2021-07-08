@@ -17,7 +17,8 @@ pids
 *.tsbuildinfo
 
 lib-cov
-coverage
+.coverage
+.mocha
 .nyc_output
 
 build

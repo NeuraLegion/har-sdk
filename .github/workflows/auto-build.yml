@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [14.x, 15.x, 16.x]
+        node-version: [14.x]
     steps:
       - uses: actions/checkout@v2
         with:
@@ -39,8 +39,42 @@ jobs:
       - run: npm ci -q --ignore-scripts && npm run bootstrap
       - run: npm run format:changed
       - run: npm run lint:changed
-      - run: npm run build:changed
       - run: npm run test:changed
+
+  coverage:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '14'
+
+      - id: npm-cache-dir-path
+        run: echo "::set-output name=dir::$(npm config get cache)"
+
+      - uses: actions/cache@v2
+        id: npm-cache
+        with:
+          path: ${{ steps.npm-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
+
+      - run: npm ci -q --ignore-scripts && npm run bootstrap
+      - run: npm run coverage:all
+
+      - uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: .coverage/lcov.info
+          fail_ci_if_error: true
+
+      - uses: paambaati/codeclimate-action@v2.7.5
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+        with:
+          coverageLocations: .coverage/lcov.info:lcov
 
   release:
     if: ${{ github.ref == 'refs/heads/master' }}
@@ -65,7 +99,6 @@ jobs:
             ${{ runner.os }}-npm-
 
       - run: npm ci -q --ignore-scripts && npm run bootstrap
-      - run: npm run build
       - run: npm run semantic-release
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

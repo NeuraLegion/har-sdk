@@ -37,7 +37,8 @@
     "bundle": "rollup -c ../../rollup.config.js",
     "lint": "eslint -c .eslintrc.js --ignore-path ../../.eslintignore . --ext ts --fix",
     "format": "prettier --ignore-path ../../.prettierignore --check **/*.ts",
-    "compile": "tsc -b tsconfig.build.json"
+    "compile": "tsc -b tsconfig.build.json",
+    "prepare": "npm run build"
   },
   "dependencies": {
     "@har-sdk/types": "*",

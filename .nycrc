@@ -1,0 +1,15 @@
+{
+  "reporter": [
+    "html",
+    "lcov"
+  ],
+  "tempDir": ".nyc_output",
+  "reportDir": ".coverage",
+  "exclude": [
+    "**/*.spec.ts",
+    "test{,s}/**",
+    ".coverage/**",
+    "**/*.{js,cjs,mjs,d.ts}"
+  ],
+  "excludeNodeModules": true
+}

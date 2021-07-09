@@ -2,9 +2,9 @@
   "extends": "./tsconfig.build.json",
   "compilerOptions": {
     "baseUrl": ".",
+    "rootDir": ".",
     "noEmit": true,
     "module": "commonjs",
-    // https://github.com/RyanCavanaugh/learn-a/#tsconfigsettingsjson
     "composite": true,
     "declaration": true,
     "declarationMap": true,
@@ -14,6 +14,10 @@
   },
   "references": [
     { "path": "packages/capture" },
-    { "path": "packages/openapi-sampler" }
+    { "path": "packages/oas" },
+    { "path": "packages/openapi-sampler" },
+    { "path": "packages/postman" },
+    { "path": "packages/validator" },
+    { "path": "packages/types" }
   ]
 }

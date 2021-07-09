@@ -1,12 +1,7 @@
 import { sample } from '../src';
-import { Schema } from '../src/traverse';
-import { expect } from 'chai';
+import 'chai/register-should';
 
 describe('Example', () => {
-  let schema: Schema;
-  let result;
-  let expected;
-
   it('should use example', () => {
     const obj = {
       test: 'test',
@@ -16,30 +11,28 @@ describe('Example', () => {
         }
       }
     };
-    schema = {
+    const schema = {
       type: 'object',
       example: obj
     };
-    result = sample(schema);
-    expected = obj;
-    expect(result).to.deep.equal(obj);
+    const result = sample(schema);
+    result.should.deep.equal(obj);
   });
   it('should use falsy example', () => {
-    schema = {
+    const schema = {
       type: 'string',
       example: false
     };
-    result = sample(schema);
-    expected = false;
-    expect(result).to.deep.equal(expected);
+    const result = sample(schema);
+    result.should.deep.equal(false);
   });
   it('should use enum', () => {
     const enumList = ['test1', 'test2'];
-    schema = {
+    const schema = {
       type: 'string',
       enum: enumList
     };
-    result = sample(schema);
-    expect(result).to.be.oneOf(enumList);
+    const result = sample(schema);
+    result.should.be.oneOf(enumList);
   });
 });

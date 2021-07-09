@@ -1,4 +1,4 @@
-import nexplotPostman from './nexploitPostman.json';
+import nexplotPostman from './nexploit.postman.json';
 import { PostmanValidator } from '../src';
 import { Postman } from '@har-sdk/types';
 import 'chai/register-should';

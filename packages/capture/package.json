@@ -21,17 +21,19 @@
     "dist/**"
   ],
   "main": "./dist/bundle.umd.js",
-  "module": "./dist/index.js",
-  "typings": "./dist/index.d.ts",
+  "module": "./dist/bundle.esm5.js",
+  "es2015": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "homepage": "https://github.com/NeuraLegion/har-sdk#readme",
   "scripts": {
     "prebuild": "npm run compile -- --clean",
     "build": "npm run compile && npm run bundle",
     "bundle": "rollup -c ../../rollup.config.js",
     "compile": "tsc -b tsconfig.build.json",
-    "lint": "eslint -c .eslintrc.js --ignore-path ../../.eslintignore . --ext ts --fix",
-    "format": "prettier --ignore-path ../../.prettierignore --check **/*.ts",
-    "test": "cross-env TS_NODE_PROJECT=tests/tsconfig.json mocha -r ts-node/register -r tsconfig-paths/register tests/**/*.spec.ts"
+    "lint": "eslint --ignore-path ../../.eslintignore .",
+    "format": "prettier --ignore-path ../../.prettierignore --check .",
+    "test": "NODE_ENV=test mocha tests/**/*.spec.ts",
+    "coverage": "nyc npm t -- --reporter xunit --reporter-options output=.mocha/testspec.xunit.xml"
   },
   "keywords": [
     "capture",
@@ -41,17 +43,18 @@
   ],
   "dependencies": {
     "content-type": "^1.0.4",
-    "querystring": "^0.2.1",
+    "qs": "^6.10.1",
     "request": "^2.88.2",
     "request-promise": "^4.2.6",
     "tough-cookie": "^4.0.0",
     "tslib": "~2.2.0"
   },
   "devDependencies": {
-    "@types/content-type": "^1.1.3",
-    "@types/har-format": "^1.2.5",
-    "@types/node": "^14.14.45",
-    "@types/request-promise": "^4.1.47",
-    "har-validator": "^5.1.5"
+    "@types/content-type": "^1.1.4",
+    "@types/har-format": "^1.2.7",
+    "@types/qs": "^6.9.7",
+    "@types/request": "^2.48.6",
+    "@types/request-promise": "^4.1.48",
+    "@types/tough-cookie": "^4.0.1"
   }
 }

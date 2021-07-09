@@ -25,6 +25,7 @@ postman2har(collection).then((requests) => {
 ```
 
 If you want to pass additional data to resolve environment variables you can pass them via options:
+
 ```ts
 postman2har(collection, {
   environment: { baseUrl: 'https://example.com' }

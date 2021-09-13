@@ -1,0 +1,52 @@
+{
+  "name": "@har-sdk/editor",
+  "version": "0.0.0",
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NeuraLegion/har-sdk.git"
+  },
+  "author": {
+    "name": "Artem Derevnjuk",
+    "email": "artem.derevnjuk@neuralegion.com"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/NeuraLegion/har-sdk/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist/**"
+  ],
+  "keywords": [
+    "parser",
+    "open-api",
+    "postman",
+    "api",
+    "json"
+  ],
+  "main": "./dist/bundle.umd.js",
+  "module": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
+  "homepage": "https://github.com/NeuraLegion/har-sdk#readme",
+  "scripts": {
+    "prebuild": "npm run compile -- --clean",
+    "build": "npm run compile && npm run bundle",
+    "bundle": "rollup -c ../../rollup.config.js",
+    "lint": "eslint -c .eslintrc.js --ignore-path ../../.eslintignore . --ext ts --fix",
+    "format": "prettier --ignore-path ../../.prettierignore --check **/*.ts",
+    "test": "NODE_ENV=test mocha tests/**/*.spec.ts",
+    "compile": "tsc -b tsconfig.build.json"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.3",
+    "@types/node": "^16.9.0"
+  },
+  "dependencies": {
+    "@har-sdk/types": "*",
+    "js-yaml": "^4.1.0",
+    "tslib": "^2.3.1"
+  }
+}

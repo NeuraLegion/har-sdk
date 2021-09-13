@@ -15,7 +15,7 @@ export default {
   plugins: [
     json(),
     resolve({ preferBuiltins: false }),
-    commonjs({ include: 'node_modules/**' }),
+    commonjs({ include: /node_modules/ }),
     typescript({
       clean: true,
       tsconfig: 'tsconfig.build.json'

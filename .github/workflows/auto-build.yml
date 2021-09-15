@@ -70,6 +70,7 @@ jobs:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         with:
           coverageLocations: .coverage/lcov.info:lcov
+          debug: true
 
   release:
     if: ${{ github.ref == 'refs/heads/master' }}

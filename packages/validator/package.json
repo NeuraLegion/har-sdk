@@ -44,7 +44,7 @@
     "json"
   ],
   "dependencies": {
-    "@har-sdk/types": "*",
+    "@har-sdk/types": "^1.0.0",
     "ajv": "^8.6.0",
     "ajv-formats": "^2.1.0",
     "semver": "^7.3.5",

@@ -26,8 +26,11 @@ checks:
 plugins:
   eslint:
     enabled: true
+    channel: "eslint-7"
     config:
-      config: .eslintrc.js
+      config: ./.eslintrc.js
+      extensions:
+        - .ts
 exclude_patterns:
   - "**/dist/"
   - "**/node_modules/"

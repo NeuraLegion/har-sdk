@@ -172,7 +172,7 @@ module.exports = {
         peerDependencies: false
       }
     ],
-    /*'no-restricted-imports': [
+    'no-restricted-imports': [
       'error',
       {
         paths: [
@@ -187,7 +187,7 @@ module.exports = {
           }
         ]
       }
-    ],*/
+    ],
     'import/order': [
       'error',
       {

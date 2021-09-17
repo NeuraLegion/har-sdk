@@ -35,17 +35,18 @@
     "prebuild": "npm run compile -- --clean",
     "build": "npm run compile && npm run bundle",
     "bundle": "rollup -c ../../rollup.config.js",
-    "lint": "eslint -c .eslintrc.js --ignore-path ../../.eslintignore . --ext ts --fix",
+    "compile": "tsc -b tsconfig.build.json",
+    "lint": "eslint --ignore-path ../../.eslintignore .",
     "format": "prettier --ignore-path ../../.prettierignore --check **/*.ts",
-    "test": "NODE_ENV=test mocha tests/**/*.spec.ts",
-    "compile": "tsc -b tsconfig.build.json"
+    "test": "cross-env NODE_ENV=test mocha tests/**/*.spec.ts",
+    "coverage": "nyc npm t -- --reporter xunit --reporter-options output=.mocha/testspec.xunit.xml"
   },
   "devDependencies": {
     "@types/js-yaml": "^4.0.3",
     "@types/node": "^16.9.0"
   },
   "dependencies": {
-    "@har-sdk/types": "*",
+    "@har-sdk/types": "^1.0.0",
     "js-yaml": "^4.1.0",
     "tslib": "^2.3.1"
   }

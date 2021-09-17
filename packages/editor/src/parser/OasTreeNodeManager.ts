@@ -47,8 +47,10 @@ export class OasTreeNodeManager
     );
   }
 
-  private getPaths(specTreeNode: SpecTreePathNode): Paths {
-    const endpoints = this.isHttpMethod(specTreeNode.method)
+  private getPaths(specTreeNode: SpecTreeNode): Paths {
+    const endpoints = this.isHttpMethod(
+      (specTreeNode as SpecTreePathNode).method
+    )
       ? [specTreeNode]
       : specTreeNode.children;
 
@@ -61,7 +63,7 @@ export class OasTreeNodeManager
     return Object.fromEntries(
       [...groupedMethods].map(([path, nodes]: [string, SpecTreeNode[]]) => [
         path,
-        this.getPathMethods(nodes)
+        this.getPathMethods(nodes as SpecTreePathNode[])
       ])
     );
   }
@@ -106,17 +108,18 @@ export class OasTreeNodeManager
 
     return [...folderLookup].map(
       ([name, children]: [string, SpecTreeNode[]]) =>
-        new SpecTreeNode({ name, children })
+        // TODO pointer, code
+        new SpecTreeNode({ name, children, pointer: null, code: null })
     );
   }
 
   private getEndpoints(document: Document): Endpoint[] {
     return Object.entries(document.paths).flatMap(
-      ([path, paths]: [string, Paths]) =>
+      ([path, paths]: [string, PathItem]) =>
         Object.entries(paths)
-          .filter(([method]: [string, Operation]) => this.isHttpMethod(method))
-          .flatMap(([method, operation]: [string, Operation]) => ({
-            ...operation,
+          .filter(([method]: [string, unknown]) => this.isHttpMethod(method))
+          .map(([method, operation]: [string, unknown]) => ({
+            ...(operation as Operation),
             path,
             method
           }))
@@ -129,7 +132,7 @@ export class OasTreeNodeManager
     );
   }
 
-  private stringifyCode(part: Document | Operation, type: string): string {
+  private stringifyCode(part: any, type: string): string {
     return type === 'yaml'
       ? dump(part, { indent: 2 })
       : JSON.stringify(part, null, 2);
@@ -163,7 +166,6 @@ export class OasTreeNodeManager
   }
 
   private createRootNode(document: Document, type: string): SpecTreeNode {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { paths, ...metaInfo } = document;
 
     return new SpecTreeNode({

@@ -13,6 +13,7 @@ describe('OasTreeNodeManager', () => {
   describe('parse', () => {
     it('should successfully parse document', async () => {
       const tree = manager.parse(gitHubSwagger);
+      tree.children.length.should.be.greaterThan(1);
     });
   });
 });

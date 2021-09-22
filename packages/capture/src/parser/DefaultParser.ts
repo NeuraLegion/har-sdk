@@ -34,7 +34,7 @@ export class DefaultParser implements Parser {
         } catch (err) {
           return [
             {
-              message: err.message,
+              message: (err as Error).message,
               code: 'INVALID_REDIRECT_URL'
             },
             ''

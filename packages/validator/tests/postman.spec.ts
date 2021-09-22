@@ -27,7 +27,7 @@ describe('PostmanValidator', () => {
       try {
         await validator.verify(apiDoc as unknown as Postman.Document);
       } catch (err) {
-        err.message.should.be.equal(
+        (err as Error).message.should.be.equal(
           'Cannot determine version of schema. Schema ID is missed.'
         );
       }

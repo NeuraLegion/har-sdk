@@ -43,7 +43,7 @@ describe('OASValidator', () => {
       try {
         await validator.verify(apiDoc as unknown as OpenAPIV2.Document);
       } catch (err) {
-        err.message.should.be.equal(
+        (err as Error).message.should.be.equal(
           'Cannot determine version of schema. Schema ID is missed.'
         );
       }

@@ -1,0 +1,192 @@
+{
+  "jsonPointer": "/",
+  "name": "Swagger Petstore",
+  "path": "/",
+  "children": [
+    {
+      "path": "/pet",
+      "jsonPointer": "/paths/~1pet",
+      "children": [
+        {
+          "path": "/pet",
+          "method": "put",
+          "jsonPointer": "/paths/~1pet/put",
+          "parameters": [
+            {
+              "paramType": "requestBody",
+              "bodyType": "application/json",
+              "valueJsonPointer": "/paths/~1pet/put/requestBody/content/application~1json/example"
+            },
+            {
+              "paramType": "requestBody",
+              "bodyType": "application/xml",
+              "valueJsonPointer": "/paths/~1pet/put/requestBody/content/application~1xml/example"
+            }
+          ]
+        },
+        {
+          "path": "/pet",
+          "method": "post",
+          "jsonPointer": "/paths/~1pet/post",
+          "parameters": [
+            {
+              "paramType": "requestBody",
+              "bodyType": "application/json",
+              "valueJsonPointer": "/paths/~1pet/post/requestBody/content/application~1json/example"
+            },
+            {
+              "paramType": "requestBody",
+              "bodyType": "application/xml",
+              "valueJsonPointer": "/paths/~1pet/post/requestBody/content/application~1xml/example"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/pet/findByStatus",
+      "jsonPointer": "/paths/~1pet~1findByStatus",
+      "children": [
+        {
+          "path": "/pet/findByStatus",
+          "method": "get",
+          "jsonPointer": "/paths/~1pet~1findByStatus/get",
+          "parameters": [
+            {
+              "paramType": "location",
+              "name": "status",
+              "valueJsonPointer": "/paths/~1pet~1findByStatus/get/parameters/0/example",
+              "location": "query",
+              "value": "available"
+            }
+          ]
+        }
+      ],
+      "parameters": [
+        {
+          "paramType": "variable",
+          "name": "servers",
+          "valueJsonPointer": "/paths/~1pet~1findByStatus/servers",
+          "value": [
+            {
+              "url": "https://petstore.swagger.io/v42"
+            },
+            {
+              "url": "http://petstore.swagger.io/v42"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/pet/findByTags",
+      "jsonPointer": "/paths/~1pet~1findByTags",
+      "children": [
+        {
+          "path": "/pet/findByTags",
+          "method": "get",
+          "jsonPointer": "/paths/~1pet~1findByTags/get",
+          "parameters": [
+            {
+              "paramType": "location",
+              "name": "tags",
+              "valueJsonPointer": "/paths/~1pet~1findByTags/get/parameters/0/example",
+              "location": "query"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/pet/{petId}",
+      "jsonPointer": "/paths/~1pet~1{petId}",
+      "children": [
+        {
+          "path": "/pet/{petId}",
+          "method": "get",
+          "jsonPointer": "/paths/~1pet~1{petId}/get",
+          "parameters": [
+            {
+              "paramType": "location",
+              "name": "petId",
+              "value": 4242,
+              "valueJsonPointer": "/paths/~1pet~1{petId}/get/parameters/0/example",
+              "location": "path"
+            }
+          ]
+        },
+        {
+          "path": "/pet/{petId}",
+          "method": "post",
+          "jsonPointer": "/paths/~1pet~1{petId}/post",
+          "parameters": [
+            {
+              "paramType": "location",
+              "name": "petId",
+              "value": 4242424242,
+              "valueJsonPointer": "/paths/~1pet~1{petId}/post/parameters/0/example",
+              "location": "path"
+            },
+            {
+              "paramType": "requestBody",
+              "bodyType": "application/x-www-form-urlencoded",
+              "valueJsonPointer": "/paths/~1pet~1{petId}/post/requestBody/content/application~1x-www-form-urlencoded/example"
+            }
+          ]
+        },
+        {
+          "path": "/pet/{petId}",
+          "method": "delete",
+          "jsonPointer": "/paths/~1pet~1{petId}/delete",
+          "parameters": [
+            {
+              "paramType": "location",
+              "name": "api_key",
+              "valueJsonPointer": "/paths/~1pet~1{petId}/delete/parameters/0/example",
+              "location": "header"
+            },
+            {
+              "paramType": "location",
+              "name": "petId",
+              "valueJsonPointer": "/paths/~1pet~1{petId}/delete/parameters/1/example",
+              "location": "path"
+            }
+          ]
+        },
+        {
+          "path": "/pet/{petId}",
+          "method": "patch",
+          "jsonPointer": "/paths/~1pet~1{petId}/patch",
+          "parameters": [
+            {
+              "paramType": "location",
+              "location": "path",
+              "name": "petId",
+              "valueJsonPointer": "/paths/~1pet~1{petId}/patch/parameters/0/example"
+            },
+            {
+              "paramType": "requestBody",
+              "bodyType": "application/json",
+              "valueJsonPointer": "/paths/~1pet~1{petId}/patch/requestBody/content/application~1json/example"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "parameters": [
+    {
+      "paramType": "variable",
+      "name": "servers",
+      "valueJsonPointer": "/servers",
+      "value": [
+        {
+          "url": "https://petstore.swagger.io/v2"
+        },
+        {
+          "url": "http://petstore.swagger.io/v2"
+        }
+      ]
+    }
+  ]
+}

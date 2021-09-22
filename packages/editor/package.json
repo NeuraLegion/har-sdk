@@ -1,0 +1,59 @@
+{
+  "name": "@har-sdk/editor",
+  "version": "0.0.0",
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NeuraLegion/har-sdk.git"
+  },
+  "author": {
+    "name": "Artem Derevnjuk",
+    "email": "artem.derevnjuk@neuralegion.com"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/NeuraLegion/har-sdk/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist/**"
+  ],
+  "keywords": [
+    "parser",
+    "open-api",
+    "postman",
+    "api",
+    "json"
+  ],
+  "main": "./dist/bundle.umd.js",
+  "module": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
+  "homepage": "https://github.com/NeuraLegion/har-sdk#readme",
+  "scripts": {
+    "prebuild": "npm run compile -- --clean",
+    "build": "npm run compile && npm run bundle",
+    "bundle": "rollup -c ../../rollup.config.js",
+    "compile": "tsc -b tsconfig.build.json",
+    "lint": "eslint --ignore-path ../../.eslintignore .",
+    "format": "prettier --ignore-path ../../.prettierignore --check **/*.ts",
+    "test": "cross-env NODE_ENV=test mocha tests/**/*.spec.ts",
+    "coverage": "nyc npm t -- --reporter xunit --reporter-options output=.mocha/testspec.xunit.xml"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.3",
+    "@types/json-pointer": "^1.0.31",
+    "@types/node": "^16.9.0"
+  },
+  "dependencies": {
+    "@apidevtools/json-schema-ref-parser": "^9.0.9",
+    "@har-sdk/types": "^1.0.0",
+    "@har-sdk/validator": "^1.0.0",
+    "@types/jsonpath": "^0.2.0",
+    "js-yaml": "^4.1.0",
+    "json-pointer": "^0.6.1",
+    "jsonpath": "^1.1.1",
+    "tslib": "^2.3.1"
+  }
+}

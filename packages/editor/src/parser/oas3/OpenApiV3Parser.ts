@@ -1,6 +1,6 @@
 import { SpecTreeNode } from '../../models';
 import { SpecTreeNodeVariableParam } from '../../models/tree/SpecTreeNodeVariableParam';
-import { TreeParser } from '../interfaces/Parser';
+import { TreeParser } from '../TreeParser';
 import { PathItemObjectParser } from './PathItemObjectParser';
 import $RefParser from '@apidevtools/json-schema-ref-parser';
 import jsonPointer from 'json-pointer';

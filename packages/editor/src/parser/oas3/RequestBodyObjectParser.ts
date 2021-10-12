@@ -1,4 +1,4 @@
-import { ParametersParser } from '../interfaces';
+import { ParametersParser } from '../ParametersParser';
 import { SpecTreeNodeParam, SpecTreeRequestBodyParam } from '../../models';
 import { OpenAPIV3 } from '@har-sdk/types';
 import jsonPointer from 'json-pointer';

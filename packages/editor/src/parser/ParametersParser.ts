@@ -1,4 +1,4 @@
-import { SpecTreeNodeParam } from '../../models';
+import { SpecTreeNodeParam } from '../models';
 
 export interface ParametersParser {
   parse(pointer: string): SpecTreeNodeParam[];

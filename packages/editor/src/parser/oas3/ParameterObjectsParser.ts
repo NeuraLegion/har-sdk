@@ -1,4 +1,4 @@
-import { ParametersParser } from '../interfaces';
+import { ParametersParser } from '../ParametersParser';
 import {
   SpecTreeNodeParam,
   ParamLocation,

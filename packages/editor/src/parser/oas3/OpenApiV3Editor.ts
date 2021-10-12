@@ -1,5 +1,5 @@
 import { SpecTreeNode } from '../../models';
-import { Editor } from '../interfaces';
+import { Editor } from '../Editor';
 import { OpenApiV3Parser } from './OpenApiV3Parser';
 import jsonPath from 'jsonpath';
 import jsonPointer from 'json-pointer';

@@ -1,5 +1,5 @@
 import { HttpMethod, SpecTreeNode } from '../../models';
-import { PathNodeParser } from '../interfaces';
+import { PathNodeParser } from '../PathNodeParser';
 import { ParameterObjectsParser } from './ParameterObjectsParser';
 import { RequestBodyObjectParser } from './RequestBodyObjectParser';
 import { OpenAPIV3 } from '@har-sdk/types';

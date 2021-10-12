@@ -1,9 +1,9 @@
 import {
   OpenApiV3Editor,
-  OpenApiV3Parser,
   SpecTreeNode,
   SpecTreeRequestBodyParam,
-  SpecTreeNodeParam
+  SpecTreeNodeParam,
+  TreeParser
 } from '../src';
 import $RefParser from '@apidevtools/json-schema-ref-parser';
 import { load } from 'js-yaml';
@@ -52,7 +52,7 @@ describe('oas parser', () => {
   });
 
   describe('oas v3 tree parser', () => {
-    const openApiParser = new OpenApiV3Parser();
+    const openApiParser: TreeParser = new OpenApiV3Editor();
     const resultTree = JSON.parse(
       readFileSync(resolve('./tests/oas3-sample1.result.json'), 'utf-8')
     );

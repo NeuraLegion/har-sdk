@@ -1,7 +1,7 @@
 import { HttpMethod, SpecTreeNode, SpecTreeNodeParam } from '../../models';
 import { isHttpMethod } from '../../models/HttpMethod';
 import { SpecTreeNodeVariableParam } from '../../models/tree/SpecTreeNodeVariableParam';
-import { PathNodeParser } from '../interfaces';
+import { PathNodeParser } from '../PathNodeParser';
 import { OperationObjectParser } from './OperationObjectParser';
 import { ParameterObjectsParser } from './ParameterObjectsParser';
 import { OpenAPIV3 } from '@har-sdk/types';

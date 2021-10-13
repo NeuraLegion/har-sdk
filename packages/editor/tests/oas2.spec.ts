@@ -1,5 +1,5 @@
 import {
-  OpenApiV3Editor,
+  OpenApiV2Editor,
   SpecTreeNode,
   SpecTreeRequestBodyParam,
   SpecTreeNodeParam,
@@ -10,7 +10,7 @@ import { load } from 'js-yaml';
 import jsonPointer from 'json-pointer';
 import jsonPath from 'jsonpath';
 import 'chai/register-should';
-import { OpenAPIV3 } from '@har-sdk/types';
+import { OpenAPIV2 } from '@har-sdk/types';
 import { OASValidator } from '@har-sdk/validator';
 import chaiAsPromised from 'chai-as-promised';
 import { use } from 'chai';
@@ -20,9 +20,9 @@ import { resolve } from 'path';
 use(chaiAsPromised);
 
 describe('oas parser', () => {
-  const sourcePath = './tests/oas3-sample1.yaml';
+  const sourcePath = './tests/oas2-sample1.yaml';
   const source = readFileSync(resolve(sourcePath), 'utf-8');
-  const expectedResultPath = './tests/oas3-sample1.result.json';
+  const expectedResultPath = './tests/oas2-sample1.result.json';
 
   describe('jsonPointer', () => {
     it('should set missing prop by jsonPointer', async () => {
@@ -40,10 +40,10 @@ describe('oas parser', () => {
     });
   });
 
-  describe('validate basic oas3 sample', () => {
+  describe('validate basic oas2 sample', () => {
     it('should be validated with no errors', async () => {
       const verifyResultPromise = new OASValidator().verify(
-        load(source, { json: true }) as OpenAPIV3.Document
+        load(source, { json: true }) as OpenAPIV2.Document
       );
 
       return verifyResultPromise.should.eventually.deep.eq({
@@ -53,8 +53,8 @@ describe('oas parser', () => {
     });
   });
 
-  describe('oas v3 tree parser', () => {
-    const openApiParser: TreeParser = new OpenApiV3Editor();
+  describe('oas v2 tree parser', () => {
+    const openApiParser: TreeParser = new OpenApiV2Editor();
     const resultTree = JSON.parse(
       readFileSync(resolve(expectedResultPath), 'utf-8')
     );
@@ -62,7 +62,10 @@ describe('oas parser', () => {
     it('should be exception on invalid syntax', async () =>
       openApiParser
         .setup('{')
-        .should.be.rejectedWith(Error, 'Bad OpenAPI V3 specification'));
+        .should.be.rejectedWith(
+          Error,
+          /Bad Swagger\/OpenAPI V2 specification/
+        ));
 
     it('should correctly parse yaml valid document', async () => {
       await openApiParser.setup(source);
@@ -70,28 +73,27 @@ describe('oas parser', () => {
       tree.should.deep.eq(resultTree);
     });
 
-    it('should have servers as parameter of root node', async () => {
+    it('should have host as parameter of root node', async () => {
       await openApiParser.setup(source);
       const tree = openApiParser.parse();
       tree.parameters.should.be.instanceOf(Array);
       tree.parameters.length.should.equal(1);
-      tree.parameters[0].value.should.be.instanceOf(Array);
-      tree.parameters[0].value.length.should.equal(2);
+      tree.parameters[0].value.should.eq('petstore.swagger.io');
     });
   });
 
-  describe('oas v3 editor', () => {
-    const openApiEditor = new OpenApiV3Editor();
+  describe('oas v2 editor', () => {
+    const openApiEditor = new OpenApiV2Editor();
 
-    const shouldBeValidDoc = (doc: OpenAPIV3.Document) =>
+    const shouldBeValidDoc = (doc: OpenAPIV2.Document) =>
       new OASValidator().verify(doc).should.eventually.deep.eq({
         errors: [],
         valid: true
       });
 
-    describe('oas v3 parameters editor', () => {
-      it('should set servers value', async () => {
-        const newValue = [{ url: 'https://neuralegion.com' }];
+    describe('oas v2 parameters editor', () => {
+      it('should set host value', async () => {
+        const newValue = 'neuralegion.com';
 
         await openApiEditor.setup(source);
         let tree = openApiEditor.parse();
@@ -100,15 +102,15 @@ describe('oas parser', () => {
           newValue
         );
 
-        openApiEditor['doc'].servers.should.deep.equal(newValue);
+        openApiEditor['doc'].host.should.equal(newValue);
 
         shouldBeValidDoc(openApiEditor['doc']);
 
         tree.parameters.should.deep.equal([
           {
             paramType: 'variable',
-            name: 'servers',
-            valueJsonPointer: '/servers',
+            name: 'host',
+            valueJsonPointer: '/host',
             value: newValue
           }
         ]);
@@ -137,14 +139,12 @@ describe('oas parser', () => {
 
         (
           openApiEditor['doc'].paths['/pet/findByStatus'].get
-            .parameters[0] as OpenAPIV3.ParameterObject
-        ).example.should.equal(newValue);
+            .parameters[0] as OpenAPIV2.ParameterObject
+        ).default.should.equal(newValue);
 
         (
-          openApiEditor['doc'].components.parameters[
-            'status'
-          ] as OpenAPIV3.ParameterObject
-        ).example.should.equal(oldValue);
+          openApiEditor['doc'].parameters['status'] as OpenAPIV2.ParameterObject
+        ).items.default.should.equal(oldValue);
       });
 
       it('should change query param existing value', async () => {
@@ -169,13 +169,13 @@ describe('oas parser', () => {
 
         (
           openApiEditor['doc'].paths['/pet/findByTags'].get
-            .parameters[0] as OpenAPIV3.ParameterObject
-        ).example.should.equal(newValue);
+            .parameters[0] as OpenAPIV2.ParameterObject
+        ).default.should.equal(newValue);
       });
 
-      it('should set referenced request body value', async () => {
+      it('should set referenced body parameter value', async () => {
         const path =
-          '$..children[?(@.path=="/pet/{petId}" && @.method=="patch")].parameters[?(@.bodyType)]';
+          '$..children[?(@.path=="/pet/{petId}" && @.method=="patch")].parameters[?(@.name=="body")]';
         const newValue = '{"name":"test"}';
 
         await openApiEditor.setup(source);
@@ -197,13 +197,14 @@ describe('oas parser', () => {
         jsonPath.query(tree, path)[0].value.should.equal(newValue);
 
         (
-          openApiEditor['doc'].paths['/pet/{petId}'].patch
-            .requestBody as OpenAPIV3.RequestBodyObject
-        ).content[bodyNode.bodyType].example.should.equal(newValue);
+          openApiEditor['doc'].paths['/pet/{petId}'].patch.parameters.find(
+            (p) => (p as OpenAPIV2.Parameter).name === 'body'
+          ) as OpenAPIV2.Parameter
+        ).default.should.equal(newValue);
       });
     });
 
-    describe('oas v3 nodes remover', () => {
+    describe('oas v2 nodes remover', () => {
       it('should remove existing path node', async () => {
         const path = '$..children[?(@.path=="/pet/{petId}")]';
         await openApiEditor.setup(source);

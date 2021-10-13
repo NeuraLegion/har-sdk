@@ -5,21 +5,21 @@ import { PathItemObjectParser } from './PathItemObjectParser';
 import $RefParser from '@apidevtools/json-schema-ref-parser';
 import jsonPointer from 'json-pointer';
 import { load } from 'js-yaml';
-import { OpenAPIV3 } from '@har-sdk/types';
+import { OpenAPIV2 } from '@har-sdk/types';
 
-export class OpenApiV3Parser implements TreeParser {
-  protected doc: OpenAPIV3.Document;
-  protected dereferencedDoc: OpenAPIV3.Document;
+export class OpenApiV2Parser implements TreeParser {
+  protected doc: OpenAPIV2.Document;
+  protected dereferencedDoc: OpenAPIV2.Document;
   protected tree: SpecTreeNode;
 
   public async setup(source: string): Promise<void> {
     try {
-      this.doc = load(source, { json: true }) as OpenAPIV3.Document;
+      this.doc = load(source, { json: true }) as OpenAPIV2.Document;
       this.dereferencedDoc = (await new $RefParser().dereference(
         load(source, { json: true })
-      )) as OpenAPIV3.Document;
+      )) as OpenAPIV2.Document;
     } catch (e) {
-      throw new Error('Bad OpenAPI V3 specification');
+      throw new Error('Bad Swagger/OpenAPI V2 specification');
     }
   }
 
@@ -27,9 +27,9 @@ export class OpenApiV3Parser implements TreeParser {
     const servers: SpecTreeNodeVariableParam[] = [
       {
         paramType: 'variable',
-        name: 'servers',
-        valueJsonPointer: '/servers',
-        value: this.doc.servers ? this.doc.servers : []
+        name: 'host',
+        valueJsonPointer: '/host',
+        value: this.doc.host
       }
     ];
 

@@ -1,6 +1,10 @@
-import { HttpMethod, SpecTreeNode, SpecTreeNodeParam } from '../../models';
-import { isHttpMethod } from '../../models/HttpMethod';
-import { SpecTreeNodeVariableParam } from '../../models/tree/SpecTreeNodeVariableParam';
+import {
+  HttpMethod,
+  isHttpMethod,
+  SpecTreeNode,
+  SpecTreeNodeParam,
+  SpecTreeNodeVariableParam
+} from '../../models';
 import { PathNodeParser } from '../PathNodeParser';
 import { OperationObjectParser } from './OperationObjectParser';
 import { ParameterObjectsParser } from './ParameterObjectsParser';

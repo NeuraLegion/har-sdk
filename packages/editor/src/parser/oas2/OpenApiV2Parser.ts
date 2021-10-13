@@ -1,5 +1,4 @@
-import { SpecTreeNode } from '../../models';
-import { SpecTreeNodeVariableParam } from '../../models/tree/SpecTreeNodeVariableParam';
+import { SpecTreeNode, SpecTreeNodeVariableParam } from '../../models';
 import { TreeParser } from '../TreeParser';
 import { PathItemObjectParser } from './PathItemObjectParser';
 import $RefParser from '@apidevtools/json-schema-ref-parser';
@@ -18,7 +17,7 @@ export class OpenApiV2Parser implements TreeParser {
       this.dereferencedDoc = (await new $RefParser().dereference(
         load(source, { json: true })
       )) as OpenAPIV2.Document;
-    } catch (e) {
+    } catch {
       throw new Error('Bad Swagger/OpenAPI V2 specification');
     }
   }

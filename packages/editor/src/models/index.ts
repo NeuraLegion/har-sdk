@@ -1,3 +1,3 @@
 export * from './tree';
-export { HttpMethod } from './HttpMethod';
+export { HttpMethod, isHttpMethod } from './HttpMethod';
 export { ParamLocation } from './ParamLocation';

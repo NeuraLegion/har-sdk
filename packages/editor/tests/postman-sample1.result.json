@@ -30,32 +30,134 @@
             {
               "path": "{{baseUrl}}/api/v1/statistics/scans?from=<string>&to=<string>&orgId=<string>",
               "jsonPointer": "/item/0/item/1/item/0",
-              "method": "GET"
+              "method": "GET",
+              "parameters": [
+                {
+                  "paramType": "variable",
+                  "name": "from",
+                  "value": "<string>",
+                  "valueJsonPointer": "/item/0/item/1/item/0/request/url/query/0"
+                },
+                {
+                  "paramType": "variable",
+                  "name": "to",
+                  "value": "<string>",
+                  "valueJsonPointer": "/item/0/item/1/item/0/request/url/query/1"
+                },
+                {
+                  "paramType": "variable",
+                  "name": "orgId",
+                  "value": "<string>",
+                  "valueJsonPointer": "/item/0/item/1/item/0/request/url/query/2"
+                }
+              ]
             },
             {
               "path": "{{baseUrl}}/api/v1/statistics/time?from=<string>&to=<string>&orgId=<string>",
               "jsonPointer": "/item/0/item/1/item/1",
-              "method": "GET"
+              "method": "GET",
+              "parameters": [
+                {
+                  "paramType": "variable",
+                  "name": "from",
+                  "value": "<string>",
+                  "valueJsonPointer": "/item/0/item/1/item/1/request/url/query/0"
+                },
+                {
+                  "paramType": "variable",
+                  "name": "to",
+                  "value": "<string>",
+                  "valueJsonPointer": "/item/0/item/1/item/1/request/url/query/1"
+                },
+                {
+                  "paramType": "variable",
+                  "name": "orgId",
+                  "value": "<string>",
+                  "valueJsonPointer": "/item/0/item/1/item/1/request/url/query/2"
+                }
+              ]
             },
             {
               "path": "{{baseUrl}}/api/v1/statistics/issues?from=<string>&to=<string>",
               "jsonPointer": "/item/0/item/1/item/2",
-              "method": "GET"
+              "method": "GET",
+              "parameters": [
+                {
+                  "paramType": "variable",
+                  "name": "from",
+                  "value": "<string>",
+                  "valueJsonPointer": "/item/0/item/1/item/2/request/url/query/0"
+                },
+                {
+                  "paramType": "variable",
+                  "name": "to",
+                  "value": "<string>",
+                  "valueJsonPointer": "/item/0/item/1/item/2/request/url/query/1"
+                }
+              ]
             },
             {
               "path": "{{baseUrl}}/api/v1/statistics/organizations?from=<string>&to=<string>",
               "jsonPointer": "/item/0/item/1/item/3",
-              "method": "GET"
+              "method": "GET",
+              "parameters": [
+                {
+                  "paramType": "variable",
+                  "name": "from",
+                  "value": "<string>",
+                  "valueJsonPointer": "/item/0/item/1/item/3/request/url/query/0"
+                },
+                {
+                  "paramType": "variable",
+                  "name": "to",
+                  "value": "<string>",
+                  "valueJsonPointer": "/item/0/item/1/item/3/request/url/query/1"
+                }
+              ]
             },
             {
               "path": "{{baseUrl}}/api/v1/statistics/subscriptions?from=<string>&to=<string>",
               "jsonPointer": "/item/0/item/1/item/4",
-              "method": "GET"
+              "method": "GET",
+              "parameters": [
+                {
+                  "paramType": "variable",
+                  "name": "from",
+                  "value": "<string>",
+                  "valueJsonPointer": "/item/0/item/1/item/4/request/url/query/0"
+                },
+                {
+                  "paramType": "variable",
+                  "name": "to",
+                  "value": "<string>",
+                  "valueJsonPointer": "/item/0/item/1/item/4/request/url/query/1"
+                }
+              ]
             },
             {
               "path": "{{baseUrl}}/api/v1/statistics/storage?from=<string>&to=<string>&organizationId=<string>",
               "jsonPointer": "/item/0/item/1/item/5",
-              "method": "GET"
+              "method": "GET",
+              "parameters": [
+                {
+                  "paramType": "variable",
+                  "name": "from",
+                  "value": "<string>",
+                  "valueJsonPointer": "/item/0/item/1/item/5/request/url/query/0"
+                },
+                {
+                  "paramType": "variable",
+                  "name": "to",
+                  "value": "<string>",
+                  "valueJsonPointer": "/item/0/item/1/item/5/request/url/query/1"
+                },
+                {
+                  "paramType": "variable",
+                  "name": "organizationId",
+                  "value": "<string>",
+                  "valueJsonPointer": "/item/0/item/1/item/5/request/url/query/2"
+                }
+              ]
             }
           ]
         },
@@ -135,6 +237,12 @@
                       "name": "fileId",
                       "value": "<string>",
                       "valueJsonPointer": "/item/0/item/2/item/0/item/3/request/url/variable/0"
+                    },
+                    {
+                      "paramType": "variable",
+                      "name": "keepAsNew",
+                      "value": "<boolean>",
+                      "valueJsonPointer": "/item/0/item/2/item/0/item/3/request/url/query/0"
                     }
                   ]
                 },
@@ -161,7 +269,15 @@
             {
               "path": "{{baseUrl}}/api/v1/files?discard=<boolean>",
               "jsonPointer": "/item/0/item/2/item/2",
-              "method": "POST"
+              "method": "POST",
+              "parameters": [
+                {
+                  "paramType": "variable",
+                  "name": "discard",
+                  "value": "<boolean>",
+                  "valueJsonPointer": "/item/0/item/2/item/2/request/url/query/0"
+                }
+              ]
             },
             {
               "path": "{{baseUrl}}/api/v1/files",
@@ -242,7 +358,21 @@
                 {
                   "path": "{{baseUrl}}/api/v1/me/feed?limit=25&offset=0",
                   "jsonPointer": "/item/0/item/3/item/0/item/3",
-                  "method": "GET"
+                  "method": "GET",
+                  "parameters": [
+                    {
+                      "paramType": "variable",
+                      "name": "limit",
+                      "value": "25",
+                      "valueJsonPointer": "/item/0/item/3/item/0/item/3/request/url/query/0"
+                    },
+                    {
+                      "paramType": "variable",
+                      "name": "offset",
+                      "value": "0",
+                      "valueJsonPointer": "/item/0/item/3/item/0/item/3/request/url/query/1"
+                    }
+                  ]
                 },
                 {
                   "path": "{{baseUrl}}/api/v1/me/feed",
@@ -1017,7 +1147,27 @@
                 {
                   "path": "{{baseUrl}}/api/v1/scim/Users?startIndex=<number>&count=<number>&filter=<string>",
                   "jsonPointer": "/item/0/item/15/item/0/item/1",
-                  "method": "GET"
+                  "method": "GET",
+                  "parameters": [
+                    {
+                      "paramType": "variable",
+                      "name": "startIndex",
+                      "value": "<number>",
+                      "valueJsonPointer": "/item/0/item/15/item/0/item/1/request/url/query/0"
+                    },
+                    {
+                      "paramType": "variable",
+                      "name": "count",
+                      "value": "<number>",
+                      "valueJsonPointer": "/item/0/item/15/item/0/item/1/request/url/query/1"
+                    },
+                    {
+                      "paramType": "variable",
+                      "name": "filter",
+                      "value": "<string>",
+                      "valueJsonPointer": "/item/0/item/15/item/0/item/1/request/url/query/2"
+                    }
+                  ]
                 },
                 {
                   "path": "{{baseUrl}}/api/v1/scim/Users",
@@ -1078,7 +1228,27 @@
                 {
                   "path": "{{baseUrl}}/api/v1/scim/Groups?startIndex=<number>&count=<number>&filter=<string>",
                   "jsonPointer": "/item/0/item/15/item/1/item/1",
-                  "method": "GET"
+                  "method": "GET",
+                  "parameters": [
+                    {
+                      "paramType": "variable",
+                      "name": "startIndex",
+                      "value": "<number>",
+                      "valueJsonPointer": "/item/0/item/15/item/1/item/1/request/url/query/0"
+                    },
+                    {
+                      "paramType": "variable",
+                      "name": "count",
+                      "value": "<number>",
+                      "valueJsonPointer": "/item/0/item/15/item/1/item/1/request/url/query/1"
+                    },
+                    {
+                      "paramType": "variable",
+                      "name": "filter",
+                      "value": "<string>",
+                      "valueJsonPointer": "/item/0/item/15/item/1/item/1/request/url/query/2"
+                    }
+                  ]
                 },
                 {
                   "path": "{{baseUrl}}/api/v1/scim/Groups",
@@ -1386,6 +1556,30 @@
                           "name": "scanId",
                           "value": "<string>",
                           "valueJsonPointer": "/item/0/item/17/item/1/item/1/item/0/request/url/variable/0"
+                        },
+                        {
+                          "paramType": "variable",
+                          "name": "limit",
+                          "value": "5",
+                          "valueJsonPointer": "/item/0/item/17/item/1/item/1/item/0/request/url/query/0"
+                        },
+                        {
+                          "paramType": "variable",
+                          "name": "next",
+                          "value": "<string>",
+                          "valueJsonPointer": "/item/0/item/17/item/1/item/1/item/0/request/url/query/1"
+                        },
+                        {
+                          "paramType": "variable",
+                          "name": "logLevel",
+                          "value": "<string>",
+                          "valueJsonPointer": "/item/0/item/17/item/1/item/1/item/0/request/url/query/2"
+                        },
+                        {
+                          "paramType": "variable",
+                          "name": "query",
+                          "value": "<string>",
+                          "valueJsonPointer": "/item/0/item/17/item/1/item/1/item/0/request/url/query/3"
                         }
                       ]
                     },
@@ -1987,6 +2181,7 @@
                           "name": "roleId",
                           "value": "<string>",
                           "valueJsonPointer": "/item/0/item/19/item/1/item/0/item/1/request/url/variable/1"
+
                         }
                       ]
                     },
@@ -2576,7 +2771,21 @@
                 {
                   "path": "{{baseUrl}}/api/v1/integrations/gitlab/install?clientId=<string>&baseUrl=<string>",
                   "jsonPointer": "/item/0/item/28/item/0/item/1",
-                  "method": "GET"
+                  "method": "GET",
+                  "parameters": [
+                    {
+                      "paramType": "variable",
+                      "name": "clientId",
+                      "value": "<string>",
+                      "valueJsonPointer": "/item/0/item/28/item/0/item/1/request/url/query/0"
+                    },
+                    {
+                      "paramType": "variable",
+                      "name": "baseUrl",
+                      "value": "<string>",
+                      "valueJsonPointer": "/item/0/item/28/item/0/item/1/request/url/query/1"
+                    }
+                  ]
                 }
               ]
             },

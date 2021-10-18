@@ -7,7 +7,6 @@ import {
 } from '../src';
 import $RefParser from '@apidevtools/json-schema-ref-parser';
 import { load } from 'js-yaml';
-import jsonPointer from 'json-pointer';
 import jsonPath from 'jsonpath';
 import 'chai/register-should';
 import { OpenAPIV3 } from '@har-sdk/types';
@@ -23,14 +22,6 @@ describe('oas parser', () => {
   const sourcePath = './tests/oas3-sample1.yaml';
   const source = readFileSync(resolve(sourcePath), 'utf-8');
   const expectedResultPath = './tests/oas3-sample1.result.json';
-
-  describe('jsonPointer', () => {
-    it('should set missing prop by jsonPointer', async () => {
-      const target = {};
-      jsonPointer.set(target, '/servers', [{ url: 'https://nexploit.app' }]);
-      target.should.have.key('servers');
-    });
-  });
 
   describe('dereference', () => {
     it('should dereference all $refs', async () => {

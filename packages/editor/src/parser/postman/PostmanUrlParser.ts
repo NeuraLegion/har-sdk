@@ -11,9 +11,9 @@ export class PostmanUrlParser {
       return url.raw;
     }
 
-    const host: string | undefined = Array.isArray(url.host)
+    const host: string = Array.isArray(url.host)
       ? url.host.join('.')
-      : url.host;
+      : url.host || '';
 
     if (typeof url.path === 'string') {
       return `${host}/${url.path}`;

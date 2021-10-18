@@ -27,11 +27,7 @@
                 },
                 "method": "GET",
                 "header": [],
-                "url": {
-                  "raw": "{{baseUrl}}/api/v1/activity/scans",
-                  "host": ["{{baseUrl}}"],
-                  "path": ["api", "v1", "activity", "scans"]
-                },
+                "url": "{{baseUrl}}/api/v1/activity/scans",
                 "description": "Returns an array of all the scans (each scan state is a seperate scan record)."
               },
               "response": [
@@ -72,9 +68,8 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                  "raw": "{{baseUrl}}/api/v1/activity/organizations",
                   "host": ["{{baseUrl}}"],
-                  "path": ["api", "v1", "activity", "organizations"]
+                  "path": "api/v1/activity/organizations"
                 },
                 "description": "Returns collection of BIOrganization entities"
               },
@@ -1391,7 +1386,7 @@
                         },
                         "url": {
                           "raw": "{{baseUrl}}/api/v1/me/feed/following",
-                          "host": ["{{baseUrl}}"],
+                          "host": "{{baseUrl}}",
                           "path": ["api", "v1", "me", "feed", "following"]
                         },
                         "description": "Creates a following relationship with a entity.       Right now, only a user may be followed."
@@ -3054,7 +3049,14 @@
                     "url": {
                       "raw": "{{baseUrl}}/api/v1/me/org",
                       "host": ["{{baseUrl}}"],
-                      "path": ["api", "v1", "me", "org"]
+                      "path": [
+                        {
+                          "value": "api"
+                        },
+                        { "value": "v1" },
+                        { "value": "me" },
+                        { "value": "org" }
+                      ]
                     },
                     "description": "Retrieves details about the organization     the logged-in user belongs to."
                   },

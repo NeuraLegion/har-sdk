@@ -1,11 +1,15 @@
 import { TreeParser } from '../TreeParser';
-import { SpecTreeNode, HttpMethod, SpecTreeNodeParam } from '../../models';
+import { SpecTreeNode, HttpMethod } from '../../models';
+import { PostmanParametersParser } from './ParametersParser';
+import { PostmanUrlParser } from './PostmanUrlParser';
 import { VariablesParser } from './VariablesParser';
 import { Postman } from '@har-sdk/types';
 
 export class PostmanParser implements TreeParser {
   protected doc: Postman.Document;
   protected tree: SpecTreeNode;
+
+  private readonly postmanUrlParser = new PostmanUrlParser();
 
   public async setup(source: string): Promise<void> {
     try {
@@ -35,35 +39,34 @@ export class PostmanParser implements TreeParser {
       (x: Postman.ItemGroup | Postman.Item, idx: number): SpecTreeNode => {
         const itemJsonPointer = `${groupJsonPointer}/item/${idx.toString(10)}`;
 
-        const parameters = this.parseVariables(itemJsonPointer);
+        const parameters = new PostmanParametersParser(this.doc).parse(
+          itemJsonPointer
+        );
+
+        if (this.isItemGroup(x)) {
+          const children = this.createNodes(x, itemJsonPointer);
+
+          return {
+            jsonPointer: itemJsonPointer,
+            path: this.postmanUrlParser.getGroupPath(children),
+            children,
+            ...(parameters?.length ? { parameters } : {})
+          };
+        }
 
         return {
-          // TODO improve path parsing
-          path: ((x as Postman.Item)?.request?.url as Postman.Url)?.raw || '/',
           jsonPointer: itemJsonPointer,
-          ...(Array.isArray((x as Postman.ItemGroup).item)
-            ? {
-                children: this.createNodes(
-                  x as Postman.ItemGroup,
-                  itemJsonPointer
-                )
-              }
-            : { method: (x as Postman.Item).request.method as HttpMethod }),
+          path: this.postmanUrlParser.parse(x.request?.url),
+          method: x.request.method as HttpMethod,
           ...(parameters?.length ? { parameters } : {})
         };
       }
     );
   }
 
-  private parseVariables(itemJsonPointer: string): SpecTreeNodeParam[] {
-    const variablesParser = new VariablesParser(this.doc);
-
-    return [
-      variablesParser.parse(`${itemJsonPointer}/variable`),
-      variablesParser.parse(`${itemJsonPointer}/request/url/variable`),
-      variablesParser.parse(`${itemJsonPointer}/request/url/query`)
-    ]
-      .flat()
-      .filter((x) => !!x);
+  private isItemGroup(
+    x: Postman.Item | Postman.ItemGroup
+  ): x is Postman.ItemGroup {
+    return Array.isArray((x as Postman.ItemGroup).item);
   }
 }

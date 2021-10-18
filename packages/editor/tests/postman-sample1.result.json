@@ -4,32 +4,32 @@
   "name": "NexPloit REST API",
   "children": [
     {
-      "path": "/",
+      "path": "{{baseUrl}}/api/v1",
       "jsonPointer": "/item/0",
       "children": [
         {
-          "path": "/",
+          "path": "{{baseUrl}}/api/v1/activity",
           "jsonPointer": "/item/0/item/0",
           "children": [
             {
-              "path": "{{baseUrl}}/api/v1/activity/scans",
               "jsonPointer": "/item/0/item/0/item/0",
+              "path": "{{baseUrl}}/api/v1/activity/scans",
               "method": "GET"
             },
             {
-              "path": "{{baseUrl}}/api/v1/activity/organizations",
               "jsonPointer": "/item/0/item/0/item/1",
+              "path": "{{baseUrl}}/api/v1/activity/organizations",
               "method": "GET"
             }
           ]
         },
         {
-          "path": "/",
+          "path": "{{baseUrl}}/api/v1/statistics",
           "jsonPointer": "/item/0/item/1",
           "children": [
             {
-              "path": "{{baseUrl}}/api/v1/statistics/scans?from=<string>&to=<string>&orgId=<string>",
               "jsonPointer": "/item/0/item/1/item/0",
+              "path": "{{baseUrl}}/api/v1/statistics/scans?from=<string>&to=<string>&orgId=<string>",
               "method": "GET",
               "parameters": [
                 {
@@ -53,8 +53,8 @@
               ]
             },
             {
-              "path": "{{baseUrl}}/api/v1/statistics/time?from=<string>&to=<string>&orgId=<string>",
               "jsonPointer": "/item/0/item/1/item/1",
+              "path": "{{baseUrl}}/api/v1/statistics/time?from=<string>&to=<string>&orgId=<string>",
               "method": "GET",
               "parameters": [
                 {
@@ -78,8 +78,8 @@
               ]
             },
             {
-              "path": "{{baseUrl}}/api/v1/statistics/issues?from=<string>&to=<string>",
               "jsonPointer": "/item/0/item/1/item/2",
+              "path": "{{baseUrl}}/api/v1/statistics/issues?from=<string>&to=<string>",
               "method": "GET",
               "parameters": [
                 {
@@ -97,8 +97,8 @@
               ]
             },
             {
-              "path": "{{baseUrl}}/api/v1/statistics/organizations?from=<string>&to=<string>",
               "jsonPointer": "/item/0/item/1/item/3",
+              "path": "{{baseUrl}}/api/v1/statistics/organizations?from=<string>&to=<string>",
               "method": "GET",
               "parameters": [
                 {
@@ -116,8 +116,8 @@
               ]
             },
             {
-              "path": "{{baseUrl}}/api/v1/statistics/subscriptions?from=<string>&to=<string>",
               "jsonPointer": "/item/0/item/1/item/4",
+              "path": "{{baseUrl}}/api/v1/statistics/subscriptions?from=<string>&to=<string>",
               "method": "GET",
               "parameters": [
                 {
@@ -135,8 +135,8 @@
               ]
             },
             {
-              "path": "{{baseUrl}}/api/v1/statistics/storage?from=<string>&to=<string>&organizationId=<string>",
               "jsonPointer": "/item/0/item/1/item/5",
+              "path": "{{baseUrl}}/api/v1/statistics/storage?from=<string>&to=<string>&organizationId=<string>",
               "method": "GET",
               "parameters": [
                 {
@@ -162,20 +162,20 @@
           ]
         },
         {
-          "path": "/",
+          "path": "{{baseUrl}}/api/v1",
           "jsonPointer": "/item/0/item/2",
           "children": [
             {
-              "path": "/",
+              "path": "{{baseUrl}}/api/v1/files/:fileId",
               "jsonPointer": "/item/0/item/2/item/0",
               "children": [
                 {
-                  "path": "/",
+                  "path": "{{baseUrl}}/api/v1/files/:fileId/tree",
                   "jsonPointer": "/item/0/item/2/item/0/item/0",
                   "children": [
                     {
-                      "path": "{{baseUrl}}/api/v1/files/:fileId/tree",
                       "jsonPointer": "/item/0/item/2/item/0/item/0/item/0",
+                      "path": "{{baseUrl}}/api/v1/files/:fileId/tree",
                       "method": "GET",
                       "parameters": [
                         {
@@ -187,8 +187,8 @@
                       ]
                     },
                     {
-                      "path": "{{baseUrl}}/api/v1/files/:fileId/tree",
                       "jsonPointer": "/item/0/item/2/item/0/item/0/item/1",
+                      "path": "{{baseUrl}}/api/v1/files/:fileId/tree",
                       "method": "PUT",
                       "parameters": [
                         {
@@ -202,8 +202,8 @@
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/files/:fileId",
                   "jsonPointer": "/item/0/item/2/item/0/item/1",
+                  "path": "{{baseUrl}}/api/v1/files/:fileId",
                   "method": "GET",
                   "parameters": [
                     {
@@ -215,8 +215,8 @@
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/files/:fileId",
                   "jsonPointer": "/item/0/item/2/item/0/item/2",
+                  "path": "{{baseUrl}}/api/v1/files/:fileId",
                   "method": "DELETE",
                   "parameters": [
                     {
@@ -228,8 +228,8 @@
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/files/:fileId/revisions/last?keepAsNew=<boolean>",
                   "jsonPointer": "/item/0/item/2/item/0/item/3",
+                  "path": "{{baseUrl}}/api/v1/files/:fileId/revisions/last?keepAsNew=<boolean>",
                   "method": "DELETE",
                   "parameters": [
                     {
@@ -247,8 +247,8 @@
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/files/:fileId/targets",
                   "jsonPointer": "/item/0/item/2/item/0/item/4",
+                  "path": "{{baseUrl}}/api/v1/files/:fileId/targets",
                   "method": "GET",
                   "parameters": [
                     {
@@ -262,13 +262,13 @@
               ]
             },
             {
-              "path": "{{baseUrl}}/api/v1/files",
               "jsonPointer": "/item/0/item/2/item/1",
+              "path": "{{baseUrl}}/api/v1/files",
               "method": "GET"
             },
             {
-              "path": "{{baseUrl}}/api/v1/files?discard=<boolean>",
               "jsonPointer": "/item/0/item/2/item/2",
+              "path": "{{baseUrl}}/api/v1/files?discard=<boolean>",
               "method": "POST",
               "parameters": [
                 {
@@ -280,53 +280,53 @@
               ]
             },
             {
-              "path": "{{baseUrl}}/api/v1/files",
               "jsonPointer": "/item/0/item/2/item/3",
+              "path": "{{baseUrl}}/api/v1/files",
               "method": "DELETE"
             },
             {
-              "path": "{{baseUrl}}/api/v1/files/metrics",
               "jsonPointer": "/item/0/item/2/item/4",
+              "path": "{{baseUrl}}/api/v1/files/metrics",
               "method": "GET"
             }
           ]
         },
         {
-          "path": "/",
+          "path": "{{baseUrl}}/api/v1/me",
           "jsonPointer": "/item/0/item/3",
           "children": [
             {
-              "path": "/",
+              "path": "{{baseUrl}}/api/v1/me",
               "jsonPointer": "/item/0/item/3/item/0",
               "children": [
                 {
-                  "path": "/",
+                  "path": "{{baseUrl}}/api/v1/me/feed/following",
                   "jsonPointer": "/item/0/item/3/item/0/item/0",
                   "children": [
                     {
-                      "path": "{{baseUrl}}/api/v1/me/feed/following",
                       "jsonPointer": "/item/0/item/3/item/0/item/0/item/0",
+                      "path": "{{baseUrl}}/api/v1/me/feed/following",
                       "method": "POST"
                     },
                     {
-                      "path": "{{baseUrl}}/api/v1/me/feed/following",
                       "jsonPointer": "/item/0/item/3/item/0/item/0/item/1",
+                      "path": "{{baseUrl}}/api/v1/me/feed/following",
                       "method": "DELETE"
                     }
                   ]
                 },
                 {
-                  "path": "/",
+                  "path": "{{baseUrl}}/api/v1/me/feed/activities",
                   "jsonPointer": "/item/0/item/3/item/0/item/1",
                   "children": [
                     {
-                      "path": "{{baseUrl}}/api/v1/me/feed/activities",
                       "jsonPointer": "/item/0/item/3/item/0/item/1/item/0",
+                      "path": "{{baseUrl}}/api/v1/me/feed/activities",
                       "method": "DELETE"
                     },
                     {
-                      "path": "{{baseUrl}}/api/v1/me/feed/activities/:activityId",
                       "jsonPointer": "/item/0/item/3/item/0/item/1/item/1",
+                      "path": "{{baseUrl}}/api/v1/me/feed/activities/:activityId",
                       "method": "DELETE",
                       "parameters": [
                         {
@@ -340,24 +340,24 @@
                   ]
                 },
                 {
-                  "path": "/",
+                  "path": "{{baseUrl}}/api/v1/me/feed/subscriptions",
                   "jsonPointer": "/item/0/item/3/item/0/item/2",
                   "children": [
                     {
-                      "path": "{{baseUrl}}/api/v1/me/feed/subscriptions",
                       "jsonPointer": "/item/0/item/3/item/0/item/2/item/0",
+                      "path": "{{baseUrl}}/api/v1/me/feed/subscriptions",
                       "method": "PUT"
                     },
                     {
-                      "path": "{{baseUrl}}/api/v1/me/feed/subscriptions",
                       "jsonPointer": "/item/0/item/3/item/0/item/2/item/1",
+                      "path": "{{baseUrl}}/api/v1/me/feed/subscriptions",
                       "method": "GET"
                     }
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/me/feed?limit=25&offset=0",
                   "jsonPointer": "/item/0/item/3/item/0/item/3",
+                  "path": "{{baseUrl}}/api/v1/me/feed?limit=25&offset=0",
                   "method": "GET",
                   "parameters": [
                     {
@@ -375,27 +375,27 @@
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/me/feed",
                   "jsonPointer": "/item/0/item/3/item/0/item/4",
+                  "path": "{{baseUrl}}/api/v1/me/feed",
                   "method": "PATCH"
                 }
               ]
             },
             {
-              "path": "/",
+              "path": "{{baseUrl}}/api/v1/me/org",
               "jsonPointer": "/item/0/item/3/item/1",
               "children": [
                 {
-                  "path": "/",
+                  "path": "{{baseUrl}}/api/v1/me/org/api-keys",
                   "jsonPointer": "/item/0/item/3/item/1/item/0",
                   "children": [
                     {
-                      "path": "/",
+                      "path": "{{baseUrl}}/api/v1/me/org/api-keys/:apiKeyId",
                       "jsonPointer": "/item/0/item/3/item/1/item/0/item/0",
                       "children": [
                         {
-                          "path": "{{baseUrl}}/api/v1/me/org/api-keys/:apiKeyId",
                           "jsonPointer": "/item/0/item/3/item/1/item/0/item/0/item/0",
+                          "path": "{{baseUrl}}/api/v1/me/org/api-keys/:apiKeyId",
                           "method": "PUT",
                           "parameters": [
                             {
@@ -407,8 +407,8 @@
                           ]
                         },
                         {
-                          "path": "{{baseUrl}}/api/v1/me/org/api-keys/:apiKeyId",
                           "jsonPointer": "/item/0/item/3/item/1/item/0/item/0/item/1",
+                          "path": "{{baseUrl}}/api/v1/me/org/api-keys/:apiKeyId",
                           "method": "DELETE",
                           "parameters": [
                             {
@@ -422,28 +422,28 @@
                       ]
                     },
                     {
-                      "path": "{{baseUrl}}/api/v1/me/org/api-keys",
                       "jsonPointer": "/item/0/item/3/item/1/item/0/item/1",
+                      "path": "{{baseUrl}}/api/v1/me/org/api-keys",
                       "method": "POST"
                     },
                     {
-                      "path": "{{baseUrl}}/api/v1/me/org/api-keys",
                       "jsonPointer": "/item/0/item/3/item/1/item/0/item/2",
+                      "path": "{{baseUrl}}/api/v1/me/org/api-keys",
                       "method": "GET"
                     }
                   ]
                 },
                 {
-                  "path": "/",
+                  "path": "{{baseUrl}}/api/v1/me/org/memberships",
                   "jsonPointer": "/item/0/item/3/item/1/item/1",
                   "children": [
                     {
-                      "path": "/",
+                      "path": "{{baseUrl}}/api/v1/me/org/memberships/:memberId",
                       "jsonPointer": "/item/0/item/3/item/1/item/1/item/0",
                       "children": [
                         {
-                          "path": "{{baseUrl}}/api/v1/me/org/memberships/:memberId",
                           "jsonPointer": "/item/0/item/3/item/1/item/1/item/0/item/0",
+                          "path": "{{baseUrl}}/api/v1/me/org/memberships/:memberId",
                           "method": "PATCH",
                           "parameters": [
                             {
@@ -455,8 +455,8 @@
                           ]
                         },
                         {
-                          "path": "{{baseUrl}}/api/v1/me/org/memberships/:memberId",
                           "jsonPointer": "/item/0/item/3/item/1/item/1/item/0/item/1",
+                          "path": "{{baseUrl}}/api/v1/me/org/memberships/:memberId",
                           "method": "DELETE",
                           "parameters": [
                             {
@@ -468,8 +468,8 @@
                           ]
                         },
                         {
-                          "path": "{{baseUrl}}/api/v1/me/org/memberships/:memberId",
                           "jsonPointer": "/item/0/item/3/item/1/item/1/item/0/item/2",
+                          "path": "{{baseUrl}}/api/v1/me/org/memberships/:memberId",
                           "method": "GET",
                           "parameters": [
                             {
@@ -483,32 +483,32 @@
                       ]
                     },
                     {
-                      "path": "{{baseUrl}}/api/v1/me/org/memberships",
                       "jsonPointer": "/item/0/item/3/item/1/item/1/item/1",
+                      "path": "{{baseUrl}}/api/v1/me/org/memberships",
                       "method": "POST"
                     },
                     {
-                      "path": "{{baseUrl}}/api/v1/me/org/memberships",
                       "jsonPointer": "/item/0/item/3/item/1/item/1/item/2",
+                      "path": "{{baseUrl}}/api/v1/me/org/memberships",
                       "method": "GET"
                     }
                   ]
                 },
                 {
-                  "path": "/",
+                  "path": "{{baseUrl}}/api/v1/me/org/groups",
                   "jsonPointer": "/item/0/item/3/item/1/item/2",
                   "children": [
                     {
-                      "path": "/",
+                      "path": "{{baseUrl}}/api/v1/me/org/groups/:groupId",
                       "jsonPointer": "/item/0/item/3/item/1/item/2/item/0",
                       "children": [
                         {
-                          "path": "/",
+                          "path": "{{baseUrl}}/api/v1/me/org/groups/:groupId/memberships",
                           "jsonPointer": "/item/0/item/3/item/1/item/2/item/0/item/0",
                           "children": [
                             {
-                              "path": "{{baseUrl}}/api/v1/me/org/groups/:groupId/memberships",
                               "jsonPointer": "/item/0/item/3/item/1/item/2/item/0/item/0/item/0",
+                              "path": "{{baseUrl}}/api/v1/me/org/groups/:groupId/memberships",
                               "method": "POST",
                               "parameters": [
                                 {
@@ -520,8 +520,8 @@
                               ]
                             },
                             {
-                              "path": "{{baseUrl}}/api/v1/me/org/groups/:groupId/memberships",
                               "jsonPointer": "/item/0/item/3/item/1/item/2/item/0/item/0/item/1",
+                              "path": "{{baseUrl}}/api/v1/me/org/groups/:groupId/memberships",
                               "method": "DELETE",
                               "parameters": [
                                 {
@@ -535,8 +535,8 @@
                           ]
                         },
                         {
-                          "path": "{{baseUrl}}/api/v1/me/org/groups/:groupId",
                           "jsonPointer": "/item/0/item/3/item/1/item/2/item/0/item/1",
+                          "path": "{{baseUrl}}/api/v1/me/org/groups/:groupId",
                           "method": "GET",
                           "parameters": [
                             {
@@ -548,8 +548,8 @@
                           ]
                         },
                         {
-                          "path": "{{baseUrl}}/api/v1/me/org/groups/:groupId",
                           "jsonPointer": "/item/0/item/3/item/1/item/2/item/0/item/2",
+                          "path": "{{baseUrl}}/api/v1/me/org/groups/:groupId",
                           "method": "PUT",
                           "parameters": [
                             {
@@ -561,8 +561,8 @@
                           ]
                         },
                         {
-                          "path": "{{baseUrl}}/api/v1/me/org/groups/:groupId",
                           "jsonPointer": "/item/0/item/3/item/1/item/2/item/0/item/3",
+                          "path": "{{baseUrl}}/api/v1/me/org/groups/:groupId",
                           "method": "DELETE",
                           "parameters": [
                             {
@@ -576,83 +576,83 @@
                       ]
                     },
                     {
-                      "path": "{{baseUrl}}/api/v1/me/org/groups",
                       "jsonPointer": "/item/0/item/3/item/1/item/2/item/1",
+                      "path": "{{baseUrl}}/api/v1/me/org/groups",
                       "method": "GET"
                     },
                     {
-                      "path": "{{baseUrl}}/api/v1/me/org/groups",
                       "jsonPointer": "/item/0/item/3/item/1/item/2/item/2",
+                      "path": "{{baseUrl}}/api/v1/me/org/groups",
                       "method": "POST"
                     }
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/me/org",
                   "jsonPointer": "/item/0/item/3/item/1/item/3",
+                  "path": "{{baseUrl}}/api/v1/me/org",
                   "method": "GET"
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/me/org",
                   "jsonPointer": "/item/0/item/3/item/1/item/4",
+                  "path": "{{baseUrl}}/api/v1/me/org",
                   "method": "POST"
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/me/org",
                   "jsonPointer": "/item/0/item/3/item/1/item/5",
+                  "path": "{{baseUrl}}/api/v1/me/org",
                   "method": "PATCH"
                 }
               ]
             },
             {
-              "path": "/",
+              "path": "{{baseUrl}}/api/v1/me/date-settings",
               "jsonPointer": "/item/0/item/3/item/2",
               "children": [
                 {
-                  "path": "{{baseUrl}}/api/v1/me/date-settings",
                   "jsonPointer": "/item/0/item/3/item/2/item/0",
+                  "path": "{{baseUrl}}/api/v1/me/date-settings",
                   "method": "GET"
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/me/date-settings",
                   "jsonPointer": "/item/0/item/3/item/2/item/1",
+                  "path": "{{baseUrl}}/api/v1/me/date-settings",
                   "method": "PUT"
                 }
               ]
             },
             {
-              "path": "{{baseUrl}}/api/v1/me",
               "jsonPointer": "/item/0/item/3/item/3",
+              "path": "{{baseUrl}}/api/v1/me",
               "method": "GET"
             },
             {
-              "path": "{{baseUrl}}/api/v1/me",
               "jsonPointer": "/item/0/item/3/item/4",
+              "path": "{{baseUrl}}/api/v1/me",
               "method": "PUT"
             },
             {
-              "path": "{{baseUrl}}/api/v1/me/logs",
               "jsonPointer": "/item/0/item/3/item/5",
+              "path": "{{baseUrl}}/api/v1/me/logs",
               "method": "GET"
             },
             {
-              "path": "{{baseUrl}}/api/v1/me/consents",
               "jsonPointer": "/item/0/item/3/item/6",
+              "path": "{{baseUrl}}/api/v1/me/consents",
               "method": "PATCH"
             }
           ]
         },
         {
-          "path": "/",
+          "path": "{{baseUrl}}/api/v1/payments",
           "jsonPointer": "/item/0/item/4",
           "children": [
             {
-              "path": "/",
+              "path": "{{baseUrl}}/api/v1/payments/:paymentId",
               "jsonPointer": "/item/0/item/4/item/0",
               "children": [
                 {
-                  "path": "{{baseUrl}}/api/v1/payments/:paymentId",
                   "jsonPointer": "/item/0/item/4/item/0/item/0",
+                  "path": "{{baseUrl}}/api/v1/payments/:paymentId",
                   "method": "PATCH",
                   "parameters": [
                     {
@@ -664,8 +664,8 @@
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/payments/:paymentId/repay",
                   "jsonPointer": "/item/0/item/4/item/0/item/1",
+                  "path": "{{baseUrl}}/api/v1/payments/:paymentId/repay",
                   "method": "PUT",
                   "parameters": [
                     {
@@ -679,39 +679,39 @@
               ]
             },
             {
-              "path": "{{baseUrl}}/api/v1/payments",
               "jsonPointer": "/item/0/item/4/item/1",
+              "path": "{{baseUrl}}/api/v1/payments",
               "method": "GET"
             }
           ]
         },
         {
-          "path": "/",
+          "path": "{{baseUrl}}/api/v1/billing",
           "jsonPointer": "/item/0/item/5",
           "children": [
             {
-              "path": "{{baseUrl}}/api/v1/billing",
               "jsonPointer": "/item/0/item/5/item/0",
+              "path": "{{baseUrl}}/api/v1/billing",
               "method": "GET"
             },
             {
-              "path": "{{baseUrl}}/api/v1/billing/contact",
               "jsonPointer": "/item/0/item/5/item/1",
+              "path": "{{baseUrl}}/api/v1/billing/contact",
               "method": "PUT"
             }
           ]
         },
         {
-          "path": "/",
+          "path": "{{baseUrl}}/api/v1/payment-methods",
           "jsonPointer": "/item/0/item/6",
           "children": [
             {
-              "path": "/",
+              "path": "{{baseUrl}}/api/v1/payment-methods/:methodId",
               "jsonPointer": "/item/0/item/6/item/0",
               "children": [
                 {
-                  "path": "{{baseUrl}}/api/v1/payment-methods/:methodId",
                   "jsonPointer": "/item/0/item/6/item/0/item/0",
+                  "path": "{{baseUrl}}/api/v1/payment-methods/:methodId",
                   "method": "GET",
                   "parameters": [
                     {
@@ -723,8 +723,8 @@
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/payment-methods/:methodId",
                   "jsonPointer": "/item/0/item/6/item/0/item/1",
+                  "path": "{{baseUrl}}/api/v1/payment-methods/:methodId",
                   "method": "PATCH",
                   "parameters": [
                     {
@@ -736,8 +736,8 @@
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/payment-methods/:methodId",
                   "jsonPointer": "/item/0/item/6/item/0/item/2",
+                  "path": "{{baseUrl}}/api/v1/payment-methods/:methodId",
                   "method": "DELETE",
                   "parameters": [
                     {
@@ -751,28 +751,28 @@
               ]
             },
             {
-              "path": "{{baseUrl}}/api/v1/payment-methods",
               "jsonPointer": "/item/0/item/6/item/1",
+              "path": "{{baseUrl}}/api/v1/payment-methods",
               "method": "GET"
             },
             {
-              "path": "{{baseUrl}}/api/v1/payment-methods",
               "jsonPointer": "/item/0/item/6/item/2",
+              "path": "{{baseUrl}}/api/v1/payment-methods",
               "method": "POST"
             }
           ]
         },
         {
-          "path": "/",
+          "path": "{{baseUrl}}/api/v1/subscriptions",
           "jsonPointer": "/item/0/item/7",
           "children": [
             {
-              "path": "/",
+              "path": "{{baseUrl}}/api/v1/subscriptions/:subscriptionId",
               "jsonPointer": "/item/0/item/7/item/0",
               "children": [
                 {
-                  "path": "{{baseUrl}}/api/v1/subscriptions/:subscriptionId",
                   "jsonPointer": "/item/0/item/7/item/0/item/0",
+                  "path": "{{baseUrl}}/api/v1/subscriptions/:subscriptionId",
                   "method": "GET",
                   "parameters": [
                     {
@@ -784,8 +784,8 @@
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/subscriptions/:subscriptionId",
                   "jsonPointer": "/item/0/item/7/item/0/item/1",
+                  "path": "{{baseUrl}}/api/v1/subscriptions/:subscriptionId",
                   "method": "PATCH",
                   "parameters": [
                     {
@@ -797,8 +797,8 @@
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/subscriptions/:subscriptionId",
                   "jsonPointer": "/item/0/item/7/item/0/item/2",
+                  "path": "{{baseUrl}}/api/v1/subscriptions/:subscriptionId",
                   "method": "DELETE",
                   "parameters": [
                     {
@@ -810,8 +810,8 @@
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/subscriptions/:subscriptionId/repay",
                   "jsonPointer": "/item/0/item/7/item/0/item/3",
+                  "path": "{{baseUrl}}/api/v1/subscriptions/:subscriptionId/repay",
                   "method": "PUT",
                   "parameters": [
                     {
@@ -825,117 +825,117 @@
               ]
             },
             {
-              "path": "{{baseUrl}}/api/v1/subscriptions",
               "jsonPointer": "/item/0/item/7/item/1",
+              "path": "{{baseUrl}}/api/v1/subscriptions",
               "method": "GET"
             },
             {
-              "path": "{{baseUrl}}/api/v1/subscriptions",
               "jsonPointer": "/item/0/item/7/item/2",
+              "path": "{{baseUrl}}/api/v1/subscriptions",
               "method": "POST"
             }
           ]
         },
         {
-          "path": "/",
+          "path": "{{baseUrl}}/api/v1/services",
           "jsonPointer": "/item/0/item/8",
           "children": [
             {
-              "path": "{{baseUrl}}/api/v1/services/stripe/events",
               "jsonPointer": "/item/0/item/8/item/0",
+              "path": "{{baseUrl}}/api/v1/services/stripe/events",
               "method": "POST"
             },
             {
-              "path": "{{baseUrl}}/api/v1/services/github/callback",
               "jsonPointer": "/item/0/item/8/item/1",
+              "path": "{{baseUrl}}/api/v1/services/github/callback",
               "method": "POST"
             },
             {
-              "path": "{{baseUrl}}/api/v1/services/slack/callback",
               "jsonPointer": "/item/0/item/8/item/2",
+              "path": "{{baseUrl}}/api/v1/services/slack/callback",
               "method": "POST"
             },
             {
-              "path": "{{baseUrl}}/api/v1/services/support/actions",
               "jsonPointer": "/item/0/item/8/item/3",
+              "path": "{{baseUrl}}/api/v1/services/support/actions",
               "method": "POST"
             }
           ]
         },
         {
-          "path": "/",
+          "path": "{{baseUrl}}/api/v1/auth",
           "jsonPointer": "/item/0/item/9",
           "children": [
             {
-              "path": "{{baseUrl}}/api/v1/auth/login",
               "jsonPointer": "/item/0/item/9/item/0",
+              "path": "{{baseUrl}}/api/v1/auth/login",
               "method": "POST"
             },
             {
-              "path": "{{baseUrl}}/api/v1/auth/token",
               "jsonPointer": "/item/0/item/9/item/1",
+              "path": "{{baseUrl}}/api/v1/auth/token",
               "method": "POST"
             },
             {
-              "path": "{{baseUrl}}/api/v1/auth/sessions",
               "jsonPointer": "/item/0/item/9/item/2",
+              "path": "{{baseUrl}}/api/v1/auth/sessions",
               "method": "GET"
             },
             {
-              "path": "{{baseUrl}}/api/v1/auth/password",
               "jsonPointer": "/item/0/item/9/item/3",
+              "path": "{{baseUrl}}/api/v1/auth/password",
               "method": "PUT"
             },
             {
-              "path": "{{baseUrl}}/api/v1/auth/logout",
               "jsonPointer": "/item/0/item/9/item/4",
+              "path": "{{baseUrl}}/api/v1/auth/logout",
               "method": "POST"
             }
           ]
         },
         {
-          "path": "/",
+          "path": "{{baseUrl}}/api/v1/mfa",
           "jsonPointer": "/item/0/item/10",
           "children": [
             {
-              "path": "/",
+              "path": "{{baseUrl}}/api/v1/mfa/setup",
               "jsonPointer": "/item/0/item/10/item/0",
               "children": [
                 {
-                  "path": "{{baseUrl}}/api/v1/mfa/setup",
                   "jsonPointer": "/item/0/item/10/item/0/item/0",
+                  "path": "{{baseUrl}}/api/v1/mfa/setup",
                   "method": "DELETE"
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/mfa/setup",
                   "jsonPointer": "/item/0/item/10/item/0/item/1",
+                  "path": "{{baseUrl}}/api/v1/mfa/setup",
                   "method": "POST"
                 }
               ]
             },
             {
-              "path": "{{baseUrl}}/api/v1/mfa",
               "jsonPointer": "/item/0/item/10/item/1",
+              "path": "{{baseUrl}}/api/v1/mfa",
               "method": "POST"
             },
             {
-              "path": "{{baseUrl}}/api/v1/mfa/verify",
               "jsonPointer": "/item/0/item/10/item/2",
+              "path": "{{baseUrl}}/api/v1/mfa/verify",
               "method": "POST"
             }
           ]
         },
         {
-          "path": "/",
+          "path": "{{baseUrl}}/api/v1/users",
           "jsonPointer": "/item/0/item/11",
           "children": [
             {
-              "path": "/",
+              "path": "{{baseUrl}}/api/v1/users/:userId",
               "jsonPointer": "/item/0/item/11/item/0",
               "children": [
                 {
-                  "path": "{{baseUrl}}/api/v1/users/:userId",
                   "jsonPointer": "/item/0/item/11/item/0/item/0",
+                  "path": "{{baseUrl}}/api/v1/users/:userId",
                   "method": "GET",
                   "parameters": [
                     {
@@ -947,8 +947,8 @@
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/users/:userId",
                   "jsonPointer": "/item/0/item/11/item/0/item/1",
+                  "path": "{{baseUrl}}/api/v1/users/:userId",
                   "method": "PUT",
                   "parameters": [
                     {
@@ -962,23 +962,23 @@
               ]
             },
             {
-              "path": "{{baseUrl}}/api/v1/users",
               "jsonPointer": "/item/0/item/11/item/1",
+              "path": "{{baseUrl}}/api/v1/users",
               "method": "GET"
             }
           ]
         },
         {
-          "path": "/",
+          "path": "{{baseUrl}}/api/v1/api-keys",
           "jsonPointer": "/item/0/item/12",
           "children": [
             {
-              "path": "/",
+              "path": "{{baseUrl}}/api/v1/api-keys/:apiKeyId",
               "jsonPointer": "/item/0/item/12/item/0",
               "children": [
                 {
-                  "path": "{{baseUrl}}/api/v1/api-keys/:apiKeyId",
                   "jsonPointer": "/item/0/item/12/item/0/item/0",
+                  "path": "{{baseUrl}}/api/v1/api-keys/:apiKeyId",
                   "method": "PUT",
                   "parameters": [
                     {
@@ -990,8 +990,8 @@
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/api-keys/:apiKeyId",
                   "jsonPointer": "/item/0/item/12/item/0/item/1",
+                  "path": "{{baseUrl}}/api/v1/api-keys/:apiKeyId",
                   "method": "DELETE",
                   "parameters": [
                     {
@@ -1005,24 +1005,24 @@
               ]
             },
             {
-              "path": "{{baseUrl}}/api/v1/api-keys",
               "jsonPointer": "/item/0/item/12/item/1",
+              "path": "{{baseUrl}}/api/v1/api-keys",
               "method": "POST"
             },
             {
-              "path": "{{baseUrl}}/api/v1/api-keys",
               "jsonPointer": "/item/0/item/12/item/2",
+              "path": "{{baseUrl}}/api/v1/api-keys",
               "method": "GET"
             }
           ]
         },
         {
-          "path": "/",
+          "path": "{{baseUrl}}/api/v1/invites/:memberId/:token",
           "jsonPointer": "/item/0/item/13",
           "children": [
             {
-              "path": "{{baseUrl}}/api/v1/invites/:memberId/:token",
               "jsonPointer": "/item/0/item/13/item/0",
+              "path": "{{baseUrl}}/api/v1/invites/:memberId/:token",
               "method": "GET",
               "parameters": [
                 {
@@ -1040,8 +1040,8 @@
               ]
             },
             {
-              "path": "{{baseUrl}}/api/v1/invites/:memberId/:token",
               "jsonPointer": "/item/0/item/13/item/1",
+              "path": "{{baseUrl}}/api/v1/invites/:memberId/:token",
               "method": "POST",
               "parameters": [
                 {
@@ -1061,51 +1061,51 @@
           ]
         },
         {
-          "path": "/",
+          "path": "{{baseUrl}}/api/v1/auth-provider",
           "jsonPointer": "/item/0/item/14",
           "children": [
             {
-              "path": "{{baseUrl}}/api/v1/auth-provider",
               "jsonPointer": "/item/0/item/14/item/0",
+              "path": "{{baseUrl}}/api/v1/auth-provider",
               "method": "GET"
             },
             {
-              "path": "{{baseUrl}}/api/v1/auth-provider",
               "jsonPointer": "/item/0/item/14/item/1",
+              "path": "{{baseUrl}}/api/v1/auth-provider",
               "method": "PATCH"
             },
             {
-              "path": "{{baseUrl}}/api/v1/auth-provider",
               "jsonPointer": "/item/0/item/14/item/2",
+              "path": "{{baseUrl}}/api/v1/auth-provider",
               "method": "DELETE"
             },
             {
-              "path": "{{baseUrl}}/api/v1/auth-provider/github/orgs",
               "jsonPointer": "/item/0/item/14/item/3",
+              "path": "{{baseUrl}}/api/v1/auth-provider/github/orgs",
               "method": "GET"
             },
             {
-              "path": "{{baseUrl}}/api/v1/auth-provider/reminders",
               "jsonPointer": "/item/0/item/14/item/4",
+              "path": "{{baseUrl}}/api/v1/auth-provider/reminders",
               "method": "PUT"
             }
           ]
         },
         {
-          "path": "/",
+          "path": "{{baseUrl}}/api/v1/scim",
           "jsonPointer": "/item/0/item/15",
           "children": [
             {
-              "path": "/",
+              "path": "{{baseUrl}}/api/v1/scim",
               "jsonPointer": "/item/0/item/15/item/0",
               "children": [
                 {
-                  "path": "/",
+                  "path": "{{baseUrl}}/api/v1/scim/Users/:userId",
                   "jsonPointer": "/item/0/item/15/item/0/item/0",
                   "children": [
                     {
-                      "path": "{{baseUrl}}/api/v1/scim/Users/:userId",
                       "jsonPointer": "/item/0/item/15/item/0/item/0/item/0",
+                      "path": "{{baseUrl}}/api/v1/scim/Users/:userId",
                       "method": "GET",
                       "parameters": [
                         {
@@ -1117,8 +1117,8 @@
                       ]
                     },
                     {
-                      "path": "{{baseUrl}}/api/v1/scim/Users/:userId",
                       "jsonPointer": "/item/0/item/15/item/0/item/0/item/1",
+                      "path": "{{baseUrl}}/api/v1/scim/Users/:userId",
                       "method": "PATCH",
                       "parameters": [
                         {
@@ -1130,8 +1130,8 @@
                       ]
                     },
                     {
-                      "path": "{{baseUrl}}/api/v1/scim/Users/:userId",
                       "jsonPointer": "/item/0/item/15/item/0/item/0/item/2",
+                      "path": "{{baseUrl}}/api/v1/scim/Users/:userId",
                       "method": "DELETE",
                       "parameters": [
                         {
@@ -1145,8 +1145,8 @@
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/scim/Users?startIndex=<number>&count=<number>&filter=<string>",
                   "jsonPointer": "/item/0/item/15/item/0/item/1",
+                  "path": "{{baseUrl}}/api/v1/scim/Users?startIndex=<number>&count=<number>&filter=<string>",
                   "method": "GET",
                   "parameters": [
                     {
@@ -1170,23 +1170,23 @@
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/scim/Users",
                   "jsonPointer": "/item/0/item/15/item/0/item/2",
+                  "path": "{{baseUrl}}/api/v1/scim/Users",
                   "method": "POST"
                 }
               ]
             },
             {
-              "path": "/",
+              "path": "{{baseUrl}}/api/v1/scim",
               "jsonPointer": "/item/0/item/15/item/1",
               "children": [
                 {
-                  "path": "/",
+                  "path": "{{baseUrl}}/api/v1/scim/Groups/:groupId",
                   "jsonPointer": "/item/0/item/15/item/1/item/0",
                   "children": [
                     {
-                      "path": "{{baseUrl}}/api/v1/scim/Groups/:groupId",
                       "jsonPointer": "/item/0/item/15/item/1/item/0/item/0",
+                      "path": "{{baseUrl}}/api/v1/scim/Groups/:groupId",
                       "method": "GET",
                       "parameters": [
                         {
@@ -1198,8 +1198,8 @@
                       ]
                     },
                     {
-                      "path": "{{baseUrl}}/api/v1/scim/Groups/:groupId",
                       "jsonPointer": "/item/0/item/15/item/1/item/0/item/1",
+                      "path": "{{baseUrl}}/api/v1/scim/Groups/:groupId",
                       "method": "PATCH",
                       "parameters": [
                         {
@@ -1211,8 +1211,8 @@
                       ]
                     },
                     {
-                      "path": "{{baseUrl}}/api/v1/scim/Groups/:groupId",
                       "jsonPointer": "/item/0/item/15/item/1/item/0/item/2",
+                      "path": "{{baseUrl}}/api/v1/scim/Groups/:groupId",
                       "method": "DELETE",
                       "parameters": [
                         {
@@ -1226,8 +1226,8 @@
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/scim/Groups?startIndex=<number>&count=<number>&filter=<string>",
                   "jsonPointer": "/item/0/item/15/item/1/item/1",
+                  "path": "{{baseUrl}}/api/v1/scim/Groups?startIndex=<number>&count=<number>&filter=<string>",
                   "method": "GET",
                   "parameters": [
                     {
@@ -1251,8 +1251,8 @@
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/scim/Groups",
                   "jsonPointer": "/item/0/item/15/item/1/item/2",
+                  "path": "{{baseUrl}}/api/v1/scim/Groups",
                   "method": "POST"
                 }
               ]
@@ -1260,20 +1260,20 @@
           ]
         },
         {
-          "path": "/",
+          "path": "{{baseUrl}}/api/v1/repeaters",
           "jsonPointer": "/item/0/item/16",
           "children": [
             {
-              "path": "/",
+              "path": "{{baseUrl}}/api/v1/repeaters/:repeaterId",
               "jsonPointer": "/item/0/item/16/item/0",
               "children": [
                 {
-                  "path": "/",
+                  "path": "{{baseUrl}}/api/v1/repeaters/:repeaterId/network",
                   "jsonPointer": "/item/0/item/16/item/0/item/0",
                   "children": [
                     {
-                      "path": "{{baseUrl}}/api/v1/repeaters/:repeaterId/network",
                       "jsonPointer": "/item/0/item/16/item/0/item/0/item/0",
+                      "path": "{{baseUrl}}/api/v1/repeaters/:repeaterId/network",
                       "method": "GET",
                       "parameters": [
                         {
@@ -1285,8 +1285,8 @@
                       ]
                     },
                     {
-                      "path": "{{baseUrl}}/api/v1/repeaters/:repeaterId/network",
                       "jsonPointer": "/item/0/item/16/item/0/item/0/item/1",
+                      "path": "{{baseUrl}}/api/v1/repeaters/:repeaterId/network",
                       "method": "POST",
                       "parameters": [
                         {
@@ -1298,8 +1298,8 @@
                       ]
                     },
                     {
-                      "path": "{{baseUrl}}/api/v1/repeaters/:repeaterId/network/test",
                       "jsonPointer": "/item/0/item/16/item/0/item/0/item/2",
+                      "path": "{{baseUrl}}/api/v1/repeaters/:repeaterId/network/test",
                       "method": "POST",
                       "parameters": [
                         {
@@ -1313,8 +1313,8 @@
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/repeaters/:repeaterId",
                   "jsonPointer": "/item/0/item/16/item/0/item/1",
+                  "path": "{{baseUrl}}/api/v1/repeaters/:repeaterId",
                   "method": "GET",
                   "parameters": [
                     {
@@ -1326,8 +1326,8 @@
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/repeaters/:repeaterId",
                   "jsonPointer": "/item/0/item/16/item/0/item/2",
+                  "path": "{{baseUrl}}/api/v1/repeaters/:repeaterId",
                   "method": "PUT",
                   "parameters": [
                     {
@@ -1339,8 +1339,8 @@
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/repeaters/:repeaterId",
                   "jsonPointer": "/item/0/item/16/item/0/item/3",
+                  "path": "{{baseUrl}}/api/v1/repeaters/:repeaterId",
                   "method": "DELETE",
                   "parameters": [
                     {
@@ -1354,36 +1354,36 @@
               ]
             },
             {
-              "path": "{{baseUrl}}/api/v1/repeaters",
               "jsonPointer": "/item/0/item/16/item/1",
+              "path": "{{baseUrl}}/api/v1/repeaters",
               "method": "GET"
             },
             {
-              "path": "{{baseUrl}}/api/v1/repeaters",
               "jsonPointer": "/item/0/item/16/item/2",
+              "path": "{{baseUrl}}/api/v1/repeaters",
               "method": "POST"
             }
           ]
         },
         {
-          "path": "/",
+          "path": "{{baseUrl}}/api/v1/scans",
           "jsonPointer": "/item/0/item/17",
           "children": [
             {
-              "path": "/",
+              "path": "{{baseUrl}}/api/v1/scans/templates",
               "jsonPointer": "/item/0/item/17/item/0",
               "children": [
                 {
-                  "path": "/",
+                  "path": "{{baseUrl}}/api/v1/scans/templates/:templateId",
                   "jsonPointer": "/item/0/item/17/item/0/item/0",
                   "children": [
                     {
-                      "path": "/",
+                      "path": "{{baseUrl}}/api/v1/scans/templates/:templateId/settings",
                       "jsonPointer": "/item/0/item/17/item/0/item/0/item/0",
                       "children": [
                         {
-                          "path": "{{baseUrl}}/api/v1/scans/templates/:templateId/settings",
                           "jsonPointer": "/item/0/item/17/item/0/item/0/item/0/item/0",
+                          "path": "{{baseUrl}}/api/v1/scans/templates/:templateId/settings",
                           "method": "GET",
                           "parameters": [
                             {
@@ -1395,8 +1395,8 @@
                           ]
                         },
                         {
-                          "path": "{{baseUrl}}/api/v1/scans/templates/:templateId/settings",
                           "jsonPointer": "/item/0/item/17/item/0/item/0/item/0/item/1",
+                          "path": "{{baseUrl}}/api/v1/scans/templates/:templateId/settings",
                           "method": "PUT",
                           "parameters": [
                             {
@@ -1410,8 +1410,8 @@
                       ]
                     },
                     {
-                      "path": "{{baseUrl}}/api/v1/scans/templates/:templateId",
                       "jsonPointer": "/item/0/item/17/item/0/item/0/item/1",
+                      "path": "{{baseUrl}}/api/v1/scans/templates/:templateId",
                       "method": "GET",
                       "parameters": [
                         {
@@ -1423,8 +1423,8 @@
                       ]
                     },
                     {
-                      "path": "{{baseUrl}}/api/v1/scans/templates/:templateId",
                       "jsonPointer": "/item/0/item/17/item/0/item/0/item/2",
+                      "path": "{{baseUrl}}/api/v1/scans/templates/:templateId",
                       "method": "PUT",
                       "parameters": [
                         {
@@ -1436,8 +1436,8 @@
                       ]
                     },
                     {
-                      "path": "{{baseUrl}}/api/v1/scans/templates/:templateId",
                       "jsonPointer": "/item/0/item/17/item/0/item/0/item/3",
+                      "path": "{{baseUrl}}/api/v1/scans/templates/:templateId",
                       "method": "DELETE",
                       "parameters": [
                         {
@@ -1451,32 +1451,32 @@
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/scans/templates",
                   "jsonPointer": "/item/0/item/17/item/0/item/1",
+                  "path": "{{baseUrl}}/api/v1/scans/templates",
                   "method": "GET"
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/scans/templates",
                   "jsonPointer": "/item/0/item/17/item/0/item/2",
+                  "path": "{{baseUrl}}/api/v1/scans/templates",
                   "method": "POST"
                 }
               ]
             },
             {
-              "path": "/",
+              "path": "{{baseUrl}}/api/v1/scans/:scanId",
               "jsonPointer": "/item/0/item/17/item/1",
               "children": [
                 {
-                  "path": "/",
+                  "path": "{{baseUrl}}/api/v1/scans/:scanId/issues",
                   "jsonPointer": "/item/0/item/17/item/1/item/0",
                   "children": [
                     {
-                      "path": "/",
+                      "path": "{{baseUrl}}/api/v1/scans/:scanId/issues/:issueId",
                       "jsonPointer": "/item/0/item/17/item/1/item/0/item/0",
                       "children": [
                         {
-                          "path": "{{baseUrl}}/api/v1/scans/:scanId/issues/:issueId",
                           "jsonPointer": "/item/0/item/17/item/1/item/0/item/0/item/0",
+                          "path": "{{baseUrl}}/api/v1/scans/:scanId/issues/:issueId",
                           "method": "GET",
                           "parameters": [
                             {
@@ -1494,8 +1494,8 @@
                           ]
                         },
                         {
-                          "path": "{{baseUrl}}/api/v1/scans/:scanId/issues/:issueId/execute",
                           "jsonPointer": "/item/0/item/17/item/1/item/0/item/0/item/1",
+                          "path": "{{baseUrl}}/api/v1/scans/:scanId/issues/:issueId/execute",
                           "method": "POST",
                           "parameters": [
                             {
@@ -1515,8 +1515,8 @@
                       ]
                     },
                     {
-                      "path": "{{baseUrl}}/api/v1/scans/:scanId/issues",
                       "jsonPointer": "/item/0/item/17/item/1/item/0/item/1",
+                      "path": "{{baseUrl}}/api/v1/scans/:scanId/issues",
                       "method": "GET",
                       "parameters": [
                         {
@@ -1528,8 +1528,8 @@
                       ]
                     },
                     {
-                      "path": "{{baseUrl}}/api/v1/scans/:scanId/issues",
                       "jsonPointer": "/item/0/item/17/item/1/item/0/item/2",
+                      "path": "{{baseUrl}}/api/v1/scans/:scanId/issues",
                       "method": "POST",
                       "parameters": [
                         {
@@ -1543,12 +1543,12 @@
                   ]
                 },
                 {
-                  "path": "/",
+                  "path": "{{baseUrl}}/api/v1/scans/:scanId",
                   "jsonPointer": "/item/0/item/17/item/1/item/1",
                   "children": [
                     {
-                      "path": "{{baseUrl}}/api/v1/scans/:scanId/logs?limit=5&next=<string>&logLevel=<string>&query=<string>",
                       "jsonPointer": "/item/0/item/17/item/1/item/1/item/0",
+                      "path": "{{baseUrl}}/api/v1/scans/:scanId/logs?limit=5&next=<string>&logLevel=<string>&query=<string>",
                       "method": "GET",
                       "parameters": [
                         {
@@ -1584,8 +1584,8 @@
                       ]
                     },
                     {
-                      "path": "{{baseUrl}}/api/v1/scans/:scanId/logs/archive",
                       "jsonPointer": "/item/0/item/17/item/1/item/1/item/1",
+                      "path": "{{baseUrl}}/api/v1/scans/:scanId/logs/archive",
                       "method": "GET",
                       "parameters": [
                         {
@@ -1599,8 +1599,8 @@
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/scans/:scanId",
                   "jsonPointer": "/item/0/item/17/item/1/item/2",
+                  "path": "{{baseUrl}}/api/v1/scans/:scanId",
                   "method": "GET",
                   "parameters": [
                     {
@@ -1612,8 +1612,8 @@
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/scans/:scanId",
                   "jsonPointer": "/item/0/item/17/item/1/item/3",
+                  "path": "{{baseUrl}}/api/v1/scans/:scanId",
                   "method": "PUT",
                   "parameters": [
                     {
@@ -1625,8 +1625,8 @@
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/scans/:scanId",
                   "jsonPointer": "/item/0/item/17/item/1/item/4",
+                  "path": "{{baseUrl}}/api/v1/scans/:scanId",
                   "method": "DELETE",
                   "parameters": [
                     {
@@ -1638,8 +1638,8 @@
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/scans/:scanId/checks",
                   "jsonPointer": "/item/0/item/17/item/1/item/5",
+                  "path": "{{baseUrl}}/api/v1/scans/:scanId/checks",
                   "method": "GET",
                   "parameters": [
                     {
@@ -1651,8 +1651,8 @@
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/scans/:scanId/sitemap",
                   "jsonPointer": "/item/0/item/17/item/1/item/6",
+                  "path": "{{baseUrl}}/api/v1/scans/:scanId/sitemap",
                   "method": "GET",
                   "parameters": [
                     {
@@ -1664,8 +1664,8 @@
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/scans/:scanId/config",
                   "jsonPointer": "/item/0/item/17/item/1/item/7",
+                  "path": "{{baseUrl}}/api/v1/scans/:scanId/config",
                   "method": "GET",
                   "parameters": [
                     {
@@ -1677,8 +1677,8 @@
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/scans/:scanId/run",
                   "jsonPointer": "/item/0/item/17/item/1/item/8",
+                  "path": "{{baseUrl}}/api/v1/scans/:scanId/run",
                   "method": "GET",
                   "parameters": [
                     {
@@ -1690,8 +1690,8 @@
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/scans/:scanId/engine-logs",
                   "jsonPointer": "/item/0/item/17/item/1/item/9",
+                  "path": "{{baseUrl}}/api/v1/scans/:scanId/engine-logs",
                   "method": "GET",
                   "parameters": [
                     {
@@ -1703,8 +1703,8 @@
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/scans/:scanId/stop",
                   "jsonPointer": "/item/0/item/17/item/1/item/10",
+                  "path": "{{baseUrl}}/api/v1/scans/:scanId/stop",
                   "method": "GET",
                   "parameters": [
                     {
@@ -1716,8 +1716,8 @@
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/scans/:scanId/retest",
                   "jsonPointer": "/item/0/item/17/item/1/item/11",
+                  "path": "{{baseUrl}}/api/v1/scans/:scanId/retest",
                   "method": "POST",
                   "parameters": [
                     {
@@ -1731,43 +1731,43 @@
               ]
             },
             {
-              "path": "{{baseUrl}}/api/v1/scans",
               "jsonPointer": "/item/0/item/17/item/2",
-              "method": "POST"
-            },
-            {
               "path": "{{baseUrl}}/api/v1/scans",
-              "jsonPointer": "/item/0/item/17/item/3",
-              "method": "GET"
-            },
-            {
-              "path": "{{baseUrl}}/api/v1/scans/summary",
-              "jsonPointer": "/item/0/item/17/item/4",
-              "method": "GET"
-            },
-            {
-              "path": "{{baseUrl}}/api/v1/scans/stop",
-              "jsonPointer": "/item/0/item/17/item/5",
               "method": "POST"
             },
             {
-              "path": "{{baseUrl}}/api/v1/scans/delete",
+              "jsonPointer": "/item/0/item/17/item/3",
+              "path": "{{baseUrl}}/api/v1/scans",
+              "method": "GET"
+            },
+            {
+              "jsonPointer": "/item/0/item/17/item/4",
+              "path": "{{baseUrl}}/api/v1/scans/summary",
+              "method": "GET"
+            },
+            {
+              "jsonPointer": "/item/0/item/17/item/5",
+              "path": "{{baseUrl}}/api/v1/scans/stop",
+              "method": "POST"
+            },
+            {
               "jsonPointer": "/item/0/item/17/item/6",
+              "path": "{{baseUrl}}/api/v1/scans/delete",
               "method": "POST"
             }
           ]
         },
         {
-          "path": "/",
+          "path": "{{baseUrl}}/api/v1/webhooks/scans/:scanId",
           "jsonPointer": "/item/0/item/18",
           "children": [
             {
-              "path": "/",
+              "path": "{{baseUrl}}/api/v1/webhooks/scans/:scanId/sitemap",
               "jsonPointer": "/item/0/item/18/item/0",
               "children": [
                 {
-                  "path": "{{baseUrl}}/api/v1/webhooks/scans/:scanId/sitemap",
                   "jsonPointer": "/item/0/item/18/item/0/item/0",
+                  "path": "{{baseUrl}}/api/v1/webhooks/scans/:scanId/sitemap",
                   "method": "POST",
                   "parameters": [
                     {
@@ -1779,8 +1779,8 @@
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/webhooks/scans/:scanId/sitemap",
                   "jsonPointer": "/item/0/item/18/item/0/item/1",
+                  "path": "{{baseUrl}}/api/v1/webhooks/scans/:scanId/sitemap",
                   "method": "PUT",
                   "parameters": [
                     {
@@ -1794,8 +1794,8 @@
               ]
             },
             {
-              "path": "{{baseUrl}}/api/v1/webhooks/scans/:scanId",
               "jsonPointer": "/item/0/item/18/item/1",
+              "path": "{{baseUrl}}/api/v1/webhooks/scans/:scanId",
               "method": "PATCH",
               "parameters": [
                 {
@@ -1807,8 +1807,8 @@
               ]
             },
             {
-              "path": "{{baseUrl}}/api/v1/webhooks/scans/:scanId/issues",
               "jsonPointer": "/item/0/item/18/item/2",
+              "path": "{{baseUrl}}/api/v1/webhooks/scans/:scanId/issues",
               "method": "POST",
               "parameters": [
                 {
@@ -1820,8 +1820,8 @@
               ]
             },
             {
-              "path": "{{baseUrl}}/api/v1/webhooks/scans/:scanId/events",
               "jsonPointer": "/item/0/item/18/item/3",
+              "path": "{{baseUrl}}/api/v1/webhooks/scans/:scanId/events",
               "method": "POST",
               "parameters": [
                 {
@@ -1833,8 +1833,8 @@
               ]
             },
             {
-              "path": "{{baseUrl}}/api/v1/webhooks/scans/:scanId/config",
               "jsonPointer": "/item/0/item/18/item/4",
+              "path": "{{baseUrl}}/api/v1/webhooks/scans/:scanId/config",
               "method": "GET",
               "parameters": [
                 {
@@ -1848,24 +1848,24 @@
           ]
         },
         {
-          "path": "/",
+          "path": "{{baseUrl}}/api/v1/orgs",
           "jsonPointer": "/item/0/item/19",
           "children": [
             {
-              "path": "/",
+              "path": "{{baseUrl}}/api/v1/orgs/:organizationId",
               "jsonPointer": "/item/0/item/19/item/0",
               "children": [
                 {
-                  "path": "/",
+                  "path": "{{baseUrl}}/api/v1/orgs/:organizationId/memberships",
                   "jsonPointer": "/item/0/item/19/item/0/item/0",
                   "children": [
                     {
-                      "path": "/",
+                      "path": "{{baseUrl}}/api/v1/orgs/:organizationId/memberships/:memberId",
                       "jsonPointer": "/item/0/item/19/item/0/item/0/item/0",
                       "children": [
                         {
-                          "path": "{{baseUrl}}/api/v1/orgs/:organizationId/memberships/:memberId",
                           "jsonPointer": "/item/0/item/19/item/0/item/0/item/0/item/0",
+                          "path": "{{baseUrl}}/api/v1/orgs/:organizationId/memberships/:memberId",
                           "method": "PATCH",
                           "parameters": [
                             {
@@ -1883,8 +1883,8 @@
                           ]
                         },
                         {
-                          "path": "{{baseUrl}}/api/v1/orgs/:organizationId/memberships/:memberId",
                           "jsonPointer": "/item/0/item/19/item/0/item/0/item/0/item/1",
+                          "path": "{{baseUrl}}/api/v1/orgs/:organizationId/memberships/:memberId",
                           "method": "DELETE",
                           "parameters": [
                             {
@@ -1902,8 +1902,8 @@
                           ]
                         },
                         {
-                          "path": "{{baseUrl}}/api/v1/orgs/:organizationId/memberships/:memberId",
                           "jsonPointer": "/item/0/item/19/item/0/item/0/item/0/item/2",
+                          "path": "{{baseUrl}}/api/v1/orgs/:organizationId/memberships/:memberId",
                           "method": "GET",
                           "parameters": [
                             {
@@ -1923,8 +1923,8 @@
                       ]
                     },
                     {
-                      "path": "{{baseUrl}}/api/v1/orgs/:organizationId/memberships",
                       "jsonPointer": "/item/0/item/19/item/0/item/0/item/1",
+                      "path": "{{baseUrl}}/api/v1/orgs/:organizationId/memberships",
                       "method": "POST",
                       "parameters": [
                         {
@@ -1936,8 +1936,8 @@
                       ]
                     },
                     {
-                      "path": "{{baseUrl}}/api/v1/orgs/:organizationId/memberships",
                       "jsonPointer": "/item/0/item/19/item/0/item/0/item/2",
+                      "path": "{{baseUrl}}/api/v1/orgs/:organizationId/memberships",
                       "method": "GET",
                       "parameters": [
                         {
@@ -1951,12 +1951,12 @@
                   ]
                 },
                 {
-                  "path": "/",
+                  "path": "{{baseUrl}}/api/v1/orgs/:organizationId/targets",
                   "jsonPointer": "/item/0/item/19/item/0/item/1",
                   "children": [
                     {
-                      "path": "{{baseUrl}}/api/v1/orgs/:organizationId/targets",
                       "jsonPointer": "/item/0/item/19/item/0/item/1/item/0",
+                      "path": "{{baseUrl}}/api/v1/orgs/:organizationId/targets",
                       "method": "POST",
                       "parameters": [
                         {
@@ -1968,8 +1968,8 @@
                       ]
                     },
                     {
-                      "path": "{{baseUrl}}/api/v1/orgs/:organizationId/targets",
                       "jsonPointer": "/item/0/item/19/item/0/item/1/item/1",
+                      "path": "{{baseUrl}}/api/v1/orgs/:organizationId/targets",
                       "method": "PUT",
                       "parameters": [
                         {
@@ -1981,8 +1981,8 @@
                       ]
                     },
                     {
-                      "path": "{{baseUrl}}/api/v1/orgs/:organizationId/targets/upload",
                       "jsonPointer": "/item/0/item/19/item/0/item/1/item/2",
+                      "path": "{{baseUrl}}/api/v1/orgs/:organizationId/targets/upload",
                       "method": "POST",
                       "parameters": [
                         {
@@ -1996,16 +1996,16 @@
                   ]
                 },
                 {
-                  "path": "/",
+                  "path": "{{baseUrl}}/api/v1/orgs/:organizationId/quotas",
                   "jsonPointer": "/item/0/item/19/item/0/item/2",
                   "children": [
                     {
-                      "path": "/",
+                      "path": "{{baseUrl}}/api/v1/orgs/:organizationId/quotas/:type",
                       "jsonPointer": "/item/0/item/19/item/0/item/2/item/0",
                       "children": [
                         {
-                          "path": "{{baseUrl}}/api/v1/orgs/:organizationId/quotas/:type",
                           "jsonPointer": "/item/0/item/19/item/0/item/2/item/0/item/0",
+                          "path": "{{baseUrl}}/api/v1/orgs/:organizationId/quotas/:type",
                           "method": "DELETE",
                           "parameters": [
                             {
@@ -2023,8 +2023,8 @@
                           ]
                         },
                         {
-                          "path": "{{baseUrl}}/api/v1/orgs/:organizationId/quotas/:type",
                           "jsonPointer": "/item/0/item/19/item/0/item/2/item/0/item/1",
+                          "path": "{{baseUrl}}/api/v1/orgs/:organizationId/quotas/:type",
                           "method": "PUT",
                           "parameters": [
                             {
@@ -2044,8 +2044,8 @@
                       ]
                     },
                     {
-                      "path": "{{baseUrl}}/api/v1/orgs/:organizationId/quotas",
                       "jsonPointer": "/item/0/item/19/item/0/item/2/item/1",
+                      "path": "{{baseUrl}}/api/v1/orgs/:organizationId/quotas",
                       "method": "GET",
                       "parameters": [
                         {
@@ -2057,8 +2057,8 @@
                       ]
                     },
                     {
-                      "path": "{{baseUrl}}/api/v1/orgs/:organizationId/quotas",
                       "jsonPointer": "/item/0/item/19/item/0/item/2/item/2",
+                      "path": "{{baseUrl}}/api/v1/orgs/:organizationId/quotas",
                       "method": "POST",
                       "parameters": [
                         {
@@ -2072,8 +2072,8 @@
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/orgs/:organizationId",
                   "jsonPointer": "/item/0/item/19/item/0/item/3",
+                  "path": "{{baseUrl}}/api/v1/orgs/:organizationId",
                   "method": "DELETE",
                   "parameters": [
                     {
@@ -2085,8 +2085,8 @@
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/orgs/:organizationId",
                   "jsonPointer": "/item/0/item/19/item/0/item/4",
+                  "path": "{{baseUrl}}/api/v1/orgs/:organizationId",
                   "method": "PATCH",
                   "parameters": [
                     {
@@ -2098,8 +2098,8 @@
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/orgs/:organizationId",
                   "jsonPointer": "/item/0/item/19/item/0/item/5",
+                  "path": "{{baseUrl}}/api/v1/orgs/:organizationId",
                   "method": "GET",
                   "parameters": [
                     {
@@ -2111,8 +2111,8 @@
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/orgs/:organizationId/permissions",
                   "jsonPointer": "/item/0/item/19/item/0/item/6",
+                  "path": "{{baseUrl}}/api/v1/orgs/:organizationId/permissions",
                   "method": "PATCH",
                   "parameters": [
                     {
@@ -2124,8 +2124,8 @@
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/orgs/:organizationId/tags",
                   "jsonPointer": "/item/0/item/19/item/0/item/7",
+                  "path": "{{baseUrl}}/api/v1/orgs/:organizationId/tags",
                   "method": "PUT",
                   "parameters": [
                     {
@@ -2139,16 +2139,17 @@
               ]
             },
             {
-              "path": "/",
+              "path": "{{baseUrl}}/api/v1/orgs/:orgId/roles",
               "jsonPointer": "/item/0/item/19/item/1",
               "children": [
                 {
-                  "path": "/",
+                  "path": "{{baseUrl}}/api/v1/orgs/:orgId/roles/:roleId",
                   "jsonPointer": "/item/0/item/19/item/1/item/0",
                   "children": [
                     {
-                      "path": "{{baseUrl}}/api/v1/orgs/:orgId/roles/:roleId",
                       "jsonPointer": "/item/0/item/19/item/1/item/0/item/0",
+                      "path": "{{baseUrl}}/api/v1/orgs/:orgId/roles/:roleId",
+
                       "method": "GET",
                       "parameters": [
                         {
@@ -2166,8 +2167,8 @@
                       ]
                     },
                     {
-                      "path": "{{baseUrl}}/api/v1/orgs/:orgId/roles/:roleId",
                       "jsonPointer": "/item/0/item/19/item/1/item/0/item/1",
+                      "path": "{{baseUrl}}/api/v1/orgs/:orgId/roles/:roleId",
                       "method": "PUT",
                       "parameters": [
                         {
@@ -2181,13 +2182,12 @@
                           "name": "roleId",
                           "value": "<string>",
                           "valueJsonPointer": "/item/0/item/19/item/1/item/0/item/1/request/url/variable/1"
-
                         }
                       ]
                     },
                     {
-                      "path": "{{baseUrl}}/api/v1/orgs/:orgId/roles/:roleId",
                       "jsonPointer": "/item/0/item/19/item/1/item/0/item/2",
+                      "path": "{{baseUrl}}/api/v1/orgs/:orgId/roles/:roleId",
                       "method": "DELETE",
                       "parameters": [
                         {
@@ -2207,8 +2207,8 @@
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/orgs/:orgId/roles",
                   "jsonPointer": "/item/0/item/19/item/1/item/1",
+                  "path": "{{baseUrl}}/api/v1/orgs/:orgId/roles",
                   "method": "GET",
                   "parameters": [
                     {
@@ -2220,8 +2220,8 @@
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/orgs/:orgId/roles",
                   "jsonPointer": "/item/0/item/19/item/1/item/2",
+                  "path": "{{baseUrl}}/api/v1/orgs/:orgId/roles",
                   "method": "POST",
                   "parameters": [
                     {
@@ -2235,28 +2235,28 @@
               ]
             },
             {
-              "path": "{{baseUrl}}/api/v1/orgs",
               "jsonPointer": "/item/0/item/19/item/2",
+              "path": "{{baseUrl}}/api/v1/orgs",
               "method": "POST"
             },
             {
-              "path": "{{baseUrl}}/api/v1/orgs",
               "jsonPointer": "/item/0/item/19/item/3",
+              "path": "{{baseUrl}}/api/v1/orgs",
               "method": "GET"
             }
           ]
         },
         {
-          "path": "/",
+          "path": "{{baseUrl}}/api/v1/tags",
           "jsonPointer": "/item/0/item/20",
           "children": [
             {
-              "path": "/",
+              "path": "{{baseUrl}}/api/v1/tags/:tagId",
               "jsonPointer": "/item/0/item/20/item/0",
               "children": [
                 {
-                  "path": "{{baseUrl}}/api/v1/tags/:tagId",
                   "jsonPointer": "/item/0/item/20/item/0/item/0",
+                  "path": "{{baseUrl}}/api/v1/tags/:tagId",
                   "method": "DELETE",
                   "parameters": [
                     {
@@ -2268,8 +2268,8 @@
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/tags/:tagId",
                   "jsonPointer": "/item/0/item/20/item/0/item/1",
+                  "path": "{{baseUrl}}/api/v1/tags/:tagId",
                   "method": "PATCH",
                   "parameters": [
                     {
@@ -2283,44 +2283,44 @@
               ]
             },
             {
-              "path": "{{baseUrl}}/api/v1/tags",
               "jsonPointer": "/item/0/item/20/item/1",
+              "path": "{{baseUrl}}/api/v1/tags",
               "method": "GET"
             },
             {
-              "path": "{{baseUrl}}/api/v1/tags",
               "jsonPointer": "/item/0/item/20/item/2",
+              "path": "{{baseUrl}}/api/v1/tags",
               "method": "POST"
             }
           ]
         },
         {
-          "path": "/",
+          "path": "{{baseUrl}}/api/v1/member/notifications",
           "jsonPointer": "/item/0/item/21",
           "children": [
             {
-              "path": "{{baseUrl}}/api/v1/member/notifications",
               "jsonPointer": "/item/0/item/21/item/0",
+              "path": "{{baseUrl}}/api/v1/member/notifications",
               "method": "GET"
             },
             {
-              "path": "{{baseUrl}}/api/v1/member/notifications",
               "jsonPointer": "/item/0/item/21/item/1",
+              "path": "{{baseUrl}}/api/v1/member/notifications",
               "method": "PUT"
             }
           ]
         },
         {
-          "path": "/",
+          "path": "{{baseUrl}}/api/v1/issues/types",
           "jsonPointer": "/item/0/item/22",
           "children": [
             {
-              "path": "/",
+              "path": "{{baseUrl}}/api/v1/issues/types/:issue",
               "jsonPointer": "/item/0/item/22/item/0",
               "children": [
                 {
-                  "path": "{{baseUrl}}/api/v1/issues/types/:issue",
                   "jsonPointer": "/item/0/item/22/item/0/item/0",
+                  "path": "{{baseUrl}}/api/v1/issues/types/:issue",
                   "method": "PATCH",
                   "parameters": [
                     {
@@ -2332,8 +2332,8 @@
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/issues/types/:issue",
                   "jsonPointer": "/item/0/item/22/item/0/item/1",
+                  "path": "{{baseUrl}}/api/v1/issues/types/:issue",
                   "method": "GET",
                   "parameters": [
                     {
@@ -2347,95 +2347,95 @@
               ]
             },
             {
-              "path": "{{baseUrl}}/api/v1/issues/types",
               "jsonPointer": "/item/0/item/22/item/1",
+              "path": "{{baseUrl}}/api/v1/issues/types",
               "method": "POST"
             },
             {
-              "path": "{{baseUrl}}/api/v1/issues/types",
               "jsonPointer": "/item/0/item/22/item/2",
+              "path": "{{baseUrl}}/api/v1/issues/types",
               "method": "PATCH"
             },
             {
-              "path": "{{baseUrl}}/api/v1/issues/types",
               "jsonPointer": "/item/0/item/22/item/3",
+              "path": "{{baseUrl}}/api/v1/issues/types",
               "method": "GET"
             },
             {
-              "path": "{{baseUrl}}/api/v1/issues/types/import",
               "jsonPointer": "/item/0/item/22/item/4",
+              "path": "{{baseUrl}}/api/v1/issues/types/import",
               "method": "POST"
             }
           ]
         },
         {
-          "path": "/",
+          "path": "{{baseUrl}}/api/v1/report-options",
           "jsonPointer": "/item/0/item/23",
           "children": [
             {
-              "path": "/",
+              "path": "{{baseUrl}}/api/v1/report-options/cover",
               "jsonPointer": "/item/0/item/23/item/0",
               "children": [
                 {
-                  "path": "{{baseUrl}}/api/v1/report-options/cover",
                   "jsonPointer": "/item/0/item/23/item/0/item/0",
+                  "path": "{{baseUrl}}/api/v1/report-options/cover",
                   "method": "POST"
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/report-options/cover",
                   "jsonPointer": "/item/0/item/23/item/0/item/1",
+                  "path": "{{baseUrl}}/api/v1/report-options/cover",
                   "method": "GET"
                 }
               ]
             },
             {
-              "path": "/",
+              "path": "{{baseUrl}}/api/v1/report-options/page",
               "jsonPointer": "/item/0/item/23/item/1",
               "children": [
                 {
-                  "path": "{{baseUrl}}/api/v1/report-options/page",
                   "jsonPointer": "/item/0/item/23/item/1/item/0",
+                  "path": "{{baseUrl}}/api/v1/report-options/page",
                   "method": "POST"
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/report-options/page",
                   "jsonPointer": "/item/0/item/23/item/1/item/1",
+                  "path": "{{baseUrl}}/api/v1/report-options/page",
                   "method": "GET"
                 }
               ]
             },
             {
-              "path": "{{baseUrl}}/api/v1/report-options",
               "jsonPointer": "/item/0/item/23/item/2",
+              "path": "{{baseUrl}}/api/v1/report-options",
               "method": "GET"
             },
             {
-              "path": "{{baseUrl}}/api/v1/report-options",
               "jsonPointer": "/item/0/item/23/item/3",
+              "path": "{{baseUrl}}/api/v1/report-options",
               "method": "POST"
             },
             {
-              "path": "{{baseUrl}}/api/v1/report-options",
               "jsonPointer": "/item/0/item/23/item/4",
+              "path": "{{baseUrl}}/api/v1/report-options",
               "method": "DELETE"
             }
           ]
         },
         {
-          "path": "/",
+          "path": "{{baseUrl}}/api/v1/projects",
           "jsonPointer": "/item/0/item/24",
           "children": [
             {
-              "path": "/",
+              "path": "{{baseUrl}}/api/v1/projects/:projectId",
               "jsonPointer": "/item/0/item/24/item/0",
               "children": [
                 {
-                  "path": "/",
+                  "path": "{{baseUrl}}/api/v1/projects/:projectId/boards",
                   "jsonPointer": "/item/0/item/24/item/0/item/0",
                   "children": [
                     {
-                      "path": "{{baseUrl}}/api/v1/projects/:projectId/boards",
                       "jsonPointer": "/item/0/item/24/item/0/item/0/item/0",
+                      "path": "{{baseUrl}}/api/v1/projects/:projectId/boards",
                       "method": "GET",
                       "parameters": [
                         {
@@ -2447,8 +2447,8 @@
                       ]
                     },
                     {
-                      "path": "{{baseUrl}}/api/v1/projects/:projectId/boards",
                       "jsonPointer": "/item/0/item/24/item/0/item/0/item/1",
+                      "path": "{{baseUrl}}/api/v1/projects/:projectId/boards",
                       "method": "POST",
                       "parameters": [
                         {
@@ -2460,8 +2460,8 @@
                       ]
                     },
                     {
-                      "path": "{{baseUrl}}/api/v1/projects/:projectId/boards/:boardId",
                       "jsonPointer": "/item/0/item/24/item/0/item/0/item/2",
+                      "path": "{{baseUrl}}/api/v1/projects/:projectId/boards/:boardId",
                       "method": "DELETE",
                       "parameters": [
                         {
@@ -2481,8 +2481,8 @@
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/projects/:projectId",
                   "jsonPointer": "/item/0/item/24/item/0/item/1",
+                  "path": "{{baseUrl}}/api/v1/projects/:projectId",
                   "method": "GET",
                   "parameters": [
                     {
@@ -2494,8 +2494,8 @@
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/projects/:projectId",
                   "jsonPointer": "/item/0/item/24/item/0/item/2",
+                  "path": "{{baseUrl}}/api/v1/projects/:projectId",
                   "method": "PATCH",
                   "parameters": [
                     {
@@ -2507,8 +2507,8 @@
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/projects/:projectId",
                   "jsonPointer": "/item/0/item/24/item/0/item/3",
+                  "path": "{{baseUrl}}/api/v1/projects/:projectId",
                   "method": "DELETE",
                   "parameters": [
                     {
@@ -2520,8 +2520,8 @@
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/projects/:projectId/issues",
                   "jsonPointer": "/item/0/item/24/item/0/item/4",
+                  "path": "{{baseUrl}}/api/v1/projects/:projectId/issues",
                   "method": "GET",
                   "parameters": [
                     {
@@ -2535,28 +2535,28 @@
               ]
             },
             {
-              "path": "{{baseUrl}}/api/v1/projects",
               "jsonPointer": "/item/0/item/24/item/1",
+              "path": "{{baseUrl}}/api/v1/projects",
               "method": "POST"
             },
             {
-              "path": "{{baseUrl}}/api/v1/projects",
               "jsonPointer": "/item/0/item/24/item/2",
+              "path": "{{baseUrl}}/api/v1/projects",
               "method": "GET"
             }
           ]
         },
         {
-          "path": "/",
+          "path": "{{baseUrl}}/api/v1/project-issues",
           "jsonPointer": "/item/0/item/25",
           "children": [
             {
-              "path": "/",
+              "path": "{{baseUrl}}/api/v1/project-issues/:id",
               "jsonPointer": "/item/0/item/25/item/0",
               "children": [
                 {
-                  "path": "{{baseUrl}}/api/v1/project-issues/:id",
                   "jsonPointer": "/item/0/item/25/item/0/item/0",
+                  "path": "{{baseUrl}}/api/v1/project-issues/:id",
                   "method": "GET",
                   "parameters": [
                     {
@@ -2568,8 +2568,8 @@
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/project-issues/:id/issues",
                   "jsonPointer": "/item/0/item/25/item/0/item/1",
+                  "path": "{{baseUrl}}/api/v1/project-issues/:id/issues",
                   "method": "GET",
                   "parameters": [
                     {
@@ -2581,8 +2581,8 @@
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/project-issues/:id/assignees",
                   "jsonPointer": "/item/0/item/25/item/0/item/2",
+                  "path": "{{baseUrl}}/api/v1/project-issues/:id/assignees",
                   "method": "PUT",
                   "parameters": [
                     {
@@ -2594,8 +2594,8 @@
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/project-issues/:id/status",
                   "jsonPointer": "/item/0/item/25/item/0/item/3",
+                  "path": "{{baseUrl}}/api/v1/project-issues/:id/status",
                   "method": "POST",
                   "parameters": [
                     {
@@ -2609,23 +2609,23 @@
               ]
             },
             {
-              "path": "{{baseUrl}}/api/v1/project-issues/status",
               "jsonPointer": "/item/0/item/25/item/1",
+              "path": "{{baseUrl}}/api/v1/project-issues/status",
               "method": "POST"
             }
           ]
         },
         {
-          "path": "/",
+          "path": "{{baseUrl}}/api/v1/auth-objects",
           "jsonPointer": "/item/0/item/26",
           "children": [
             {
-              "path": "/",
+              "path": "{{baseUrl}}/api/v1/auth-objects/:authObjectId",
               "jsonPointer": "/item/0/item/26/item/0",
               "children": [
                 {
-                  "path": "{{baseUrl}}/api/v1/auth-objects/:authObjectId",
                   "jsonPointer": "/item/0/item/26/item/0/item/0",
+                  "path": "{{baseUrl}}/api/v1/auth-objects/:authObjectId",
                   "method": "GET",
                   "parameters": [
                     {
@@ -2637,8 +2637,8 @@
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/auth-objects/:authObjectId",
                   "jsonPointer": "/item/0/item/26/item/0/item/1",
+                  "path": "{{baseUrl}}/api/v1/auth-objects/:authObjectId",
                   "method": "PUT",
                   "parameters": [
                     {
@@ -2650,8 +2650,8 @@
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/auth-objects/:authObjectId",
                   "jsonPointer": "/item/0/item/26/item/0/item/2",
+                  "path": "{{baseUrl}}/api/v1/auth-objects/:authObjectId",
                   "method": "DELETE",
                   "parameters": [
                     {
@@ -2663,8 +2663,8 @@
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/auth-objects/:authObjectId/test",
                   "jsonPointer": "/item/0/item/26/item/0/item/3",
+                  "path": "{{baseUrl}}/api/v1/auth-objects/:authObjectId/test",
                   "method": "GET",
                   "parameters": [
                     {
@@ -2678,33 +2678,33 @@
               ]
             },
             {
-              "path": "{{baseUrl}}/api/v1/auth-objects",
               "jsonPointer": "/item/0/item/26/item/1",
+              "path": "{{baseUrl}}/api/v1/auth-objects",
               "method": "GET"
             },
             {
-              "path": "{{baseUrl}}/api/v1/auth-objects",
               "jsonPointer": "/item/0/item/26/item/2",
+              "path": "{{baseUrl}}/api/v1/auth-objects",
               "method": "POST"
             },
             {
-              "path": "{{baseUrl}}/api/v1/auth-objects/test",
               "jsonPointer": "/item/0/item/26/item/3",
+              "path": "{{baseUrl}}/api/v1/auth-objects/test",
               "method": "POST"
             }
           ]
         },
         {
-          "path": "/",
+          "path": "{{baseUrl}}/api/v1/scripts",
           "jsonPointer": "/item/0/item/27",
           "children": [
             {
-              "path": "/",
+              "path": "{{baseUrl}}/api/v1/scripts/:scriptId",
               "jsonPointer": "/item/0/item/27/item/0",
               "children": [
                 {
-                  "path": "{{baseUrl}}/api/v1/scripts/:scriptId",
                   "jsonPointer": "/item/0/item/27/item/0/item/0",
+                  "path": "{{baseUrl}}/api/v1/scripts/:scriptId",
                   "method": "GET",
                   "parameters": [
                     {
@@ -2716,8 +2716,8 @@
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/scripts/:scriptId",
                   "jsonPointer": "/item/0/item/27/item/0/item/1",
+                  "path": "{{baseUrl}}/api/v1/scripts/:scriptId",
                   "method": "PATCH",
                   "parameters": [
                     {
@@ -2729,8 +2729,8 @@
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/scripts/:scriptId",
                   "jsonPointer": "/item/0/item/27/item/0/item/2",
+                  "path": "{{baseUrl}}/api/v1/scripts/:scriptId",
                   "method": "DELETE",
                   "parameters": [
                     {
@@ -2744,33 +2744,33 @@
               ]
             },
             {
-              "path": "{{baseUrl}}/api/v1/scripts",
               "jsonPointer": "/item/0/item/27/item/1",
+              "path": "{{baseUrl}}/api/v1/scripts",
               "method": "GET"
             },
             {
-              "path": "{{baseUrl}}/api/v1/scripts",
               "jsonPointer": "/item/0/item/27/item/2",
+              "path": "{{baseUrl}}/api/v1/scripts",
               "method": "POST"
             }
           ]
         },
         {
-          "path": "/",
+          "path": "{{baseUrl}}/api/v1/integrations",
           "jsonPointer": "/item/0/item/28",
           "children": [
             {
-              "path": "/",
+              "path": "{{baseUrl}}/api/v1/integrations/gitlab",
               "jsonPointer": "/item/0/item/28/item/0",
               "children": [
                 {
-                  "path": "{{baseUrl}}/api/v1/integrations/gitlab/install",
                   "jsonPointer": "/item/0/item/28/item/0/item/0",
+                  "path": "{{baseUrl}}/api/v1/integrations/gitlab/install",
                   "method": "POST"
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/integrations/gitlab/install?clientId=<string>&baseUrl=<string>",
                   "jsonPointer": "/item/0/item/28/item/0/item/1",
+                  "path": "{{baseUrl}}/api/v1/integrations/gitlab/install?clientId=<string>&baseUrl=<string>",
                   "method": "GET",
                   "parameters": [
                     {
@@ -2790,44 +2790,44 @@
               ]
             },
             {
-              "path": "/",
+              "path": "{{baseUrl}}/api/v1/integrations/slack",
               "jsonPointer": "/item/0/item/28/item/1",
               "children": [
                 {
-                  "path": "{{baseUrl}}/api/v1/integrations/slack/install",
                   "jsonPointer": "/item/0/item/28/item/1/item/0",
+                  "path": "{{baseUrl}}/api/v1/integrations/slack/install",
                   "method": "GET"
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/integrations/slack/channels",
                   "jsonPointer": "/item/0/item/28/item/1/item/1",
+                  "path": "{{baseUrl}}/api/v1/integrations/slack/channels",
                   "method": "GET"
                 }
               ]
             },
             {
-              "path": "/",
+              "path": "{{baseUrl}}/api/v1/integrations/azure",
               "jsonPointer": "/item/0/item/28/item/2",
               "children": [
                 {
-                  "path": "{{baseUrl}}/api/v1/integrations/azure/install",
                   "jsonPointer": "/item/0/item/28/item/2/item/0",
+                  "path": "{{baseUrl}}/api/v1/integrations/azure/install",
                   "method": "GET"
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/integrations/azure/orgs",
                   "jsonPointer": "/item/0/item/28/item/2/item/1",
+                  "path": "{{baseUrl}}/api/v1/integrations/azure/orgs",
                   "method": "GET"
                 }
               ]
             },
             {
-              "path": "/",
+              "path": "{{baseUrl}}/api/v1/integrations/:provider",
               "jsonPointer": "/item/0/item/28/item/3",
               "children": [
                 {
-                  "path": "{{baseUrl}}/api/v1/integrations/:provider",
                   "jsonPointer": "/item/0/item/28/item/3/item/0",
+                  "path": "{{baseUrl}}/api/v1/integrations/:provider",
                   "method": "GET",
                   "parameters": [
                     {
@@ -2839,8 +2839,8 @@
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/integrations/:provider",
                   "jsonPointer": "/item/0/item/28/item/3/item/1",
+                  "path": "{{baseUrl}}/api/v1/integrations/:provider",
                   "method": "PUT",
                   "parameters": [
                     {
@@ -2852,8 +2852,8 @@
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/integrations/:provider",
                   "jsonPointer": "/item/0/item/28/item/3/item/2",
+                  "path": "{{baseUrl}}/api/v1/integrations/:provider",
                   "method": "DELETE",
                   "parameters": [
                     {
@@ -2865,8 +2865,8 @@
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/integrations/:provider/repos",
                   "jsonPointer": "/item/0/item/28/item/3/item/3",
+                  "path": "{{baseUrl}}/api/v1/integrations/:provider/repos",
                   "method": "GET",
                   "parameters": [
                     {
@@ -2880,35 +2880,35 @@
               ]
             },
             {
-              "path": "{{baseUrl}}/api/v1/integrations",
               "jsonPointer": "/item/0/item/28/item/4",
+              "path": "{{baseUrl}}/api/v1/integrations",
               "method": "GET"
             },
             {
-              "path": "{{baseUrl}}/api/v1/integrations",
               "jsonPointer": "/item/0/item/28/item/5",
+              "path": "{{baseUrl}}/api/v1/integrations",
               "method": "POST"
             },
             {
-              "path": "{{baseUrl}}/api/v1/integrations/monday/install",
               "jsonPointer": "/item/0/item/28/item/6",
+              "path": "{{baseUrl}}/api/v1/integrations/monday/install",
               "method": "GET"
             },
             {
-              "path": "{{baseUrl}}/api/v1/integrations/github/install",
               "jsonPointer": "/item/0/item/28/item/7",
+              "path": "{{baseUrl}}/api/v1/integrations/github/install",
               "method": "GET"
             }
           ]
         },
         {
-          "path": "{{baseUrl}}/api/v1/products",
           "jsonPointer": "/item/0/item/29",
+          "path": "{{baseUrl}}/api/v1/products",
           "method": "GET"
         },
         {
-          "path": "{{baseUrl}}/api/v1/customers/:customerId/billing",
           "jsonPointer": "/item/0/item/30",
+          "path": "{{baseUrl}}/api/v1/customers/:customerId/billing",
           "method": "GET",
           "parameters": [
             {
@@ -2920,15 +2920,15 @@
           ]
         },
         {
-          "path": "{{baseUrl}}/api/v1/register",
           "jsonPointer": "/item/0/item/31",
+          "path": "{{baseUrl}}/api/v1/register",
           "method": "POST"
         }
       ]
     },
     {
-      "path": "{{baseUrl}}/.well-known/change-password",
       "jsonPointer": "/item/1",
+      "path": "{{baseUrl}}/.well-known/change-password",
       "method": "GET"
     }
   ],

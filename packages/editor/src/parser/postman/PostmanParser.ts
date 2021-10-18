@@ -1,5 +1,5 @@
 import { TreeParser } from '../TreeParser';
-import { SpecTreeNode, HttpMethod } from '../../models';
+import { SpecTreeNode, HttpMethod, SpecTreeNodeParam } from '../../models';
 import { VariablesParser } from './VariablesParser';
 import { Postman } from '@har-sdk/types';
 
@@ -35,9 +35,7 @@ export class PostmanParser implements TreeParser {
       (x: Postman.ItemGroup | Postman.Item, idx: number): SpecTreeNode => {
         const itemJsonPointer = `${groupJsonPointer}/item/${idx.toString(10)}`;
 
-        const parameters = new VariablesParser(this.doc).parse(
-          `${itemJsonPointer}/variable`
-        );
+        const parameters = this.parseVariables(itemJsonPointer);
 
         return {
           // TODO improve path parsing
@@ -51,9 +49,20 @@ export class PostmanParser implements TreeParser {
                 )
               }
             : { method: (x as Postman.Item).request.method as HttpMethod }),
-          ...(parameters ? { parameters } : {})
+          ...(parameters?.length ? { parameters } : {})
         };
       }
     );
+  }
+
+  private parseVariables(itemJsonPointer: string): SpecTreeNodeParam[] {
+    const variablesParser = new VariablesParser(this.doc);
+
+    return [
+      variablesParser.parse(`${itemJsonPointer}/variable`),
+      variablesParser.parse(`${itemJsonPointer}/request/url/variable`)
+    ]
+      .flat()
+      .filter((x) => !!x);
   }
 }

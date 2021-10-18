@@ -60,7 +60,8 @@ export class PostmanParser implements TreeParser {
 
     return [
       variablesParser.parse(`${itemJsonPointer}/variable`),
-      variablesParser.parse(`${itemJsonPointer}/request/url/variable`)
+      variablesParser.parse(`${itemJsonPointer}/request/url/variable`),
+      variablesParser.parse(`${itemJsonPointer}/request/url/query`)
     ]
       .flat()
       .filter((x) => !!x);

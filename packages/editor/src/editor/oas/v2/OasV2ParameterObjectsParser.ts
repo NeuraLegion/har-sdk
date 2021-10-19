@@ -1,36 +1,20 @@
-import { ParametersParser } from '../../ParametersParser';
-import {
-  SpecTreeNodeParam,
-  ParamLocation,
-  SpecTreeLocationParam
-} from '../../../models';
+import { ParamLocation, SpecTreeLocationParam } from '../../../models';
+import { BaseOasParameterObjectsParser } from '../BaseOasParameterObjectsParser';
 import { OpenAPIV2 } from '@har-sdk/types';
 import jsonPointer from 'json-pointer';
 
-export class OasV2ParameterObjectsParser implements ParametersParser {
+export class OasV2ParameterObjectsParser extends BaseOasParameterObjectsParser<
+  OpenAPIV2.Document,
+  OpenAPIV2.ReferenceObject | OpenAPIV2.ParameterObject
+> {
   constructor(
-    private readonly doc: OpenAPIV2.Document,
+    doc: OpenAPIV2.Document,
     private readonly dereferencedDoc: OpenAPIV2.Document
-  ) {}
-
-  public parse(pointer: string): SpecTreeNodeParam[] {
-    const parameters: (
-      | OpenAPIV2.ReferenceObject
-      | OpenAPIV2.ParameterObject
-    )[] = jsonPointer.has(this.doc, pointer)
-      ? jsonPointer.get(this.doc, pointer)
-      : undefined;
-
-    return parameters?.map(
-      (
-        parameter: OpenAPIV2.ReferenceObject | OpenAPIV2.ParameterObject,
-        idx: number
-      ): SpecTreeLocationParam =>
-        this.parseParameter(`${pointer}/${idx}`, parameter)
-    );
+  ) {
+    super(doc);
   }
 
-  private parseParameter(
+  protected parseParameter(
     pointer: string,
     parameter: OpenAPIV2.ReferenceObject | OpenAPIV2.ParameterObject
   ): SpecTreeLocationParam {

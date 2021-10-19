@@ -1,9 +1,9 @@
-import { ParametersParser } from '../ParametersParser';
-import { SpecTreeNodeParam, SpecTreeRequestBodyParam } from '../../models';
+import { ParametersParser } from '../../ParametersParser';
+import { SpecTreeNodeParam, SpecTreeRequestBodyParam } from '../../../models';
 import { OpenAPIV3 } from '@har-sdk/types';
 import jsonPointer from 'json-pointer';
 
-export class RequestBodyObjectParser implements ParametersParser {
+export class OasV3RequestBodyObjectParser implements ParametersParser {
   constructor(
     private readonly doc: OpenAPIV3.Document,
     private readonly dereferencedDoc: OpenAPIV3.Document

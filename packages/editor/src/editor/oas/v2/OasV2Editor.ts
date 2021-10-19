@@ -1,16 +1,12 @@
-import { SpecTreeNode, SpecTreeNodeVariableParam } from '../../models';
-import { TreeParser } from '../TreeParser';
-import { PathItemObjectParser } from './PathItemObjectParser';
+import { OasV2PathItemObjectParser } from './OasV2PathItemObjectParser';
+import { BaseOasEditor } from '../BaseOasEditor';
+import { SpecTreeNode, SpecTreeNodeVariableParam } from '../../../models';
 import $RefParser from '@apidevtools/json-schema-ref-parser';
-import jsonPointer from 'json-pointer';
-import { load } from 'js-yaml';
 import { OpenAPIV2 } from '@har-sdk/types';
+import { load } from 'js-yaml';
+import jsonPointer from 'json-pointer';
 
-export class OpenApiV2Parser implements TreeParser {
-  protected doc: OpenAPIV2.Document;
-  protected dereferencedDoc: OpenAPIV2.Document;
-  protected tree: SpecTreeNode;
-
+export class OasV2Editor extends BaseOasEditor<OpenAPIV2.Document> {
   public async setup(source: string): Promise<void> {
     try {
       this.doc = load(source, { json: true }) as OpenAPIV2.Document;
@@ -37,7 +33,7 @@ export class OpenApiV2Parser implements TreeParser {
       path: '/',
       name: this.doc.info.title,
       children: Object.keys(this.doc.paths).map((path: string) =>
-        new PathItemObjectParser(this.doc, this.dereferencedDoc).parse(
+        new OasV2PathItemObjectParser(this.doc, this.dereferencedDoc).parse(
           jsonPointer.compile(['paths', path])
         )
       ),

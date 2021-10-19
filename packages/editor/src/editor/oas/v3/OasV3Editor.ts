@@ -1,16 +1,12 @@
-import { SpecTreeNode, SpecTreeNodeVariableParam } from '../../models';
-import { TreeParser } from '../TreeParser';
-import { PathItemObjectParser } from './PathItemObjectParser';
+import { SpecTreeNode, SpecTreeNodeVariableParam } from '../../../models';
+import { BaseOasEditor } from '../BaseOasEditor';
+import { OasV3PathItemObjectParser } from './OasV3PathItemObjectParser';
 import $RefParser from '@apidevtools/json-schema-ref-parser';
-import jsonPointer from 'json-pointer';
 import { load } from 'js-yaml';
 import { OpenAPIV3 } from '@har-sdk/types';
+import jsonPointer from 'json-pointer';
 
-export class OpenApiV3Parser implements TreeParser {
-  protected doc: OpenAPIV3.Document;
-  protected dereferencedDoc: OpenAPIV3.Document;
-  protected tree: SpecTreeNode;
-
+export class OasV3Editor extends BaseOasEditor<OpenAPIV3.Document> {
   public async setup(source: string): Promise<void> {
     try {
       this.doc = load(source, { json: true }) as OpenAPIV3.Document;
@@ -37,7 +33,7 @@ export class OpenApiV3Parser implements TreeParser {
       path: '/',
       name: this.doc.info.title,
       children: Object.keys(this.doc.paths).map((path: string) =>
-        new PathItemObjectParser(this.doc, this.dereferencedDoc).parse(
+        new OasV3PathItemObjectParser(this.doc, this.dereferencedDoc).parse(
           jsonPointer.compile(['paths', path])
         )
       ),

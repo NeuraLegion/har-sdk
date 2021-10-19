@@ -1,10 +1,11 @@
 import { SpecTreeNode } from '../../models';
+import { BaseEditor } from '../BaseEditor';
 import { Editor } from '../Editor';
-import { OpenApiV2Parser } from './OpenApiV2Parser';
-import jsonPath from 'jsonpath';
 import jsonPointer from 'json-pointer';
 
-export class OpenApiV2Editor extends OpenApiV2Parser implements Editor {
+export abstract class BaseOasEditor<T> extends BaseEditor<T> implements Editor {
+  protected dereferencedDoc: T;
+
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   public setParameterValue(valueJsonPointer: string, value: any): SpecTreeNode {
     let refJsonPointer;
@@ -20,33 +21,15 @@ export class OpenApiV2Editor extends OpenApiV2Parser implements Editor {
       );
     }
 
-    jsonPointer.set(this.doc, valueJsonPointer, value);
     jsonPointer.set(this.dereferencedDoc, valueJsonPointer, value);
 
-    const tree = JSON.parse(JSON.stringify(this.tree));
-    jsonPath.apply(
-      tree,
-      '$..[?(@.valueJsonPointer=="' + valueJsonPointer + '")]',
-      (item) => ({ ...item, value })
-    );
-    this.tree = tree;
-
-    return this.tree;
+    return super.setParameterValue(valueJsonPointer, value);
   }
 
   public removeNode(nodeJsonPointer: string): SpecTreeNode {
-    jsonPointer.remove(this.doc, nodeJsonPointer);
     jsonPointer.remove(this.dereferencedDoc, nodeJsonPointer);
 
-    const tree = JSON.parse(JSON.stringify(this.tree));
-    jsonPath.apply(
-      tree,
-      '$..[?(@.jsonPointer=="' + nodeJsonPointer + '")]',
-      () => undefined
-    );
-    this.tree = tree;
-
-    return this.parse();
+    return super.removeNode(nodeJsonPointer);
   }
 
   private getRefJsonPointer(valueJsonPointer: string): string | undefined {

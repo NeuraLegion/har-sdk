@@ -4,14 +4,14 @@ import {
   SpecTreeNode,
   SpecTreeNodeParam,
   SpecTreeNodeVariableParam
-} from '../../models';
-import { PathNodeParser } from '../PathNodeParser';
-import { OperationObjectParser } from './OperationObjectParser';
-import { ParameterObjectsParser } from './ParameterObjectsParser';
+} from '../../../models';
+import { PathNodeParser } from '../../PathNodeParser';
+import { OasV3OperationObjectParser } from './OasV3OperationObjectParser';
+import { OasV3ParameterObjectsParser } from './OasV3ParameterObjectsParser';
 import { OpenAPIV3 } from '@har-sdk/types';
 import jsonPointer from 'json-pointer';
 
-export class PathItemObjectParser implements PathNodeParser {
+export class OasV3PathItemObjectParser implements PathNodeParser {
   constructor(
     private readonly doc: OpenAPIV3.Document,
     private readonly dereferencedDoc: OpenAPIV3.Document
@@ -33,9 +33,10 @@ export class PathItemObjectParser implements PathNodeParser {
         .map((key) => key as HttpMethod)
         .map(
           (method: HttpMethod): SpecTreeNode =>
-            new OperationObjectParser(this.doc, this.dereferencedDoc).parse(
-              jsonPointer.compile(['paths', path, method])
-            )
+            new OasV3OperationObjectParser(
+              this.doc,
+              this.dereferencedDoc
+            ).parse(jsonPointer.compile(['paths', path, method]))
         ),
       ...(parameters?.length ? { parameters } : {})
     };
@@ -49,7 +50,7 @@ export class PathItemObjectParser implements PathNodeParser {
     );
 
     const parameters: SpecTreeNodeParam[] =
-      new ParameterObjectsParser(this.doc, this.dereferencedDoc).parse(
+      new OasV3ParameterObjectsParser(this.doc, this.dereferencedDoc).parse(
         `${pointer}/parameters`
       ) || [];
 

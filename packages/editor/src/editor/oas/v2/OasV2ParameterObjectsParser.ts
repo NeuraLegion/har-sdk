@@ -1,13 +1,13 @@
-import { ParametersParser } from '../ParametersParser';
+import { ParametersParser } from '../../ParametersParser';
 import {
   SpecTreeNodeParam,
   ParamLocation,
   SpecTreeLocationParam
-} from '../../models';
+} from '../../../models';
 import { OpenAPIV2 } from '@har-sdk/types';
 import jsonPointer from 'json-pointer';
 
-export class ParameterObjectsParser implements ParametersParser {
+export class OasV2ParameterObjectsParser implements ParametersParser {
   constructor(
     private readonly doc: OpenAPIV2.Document,
     private readonly dereferencedDoc: OpenAPIV2.Document

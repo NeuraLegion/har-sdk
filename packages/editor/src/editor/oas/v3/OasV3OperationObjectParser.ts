@@ -1,11 +1,11 @@
-import { HttpMethod, SpecTreeNode } from '../../models';
-import { PathNodeParser } from '../PathNodeParser';
-import { ParameterObjectsParser } from './ParameterObjectsParser';
-import { RequestBodyObjectParser } from './RequestBodyObjectParser';
+import { HttpMethod, SpecTreeNode } from '../../../models';
+import { PathNodeParser } from '../../PathNodeParser';
+import { OasV3ParameterObjectsParser } from './OasV3ParameterObjectsParser';
+import { OasV3RequestBodyObjectParser } from './OasV3RequestBodyObjectParser';
 import { OpenAPIV3 } from '@har-sdk/types';
 import jsonPointer from 'json-pointer';
 
-export class OperationObjectParser implements PathNodeParser {
+export class OasV3OperationObjectParser implements PathNodeParser {
   constructor(
     private readonly doc: OpenAPIV3.Document,
     private readonly dereferencedDoc: OpenAPIV3.Document
@@ -13,12 +13,13 @@ export class OperationObjectParser implements PathNodeParser {
 
   public parse(pointer: string): SpecTreeNode {
     const parameters = [
-      ...(new ParameterObjectsParser(this.doc, this.dereferencedDoc).parse(
+      ...(new OasV3ParameterObjectsParser(this.doc, this.dereferencedDoc).parse(
         `${pointer}/parameters`
       ) || []),
-      ...(new RequestBodyObjectParser(this.doc, this.dereferencedDoc).parse(
-        `${pointer}/requestBody`
-      ) || [])
+      ...(new OasV3RequestBodyObjectParser(
+        this.doc,
+        this.dereferencedDoc
+      ).parse(`${pointer}/requestBody`) || [])
     ];
 
     const parts = jsonPointer.parse(pointer);

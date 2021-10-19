@@ -1,10 +1,13 @@
-import { SpecTreeNode } from '../../models';
-import { Editor } from '../Editor';
-import { PostmanParser } from './PostmanParser';
+import { SpecTreeNode } from '../models';
+import { Editor } from './Editor';
+import { BaseTreeParser } from './BaseTreeParser';
 import jsonPath from 'jsonpath';
 import jsonPointer from 'json-pointer';
 
-export class PostmanEditor extends PostmanParser implements Editor {
+export abstract class BaseEditor<T>
+  extends BaseTreeParser<T>
+  implements Editor
+{
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   public setParameterValue(valueJsonPointer: string, value: any): SpecTreeNode {
     jsonPointer.set(this.doc, valueJsonPointer, value);

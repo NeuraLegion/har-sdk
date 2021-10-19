@@ -1,10 +1,10 @@
-import { HttpMethod, SpecTreeNode } from '../../models';
-import { PathNodeParser } from '../PathNodeParser';
-import { ParameterObjectsParser } from './ParameterObjectsParser';
+import { HttpMethod, SpecTreeNode } from '../../../models';
+import { PathNodeParser } from '../../PathNodeParser';
+import { OasV2ParameterObjectsParser } from './OasV2ParameterObjectsParser';
 import { OpenAPIV2 } from '@har-sdk/types';
 import jsonPointer from 'json-pointer';
 
-export class OperationObjectParser implements PathNodeParser {
+export class OasV2OperationObjectParser implements PathNodeParser {
   constructor(
     private readonly doc: OpenAPIV2.Document,
     private readonly dereferencedDoc: OpenAPIV2.Document
@@ -12,7 +12,7 @@ export class OperationObjectParser implements PathNodeParser {
 
   public parse(pointer: string): SpecTreeNode {
     const parameters = [
-      ...(new ParameterObjectsParser(this.doc, this.dereferencedDoc).parse(
+      ...(new OasV2ParameterObjectsParser(this.doc, this.dereferencedDoc).parse(
         `${pointer}/parameters`
       ) || [])
     ];

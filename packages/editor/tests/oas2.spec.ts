@@ -1,5 +1,5 @@
 import {
-  OpenApiV2Editor,
+  OasV2Editor,
   SpecTreeNode,
   SpecTreeRequestBodyParam,
   SpecTreeNodeParam,
@@ -45,7 +45,7 @@ describe('oas parser', () => {
   });
 
   describe('oas v2 tree parser', () => {
-    const openApiParser: TreeParser = new OpenApiV2Editor();
+    const openApiParser: TreeParser = new OasV2Editor();
     const resultTree = JSON.parse(
       readFileSync(resolve(expectedResultPath), 'utf-8')
     );
@@ -74,7 +74,7 @@ describe('oas parser', () => {
   });
 
   describe('oas v2 editor', () => {
-    const openApiEditor = new OpenApiV2Editor();
+    const openApiEditor = new OasV2Editor();
 
     const shouldBeValidDoc = (doc: OpenAPIV2.Document) =>
       new OASValidator().verify(doc).should.eventually.deep.eq({

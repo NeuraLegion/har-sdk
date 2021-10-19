@@ -1,14 +1,11 @@
-import { TreeParser } from '../TreeParser';
 import { SpecTreeNode, HttpMethod } from '../../models';
+import { BaseEditor } from '../BaseEditor';
 import { PostmanParametersParser } from './ParametersParser';
 import { PostmanUrlParser } from './PostmanUrlParser';
 import { VariablesParser } from './VariablesParser';
 import { Postman } from '@har-sdk/types';
 
-export class PostmanParser implements TreeParser {
-  protected doc: Postman.Document;
-  protected tree: SpecTreeNode;
-
+export class PostmanEditor extends BaseEditor<Postman.Document> {
   private readonly postmanUrlParser = new PostmanUrlParser();
 
   public async setup(source: string): Promise<void> {

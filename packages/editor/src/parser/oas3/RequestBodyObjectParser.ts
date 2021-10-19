@@ -28,22 +28,29 @@ export class RequestBodyObjectParser implements ParametersParser {
       ([mediaType, mediaTypeObject]: [
         string,
         OpenAPIV3.MediaTypeObject
-      ]): SpecTreeRequestBodyParam => {
-        const value =
-          mediaTypeObject.example ||
-          (mediaTypeObject.examples?.[0] as OpenAPIV3.ExampleObject)?.value;
-
-        return {
-          paramType: 'requestBody',
-          bodyType: mediaType,
-          ...(value != null ? { value } : {}),
-          valueJsonPointer: `${pointer}${jsonPointer.compile([
-            'content',
-            mediaType,
-            'example'
-          ])}`
-        };
-      }
+      ]): SpecTreeRequestBodyParam =>
+        this.parseRequestBodyContentEntry(pointer, mediaType, mediaTypeObject)
     );
+  }
+
+  private parseRequestBodyContentEntry(
+    pointer: string,
+    mediaType: string,
+    mediaTypeObject: OpenAPIV3.MediaTypeObject
+  ): SpecTreeRequestBodyParam {
+    const value =
+      mediaTypeObject.example ||
+      (mediaTypeObject.examples?.[0] as OpenAPIV3.ExampleObject)?.value;
+
+    return {
+      paramType: 'requestBody',
+      bodyType: mediaType,
+      ...(value != null ? { value } : {}),
+      valueJsonPointer: `${pointer}${jsonPointer.compile([
+        'content',
+        mediaType,
+        'example'
+      ])}`
+    };
   }
 }

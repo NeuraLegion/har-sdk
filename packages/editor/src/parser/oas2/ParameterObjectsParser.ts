@@ -2,8 +2,7 @@ import { ParametersParser } from '../ParametersParser';
 import {
   SpecTreeNodeParam,
   ParamLocation,
-  SpecTreeLocationParam,
-  SpecTreeRequestBodyParam
+  SpecTreeLocationParam
 } from '../../models';
 import { OpenAPIV2 } from '@har-sdk/types';
 import jsonPointer from 'json-pointer';
@@ -26,26 +25,28 @@ export class ParameterObjectsParser implements ParametersParser {
       (
         parameter: OpenAPIV2.ReferenceObject | OpenAPIV2.ParameterObject,
         idx: number
-      ): SpecTreeLocationParam | SpecTreeRequestBodyParam => {
-        const paramJsonPointer = `${pointer}/${idx}`;
-        const $ref = (parameter as OpenAPIV2.ReferenceObject).$ref;
-
-        const paramObj: OpenAPIV2.Parameter = $ref
-          ? jsonPointer.get(this.dereferencedDoc, paramJsonPointer)
-          : (parameter as OpenAPIV2.Parameter);
-        const value = paramObj.default || paramObj?.items?.default;
-
-        return {
-          paramType: 'location',
-          name: paramObj.name,
-          ...(value != null ? { value } : {}),
-          valueJsonPointer: `${pointer}${jsonPointer.compile([
-            idx.toString(10),
-            'default'
-          ])}`,
-          location: paramObj.in as ParamLocation
-        };
-      }
+      ): SpecTreeLocationParam =>
+        this.parseParameter(`${pointer}/${idx}`, parameter)
     );
+  }
+
+  private parseParameter(
+    pointer: string,
+    parameter: OpenAPIV2.ReferenceObject | OpenAPIV2.ParameterObject
+  ): SpecTreeLocationParam {
+    const paramObj: OpenAPIV2.Parameter = (
+      parameter as OpenAPIV2.ReferenceObject
+    ).$ref
+      ? jsonPointer.get(this.dereferencedDoc, pointer)
+      : (parameter as OpenAPIV2.Parameter);
+    const value = paramObj.default || paramObj?.items?.default;
+
+    return {
+      paramType: 'location',
+      name: paramObj.name,
+      ...(value != null ? { value } : {}),
+      valueJsonPointer: `${pointer}/default`,
+      location: paramObj.in as ParamLocation
+    };
   }
 }

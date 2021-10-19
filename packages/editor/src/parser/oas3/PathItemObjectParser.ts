@@ -23,6 +23,31 @@ export class PathItemObjectParser implements PathNodeParser {
       this.doc,
       pointer
     );
+    const parameters = this.parseParameters(pointer);
+
+    return {
+      path,
+      jsonPointer: pointer,
+      children: Object.keys(pathItemObject)
+        .filter((key: string) => isHttpMethod(key))
+        .map((key) => key as HttpMethod)
+        .map(
+          (method: HttpMethod): SpecTreeNode =>
+            new OperationObjectParser(this.doc, this.dereferencedDoc).parse(
+              jsonPointer.compile(['paths', path, method])
+            )
+        ),
+      ...(parameters?.length ? { parameters } : {})
+    };
+  }
+
+  private parseParameters(pointer: string): SpecTreeNodeParam[] {
+    const path = jsonPointer.parse(pointer).pop();
+    const pathItemObject: OpenAPIV3.PathItemObject = jsonPointer.get(
+      this.doc,
+      pointer
+    );
+
     const parameters: SpecTreeNodeParam[] =
       new ParameterObjectsParser(this.doc, this.dereferencedDoc).parse(
         `${pointer}/parameters`
@@ -39,19 +64,6 @@ export class PathItemObjectParser implements PathNodeParser {
       parameters.push(servers);
     }
 
-    return {
-      path,
-      jsonPointer: pointer,
-      children: Object.keys(pathItemObject)
-        .filter((key: string) => isHttpMethod(key))
-        .map((key) => key as HttpMethod)
-        .map(
-          (method: HttpMethod): SpecTreeNode =>
-            new OperationObjectParser(this.doc, this.dereferencedDoc).parse(
-              jsonPointer.compile(['paths', path, method])
-            )
-        ),
-      ...(parameters?.length ? { parameters } : {})
-    };
+    return parameters;
   }
 }

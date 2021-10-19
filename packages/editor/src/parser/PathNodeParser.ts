@@ -1,5 +1,4 @@
 import { SpecTreeNode } from '../models';
+import { Parser } from './Parser';
 
-export interface PathNodeParser {
-  parse(pointer: string): SpecTreeNode;
-}
+export type PathNodeParser = Parser<SpecTreeNode>;

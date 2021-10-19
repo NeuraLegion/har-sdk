@@ -4,12 +4,12 @@
   "name": "NexPloit REST API",
   "children": [
     {
-      "path": "{{baseUrl}}/api/v1",
       "jsonPointer": "/item/0",
+      "path": "{{baseUrl}}/api/v1",
       "children": [
         {
-          "path": "{{baseUrl}}/api/v1/activity",
           "jsonPointer": "/item/0/item/0",
+          "path": "{{baseUrl}}/api/v1/activity",
           "children": [
             {
               "jsonPointer": "/item/0/item/0/item/0",
@@ -24,8 +24,8 @@
           ]
         },
         {
-          "path": "{{baseUrl}}/api/v1/statistics",
           "jsonPointer": "/item/0/item/1",
+          "path": "{{baseUrl}}/api/v1/statistics",
           "children": [
             {
               "jsonPointer": "/item/0/item/1/item/0",
@@ -162,16 +162,16 @@
           ]
         },
         {
-          "path": "{{baseUrl}}/api/v1",
           "jsonPointer": "/item/0/item/2",
+          "path": "{{baseUrl}}/api/v1",
           "children": [
             {
-              "path": "{{baseUrl}}/api/v1/files/:fileId",
               "jsonPointer": "/item/0/item/2/item/0",
+              "path": "{{baseUrl}}/api/v1/files/:fileId",
               "children": [
                 {
-                  "path": "{{baseUrl}}/api/v1/files/:fileId/tree",
                   "jsonPointer": "/item/0/item/2/item/0/item/0",
+                  "path": "{{baseUrl}}/api/v1/files/:fileId/tree",
                   "children": [
                     {
                       "jsonPointer": "/item/0/item/2/item/0/item/0/item/0",
@@ -196,6 +196,12 @@
                           "name": "fileId",
                           "value": "<string>",
                           "valueJsonPointer": "/item/0/item/2/item/0/item/0/item/1/request/url/variable/0"
+                        },
+                        {
+                          "paramType": "requestBody",
+                          "bodyType": "application/json",
+                          "value": "{\n    \"node\": \"<object>\",\n    \"headers\": \"<string>\",\n    \"variables\": \"<string>\"\n}",
+                          "valueJsonPointer": "/item/0/item/2/item/0/item/0/item/1/request/body/raw"
                         }
                       ]
                     }
@@ -276,13 +282,27 @@
                   "name": "discard",
                   "value": "<boolean>",
                   "valueJsonPointer": "/item/0/item/2/item/2/request/url/query/0"
+                },
+                {
+                  "paramType": "requestBody",
+                  "bodyType": "application/json",
+                  "value": "{\n    \"file\": \"<binary>\"\n}",
+                  "valueJsonPointer": "/item/0/item/2/item/2/request/body/raw"
                 }
               ]
             },
             {
               "jsonPointer": "/item/0/item/2/item/3",
               "path": "{{baseUrl}}/api/v1/files",
-              "method": "DELETE"
+              "method": "DELETE",
+              "parameters": [
+                {
+                  "paramType": "requestBody",
+                  "bodyType": "application/json",
+                  "value": "{\n    \"ids\": [\n        \"<integer>\",\n        \"<integer>\"\n    ]\n}",
+                  "valueJsonPointer": "/item/0/item/2/item/3/request/body/raw"
+                }
+              ]
             },
             {
               "jsonPointer": "/item/0/item/2/item/4",
@@ -292,32 +312,48 @@
           ]
         },
         {
-          "path": "{{baseUrl}}/api/v1/me",
           "jsonPointer": "/item/0/item/3",
+          "path": "{{baseUrl}}/api/v1/me",
           "children": [
             {
-              "path": "{{baseUrl}}/api/v1/me",
               "jsonPointer": "/item/0/item/3/item/0",
+              "path": "{{baseUrl}}/api/v1/me",
               "children": [
                 {
-                  "path": "{{baseUrl}}/api/v1/me/feed/following",
                   "jsonPointer": "/item/0/item/3/item/0/item/0",
+                  "path": "{{baseUrl}}/api/v1/me/feed/following",
                   "children": [
                     {
                       "jsonPointer": "/item/0/item/3/item/0/item/0/item/0",
                       "path": "{{baseUrl}}/api/v1/me/feed/following",
-                      "method": "POST"
+                      "method": "POST",
+                      "parameters": [
+                        {
+                          "paramType": "requestBody",
+                          "bodyType": "application/json",
+                          "value": "{\n    \"targetIds\": [\n        \"<string>\"\n    ],\n    \"keepHistory\": true\n}",
+                          "valueJsonPointer": "/item/0/item/3/item/0/item/0/item/0/request/body/raw"
+                        }
+                      ]
                     },
                     {
                       "jsonPointer": "/item/0/item/3/item/0/item/0/item/1",
                       "path": "{{baseUrl}}/api/v1/me/feed/following",
-                      "method": "DELETE"
+                      "method": "DELETE",
+                      "parameters": [
+                        {
+                          "paramType": "requestBody",
+                          "bodyType": "application/json",
+                          "value": "{\n    \"targetIds\": [\n        \"<string>\"\n    ],\n    \"keepHistory\": true\n}",
+                          "valueJsonPointer": "/item/0/item/3/item/0/item/0/item/1/request/body/raw"
+                        }
+                      ]
                     }
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/me/feed/activities",
                   "jsonPointer": "/item/0/item/3/item/0/item/1",
+                  "path": "{{baseUrl}}/api/v1/me/feed/activities",
                   "children": [
                     {
                       "jsonPointer": "/item/0/item/3/item/0/item/1/item/0",
@@ -340,13 +376,21 @@
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/me/feed/subscriptions",
                   "jsonPointer": "/item/0/item/3/item/0/item/2",
+                  "path": "{{baseUrl}}/api/v1/me/feed/subscriptions",
                   "children": [
                     {
                       "jsonPointer": "/item/0/item/3/item/0/item/2/item/0",
                       "path": "{{baseUrl}}/api/v1/me/feed/subscriptions",
-                      "method": "PUT"
+                      "method": "PUT",
+                      "parameters": [
+                        {
+                          "paramType": "requestBody",
+                          "bodyType": "application/json",
+                          "value": "[\n    {\n        \"objectType\": \"<string>\",\n        \"verbs\": [\n            \"<string>\"\n        ]\n    },\n    {\n        \"objectType\": \"<string>\",\n        \"verbs\": [\n            \"<string>\"\n        ]\n    }\n]",
+                          "valueJsonPointer": "/item/0/item/3/item/0/item/2/item/0/request/body/raw"
+                        }
+                      ]
                     },
                     {
                       "jsonPointer": "/item/0/item/3/item/0/item/2/item/1",
@@ -377,21 +421,29 @@
                 {
                   "jsonPointer": "/item/0/item/3/item/0/item/4",
                   "path": "{{baseUrl}}/api/v1/me/feed",
-                  "method": "PATCH"
+                  "method": "PATCH",
+                  "parameters": [
+                    {
+                      "paramType": "requestBody",
+                      "bodyType": "application/json",
+                      "value": "{\n    \"markSeenAll\": false,\n    \"markSeen\": [\n        \"<string>\",\n        \"<string>\"\n    ]\n}",
+                      "valueJsonPointer": "/item/0/item/3/item/0/item/4/request/body/raw"
+                    }
+                  ]
                 }
               ]
             },
             {
-              "path": "{{baseUrl}}/api/v1/me/org",
               "jsonPointer": "/item/0/item/3/item/1",
+              "path": "{{baseUrl}}/api/v1/me/org",
               "children": [
                 {
-                  "path": "{{baseUrl}}/api/v1/me/org/api-keys",
                   "jsonPointer": "/item/0/item/3/item/1/item/0",
+                  "path": "{{baseUrl}}/api/v1/me/org/api-keys",
                   "children": [
                     {
-                      "path": "{{baseUrl}}/api/v1/me/org/api-keys/:apiKeyId",
                       "jsonPointer": "/item/0/item/3/item/1/item/0/item/0",
+                      "path": "{{baseUrl}}/api/v1/me/org/api-keys/:apiKeyId",
                       "children": [
                         {
                           "jsonPointer": "/item/0/item/3/item/1/item/0/item/0/item/0",
@@ -403,6 +455,12 @@
                               "name": "apiKeyId",
                               "value": "<string>",
                               "valueJsonPointer": "/item/0/item/3/item/1/item/0/item/0/item/0/request/url/variable/0"
+                            },
+                            {
+                              "paramType": "requestBody",
+                              "bodyType": "application/json",
+                              "value": "{\n    \"name\": \"<string>\",\n    \"scopes\": [\n        \"<string>\"\n    ]\n}",
+                              "valueJsonPointer": "/item/0/item/3/item/1/item/0/item/0/item/0/request/body/raw"
                             }
                           ]
                         },
@@ -424,7 +482,15 @@
                     {
                       "jsonPointer": "/item/0/item/3/item/1/item/0/item/1",
                       "path": "{{baseUrl}}/api/v1/me/org/api-keys",
-                      "method": "POST"
+                      "method": "POST",
+                      "parameters": [
+                        {
+                          "paramType": "requestBody",
+                          "bodyType": "application/json",
+                          "value": "{\n    \"name\": \"<string>\",\n    \"scopes\": [\n        \"<string>\"\n    ]\n}",
+                          "valueJsonPointer": "/item/0/item/3/item/1/item/0/item/1/request/body/raw"
+                        }
+                      ]
                     },
                     {
                       "jsonPointer": "/item/0/item/3/item/1/item/0/item/2",
@@ -434,12 +500,12 @@
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/me/org/memberships",
                   "jsonPointer": "/item/0/item/3/item/1/item/1",
+                  "path": "{{baseUrl}}/api/v1/me/org/memberships",
                   "children": [
                     {
-                      "path": "{{baseUrl}}/api/v1/me/org/memberships/:memberId",
                       "jsonPointer": "/item/0/item/3/item/1/item/1/item/0",
+                      "path": "{{baseUrl}}/api/v1/me/org/memberships/:memberId",
                       "children": [
                         {
                           "jsonPointer": "/item/0/item/3/item/1/item/1/item/0/item/0",
@@ -451,6 +517,12 @@
                               "name": "memberId",
                               "value": "<string>",
                               "valueJsonPointer": "/item/0/item/3/item/1/item/1/item/0/item/0/request/url/variable/0"
+                            },
+                            {
+                              "paramType": "requestBody",
+                              "bodyType": "application/json",
+                              "value": "{\n    \"active\": \"<boolean>\",\n    \"email\": \"<email>\",\n    \"roleId\": \"<string>\",\n    \"firstName\": \"<string>\",\n    \"lastName\": \"<string>\",\n    \"groups\": [\n        \"<string>\"\n    ]\n}",
+                              "valueJsonPointer": "/item/0/item/3/item/1/item/1/item/0/item/0/request/body/raw"
                             }
                           ]
                         },
@@ -485,7 +557,15 @@
                     {
                       "jsonPointer": "/item/0/item/3/item/1/item/1/item/1",
                       "path": "{{baseUrl}}/api/v1/me/org/memberships",
-                      "method": "POST"
+                      "method": "POST",
+                      "parameters": [
+                        {
+                          "paramType": "requestBody",
+                          "bodyType": "application/json",
+                          "value": "{\n    \"email\": \"<email>\",\n    \"roleId\": \"<string>\",\n    \"firstName\": \"<string>\",\n    \"lastName\": \"<string>\",\n    \"groups\": [\n        \"<string>\"\n    ]\n}",
+                          "valueJsonPointer": "/item/0/item/3/item/1/item/1/item/1/request/body/raw"
+                        }
+                      ]
                     },
                     {
                       "jsonPointer": "/item/0/item/3/item/1/item/1/item/2",
@@ -495,16 +575,16 @@
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/me/org/groups",
                   "jsonPointer": "/item/0/item/3/item/1/item/2",
+                  "path": "{{baseUrl}}/api/v1/me/org/groups",
                   "children": [
                     {
-                      "path": "{{baseUrl}}/api/v1/me/org/groups/:groupId",
                       "jsonPointer": "/item/0/item/3/item/1/item/2/item/0",
+                      "path": "{{baseUrl}}/api/v1/me/org/groups/:groupId",
                       "children": [
                         {
-                          "path": "{{baseUrl}}/api/v1/me/org/groups/:groupId/memberships",
                           "jsonPointer": "/item/0/item/3/item/1/item/2/item/0/item/0",
+                          "path": "{{baseUrl}}/api/v1/me/org/groups/:groupId/memberships",
                           "children": [
                             {
                               "jsonPointer": "/item/0/item/3/item/1/item/2/item/0/item/0/item/0",
@@ -516,6 +596,12 @@
                                   "name": "groupId",
                                   "value": "<string>",
                                   "valueJsonPointer": "/item/0/item/3/item/1/item/2/item/0/item/0/item/0/request/url/variable/0"
+                                },
+                                {
+                                  "paramType": "requestBody",
+                                  "bodyType": "application/json",
+                                  "value": "{\n    \"members\": [\n        \"<string>\"\n    ]\n}",
+                                  "valueJsonPointer": "/item/0/item/3/item/1/item/2/item/0/item/0/item/0/request/body/raw"
                                 }
                               ]
                             },
@@ -529,6 +615,12 @@
                                   "name": "groupId",
                                   "value": "<string>",
                                   "valueJsonPointer": "/item/0/item/3/item/1/item/2/item/0/item/0/item/1/request/url/variable/0"
+                                },
+                                {
+                                  "paramType": "requestBody",
+                                  "bodyType": "application/json",
+                                  "value": "{\n    \"members\": [\n        \"<string>\"\n    ]\n}",
+                                  "valueJsonPointer": "/item/0/item/3/item/1/item/2/item/0/item/0/item/1/request/body/raw"
                                 }
                               ]
                             }
@@ -557,6 +649,12 @@
                               "name": "groupId",
                               "value": "<string>",
                               "valueJsonPointer": "/item/0/item/3/item/1/item/2/item/0/item/2/request/url/variable/0"
+                            },
+                            {
+                              "paramType": "requestBody",
+                              "bodyType": "application/json",
+                              "value": "{\n    \"name\": \"<string>\",\n    \"id\": \"<string>\",\n    \"description\": \"<string>\",\n    \"predefined\": false,\n    \"members\": [\n        \"<string>\"\n    ],\n    \"createdAt\": \"<dateTime>\",\n    \"updatedAt\": \"<dateTime>\",\n    \"sso\": false\n}",
+                              "valueJsonPointer": "/item/0/item/3/item/1/item/2/item/0/item/2/request/body/raw"
                             }
                           ]
                         },
@@ -583,7 +681,15 @@
                     {
                       "jsonPointer": "/item/0/item/3/item/1/item/2/item/2",
                       "path": "{{baseUrl}}/api/v1/me/org/groups",
-                      "method": "POST"
+                      "method": "POST",
+                      "parameters": [
+                        {
+                          "paramType": "requestBody",
+                          "bodyType": "application/json",
+                          "value": "{\n    \"name\": \"<string>\",\n    \"id\": \"<string>\",\n    \"description\": \"<string>\",\n    \"predefined\": false,\n    \"members\": [\n        \"<string>\"\n    ],\n    \"createdAt\": \"<dateTime>\",\n    \"updatedAt\": \"<dateTime>\",\n    \"sso\": false\n}",
+                          "valueJsonPointer": "/item/0/item/3/item/1/item/2/item/2/request/body/raw"
+                        }
+                      ]
                     }
                   ]
                 },
@@ -595,18 +701,34 @@
                 {
                   "jsonPointer": "/item/0/item/3/item/1/item/4",
                   "path": "{{baseUrl}}/api/v1/me/org",
-                  "method": "POST"
+                  "method": "POST",
+                  "parameters": [
+                    {
+                      "paramType": "requestBody",
+                      "bodyType": "application/json",
+                      "value": "{\n    \"email\": \"<email>\",\n    \"active\": \"<boolean>\",\n    \"mfaEnabled\": \"<boolean>\",\n    \"name\": \"<string>\",\n    \"lastName\": \"<string>\",\n    \"firstName\": \"<string>\",\n    \"supportLead\": \"<string>\"\n}",
+                      "valueJsonPointer": "/item/0/item/3/item/1/item/4/request/body/raw"
+                    }
+                  ]
                 },
                 {
                   "jsonPointer": "/item/0/item/3/item/1/item/5",
                   "path": "{{baseUrl}}/api/v1/me/org",
-                  "method": "PATCH"
+                  "method": "PATCH",
+                  "parameters": [
+                    {
+                      "paramType": "requestBody",
+                      "bodyType": "application/json",
+                      "value": "{\n    \"email\": \"<email>\",\n    \"active\": \"<boolean>\",\n    \"mfaEnabled\": \"<boolean>\",\n    \"name\": \"<string>\",\n    \"lastName\": \"<string>\",\n    \"firstName\": \"<string>\",\n    \"supportLead\": \"<string>\"\n}",
+                      "valueJsonPointer": "/item/0/item/3/item/1/item/5/request/body/raw"
+                    }
+                  ]
                 }
               ]
             },
             {
-              "path": "{{baseUrl}}/api/v1/me/date-settings",
               "jsonPointer": "/item/0/item/3/item/2",
+              "path": "{{baseUrl}}/api/v1/me/date-settings",
               "children": [
                 {
                   "jsonPointer": "/item/0/item/3/item/2/item/0",
@@ -616,7 +738,15 @@
                 {
                   "jsonPointer": "/item/0/item/3/item/2/item/1",
                   "path": "{{baseUrl}}/api/v1/me/date-settings",
-                  "method": "PUT"
+                  "method": "PUT",
+                  "parameters": [
+                    {
+                      "paramType": "requestBody",
+                      "bodyType": "application/json",
+                      "value": "{\n    \"startOfWeek\": \"<number>\",\n    \"timeFormat\": \"<string>\",\n    \"timeZone\": \"<string>\",\n    \"dateFormat\": \"<string>\"\n}",
+                      "valueJsonPointer": "/item/0/item/3/item/2/item/1/request/body/raw"
+                    }
+                  ]
                 }
               ]
             },
@@ -628,7 +758,15 @@
             {
               "jsonPointer": "/item/0/item/3/item/4",
               "path": "{{baseUrl}}/api/v1/me",
-              "method": "PUT"
+              "method": "PUT",
+              "parameters": [
+                {
+                  "paramType": "requestBody",
+                  "bodyType": "application/json",
+                  "value": "{\n    \"firstName\": \"<string>\",\n    \"lastName\": \"<string>\",\n    \"email\": \"<email>\"\n}",
+                  "valueJsonPointer": "/item/0/item/3/item/4/request/body/raw"
+                }
+              ]
             },
             {
               "jsonPointer": "/item/0/item/3/item/5",
@@ -638,17 +776,25 @@
             {
               "jsonPointer": "/item/0/item/3/item/6",
               "path": "{{baseUrl}}/api/v1/me/consents",
-              "method": "PATCH"
+              "method": "PATCH",
+              "parameters": [
+                {
+                  "paramType": "requestBody",
+                  "bodyType": "application/json",
+                  "value": "{\n    \"thirdParty\": \"<boolean>\",\n    \"smartScanOff\": \"<boolean>\",\n    \"extraTargetParamLocations\": \"<boolean>\",\n    \"businessLogicTests\": \"<boolean>\"\n}",
+                  "valueJsonPointer": "/item/0/item/3/item/6/request/body/raw"
+                }
+              ]
             }
           ]
         },
         {
-          "path": "{{baseUrl}}/api/v1/payments",
           "jsonPointer": "/item/0/item/4",
+          "path": "{{baseUrl}}/api/v1/payments",
           "children": [
             {
-              "path": "{{baseUrl}}/api/v1/payments/:paymentId",
               "jsonPointer": "/item/0/item/4/item/0",
+              "path": "{{baseUrl}}/api/v1/payments/:paymentId",
               "children": [
                 {
                   "jsonPointer": "/item/0/item/4/item/0/item/0",
@@ -660,6 +806,12 @@
                       "name": "paymentId",
                       "value": "<string>",
                       "valueJsonPointer": "/item/0/item/4/item/0/item/0/request/url/variable/0"
+                    },
+                    {
+                      "paramType": "requestBody",
+                      "bodyType": "application/json",
+                      "value": "{\n    \"paymentMethodId\": \"<string>\"\n}",
+                      "valueJsonPointer": "/item/0/item/4/item/0/item/0/request/body/raw"
                     }
                   ]
                 },
@@ -686,8 +838,8 @@
           ]
         },
         {
-          "path": "{{baseUrl}}/api/v1/billing",
           "jsonPointer": "/item/0/item/5",
+          "path": "{{baseUrl}}/api/v1/billing",
           "children": [
             {
               "jsonPointer": "/item/0/item/5/item/0",
@@ -697,17 +849,25 @@
             {
               "jsonPointer": "/item/0/item/5/item/1",
               "path": "{{baseUrl}}/api/v1/billing/contact",
-              "method": "PUT"
+              "method": "PUT",
+              "parameters": [
+                {
+                  "paramType": "requestBody",
+                  "bodyType": "application/json",
+                  "value": "{\n    \"city\": \"<string>\",\n    \"zip\": \"<string>\",\n    \"country\": \"<string>\",\n    \"line1\": \"<string>\",\n    \"name\": \"<string>\",\n    \"email\": \"<email>\",\n    \"state\": \"<string>\",\n    \"line2\": \"<string>\",\n    \"phone\": \"<string>\"\n}",
+                  "valueJsonPointer": "/item/0/item/5/item/1/request/body/raw"
+                }
+              ]
             }
           ]
         },
         {
-          "path": "{{baseUrl}}/api/v1/payment-methods",
           "jsonPointer": "/item/0/item/6",
+          "path": "{{baseUrl}}/api/v1/payment-methods",
           "children": [
             {
-              "path": "{{baseUrl}}/api/v1/payment-methods/:methodId",
               "jsonPointer": "/item/0/item/6/item/0",
+              "path": "{{baseUrl}}/api/v1/payment-methods/:methodId",
               "children": [
                 {
                   "jsonPointer": "/item/0/item/6/item/0/item/0",
@@ -732,6 +892,12 @@
                       "name": "methodId",
                       "value": "<string>",
                       "valueJsonPointer": "/item/0/item/6/item/0/item/1/request/url/variable/0"
+                    },
+                    {
+                      "paramType": "requestBody",
+                      "bodyType": "application/json",
+                      "value": "{\n    \"defaultMethod\": \"<boolean>\"\n}",
+                      "valueJsonPointer": "/item/0/item/6/item/0/item/1/request/body/raw"
                     }
                   ]
                 },
@@ -758,17 +924,25 @@
             {
               "jsonPointer": "/item/0/item/6/item/2",
               "path": "{{baseUrl}}/api/v1/payment-methods",
-              "method": "POST"
+              "method": "POST",
+              "parameters": [
+                {
+                  "paramType": "requestBody",
+                  "bodyType": "application/json",
+                  "value": "{\n    \"cardNumber\": \"<string>\",\n    \"securityNumber\": \"<string>\",\n    \"expiration\": \"<string>\",\n    \"defaultMethod\": true\n}",
+                  "valueJsonPointer": "/item/0/item/6/item/2/request/body/raw"
+                }
+              ]
             }
           ]
         },
         {
-          "path": "{{baseUrl}}/api/v1/subscriptions",
           "jsonPointer": "/item/0/item/7",
+          "path": "{{baseUrl}}/api/v1/subscriptions",
           "children": [
             {
-              "path": "{{baseUrl}}/api/v1/subscriptions/:subscriptionId",
               "jsonPointer": "/item/0/item/7/item/0",
+              "path": "{{baseUrl}}/api/v1/subscriptions/:subscriptionId",
               "children": [
                 {
                   "jsonPointer": "/item/0/item/7/item/0/item/0",
@@ -793,6 +967,12 @@
                       "name": "subscriptionId",
                       "value": "<string>",
                       "valueJsonPointer": "/item/0/item/7/item/0/item/1/request/url/variable/0"
+                    },
+                    {
+                      "paramType": "requestBody",
+                      "bodyType": "application/json",
+                      "value": "{\n    \"planId\": \"<string>\",\n    \"paymentMethodId\": \"<string>\",\n    \"quantity\": 1\n}",
+                      "valueJsonPointer": "/item/0/item/7/item/0/item/1/request/body/raw"
                     }
                   ]
                 },
@@ -832,13 +1012,21 @@
             {
               "jsonPointer": "/item/0/item/7/item/2",
               "path": "{{baseUrl}}/api/v1/subscriptions",
-              "method": "POST"
+              "method": "POST",
+              "parameters": [
+                {
+                  "paramType": "requestBody",
+                  "bodyType": "application/json",
+                  "value": "{\n    \"planId\": \"<string>\",\n    \"paymentMethodId\": \"<string>\",\n    \"quantity\": 1\n}",
+                  "valueJsonPointer": "/item/0/item/7/item/2/request/body/raw"
+                }
+              ]
             }
           ]
         },
         {
-          "path": "{{baseUrl}}/api/v1/services",
           "jsonPointer": "/item/0/item/8",
+          "path": "{{baseUrl}}/api/v1/services",
           "children": [
             {
               "jsonPointer": "/item/0/item/8/item/0",
@@ -848,28 +1036,60 @@
             {
               "jsonPointer": "/item/0/item/8/item/1",
               "path": "{{baseUrl}}/api/v1/services/github/callback",
-              "method": "POST"
+              "method": "POST",
+              "parameters": [
+                {
+                  "paramType": "requestBody",
+                  "bodyType": "application/json",
+                  "value": "{\n    \"installation\": \"<object>\",\n    \"repository\": \"<object>\",\n    \"action\": \"<object>\"\n}",
+                  "valueJsonPointer": "/item/0/item/8/item/1/request/body/raw"
+                }
+              ]
             },
             {
               "jsonPointer": "/item/0/item/8/item/2",
               "path": "{{baseUrl}}/api/v1/services/slack/callback",
-              "method": "POST"
+              "method": "POST",
+              "parameters": [
+                {
+                  "paramType": "requestBody",
+                  "bodyType": "application/json",
+                  "value": "{\n    \"event\": {\n        \"type\": \"<string>\",\n        \"challenge\": \"<string>\",\n        \"channel\": \"<string>\",\n        \"payload\": \"<string>\"\n    },\n    \"team_id\": \"<string>\"\n}",
+                  "valueJsonPointer": "/item/0/item/8/item/2/request/body/raw"
+                }
+              ]
             },
             {
               "jsonPointer": "/item/0/item/8/item/3",
               "path": "{{baseUrl}}/api/v1/services/support/actions",
-              "method": "POST"
+              "method": "POST",
+              "parameters": [
+                {
+                  "paramType": "requestBody",
+                  "bodyType": "application/json",
+                  "value": "{\n    \"type\": \"<string>\",\n    \"challenge\": \"<string>\",\n    \"channel\": \"<string>\",\n    \"payload\": \"<string>\"\n}",
+                  "valueJsonPointer": "/item/0/item/8/item/3/request/body/raw"
+                }
+              ]
             }
           ]
         },
         {
-          "path": "{{baseUrl}}/api/v1/auth",
           "jsonPointer": "/item/0/item/9",
+          "path": "{{baseUrl}}/api/v1/auth",
           "children": [
             {
               "jsonPointer": "/item/0/item/9/item/0",
               "path": "{{baseUrl}}/api/v1/auth/login",
-              "method": "POST"
+              "method": "POST",
+              "parameters": [
+                {
+                  "paramType": "requestBody",
+                  "bodyType": "application/json",
+                  "value": "{\n    \"email\": \"<email>\",\n    \"password\": \"<string>\"\n}",
+                  "valueJsonPointer": "/item/0/item/9/item/0/request/body/raw"
+                }
+              ]
             },
             {
               "jsonPointer": "/item/0/item/9/item/1",
@@ -884,7 +1104,15 @@
             {
               "jsonPointer": "/item/0/item/9/item/3",
               "path": "{{baseUrl}}/api/v1/auth/password",
-              "method": "PUT"
+              "method": "PUT",
+              "parameters": [
+                {
+                  "paramType": "requestBody",
+                  "bodyType": "application/json",
+                  "value": "{\n    \"password\": \"<string>\",\n    \"oldPassword\": \"<string>\"\n}",
+                  "valueJsonPointer": "/item/0/item/9/item/3/request/body/raw"
+                }
+              ]
             },
             {
               "jsonPointer": "/item/0/item/9/item/4",
@@ -894,12 +1122,12 @@
           ]
         },
         {
-          "path": "{{baseUrl}}/api/v1/mfa",
           "jsonPointer": "/item/0/item/10",
+          "path": "{{baseUrl}}/api/v1/mfa",
           "children": [
             {
-              "path": "{{baseUrl}}/api/v1/mfa/setup",
               "jsonPointer": "/item/0/item/10/item/0",
+              "path": "{{baseUrl}}/api/v1/mfa/setup",
               "children": [
                 {
                   "jsonPointer": "/item/0/item/10/item/0/item/0",
@@ -916,22 +1144,38 @@
             {
               "jsonPointer": "/item/0/item/10/item/1",
               "path": "{{baseUrl}}/api/v1/mfa",
-              "method": "POST"
+              "method": "POST",
+              "parameters": [
+                {
+                  "paramType": "requestBody",
+                  "bodyType": "application/json",
+                  "value": "{\n    \"otp\": \"<string>\",\n    \"token\": \"<string>\"\n}",
+                  "valueJsonPointer": "/item/0/item/10/item/1/request/body/raw"
+                }
+              ]
             },
             {
               "jsonPointer": "/item/0/item/10/item/2",
               "path": "{{baseUrl}}/api/v1/mfa/verify",
-              "method": "POST"
+              "method": "POST",
+              "parameters": [
+                {
+                  "paramType": "requestBody",
+                  "bodyType": "application/json",
+                  "value": "{\n    \"otp\": \"<string>\",\n    \"code\": \"<string>\"\n}",
+                  "valueJsonPointer": "/item/0/item/10/item/2/request/body/raw"
+                }
+              ]
             }
           ]
         },
         {
-          "path": "{{baseUrl}}/api/v1/users",
           "jsonPointer": "/item/0/item/11",
+          "path": "{{baseUrl}}/api/v1/users",
           "children": [
             {
-              "path": "{{baseUrl}}/api/v1/users/:userId",
               "jsonPointer": "/item/0/item/11/item/0",
+              "path": "{{baseUrl}}/api/v1/users/:userId",
               "children": [
                 {
                   "jsonPointer": "/item/0/item/11/item/0/item/0",
@@ -956,6 +1200,12 @@
                       "name": "userId",
                       "value": "<string>",
                       "valueJsonPointer": "/item/0/item/11/item/0/item/1/request/url/variable/0"
+                    },
+                    {
+                      "paramType": "requestBody",
+                      "bodyType": "application/json",
+                      "value": "{\n    \"firstName\": \"<string>\",\n    \"lastName\": \"<string>\",\n    \"email\": \"<email>\",\n    \"active\": \"<boolean>\",\n    \"isStaff\": \"<boolean>\"\n}",
+                      "valueJsonPointer": "/item/0/item/11/item/0/item/1/request/body/raw"
                     }
                   ]
                 }
@@ -969,12 +1219,12 @@
           ]
         },
         {
-          "path": "{{baseUrl}}/api/v1/api-keys",
           "jsonPointer": "/item/0/item/12",
+          "path": "{{baseUrl}}/api/v1/api-keys",
           "children": [
             {
-              "path": "{{baseUrl}}/api/v1/api-keys/:apiKeyId",
               "jsonPointer": "/item/0/item/12/item/0",
+              "path": "{{baseUrl}}/api/v1/api-keys/:apiKeyId",
               "children": [
                 {
                   "jsonPointer": "/item/0/item/12/item/0/item/0",
@@ -986,6 +1236,12 @@
                       "name": "apiKeyId",
                       "value": "<string>",
                       "valueJsonPointer": "/item/0/item/12/item/0/item/0/request/url/variable/0"
+                    },
+                    {
+                      "paramType": "requestBody",
+                      "bodyType": "application/json",
+                      "value": "{\n    \"name\": \"<string>\",\n    \"scopes\": [\n        \"<string>\"\n    ]\n}",
+                      "valueJsonPointer": "/item/0/item/12/item/0/item/0/request/body/raw"
                     }
                   ]
                 },
@@ -1007,7 +1263,15 @@
             {
               "jsonPointer": "/item/0/item/12/item/1",
               "path": "{{baseUrl}}/api/v1/api-keys",
-              "method": "POST"
+              "method": "POST",
+              "parameters": [
+                {
+                  "paramType": "requestBody",
+                  "bodyType": "application/json",
+                  "value": "{\n    \"name\": \"<string>\",\n    \"scopes\": [\n        \"<string>\"\n    ]\n}",
+                  "valueJsonPointer": "/item/0/item/12/item/1/request/body/raw"
+                }
+              ]
             },
             {
               "jsonPointer": "/item/0/item/12/item/2",
@@ -1017,8 +1281,8 @@
           ]
         },
         {
-          "path": "{{baseUrl}}/api/v1/invites/:memberId/:token",
           "jsonPointer": "/item/0/item/13",
+          "path": "{{baseUrl}}/api/v1/invites/:memberId/:token",
           "children": [
             {
               "jsonPointer": "/item/0/item/13/item/0",
@@ -1061,8 +1325,8 @@
           ]
         },
         {
-          "path": "{{baseUrl}}/api/v1/auth-provider",
           "jsonPointer": "/item/0/item/14",
+          "path": "{{baseUrl}}/api/v1/auth-provider",
           "children": [
             {
               "jsonPointer": "/item/0/item/14/item/0",
@@ -1072,7 +1336,15 @@
             {
               "jsonPointer": "/item/0/item/14/item/1",
               "path": "{{baseUrl}}/api/v1/auth-provider",
-              "method": "PATCH"
+              "method": "PATCH",
+              "parameters": [
+                {
+                  "paramType": "requestBody",
+                  "bodyType": "application/json",
+                  "value": "{\n    \"providerType\": \"<string>\",\n    \"defaultRoleId\": \"<string>\",\n    \"config\": \"<object>\",\n    \"forceSso\": false,\n    \"provisioning\": false\n}",
+                  "valueJsonPointer": "/item/0/item/14/item/1/request/body/raw"
+                }
+              ]
             },
             {
               "jsonPointer": "/item/0/item/14/item/2",
@@ -1092,16 +1364,16 @@
           ]
         },
         {
-          "path": "{{baseUrl}}/api/v1/scim",
           "jsonPointer": "/item/0/item/15",
+          "path": "{{baseUrl}}/api/v1/scim",
           "children": [
             {
-              "path": "{{baseUrl}}/api/v1/scim",
               "jsonPointer": "/item/0/item/15/item/0",
+              "path": "{{baseUrl}}/api/v1/scim",
               "children": [
                 {
-                  "path": "{{baseUrl}}/api/v1/scim/Users/:userId",
                   "jsonPointer": "/item/0/item/15/item/0/item/0",
+                  "path": "{{baseUrl}}/api/v1/scim/Users/:userId",
                   "children": [
                     {
                       "jsonPointer": "/item/0/item/15/item/0/item/0/item/0",
@@ -1126,6 +1398,12 @@
                           "name": "userId",
                           "value": "<string>",
                           "valueJsonPointer": "/item/0/item/15/item/0/item/0/item/1/request/url/variable/0"
+                        },
+                        {
+                          "paramType": "requestBody",
+                          "bodyType": "application/json",
+                          "value": "{\n    \"schemas\": [\n        \"<string>\",\n        \"<string>\"\n    ],\n    \"Operations\": [\n        {\n            \"op\": \"<string>\",\n            \"path\": \"<string>\",\n            \"value\": \"<object>\"\n        },\n        {\n            \"op\": \"<string>\",\n            \"path\": \"<string>\",\n            \"value\": \"<object>\"\n        }\n    ]\n}",
+                          "valueJsonPointer": "/item/0/item/15/item/0/item/0/item/1/request/body/raw"
                         }
                       ]
                     },
@@ -1172,17 +1450,25 @@
                 {
                   "jsonPointer": "/item/0/item/15/item/0/item/2",
                   "path": "{{baseUrl}}/api/v1/scim/Users",
-                  "method": "POST"
+                  "method": "POST",
+                  "parameters": [
+                    {
+                      "paramType": "requestBody",
+                      "bodyType": "application/json",
+                      "value": "{\n    \"id\": \"<string>\",\n    \"externalId\": \"<string>\",\n    \"schemas\": [\n        \"<string>\",\n        \"<string>\"\n    ],\n    \"meta\": {\n        \"resourceType\": \"User\",\n        \"created\": \"Ut id\",\n        \"lastModified\": \"occaecat ea sed\"\n    },\n    \"active\": true,\n    \"userName\": \"<string>\",\n    \"name\": {\n        \"familyName\": \"sint laborum exercitation\",\n        \"givenName\": \"consectetur consequat\"\n    }\n}",
+                      "valueJsonPointer": "/item/0/item/15/item/0/item/2/request/body/raw"
+                    }
+                  ]
                 }
               ]
             },
             {
-              "path": "{{baseUrl}}/api/v1/scim",
               "jsonPointer": "/item/0/item/15/item/1",
+              "path": "{{baseUrl}}/api/v1/scim",
               "children": [
                 {
-                  "path": "{{baseUrl}}/api/v1/scim/Groups/:groupId",
                   "jsonPointer": "/item/0/item/15/item/1/item/0",
+                  "path": "{{baseUrl}}/api/v1/scim/Groups/:groupId",
                   "children": [
                     {
                       "jsonPointer": "/item/0/item/15/item/1/item/0/item/0",
@@ -1207,6 +1493,12 @@
                           "name": "groupId",
                           "value": "<string>",
                           "valueJsonPointer": "/item/0/item/15/item/1/item/0/item/1/request/url/variable/0"
+                        },
+                        {
+                          "paramType": "requestBody",
+                          "bodyType": "application/json",
+                          "value": "{\n    \"schemas\": [\n        \"<string>\",\n        \"<string>\"\n    ],\n    \"Operations\": [\n        {\n            \"op\": \"<string>\",\n            \"path\": \"<string>\",\n            \"value\": \"<object>\"\n        },\n        {\n            \"op\": \"<string>\",\n            \"path\": \"<string>\",\n            \"value\": \"<object>\"\n        }\n    ]\n}",
+                          "valueJsonPointer": "/item/0/item/15/item/1/item/0/item/1/request/body/raw"
                         }
                       ]
                     },
@@ -1253,23 +1545,31 @@
                 {
                   "jsonPointer": "/item/0/item/15/item/1/item/2",
                   "path": "{{baseUrl}}/api/v1/scim/Groups",
-                  "method": "POST"
+                  "method": "POST",
+                  "parameters": [
+                    {
+                      "paramType": "requestBody",
+                      "bodyType": "application/json",
+                      "value": "{\n    \"id\": \"<string>\",\n    \"externalId\": \"<string>\",\n    \"schemas\": [\n        \"<string>\",\n        \"<string>\"\n    ],\n    \"meta\": {\n        \"resourceType\": \"User\",\n        \"created\": \"adipisicing esse ullamco\",\n        \"lastModified\": \"et aliquip do\"\n    },\n    \"displayName\": \"<string>\",\n    \"members\": [\n        {\n            \"$ref\": \"ipsum mollit in Ut\",\n            \"value\": \"id laboris\"\n        },\n        {\n            \"$ref\": \"vo\",\n            \"value\": \"laborum nulla non\"\n        }\n    ]\n}",
+                      "valueJsonPointer": "/item/0/item/15/item/1/item/2/request/body/raw"
+                    }
+                  ]
                 }
               ]
             }
           ]
         },
         {
-          "path": "{{baseUrl}}/api/v1/repeaters",
           "jsonPointer": "/item/0/item/16",
+          "path": "{{baseUrl}}/api/v1/repeaters",
           "children": [
             {
-              "path": "{{baseUrl}}/api/v1/repeaters/:repeaterId",
               "jsonPointer": "/item/0/item/16/item/0",
+              "path": "{{baseUrl}}/api/v1/repeaters/:repeaterId",
               "children": [
                 {
-                  "path": "{{baseUrl}}/api/v1/repeaters/:repeaterId/network",
                   "jsonPointer": "/item/0/item/16/item/0/item/0",
+                  "path": "{{baseUrl}}/api/v1/repeaters/:repeaterId/network",
                   "children": [
                     {
                       "jsonPointer": "/item/0/item/16/item/0/item/0/item/0",
@@ -1294,6 +1594,12 @@
                           "name": "repeaterId",
                           "value": "<string>",
                           "valueJsonPointer": "/item/0/item/16/item/0/item/0/item/1/request/url/variable/0"
+                        },
+                        {
+                          "paramType": "requestBody",
+                          "bodyType": "application/json",
+                          "value": "{\n    \"urls\": [\n        \"<url>\"\n    ]\n}",
+                          "valueJsonPointer": "/item/0/item/16/item/0/item/0/item/1/request/body/raw"
                         }
                       ]
                     },
@@ -1307,6 +1613,12 @@
                           "name": "repeaterId",
                           "value": "<string>",
                           "valueJsonPointer": "/item/0/item/16/item/0/item/0/item/2/request/url/variable/0"
+                        },
+                        {
+                          "paramType": "requestBody",
+                          "bodyType": "application/json",
+                          "value": "{\n    \"urls\": [\n        \"<url>\"\n    ]\n}",
+                          "valueJsonPointer": "/item/0/item/16/item/0/item/0/item/2/request/body/raw"
                         }
                       ]
                     }
@@ -1335,6 +1647,12 @@
                       "name": "repeaterId",
                       "value": "<string>",
                       "valueJsonPointer": "/item/0/item/16/item/0/item/2/request/url/variable/0"
+                    },
+                    {
+                      "paramType": "requestBody",
+                      "bodyType": "application/json",
+                      "value": "{\n    \"name\": \"<string>\",\n    \"active\": \"<boolean>\",\n    \"description\": \"<string>\",\n    \"scripts\": [\n        {\n            \"scriptId\": \"<string>\",\n            \"host\": \"<string>\"\n        },\n        {\n            \"scriptId\": \"<string>\",\n            \"host\": \"<string>\"\n        }\n    ]\n}",
+                      "valueJsonPointer": "/item/0/item/16/item/0/item/2/request/body/raw"
                     }
                   ]
                 },
@@ -1361,25 +1679,33 @@
             {
               "jsonPointer": "/item/0/item/16/item/2",
               "path": "{{baseUrl}}/api/v1/repeaters",
-              "method": "POST"
+              "method": "POST",
+              "parameters": [
+                {
+                  "paramType": "requestBody",
+                  "bodyType": "application/json",
+                  "value": "{\n    \"name\": \"<string>\",\n    \"active\": \"<boolean>\",\n    \"description\": \"<string>\",\n    \"scripts\": [\n        {\n            \"scriptId\": \"<string>\",\n            \"host\": \"<string>\"\n        },\n        {\n            \"scriptId\": \"<string>\",\n            \"host\": \"<string>\"\n        }\n    ]\n}",
+                  "valueJsonPointer": "/item/0/item/16/item/2/request/body/raw"
+                }
+              ]
             }
           ]
         },
         {
-          "path": "{{baseUrl}}/api/v1/scans",
           "jsonPointer": "/item/0/item/17",
+          "path": "{{baseUrl}}/api/v1/scans",
           "children": [
             {
-              "path": "{{baseUrl}}/api/v1/scans/templates",
               "jsonPointer": "/item/0/item/17/item/0",
+              "path": "{{baseUrl}}/api/v1/scans/templates",
               "children": [
                 {
-                  "path": "{{baseUrl}}/api/v1/scans/templates/:templateId",
                   "jsonPointer": "/item/0/item/17/item/0/item/0",
+                  "path": "{{baseUrl}}/api/v1/scans/templates/:templateId",
                   "children": [
                     {
-                      "path": "{{baseUrl}}/api/v1/scans/templates/:templateId/settings",
                       "jsonPointer": "/item/0/item/17/item/0/item/0/item/0",
+                      "path": "{{baseUrl}}/api/v1/scans/templates/:templateId/settings",
                       "children": [
                         {
                           "jsonPointer": "/item/0/item/17/item/0/item/0/item/0/item/0",
@@ -1404,6 +1730,12 @@
                               "name": "templateId",
                               "value": "<string>",
                               "valueJsonPointer": "/item/0/item/17/item/0/item/0/item/0/item/1/request/url/variable/0"
+                            },
+                            {
+                              "paramType": "requestBody",
+                              "bodyType": "application/json",
+                              "value": "{\n    \"permissions\": [\n        {\n            \"assignmentId\": \"et aute\",\n            \"mode\": \"template:edit\",\n            \"assignmentType\": \"group\"\n        },\n        {\n            \"assignmentId\": \"sit cillum minim\",\n            \"mode\": \"template:view\",\n            \"assignmentType\": \"user\"\n        }\n    ],\n    \"accessibility\": \"private\"\n}",
+                              "valueJsonPointer": "/item/0/item/17/item/0/item/0/item/0/item/1/request/body/raw"
                             }
                           ]
                         }
@@ -1432,6 +1764,12 @@
                           "name": "templateId",
                           "value": "<string>",
                           "valueJsonPointer": "/item/0/item/17/item/0/item/0/item/2/request/url/variable/0"
+                        },
+                        {
+                          "paramType": "requestBody",
+                          "bodyType": "application/json",
+                          "value": "{\n    \"name\": \"<string>\",\n    \"tests\": [\n        \"<string>\",\n        \"<string>\"\n    ],\n    \"repositories\": [\n        {\n            \"id\": \"<string>\",\n            \"service\": \"<string>\",\n            \"name\": \"<string>\",\n            \"uri\": \"<uri>\"\n        },\n        {\n            \"id\": \"<string>\",\n            \"service\": \"<string>\",\n            \"name\": \"<string>\",\n            \"uri\": \"<uri>\"\n        }\n    ],\n    \"discoveryTypes\": [\n        \"<string>\",\n        \"<string>\"\n    ],\n    \"poolSize\": \"<number>\",\n    \"crawlerUrls\": [\n        \"<uri>\",\n        \"<uri>\"\n    ],\n    \"attackParamLocations\": [\n        \"<string>\",\n        \"<string>\"\n    ],\n    \"extraHosts\": \"<object>\",\n    \"headers\": [\n        {\n            \"name\": \"<string>\",\n            \"value\": \"<string>\",\n            \"mergeStrategy\": \"replace\"\n        },\n        {\n            \"name\": \"<string>\",\n            \"value\": \"<string>\",\n            \"mergeStrategy\": \"replace\"\n        }\n    ],\n    \"fileId\": \"<string>\",\n    \"hostsFilter\": [\n        \"<hostname>\",\n        \"<hostname>\"\n    ],\n    \"repeaters\": [\n        \"<string>\",\n        \"<string>\"\n    ],\n    \"smart\": \"<boolean>\",\n    \"skipStaticParams\": \"<boolean>\",\n    \"ignore\": [\n        \"<string>\",\n        \"<string>\"\n    ],\n    \"projectId\": \"<string>\",\n    \"exclusions\": {\n        \"urls\": [\n            \"<string>\"\n        ],\n        \"params\": [\n            \"<string>\"\n        ]\n    },\n    \"slowEpTimeout\": \"<number>\",\n    \"payloadExtractor\": [\n        \"<string>\",\n        \"<string>\"\n    ],\n    \"correlationIdXPath\": \"<string>\",\n    \"description\": \"<string>\"\n}",
+                          "valueJsonPointer": "/item/0/item/17/item/0/item/0/item/2/request/body/raw"
                         }
                       ]
                     },
@@ -1458,21 +1796,29 @@
                 {
                   "jsonPointer": "/item/0/item/17/item/0/item/2",
                   "path": "{{baseUrl}}/api/v1/scans/templates",
-                  "method": "POST"
+                  "method": "POST",
+                  "parameters": [
+                    {
+                      "paramType": "requestBody",
+                      "bodyType": "application/json",
+                      "value": "{\n    \"name\": \"<string>\",\n    \"tests\": [\n        \"<string>\",\n        \"<string>\"\n    ],\n    \"repositories\": [\n        {\n            \"id\": \"<string>\",\n            \"service\": \"<string>\",\n            \"name\": \"<string>\",\n            \"uri\": \"<uri>\"\n        },\n        {\n            \"id\": \"<string>\",\n            \"service\": \"<string>\",\n            \"name\": \"<string>\",\n            \"uri\": \"<uri>\"\n        }\n    ],\n    \"discoveryTypes\": [\n        \"<string>\",\n        \"<string>\"\n    ],\n    \"poolSize\": \"<number>\",\n    \"crawlerUrls\": [\n        \"<uri>\",\n        \"<uri>\"\n    ],\n    \"attackParamLocations\": [\n        \"<string>\",\n        \"<string>\"\n    ],\n    \"extraHosts\": \"<object>\",\n    \"headers\": [\n        {\n            \"name\": \"<string>\",\n            \"value\": \"<string>\",\n            \"mergeStrategy\": \"replace\"\n        },\n        {\n            \"name\": \"<string>\",\n            \"value\": \"<string>\",\n            \"mergeStrategy\": \"replace\"\n        }\n    ],\n    \"fileId\": \"<string>\",\n    \"hostsFilter\": [\n        \"<hostname>\",\n        \"<hostname>\"\n    ],\n    \"repeaters\": [\n        \"<string>\",\n        \"<string>\"\n    ],\n    \"smart\": \"<boolean>\",\n    \"skipStaticParams\": \"<boolean>\",\n    \"ignore\": [\n        \"<string>\",\n        \"<string>\"\n    ],\n    \"projectId\": \"<string>\",\n    \"exclusions\": {\n        \"urls\": [\n            \"<string>\"\n        ],\n        \"params\": [\n            \"<string>\"\n        ]\n    },\n    \"slowEpTimeout\": \"<number>\",\n    \"payloadExtractor\": [\n        \"<string>\",\n        \"<string>\"\n    ],\n    \"correlationIdXPath\": \"<string>\",\n    \"description\": \"<string>\"\n}",
+                      "valueJsonPointer": "/item/0/item/17/item/0/item/2/request/body/raw"
+                    }
+                  ]
                 }
               ]
             },
             {
-              "path": "{{baseUrl}}/api/v1/scans/:scanId",
               "jsonPointer": "/item/0/item/17/item/1",
+              "path": "{{baseUrl}}/api/v1/scans/:scanId",
               "children": [
                 {
-                  "path": "{{baseUrl}}/api/v1/scans/:scanId/issues",
                   "jsonPointer": "/item/0/item/17/item/1/item/0",
+                  "path": "{{baseUrl}}/api/v1/scans/:scanId/issues",
                   "children": [
                     {
-                      "path": "{{baseUrl}}/api/v1/scans/:scanId/issues/:issueId",
                       "jsonPointer": "/item/0/item/17/item/1/item/0/item/0",
+                      "path": "{{baseUrl}}/api/v1/scans/:scanId/issues/:issueId",
                       "children": [
                         {
                           "jsonPointer": "/item/0/item/17/item/1/item/0/item/0/item/0",
@@ -1509,6 +1855,12 @@
                               "name": "issueId",
                               "value": "<string>",
                               "valueJsonPointer": "/item/0/item/17/item/1/item/0/item/0/item/1/request/url/variable/1"
+                            },
+                            {
+                              "paramType": "requestBody",
+                              "bodyType": "application/json",
+                              "value": "{\n    \"request\": {\n        \"method\": \"<string>\",\n        \"url\": \"<url>\",\n        \"headers\": \"<object>\",\n        \"body\": \"<string>\"\n    }\n}",
+                              "valueJsonPointer": "/item/0/item/17/item/1/item/0/item/0/item/1/request/body/raw"
                             }
                           ]
                         }
@@ -1537,14 +1889,20 @@
                           "name": "scanId",
                           "value": "<string>",
                           "valueJsonPointer": "/item/0/item/17/item/1/item/0/item/2/request/url/variable/0"
+                        },
+                        {
+                          "paramType": "requestBody",
+                          "bodyType": "application/json",
+                          "value": "{\n    \"originalIssueId\": \"<string>\",\n    \"request\": {\n        \"method\": \"<string>\",\n        \"url\": \"<url>\",\n        \"headers\": \"<object>\",\n        \"body\": \"<string>\"\n    },\n    \"response\": {\n        \"headers\": \"<object>\",\n        \"status\": \"<number>\",\n        \"body\": \"<string>\"\n    }\n}",
+                          "valueJsonPointer": "/item/0/item/17/item/1/item/0/item/2/request/body/raw"
                         }
                       ]
                     }
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/scans/:scanId",
                   "jsonPointer": "/item/0/item/17/item/1/item/1",
+                  "path": "{{baseUrl}}/api/v1/scans/:scanId",
                   "children": [
                     {
                       "jsonPointer": "/item/0/item/17/item/1/item/1/item/0",
@@ -1621,6 +1979,12 @@
                       "name": "scanId",
                       "value": "<string>",
                       "valueJsonPointer": "/item/0/item/17/item/1/item/3/request/url/variable/0"
+                    },
+                    {
+                      "paramType": "requestBody",
+                      "bodyType": "application/json",
+                      "value": "{\n    \"name\": \"<string>\",\n    \"tests\": [\n        \"<string>\",\n        \"<string>\"\n    ],\n    \"repositories\": [\n        {\n            \"id\": \"<string>\",\n            \"service\": \"<string>\",\n            \"name\": \"<string>\",\n            \"uri\": \"<uri>\"\n        },\n        {\n            \"id\": \"<string>\",\n            \"service\": \"<string>\",\n            \"name\": \"<string>\",\n            \"uri\": \"<uri>\"\n        }\n    ],\n    \"discoveryTypes\": [\n        \"<string>\",\n        \"<string>\"\n    ],\n    \"poolSize\": \"<number>\",\n    \"crawlerUrls\": [\n        \"<uri>\",\n        \"<uri>\"\n    ],\n    \"attackParamLocations\": [\n        \"<string>\",\n        \"<string>\"\n    ],\n    \"extraHosts\": \"<object>\",\n    \"headers\": [\n        {\n            \"name\": \"<string>\",\n            \"value\": \"<string>\",\n            \"mergeStrategy\": \"replace\"\n        },\n        {\n            \"name\": \"<string>\",\n            \"value\": \"<string>\",\n            \"mergeStrategy\": \"replace\"\n        }\n    ],\n    \"fileId\": \"<string>\",\n    \"hostsFilter\": [\n        \"<hostname>\",\n        \"<hostname>\"\n    ],\n    \"repeaters\": [\n        \"<string>\",\n        \"<string>\"\n    ],\n    \"smart\": \"<boolean>\",\n    \"skipStaticParams\": \"<boolean>\",\n    \"ignore\": [\n        \"<string>\",\n        \"<string>\"\n    ],\n    \"projectId\": \"<string>\",\n    \"exclusions\": {\n        \"urls\": [\n            \"<string>\"\n        ],\n        \"params\": [\n            \"<string>\"\n        ]\n    },\n    \"slowEpTimeout\": \"<number>\",\n    \"payloadExtractor\": [\n        \"<string>\",\n        \"<string>\"\n    ],\n    \"correlationIdXPath\": \"<string>\",\n    \"authObjectId\": \"<string>\",\n    \"schedule\": {\n        \"type\": \"<string>\",\n        \"repeatInterval\": \"<number>\",\n        \"repeatIntervalUnit\": \"<string>\",\n        \"repeatWeekdays\": [\n            \"<number>\"\n        ],\n        \"nextRunAt\": \"<dateTime>\",\n        \"endAt\": \"<dateTime>\",\n        \"runNow\": false,\n        \"skipConcurrent\": true\n    },\n    \"module\": \"<string>\",\n    \"build\": {\n        \"service\": \"<string>\",\n        \"buildNumber\": \"<number>\",\n        \"user\": \"<string>\",\n        \"project\": \"<string>\",\n        \"vcs\": \"<string>\"\n    },\n    \"templateId\": \"<string>\"\n}",
+                      "valueJsonPointer": "/item/0/item/17/item/1/item/3/request/body/raw"
                     }
                   ]
                 },
@@ -1725,6 +2089,12 @@
                       "name": "scanId",
                       "value": "<string>",
                       "valueJsonPointer": "/item/0/item/17/item/1/item/11/request/url/variable/0"
+                    },
+                    {
+                      "paramType": "requestBody",
+                      "bodyType": "application/json",
+                      "value": "{\n    \"config\": {\n        \"name\": \"<string>\",\n        \"tests\": [\n            \"<string>\",\n            \"<string>\"\n        ],\n        \"repositories\": [\n            {\n                \"id\": \"<string>\",\n                \"service\": \"<string>\",\n                \"name\": \"<string>\",\n                \"uri\": \"<uri>\"\n            },\n            {\n                \"id\": \"<string>\",\n                \"service\": \"<string>\",\n                \"name\": \"<string>\",\n                \"uri\": \"<uri>\"\n            }\n        ],\n        \"discoveryTypes\": [\n            \"<string>\",\n            \"<string>\"\n        ],\n        \"poolSize\": \"<number>\",\n        \"crawlerUrls\": [\n            \"<uri>\",\n            \"<uri>\"\n        ],\n        \"attackParamLocations\": [\n            \"<string>\",\n            \"<string>\"\n        ],\n        \"extraHosts\": \"<object>\",\n        \"headers\": [\n            {\n                \"name\": \"<string>\",\n                \"value\": \"<string>\",\n                \"mergeStrategy\": \"replace\"\n            },\n            {\n                \"name\": \"<string>\",\n                \"value\": \"<string>\",\n                \"mergeStrategy\": \"replace\"\n            }\n        ],\n        \"fileId\": \"<string>\",\n        \"hostsFilter\": [\n            \"<hostname>\",\n            \"<hostname>\"\n        ],\n        \"repeaters\": [\n            \"<string>\",\n            \"<string>\"\n        ],\n        \"smart\": \"<boolean>\",\n        \"skipStaticParams\": \"<boolean>\",\n        \"ignore\": [\n            \"<string>\",\n            \"<string>\"\n        ],\n        \"projectId\": \"<string>\",\n        \"exclusions\": {\n            \"urls\": [\n                \"<string>\"\n            ],\n            \"params\": [\n                \"<string>\"\n            ]\n        },\n        \"slowEpTimeout\": \"<number>\",\n        \"payloadExtractor\": [\n            \"<string>\",\n            \"<string>\"\n        ],\n        \"correlationIdXPath\": \"<string>\",\n        \"authObjectId\": \"<string>\",\n        \"schedule\": {\n            \"type\": \"<string>\",\n            \"repeatInterval\": \"<number>\",\n            \"repeatIntervalUnit\": \"<string>\",\n            \"repeatWeekdays\": [\n                \"<number>\"\n            ],\n            \"nextRunAt\": \"<dateTime>\",\n            \"endAt\": \"<dateTime>\",\n            \"runNow\": false,\n            \"skipConcurrent\": true\n        },\n        \"module\": \"<string>\",\n        \"build\": {\n            \"service\": \"<string>\",\n            \"buildNumber\": \"<number>\",\n            \"user\": \"<string>\",\n            \"project\": \"<string>\",\n            \"vcs\": \"<string>\"\n        },\n        \"templateId\": \"<string>\"\n    }\n}",
+                      "valueJsonPointer": "/item/0/item/17/item/1/item/11/request/body/raw"
                     }
                   ]
                 }
@@ -1733,7 +2103,15 @@
             {
               "jsonPointer": "/item/0/item/17/item/2",
               "path": "{{baseUrl}}/api/v1/scans",
-              "method": "POST"
+              "method": "POST",
+              "parameters": [
+                {
+                  "paramType": "requestBody",
+                  "bodyType": "application/json",
+                  "value": "{\n    \"name\": \"<string>\",\n    \"tests\": [\n        \"<string>\",\n        \"<string>\"\n    ],\n    \"repositories\": [\n        {\n            \"id\": \"<string>\",\n            \"service\": \"<string>\",\n            \"name\": \"<string>\",\n            \"uri\": \"<uri>\"\n        },\n        {\n            \"id\": \"<string>\",\n            \"service\": \"<string>\",\n            \"name\": \"<string>\",\n            \"uri\": \"<uri>\"\n        }\n    ],\n    \"discoveryTypes\": [\n        \"<string>\",\n        \"<string>\"\n    ],\n    \"poolSize\": \"<number>\",\n    \"crawlerUrls\": [\n        \"<uri>\",\n        \"<uri>\"\n    ],\n    \"attackParamLocations\": [\n        \"<string>\",\n        \"<string>\"\n    ],\n    \"extraHosts\": \"<object>\",\n    \"headers\": [\n        {\n            \"name\": \"<string>\",\n            \"value\": \"<string>\",\n            \"mergeStrategy\": \"replace\"\n        },\n        {\n            \"name\": \"<string>\",\n            \"value\": \"<string>\",\n            \"mergeStrategy\": \"replace\"\n        }\n    ],\n    \"fileId\": \"<string>\",\n    \"hostsFilter\": [\n        \"<hostname>\",\n        \"<hostname>\"\n    ],\n    \"repeaters\": [\n        \"<string>\",\n        \"<string>\"\n    ],\n    \"smart\": \"<boolean>\",\n    \"skipStaticParams\": \"<boolean>\",\n    \"ignore\": [\n        \"<string>\",\n        \"<string>\"\n    ],\n    \"projectId\": \"<string>\",\n    \"exclusions\": {\n        \"urls\": [\n            \"<string>\"\n        ],\n        \"params\": [\n            \"<string>\"\n        ]\n    },\n    \"slowEpTimeout\": \"<number>\",\n    \"payloadExtractor\": [\n        \"<string>\",\n        \"<string>\"\n    ],\n    \"correlationIdXPath\": \"<string>\",\n    \"authObjectId\": \"<string>\",\n    \"schedule\": {\n        \"type\": \"<string>\",\n        \"repeatInterval\": \"<number>\",\n        \"repeatIntervalUnit\": \"<string>\",\n        \"repeatWeekdays\": [\n            \"<number>\"\n        ],\n        \"nextRunAt\": \"<dateTime>\",\n        \"endAt\": \"<dateTime>\",\n        \"runNow\": false,\n        \"skipConcurrent\": true\n    },\n    \"module\": \"<string>\",\n    \"build\": {\n        \"service\": \"<string>\",\n        \"buildNumber\": \"<number>\",\n        \"user\": \"<string>\",\n        \"project\": \"<string>\",\n        \"vcs\": \"<string>\"\n    },\n    \"templateId\": \"<string>\"\n}",
+                  "valueJsonPointer": "/item/0/item/17/item/2/request/body/raw"
+                }
+              ]
             },
             {
               "jsonPointer": "/item/0/item/17/item/3",
@@ -1748,22 +2126,38 @@
             {
               "jsonPointer": "/item/0/item/17/item/5",
               "path": "{{baseUrl}}/api/v1/scans/stop",
-              "method": "POST"
+              "method": "POST",
+              "parameters": [
+                {
+                  "paramType": "requestBody",
+                  "bodyType": "application/json",
+                  "value": "{\n    \"scanIds\": [\n        \"<integer>\",\n        \"<integer>\"\n    ]\n}",
+                  "valueJsonPointer": "/item/0/item/17/item/5/request/body/raw"
+                }
+              ]
             },
             {
               "jsonPointer": "/item/0/item/17/item/6",
               "path": "{{baseUrl}}/api/v1/scans/delete",
-              "method": "POST"
+              "method": "POST",
+              "parameters": [
+                {
+                  "paramType": "requestBody",
+                  "bodyType": "application/json",
+                  "value": "{\n    \"scanIds\": [\n        \"<integer>\",\n        \"<integer>\"\n    ]\n}",
+                  "valueJsonPointer": "/item/0/item/17/item/6/request/body/raw"
+                }
+              ]
             }
           ]
         },
         {
-          "path": "{{baseUrl}}/api/v1/webhooks/scans/:scanId",
           "jsonPointer": "/item/0/item/18",
+          "path": "{{baseUrl}}/api/v1/webhooks/scans/:scanId",
           "children": [
             {
-              "path": "{{baseUrl}}/api/v1/webhooks/scans/:scanId/sitemap",
               "jsonPointer": "/item/0/item/18/item/0",
+              "path": "{{baseUrl}}/api/v1/webhooks/scans/:scanId/sitemap",
               "children": [
                 {
                   "jsonPointer": "/item/0/item/18/item/0/item/0",
@@ -1775,6 +2169,12 @@
                       "name": "scanId",
                       "value": "<string>",
                       "valueJsonPointer": "/item/0/item/18/item/0/item/0/request/url/variable/0"
+                    },
+                    {
+                      "paramType": "requestBody",
+                      "bodyType": "application/json",
+                      "value": "[\n    {\n        \"url\": \"<uri>\",\n        \"method\": \"<string>\",\n        \"params\": \"<object>\"\n    },\n    {\n        \"url\": \"<uri>\",\n        \"method\": \"<string>\",\n        \"params\": \"<object>\"\n    }\n]",
+                      "valueJsonPointer": "/item/0/item/18/item/0/item/0/request/body/raw"
                     }
                   ]
                 },
@@ -1788,6 +2188,12 @@
                       "name": "scanId",
                       "value": "<string>",
                       "valueJsonPointer": "/item/0/item/18/item/0/item/1/request/url/variable/0"
+                    },
+                    {
+                      "paramType": "requestBody",
+                      "bodyType": "application/json",
+                      "value": "[\n    {\n        \"url\": \"<uri>\",\n        \"method\": \"<string>\",\n        \"params\": \"<object>\"\n    },\n    {\n        \"url\": \"<uri>\",\n        \"method\": \"<string>\",\n        \"params\": \"<object>\"\n    }\n]",
+                      "valueJsonPointer": "/item/0/item/18/item/0/item/1/request/body/raw"
                     }
                   ]
                 }
@@ -1803,6 +2209,12 @@
                   "name": "scanId",
                   "value": "<string>",
                   "valueJsonPointer": "/item/0/item/18/item/1/request/url/variable/0"
+                },
+                {
+                  "paramType": "requestBody",
+                  "bodyType": "application/json",
+                  "value": "{\n    \"elapsed\": \"<string>\",\n    \"status\": \"<string>\",\n    \"discovering\": false,\n    \"entry_points\": 0,\n    \"total_params\": 0,\n    \"requests\": 0,\n    \"component_status\": \"<object>\",\n    \"wafs\": \"<object>\",\n    \"request_statuses\": \"<object>\",\n    \"tech_stack\": [\n        {\n            \"host\": \"<string>\",\n            \"tech\": [\n                {\n                    \"name\": \"<string>\",\n                    \"version\": \"<string>\"\n                },\n                {\n                    \"name\": \"<string>\",\n                    \"version\": \"<string>\"\n                }\n            ]\n        },\n        {\n            \"host\": \"<string>\",\n            \"tech\": [\n                {\n                    \"name\": \"<string>\",\n                    \"version\": \"<string>\"\n                },\n                {\n                    \"name\": \"<string>\",\n                    \"version\": \"<string>\"\n                }\n            ]\n        }\n    ],\n    \"response_time\": \"<object>\",\n    \"traffic_metrics\": \"<object>\",\n    \"status_description\": \"<string>\"\n}",
+                  "valueJsonPointer": "/item/0/item/18/item/1/request/body/raw"
                 }
               ]
             },
@@ -1816,6 +2228,12 @@
                   "name": "scanId",
                   "value": "<string>",
                   "valueJsonPointer": "/item/0/item/18/item/2/request/url/variable/0"
+                },
+                {
+                  "paramType": "requestBody",
+                  "bodyType": "application/json",
+                  "value": "{\n    \"issue\": {\n        \"issue\": \"<number>\",\n        \"uuid\": \"<uuid>\",\n        \"metadata\": \"<object>\",\n        \"protocol\": \"<string>\",\n        \"payload\": {\n            \"body\": \"<string>\",\n            \"headers\": \"<object>\",\n            \"method\": \"<string>\",\n            \"url\": \"<url>\"\n        },\n        \"original_payload\": {\n            \"body\": \"<string>\",\n            \"headers\": \"<object>\",\n            \"method\": \"<string>\",\n            \"url\": \"<url>\"\n        },\n        \"response\": {\n            \"headers\": \"<object>\",\n            \"body\": \"<string>\",\n            \"status\": \"<number>\"\n        },\n        \"time\": \"<string>\",\n        \"screenshots\": [\n            {\n                \"screenshot\": \"<string>\",\n                \"title\": \"<string>\"\n            },\n            {\n                \"screenshot\": \"<string>\",\n                \"title\": \"<string>\"\n            }\n        ],\n        \"screenshot\": \"<string>\",\n        \"comments\": [\n            {\n                \"headline\": \"in pariatur ex ullamco\",\n                \"text\": \"Excepteur Duis\",\n                \"links\": [\n                    \"occaecat dolor ipsum dolore\",\n                    \"ex pariatur proident\"\n                ]\n            },\n            {\n                \"headline\": \"pariatur\",\n                \"text\": \"laboris\",\n                \"links\": [\n                    \"proident do occaecat incididunt enim\",\n                    \"sed est irure\"\n                ]\n            }\n        ]\n    }\n}",
+                  "valueJsonPointer": "/item/0/item/18/item/2/request/body/raw"
                 }
               ]
             },
@@ -1829,6 +2247,12 @@
                   "name": "scanId",
                   "value": "<string>",
                   "valueJsonPointer": "/item/0/item/18/item/3/request/url/variable/0"
+                },
+                {
+                  "paramType": "requestBody",
+                  "bodyType": "application/json",
+                  "value": "{\n    \"message\": \"<string>\",\n    \"timestamp\": \"<dateTime>\",\n    \"level\": \"info\",\n    \"extra\": \"<object>\"\n}",
+                  "valueJsonPointer": "/item/0/item/18/item/3/request/body/raw"
                 }
               ]
             },
@@ -1848,20 +2272,20 @@
           ]
         },
         {
-          "path": "{{baseUrl}}/api/v1/orgs",
           "jsonPointer": "/item/0/item/19",
+          "path": "{{baseUrl}}/api/v1/orgs",
           "children": [
             {
-              "path": "{{baseUrl}}/api/v1/orgs/:organizationId",
               "jsonPointer": "/item/0/item/19/item/0",
+              "path": "{{baseUrl}}/api/v1/orgs/:organizationId",
               "children": [
                 {
-                  "path": "{{baseUrl}}/api/v1/orgs/:organizationId/memberships",
                   "jsonPointer": "/item/0/item/19/item/0/item/0",
+                  "path": "{{baseUrl}}/api/v1/orgs/:organizationId/memberships",
                   "children": [
                     {
-                      "path": "{{baseUrl}}/api/v1/orgs/:organizationId/memberships/:memberId",
                       "jsonPointer": "/item/0/item/19/item/0/item/0/item/0",
+                      "path": "{{baseUrl}}/api/v1/orgs/:organizationId/memberships/:memberId",
                       "children": [
                         {
                           "jsonPointer": "/item/0/item/19/item/0/item/0/item/0/item/0",
@@ -1879,6 +2303,12 @@
                               "name": "memberId",
                               "value": "<string>",
                               "valueJsonPointer": "/item/0/item/19/item/0/item/0/item/0/item/0/request/url/variable/1"
+                            },
+                            {
+                              "paramType": "requestBody",
+                              "bodyType": "application/json",
+                              "value": "{\n    \"active\": \"<boolean>\",\n    \"email\": \"<email>\",\n    \"roleId\": \"<string>\",\n    \"firstName\": \"<string>\",\n    \"lastName\": \"<string>\",\n    \"groups\": [\n        \"<string>\"\n    ]\n}",
+                              "valueJsonPointer": "/item/0/item/19/item/0/item/0/item/0/item/0/request/body/raw"
                             }
                           ]
                         },
@@ -1932,6 +2362,12 @@
                           "name": "organizationId",
                           "value": "<string>",
                           "valueJsonPointer": "/item/0/item/19/item/0/item/0/item/1/request/url/variable/0"
+                        },
+                        {
+                          "paramType": "requestBody",
+                          "bodyType": "application/json",
+                          "value": "{\n    \"email\": \"<email>\",\n    \"roleId\": \"<string>\",\n    \"firstName\": \"<string>\",\n    \"lastName\": \"<string>\",\n    \"groups\": [\n        \"<string>\"\n    ]\n}",
+                          "valueJsonPointer": "/item/0/item/19/item/0/item/0/item/1/request/body/raw"
                         }
                       ]
                     },
@@ -1951,8 +2387,8 @@
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/orgs/:organizationId/targets",
                   "jsonPointer": "/item/0/item/19/item/0/item/1",
+                  "path": "{{baseUrl}}/api/v1/orgs/:organizationId/targets",
                   "children": [
                     {
                       "jsonPointer": "/item/0/item/19/item/0/item/1/item/0",
@@ -1964,6 +2400,12 @@
                           "name": "organizationId",
                           "value": "<string>",
                           "valueJsonPointer": "/item/0/item/19/item/0/item/1/item/0/request/url/variable/0"
+                        },
+                        {
+                          "paramType": "requestBody",
+                          "bodyType": "application/json",
+                          "value": "{\n    \"targets\": [\n        \"<string>\"\n    ],\n    \"repeaterId\": \"<string>\"\n}",
+                          "valueJsonPointer": "/item/0/item/19/item/0/item/1/item/0/request/body/raw"
                         }
                       ]
                     },
@@ -1977,6 +2419,12 @@
                           "name": "organizationId",
                           "value": "<string>",
                           "valueJsonPointer": "/item/0/item/19/item/0/item/1/item/1/request/url/variable/0"
+                        },
+                        {
+                          "paramType": "requestBody",
+                          "bodyType": "application/json",
+                          "value": "{\n    \"authorizedTargets\": [\n        \"<string>\"\n    ]\n}",
+                          "valueJsonPointer": "/item/0/item/19/item/0/item/1/item/1/request/body/raw"
                         }
                       ]
                     },
@@ -1990,18 +2438,24 @@
                           "name": "organizationId",
                           "value": "<string>",
                           "valueJsonPointer": "/item/0/item/19/item/0/item/1/item/2/request/url/variable/0"
+                        },
+                        {
+                          "paramType": "requestBody",
+                          "bodyType": "text/plain",
+                          "value": "{\n    \"file\": \"<binary>\"\n}",
+                          "valueJsonPointer": "/item/0/item/19/item/0/item/1/item/2/request/body/raw"
                         }
                       ]
                     }
                   ]
                 },
                 {
-                  "path": "{{baseUrl}}/api/v1/orgs/:organizationId/quotas",
                   "jsonPointer": "/item/0/item/19/item/0/item/2",
+                  "path": "{{baseUrl}}/api/v1/orgs/:organizationId/quotas",
                   "children": [
                     {
-                      "path": "{{baseUrl}}/api/v1/orgs/:organizationId/quotas/:type",
                       "jsonPointer": "/item/0/item/19/item/0/item/2/item/0",
+                      "path": "{{baseUrl}}/api/v1/orgs/:organizationId/quotas/:type",
                       "children": [
                         {
                           "jsonPointer": "/item/0/item/19/item/0/item/2/item/0/item/0",
@@ -2038,6 +2492,12 @@
                               "name": "type",
                               "value": "<object>",
                               "valueJsonPointer": "/item/0/item/19/item/0/item/2/item/0/item/1/request/url/variable/1"
+                            },
+                            {
+                              "paramType": "requestBody",
+                              "bodyType": "application/json",
+                              "value": "{\n    \"limit\": \"<number>\",\n    \"type\": \"<string>\"\n}",
+                              "valueJsonPointer": "/item/0/item/19/item/0/item/2/item/0/item/1/request/body/raw"
                             }
                           ]
                         }
@@ -2066,6 +2526,12 @@
                           "name": "organizationId",
                           "value": "<string>",
                           "valueJsonPointer": "/item/0/item/19/item/0/item/2/item/2/request/url/variable/0"
+                        },
+                        {
+                          "paramType": "requestBody",
+                          "bodyType": "application/json",
+                          "value": "{\n    \"limit\": \"<number>\",\n    \"type\": \"<string>\"\n}",
+                          "valueJsonPointer": "/item/0/item/19/item/0/item/2/item/2/request/body/raw"
                         }
                       ]
                     }
@@ -2094,6 +2560,12 @@
                       "name": "organizationId",
                       "value": "<string>",
                       "valueJsonPointer": "/item/0/item/19/item/0/item/4/request/url/variable/0"
+                    },
+                    {
+                      "paramType": "requestBody",
+                      "bodyType": "application/json",
+                      "value": "{\n    \"email\": \"<email>\",\n    \"active\": \"<boolean>\",\n    \"mfaEnabled\": \"<boolean>\",\n    \"name\": \"<string>\",\n    \"lastName\": \"<string>\",\n    \"firstName\": \"<string>\",\n    \"supportLead\": \"<string>\"\n}",
+                      "valueJsonPointer": "/item/0/item/19/item/0/item/4/request/body/raw"
                     }
                   ]
                 },
@@ -2120,6 +2592,12 @@
                       "name": "organizationId",
                       "value": "<string>",
                       "valueJsonPointer": "/item/0/item/19/item/0/item/6/request/url/variable/0"
+                    },
+                    {
+                      "paramType": "requestBody",
+                      "bodyType": "application/json",
+                      "value": "{\n    \"businessLogic\": \"<boolean>\",\n    \"dast\": \"<boolean>\",\n    \"orgApiKeys\": \"<boolean>\",\n    \"rbac\": \"<boolean>\",\n    \"repeaters\": \"<boolean>\",\n    \"sdlc\": \"<boolean>\",\n    \"sso\": \"<boolean>\",\n    \"zeroDay\": \"<boolean>\",\n    \"onlyAuthorizedHosts\": \"<boolean>\",\n    \"reportCustomization\": \"<boolean>\",\n    \"reports\": \"<boolean>\"\n}",
+                      "valueJsonPointer": "/item/0/item/19/item/0/item/6/request/body/raw"
                     }
                   ]
                 },
@@ -2133,23 +2611,28 @@
                       "name": "organizationId",
                       "value": "<string>",
                       "valueJsonPointer": "/item/0/item/19/item/0/item/7/request/url/variable/0"
+                    },
+                    {
+                      "paramType": "requestBody",
+                      "bodyType": "application/json",
+                      "value": "{\n    \"tags\": [\n        \"<string>\"\n    ]\n}",
+                      "valueJsonPointer": "/item/0/item/19/item/0/item/7/request/body/raw"
                     }
                   ]
                 }
               ]
             },
             {
-              "path": "{{baseUrl}}/api/v1/orgs/:orgId/roles",
               "jsonPointer": "/item/0/item/19/item/1",
+              "path": "{{baseUrl}}/api/v1/orgs/:orgId/roles",
               "children": [
                 {
-                  "path": "{{baseUrl}}/api/v1/orgs/:orgId/roles/:roleId",
                   "jsonPointer": "/item/0/item/19/item/1/item/0",
+                  "path": "{{baseUrl}}/api/v1/orgs/:orgId/roles/:roleId",
                   "children": [
                     {
                       "jsonPointer": "/item/0/item/19/item/1/item/0/item/0",
                       "path": "{{baseUrl}}/api/v1/orgs/:orgId/roles/:roleId",
-
                       "method": "GET",
                       "parameters": [
                         {
@@ -2182,6 +2665,12 @@
                           "name": "roleId",
                           "value": "<string>",
                           "valueJsonPointer": "/item/0/item/19/item/1/item/0/item/1/request/url/variable/1"
+                        },
+                        {
+                          "paramType": "requestBody",
+                          "bodyType": "application/json",
+                          "value": "{\n    \"name\": \"<string>\",\n    \"description\": \"<string>\",\n    \"scopes\": [\n        \"<string>\"\n    ]\n}",
+                          "valueJsonPointer": "/item/0/item/19/item/1/item/0/item/1/request/body/raw"
                         }
                       ]
                     },
@@ -2229,6 +2718,12 @@
                       "name": "orgId",
                       "value": "<string>",
                       "valueJsonPointer": "/item/0/item/19/item/1/item/2/request/url/variable/0"
+                    },
+                    {
+                      "paramType": "requestBody",
+                      "bodyType": "application/json",
+                      "value": "{\n    \"name\": \"<string>\",\n    \"description\": \"<string>\",\n    \"scopes\": [\n        \"<string>\"\n    ]\n}",
+                      "valueJsonPointer": "/item/0/item/19/item/1/item/2/request/body/raw"
                     }
                   ]
                 }
@@ -2237,7 +2732,15 @@
             {
               "jsonPointer": "/item/0/item/19/item/2",
               "path": "{{baseUrl}}/api/v1/orgs",
-              "method": "POST"
+              "method": "POST",
+              "parameters": [
+                {
+                  "paramType": "requestBody",
+                  "bodyType": "application/json",
+                  "value": "{\n    \"email\": \"<email>\",\n    \"active\": \"<boolean>\",\n    \"mfaEnabled\": \"<boolean>\",\n    \"name\": \"<string>\",\n    \"lastName\": \"<string>\",\n    \"firstName\": \"<string>\",\n    \"supportLead\": \"<string>\"\n}",
+                  "valueJsonPointer": "/item/0/item/19/item/2/request/body/raw"
+                }
+              ]
             },
             {
               "jsonPointer": "/item/0/item/19/item/3",
@@ -2247,12 +2750,12 @@
           ]
         },
         {
-          "path": "{{baseUrl}}/api/v1/tags",
           "jsonPointer": "/item/0/item/20",
+          "path": "{{baseUrl}}/api/v1/tags",
           "children": [
             {
-              "path": "{{baseUrl}}/api/v1/tags/:tagId",
               "jsonPointer": "/item/0/item/20/item/0",
+              "path": "{{baseUrl}}/api/v1/tags/:tagId",
               "children": [
                 {
                   "jsonPointer": "/item/0/item/20/item/0/item/0",
@@ -2277,6 +2780,12 @@
                       "name": "tagId",
                       "value": "<string>",
                       "valueJsonPointer": "/item/0/item/20/item/0/item/1/request/url/variable/0"
+                    },
+                    {
+                      "paramType": "requestBody",
+                      "bodyType": "application/json",
+                      "value": "{\n    \"name\": \"<string>\",\n    \"description\": \"<string>\"\n}",
+                      "valueJsonPointer": "/item/0/item/20/item/0/item/1/request/body/raw"
                     }
                   ]
                 }
@@ -2290,13 +2799,21 @@
             {
               "jsonPointer": "/item/0/item/20/item/2",
               "path": "{{baseUrl}}/api/v1/tags",
-              "method": "POST"
+              "method": "POST",
+              "parameters": [
+                {
+                  "paramType": "requestBody",
+                  "bodyType": "application/json",
+                  "value": "{\n    \"name\": \"<string>\",\n    \"description\": \"<string>\"\n}",
+                  "valueJsonPointer": "/item/0/item/20/item/2/request/body/raw"
+                }
+              ]
             }
           ]
         },
         {
-          "path": "{{baseUrl}}/api/v1/member/notifications",
           "jsonPointer": "/item/0/item/21",
+          "path": "{{baseUrl}}/api/v1/member/notifications",
           "children": [
             {
               "jsonPointer": "/item/0/item/21/item/0",
@@ -2306,17 +2823,25 @@
             {
               "jsonPointer": "/item/0/item/21/item/1",
               "path": "{{baseUrl}}/api/v1/member/notifications",
-              "method": "PUT"
+              "method": "PUT",
+              "parameters": [
+                {
+                  "paramType": "requestBody",
+                  "bodyType": "application/json",
+                  "value": "{\n    \"onError\": \"<boolean>\",\n    \"onIssueFound\": \"<boolean>\",\n    \"onScanStatusChanged\": \"<boolean>\"\n}",
+                  "valueJsonPointer": "/item/0/item/21/item/1/request/body/raw"
+                }
+              ]
             }
           ]
         },
         {
-          "path": "{{baseUrl}}/api/v1/issues/types",
           "jsonPointer": "/item/0/item/22",
+          "path": "{{baseUrl}}/api/v1/issues/types",
           "children": [
             {
-              "path": "{{baseUrl}}/api/v1/issues/types/:issue",
               "jsonPointer": "/item/0/item/22/item/0",
+              "path": "{{baseUrl}}/api/v1/issues/types/:issue",
               "children": [
                 {
                   "jsonPointer": "/item/0/item/22/item/0/item/0",
@@ -2328,6 +2853,12 @@
                       "name": "issue",
                       "value": "<number>",
                       "valueJsonPointer": "/item/0/item/22/item/0/item/0/request/url/variable/0"
+                    },
+                    {
+                      "paramType": "requestBody",
+                      "bodyType": "application/json",
+                      "value": "{\n    \"externalId\": \"<number>\",\n    \"severity\": \"<string>\",\n    \"remedy\": \"<string>\",\n    \"details\": \"<string>\",\n    \"name\": \"<string>\",\n    \"source\": [\n        \"<string>\"\n    ],\n    \"id\": \"<number>\",\n    \"reference\": [\n        \"<url>\",\n        \"<url>\"\n    ],\n    \"exposure\": \"<string>\",\n    \"cvss\": \"<string>\"\n}",
+                      "valueJsonPointer": "/item/0/item/22/item/0/item/0/request/body/raw"
                     }
                   ]
                 },
@@ -2349,12 +2880,28 @@
             {
               "jsonPointer": "/item/0/item/22/item/1",
               "path": "{{baseUrl}}/api/v1/issues/types",
-              "method": "POST"
+              "method": "POST",
+              "parameters": [
+                {
+                  "paramType": "requestBody",
+                  "bodyType": "application/json",
+                  "value": "{\n    \"externalId\": \"<number>\",\n    \"severity\": \"<string>\",\n    \"remedy\": \"<string>\",\n    \"details\": \"<string>\",\n    \"name\": \"<string>\",\n    \"source\": [\n        \"<string>\"\n    ],\n    \"id\": \"<number>\",\n    \"reference\": [\n        \"<url>\",\n        \"<url>\"\n    ],\n    \"exposure\": \"<string>\",\n    \"cvss\": \"<string>\"\n}",
+                  "valueJsonPointer": "/item/0/item/22/item/1/request/body/raw"
+                }
+              ]
             },
             {
               "jsonPointer": "/item/0/item/22/item/2",
               "path": "{{baseUrl}}/api/v1/issues/types",
-              "method": "PATCH"
+              "method": "PATCH",
+              "parameters": [
+                {
+                  "paramType": "requestBody",
+                  "bodyType": "application/json",
+                  "value": "{\n    \"severity\": \"<string>\",\n    \"issueTypeIds\": [\n        \"<number>\"\n    ]\n}",
+                  "valueJsonPointer": "/item/0/item/22/item/2/request/body/raw"
+                }
+              ]
             },
             {
               "jsonPointer": "/item/0/item/22/item/3",
@@ -2364,22 +2911,38 @@
             {
               "jsonPointer": "/item/0/item/22/item/4",
               "path": "{{baseUrl}}/api/v1/issues/types/import",
-              "method": "POST"
+              "method": "POST",
+              "parameters": [
+                {
+                  "paramType": "requestBody",
+                  "bodyType": "application/json",
+                  "value": "{\n    \"file\": \"<binary>\"\n}",
+                  "valueJsonPointer": "/item/0/item/22/item/4/request/body/raw"
+                }
+              ]
             }
           ]
         },
         {
-          "path": "{{baseUrl}}/api/v1/report-options",
           "jsonPointer": "/item/0/item/23",
+          "path": "{{baseUrl}}/api/v1/report-options",
           "children": [
             {
-              "path": "{{baseUrl}}/api/v1/report-options/cover",
               "jsonPointer": "/item/0/item/23/item/0",
+              "path": "{{baseUrl}}/api/v1/report-options/cover",
               "children": [
                 {
                   "jsonPointer": "/item/0/item/23/item/0/item/0",
                   "path": "{{baseUrl}}/api/v1/report-options/cover",
-                  "method": "POST"
+                  "method": "POST",
+                  "parameters": [
+                    {
+                      "paramType": "requestBody",
+                      "bodyType": "image/*",
+                      "value": "{\n    \"file\": \"<binary>\"\n}",
+                      "valueJsonPointer": "/item/0/item/23/item/0/item/0/request/body/raw"
+                    }
+                  ]
                 },
                 {
                   "jsonPointer": "/item/0/item/23/item/0/item/1",
@@ -2389,13 +2952,21 @@
               ]
             },
             {
-              "path": "{{baseUrl}}/api/v1/report-options/page",
               "jsonPointer": "/item/0/item/23/item/1",
+              "path": "{{baseUrl}}/api/v1/report-options/page",
               "children": [
                 {
                   "jsonPointer": "/item/0/item/23/item/1/item/0",
                   "path": "{{baseUrl}}/api/v1/report-options/page",
-                  "method": "POST"
+                  "method": "POST",
+                  "parameters": [
+                    {
+                      "paramType": "requestBody",
+                      "bodyType": "image/*",
+                      "value": "{\n    \"file\": \"<binary>\"\n}",
+                      "valueJsonPointer": "/item/0/item/23/item/1/item/0/request/body/raw"
+                    }
+                  ]
                 },
                 {
                   "jsonPointer": "/item/0/item/23/item/1/item/1",
@@ -2412,7 +2983,15 @@
             {
               "jsonPointer": "/item/0/item/23/item/3",
               "path": "{{baseUrl}}/api/v1/report-options",
-              "method": "POST"
+              "method": "POST",
+              "parameters": [
+                {
+                  "paramType": "requestBody",
+                  "bodyType": "application/json",
+                  "value": "{\n    \"colors\": \"<object>\",\n    \"comments\": {\n        \"issueHeader\": {\n            \"x\": 44936572.63296464,\n            \"y\": -92013519.97275893,\n            \"width\": 60479701.267980605,\n            \"font\": {\n                \"color\": {},\n                \"lineHeight\": -67084552.76710654,\n                \"name\": \"elit sit\",\n                \"size\": 69204458.77969053,\n                \"style\": \"bold\"\n            },\n            \"text\": \"quis occae\",\n            \"maxLines\": 46897845.191670656,\n            \"dateFormat\": \"incididunt sed ea id\"\n        },\n        \"dateFormat\": \"id\"\n    },\n    \"cover\": {\n        \"image\": {\n            \"width\": -55820227.53454292,\n            \"height\": -80939407.374724,\n            \"x\": -29067486.18207194,\n            \"y\": -71923798.26479,\n            \"url\": \"do Duis ea sit\"\n        },\n        \"scanName\": {\n            \"x\": 78394546.63417697,\n            \"y\": 32081206.818270713,\n            \"width\": -85774445.17972025,\n            \"font\": {\n                \"color\": {},\n                \"lineHeight\": 80708839.92320871,\n                \"name\": \"consectetur reprehenderit\",\n                \"size\": 17587904.034120068,\n                \"style\": \"bold\"\n            },\n            \"text\": \"elit la\",\n            \"maxLines\": -67941161.41512245,\n            \"dateFormat\": \"sit dolore nulla\"\n        },\n        \"generatedBy\": {\n            \"x\": -46112854.84122063,\n            \"yAsOffset\": false,\n            \"y\": 77587572.77198339,\n            \"width\": 85512785.91678128,\n            \"font\": {\n                \"color\": {},\n                \"lineHeight\": -37753596.67712408,\n                \"name\": \"cupidatat Duis\",\n                \"size\": -26955375.169835255,\n                \"style\": \"normal\"\n            },\n            \"text\": \"quis amet do\",\n            \"maxLines\": -34794192.21504729,\n            \"dateFormat\": \"amet labore nisi\"\n        }\n    },\n    \"font\": {\n        \"color\": {},\n        \"lineHeight\": 80541413.57517487,\n        \"name\": \"Excepteur do aute dolor\",\n        \"size\": -79722278.68113819,\n        \"style\": \"bold\"\n    },\n    \"header\": {\n        \"x\": 48038594.793387234,\n        \"arrow\": false,\n        \"y\": -25273223.07923989,\n        \"width\": -51730557.70347155,\n        \"font\": {\n            \"color\": {},\n            \"lineHeight\": -50035971.269173585,\n            \"name\": \"eiusmod\",\n            \"size\": 38739590.9882012,\n            \"style\": \"normal\"\n        },\n        \"text\": \"dolore occaecat ex\",\n        \"maxLines\": 85355396.00214803,\n        \"dateFormat\": \"cillum sunt\"\n    },\n    \"issue\": {\n        \"header\": {\n            \"x\": 73321620.75771108,\n            \"y\": 43534136.77168745,\n            \"width\": -59788704.004742585,\n            \"font\": {\n                \"color\": {},\n                \"lineHeight\": -62667560.717829265,\n                \"name\": \"dolor sed\",\n                \"size\": -67728944.47425827,\n                \"style\": \"normal\"\n            },\n            \"text\": \"dolore nostrud reprehenderit ea\",\n            \"maxLines\": -44740517.953845374,\n            \"dateFormat\": \"qui Ut\"\n        },\n        \"backLink\": {\n            \"x\": -8349782.658504561,\n            \"y\": -77329048.63698956,\n            \"width\": -4814715.7330335975,\n            \"font\": {\n                \"color\": {},\n                \"lineHeight\": -41854138.03190783,\n                \"name\": \"consequat mollit \",\n                \"size\": 97099447.42687142,\n                \"style\": \"bold\"\n            },\n            \"text\": \"consequat eu occaecat Excepteur\",\n            \"maxLines\": 16008168.288849503,\n            \"dateFormat\": \"et irure\"\n        }\n    },\n    \"locale\": \"<string>\",\n    \"page\": {\n        \"margins\": {\n            \"top\": 70372402.17771173,\n            \"right\": 9696790.195631564,\n            \"bottom\": 89366605.90829834,\n            \"left\": 96486982.91550142\n        },\n        \"logo\": {\n            \"width\": 65797095.07385528,\n            \"height\": -12640343.120781288,\n            \"x\": 78502511.99095947,\n            \"y\": -95828807.83260217,\n            \"url\": \"do deserunt\"\n        },\n        \"footer\": {\n            \"font\": {\n                \"color\": {},\n                \"lineHeight\": 12463357.447468176,\n                \"name\": \"Duis irure labore elit\",\n                \"size\": 8503122.61680673,\n                \"style\": \"bold\"\n            },\n            \"rect\": {\n                \"width\": -71663354.1748937,\n                \"height\": -19534677.505311787,\n                \"x\": 37161628.23428172,\n                \"y\": 18889328.593130454\n            },\n            \"link\": {\n                \"x\": -22423542.840055883,\n                \"url\": \"laboris sunt ut\",\n                \"y\": 72043334.67765704,\n                \"width\": 78884566.99191248,\n                \"font\": {\n                    \"color\": {},\n                    \"lineHeight\": 36062642.722812474,\n                    \"name\": \"Ut proident anim\",\n                    \"size\": 9375650.159635067,\n                    \"style\": \"bold\"\n                },\n                \"text\": \"elit\",\n                \"maxLines\": -45558478.19489145,\n                \"dateFormat\": \"occaecat incididunt consequat amet\"\n            },\n            \"topLink\": {\n                \"x\": 37798547.34482768,\n                \"y\": -86034462.7070286,\n                \"width\": -57577654.729702845,\n                \"font\": {\n                    \"color\": {},\n                    \"lineHeight\": 97651033.54606804,\n                    \"name\": \"culpa labore\",\n                    \"size\": 65900320.93151051,\n                    \"style\": \"normal\"\n                },\n                \"text\": \"exercitation dolore\",\n                \"maxLines\": 66380065.83373439,\n                \"dateFormat\": \"sit dolor non laboris\"\n            },\n            \"pageNumber\": {\n                \"x\": -51815901.46849131,\n                \"y\": 90015990.10035136,\n                \"width\": 85208023.55115321,\n                \"font\": {\n                    \"color\": {},\n                    \"lineHeight\": 38126145.928053826,\n                    \"name\": \"ullamco ad\",\n                    \"size\": 8715050.68374829,\n                    \"style\": \"bold\"\n                },\n                \"text\": \"ex do in nulla eu\",\n                \"maxLines\": -55386144.1171724,\n                \"dateFormat\": \"non laborum sunt\"\n            }\n        }\n    },\n    \"producer\": \"<string>\",\n    \"subHeader\": {\n        \"x\": 52794633.81950599,\n        \"y\": -77904189.99932505,\n        \"width\": 9633178.920682892,\n        \"font\": {\n            \"color\": {},\n            \"lineHeight\": 47621644.87858215,\n            \"name\": \"laboris mollit\",\n            \"size\": -23579386.331597492,\n            \"style\": \"normal\"\n        },\n        \"text\": \"Lorem\",\n        \"maxLines\": -80532885.89760377,\n        \"dateFormat\": \"ex nisi\"\n    },\n    \"defaultDateFormat\": \"<dateTime>\"\n}",
+                  "valueJsonPointer": "/item/0/item/23/item/3/request/body/raw"
+                }
+              ]
             },
             {
               "jsonPointer": "/item/0/item/23/item/4",
@@ -2422,16 +3001,16 @@
           ]
         },
         {
-          "path": "{{baseUrl}}/api/v1/projects",
           "jsonPointer": "/item/0/item/24",
+          "path": "{{baseUrl}}/api/v1/projects",
           "children": [
             {
-              "path": "{{baseUrl}}/api/v1/projects/:projectId",
               "jsonPointer": "/item/0/item/24/item/0",
+              "path": "{{baseUrl}}/api/v1/projects/:projectId",
               "children": [
                 {
-                  "path": "{{baseUrl}}/api/v1/projects/:projectId/boards",
                   "jsonPointer": "/item/0/item/24/item/0/item/0",
+                  "path": "{{baseUrl}}/api/v1/projects/:projectId/boards",
                   "children": [
                     {
                       "jsonPointer": "/item/0/item/24/item/0/item/0/item/0",
@@ -2456,6 +3035,12 @@
                           "name": "projectId",
                           "value": "<string>",
                           "valueJsonPointer": "/item/0/item/24/item/0/item/0/item/1/request/url/variable/0"
+                        },
+                        {
+                          "paramType": "requestBody",
+                          "bodyType": "application/json",
+                          "value": "{\n    \"service\": \"<string>\",\n    \"name\": \"<string>\",\n    \"externalId\": \"<string>\",\n    \"uri\": \"<string>\"\n}",
+                          "valueJsonPointer": "/item/0/item/24/item/0/item/0/item/1/request/body/raw"
                         }
                       ]
                     },
@@ -2503,6 +3088,12 @@
                       "name": "projectId",
                       "value": "<string>",
                       "valueJsonPointer": "/item/0/item/24/item/0/item/2/request/url/variable/0"
+                    },
+                    {
+                      "paramType": "requestBody",
+                      "bodyType": "application/json",
+                      "value": "{\n    \"name\": \"<string>\",\n    \"groupIds\": [\n        \"<string>\",\n        \"<string>\"\n    ],\n    \"enginesLimit\": \"<number>\"\n}",
+                      "valueJsonPointer": "/item/0/item/24/item/0/item/2/request/body/raw"
                     }
                   ]
                 },
@@ -2537,7 +3128,15 @@
             {
               "jsonPointer": "/item/0/item/24/item/1",
               "path": "{{baseUrl}}/api/v1/projects",
-              "method": "POST"
+              "method": "POST",
+              "parameters": [
+                {
+                  "paramType": "requestBody",
+                  "bodyType": "application/json",
+                  "value": "{\n    \"name\": \"<string>\",\n    \"groupIds\": [\n        \"<string>\",\n        \"<string>\"\n    ],\n    \"enginesLimit\": \"<number>\"\n}",
+                  "valueJsonPointer": "/item/0/item/24/item/1/request/body/raw"
+                }
+              ]
             },
             {
               "jsonPointer": "/item/0/item/24/item/2",
@@ -2547,12 +3146,12 @@
           ]
         },
         {
-          "path": "{{baseUrl}}/api/v1/project-issues",
           "jsonPointer": "/item/0/item/25",
+          "path": "{{baseUrl}}/api/v1/project-issues",
           "children": [
             {
-              "path": "{{baseUrl}}/api/v1/project-issues/:id",
               "jsonPointer": "/item/0/item/25/item/0",
+              "path": "{{baseUrl}}/api/v1/project-issues/:id",
               "children": [
                 {
                   "jsonPointer": "/item/0/item/25/item/0/item/0",
@@ -2590,6 +3189,12 @@
                       "name": "id",
                       "value": "<string>",
                       "valueJsonPointer": "/item/0/item/25/item/0/item/2/request/url/variable/0"
+                    },
+                    {
+                      "paramType": "requestBody",
+                      "bodyType": "application/json",
+                      "value": "{\n    \"assigneeIds\": [\n        \"<integer>\",\n        \"<integer>\"\n    ]\n}",
+                      "valueJsonPointer": "/item/0/item/25/item/0/item/2/request/body/raw"
                     }
                   ]
                 },
@@ -2603,6 +3208,12 @@
                       "name": "id",
                       "value": "<string>",
                       "valueJsonPointer": "/item/0/item/25/item/0/item/3/request/url/variable/0"
+                    },
+                    {
+                      "paramType": "requestBody",
+                      "bodyType": "application/json",
+                      "value": "{\n    \"action\": \"<object>\"\n}",
+                      "valueJsonPointer": "/item/0/item/25/item/0/item/3/request/body/raw"
                     }
                   ]
                 }
@@ -2611,17 +3222,25 @@
             {
               "jsonPointer": "/item/0/item/25/item/1",
               "path": "{{baseUrl}}/api/v1/project-issues/status",
-              "method": "POST"
+              "method": "POST",
+              "parameters": [
+                {
+                  "paramType": "requestBody",
+                  "bodyType": "application/json",
+                  "value": "{\n    \"projectIssueIds\": [\n        \"<integer>\",\n        \"<integer>\"\n    ],\n    \"action\": \"<object>\"\n}",
+                  "valueJsonPointer": "/item/0/item/25/item/1/request/body/raw"
+                }
+              ]
             }
           ]
         },
         {
-          "path": "{{baseUrl}}/api/v1/auth-objects",
           "jsonPointer": "/item/0/item/26",
+          "path": "{{baseUrl}}/api/v1/auth-objects",
           "children": [
             {
-              "path": "{{baseUrl}}/api/v1/auth-objects/:authObjectId",
               "jsonPointer": "/item/0/item/26/item/0",
+              "path": "{{baseUrl}}/api/v1/auth-objects/:authObjectId",
               "children": [
                 {
                   "jsonPointer": "/item/0/item/26/item/0/item/0",
@@ -2646,6 +3265,12 @@
                       "name": "authObjectId",
                       "value": "<string>",
                       "valueJsonPointer": "/item/0/item/26/item/0/item/1/request/url/variable/0"
+                    },
+                    {
+                      "paramType": "requestBody",
+                      "bodyType": "application/json",
+                      "value": "{\n    \"name\": \"<string>\",\n    \"type\": \"<string>\",\n    \"config\": {\n        \"request\": {\n            \"url\": \"http://tXjLfySCwwHOgXZMVbNbTKohcInlSXdo.ooNi8-U5,ibOt\",\n            \"protocol\": \"websocket\",\n            \"method\": \"PATCH\",\n            \"headers\": [\n                {\n                    \"name\": \"<string>\",\n                    \"value\": \"<string>\",\n                    \"mergeStrategy\": \"replace\"\n                },\n                {\n                    \"name\": \"<string>\",\n                    \"value\": \"<string>\",\n                    \"mergeStrategy\": \"replace\"\n                }\n            ],\n            \"body\": \"magna sit\",\n            \"followRedirects\": true,\n            \"maxRedirects\": -67123671.62367228,\n            \"payloadExtractor\": \"mollit ullamco Duis veni\",\n            \"correlationIdXPath\": \"exercitation velit\",\n            \"form\": {},\n            \"extractor\": {\n                \"to\": {\n                    \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"from\": {\n                    \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n            },\n            \"postLoginUrl\": \"https://MldsU.yflvWdlmzJExaNNORSFl7xXzFI0RwB85HuypJI\"\n        },\n        \"oidc\": {\n            \"grantType\": \"password\",\n            \"clientId\": \"amet ad aute\",\n            \"metadataUrl\": \"http://NvHJDRkbDMqoXL.eyegUcrPApCDEpRzbP\",\n            \"tokenEndpoint\": \"http://KkMIUsQyseThWsPEZSat.cqguCgKkgzHjwlgfeQXsMZdb1n-UKf.G\",\n            \"clientSecret\": \"ipsum esse\",\n            \"scope\": [\n                \"Lorem nostrud\",\n                \"esse u\"\n            ],\n            \"audience\": \"qui amet\",\n            \"username\": \"occaecat eiusmod adipisicing laboris\",\n            \"password\": \"Lorem reprehenderit\",\n            \"embedder\": {\n                \"type\": \"status\",\n                \"path\": \"laboris occaecat non\",\n                \"contentType\": \"irure minim dolor\",\n                \"name\": \"aliq\",\n                \"template\": \"{{token}}\",\n                \"encoder\": \"base64\",\n                \"mergeStrategy\": \"replace\"\n            }\n        },\n        \"multistep\": {\n            \"embedders\": [\n                {\n                    \"type\": \"status\",\n                    \"path\": \"minim commodo cillum sit est\",\n                    \"contentType\": \"ut labore\",\n                    \"name\": \"id esse\",\n                    \"template\": \"{{token}}\",\n                    \"encoder\": \"base64\",\n                    \"mergeStrategy\": \"append\"\n                },\n                {\n                    \"type\": \"body\",\n                    \"path\": \"incididunt cillum in consequat\",\n                    \"contentType\": \"aute nulla Lorem\",\n                    \"name\": \"ut reprehender\",\n                    \"template\": \"{{token}}\",\n                    \"encoder\": \"base64\",\n                    \"mergeStrategy\": \"replace\"\n                }\n            ],\n            \"steps\": [\n                {\n                    \"name\": {\n                        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    },\n                    \"request\": {\n                        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    },\n                    \"successResponseDetection\": {\n                        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    }\n                },\n                {\n                    \"name\": {\n                        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    },\n                    \"request\": {\n                        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    },\n                    \"successResponseDetection\": {\n                        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    }\n                }\n            ]\n        },\n        \"ntlm\": {\n            \"username\": \"magna sit et irure in\",\n            \"password\": \"veniam in adipisicing\",\n            \"domain\": \"in sit fugiat ad\",\n            \"workstation\": \"in\"\n        }\n    },\n    \"description\": \"<string>\",\n    \"successResponseDetection\": [\n        {\n            \"type\": \"header\",\n            \"name\": \"anim \",\n            \"statuses\": [\n                -2408601.2984431386,\n                -59707494.430182084\n            ],\n            \"patterns\": [\n                \"dolore pariatur Ut fugiat reprehenderit\",\n                \"Duis voluptate id\"\n            ]\n        },\n        {\n            \"type\": \"header\",\n            \"name\": \"exercitation adipisicing est\",\n            \"statuses\": [\n                -22636392.824818194,\n                69028541.65092519\n            ],\n            \"patterns\": [\n                \"do\",\n                \"\"\n            ]\n        }\n    ],\n    \"invalidSessionDetection\": [\n        {\n            \"type\": \"body\",\n            \"name\": \"laborum quis Ut et magna\",\n            \"statuses\": [\n                -92572513.79654013,\n                -84107195.8280029\n            ],\n            \"patterns\": [\n                \"in qui occaecat Ut\",\n                \"dolor minim mollit commodo ullamco\"\n            ]\n        },\n        {\n            \"type\": \"status\",\n            \"name\": \"ipsum adipisicing cillum quis ut\",\n            \"statuses\": [\n                -1021816.4576663971,\n                -19218570.84619835\n            ],\n            \"patterns\": [\n                \"Duis Excepteur\",\n                \"sit velit sunt\"\n            ]\n        }\n    ],\n    \"test\": {\n        \"request\": {\n            \"url\": \"http://NvsGfWvwCSXTChoNPgaN.kwwqrL5lBOPRPRzdEAzqPu9ifDmd+eqJg2JfYySp93+d\",\n            \"protocol\": \"websocket\",\n            \"method\": \"CONNECT\",\n            \"headers\": [\n                {\n                    \"name\": \"<string>\",\n                    \"value\": \"<string>\",\n                    \"mergeStrategy\": \"replace\"\n                },\n                {\n                    \"name\": \"<string>\",\n                    \"value\": \"<string>\",\n                    \"mergeStrategy\": \"replace\"\n                }\n            ],\n            \"body\": \"in aliquip et\",\n            \"followRedirects\": true,\n            \"maxRedirects\": -19257156.080530584,\n            \"payloadExtractor\": \"ullamco elit ut\",\n            \"correlationIdXPath\": \"Ut do\"\n        },\n        \"repeaterId\": \"Excepte\"\n    }\n}",
+                      "valueJsonPointer": "/item/0/item/26/item/0/item/1/request/body/raw"
                     }
                   ]
                 },
@@ -2685,22 +3310,38 @@
             {
               "jsonPointer": "/item/0/item/26/item/2",
               "path": "{{baseUrl}}/api/v1/auth-objects",
-              "method": "POST"
+              "method": "POST",
+              "parameters": [
+                {
+                  "paramType": "requestBody",
+                  "bodyType": "application/json",
+                  "value": "{\n    \"name\": \"<string>\",\n    \"type\": \"<string>\",\n    \"config\": {\n        \"request\": {\n            \"url\": \"https://NeQBR.beqj5KMg7PVTHOe0XoduHTiEu7NM,LVfEokVSF0lEbOyELXDwShQfajd0ZluPEJRh\",\n            \"protocol\": \"http\",\n            \"method\": \"GET\",\n            \"headers\": [\n                {\n                    \"name\": \"<string>\",\n                    \"value\": \"<string>\",\n                    \"mergeStrategy\": \"replace\"\n                },\n                {\n                    \"name\": \"<string>\",\n                    \"value\": \"<string>\",\n                    \"mergeStrategy\": \"replace\"\n                }\n            ],\n            \"body\": \"ex velit consectetur Duis elit\",\n            \"followRedirects\": true,\n            \"maxRedirects\": -66168014.10668059,\n            \"payloadExtractor\": \"est dolore id ipsum nostrud\",\n            \"correlationIdXPath\": \"quis\",\n            \"form\": {},\n            \"extractor\": {\n                \"to\": {\n                    \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"from\": {\n                    \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n            },\n            \"postLoginUrl\": \"http://HBeB.nlXVzGRZ10YEaXOOjmFxa,bzrRzzpRw5KuBYC5LVI1uB2-N\"\n        },\n        \"oidc\": {\n            \"grantType\": \"client_credentials\",\n            \"clientId\": \"dolore n\",\n            \"metadataUrl\": \"https://gCfqvYYyCAqyrYmx.pyo5DuUPnqHAgJ1kevEcBoqNXneOaw24UWE.uoCwqfJTOcUxZcdjBrJbDE7\",\n            \"tokenEndpoint\": \"http://KUghbkYNnfVUkYwYLt.njkUJDDzFEVbohwepdzGdW9stCvEdjDg+SsxfEqY4Fi.aQNUKawWHvphcRHJ\",\n            \"clientSecret\": \"Lorem minim nisi\",\n            \"scope\": [\n                \"incididunt\",\n                \"labore adipisicing quis cillum\"\n            ],\n            \"audience\": \"eiusmod Duis anim\",\n            \"username\": \"aliquip consectetur dolor Lorem\",\n            \"password\": \"nisi ullamco velit\",\n            \"embedder\": {\n                \"type\": \"header\",\n                \"path\": \"ullamco\",\n                \"contentType\": \"ad eu\",\n                \"name\": \"in ipsum\",\n                \"template\": \"{{token}}\",\n                \"encoder\": \"base64\",\n                \"mergeStrategy\": \"replace\"\n            }\n        },\n        \"multistep\": {\n            \"embedders\": [\n                {\n                    \"type\": \"body\",\n                    \"path\": \"labore velit Duis\",\n                    \"contentType\": \"ea ullamco sit commodo\",\n                    \"name\": \"elit ea proident sunt\",\n                    \"template\": \"{{token}}\",\n                    \"encoder\": \"base64\",\n                    \"mergeStrategy\": \"append\"\n                },\n                {\n                    \"type\": \"status\",\n                    \"path\": \"do in es\",\n                    \"contentType\": \"cupidatat elit consequat magna\",\n                    \"name\": \"laboris pariatur\",\n                    \"template\": \"{{token}}\",\n                    \"encoder\": \"base64\",\n                    \"mergeStrategy\": \"append\"\n                }\n            ],\n            \"steps\": [\n                {\n                    \"name\": {\n                        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    },\n                    \"request\": {\n                        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    },\n                    \"successResponseDetection\": {\n                        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    }\n                },\n                {\n                    \"name\": {\n                        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    },\n                    \"request\": {\n                        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    },\n                    \"successResponseDetection\": {\n                        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    }\n                }\n            ]\n        },\n        \"ntlm\": {\n            \"username\": \"cillum\",\n            \"password\": \"officia proident deserunt Ut\",\n            \"domain\": \"amet officia elit quis\",\n            \"workstation\": \"sit elit fugiat\"\n        }\n    },\n    \"description\": \"<string>\",\n    \"successResponseDetection\": [\n        {\n            \"type\": \"status\",\n            \"name\": \"ex incididunt ea nisi\",\n            \"statuses\": [\n                28382885.619084015,\n                80348212.98202735\n            ],\n            \"patterns\": [\n                \"magna\",\n                \"sed elit enim\"\n            ]\n        },\n        {\n            \"type\": \"header\",\n            \"name\": \"in commodo consectetur mollit\",\n            \"statuses\": [\n                90807672.82040831,\n                -27327157.120375037\n            ],\n            \"patterns\": [\n                \"ad aute\",\n                \"irure amet esse mollit\"\n            ]\n        }\n    ],\n    \"invalidSessionDetection\": [\n        {\n            \"type\": \"status\",\n            \"name\": \"dolor fugiat adipisicing nostrud reprehenderit\",\n            \"statuses\": [\n                -58367962.17994462,\n                5058804.207077384\n            ],\n            \"patterns\": [\n                \"laborum ex quis sunt\",\n                \"veniam\"\n            ]\n        },\n        {\n            \"type\": \"header\",\n            \"name\": \"proident enim ex reprehenderit\",\n            \"statuses\": [\n                59326894.93451062,\n                21720741.457092434\n            ],\n            \"patterns\": [\n                \"dolore ut\",\n                \"nulla in velit\"\n            ]\n        }\n    ],\n    \"test\": {\n        \"request\": {\n            \"url\": \"http://BlgJAy.lrR-cdwGtevIwCKwUwBVsUrrMaXTB\",\n            \"protocol\": \"http\",\n            \"method\": \"PATCH\",\n            \"headers\": [\n                {\n                    \"name\": \"<string>\",\n                    \"value\": \"<string>\",\n                    \"mergeStrategy\": \"replace\"\n                },\n                {\n                    \"name\": \"<string>\",\n                    \"value\": \"<string>\",\n                    \"mergeStrategy\": \"replace\"\n                }\n            ],\n            \"body\": \"aliquip minim\",\n            \"followRedirects\": false,\n            \"maxRedirects\": 11698255.85130848,\n            \"payloadExtractor\": \"proident quis Duis ad\",\n            \"correlationIdXPath\": \"consequat ut nulla ullamco ea\"\n        },\n        \"repeaterId\": \"con\"\n    }\n}",
+                  "valueJsonPointer": "/item/0/item/26/item/2/request/body/raw"
+                }
+              ]
             },
             {
               "jsonPointer": "/item/0/item/26/item/3",
               "path": "{{baseUrl}}/api/v1/auth-objects/test",
-              "method": "POST"
+              "method": "POST",
+              "parameters": [
+                {
+                  "paramType": "requestBody",
+                  "bodyType": "application/json",
+                  "value": "{\n    \"name\": \"<string>\",\n    \"type\": \"<string>\",\n    \"config\": {\n        \"request\": {\n            \"url\": \"http://tXjLfySCwwHOgXZMVbNbTKohcInlSXdo.ooNi8-U5,ibOt\",\n            \"protocol\": \"websocket\",\n            \"method\": \"PATCH\",\n            \"headers\": [\n                {\n                    \"name\": \"<string>\",\n                    \"value\": \"<string>\",\n                    \"mergeStrategy\": \"replace\"\n                },\n                {\n                    \"name\": \"<string>\",\n                    \"value\": \"<string>\",\n                    \"mergeStrategy\": \"replace\"\n                }\n            ],\n            \"body\": \"magna sit\",\n            \"followRedirects\": true,\n            \"maxRedirects\": -67123671.62367228,\n            \"payloadExtractor\": \"mollit ullamco Duis veni\",\n            \"correlationIdXPath\": \"exercitation velit\",\n            \"form\": {},\n            \"extractor\": {\n                \"to\": {\n                    \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"from\": {\n                    \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n            },\n            \"postLoginUrl\": \"https://MldsU.yflvWdlmzJExaNNORSFl7xXzFI0RwB85HuypJI\"\n        },\n        \"oidc\": {\n            \"grantType\": \"password\",\n            \"clientId\": \"amet ad aute\",\n            \"metadataUrl\": \"http://NvHJDRkbDMqoXL.eyegUcrPApCDEpRzbP\",\n            \"tokenEndpoint\": \"http://KkMIUsQyseThWsPEZSat.cqguCgKkgzHjwlgfeQXsMZdb1n-UKf.G\",\n            \"clientSecret\": \"ipsum esse\",\n            \"scope\": [\n                \"Lorem nostrud\",\n                \"esse u\"\n            ],\n            \"audience\": \"qui amet\",\n            \"username\": \"occaecat eiusmod adipisicing laboris\",\n            \"password\": \"Lorem reprehenderit\",\n            \"embedder\": {\n                \"type\": \"status\",\n                \"path\": \"laboris occaecat non\",\n                \"contentType\": \"irure minim dolor\",\n                \"name\": \"aliq\",\n                \"template\": \"{{token}}\",\n                \"encoder\": \"base64\",\n                \"mergeStrategy\": \"replace\"\n            }\n        },\n        \"multistep\": {\n            \"embedders\": [\n                {\n                    \"type\": \"status\",\n                    \"path\": \"minim commodo cillum sit est\",\n                    \"contentType\": \"ut labore\",\n                    \"name\": \"id esse\",\n                    \"template\": \"{{token}}\",\n                    \"encoder\": \"base64\",\n                    \"mergeStrategy\": \"append\"\n                },\n                {\n                    \"type\": \"body\",\n                    \"path\": \"incididunt cillum in consequat\",\n                    \"contentType\": \"aute nulla Lorem\",\n                    \"name\": \"ut reprehender\",\n                    \"template\": \"{{token}}\",\n                    \"encoder\": \"base64\",\n                    \"mergeStrategy\": \"replace\"\n                }\n            ],\n            \"steps\": [\n                {\n                    \"name\": {\n                        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    },\n                    \"request\": {\n                        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    },\n                    \"successResponseDetection\": {\n                        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    }\n                },\n                {\n                    \"name\": {\n                        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    },\n                    \"request\": {\n                        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    },\n                    \"successResponseDetection\": {\n                        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                    }\n                }\n            ]\n        },\n        \"ntlm\": {\n            \"username\": \"magna sit et irure in\",\n            \"password\": \"veniam in adipisicing\",\n            \"domain\": \"in sit fugiat ad\",\n            \"workstation\": \"in\"\n        }\n    },\n    \"description\": \"<string>\",\n    \"successResponseDetection\": [\n        {\n            \"type\": \"header\",\n            \"name\": \"anim \",\n            \"statuses\": [\n                -2408601.2984431386,\n                -59707494.430182084\n            ],\n            \"patterns\": [\n                \"dolore pariatur Ut fugiat reprehenderit\",\n                \"Duis voluptate id\"\n            ]\n        },\n        {\n            \"type\": \"header\",\n            \"name\": \"exercitation adipisicing est\",\n            \"statuses\": [\n                -22636392.824818194,\n                69028541.65092519\n            ],\n            \"patterns\": [\n                \"do\",\n                \"\"\n            ]\n        }\n    ],\n    \"invalidSessionDetection\": [\n        {\n            \"type\": \"body\",\n            \"name\": \"laborum quis Ut et magna\",\n            \"statuses\": [\n                -92572513.79654013,\n                -84107195.8280029\n            ],\n            \"patterns\": [\n                \"in qui occaecat Ut\",\n                \"dolor minim mollit commodo ullamco\"\n            ]\n        },\n        {\n            \"type\": \"status\",\n            \"name\": \"ipsum adipisicing cillum quis ut\",\n            \"statuses\": [\n                -1021816.4576663971,\n                -19218570.84619835\n            ],\n            \"patterns\": [\n                \"Duis Excepteur\",\n                \"sit velit sunt\"\n            ]\n        }\n    ],\n    \"test\": {\n        \"request\": {\n            \"url\": \"http://NvsGfWvwCSXTChoNPgaN.kwwqrL5lBOPRPRzdEAzqPu9ifDmd+eqJg2JfYySp93+d\",\n            \"protocol\": \"websocket\",\n            \"method\": \"CONNECT\",\n            \"headers\": [\n                {\n                    \"name\": \"<string>\",\n                    \"value\": \"<string>\",\n                    \"mergeStrategy\": \"replace\"\n                },\n                {\n                    \"name\": \"<string>\",\n                    \"value\": \"<string>\",\n                    \"mergeStrategy\": \"replace\"\n                }\n            ],\n            \"body\": \"in aliquip et\",\n            \"followRedirects\": true,\n            \"maxRedirects\": -19257156.080530584,\n            \"payloadExtractor\": \"ullamco elit ut\",\n            \"correlationIdXPath\": \"Ut do\"\n        },\n        \"repeaterId\": \"Excepte\"\n    }\n}",
+                  "valueJsonPointer": "/item/0/item/26/item/3/request/body/raw"
+                }
+              ]
             }
           ]
         },
         {
-          "path": "{{baseUrl}}/api/v1/scripts",
           "jsonPointer": "/item/0/item/27",
+          "path": "{{baseUrl}}/api/v1/scripts",
           "children": [
             {
-              "path": "{{baseUrl}}/api/v1/scripts/:scriptId",
               "jsonPointer": "/item/0/item/27/item/0",
+              "path": "{{baseUrl}}/api/v1/scripts/:scriptId",
               "children": [
                 {
                   "jsonPointer": "/item/0/item/27/item/0/item/0",
@@ -2725,6 +3366,12 @@
                       "name": "scriptId",
                       "value": "<string>",
                       "valueJsonPointer": "/item/0/item/27/item/0/item/1/request/url/variable/0"
+                    },
+                    {
+                      "paramType": "requestBody",
+                      "bodyType": "application/json",
+                      "value": "{\n    \"name\": \"<string>\",\n    \"description\": \"<string>\",\n    \"code\": \"<string>\"\n}",
+                      "valueJsonPointer": "/item/0/item/27/item/0/item/1/request/body/raw"
                     }
                   ]
                 },
@@ -2751,22 +3398,38 @@
             {
               "jsonPointer": "/item/0/item/27/item/2",
               "path": "{{baseUrl}}/api/v1/scripts",
-              "method": "POST"
+              "method": "POST",
+              "parameters": [
+                {
+                  "paramType": "requestBody",
+                  "bodyType": "application/json",
+                  "value": "{\n    \"name\": \"<string>\",\n    \"code\": \"<string>\",\n    \"description\": \"<string>\"\n}",
+                  "valueJsonPointer": "/item/0/item/27/item/2/request/body/raw"
+                }
+              ]
             }
           ]
         },
         {
-          "path": "{{baseUrl}}/api/v1/integrations",
           "jsonPointer": "/item/0/item/28",
+          "path": "{{baseUrl}}/api/v1/integrations",
           "children": [
             {
-              "path": "{{baseUrl}}/api/v1/integrations/gitlab",
               "jsonPointer": "/item/0/item/28/item/0",
+              "path": "{{baseUrl}}/api/v1/integrations/gitlab",
               "children": [
                 {
                   "jsonPointer": "/item/0/item/28/item/0/item/0",
                   "path": "{{baseUrl}}/api/v1/integrations/gitlab/install",
-                  "method": "POST"
+                  "method": "POST",
+                  "parameters": [
+                    {
+                      "paramType": "requestBody",
+                      "bodyType": "application/json",
+                      "value": "{\n    \"service\": \"<string>\",\n    \"accessToken\": \"<string>\",\n    \"refreshToken\": \"<string>\",\n    \"password\": \"<string>\",\n    \"code\": \"<string>\",\n    \"state\": \"<string>\",\n    \"user\": \"<string>\",\n    \"orgSlug\": \"<string>\",\n    \"clientId\": \"<string>\",\n    \"clientSecret\": \"<string>\",\n    \"installationId\": \"<string>\",\n    \"error\": \"<string>\",\n    \"errorDescription\": \"<string>\",\n    \"notificationLevels\": [\n        \"<string>\"\n    ],\n    \"slackChannels\": [\n        \"<string>\"\n    ],\n    \"baseUrl\": \"<url>\",\n    \"accessKey\": \"<string>\"\n}",
+                      "valueJsonPointer": "/item/0/item/28/item/0/item/0/request/body/raw"
+                    }
+                  ]
                 },
                 {
                   "jsonPointer": "/item/0/item/28/item/0/item/1",
@@ -2790,8 +3453,8 @@
               ]
             },
             {
-              "path": "{{baseUrl}}/api/v1/integrations/slack",
               "jsonPointer": "/item/0/item/28/item/1",
+              "path": "{{baseUrl}}/api/v1/integrations/slack",
               "children": [
                 {
                   "jsonPointer": "/item/0/item/28/item/1/item/0",
@@ -2806,8 +3469,8 @@
               ]
             },
             {
-              "path": "{{baseUrl}}/api/v1/integrations/azure",
               "jsonPointer": "/item/0/item/28/item/2",
+              "path": "{{baseUrl}}/api/v1/integrations/azure",
               "children": [
                 {
                   "jsonPointer": "/item/0/item/28/item/2/item/0",
@@ -2822,8 +3485,8 @@
               ]
             },
             {
-              "path": "{{baseUrl}}/api/v1/integrations/:provider",
               "jsonPointer": "/item/0/item/28/item/3",
+              "path": "{{baseUrl}}/api/v1/integrations/:provider",
               "children": [
                 {
                   "jsonPointer": "/item/0/item/28/item/3/item/0",
@@ -2848,6 +3511,12 @@
                       "name": "provider",
                       "value": "<string>",
                       "valueJsonPointer": "/item/0/item/28/item/3/item/1/request/url/variable/0"
+                    },
+                    {
+                      "paramType": "requestBody",
+                      "bodyType": "application/json",
+                      "value": "{\n    \"service\": \"<string>\",\n    \"accessToken\": \"<string>\",\n    \"refreshToken\": \"<string>\",\n    \"password\": \"<string>\",\n    \"code\": \"<string>\",\n    \"state\": \"<string>\",\n    \"user\": \"<string>\",\n    \"orgSlug\": \"<string>\",\n    \"clientId\": \"<string>\",\n    \"clientSecret\": \"<string>\",\n    \"installationId\": \"<string>\",\n    \"error\": \"<string>\",\n    \"errorDescription\": \"<string>\",\n    \"notificationLevels\": [\n        \"<string>\"\n    ],\n    \"slackChannels\": [\n        \"<string>\"\n    ],\n    \"baseUrl\": \"<url>\",\n    \"accessKey\": \"<string>\"\n}",
+                      "valueJsonPointer": "/item/0/item/28/item/3/item/1/request/body/raw"
                     }
                   ]
                 },
@@ -2887,7 +3556,15 @@
             {
               "jsonPointer": "/item/0/item/28/item/5",
               "path": "{{baseUrl}}/api/v1/integrations",
-              "method": "POST"
+              "method": "POST",
+              "parameters": [
+                {
+                  "paramType": "requestBody",
+                  "bodyType": "application/json",
+                  "value": "{\n    \"service\": \"<string>\",\n    \"accessToken\": \"<string>\",\n    \"refreshToken\": \"<string>\",\n    \"password\": \"<string>\",\n    \"code\": \"<string>\",\n    \"state\": \"<string>\",\n    \"user\": \"<string>\",\n    \"orgSlug\": \"<string>\",\n    \"clientId\": \"<string>\",\n    \"clientSecret\": \"<string>\",\n    \"installationId\": \"<string>\",\n    \"error\": \"<string>\",\n    \"errorDescription\": \"<string>\",\n    \"notificationLevels\": [\n        \"<string>\"\n    ],\n    \"slackChannels\": [\n        \"<string>\"\n    ],\n    \"baseUrl\": \"<url>\",\n    \"accessKey\": \"<string>\"\n}",
+                  "valueJsonPointer": "/item/0/item/28/item/5/request/body/raw"
+                }
+              ]
             },
             {
               "jsonPointer": "/item/0/item/28/item/6",
@@ -2922,7 +3599,15 @@
         {
           "jsonPointer": "/item/0/item/31",
           "path": "{{baseUrl}}/api/v1/register",
-          "method": "POST"
+          "method": "POST",
+          "parameters": [
+            {
+              "paramType": "requestBody",
+              "bodyType": "application/json",
+              "value": "{\n    \"firstName\": \"<string>\",\n    \"lastName\": \"<string>\",\n    \"email\": \"<email>\",\n    \"password\": \"<string>\"\n}",
+              "valueJsonPointer": "/item/0/item/31/request/body/raw"
+            }
+          ]
         }
       ]
     },

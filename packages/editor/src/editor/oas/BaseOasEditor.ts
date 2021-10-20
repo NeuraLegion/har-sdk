@@ -1,7 +1,7 @@
 import { Editor } from '../Editor';
 import { SpecTreeNode, SpecTreeNodeVariableParam } from '../../models';
 import { BaseEditor } from '../BaseEditor';
-import { BaseOasPathItemObjectParser } from './BaseOasPathItemObjectParser';
+import { PathNodeParser } from '../PathNodeParser';
 import { OpenAPIV3, OpenAPIV2 } from '@har-sdk/types';
 import $RefParser from '@apidevtools/json-schema-ref-parser';
 import { load } from 'js-yaml';
@@ -15,7 +15,7 @@ export abstract class BaseOasEditor<
 {
   protected dereferencedDoc: D;
 
-  protected abstract createPathItemObjectParser(): BaseOasPathItemObjectParser<D>;
+  protected abstract createPathItemObjectParser(): PathNodeParser;
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   public setParameterValue(valueJsonPointer: string, value: any): SpecTreeNode {

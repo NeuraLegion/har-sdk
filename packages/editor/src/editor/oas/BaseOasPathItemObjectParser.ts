@@ -4,21 +4,22 @@ import {
   SpecTreeNode,
   SpecTreeNodeParam
 } from '../../models';
+import { ParametersParser } from '../ParametersParser';
 import { PathNodeParser } from '../PathNodeParser';
 import jsonPointer from 'json-pointer';
 
 export abstract class BaseOasPathItemObjectParser<D> implements PathNodeParser {
-  protected constructor(
-    protected readonly doc: D,
-    private readonly operationObjectsParser: PathNodeParser
-  ) {}
+  protected constructor(protected readonly doc: D) {}
 
-  protected abstract parseParameters(pointer: string): SpecTreeNodeParam[];
+  protected abstract createParametersObjectParser(): ParametersParser;
+  protected abstract createOperationObjectsParser(): PathNodeParser;
 
   public parse(pointer: string): SpecTreeNode {
     const path = jsonPointer.parse(pointer).pop();
     const pathItemObject = jsonPointer.get(this.doc, pointer);
     const parameters = this.parseParameters(pointer);
+
+    const operationObjectsParser = this.createOperationObjectsParser();
 
     return {
       path,
@@ -28,11 +29,17 @@ export abstract class BaseOasPathItemObjectParser<D> implements PathNodeParser {
         .map((key) => key as HttpMethod)
         .map(
           (method: HttpMethod): SpecTreeNode =>
-            this.operationObjectsParser.parse(
+            operationObjectsParser.parse(
               jsonPointer.compile(['paths', path, method])
             )
         ),
       ...(parameters?.length ? { parameters } : {})
     };
+  }
+
+  protected parseParameters(pointer: string): SpecTreeNodeParam[] {
+    return (
+      this.createParametersObjectParser().parse(`${pointer}/parameters`) || []
+    );
   }
 }

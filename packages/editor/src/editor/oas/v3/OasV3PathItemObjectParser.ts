@@ -6,28 +6,21 @@ import { OpenAPIV3 } from '@har-sdk/types';
 import jsonPointer from 'json-pointer';
 
 export class OasV3PathItemObjectParser extends BaseOasPathItemObjectParser<OpenAPIV3.Document> {
-  private readonly parameterObjectsParser: OasV3ParameterObjectsParser;
-
   constructor(
     protected readonly doc: OpenAPIV3.Document,
-    dereferencedDoc: OpenAPIV3.Document
+    private readonly dereferencedDoc: OpenAPIV3.Document
   ) {
-    super(doc, new OasV3OperationObjectParser(doc, dereferencedDoc));
-    this.parameterObjectsParser = new OasV3ParameterObjectsParser(
-      doc,
-      dereferencedDoc
-    );
+    super(doc);
   }
 
   protected parseParameters(pointer: string): SpecTreeNodeParam[] {
+    const parameters: SpecTreeNodeParam[] = [];
+
     const path = jsonPointer.parse(pointer).pop();
     const pathItemObject: OpenAPIV3.PathItemObject = jsonPointer.get(
       this.doc,
       pointer
     );
-
-    const parameters: SpecTreeNodeParam[] =
-      this.parameterObjectsParser.parse(`${pointer}/parameters`) || [];
 
     if (pathItemObject.servers?.length) {
       const servers: SpecTreeNodeVariableParam = {
@@ -40,6 +33,14 @@ export class OasV3PathItemObjectParser extends BaseOasPathItemObjectParser<OpenA
       parameters.push(servers);
     }
 
-    return parameters;
+    return [...super.parseParameters(pointer), ...parameters];
+  }
+
+  protected createParametersObjectParser(): OasV3ParameterObjectsParser {
+    return new OasV3ParameterObjectsParser(this.doc, this.dereferencedDoc);
+  }
+
+  protected createOperationObjectsParser(): OasV3OperationObjectParser {
+    return new OasV3OperationObjectParser(this.doc, this.dereferencedDoc);
   }
 }

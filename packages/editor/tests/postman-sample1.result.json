@@ -36,19 +36,19 @@
                   "paramType": "variable",
                   "name": "from",
                   "value": "<string>",
-                  "valueJsonPointer": "/item/0/item/1/item/0/request/url/query/0"
+                  "valueJsonPointer": "/item/0/item/1/item/0/request/url/query/0/value"
                 },
                 {
                   "paramType": "variable",
                   "name": "to",
                   "value": "<string>",
-                  "valueJsonPointer": "/item/0/item/1/item/0/request/url/query/1"
+                  "valueJsonPointer": "/item/0/item/1/item/0/request/url/query/1/value"
                 },
                 {
                   "paramType": "variable",
                   "name": "orgId",
                   "value": "<string>",
-                  "valueJsonPointer": "/item/0/item/1/item/0/request/url/query/2"
+                  "valueJsonPointer": "/item/0/item/1/item/0/request/url/query/2/value"
                 }
               ]
             },
@@ -61,19 +61,19 @@
                   "paramType": "variable",
                   "name": "from",
                   "value": "<string>",
-                  "valueJsonPointer": "/item/0/item/1/item/1/request/url/query/0"
+                  "valueJsonPointer": "/item/0/item/1/item/1/request/url/query/0/value"
                 },
                 {
                   "paramType": "variable",
                   "name": "to",
                   "value": "<string>",
-                  "valueJsonPointer": "/item/0/item/1/item/1/request/url/query/1"
+                  "valueJsonPointer": "/item/0/item/1/item/1/request/url/query/1/value"
                 },
                 {
                   "paramType": "variable",
                   "name": "orgId",
                   "value": "<string>",
-                  "valueJsonPointer": "/item/0/item/1/item/1/request/url/query/2"
+                  "valueJsonPointer": "/item/0/item/1/item/1/request/url/query/2/value"
                 }
               ]
             },
@@ -86,13 +86,13 @@
                   "paramType": "variable",
                   "name": "from",
                   "value": "<string>",
-                  "valueJsonPointer": "/item/0/item/1/item/2/request/url/query/0"
+                  "valueJsonPointer": "/item/0/item/1/item/2/request/url/query/0/value"
                 },
                 {
                   "paramType": "variable",
                   "name": "to",
                   "value": "<string>",
-                  "valueJsonPointer": "/item/0/item/1/item/2/request/url/query/1"
+                  "valueJsonPointer": "/item/0/item/1/item/2/request/url/query/1/value"
                 }
               ]
             },
@@ -105,13 +105,13 @@
                   "paramType": "variable",
                   "name": "from",
                   "value": "<string>",
-                  "valueJsonPointer": "/item/0/item/1/item/3/request/url/query/0"
+                  "valueJsonPointer": "/item/0/item/1/item/3/request/url/query/0/value"
                 },
                 {
                   "paramType": "variable",
                   "name": "to",
                   "value": "<string>",
-                  "valueJsonPointer": "/item/0/item/1/item/3/request/url/query/1"
+                  "valueJsonPointer": "/item/0/item/1/item/3/request/url/query/1/value"
                 }
               ]
             },
@@ -124,13 +124,13 @@
                   "paramType": "variable",
                   "name": "from",
                   "value": "<string>",
-                  "valueJsonPointer": "/item/0/item/1/item/4/request/url/query/0"
+                  "valueJsonPointer": "/item/0/item/1/item/4/request/url/query/0/value"
                 },
                 {
                   "paramType": "variable",
                   "name": "to",
                   "value": "<string>",
-                  "valueJsonPointer": "/item/0/item/1/item/4/request/url/query/1"
+                  "valueJsonPointer": "/item/0/item/1/item/4/request/url/query/1/value"
                 }
               ]
             },
@@ -143,19 +143,19 @@
                   "paramType": "variable",
                   "name": "from",
                   "value": "<string>",
-                  "valueJsonPointer": "/item/0/item/1/item/5/request/url/query/0"
+                  "valueJsonPointer": "/item/0/item/1/item/5/request/url/query/0/value"
                 },
                 {
                   "paramType": "variable",
                   "name": "to",
                   "value": "<string>",
-                  "valueJsonPointer": "/item/0/item/1/item/5/request/url/query/1"
+                  "valueJsonPointer": "/item/0/item/1/item/5/request/url/query/1/value"
                 },
                 {
                   "paramType": "variable",
                   "name": "organizationId",
                   "value": "<string>",
-                  "valueJsonPointer": "/item/0/item/1/item/5/request/url/query/2"
+                  "valueJsonPointer": "/item/0/item/1/item/5/request/url/query/2/value"
                 }
               ]
             }
@@ -182,7 +182,7 @@
                           "paramType": "variable",
                           "name": "fileId",
                           "value": "<string>",
-                          "valueJsonPointer": "/item/0/item/2/item/0/item/0/item/0/request/url/variable/0"
+                          "valueJsonPointer": "/item/0/item/2/item/0/item/0/item/0/request/url/variable/0/value"
                         }
                       ]
                     },
@@ -195,7 +195,7 @@
                           "paramType": "variable",
                           "name": "fileId",
                           "value": "<string>",
-                          "valueJsonPointer": "/item/0/item/2/item/0/item/0/item/1/request/url/variable/0"
+                          "valueJsonPointer": "/item/0/item/2/item/0/item/0/item/1/request/url/variable/0/value"
                         },
                         {
                           "paramType": "requestBody",
@@ -216,7 +216,7 @@
                       "paramType": "variable",
                       "name": "fileId",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/2/item/0/item/1/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/2/item/0/item/1/request/url/variable/0/value"
                     }
                   ]
                 },
@@ -229,7 +229,7 @@
                       "paramType": "variable",
                       "name": "fileId",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/2/item/0/item/2/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/2/item/0/item/2/request/url/variable/0/value"
                     }
                   ]
                 },
@@ -242,13 +242,13 @@
                       "paramType": "variable",
                       "name": "fileId",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/2/item/0/item/3/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/2/item/0/item/3/request/url/variable/0/value"
                     },
                     {
                       "paramType": "variable",
                       "name": "keepAsNew",
                       "value": "<boolean>",
-                      "valueJsonPointer": "/item/0/item/2/item/0/item/3/request/url/query/0"
+                      "valueJsonPointer": "/item/0/item/2/item/0/item/3/request/url/query/0/value"
                     }
                   ]
                 },
@@ -261,7 +261,7 @@
                       "paramType": "variable",
                       "name": "fileId",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/2/item/0/item/4/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/2/item/0/item/4/request/url/variable/0/value"
                     }
                   ]
                 }
@@ -281,7 +281,7 @@
                   "paramType": "variable",
                   "name": "discard",
                   "value": "<boolean>",
-                  "valueJsonPointer": "/item/0/item/2/item/2/request/url/query/0"
+                  "valueJsonPointer": "/item/0/item/2/item/2/request/url/query/0/value"
                 },
                 {
                   "paramType": "requestBody",
@@ -369,7 +369,7 @@
                           "paramType": "variable",
                           "name": "activityId",
                           "value": "<string>",
-                          "valueJsonPointer": "/item/0/item/3/item/0/item/1/item/1/request/url/variable/0"
+                          "valueJsonPointer": "/item/0/item/3/item/0/item/1/item/1/request/url/variable/0/value"
                         }
                       ]
                     }
@@ -408,13 +408,13 @@
                       "paramType": "variable",
                       "name": "limit",
                       "value": "25",
-                      "valueJsonPointer": "/item/0/item/3/item/0/item/3/request/url/query/0"
+                      "valueJsonPointer": "/item/0/item/3/item/0/item/3/request/url/query/0/value"
                     },
                     {
                       "paramType": "variable",
                       "name": "offset",
                       "value": "0",
-                      "valueJsonPointer": "/item/0/item/3/item/0/item/3/request/url/query/1"
+                      "valueJsonPointer": "/item/0/item/3/item/0/item/3/request/url/query/1/value"
                     }
                   ]
                 },
@@ -454,7 +454,7 @@
                               "paramType": "variable",
                               "name": "apiKeyId",
                               "value": "<string>",
-                              "valueJsonPointer": "/item/0/item/3/item/1/item/0/item/0/item/0/request/url/variable/0"
+                              "valueJsonPointer": "/item/0/item/3/item/1/item/0/item/0/item/0/request/url/variable/0/value"
                             },
                             {
                               "paramType": "requestBody",
@@ -473,7 +473,7 @@
                               "paramType": "variable",
                               "name": "apiKeyId",
                               "value": "<string>",
-                              "valueJsonPointer": "/item/0/item/3/item/1/item/0/item/0/item/1/request/url/variable/0"
+                              "valueJsonPointer": "/item/0/item/3/item/1/item/0/item/0/item/1/request/url/variable/0/value"
                             }
                           ]
                         }
@@ -516,7 +516,7 @@
                               "paramType": "variable",
                               "name": "memberId",
                               "value": "<string>",
-                              "valueJsonPointer": "/item/0/item/3/item/1/item/1/item/0/item/0/request/url/variable/0"
+                              "valueJsonPointer": "/item/0/item/3/item/1/item/1/item/0/item/0/request/url/variable/0/value"
                             },
                             {
                               "paramType": "requestBody",
@@ -535,7 +535,7 @@
                               "paramType": "variable",
                               "name": "memberId",
                               "value": "<string>",
-                              "valueJsonPointer": "/item/0/item/3/item/1/item/1/item/0/item/1/request/url/variable/0"
+                              "valueJsonPointer": "/item/0/item/3/item/1/item/1/item/0/item/1/request/url/variable/0/value"
                             }
                           ]
                         },
@@ -548,7 +548,7 @@
                               "paramType": "variable",
                               "name": "memberId",
                               "value": "<string>",
-                              "valueJsonPointer": "/item/0/item/3/item/1/item/1/item/0/item/2/request/url/variable/0"
+                              "valueJsonPointer": "/item/0/item/3/item/1/item/1/item/0/item/2/request/url/variable/0/value"
                             }
                           ]
                         }
@@ -595,7 +595,7 @@
                                   "paramType": "variable",
                                   "name": "groupId",
                                   "value": "<string>",
-                                  "valueJsonPointer": "/item/0/item/3/item/1/item/2/item/0/item/0/item/0/request/url/variable/0"
+                                  "valueJsonPointer": "/item/0/item/3/item/1/item/2/item/0/item/0/item/0/request/url/variable/0/value"
                                 },
                                 {
                                   "paramType": "requestBody",
@@ -614,7 +614,7 @@
                                   "paramType": "variable",
                                   "name": "groupId",
                                   "value": "<string>",
-                                  "valueJsonPointer": "/item/0/item/3/item/1/item/2/item/0/item/0/item/1/request/url/variable/0"
+                                  "valueJsonPointer": "/item/0/item/3/item/1/item/2/item/0/item/0/item/1/request/url/variable/0/value"
                                 },
                                 {
                                   "paramType": "requestBody",
@@ -635,7 +635,7 @@
                               "paramType": "variable",
                               "name": "groupId",
                               "value": "<string>",
-                              "valueJsonPointer": "/item/0/item/3/item/1/item/2/item/0/item/1/request/url/variable/0"
+                              "valueJsonPointer": "/item/0/item/3/item/1/item/2/item/0/item/1/request/url/variable/0/value"
                             }
                           ]
                         },
@@ -648,7 +648,7 @@
                               "paramType": "variable",
                               "name": "groupId",
                               "value": "<string>",
-                              "valueJsonPointer": "/item/0/item/3/item/1/item/2/item/0/item/2/request/url/variable/0"
+                              "valueJsonPointer": "/item/0/item/3/item/1/item/2/item/0/item/2/request/url/variable/0/value"
                             },
                             {
                               "paramType": "requestBody",
@@ -667,7 +667,7 @@
                               "paramType": "variable",
                               "name": "groupId",
                               "value": "<string>",
-                              "valueJsonPointer": "/item/0/item/3/item/1/item/2/item/0/item/3/request/url/variable/0"
+                              "valueJsonPointer": "/item/0/item/3/item/1/item/2/item/0/item/3/request/url/variable/0/value"
                             }
                           ]
                         }
@@ -805,7 +805,7 @@
                       "paramType": "variable",
                       "name": "paymentId",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/4/item/0/item/0/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/4/item/0/item/0/request/url/variable/0/value"
                     },
                     {
                       "paramType": "requestBody",
@@ -824,7 +824,7 @@
                       "paramType": "variable",
                       "name": "paymentId",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/4/item/0/item/1/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/4/item/0/item/1/request/url/variable/0/value"
                     }
                   ]
                 }
@@ -878,7 +878,7 @@
                       "paramType": "variable",
                       "name": "methodId",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/6/item/0/item/0/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/6/item/0/item/0/request/url/variable/0/value"
                     }
                   ]
                 },
@@ -891,7 +891,7 @@
                       "paramType": "variable",
                       "name": "methodId",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/6/item/0/item/1/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/6/item/0/item/1/request/url/variable/0/value"
                     },
                     {
                       "paramType": "requestBody",
@@ -910,7 +910,7 @@
                       "paramType": "variable",
                       "name": "methodId",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/6/item/0/item/2/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/6/item/0/item/2/request/url/variable/0/value"
                     }
                   ]
                 }
@@ -953,7 +953,7 @@
                       "paramType": "variable",
                       "name": "subscriptionId",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/7/item/0/item/0/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/7/item/0/item/0/request/url/variable/0/value"
                     }
                   ]
                 },
@@ -966,7 +966,7 @@
                       "paramType": "variable",
                       "name": "subscriptionId",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/7/item/0/item/1/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/7/item/0/item/1/request/url/variable/0/value"
                     },
                     {
                       "paramType": "requestBody",
@@ -985,7 +985,7 @@
                       "paramType": "variable",
                       "name": "subscriptionId",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/7/item/0/item/2/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/7/item/0/item/2/request/url/variable/0/value"
                     }
                   ]
                 },
@@ -998,7 +998,7 @@
                       "paramType": "variable",
                       "name": "subscriptionId",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/7/item/0/item/3/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/7/item/0/item/3/request/url/variable/0/value"
                     }
                   ]
                 }
@@ -1186,7 +1186,7 @@
                       "paramType": "variable",
                       "name": "userId",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/11/item/0/item/0/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/11/item/0/item/0/request/url/variable/0/value"
                     }
                   ]
                 },
@@ -1199,7 +1199,7 @@
                       "paramType": "variable",
                       "name": "userId",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/11/item/0/item/1/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/11/item/0/item/1/request/url/variable/0/value"
                     },
                     {
                       "paramType": "requestBody",
@@ -1235,7 +1235,7 @@
                       "paramType": "variable",
                       "name": "apiKeyId",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/12/item/0/item/0/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/12/item/0/item/0/request/url/variable/0/value"
                     },
                     {
                       "paramType": "requestBody",
@@ -1254,7 +1254,7 @@
                       "paramType": "variable",
                       "name": "apiKeyId",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/12/item/0/item/1/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/12/item/0/item/1/request/url/variable/0/value"
                     }
                   ]
                 }
@@ -1293,13 +1293,13 @@
                   "paramType": "variable",
                   "name": "memberId",
                   "value": "<string>",
-                  "valueJsonPointer": "/item/0/item/13/item/0/request/url/variable/0"
+                  "valueJsonPointer": "/item/0/item/13/item/0/request/url/variable/0/value"
                 },
                 {
                   "paramType": "variable",
                   "name": "token",
                   "value": "<string>",
-                  "valueJsonPointer": "/item/0/item/13/item/0/request/url/variable/1"
+                  "valueJsonPointer": "/item/0/item/13/item/0/request/url/variable/1/value"
                 }
               ]
             },
@@ -1312,13 +1312,13 @@
                   "paramType": "variable",
                   "name": "memberId",
                   "value": "<string>",
-                  "valueJsonPointer": "/item/0/item/13/item/1/request/url/variable/0"
+                  "valueJsonPointer": "/item/0/item/13/item/1/request/url/variable/0/value"
                 },
                 {
                   "paramType": "variable",
                   "name": "token",
                   "value": "<string>",
-                  "valueJsonPointer": "/item/0/item/13/item/1/request/url/variable/1"
+                  "valueJsonPointer": "/item/0/item/13/item/1/request/url/variable/1/value"
                 }
               ]
             }
@@ -1384,7 +1384,7 @@
                           "paramType": "variable",
                           "name": "userId",
                           "value": "<string>",
-                          "valueJsonPointer": "/item/0/item/15/item/0/item/0/item/0/request/url/variable/0"
+                          "valueJsonPointer": "/item/0/item/15/item/0/item/0/item/0/request/url/variable/0/value"
                         }
                       ]
                     },
@@ -1397,7 +1397,7 @@
                           "paramType": "variable",
                           "name": "userId",
                           "value": "<string>",
-                          "valueJsonPointer": "/item/0/item/15/item/0/item/0/item/1/request/url/variable/0"
+                          "valueJsonPointer": "/item/0/item/15/item/0/item/0/item/1/request/url/variable/0/value"
                         },
                         {
                           "paramType": "requestBody",
@@ -1416,7 +1416,7 @@
                           "paramType": "variable",
                           "name": "userId",
                           "value": "<string>",
-                          "valueJsonPointer": "/item/0/item/15/item/0/item/0/item/2/request/url/variable/0"
+                          "valueJsonPointer": "/item/0/item/15/item/0/item/0/item/2/request/url/variable/0/value"
                         }
                       ]
                     }
@@ -1431,19 +1431,19 @@
                       "paramType": "variable",
                       "name": "startIndex",
                       "value": "<number>",
-                      "valueJsonPointer": "/item/0/item/15/item/0/item/1/request/url/query/0"
+                      "valueJsonPointer": "/item/0/item/15/item/0/item/1/request/url/query/0/value"
                     },
                     {
                       "paramType": "variable",
                       "name": "count",
                       "value": "<number>",
-                      "valueJsonPointer": "/item/0/item/15/item/0/item/1/request/url/query/1"
+                      "valueJsonPointer": "/item/0/item/15/item/0/item/1/request/url/query/1/value"
                     },
                     {
                       "paramType": "variable",
                       "name": "filter",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/15/item/0/item/1/request/url/query/2"
+                      "valueJsonPointer": "/item/0/item/15/item/0/item/1/request/url/query/2/value"
                     }
                   ]
                 },
@@ -1479,7 +1479,7 @@
                           "paramType": "variable",
                           "name": "groupId",
                           "value": "<string>",
-                          "valueJsonPointer": "/item/0/item/15/item/1/item/0/item/0/request/url/variable/0"
+                          "valueJsonPointer": "/item/0/item/15/item/1/item/0/item/0/request/url/variable/0/value"
                         }
                       ]
                     },
@@ -1492,7 +1492,7 @@
                           "paramType": "variable",
                           "name": "groupId",
                           "value": "<string>",
-                          "valueJsonPointer": "/item/0/item/15/item/1/item/0/item/1/request/url/variable/0"
+                          "valueJsonPointer": "/item/0/item/15/item/1/item/0/item/1/request/url/variable/0/value"
                         },
                         {
                           "paramType": "requestBody",
@@ -1511,7 +1511,7 @@
                           "paramType": "variable",
                           "name": "groupId",
                           "value": "<string>",
-                          "valueJsonPointer": "/item/0/item/15/item/1/item/0/item/2/request/url/variable/0"
+                          "valueJsonPointer": "/item/0/item/15/item/1/item/0/item/2/request/url/variable/0/value"
                         }
                       ]
                     }
@@ -1526,19 +1526,19 @@
                       "paramType": "variable",
                       "name": "startIndex",
                       "value": "<number>",
-                      "valueJsonPointer": "/item/0/item/15/item/1/item/1/request/url/query/0"
+                      "valueJsonPointer": "/item/0/item/15/item/1/item/1/request/url/query/0/value"
                     },
                     {
                       "paramType": "variable",
                       "name": "count",
                       "value": "<number>",
-                      "valueJsonPointer": "/item/0/item/15/item/1/item/1/request/url/query/1"
+                      "valueJsonPointer": "/item/0/item/15/item/1/item/1/request/url/query/1/value"
                     },
                     {
                       "paramType": "variable",
                       "name": "filter",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/15/item/1/item/1/request/url/query/2"
+                      "valueJsonPointer": "/item/0/item/15/item/1/item/1/request/url/query/2/value"
                     }
                   ]
                 },
@@ -1580,7 +1580,7 @@
                           "paramType": "variable",
                           "name": "repeaterId",
                           "value": "<string>",
-                          "valueJsonPointer": "/item/0/item/16/item/0/item/0/item/0/request/url/variable/0"
+                          "valueJsonPointer": "/item/0/item/16/item/0/item/0/item/0/request/url/variable/0/value"
                         }
                       ]
                     },
@@ -1593,7 +1593,7 @@
                           "paramType": "variable",
                           "name": "repeaterId",
                           "value": "<string>",
-                          "valueJsonPointer": "/item/0/item/16/item/0/item/0/item/1/request/url/variable/0"
+                          "valueJsonPointer": "/item/0/item/16/item/0/item/0/item/1/request/url/variable/0/value"
                         },
                         {
                           "paramType": "requestBody",
@@ -1612,7 +1612,7 @@
                           "paramType": "variable",
                           "name": "repeaterId",
                           "value": "<string>",
-                          "valueJsonPointer": "/item/0/item/16/item/0/item/0/item/2/request/url/variable/0"
+                          "valueJsonPointer": "/item/0/item/16/item/0/item/0/item/2/request/url/variable/0/value"
                         },
                         {
                           "paramType": "requestBody",
@@ -1633,7 +1633,7 @@
                       "paramType": "variable",
                       "name": "repeaterId",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/16/item/0/item/1/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/16/item/0/item/1/request/url/variable/0/value"
                     }
                   ]
                 },
@@ -1646,7 +1646,7 @@
                       "paramType": "variable",
                       "name": "repeaterId",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/16/item/0/item/2/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/16/item/0/item/2/request/url/variable/0/value"
                     },
                     {
                       "paramType": "requestBody",
@@ -1665,7 +1665,7 @@
                       "paramType": "variable",
                       "name": "repeaterId",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/16/item/0/item/3/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/16/item/0/item/3/request/url/variable/0/value"
                     }
                   ]
                 }
@@ -1716,7 +1716,7 @@
                               "paramType": "variable",
                               "name": "templateId",
                               "value": "<string>",
-                              "valueJsonPointer": "/item/0/item/17/item/0/item/0/item/0/item/0/request/url/variable/0"
+                              "valueJsonPointer": "/item/0/item/17/item/0/item/0/item/0/item/0/request/url/variable/0/value"
                             }
                           ]
                         },
@@ -1729,7 +1729,7 @@
                               "paramType": "variable",
                               "name": "templateId",
                               "value": "<string>",
-                              "valueJsonPointer": "/item/0/item/17/item/0/item/0/item/0/item/1/request/url/variable/0"
+                              "valueJsonPointer": "/item/0/item/17/item/0/item/0/item/0/item/1/request/url/variable/0/value"
                             },
                             {
                               "paramType": "requestBody",
@@ -1750,7 +1750,7 @@
                           "paramType": "variable",
                           "name": "templateId",
                           "value": "<string>",
-                          "valueJsonPointer": "/item/0/item/17/item/0/item/0/item/1/request/url/variable/0"
+                          "valueJsonPointer": "/item/0/item/17/item/0/item/0/item/1/request/url/variable/0/value"
                         }
                       ]
                     },
@@ -1763,7 +1763,7 @@
                           "paramType": "variable",
                           "name": "templateId",
                           "value": "<string>",
-                          "valueJsonPointer": "/item/0/item/17/item/0/item/0/item/2/request/url/variable/0"
+                          "valueJsonPointer": "/item/0/item/17/item/0/item/0/item/2/request/url/variable/0/value"
                         },
                         {
                           "paramType": "requestBody",
@@ -1782,7 +1782,7 @@
                           "paramType": "variable",
                           "name": "templateId",
                           "value": "<string>",
-                          "valueJsonPointer": "/item/0/item/17/item/0/item/0/item/3/request/url/variable/0"
+                          "valueJsonPointer": "/item/0/item/17/item/0/item/0/item/3/request/url/variable/0/value"
                         }
                       ]
                     }
@@ -1829,13 +1829,13 @@
                               "paramType": "variable",
                               "name": "scanId",
                               "value": "<string>",
-                              "valueJsonPointer": "/item/0/item/17/item/1/item/0/item/0/item/0/request/url/variable/0"
+                              "valueJsonPointer": "/item/0/item/17/item/1/item/0/item/0/item/0/request/url/variable/0/value"
                             },
                             {
                               "paramType": "variable",
                               "name": "issueId",
                               "value": "<string>",
-                              "valueJsonPointer": "/item/0/item/17/item/1/item/0/item/0/item/0/request/url/variable/1"
+                              "valueJsonPointer": "/item/0/item/17/item/1/item/0/item/0/item/0/request/url/variable/1/value"
                             }
                           ]
                         },
@@ -1848,13 +1848,13 @@
                               "paramType": "variable",
                               "name": "scanId",
                               "value": "<string>",
-                              "valueJsonPointer": "/item/0/item/17/item/1/item/0/item/0/item/1/request/url/variable/0"
+                              "valueJsonPointer": "/item/0/item/17/item/1/item/0/item/0/item/1/request/url/variable/0/value"
                             },
                             {
                               "paramType": "variable",
                               "name": "issueId",
                               "value": "<string>",
-                              "valueJsonPointer": "/item/0/item/17/item/1/item/0/item/0/item/1/request/url/variable/1"
+                              "valueJsonPointer": "/item/0/item/17/item/1/item/0/item/0/item/1/request/url/variable/1/value"
                             },
                             {
                               "paramType": "requestBody",
@@ -1875,7 +1875,7 @@
                           "paramType": "variable",
                           "name": "scanId",
                           "value": "<string>",
-                          "valueJsonPointer": "/item/0/item/17/item/1/item/0/item/1/request/url/variable/0"
+                          "valueJsonPointer": "/item/0/item/17/item/1/item/0/item/1/request/url/variable/0/value"
                         }
                       ]
                     },
@@ -1888,7 +1888,7 @@
                           "paramType": "variable",
                           "name": "scanId",
                           "value": "<string>",
-                          "valueJsonPointer": "/item/0/item/17/item/1/item/0/item/2/request/url/variable/0"
+                          "valueJsonPointer": "/item/0/item/17/item/1/item/0/item/2/request/url/variable/0/value"
                         },
                         {
                           "paramType": "requestBody",
@@ -1913,31 +1913,31 @@
                           "paramType": "variable",
                           "name": "scanId",
                           "value": "<string>",
-                          "valueJsonPointer": "/item/0/item/17/item/1/item/1/item/0/request/url/variable/0"
+                          "valueJsonPointer": "/item/0/item/17/item/1/item/1/item/0/request/url/variable/0/value"
                         },
                         {
                           "paramType": "variable",
                           "name": "limit",
                           "value": "5",
-                          "valueJsonPointer": "/item/0/item/17/item/1/item/1/item/0/request/url/query/0"
+                          "valueJsonPointer": "/item/0/item/17/item/1/item/1/item/0/request/url/query/0/value"
                         },
                         {
                           "paramType": "variable",
                           "name": "next",
                           "value": "<string>",
-                          "valueJsonPointer": "/item/0/item/17/item/1/item/1/item/0/request/url/query/1"
+                          "valueJsonPointer": "/item/0/item/17/item/1/item/1/item/0/request/url/query/1/value"
                         },
                         {
                           "paramType": "variable",
                           "name": "logLevel",
                           "value": "<string>",
-                          "valueJsonPointer": "/item/0/item/17/item/1/item/1/item/0/request/url/query/2"
+                          "valueJsonPointer": "/item/0/item/17/item/1/item/1/item/0/request/url/query/2/value"
                         },
                         {
                           "paramType": "variable",
                           "name": "query",
                           "value": "<string>",
-                          "valueJsonPointer": "/item/0/item/17/item/1/item/1/item/0/request/url/query/3"
+                          "valueJsonPointer": "/item/0/item/17/item/1/item/1/item/0/request/url/query/3/value"
                         }
                       ]
                     },
@@ -1950,7 +1950,7 @@
                           "paramType": "variable",
                           "name": "scanId",
                           "value": "<string>",
-                          "valueJsonPointer": "/item/0/item/17/item/1/item/1/item/1/request/url/variable/0"
+                          "valueJsonPointer": "/item/0/item/17/item/1/item/1/item/1/request/url/variable/0/value"
                         }
                       ]
                     }
@@ -1965,7 +1965,7 @@
                       "paramType": "variable",
                       "name": "scanId",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/17/item/1/item/2/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/17/item/1/item/2/request/url/variable/0/value"
                     }
                   ]
                 },
@@ -1978,7 +1978,7 @@
                       "paramType": "variable",
                       "name": "scanId",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/17/item/1/item/3/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/17/item/1/item/3/request/url/variable/0/value"
                     },
                     {
                       "paramType": "requestBody",
@@ -1997,7 +1997,7 @@
                       "paramType": "variable",
                       "name": "scanId",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/17/item/1/item/4/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/17/item/1/item/4/request/url/variable/0/value"
                     }
                   ]
                 },
@@ -2010,7 +2010,7 @@
                       "paramType": "variable",
                       "name": "scanId",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/17/item/1/item/5/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/17/item/1/item/5/request/url/variable/0/value"
                     }
                   ]
                 },
@@ -2023,7 +2023,7 @@
                       "paramType": "variable",
                       "name": "scanId",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/17/item/1/item/6/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/17/item/1/item/6/request/url/variable/0/value"
                     }
                   ]
                 },
@@ -2036,7 +2036,7 @@
                       "paramType": "variable",
                       "name": "scanId",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/17/item/1/item/7/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/17/item/1/item/7/request/url/variable/0/value"
                     }
                   ]
                 },
@@ -2049,7 +2049,7 @@
                       "paramType": "variable",
                       "name": "scanId",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/17/item/1/item/8/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/17/item/1/item/8/request/url/variable/0/value"
                     }
                   ]
                 },
@@ -2062,7 +2062,7 @@
                       "paramType": "variable",
                       "name": "scanId",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/17/item/1/item/9/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/17/item/1/item/9/request/url/variable/0/value"
                     }
                   ]
                 },
@@ -2075,7 +2075,7 @@
                       "paramType": "variable",
                       "name": "scanId",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/17/item/1/item/10/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/17/item/1/item/10/request/url/variable/0/value"
                     }
                   ]
                 },
@@ -2088,7 +2088,7 @@
                       "paramType": "variable",
                       "name": "scanId",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/17/item/1/item/11/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/17/item/1/item/11/request/url/variable/0/value"
                     },
                     {
                       "paramType": "requestBody",
@@ -2168,7 +2168,7 @@
                       "paramType": "variable",
                       "name": "scanId",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/18/item/0/item/0/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/18/item/0/item/0/request/url/variable/0/value"
                     },
                     {
                       "paramType": "requestBody",
@@ -2187,7 +2187,7 @@
                       "paramType": "variable",
                       "name": "scanId",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/18/item/0/item/1/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/18/item/0/item/1/request/url/variable/0/value"
                     },
                     {
                       "paramType": "requestBody",
@@ -2208,7 +2208,7 @@
                   "paramType": "variable",
                   "name": "scanId",
                   "value": "<string>",
-                  "valueJsonPointer": "/item/0/item/18/item/1/request/url/variable/0"
+                  "valueJsonPointer": "/item/0/item/18/item/1/request/url/variable/0/value"
                 },
                 {
                   "paramType": "requestBody",
@@ -2227,7 +2227,7 @@
                   "paramType": "variable",
                   "name": "scanId",
                   "value": "<string>",
-                  "valueJsonPointer": "/item/0/item/18/item/2/request/url/variable/0"
+                  "valueJsonPointer": "/item/0/item/18/item/2/request/url/variable/0/value"
                 },
                 {
                   "paramType": "requestBody",
@@ -2246,7 +2246,7 @@
                   "paramType": "variable",
                   "name": "scanId",
                   "value": "<string>",
-                  "valueJsonPointer": "/item/0/item/18/item/3/request/url/variable/0"
+                  "valueJsonPointer": "/item/0/item/18/item/3/request/url/variable/0/value"
                 },
                 {
                   "paramType": "requestBody",
@@ -2265,7 +2265,7 @@
                   "paramType": "variable",
                   "name": "scanId",
                   "value": "<string>",
-                  "valueJsonPointer": "/item/0/item/18/item/4/request/url/variable/0"
+                  "valueJsonPointer": "/item/0/item/18/item/4/request/url/variable/0/value"
                 }
               ]
             }
@@ -2296,13 +2296,13 @@
                               "paramType": "variable",
                               "name": "organizationId",
                               "value": "<string>",
-                              "valueJsonPointer": "/item/0/item/19/item/0/item/0/item/0/item/0/request/url/variable/0"
+                              "valueJsonPointer": "/item/0/item/19/item/0/item/0/item/0/item/0/request/url/variable/0/value"
                             },
                             {
                               "paramType": "variable",
                               "name": "memberId",
                               "value": "<string>",
-                              "valueJsonPointer": "/item/0/item/19/item/0/item/0/item/0/item/0/request/url/variable/1"
+                              "valueJsonPointer": "/item/0/item/19/item/0/item/0/item/0/item/0/request/url/variable/1/value"
                             },
                             {
                               "paramType": "requestBody",
@@ -2321,13 +2321,13 @@
                               "paramType": "variable",
                               "name": "organizationId",
                               "value": "<string>",
-                              "valueJsonPointer": "/item/0/item/19/item/0/item/0/item/0/item/1/request/url/variable/0"
+                              "valueJsonPointer": "/item/0/item/19/item/0/item/0/item/0/item/1/request/url/variable/0/value"
                             },
                             {
                               "paramType": "variable",
                               "name": "memberId",
                               "value": "<string>",
-                              "valueJsonPointer": "/item/0/item/19/item/0/item/0/item/0/item/1/request/url/variable/1"
+                              "valueJsonPointer": "/item/0/item/19/item/0/item/0/item/0/item/1/request/url/variable/1/value"
                             }
                           ]
                         },
@@ -2340,13 +2340,13 @@
                               "paramType": "variable",
                               "name": "organizationId",
                               "value": "<string>",
-                              "valueJsonPointer": "/item/0/item/19/item/0/item/0/item/0/item/2/request/url/variable/0"
+                              "valueJsonPointer": "/item/0/item/19/item/0/item/0/item/0/item/2/request/url/variable/0/value"
                             },
                             {
                               "paramType": "variable",
                               "name": "memberId",
                               "value": "<string>",
-                              "valueJsonPointer": "/item/0/item/19/item/0/item/0/item/0/item/2/request/url/variable/1"
+                              "valueJsonPointer": "/item/0/item/19/item/0/item/0/item/0/item/2/request/url/variable/1/value"
                             }
                           ]
                         }
@@ -2361,7 +2361,7 @@
                           "paramType": "variable",
                           "name": "organizationId",
                           "value": "<string>",
-                          "valueJsonPointer": "/item/0/item/19/item/0/item/0/item/1/request/url/variable/0"
+                          "valueJsonPointer": "/item/0/item/19/item/0/item/0/item/1/request/url/variable/0/value"
                         },
                         {
                           "paramType": "requestBody",
@@ -2380,7 +2380,7 @@
                           "paramType": "variable",
                           "name": "organizationId",
                           "value": "<string>",
-                          "valueJsonPointer": "/item/0/item/19/item/0/item/0/item/2/request/url/variable/0"
+                          "valueJsonPointer": "/item/0/item/19/item/0/item/0/item/2/request/url/variable/0/value"
                         }
                       ]
                     }
@@ -2399,7 +2399,7 @@
                           "paramType": "variable",
                           "name": "organizationId",
                           "value": "<string>",
-                          "valueJsonPointer": "/item/0/item/19/item/0/item/1/item/0/request/url/variable/0"
+                          "valueJsonPointer": "/item/0/item/19/item/0/item/1/item/0/request/url/variable/0/value"
                         },
                         {
                           "paramType": "requestBody",
@@ -2418,7 +2418,7 @@
                           "paramType": "variable",
                           "name": "organizationId",
                           "value": "<string>",
-                          "valueJsonPointer": "/item/0/item/19/item/0/item/1/item/1/request/url/variable/0"
+                          "valueJsonPointer": "/item/0/item/19/item/0/item/1/item/1/request/url/variable/0/value"
                         },
                         {
                           "paramType": "requestBody",
@@ -2437,7 +2437,7 @@
                           "paramType": "variable",
                           "name": "organizationId",
                           "value": "<string>",
-                          "valueJsonPointer": "/item/0/item/19/item/0/item/1/item/2/request/url/variable/0"
+                          "valueJsonPointer": "/item/0/item/19/item/0/item/1/item/2/request/url/variable/0/value"
                         },
                         {
                           "paramType": "requestBody",
@@ -2466,13 +2466,13 @@
                               "paramType": "variable",
                               "name": "organizationId",
                               "value": "<string>",
-                              "valueJsonPointer": "/item/0/item/19/item/0/item/2/item/0/item/0/request/url/variable/0"
+                              "valueJsonPointer": "/item/0/item/19/item/0/item/2/item/0/item/0/request/url/variable/0/value"
                             },
                             {
                               "paramType": "variable",
                               "name": "type",
                               "value": "<object>",
-                              "valueJsonPointer": "/item/0/item/19/item/0/item/2/item/0/item/0/request/url/variable/1"
+                              "valueJsonPointer": "/item/0/item/19/item/0/item/2/item/0/item/0/request/url/variable/1/value"
                             }
                           ]
                         },
@@ -2485,13 +2485,13 @@
                               "paramType": "variable",
                               "name": "organizationId",
                               "value": "<string>",
-                              "valueJsonPointer": "/item/0/item/19/item/0/item/2/item/0/item/1/request/url/variable/0"
+                              "valueJsonPointer": "/item/0/item/19/item/0/item/2/item/0/item/1/request/url/variable/0/value"
                             },
                             {
                               "paramType": "variable",
                               "name": "type",
                               "value": "<object>",
-                              "valueJsonPointer": "/item/0/item/19/item/0/item/2/item/0/item/1/request/url/variable/1"
+                              "valueJsonPointer": "/item/0/item/19/item/0/item/2/item/0/item/1/request/url/variable/1/value"
                             },
                             {
                               "paramType": "requestBody",
@@ -2512,7 +2512,7 @@
                           "paramType": "variable",
                           "name": "organizationId",
                           "value": "<string>",
-                          "valueJsonPointer": "/item/0/item/19/item/0/item/2/item/1/request/url/variable/0"
+                          "valueJsonPointer": "/item/0/item/19/item/0/item/2/item/1/request/url/variable/0/value"
                         }
                       ]
                     },
@@ -2525,7 +2525,7 @@
                           "paramType": "variable",
                           "name": "organizationId",
                           "value": "<string>",
-                          "valueJsonPointer": "/item/0/item/19/item/0/item/2/item/2/request/url/variable/0"
+                          "valueJsonPointer": "/item/0/item/19/item/0/item/2/item/2/request/url/variable/0/value"
                         },
                         {
                           "paramType": "requestBody",
@@ -2546,7 +2546,7 @@
                       "paramType": "variable",
                       "name": "organizationId",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/19/item/0/item/3/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/19/item/0/item/3/request/url/variable/0/value"
                     }
                   ]
                 },
@@ -2559,7 +2559,7 @@
                       "paramType": "variable",
                       "name": "organizationId",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/19/item/0/item/4/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/19/item/0/item/4/request/url/variable/0/value"
                     },
                     {
                       "paramType": "requestBody",
@@ -2578,7 +2578,7 @@
                       "paramType": "variable",
                       "name": "organizationId",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/19/item/0/item/5/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/19/item/0/item/5/request/url/variable/0/value"
                     }
                   ]
                 },
@@ -2591,7 +2591,7 @@
                       "paramType": "variable",
                       "name": "organizationId",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/19/item/0/item/6/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/19/item/0/item/6/request/url/variable/0/value"
                     },
                     {
                       "paramType": "requestBody",
@@ -2610,7 +2610,7 @@
                       "paramType": "variable",
                       "name": "organizationId",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/19/item/0/item/7/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/19/item/0/item/7/request/url/variable/0/value"
                     },
                     {
                       "paramType": "requestBody",
@@ -2639,13 +2639,13 @@
                           "paramType": "variable",
                           "name": "orgId",
                           "value": "<string>",
-                          "valueJsonPointer": "/item/0/item/19/item/1/item/0/item/0/request/url/variable/0"
+                          "valueJsonPointer": "/item/0/item/19/item/1/item/0/item/0/request/url/variable/0/value"
                         },
                         {
                           "paramType": "variable",
                           "name": "roleId",
                           "value": "<string>",
-                          "valueJsonPointer": "/item/0/item/19/item/1/item/0/item/0/request/url/variable/1"
+                          "valueJsonPointer": "/item/0/item/19/item/1/item/0/item/0/request/url/variable/1/value"
                         }
                       ]
                     },
@@ -2658,13 +2658,13 @@
                           "paramType": "variable",
                           "name": "orgId",
                           "value": "<string>",
-                          "valueJsonPointer": "/item/0/item/19/item/1/item/0/item/1/request/url/variable/0"
+                          "valueJsonPointer": "/item/0/item/19/item/1/item/0/item/1/request/url/variable/0/value"
                         },
                         {
                           "paramType": "variable",
                           "name": "roleId",
                           "value": "<string>",
-                          "valueJsonPointer": "/item/0/item/19/item/1/item/0/item/1/request/url/variable/1"
+                          "valueJsonPointer": "/item/0/item/19/item/1/item/0/item/1/request/url/variable/1/value"
                         },
                         {
                           "paramType": "requestBody",
@@ -2683,13 +2683,13 @@
                           "paramType": "variable",
                           "name": "orgId",
                           "value": "<string>",
-                          "valueJsonPointer": "/item/0/item/19/item/1/item/0/item/2/request/url/variable/0"
+                          "valueJsonPointer": "/item/0/item/19/item/1/item/0/item/2/request/url/variable/0/value"
                         },
                         {
                           "paramType": "variable",
                           "name": "roleId",
                           "value": "<string>",
-                          "valueJsonPointer": "/item/0/item/19/item/1/item/0/item/2/request/url/variable/1"
+                          "valueJsonPointer": "/item/0/item/19/item/1/item/0/item/2/request/url/variable/1/value"
                         }
                       ]
                     }
@@ -2704,7 +2704,7 @@
                       "paramType": "variable",
                       "name": "orgId",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/19/item/1/item/1/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/19/item/1/item/1/request/url/variable/0/value"
                     }
                   ]
                 },
@@ -2717,7 +2717,7 @@
                       "paramType": "variable",
                       "name": "orgId",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/19/item/1/item/2/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/19/item/1/item/2/request/url/variable/0/value"
                     },
                     {
                       "paramType": "requestBody",
@@ -2766,7 +2766,7 @@
                       "paramType": "variable",
                       "name": "tagId",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/20/item/0/item/0/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/20/item/0/item/0/request/url/variable/0/value"
                     }
                   ]
                 },
@@ -2779,7 +2779,7 @@
                       "paramType": "variable",
                       "name": "tagId",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/20/item/0/item/1/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/20/item/0/item/1/request/url/variable/0/value"
                     },
                     {
                       "paramType": "requestBody",
@@ -2852,7 +2852,7 @@
                       "paramType": "variable",
                       "name": "issue",
                       "value": "<number>",
-                      "valueJsonPointer": "/item/0/item/22/item/0/item/0/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/22/item/0/item/0/request/url/variable/0/value"
                     },
                     {
                       "paramType": "requestBody",
@@ -2871,7 +2871,7 @@
                       "paramType": "variable",
                       "name": "issue",
                       "value": "<number>",
-                      "valueJsonPointer": "/item/0/item/22/item/0/item/1/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/22/item/0/item/1/request/url/variable/0/value"
                     }
                   ]
                 }
@@ -3021,7 +3021,7 @@
                           "paramType": "variable",
                           "name": "projectId",
                           "value": "<string>",
-                          "valueJsonPointer": "/item/0/item/24/item/0/item/0/item/0/request/url/variable/0"
+                          "valueJsonPointer": "/item/0/item/24/item/0/item/0/item/0/request/url/variable/0/value"
                         }
                       ]
                     },
@@ -3034,7 +3034,7 @@
                           "paramType": "variable",
                           "name": "projectId",
                           "value": "<string>",
-                          "valueJsonPointer": "/item/0/item/24/item/0/item/0/item/1/request/url/variable/0"
+                          "valueJsonPointer": "/item/0/item/24/item/0/item/0/item/1/request/url/variable/0/value"
                         },
                         {
                           "paramType": "requestBody",
@@ -3053,13 +3053,13 @@
                           "paramType": "variable",
                           "name": "projectId",
                           "value": "<string>",
-                          "valueJsonPointer": "/item/0/item/24/item/0/item/0/item/2/request/url/variable/0"
+                          "valueJsonPointer": "/item/0/item/24/item/0/item/0/item/2/request/url/variable/0/value"
                         },
                         {
                           "paramType": "variable",
                           "name": "boardId",
                           "value": "<string>",
-                          "valueJsonPointer": "/item/0/item/24/item/0/item/0/item/2/request/url/variable/1"
+                          "valueJsonPointer": "/item/0/item/24/item/0/item/0/item/2/request/url/variable/1/value"
                         }
                       ]
                     }
@@ -3074,7 +3074,7 @@
                       "paramType": "variable",
                       "name": "projectId",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/24/item/0/item/1/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/24/item/0/item/1/request/url/variable/0/value"
                     }
                   ]
                 },
@@ -3087,7 +3087,7 @@
                       "paramType": "variable",
                       "name": "projectId",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/24/item/0/item/2/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/24/item/0/item/2/request/url/variable/0/value"
                     },
                     {
                       "paramType": "requestBody",
@@ -3106,7 +3106,7 @@
                       "paramType": "variable",
                       "name": "projectId",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/24/item/0/item/3/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/24/item/0/item/3/request/url/variable/0/value"
                     }
                   ]
                 },
@@ -3119,7 +3119,7 @@
                       "paramType": "variable",
                       "name": "projectId",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/24/item/0/item/4/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/24/item/0/item/4/request/url/variable/0/value"
                     }
                   ]
                 }
@@ -3162,7 +3162,7 @@
                       "paramType": "variable",
                       "name": "id",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/25/item/0/item/0/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/25/item/0/item/0/request/url/variable/0/value"
                     }
                   ]
                 },
@@ -3175,7 +3175,7 @@
                       "paramType": "variable",
                       "name": "id",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/25/item/0/item/1/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/25/item/0/item/1/request/url/variable/0/value"
                     }
                   ]
                 },
@@ -3188,7 +3188,7 @@
                       "paramType": "variable",
                       "name": "id",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/25/item/0/item/2/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/25/item/0/item/2/request/url/variable/0/value"
                     },
                     {
                       "paramType": "requestBody",
@@ -3207,7 +3207,7 @@
                       "paramType": "variable",
                       "name": "id",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/25/item/0/item/3/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/25/item/0/item/3/request/url/variable/0/value"
                     },
                     {
                       "paramType": "requestBody",
@@ -3251,7 +3251,7 @@
                       "paramType": "variable",
                       "name": "authObjectId",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/26/item/0/item/0/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/26/item/0/item/0/request/url/variable/0/value"
                     }
                   ]
                 },
@@ -3264,7 +3264,7 @@
                       "paramType": "variable",
                       "name": "authObjectId",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/26/item/0/item/1/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/26/item/0/item/1/request/url/variable/0/value"
                     },
                     {
                       "paramType": "requestBody",
@@ -3283,7 +3283,7 @@
                       "paramType": "variable",
                       "name": "authObjectId",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/26/item/0/item/2/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/26/item/0/item/2/request/url/variable/0/value"
                     }
                   ]
                 },
@@ -3296,7 +3296,7 @@
                       "paramType": "variable",
                       "name": "authObjectId",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/26/item/0/item/3/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/26/item/0/item/3/request/url/variable/0/value"
                     }
                   ]
                 }
@@ -3352,7 +3352,7 @@
                       "paramType": "variable",
                       "name": "scriptId",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/27/item/0/item/0/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/27/item/0/item/0/request/url/variable/0/value"
                     }
                   ]
                 },
@@ -3365,7 +3365,7 @@
                       "paramType": "variable",
                       "name": "scriptId",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/27/item/0/item/1/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/27/item/0/item/1/request/url/variable/0/value"
                     },
                     {
                       "paramType": "requestBody",
@@ -3384,7 +3384,7 @@
                       "paramType": "variable",
                       "name": "scriptId",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/27/item/0/item/2/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/27/item/0/item/2/request/url/variable/0/value"
                     }
                   ]
                 }
@@ -3440,13 +3440,13 @@
                       "paramType": "variable",
                       "name": "clientId",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/28/item/0/item/1/request/url/query/0"
+                      "valueJsonPointer": "/item/0/item/28/item/0/item/1/request/url/query/0/value"
                     },
                     {
                       "paramType": "variable",
                       "name": "baseUrl",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/28/item/0/item/1/request/url/query/1"
+                      "valueJsonPointer": "/item/0/item/28/item/0/item/1/request/url/query/1/value"
                     }
                   ]
                 }
@@ -3497,7 +3497,7 @@
                       "paramType": "variable",
                       "name": "provider",
                       "value": "<object>",
-                      "valueJsonPointer": "/item/0/item/28/item/3/item/0/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/28/item/3/item/0/request/url/variable/0/value"
                     }
                   ]
                 },
@@ -3510,7 +3510,7 @@
                       "paramType": "variable",
                       "name": "provider",
                       "value": "<string>",
-                      "valueJsonPointer": "/item/0/item/28/item/3/item/1/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/28/item/3/item/1/request/url/variable/0/value"
                     },
                     {
                       "paramType": "requestBody",
@@ -3529,7 +3529,7 @@
                       "paramType": "variable",
                       "name": "provider",
                       "value": "<object>",
-                      "valueJsonPointer": "/item/0/item/28/item/3/item/2/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/28/item/3/item/2/request/url/variable/0/value"
                     }
                   ]
                 },
@@ -3542,7 +3542,7 @@
                       "paramType": "variable",
                       "name": "provider",
                       "value": "<object>",
-                      "valueJsonPointer": "/item/0/item/28/item/3/item/3/request/url/variable/0"
+                      "valueJsonPointer": "/item/0/item/28/item/3/item/3/request/url/variable/0/value"
                     }
                   ]
                 }
@@ -3592,7 +3592,7 @@
               "paramType": "variable",
               "name": "customerId",
               "value": "<string>",
-              "valueJsonPointer": "/item/0/item/30/request/url/variable/0"
+              "valueJsonPointer": "/item/0/item/30/request/url/variable/0/value"
             }
           ]
         },
@@ -3622,7 +3622,7 @@
       "paramType": "variable",
       "name": "baseUrl",
       "value": "http://development.playground.nexploit.app",
-      "valueJsonPointer": "/variable/0"
+      "valueJsonPointer": "/variable/0/value"
     }
   ]
 }

@@ -7,9 +7,7 @@ import {
 import { PathNodeParser } from '../PathNodeParser';
 import jsonPointer from 'json-pointer';
 
-export abstract class BaseOasPathItemObjectParser<D, T>
-  implements PathNodeParser
-{
+export abstract class BaseOasPathItemObjectParser<D> implements PathNodeParser {
   protected constructor(
     protected readonly doc: D,
     private readonly operationObjectsParser: PathNodeParser
@@ -19,7 +17,7 @@ export abstract class BaseOasPathItemObjectParser<D, T>
 
   public parse(pointer: string): SpecTreeNode {
     const path = jsonPointer.parse(pointer).pop();
-    const pathItemObject: T = jsonPointer.get(this.doc, pointer);
+    const pathItemObject = jsonPointer.get(this.doc, pointer);
     const parameters = this.parseParameters(pointer);
 
     return {

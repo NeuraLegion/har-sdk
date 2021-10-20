@@ -4,10 +4,7 @@ import { OasV2OperationObjectParser } from './OasV2OperationObjectParser';
 import { OasV2ParameterObjectsParser } from './OasV2ParameterObjectsParser';
 import { OpenAPIV2 } from '@har-sdk/types';
 
-export class OasV2PathItemObjectParser extends BaseOasPathItemObjectParser<
-  OpenAPIV2.Document,
-  OpenAPIV2.PathItemObject
-> {
+export class OasV2PathItemObjectParser extends BaseOasPathItemObjectParser<OpenAPIV2.Document> {
   private readonly parameterObjectsParser: OasV2ParameterObjectsParser;
 
   constructor(

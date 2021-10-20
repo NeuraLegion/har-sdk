@@ -23,69 +23,59 @@ export class PostmanBodyParser implements ParametersParser {
 
     switch (body.mode) {
       case 'raw':
-        return this.parseRawBody(pointer, body);
+        return [this.createRequestBodyParam(`${pointer}/raw`)];
       case 'file':
-        return this.parseFileBody(pointer, body);
+        return [this.createRequestBodyParam(`${pointer}/file`)];
       case 'graphql':
-        return this.parseGraphQlBody(pointer, body);
+        return [this.createRequestBodyParam(`${pointer}/graphql`)];
       case 'urlencoded':
         return this.parseUrlEncodedBody(pointer, body);
       case 'formdata':
-        return this.parseFormDataBody(pointer, body);
+        return this.createBodyLocationParams(
+          `${pointer}/formdata`,
+          body.formdata
+        );
       default:
         throw new Error('Unknown Postman request body mode');
     }
   }
 
-  private parseRawBody(
+  private createRequestBodyParam(
     pointer: string,
-    body: Postman.RequestBody
-  ): SpecTreeRequestBodyParam[] {
+    contentType?: string
+  ): SpecTreeRequestBodyParam {
+    const value = jsonPointer.get(this.doc, pointer);
+
     const headersPointer = jsonPointer.compile([
-      ...jsonPointer.parse(pointer).slice(0, -1),
+      ...jsonPointer.parse(pointer).slice(0, -2),
       'header'
     ]);
     const headers = new PostmanHeadersParser(this.doc).parse(headersPointer);
-    const contentType =
+    const bodyType =
+      contentType ||
       headers.find((header) => header.key.toLowerCase() === 'content-type')
-        ?.value || 'application/json';
+        ?.value ||
+      'application/json';
 
-    return [
-      {
-        paramType: 'requestBody',
-        bodyType: contentType,
-        value: body.raw,
-        valueJsonPointer: `${pointer}/raw`
-      }
-    ];
+    return {
+      paramType: 'requestBody',
+      bodyType,
+      value,
+      valueJsonPointer: pointer
+    };
   }
 
-  private parseFileBody(
-    pointer: string,
-    body: Postman.RequestBody
-  ): SpecTreeRequestBodyParam[] {
-    return [
-      {
-        paramType: 'requestBody',
-        bodyType: 'application/octet-stream',
-        value: body.file,
-        valueJsonPointer: `${pointer}/file`
-      }
-    ];
-  }
-
-  private parseGraphQlBody(
-    pointer: string,
-    body: Postman.RequestBody
-  ): SpecTreeRequestBodyParam[] {
-    return [
-      {
-        paramType: 'requestBody',
-        bodyType: 'application/json',
-        value: body.graphql,
-        valueJsonPointer: `${pointer}/graphql`
-      }
-    ];
+  private createBodyLocationParams(
+    paramsJsonPointer: string,
+    params: Postman.QueryParam[] | Postman.FormParam[]
+  ): SpecTreeLocationParam[] {
+    return params.map((param, idx) => ({
+      paramType: 'location',
+      location: ParamLocation.BODY,
+      valueJsonPointer: `${paramsJsonPointer}/${idx}`,
+      name: param.name,
+      value: param.value
+    }));
   }
 
   private parseUrlEncodedBody(
@@ -93,39 +83,17 @@ export class PostmanBodyParser implements ParametersParser {
     body: Postman.RequestBody
   ): SpecTreeLocationParam[] | SpecTreeRequestBodyParam[] {
     if (Array.isArray(body.urlencoded)) {
-      return body.urlencoded.map(
-        (param: Postman.QueryParam, idx: number): SpecTreeLocationParam => ({
-          paramType: 'location',
-          location: ParamLocation.BODY,
-          valueJsonPointer: `${pointer}/urlencoded/${idx}/value`,
-          name: param.name,
-          value: param.value
-        })
+      return this.createBodyLocationParams(
+        `${pointer}/urlencoded`,
+        body.urlencoded
       );
     }
 
     return [
-      {
-        paramType: 'requestBody',
-        bodyType: 'application/x-www-form-urlencoded',
-        value: body.urlencoded,
-        valueJsonPointer: `${pointer}/urlencoded`
-      }
+      this.createRequestBodyParam(
+        `${pointer}/urlencoded`,
+        'application/x-www-form-urlencoded'
+      )
     ];
-  }
-
-  private parseFormDataBody(
-    pointer: string,
-    body: Postman.RequestBody
-  ): SpecTreeLocationParam[] {
-    return body.formdata.map(
-      (param: Postman.FormParam, idx: number): SpecTreeLocationParam => ({
-        paramType: 'location',
-        location: ParamLocation.BODY,
-        valueJsonPointer: `${pointer}/formdata/${idx}/value`,
-        name: param.name,
-        value: param.value
-      })
-    );
   }
 }

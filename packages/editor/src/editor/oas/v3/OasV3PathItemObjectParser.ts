@@ -5,10 +5,7 @@ import { OasV3ParameterObjectsParser } from './OasV3ParameterObjectsParser';
 import { OpenAPIV3 } from '@har-sdk/types';
 import jsonPointer from 'json-pointer';
 
-export class OasV3PathItemObjectParser extends BaseOasPathItemObjectParser<
-  OpenAPIV3.Document,
-  OpenAPIV3.PathItemObject
-> {
+export class OasV3PathItemObjectParser extends BaseOasPathItemObjectParser<OpenAPIV3.Document> {
   private readonly parameterObjectsParser: OasV3ParameterObjectsParser;
 
   constructor(

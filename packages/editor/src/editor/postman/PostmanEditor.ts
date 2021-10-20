@@ -1,8 +1,8 @@
 import { SpecTreeNode, HttpMethod } from '../../models';
 import { BaseEditor } from '../BaseEditor';
-import { PostmanParametersParser } from './ParametersParser';
+import { PostmanParametersParser } from './PostmanParametersParser';
 import { PostmanUrlParser } from './PostmanUrlParser';
-import { VariablesParser } from './VariablesParser';
+import { PostmanVariablesParser } from './PostmanVariablesParser';
 import { Postman } from '@har-sdk/types';
 
 export class PostmanEditor extends BaseEditor<Postman.Document> {
@@ -22,7 +22,7 @@ export class PostmanEditor extends BaseEditor<Postman.Document> {
       path: '/',
       name: this.doc.info.name,
       children: this.createNodes(this.doc, ''),
-      parameters: new VariablesParser(this.doc).parse('/variable')
+      parameters: new PostmanVariablesParser(this.doc).parse('/variable')
     };
 
     return this.tree;

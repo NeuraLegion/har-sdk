@@ -1,14 +1,14 @@
 import { SpecTreeNodeParam } from '../../models';
 import { ParametersParser } from '../ParametersParser';
 import { PostmanBodyParser } from './PostmanBodyParser';
-import { VariablesParser } from './VariablesParser';
+import { PostmanVariablesParser } from './PostmanVariablesParser';
 import { Postman } from '@har-sdk/types';
 
 export class PostmanParametersParser implements ParametersParser {
   constructor(private readonly doc: Postman.Document) {}
 
   public parse(pointer: string): SpecTreeNodeParam[] {
-    const variablesParser = new VariablesParser(this.doc);
+    const variablesParser = new PostmanVariablesParser(this.doc);
 
     return [
       variablesParser.parse(`${pointer}/variable`),

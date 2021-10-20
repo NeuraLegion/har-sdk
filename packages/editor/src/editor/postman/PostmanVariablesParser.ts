@@ -3,7 +3,7 @@ import { ParametersParser } from '../ParametersParser';
 import jsonPointer from 'json-pointer';
 import { Postman } from '@har-sdk/types';
 
-export class VariablesParser implements ParametersParser {
+export class PostmanVariablesParser implements ParametersParser {
   constructor(private readonly doc: Postman.Document) {}
 
   public parse(pointer: string): SpecTreeNodeParam[] {
@@ -18,7 +18,7 @@ export class VariablesParser implements ParametersParser {
         paramType: 'variable',
         name: variable.key,
         value: variable.value,
-        valueJsonPointer: `${pointer}/${idx}`
+        valueJsonPointer: `${pointer}/${idx}/value`
       })
     );
   }

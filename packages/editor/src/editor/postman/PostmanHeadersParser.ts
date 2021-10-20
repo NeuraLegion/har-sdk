@@ -20,9 +20,7 @@ export class PostmanHeadersParser implements Parser<Postman.Header[]> {
     return Array.isArray(headers)
       ? headers
       : headers.split('\n').map((pair: string) => {
-          const [key, value]: string[] = pair
-            .split(':')
-            .map((x: string) => x.trim());
+          const [key, value]: string[] = pair.split(': ', 2);
 
           return {
             key,

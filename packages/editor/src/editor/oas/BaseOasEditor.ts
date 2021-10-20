@@ -1,10 +1,21 @@
-import { SpecTreeNode } from '../../models';
-import { BaseEditor } from '../BaseEditor';
 import { Editor } from '../Editor';
+import { SpecTreeNode, SpecTreeNodeVariableParam } from '../../models';
+import { BaseEditor } from '../BaseEditor';
+import { BaseOasPathItemObjectParser } from './BaseOasPathItemObjectParser';
+import { OpenAPIV3, OpenAPIV2 } from '@har-sdk/types';
+import $RefParser from '@apidevtools/json-schema-ref-parser';
+import { load } from 'js-yaml';
 import jsonPointer from 'json-pointer';
 
-export abstract class BaseOasEditor<T> extends BaseEditor<T> implements Editor {
-  protected dereferencedDoc: T;
+export abstract class BaseOasEditor<
+    D extends OpenAPIV3.Document | OpenAPIV2.Document
+  >
+  extends BaseEditor<D>
+  implements Editor
+{
+  protected dereferencedDoc: D;
+
+  protected abstract createPathItemObjectParser(): BaseOasPathItemObjectParser<D>;
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   public setParameterValue(valueJsonPointer: string, value: any): SpecTreeNode {
@@ -30,6 +41,36 @@ export abstract class BaseOasEditor<T> extends BaseEditor<T> implements Editor {
     jsonPointer.remove(this.dereferencedDoc, nodeJsonPointer);
 
     return super.removeNode(nodeJsonPointer);
+  }
+
+  protected async loadFromSource(
+    source: string,
+    errorMessage: string
+  ): Promise<void> {
+    try {
+      this.doc = load(source, { json: true }) as D;
+      this.dereferencedDoc = (await new $RefParser().dereference(
+        load(source, { json: true })
+      )) as D;
+    } catch {
+      throw new Error(errorMessage);
+    }
+  }
+
+  protected createRootNode(
+    parameters: SpecTreeNodeVariableParam[]
+  ): SpecTreeNode {
+    const pathItemObjectParser = this.createPathItemObjectParser();
+
+    return {
+      jsonPointer: '/',
+      path: '/',
+      name: this.doc.info.title,
+      children: Object.keys(this.doc.paths).map((path: string) =>
+        pathItemObjectParser.parse(jsonPointer.compile(['paths', path]))
+      ),
+      parameters
+    };
   }
 
   private getRefJsonPointer(valueJsonPointer: string): string | undefined {

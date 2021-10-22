@@ -1,4 +1,9 @@
-import { TreeParser, PostmanEditor, SpecTreeNodeParam } from '../src';
+import {
+  TreeParser,
+  PostmanEditor,
+  SpecTreeNodeParam,
+  SpecTreeNode
+} from '../src';
 import { Postman } from '@har-sdk/types';
 import jsonPath from 'jsonpath';
 import 'chai/register-should';
@@ -10,7 +15,7 @@ import { resolve } from 'path';
 
 use(chaiAsPromised);
 
-describe('oas parser', () => {
+describe('postman parser', () => {
   const sourcePath = './tests/postman-sample1.json';
   const source = readFileSync(resolve(sourcePath), 'utf-8');
   const expectedResultPath = './tests/postman-sample1.result.json';
@@ -105,6 +110,47 @@ describe('oas parser', () => {
         jsonPath
           .query(postmanEditor['doc'], docPath)[0]
           .value.should.equal(newValue);
+      });
+    });
+
+    describe('postman nodes remover', () => {
+      it('should remove group node', async () => {
+        await postmanEditor.setup(source);
+        let tree = postmanEditor.parse();
+
+        const path = '$..children[?(@.path=="{{baseUrl}}/api/v1/statistics")]';
+        const pathNode = jsonPath.query(tree, path)[0] as SpecTreeNode;
+
+        tree = postmanEditor.removeNode(pathNode.jsonPointer);
+
+        shouldBeValidDoc(postmanEditor['doc']);
+
+        jsonPath.query(tree, path).should.be.empty;
+        postmanEditor
+          .stringify()
+          .should.not.include('{{baseUrl}}/api/v1/statistics');
+
+        postmanEditor['tree'].should.be.deep.equal(postmanEditor.parse());
+      });
+
+      it('should remove endpoint node', async () => {
+        await postmanEditor.setup(source);
+        let tree = postmanEditor.parse();
+
+        const path =
+          '$.children[?(@.path=="{{baseUrl}}/.well-known/change-password")]';
+        const endpointNode = jsonPath.query(tree, path)[0] as SpecTreeNode;
+
+        tree = postmanEditor.removeNode(endpointNode.jsonPointer);
+
+        shouldBeValidDoc(postmanEditor['doc']);
+
+        jsonPath.query(tree, path).should.be.empty;
+        postmanEditor
+          .stringify()
+          .should.not.include('{{baseUrl}}/.well-known/change-password');
+
+        postmanEditor['tree'].should.be.deep.equal(postmanEditor.parse());
       });
     });
   });

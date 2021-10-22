@@ -15,15 +15,9 @@ export class PostmanUrlParser {
       ? url.host.join('.')
       : url.host || '';
 
-    if (typeof url.path === 'string') {
-      return `${host}/${url.path}`;
-    }
-
-    return url.path
-      .map((pathItem: string | Postman.Variable) =>
-        typeof pathItem === 'string' ? pathItem : pathItem.value ?? ''
-      )
-      .join('/');
+    return `${host}/${
+      typeof url.path === 'string' ? url.path : this.getPathFromArray(url.path)
+    }`;
   }
 
   public getGroupPath(children: ReadonlyArray<SpecTreeNode>): string {
@@ -32,6 +26,14 @@ export class PostmanUrlParser {
     );
 
     return this.getLongestCommonPath(childrenPaths);
+  }
+
+  private getPathFromArray(path: (string | Postman.Variable)[]): string {
+    return path
+      .map((pathItem: string | Postman.Variable) =>
+        typeof pathItem === 'string' ? pathItem : pathItem.value ?? ''
+      )
+      .join('/');
   }
 
   private getLongestCommonPath(childrenPaths: string[]): string {

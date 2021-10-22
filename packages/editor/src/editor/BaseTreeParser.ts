@@ -7,4 +7,8 @@ export abstract class BaseTreeParser<T> implements TreeParser {
 
   public abstract setup(source: string): Promise<void>;
   public abstract parse(): SpecTreeNode;
+
+  public stringify(): string {
+    return JSON.stringify(this.doc);
+  }
 }

@@ -164,6 +164,14 @@
         {
           "jsonPointer": "/item/0/item/2",
           "path": "{{baseUrl}}/api/v1",
+          "parameters": [
+            {
+              "name": "foo",
+              "paramType": "variable",
+              "value": "bar",
+              "valueJsonPointer": "/item/0/item/2/variable/0/value"
+            }
+          ],
           "children": [
             {
               "jsonPointer": "/item/0/item/2/item/0",
@@ -270,7 +278,15 @@
             {
               "jsonPointer": "/item/0/item/2/item/1",
               "path": "{{baseUrl}}/api/v1/files",
-              "method": "GET"
+              "method": "POST",
+              "parameters": [
+                {
+                  "bodyType": "application/json",
+                  "paramType": "requestBody",
+                  "value": {},
+                  "valueJsonPointer": "/item/0/item/2/item/1/request/body/graphql"
+                }
+              ]
             },
             {
               "jsonPointer": "/item/0/item/2/item/2",
@@ -329,10 +345,18 @@
                       "method": "POST",
                       "parameters": [
                         {
-                          "paramType": "requestBody",
-                          "bodyType": "application/json",
-                          "value": "{\n    \"targetIds\": [\n        \"<string>\"\n    ],\n    \"keepHistory\": true\n}",
-                          "valueJsonPointer": "/item/0/item/3/item/0/item/0/item/0/request/body/raw"
+                          "location": "body",
+                          "name": "targetIds",
+                          "paramType": "location",
+                          "value": "<string>[]",
+                          "valueJsonPointer": "/item/0/item/3/item/0/item/0/item/0/request/body/urlencoded/0"
+                        },
+                        {
+                          "location": "body",
+                          "name": "keepHistory",
+                          "paramType": "location",
+                          "value": "true",
+                          "valueJsonPointer": "/item/0/item/3/item/0/item/0/item/0/request/body/urlencoded/1"
                         }
                       ]
                     },
@@ -2442,8 +2466,10 @@
                         {
                           "paramType": "requestBody",
                           "bodyType": "text/plain",
-                          "value": "{\n    \"file\": \"<binary>\"\n}",
-                          "valueJsonPointer": "/item/0/item/19/item/0/item/1/item/2/request/body/raw"
+                          "value": {
+                            "content": "<binary>"
+                          },
+                          "valueJsonPointer": "/item/0/item/19/item/0/item/1/item/2/request/body/file"
                         }
                       ]
                     }
@@ -3602,10 +3628,32 @@
           "method": "POST",
           "parameters": [
             {
-              "paramType": "requestBody",
-              "bodyType": "application/json",
-              "value": "{\n    \"firstName\": \"<string>\",\n    \"lastName\": \"<string>\",\n    \"email\": \"<email>\",\n    \"password\": \"<string>\"\n}",
-              "valueJsonPointer": "/item/0/item/31/request/body/raw"
+              "location": "body",
+              "name": "firstName",
+              "paramType": "location",
+              "value": "<string>",
+              "valueJsonPointer": "/item/0/item/31/request/body/formdata/0"
+            },
+            {
+              "location": "body",
+              "name": "lastName",
+              "paramType": "location",
+              "value": "<string>",
+              "valueJsonPointer": "/item/0/item/31/request/body/formdata/1"
+            },
+            {
+              "location": "body",
+              "name": "email",
+              "paramType": "location",
+              "value": "<string>",
+              "valueJsonPointer": "/item/0/item/31/request/body/formdata/2"
+            },
+            {
+              "location": "body",
+              "name": "password",
+              "paramType": "location",
+              "value": "<string>",
+              "valueJsonPointer": "/item/0/item/31/request/body/formdata/3"
             }
           ]
         }

@@ -229,12 +229,7 @@
                   "status": "OK",
                   "code": 200,
                   "_postman_previewlanguage": "json",
-                  "header": [
-                    {
-                      "key": "Content-Type",
-                      "value": "application/json"
-                    }
-                  ],
+                  "header": "Content-Type: application/json",
                   "cookie": [],
                   "body": "[\n {\n  \"name\": \"High\",\n  \"data\": [\n   {\n    \"value\": 0,\n    \"date\": \"2019-01-01\"\n   },\n   {\n    \"value\": 0,\n    \"date\": \"2019-01-01\"\n   }\n  ]\n },\n {\n  \"name\": \"High\",\n  \"data\": [\n   {\n    \"value\": 0,\n    \"date\": \"2019-01-01\"\n   },\n   {\n    \"value\": 0,\n    \"date\": \"2019-01-01\"\n   }\n  ]\n }\n]"
                 }
@@ -525,8 +520,7 @@
                         "method": "GET",
                         "header": [],
                         "url": {
-                          "raw": "{{baseUrl}}/api/v1/files/:fileId/tree",
-                          "host": ["{{baseUrl}}"],
+                          "host": "{{baseUrl}}",
                           "path": ["api", "v1", "files", ":fileId", "tree"],
                           "variable": [
                             {
@@ -599,20 +593,15 @@
                           ]
                         },
                         "method": "PUT",
-                        "header": [
-                          {
-                            "key": "Content-Type",
-                            "value": "application/json"
-                          }
-                        ],
                         "body": {
                           "mode": "raw",
                           "raw": "{\n    \"node\": \"<object>\",\n    \"headers\": \"<string>\",\n    \"variables\": \"<string>\"\n}"
                         },
                         "url": {
-                          "raw": "{{baseUrl}}/api/v1/files/:fileId/tree",
                           "host": ["{{baseUrl}}"],
-                          "path": ["api", "v1", "files", ":fileId", "tree"],
+                          "path": [{
+                            "value": "api/v1/files/:fileId/tree"
+                          }],
                           "variable": [
                             {
                               "key": "fileId",
@@ -1051,7 +1040,12 @@
                     }
                   ]
                 },
-                "method": "GET",
+                "method": "POST",
+                "body": {
+                  "mode": "graphql",
+                  "graphql": {
+                  }
+                },
                 "header": [],
                 "url": {
                   "raw": "{{baseUrl}}/api/v1/files",
@@ -1116,12 +1110,7 @@
                   ]
                 },
                 "method": "POST",
-                "header": [
-                  {
-                    "key": "Content-Type",
-                    "value": "application/json"
-                  }
-                ],
+                "header": "Content-Type: application/json",
                 "body": {
                   "mode": "raw",
                   "raw": "{\n    \"file\": \"<binary>\"\n}"
@@ -1359,7 +1348,11 @@
                 }
               ]
             }
-          ]
+          ],
+          "variable": [{
+            "key": "foo",
+            "value": "bar"
+          }]
         },
         {
           "name": "me",
@@ -1381,8 +1374,17 @@
                           }
                         ],
                         "body": {
-                          "mode": "raw",
-                          "raw": "{\n    \"targetIds\": [\n        \"<string>\"\n    ],\n    \"keepHistory\": true\n}"
+                          "mode": "urlencoded",
+                          "urlencoded": [
+                            {
+                              "key": "targetIds",
+                              "value": "<string>[]"
+                            },
+                            {
+                              "key": "keepHistory",
+                              "value": "true"
+                            }
+                          ]
                         },
                         "url": {
                           "raw": "{{baseUrl}}/api/v1/me/feed/following",
@@ -1646,8 +1648,10 @@
                         "header": [],
                         "url": {
                           "raw": "{{baseUrl}}/api/v1/me/feed/subscriptions",
-                          "host": ["{{baseUrl}}"],
-                          "path": ["api", "v1", "me", "feed", "subscriptions"]
+                          "host": "{{baseUrl}}",
+                          "path": [{
+                            "value": "/api/v1/me/feed/subscriptions"
+                          }]
                         },
                         "description": "Returns the feed preferences as a list of verbs grouped by object."
                       },
@@ -12513,8 +12517,10 @@
                           }
                         ],
                         "body": {
-                          "mode": "raw",
-                          "raw": "{\n    \"file\": \"<binary>\"\n}"
+                          "mode": "file",
+                          "file": {
+                            "content": "<binary>"
+                          }
                         },
                         "url": {
                           "raw": "{{baseUrl}}/api/v1/orgs/:organizationId/targets/upload",
@@ -18094,15 +18100,26 @@
           "name": "The first step in Sign Up form. All the fields are mandatory.",
           "request": {
             "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
             "body": {
-              "mode": "raw",
-              "raw": "{\n    \"firstName\": \"<string>\",\n    \"lastName\": \"<string>\",\n    \"email\": \"<email>\",\n    \"password\": \"<string>\"\n}"
+              "mode": "formdata",
+              "formdata":  [
+                {
+                  "key": "firstName",
+                  "value": "<string>"
+                },
+                {
+                  "key": "lastName",
+                  "value": "<string>"
+                },
+                {
+                  "key": "email",
+                  "value": "<string>"
+                },
+                {
+                  "key": "password",
+                  "value": "<string>"
+                }
+              ]
             },
             "url": {
               "raw": "{{baseUrl}}/api/v1/register",

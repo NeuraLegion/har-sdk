@@ -107,7 +107,7 @@ describe('oas parser', () => {
 
       it('should set referenced query param value', async () => {
         const path =
-          '$..children[?(@.path=="/pet/findByStatus" && @.method=="get")].parameters[?(@.name=="status")]';
+          '$..children[?(@.path=="/pet/findByStatus" && @.method=="GET")].parameters[?(@.name=="status")]';
         const oldValue = 'available';
         const newValue = 'dummyStatus';
 
@@ -140,7 +140,7 @@ describe('oas parser', () => {
 
       it('should change query param existing value', async () => {
         const path =
-          '$..children[?(@.path=="/pet/findByTags" && @.method=="get")].parameters[?(@.name=="tags")]';
+          '$..children[?(@.path=="/pet/findByTags" && @.method=="GET")].parameters[?(@.name=="tags")]';
         const newValue = 'dummyTag';
 
         await openApiEditor.setup(source);
@@ -166,7 +166,7 @@ describe('oas parser', () => {
 
       it('should set referenced request body value', async () => {
         const path =
-          '$..children[?(@.path=="/pet/{petId}" && @.method=="patch")].parameters[?(@.bodyType)]';
+          '$..children[?(@.path=="/pet/{petId}" && @.method=="PATCH")].parameters[?(@.bodyType)]';
         const newValue = '{"name":"test"}';
 
         await openApiEditor.setup(source);
@@ -214,7 +214,7 @@ describe('oas parser', () => {
 
       it('should remove endpoint node', async () => {
         const path =
-          '$..children[?(@.path=="/pet/{petId}" && @.method=="get")]';
+          '$..children[?(@.path=="/pet/{petId}" && @.method=="GET")]';
         await openApiEditor.setup(source);
 
         let tree = openApiEditor.parse();

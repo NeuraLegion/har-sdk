@@ -9,7 +9,7 @@
       "children": [
         {
           "path": "/pet",
-          "method": "put",
+          "method": "PUT",
           "jsonPointer": "/paths/~1pet/put",
           "parameters": [
             {
@@ -22,7 +22,7 @@
         },
         {
           "path": "/pet",
-          "method": "post",
+          "method": "POST",
           "jsonPointer": "/paths/~1pet/post",
           "parameters": [
             {
@@ -41,7 +41,7 @@
       "children": [
         {
           "path": "/pet/findByStatus",
-          "method": "get",
+          "method": "GET",
           "jsonPointer": "/paths/~1pet~1findByStatus/get",
           "parameters": [
             {
@@ -61,7 +61,7 @@
       "children": [
         {
           "path": "/pet/findByTags",
-          "method": "get",
+          "method": "GET",
           "jsonPointer": "/paths/~1pet~1findByTags/get",
           "parameters": [
             {
@@ -80,7 +80,7 @@
       "children": [
         {
           "path": "/pet/{petId}",
-          "method": "get",
+          "method": "GET",
           "jsonPointer": "/paths/~1pet~1{petId}/get",
           "parameters": [
             {
@@ -94,7 +94,7 @@
         },
         {
           "path": "/pet/{petId}",
-          "method": "post",
+          "method": "POST",
           "jsonPointer": "/paths/~1pet~1{petId}/post",
           "parameters": [
             {
@@ -120,7 +120,7 @@
         },
         {
           "path": "/pet/{petId}",
-          "method": "delete",
+          "method": "DELETE",
           "jsonPointer": "/paths/~1pet~1{petId}/delete",
           "parameters": [
             {
@@ -139,7 +139,7 @@
         },
         {
           "path": "/pet/{petId}",
-          "method": "patch",
+          "method": "PATCH",
           "jsonPointer": "/paths/~1pet~1{petId}/patch",
           "parameters": [
             {

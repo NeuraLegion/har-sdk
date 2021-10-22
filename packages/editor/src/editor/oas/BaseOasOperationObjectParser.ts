@@ -18,7 +18,7 @@ export abstract class BaseOasOperationObjectParser implements PathNodeParser {
 
     return {
       path,
-      method: method as HttpMethod,
+      method: method.toUpperCase() as HttpMethod,
       jsonPointer: pointer,
       ...(parameters?.length ? { parameters } : {})
     };

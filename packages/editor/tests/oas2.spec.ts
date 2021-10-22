@@ -196,7 +196,7 @@ describe('oas parser', () => {
     });
 
     describe('oas v2 nodes remover', () => {
-      it('should remove existing path node', async () => {
+      it('should remove path node', async () => {
         const path = '$..children[?(@.path=="/pet/{petId}")]';
         await openApiEditor.setup(source);
 
@@ -213,15 +213,15 @@ describe('oas parser', () => {
         openApiEditor['tree'].should.be.deep.equal(openApiEditor.parse());
       });
 
-      it('should correctly remove existing endpoint node', async () => {
+      it('should remove endpoint node', async () => {
         const path =
           '$..children[?(@.path=="/pet/{petId}" && @.method=="get")]';
         await openApiEditor.setup(source);
 
         let tree = openApiEditor.parse();
-        const endPointNode = jsonPath.query(tree, path)[0] as SpecTreeNode;
+        const endpointNode = jsonPath.query(tree, path)[0] as SpecTreeNode;
 
-        tree = openApiEditor.removeNode(endPointNode.jsonPointer);
+        tree = openApiEditor.removeNode(endpointNode.jsonPointer);
 
         shouldBeValidDoc(openApiEditor['doc']);
 

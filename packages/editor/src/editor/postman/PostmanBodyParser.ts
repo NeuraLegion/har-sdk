@@ -29,14 +29,15 @@ export class PostmanBodyParser implements ParametersParser {
       case 'graphql':
         return [this.createRequestBodyParam(`${pointer}/graphql`)];
       case 'urlencoded':
-        return this.parseUrlEncodedBody(pointer, body);
+        return this.createBodyLocationParams(
+          `${pointer}/urlencoded`,
+          body.urlencoded as Postman.QueryParam[]
+        );
       case 'formdata':
         return this.createBodyLocationParams(
           `${pointer}/formdata`,
           body.formdata
         );
-      default:
-        throw new Error('Unknown Postman request body mode');
     }
   }
 
@@ -73,27 +74,8 @@ export class PostmanBodyParser implements ParametersParser {
       paramType: 'location',
       location: ParamLocation.BODY,
       valueJsonPointer: `${paramsJsonPointer}/${idx}`,
-      name: param.name,
+      name: param.key,
       value: param.value
     }));
-  }
-
-  private parseUrlEncodedBody(
-    pointer: string,
-    body: Postman.RequestBody
-  ): SpecTreeLocationParam[] | SpecTreeRequestBodyParam[] {
-    if (Array.isArray(body.urlencoded)) {
-      return this.createBodyLocationParams(
-        `${pointer}/urlencoded`,
-        body.urlencoded
-      );
-    }
-
-    return [
-      this.createRequestBodyParam(
-        `${pointer}/urlencoded`,
-        'application/x-www-form-urlencoded'
-      )
-    ];
   }
 }

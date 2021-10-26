@@ -5,7 +5,7 @@ import { OpenAPIV3 } from '@har-sdk/types';
 
 export class OasV3Editor extends BaseOasEditor<OpenAPIV3.Document> {
   public async setup(source: string): Promise<void> {
-    await this.loadFromSource(source, 'Bad OpenAPI V3 specification');
+    await this.load(source, 'Bad OpenAPI V3 specification');
   }
 
   public parse(): SpecTreeNode {

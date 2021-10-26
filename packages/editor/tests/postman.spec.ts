@@ -152,6 +152,36 @@ describe('postman parser', () => {
 
         postmanEditor['tree'].should.be.deep.equal(postmanEditor.parse());
       });
+
+      it('should update indices on remove', async () => {
+        await postmanEditor.setup(source);
+        let tree = postmanEditor.parse();
+
+        const path1 =
+          '$..children[?(@.path=="{{baseUrl}}/api/v1/me/feed/activities" && @.method=="DELETE")]';
+        const endpointNode1 = jsonPath.query(tree, path1)[0] as SpecTreeNode;
+        endpointNode1.jsonPointer.should.be.equal(
+          '/item/0/item/3/item/0/item/1/item/0'
+        );
+
+        const path2 =
+          '$..children[?(@.path=="{{baseUrl}}/api/v1/me/feed/activities/:activityId" && @.method=="DELETE")]';
+        const endpointNode2 = jsonPath.query(tree, path2)[0] as SpecTreeNode;
+        endpointNode2.jsonPointer.should.be.equal(
+          '/item/0/item/3/item/0/item/1/item/1'
+        );
+
+        tree = postmanEditor.removeNode(endpointNode1.jsonPointer);
+        jsonPath.query(tree, path1).should.be.empty;
+
+        const endpointNode2Changed = jsonPath.query(
+          tree,
+          path2
+        )[0] as SpecTreeNode;
+        endpointNode2Changed.jsonPointer.should.be.equal(
+          '/item/0/item/3/item/0/item/1/item/0'
+        );
+      });
     });
   });
 });

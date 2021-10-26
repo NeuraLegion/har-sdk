@@ -4,7 +4,6 @@ import { BaseEditor } from '../BaseEditor';
 import { PathNodeParser } from '../PathNodeParser';
 import { OpenAPIV3, OpenAPIV2 } from '@har-sdk/types';
 import $RefParser from '@apidevtools/json-schema-ref-parser';
-import { load } from 'js-yaml';
 import jsonPointer from 'json-pointer';
 
 export abstract class BaseOasEditor<
@@ -43,18 +42,12 @@ export abstract class BaseOasEditor<
     return super.removeNode(nodeJsonPointer);
   }
 
-  protected async loadFromSource(
-    source: string,
-    errorMessage: string
-  ): Promise<void> {
-    try {
-      this.doc = load(source, { json: true }) as D;
-      this.dereferencedDoc = (await new $RefParser().dereference(
-        load(source, { json: true })
-      )) as D;
-    } catch {
-      throw new Error(errorMessage);
-    }
+  protected async load(source: string, errorMessage: string): Promise<void> {
+    await super.load(source, errorMessage);
+
+    this.dereferencedDoc = (await new $RefParser().dereference(
+      JSON.parse(JSON.stringify(this.doc))
+    )) as D;
   }
 
   protected createRootNode(

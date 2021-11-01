@@ -850,11 +850,11 @@
       }
     },
     "parameter": {
-      "switch": [
+      "allOf": [
         {
           "if": {
             "required": ["in"],
-            "properties": { "in": { "enum": ["body"] } }
+            "properties": { "in": { "const": "body" } }
           },
           "then": {
             "$ref": "#/definitions/bodyParameter"
@@ -863,7 +863,7 @@
         {
           "if": {
             "required": ["in"],
-            "properties": { "in": { "enum": ["header"] } }
+            "properties": { "in": { "const": "header" } }
           },
           "then": {
             "$ref": "#/definitions/headerParameterSubSchema"
@@ -872,7 +872,7 @@
         {
           "if": {
             "required": ["in"],
-            "properties": { "in": { "enum": ["formData"] } }
+            "properties": { "in": { "const": "formData" } }
           },
           "then": {
             "$ref": "#/definitions/formDataParameterSubSchema"
@@ -881,7 +881,7 @@
         {
           "if": {
             "required": ["in"],
-            "properties": { "in": { "enum": ["query"] } }
+            "properties": { "in": { "const": "query" } }
           },
           "then": {
             "$ref": "#/definitions/queryParameterSubSchema"
@@ -890,17 +890,10 @@
         {
           "if": {
             "required": ["in"],
-            "properties": { "in": { "enum": ["path"] } }
+            "properties": { "in": { "const": "path" } }
           },
           "then": {
             "$ref": "#/definitions/pathParameterSubSchema"
-          }
-        },
-        {
-          "then": {
-            "type": "object",
-            "required": ["in"],
-            "properties": { "in": { "enum": ["body", "header", "formData", "query", "path"] } }
           }
         }
       ]
@@ -1206,7 +1199,7 @@
     "securityDefinitions": {
       "type": "object",
       "additionalProperties": {
-        "switch": [
+        "allOf": [
           {
             "if": {
               "required": ["type"],
@@ -1233,7 +1226,7 @@
               }
             },
             "then": {
-              "switch":[
+              "allOf":[
                 {
                   "if": {
                     "required": ["flow"],
@@ -1493,21 +1486,21 @@
       "type": "array",
       "description": "The parameters needed to send a valid API call.",
       "items": {
-        "switch": [
-          {
-            "if": {
-              "required": ["$ref"]
-            },
-            "then": {
-              "$ref": "#/definitions/jsonReference"
-            }
-          },
-          {
-            "then": {
-              "$ref": "#/definitions/jsonReference"
+        "type": "object",
+        "if": {
+          "required": ["$ref"],
+          "properties": {
+            "$ref": {
+              "type": "string"
             }
           }
-        ]
+        },
+        "then": {
+          "$ref": "#/definitions/jsonReference"
+        },
+        "else": {
+          "$ref": "#/definitions/parameter"
+        }
       },
       "uniqueItems": true
     },

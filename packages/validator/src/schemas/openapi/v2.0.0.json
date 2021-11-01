@@ -360,14 +360,15 @@
       }
     },
     "responseValue": {
-      "oneOf": [
-        {
-          "$ref": "#/definitions/response"
-        },
-        {
-          "$ref": "#/definitions/jsonReference"
-        }
-      ]
+      "if": {
+        "required": ["$ref"]
+      },
+      "then": {
+        "$ref": "#/definitions/jsonReference"
+      },
+      "else": {
+        "$ref": "#/definitions/response"
+      }
     },
     "response": {
       "type": "object",
@@ -377,14 +378,32 @@
           "type": "string"
         },
         "schema": {
-          "oneOf": [
-            {
-              "$ref": "#/definitions/schema"
+          "if": {
+            "required": [
+              "$ref"
+            ]
+          },
+          "then": {
+            "$ref": "#/definitions/jsonReference"
+          },
+          "else": {
+            "if": {
+              "required": [
+                "type"
+              ],
+              "properties": {
+                "type": {
+                  "const": "file"
+                }
+              }
             },
-            {
+            "then": {
               "$ref": "#/definitions/fileSchema"
+            },
+            "else": {
+              "$ref": "#/definitions/schema"
             }
-          ]
+          }
         },
         "headers": {
           "$ref": "#/definitions/headers"
@@ -968,32 +987,22 @@
           "$ref": "http://json-schema.org/draft-07/schema#/properties/enum"
         },
         "additionalProperties": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/schema"
-            },
-            {
-              "type": "boolean"
-            }
-          ],
+          "if": {
+            "type": "object"
+          },
+          "then": {
+            "$ref": "#/definitions/schema"
+          },
+          "else": {
+            "type": "boolean"
+          },
           "default": {}
         },
         "type": {
           "$ref": "http://json-schema.org/draft-07/schema#/properties/type"
         },
         "items": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/schema"
-            },
-            {
-              "type": "array",
-              "minItems": 1,
-              "items": {
-                "$ref": "#/definitions/schema"
-              }
-            }
-          ],
+          "$ref": "#/definitions/schema",
           "default": {}
         },
         "allOf": {
@@ -1199,6 +1208,10 @@
     "securityDefinitions": {
       "type": "object",
       "additionalProperties": {
+        "required": ["type"],
+        "properties": {
+          "type": { "enum": ["basic", "apiKey", "oauth2"] }
+        },
         "allOf": [
           {
             "if": {
@@ -1222,16 +1235,20 @@
             "if": {
               "required": ["type"],
               "properties": {
-                "type": { "enum": ["oauth2"] }
+                "type": { "const": "oauth2" }
               }
             },
             "then": {
-              "allOf":[
+              "required": ["flow"],
+              "properties": {
+                "flow": { "enum": ["implicit", "password", "application", "accessCode"] }
+              },
+              "allOf": [
                 {
                   "if": {
                     "required": ["flow"],
                     "properties": {
-                      "flow": { "enum": ["implicit"] }
+                      "flow": { "const": "implicit" }
                     }
                   },
                   "then": { "$ref": "#/definitions/oauth2ImplicitSecurity" }
@@ -1240,7 +1257,7 @@
                   "if": {
                     "required": ["flow"],
                     "properties": {
-                      "flow": { "enum": ["password"] }
+                      "flow": { "const": "password" }
                     }
                   },
                   "then": { "$ref": "#/definitions/oauth2PasswordSecurity" }
@@ -1249,7 +1266,7 @@
                   "if": {
                     "required": ["flow"],
                     "properties": {
-                      "flow": { "enum": ["application"] }
+                      "flow": { "const": "application" }
                     }
                   },
                   "then": { "$ref": "#/definitions/oauth2ApplicationSecurity" }
@@ -1258,28 +1275,12 @@
                   "if": {
                     "required": ["flow"],
                     "properties": {
-                      "flow": { "enum": ["accessCode"] }
+                      "flow": { "const": "accessCode" }
                     }
                   },
                   "then": { "$ref": "#/definitions/oauth2AccessCodeSecurity" }
-                },
-                {
-                  "then": {
-                    "required": ["flow"],
-                    "properties": {
-                      "flow": { "enum": ["implicit", "password", "application", "accessCode"] }
-                    }
-                  }
                 }
               ]
-            }
-          },
-          {
-            "then": {
-              "required": ["type"],
-              "properties": {
-                "type": { "enum": ["basic", "apiKey", "oauth2"] }
-              }
             }
           }
         ]

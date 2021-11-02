@@ -6,7 +6,8 @@
   "required": [
     "openapi",
     "info",
-    "paths"
+    "paths",
+    "servers"
   ],
   "properties": {
     "openapi": {
@@ -398,7 +399,10 @@
             "type": "string"
           },
           "minItems": 1,
-          "uniqueItems": true
+          "uniqueItems": true,
+          "errorMessage": {
+            "type": "should be an array of property names required within an object schema"
+          }
         },
         "enum": {
           "type": "array",
@@ -796,7 +800,10 @@
         "^x-": {
         }
       },
-      "additionalProperties": false
+      "additionalProperties": false,
+      "errorMessage": {
+        "additionalProperties": "should only have path names that start with `/`"
+      }
     },
     "PathItem": {
       "type": "object",
@@ -956,7 +963,20 @@
         }
       },
       "minProperties": 1,
-      "additionalProperties": false
+      "additionalProperties": false,
+      "not": {
+        "type": "object",
+        "minProperties": 1,
+        "additionalProperties": false,
+        "patternProperties": {
+          "^x-": {}
+        }
+      },
+      "errorMessage": {
+        "minProperties": "should define at least one response",
+        "not": "should define at least one response, in addition to any vendor extension (`x-*`) fields",
+        "additionalProperties": "should only have three-digit status codes, `default`, and vendor extensions (`x-*`) as properties"
+      }
     },
     "SecurityRequirement": {
       "type": "object",
@@ -1011,6 +1031,7 @@
     },
     "ExampleXORExamples": {
       "description": "Example and examples are mutually exclusive",
+      "errorMessage": "should not have both `example` and `examples`, as they are mutually exclusive",
       "not": {
         "required": [
           "example",
@@ -1275,6 +1296,7 @@
       "additionalProperties": false
     },
     "SecurityScheme": {
+      "type": "object",
       "oneOf": [
         {
           "$ref": "#/definitions/APIKeySecurityScheme"

@@ -9,7 +9,7 @@ export class OASValidator extends BaseValidator<OpenAPI.Document> {
 
   private readonly VERSION_SCHEMA_MAP: Readonly<Record<2 | 3, string>> = {
     2: 'http://swagger.io/v2/schema.json#',
-    3: 'http://openapis.org/v3/schema.json#'
+    3: 'https://spec.openapis.org/oas/3.0/schema/2021-09-28'
   };
 
   constructor() {

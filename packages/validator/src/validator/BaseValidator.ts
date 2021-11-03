@@ -1,6 +1,7 @@
 import { Validator, ValidatorResult, Document } from './Validator';
 import Ajv, { AnySchema, AsyncSchema, ValidateFunction } from 'ajv';
 import addFormats from 'ajv-formats';
+import ajvErrors from 'ajv-errors';
 
 export abstract class BaseValidator<T extends Document>
   implements Validator<T>
@@ -14,6 +15,7 @@ export abstract class BaseValidator<T extends Document>
     });
 
     addFormats(this.ajv);
+    ajvErrors(this.ajv);
 
     (Array.isArray(schema) ? schema : [schema]).forEach((s) =>
       this.verifySchema(s)

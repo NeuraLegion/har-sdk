@@ -1,4 +1,4 @@
-import { condenseErrors } from './ErrorCondenser';
+import { ErrorCondenser } from './ErrorCondenser';
 import { Validator, Document } from './Validator';
 import Ajv, {
   AnySchema,
@@ -51,7 +51,7 @@ export abstract class BaseValidator<T extends Document>
         throw err;
       }
 
-      return condenseErrors(err.errors as ErrorObject[]);
+      return new ErrorCondenser(err.errors as ErrorObject[]).condense();
     }
   }
 

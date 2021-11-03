@@ -1,6 +1,6 @@
 import { ErrorObject } from 'ajv/lib/types/index';
 
-// Based on ErrorCondenser from https://github.com/swagger-api/swagger-editor
+// Based on condenseErrors() from https://github.com/swagger-api/swagger-editor
 //
 // 1. group all errors by path
 // 2. score them by message frequency
@@ -9,33 +9,58 @@ import { ErrorObject } from 'ajv/lib/types/index';
 // 5. create one condensed error for the path
 // 6. return all condensed errors as an array
 
-export function condenseErrors(errors: ErrorObject[]): ErrorObject[] {
-  if (!Array.isArray(errors)) {
-    return [];
+export class ErrorCondenser {
+  // tree: instancePath -> message -> errors
+  private tree: Record<string, Record<string, ErrorObject[]>>;
+
+  constructor(private readonly errors: ReadonlyArray<ErrorObject>) {}
+
+  public condense(): ErrorObject[] {
+    if (!Array.isArray(this.errors)) {
+      return [];
+    }
+
+    this.parseToTree();
+
+    return Object.keys(this.tree).reduce(
+      (res: ErrorObject[], path: string): ErrorObject[] => {
+        const frequentMessageErrors: ErrorObject[][] =
+          this.detectMostFrequentMessageNames(path).map(
+            (name) => this.tree[path][name]
+          );
+
+        return res.concat(
+          frequentMessageErrors.map(this.mergeDuplicatedErrors.bind(this))
+        );
+      },
+      []
+    );
   }
 
-  const tree: Record<string, Record<string, ErrorObject[]>> = {};
+  private parseToTree(): void {
+    const tree: Record<string, Record<string, ErrorObject[]>> = {};
 
-  errors.forEach((err: ErrorObject) => {
-    const { instancePath, message } = err;
+    this.errors.forEach((err: ErrorObject) => {
+      const { instancePath, message } = err;
 
-    if (tree[instancePath] && tree[instancePath][message]) {
-      tree[instancePath][message].push(err);
-    } else if (tree[instancePath]) {
-      tree[instancePath][message] = [err];
-    } else {
-      tree[instancePath] = {
-        [message]: [err]
-      };
-    }
-  });
+      if (tree[instancePath] && tree[instancePath][message]) {
+        tree[instancePath][message].push(err);
+      } else if (tree[instancePath]) {
+        tree[instancePath][message] = [err];
+      } else {
+        tree[instancePath] = {
+          [message]: [err]
+        };
+      }
+    });
 
-  return Object.keys(tree).reduce((res, path) => {
-    const messages = Object.keys(tree[path]);
+    this.tree = tree;
+  }
 
-    const mostFrequentMessageNames: string[] = messages.reduce(
+  private detectMostFrequentMessageNames(path: string): string[] {
+    return Object.keys(this.tree[path]).reduce(
       (obj, msg) => {
-        const count = tree[path][msg].length;
+        const count = this.tree[path][msg].length;
 
         if (count > obj.max) {
           return {
@@ -52,63 +77,42 @@ export function condenseErrors(errors: ErrorObject[]): ErrorObject[] {
       },
       { max: 0, messages: [] }
     ).messages;
-
-    const mostFrequentMessages: ErrorObject[][] = mostFrequentMessageNames.map(
-      (name) => tree[path][name]
-    );
-
-    const condensedErrors = mostFrequentMessages.map((frequentMessages) =>
-      frequentMessages.reduce((prev, err) => {
-        const obj = Object.assign({}, prev, {
-          params: mergeParams(prev.params, err.params)
-        });
-
-        if (!prev.params && !err.params) {
-          delete obj.params;
-        }
-
-        return obj;
-      })
-    );
-
-    return res.concat(condensedErrors);
-  }, []);
-}
-
-// Helpers
-
-function mergeParams(objA = {}, objB = {}) {
-  if (!objA && !objB) {
-    return undefined;
   }
 
-  const res = {};
+  private mergeDuplicatedErrors(errors: ErrorObject[]): ErrorObject {
+    return errors.reduce((prev: ErrorObject, err: ErrorObject): ErrorObject => {
+      const obj = Object.assign({}, prev, {
+        params: this.mergeParameterObjects(prev.params, err.params)
+      });
 
-  // eslint-disable-next-line no-restricted-syntax
-  for (const k in objA) {
-    if (Object.prototype.hasOwnProperty.call(objA, k)) {
-      res[k] = arrayify(objA[k]);
-    }
-  }
-
-  // eslint-disable-next-line no-restricted-syntax
-  for (const k in objB) {
-    if (Object.prototype.hasOwnProperty.call(objB, k)) {
-      // eslint-disable-next-line max-depth
-      if (res[k]) {
-        const curr = res[k];
-        res[k] = curr.concat(arrayify(objB[k]));
-      } else {
-        res[k] = arrayify(objB[k]);
+      if (!prev.params && !err.params) {
+        delete obj.params;
       }
-    }
+
+      return obj;
+    });
   }
 
-  return res;
-}
+  private readonly arrayify = (thing: any): any[] =>
+    thing === undefined || thing === null || Array.isArray(thing)
+      ? thing
+      : [thing];
 
-function arrayify(thing: any): any[] {
-  return thing === undefined || thing === null || Array.isArray(thing)
-    ? thing
-    : [thing];
+  private mergeParameterObjects(objA = {}, objB = {}): Record<string, any> {
+    if (!objA && !objB) {
+      return undefined;
+    }
+
+    const res = {};
+
+    Object.keys(objA).forEach((k) => {
+      res[k] = this.arrayify(objA[k]);
+    });
+
+    Object.keys(objB).forEach((k) => {
+      res[k] = [...(res[k] || []), ...this.arrayify(objB[k])];
+    });
+
+    return res;
+  }
 }

@@ -379,18 +379,14 @@
         },
         "schema": {
           "if": {
-            "required": [
-              "$ref"
-            ]
+            "required": ["$ref"]
           },
           "then": {
             "$ref": "#/definitions/jsonReference"
           },
           "else": {
             "if": {
-              "required": [
-                "type"
-              ],
+              "required": ["type"],
               "properties": {
                 "type": {
                   "const": "file"
@@ -869,6 +865,11 @@
       }
     },
     "parameter": {
+      "required": ["in"],
+      "properties": {
+        "in": { "enum": ["body", "header", "formData", "query", "path"] }
+      },
+
       "allOf": [
         {
           "if": {
@@ -1241,7 +1242,9 @@
             "then": {
               "required": ["flow"],
               "properties": {
-                "flow": { "enum": ["implicit", "password", "application", "accessCode"] }
+                "flow": {
+                  "enum": ["implicit", "password", "application", "accessCode"]
+                }
               },
               "allOf": [
                 {

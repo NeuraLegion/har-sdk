@@ -21,7 +21,7 @@ export class ErrorCondenser {
 
     this.parseToTree();
 
-    return Object.keys(this.tree).reduce(
+    const condensedErrors = Object.keys(this.tree).reduce(
       (res: ErrorObject[], path: string): ErrorObject[] => {
         const frequentMessageErrors: ErrorObject[][] =
           this.detectMostFrequentMessageNames(path).map(
@@ -34,6 +34,8 @@ export class ErrorCondenser {
       },
       []
     );
+
+    return this.filterRedundantIfKeywords(condensedErrors);
   }
 
   private parseToTree(): void {
@@ -107,5 +109,17 @@ export class ErrorCondenser {
     });
 
     return res;
+  }
+
+  private filterRedundantIfKeywords(errors: ErrorObject[]): ErrorObject[] {
+    const paths = Object.keys(this.tree);
+
+    return errors.filter(
+      (error: ErrorObject) =>
+        error.keyword !== 'if' ||
+        paths
+          .filter((path) => path !== error.instancePath)
+          .every((path) => !path.startsWith(error.instancePath))
+    );
   }
 }

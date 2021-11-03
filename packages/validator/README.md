@@ -24,11 +24,8 @@ const apiDoc = {
   paths: {}
 };
 
-const result = await validator.verify(apiDoc);
-// { errors: [] }
+const result = await validator.validate(apiDoc);
+// array of ErrorObject
 ```
 
-- **result** (_required_) - `object`
-  - **errors** (_required_) - `array`
-    - **error** (_optional_) - `object`
-      here is full description of [Error Object](https://ajv.js.org/api.html#error-objects)
+See [Error Object](https://ajv.js.org/api.html#error-objects)

@@ -1,5 +1,7 @@
 import githubSwagger from './oas2.github.json';
 import { OASValidator } from '../src';
+import chaiAsPromised from 'chai-as-promised';
+import { use } from 'chai';
 import yaml from 'js-yaml';
 import { OpenAPIV2, OpenAPIV3 } from '@har-sdk/types';
 import { resolve } from 'path';
@@ -7,21 +9,23 @@ import { readFile } from 'fs';
 import { promisify } from 'util';
 import 'chai/register-should';
 
+use(chaiAsPromised);
+
 describe('OASValidator', () => {
   const validator = new OASValidator();
 
   it('should successfully validate valid oas v2 document (GitHub, json)', async () => {
-    const result = await validator.verify(
+    const result = await validator.validate(
       githubSwagger as unknown as OpenAPIV2.Document
     );
-    result.errors.should.be.empty;
+    result.should.be.empty;
   });
 
   it('should successfully validate valid oas v2 document (Petstore, json)', async () => {
-    const result = await validator.verify(
+    const result = await validator.validate(
       githubSwagger as unknown as OpenAPIV2.Document
     );
-    result.errors.should.be.empty;
+    result.should.be.empty;
   });
 
   it('should successfully validate valid oas v3 document (Petstore, yaml)', async () => {
@@ -30,29 +34,29 @@ describe('OASValidator', () => {
       'utf8'
     );
 
-    const result = await validator.verify(
+    const result = await validator.validate(
       yaml.load(content) as OpenAPIV3.Document
     );
-    result.errors.should.be.empty;
+    result.should.be.empty;
   });
 
-  it('should throw exception if cannot determine version of schema', async () => {
+  it('should throw exception if cannot determine version of document', async () => {
     const apiDoc = {
-      swagger: '2.0',
+      swagger: '1.0',
+      host: 'http://localhost:3000',
       info: {
-        title: 'Invalid OpenAPI document',
+        title: 'Some valid API document',
         version: '1.0.0'
       },
       paths: {}
     };
 
-    try {
-      await validator.verify(apiDoc as unknown as OpenAPIV2.Document);
-    } catch (err) {
-      (err as Error).message.should.be.equal(
+    validator
+      .validate(apiDoc as unknown as OpenAPIV2.Document)
+      .should.be.rejectedWith(
+        Error,
         'Cannot determine version of schema. Schema ID is missed.'
       );
-    }
   });
 
   it('should return error if oas v2 property `host` does not exist', async () => {
@@ -65,11 +69,11 @@ describe('OASValidator', () => {
       paths: {}
     };
 
-    const result = await validator.verify(
+    const result = await validator.validate(
       apiDoc as unknown as OpenAPIV2.Document
     );
 
-    result.errors.should.deep.eq([
+    result.should.deep.eq([
       {
         instancePath: '',
         keyword: 'required',
@@ -92,11 +96,11 @@ describe('OASValidator', () => {
       paths: {}
     };
 
-    const result = await validator.verify(
+    const result = await validator.validate(
       apiDoc as unknown as OpenAPIV3.Document
     );
 
-    result.errors.should.deep.eq([
+    result.should.deep.eq([
       {
         instancePath: '',
         keyword: 'required',
@@ -131,9 +135,9 @@ describe('OASValidator', () => {
       }
     ];
 
-    const result = await validator.verify(
+    const result = await validator.validate(
       apiDoc as unknown as OpenAPIV3.Document
     );
-    result.errors.should.deep.eq(errors);
+    result.should.deep.eq(errors);
   });
 });

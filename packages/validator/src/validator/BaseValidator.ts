@@ -1,5 +1,10 @@
-import { Validator, ValidatorResult, Document } from './Validator';
-import Ajv, { AnySchema, AsyncSchema, ValidateFunction } from 'ajv';
+import { Validator, Document } from './Validator';
+import Ajv, {
+  AnySchema,
+  AsyncSchema,
+  ValidateFunction,
+  ErrorObject
+} from 'ajv';
 import addFormats from 'ajv-formats';
 import ajvErrors from 'ajv-errors';
 
@@ -26,7 +31,7 @@ export abstract class BaseValidator<T extends Document>
 
   protected abstract getSchemaId(document: T): string;
 
-  public async verify(document: T): Promise<ValidatorResult> {
+  public async validate(document: T): Promise<ErrorObject[]> {
     const schemaId = this.getSchemaId(document);
     const validate: ValidateFunction | undefined = this.ajv.getSchema(schemaId);
 
@@ -39,26 +44,20 @@ export abstract class BaseValidator<T extends Document>
     try {
       await validate(document);
 
-      return {
-        errors: [],
-        valid: true
-      };
+      return [];
     } catch (err) {
       if (!(err instanceof Ajv.ValidationError)) {
         throw err;
       }
 
-      return {
-        errors: err.errors,
-        valid: false
-      };
+      return err.errors as ErrorObject[];
     }
   }
 
   private verifySchema(schema: AnySchema): void {
     if (!(schema as AsyncSchema).$async) {
       throw Error(
-        'Invalid schema: the schema should support an asynchronous validation. Set the "$async" parameter in the schema. Look at https://ajv.js.org/guide/async-validation.html#asynchronous-validation for more details l'
+        'Invalid schema: the schema should support an asynchronous validation. Set the "$async" parameter in the schema. Look at https://ajv.js.org/guide/async-validation.html#asynchronous-validation for more details'
       );
     }
   }

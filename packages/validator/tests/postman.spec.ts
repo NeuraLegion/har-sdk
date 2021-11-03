@@ -1,16 +1,20 @@
-import nexplotPostman from './postman.nexploit.json';
+import nexploitPostman from './postman.nexploit.json';
 import { PostmanValidator } from '../src';
+import { use } from 'chai';
+import chaiAsPromised from 'chai-as-promised';
 import { Postman } from '@har-sdk/types';
 import 'chai/register-should';
+
+use(chaiAsPromised);
 
 describe('PostmanValidator', () => {
   const validator = new PostmanValidator();
 
   it('should successfully validate valid document (Nexploit, json)', async () => {
-    const result = await validator.verify(
-      nexplotPostman as unknown as Postman.Document
+    const result = await validator.validate(
+      nexploitPostman as unknown as Postman.Document
     );
-    result.errors.should.be.empty;
+    result.should.be.empty;
   });
 
   it('should throw exception if cannot determine version of document', async () => {
@@ -22,13 +26,12 @@ describe('PostmanValidator', () => {
       }
     };
 
-    try {
-      await validator.verify(apiDoc as unknown as Postman.Document);
-    } catch (err) {
-      (err as Error).message.should.be.equal(
+    validator
+      .validate(apiDoc as unknown as Postman.Document)
+      .should.be.rejectedWith(
+        Error,
         'Cannot determine version of schema. Schema ID is missed.'
       );
-    }
   });
 
   it('should return list of errors if document is invalid', async () => {
@@ -40,11 +43,11 @@ describe('PostmanValidator', () => {
       }
     };
 
-    const result = await validator.verify(
+    const result = await validator.validate(
       apiDoc as unknown as Postman.Document
     );
 
-    result.errors.should.deep.eq([
+    result.should.deep.eq([
       {
         instancePath: '',
         schemaPath: '#/required',

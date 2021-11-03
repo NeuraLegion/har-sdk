@@ -4,10 +4,9 @@ import { ErrorObject } from 'ajv/lib/types/index';
 //
 // 1. group all errors by path
 // 2. score them by message frequency
-// 3. select the most frequent messages (ties retain all equally-frequent messages)
+// 3. select the most frequent messages (retaining all equally-frequent messages)
 // 4. concatenate the params of each occurrence of the most frequent message
 // 5. create one condensed error for the path
-// 6. return all condensed errors as an array
 
 export class ErrorCondenser {
   // tree: instancePath -> message -> errors
@@ -38,23 +37,22 @@ export class ErrorCondenser {
   }
 
   private parseToTree(): void {
-    const tree: Record<string, Record<string, ErrorObject[]>> = {};
+    this.tree = this.errors.reduce(
+      (
+        res: Record<string, Record<string, ErrorObject[]>>,
+        err: ErrorObject
+      ) => {
+        const { instancePath, message } = err;
 
-    this.errors.forEach((err: ErrorObject) => {
-      const { instancePath, message } = err;
-
-      if (tree[instancePath] && tree[instancePath][message]) {
-        tree[instancePath][message].push(err);
-      } else if (tree[instancePath]) {
-        tree[instancePath][message] = [err];
-      } else {
-        tree[instancePath] = {
-          [message]: [err]
+        res[instancePath] = {
+          ...(res[instancePath] || {}),
+          [message]: [...(res[instancePath]?.[message] || []), err]
         };
-      }
-    });
 
-    this.tree = tree;
+        return res;
+      },
+      {}
+    );
   }
 
   private detectMostFrequentMessageNames(path: string): string[] {
@@ -69,28 +67,23 @@ export class ErrorCondenser {
           };
         } else if (count === obj.max) {
           obj.messages.push(msg);
-
-          return obj;
-        } else {
-          return obj;
         }
+
+        return obj;
       },
       { max: 0, messages: [] }
     ).messages;
   }
 
   private mergeDuplicatedErrors(errors: ErrorObject[]): ErrorObject {
-    return errors.reduce((prev: ErrorObject, err: ErrorObject): ErrorObject => {
-      const obj = Object.assign({}, prev, {
-        params: this.mergeParameterObjects(prev.params, err.params)
-      });
-
-      if (!prev.params && !err.params) {
-        delete obj.params;
-      }
-
-      return obj;
-    });
+    return errors.reduce(
+      (prev: ErrorObject, err: ErrorObject): ErrorObject =>
+        Object.assign({}, prev, {
+          ...(!prev.params && !err.params
+            ? {}
+            : { params: this.mergeParameterObjects(prev.params, err.params) })
+        })
+    );
   }
 
   private readonly arrayify = (thing: any): any[] =>

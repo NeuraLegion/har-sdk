@@ -1,4 +1,5 @@
 import githubSwagger from './oas2.github.json';
+import petstoreSwagger from './oas2.petstore.json';
 import { OASValidator } from '../src';
 import chaiAsPromised from 'chai-as-promised';
 import { use } from 'chai';
@@ -23,7 +24,7 @@ describe('OASValidator', () => {
 
   it('should successfully validate valid oas v2 document (Petstore, json)', async () => {
     const result = await validator.validate(
-      githubSwagger as unknown as OpenAPIV2.Document
+      petstoreSwagger as unknown as OpenAPIV2.Document
     );
     result.should.be.empty;
   });

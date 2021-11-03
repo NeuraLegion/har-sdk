@@ -1,4 +1,4 @@
-import { ErrorObject } from 'ajv/lib/types/index';
+import { ErrorObject } from 'ajv';
 
 // Based on condenseErrors() from https://github.com/swagger-api/swagger-editor
 //

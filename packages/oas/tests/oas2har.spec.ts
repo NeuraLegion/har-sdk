@@ -21,7 +21,7 @@ describe('OAS 2 HAR', async () => {
 
   it('Petstore OpenApi v3 YAML to JSON converts to HAR', async () => {
     const content: string = await promisify(readFile)(
-      resolve('./tests/oas3.petstore.yaml'),
+      resolve('./tests/petstore.oas.yaml'),
       'utf8'
     );
 

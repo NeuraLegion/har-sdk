@@ -1,4 +1,4 @@
-import githubSwagger from './github.swagger.json';
+import githubSwagger from './oas2.github.json';
 import { OASValidator } from '../src';
 import yaml from 'js-yaml';
 import { OpenAPIV2, OpenAPIV3 } from '@har-sdk/types';
@@ -10,125 +10,130 @@ import 'chai/register-should';
 describe('OASValidator', () => {
   const validator = new OASValidator();
 
-  describe('verify', () => {
-    it('should successfully validate GitHub swagger v2 JSON', async () => {
-      const result = await validator.verify(
-        githubSwagger as unknown as OpenAPIV2.Document
-      );
-      result.errors.should.be.empty;
-    });
+  it('should successfully validate valid oas v2 document (GitHub, json)', async () => {
+    const result = await validator.verify(
+      githubSwagger as unknown as OpenAPIV2.Document
+    );
+    result.errors.should.be.empty;
+  });
 
-    it('should successfully validate Petstore OpenApi v3 YAML', async () => {
-      const content: string = await promisify(readFile)(
-        resolve('./tests/petstore.oas.yaml'),
-        'utf8'
-      );
+  it('should successfully validate valid oas v2 document (Petstore, json)', async () => {
+    const result = await validator.verify(
+      githubSwagger as unknown as OpenAPIV2.Document
+    );
+    result.errors.should.be.empty;
+  });
 
-      const result = await validator.verify(
-        yaml.load(content) as OpenAPIV3.Document
-      );
-      result.errors.should.be.empty;
-    });
+  it('should successfully validate valid oas v3 document (Petstore, yaml)', async () => {
+    const content: string = await promisify(readFile)(
+      resolve('./tests/oas3.petstore.yaml'),
+      'utf8'
+    );
 
-    it('should throw error if cannot determine version of schema because of schema ID is missed.', async () => {
-      const apiDoc = {
-        swagger: '1.0.0',
-        info: {
-          title: 'Some valid API document',
-          version: '1.0.0'
+    const result = await validator.verify(
+      yaml.load(content) as OpenAPIV3.Document
+    );
+    result.errors.should.be.empty;
+  });
+
+  it('should throw exception if cannot determine version of schema', async () => {
+    const apiDoc = {
+      swagger: '2.0',
+      info: {
+        title: 'Invalid OpenAPI document',
+        version: '1.0.0'
+      },
+      paths: {}
+    };
+
+    try {
+      await validator.verify(apiDoc as unknown as OpenAPIV2.Document);
+    } catch (err) {
+      (err as Error).message.should.be.equal(
+        'Cannot determine version of schema. Schema ID is missed.'
+      );
+    }
+  });
+
+  it('should return error if oas v2 property `host` does not exist', async () => {
+    const apiDoc = {
+      swagger: '2.0',
+      info: {
+        title: 'Invalid OpenAPI document',
+        version: '1.0.0'
+      },
+      paths: {}
+    };
+
+    const result = await validator.verify(
+      apiDoc as unknown as OpenAPIV2.Document
+    );
+
+    result.errors.should.deep.eq([
+      {
+        instancePath: '',
+        keyword: 'required',
+        message: "must have required property 'host'",
+        params: {
+          missingProperty: 'host'
         },
-        paths: {}
-      };
-
-      try {
-        await validator.verify(apiDoc as unknown as OpenAPIV2.Document);
-      } catch (err) {
-        err.message.should.be.equal(
-          'Cannot determine version of schema. Schema ID is missed.'
-        );
+        schemaPath: '#/required'
       }
-    });
+    ]);
+  });
 
-    it("should throw error if property 'host' does not exist", async () => {
-      const apiDoc = {
-        swagger: '2.0',
-        info: {
-          title: 'Some valid API document',
-          version: '1.0.0'
+  it('should return error if oas v3 property `servers` does not exist', async () => {
+    const apiDoc = {
+      openapi: '3.0.0',
+      info: {
+        title: 'Invalid OpenAPI document',
+        version: '1.0.0'
+      },
+      paths: {}
+    };
+
+    const result = await validator.verify(
+      apiDoc as unknown as OpenAPIV3.Document
+    );
+
+    result.errors.should.deep.eq([
+      {
+        instancePath: '',
+        keyword: 'required',
+        message: "must have required property 'servers'",
+        params: {
+          missingProperty: 'servers'
         },
-        paths: {}
-      };
-      const errors = [
-        {
-          instancePath: '',
-          keyword: 'required',
-          message: "must have required property 'host'",
-          params: {
-            missingProperty: 'host'
-          },
-          schemaPath: '#/required'
-        }
-      ];
+        schemaPath: '#/required'
+      }
+    ]);
+  });
 
-      const result = await validator.verify(
-        apiDoc as unknown as OpenAPIV2.Document
-      );
-      result.errors.should.deep.eq(errors);
-    });
-
-    it("should throw error if property 'servers' does not exist", async () => {
-      const apiDoc = {
-        openapi: '3.0.0',
-        info: {
-          title: 'Some valid API document',
-          version: '1.0.0'
+  it('should return error if property `url` does not exist inside `servers`', async () => {
+    const apiDoc = {
+      openapi: '3.0.0',
+      servers: [{}],
+      info: {
+        title: 'Some valid API document',
+        version: '1.0.0'
+      },
+      paths: {}
+    };
+    const errors = [
+      {
+        instancePath: '/servers/0',
+        keyword: 'required',
+        message: "must have required property 'url'",
+        params: {
+          missingProperty: 'url'
         },
-        paths: {}
-      };
-      const errors = [
-        {
-          instancePath: '',
-          keyword: 'required',
-          message: "must have required property 'servers'",
-          params: {
-            missingProperty: 'servers'
-          },
-          schemaPath: '#/required'
-        }
-      ];
+        schemaPath: '#/required'
+      }
+    ];
 
-      const result = await validator.verify(
-        apiDoc as unknown as OpenAPIV3.Document
-      );
-      result.errors.should.deep.eq(errors);
-    });
-
-    it("should throw error if property 'url' does not exist", async () => {
-      const apiDoc = {
-        openapi: '3.0.0',
-        servers: [{}],
-        info: {
-          title: 'Some valid API document',
-          version: '1.0.0'
-        },
-        paths: {}
-      };
-      const errors = [
-        {
-          instancePath: '/servers/0',
-          keyword: 'required',
-          message: "must have required property 'url'",
-          params: {
-            missingProperty: 'url'
-          },
-          schemaPath: '#/required'
-        }
-      ];
-
-      const result = await validator.verify(
-        apiDoc as unknown as OpenAPIV3.Document
-      );
-      result.errors.should.deep.eq(errors);
-    });
+    const result = await validator.verify(
+      apiDoc as unknown as OpenAPIV3.Document
+    );
+    result.errors.should.deep.eq(errors);
   });
 });

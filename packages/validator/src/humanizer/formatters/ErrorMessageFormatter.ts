@@ -67,44 +67,27 @@ export const getMessage = (error: ErrorObject): string => {
 
       return `${location} must be ${indefiniteArticle(
         expectType
-      )} ${expectType} but it was ${gotType}`;
+      )} ${expectType}${data ? ` but it was ${gotType}` : ''}`;
     }
 
-    case 'minLength': {
-      const limit = params.limit;
-      const charsLimit = pluralize('character', limit);
-      const actual = (data as any).length;
-      const charsActual = pluralize('character', actual);
-
-      return `${location} must be ${limit} ${charsLimit} or more but it was ${actual} ${charsActual}`;
-    }
-
+    case 'minLength':
     case 'maxLength': {
       const limit = params.limit;
       const charsLimit = pluralize('character', limit);
-      const actual = (data as any).length;
-      const charsActual = pluralize('character', actual);
 
-      return `${location} must be ${limit} ${charsLimit} or fewer but it was ${actual} ${charsActual}`;
+      return `${location} must be ${limit} ${charsLimit} or ${
+        keyword === 'minLength' ? 'more' : 'fewer'
+      }`;
     }
 
     case 'pattern': {
-      if (error.schemaPath.endsWith('propertyNames/pattern')) {
-        return null;
-      }
-
-      const patternLabel = parentSchema?.patternLabel;
-      if (patternLabel) {
-        return `${location} must be ${patternLabel} but it was not`;
-      } else {
-        return `${location} is an invalid string`;
-      }
+      return `${location} does not match pattern ${params.pattern}`;
     }
 
     case 'format': {
       const label = formatLabelsMap[params.format] || params.format;
 
-      return `${location} must be a valid ${label} string but it was not`;
+      return `${location} must be a valid ${label} string`;
     }
 
     case 'multipleOf': {
@@ -128,7 +111,7 @@ export const getMessage = (error: ErrorObject): string => {
     }
 
     case 'additionalProperties': {
-      const allowed = Object.keys(parentSchema?.properties).join(', ');
+      const allowed = Object.keys(parentSchema?.properties || {}).join(', ');
       const found = params.additionalProperty;
 
       return `${location} has an unexpected property, ${found}, which is not in the list of allowed properties (${allowed})`;

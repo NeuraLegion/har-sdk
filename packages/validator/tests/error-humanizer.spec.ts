@@ -87,7 +87,7 @@ describe('ErrorHumanizer', () => {
     ]);
   });
 
-  it('should humanize "type" error message', async () => {
+  it('should humanize "type" error message for multiple items case', async () => {
     const apiDoc: OpenAPIV2.Document = {
       ...getBaseSwaggerDoc(),
       info: 42
@@ -97,7 +97,31 @@ describe('ErrorHumanizer', () => {
       .humanizeErrors(await oasValidator.validate(apiDoc))
       .map((error) => error.message);
 
-    result.should.deep.eq(['the value at /info must be an object']);
+    result.should.deep.eq(['the value at /info must be of type object']);
+  });
+
+  it('should humanize "type" error message for two items case', async () => {
+    const apiDoc: Postman.Document = {
+      ...getBasePostmanDoc(),
+      item: [
+        {
+          request: {},
+          response: [
+            {
+              body: 42
+            }
+          ]
+        }
+      ]
+    } as unknown as Postman.Document;
+
+    const result = humanizer
+      .humanizeErrors(await postmanValidator.validate(apiDoc))
+      .map((error) => error.message);
+
+    result.should.deep.eq([
+      'the value at /item/0/response/0/body must be of type null or string'
+    ]);
   });
 
   it('should humanize "maxLength" error message', async () => {
@@ -109,7 +133,7 @@ describe('ErrorHumanizer', () => {
       .map((error) => error.message);
 
     result.should.deep.eq([
-      'the value at /info/version/identifier must be 10 characters or fewer'
+      'the value at /info/version/identifier must be of length 10 or fewer'
     ]);
   });
 
@@ -246,6 +270,27 @@ describe('ErrorHumanizer', () => {
 
     result.should.deep.eq([
       'the value at /paths/~1x/get/responses/200/content/application~1json/schema/required must have 1 or more items'
+    ]);
+  });
+
+  it('should humanize "minProperties" error message', async () => {
+    const apiDoc: OpenAPIV3.Document = {
+      ...getBaseOasDoc(),
+      paths: {
+        '/x': {
+          get: {
+            responses: {}
+          }
+        }
+      }
+    };
+
+    const result = humanizer
+      .humanizeErrors(await oasValidator.validate(apiDoc))
+      .map((error) => error.message);
+
+    result.should.deep.eq([
+      'the value at /paths/~1x/get/responses must have 1 or more properties'
     ]);
   });
 });

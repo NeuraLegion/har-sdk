@@ -1,4 +1,4 @@
-import { humanizeList, indefiniteArticle, pluralize } from './Helpers';
+import { humanizeList } from './Helpers';
 import { ErrorObject } from 'ajv';
 
 // based on https://github.com/segmentio/action-destinations/tree/main/packages/ajv-human-errors
@@ -37,7 +37,7 @@ export const formatLocation = (error: ErrorObject): string => {
 export const getMessage = (error: ErrorObject): string => {
   const location = formatLocation(error);
 
-  const { keyword, params, data } = error;
+  const { keyword, params } = error;
 
   switch (keyword) {
     case 'enum': {
@@ -53,17 +53,14 @@ export const getMessage = (error: ErrorObject): string => {
         : params.type.split(',');
       const expectType = humanizeList(list, 'or');
 
-      return `${location} must be ${indefiniteArticle(
-        expectType
-      )} ${expectType}`;
+      return `${location} must be of type ${expectType}`;
     }
 
     case 'minLength':
     case 'maxLength': {
       const limit = params.limit;
-      const charsLimit = pluralize('character', limit);
 
-      return `${location} must be ${limit} ${charsLimit} or ${
+      return `${location} must be of length ${limit} or ${
         keyword === 'minLength' ? 'more' : 'fewer'
       }`;
     }
@@ -78,20 +75,18 @@ export const getMessage = (error: ErrorObject): string => {
       return `${location} must be a valid ${label} string`;
     }
 
-    case 'minimum': {
-      return `${location} must be equal to or greater than ${params.limit}`;
-    }
-
-    case 'exclusiveMinimum': {
-      return `${location} must be greater than ${params.limit}`;
-    }
-
+    case 'minimum':
     case 'maximum': {
-      return `${location} must be equal to or less than ${params.limit}`;
+      const direction = keyword === 'minimum' ? 'greater' : 'less';
+
+      return `${location} must be equal to or ${direction} than ${params.limit}`;
     }
 
+    case 'exclusiveMinimum':
     case 'exclusiveMaximum': {
-      return `${location} must be less than ${params.limit}`;
+      const direction = keyword === 'exclusiveMinimum' ? 'greater' : 'less';
+
+      return `${location} must be ${direction} than ${params.limit}`;
     }
 
     case 'additionalProperties': {
@@ -102,18 +97,12 @@ export const getMessage = (error: ErrorObject): string => {
       return `${location} is missing the required field '${params.missingProperty}'`;
     }
 
-    case 'minProperties': {
-      const expected = params.limit;
-      const actual = Object.keys(data).length;
-
-      return `${location} must have ${expected} or more properties but it has ${actual}`;
-    }
-
+    case 'minProperties':
     case 'maxProperties': {
       const expected = params.limit;
-      const actual = Object.keys(data).length;
+      const direction = keyword === 'minProperties' ? 'more' : 'fewer';
 
-      return `${location} must have ${expected} or fewer properties but it has ${actual}`;
+      return `${location} must have ${expected} or ${direction} properties`;
     }
 
     case 'minItems':

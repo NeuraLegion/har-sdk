@@ -1,9 +1,4 @@
-import {
-  humanizeList,
-  humanizeTypeOf,
-  indefiniteArticle,
-  pluralize
-} from './Helpers';
+import { humanizeList, indefiniteArticle, pluralize } from './Helpers';
 import { ErrorObject } from 'ajv';
 
 // based on https://github.com/segmentio/action-destinations/tree/main/packages/ajv-human-errors
@@ -42,13 +37,7 @@ export const formatLocation = (error: ErrorObject): string => {
 export const getMessage = (error: ErrorObject): string => {
   const location = formatLocation(error);
 
-  // The user can always specify a custom error message.
-  // If so, then we want to just display their message.
-  if (error.parentSchema?.errorMessage) {
-    return `${location} ${error.parentSchema.errorMessage}`;
-  }
-
-  const { keyword, params, parentSchema, data } = error;
+  const { keyword, params, data } = error;
 
   switch (keyword) {
     case 'enum': {
@@ -63,11 +52,10 @@ export const getMessage = (error: ErrorObject): string => {
         ? params.type
         : params.type.split(',');
       const expectType = humanizeList(list, 'or');
-      const gotType = humanizeTypeOf(data);
 
       return `${location} must be ${indefiniteArticle(
         expectType
-      )} ${expectType}${data ? ` but it was ${gotType}` : ''}`;
+      )} ${expectType}`;
     }
 
     case 'minLength':
@@ -90,10 +78,6 @@ export const getMessage = (error: ErrorObject): string => {
       return `${location} must be a valid ${label} string`;
     }
 
-    case 'multipleOf': {
-      return `${location} must be a multiple of ${params.multipleOf}`;
-    }
-
     case 'minimum': {
       return `${location} must be equal to or greater than ${params.limit}`;
     }
@@ -111,22 +95,11 @@ export const getMessage = (error: ErrorObject): string => {
     }
 
     case 'additionalProperties': {
-      const allowed = Object.keys(parentSchema?.properties || {}).join(', ');
-      const found = params.additionalProperty;
-
-      return `${location} has an unexpected property, ${found}, which is not in the list of allowed properties (${allowed})`;
+      return `${location} has an unexpected property "${params.additionalProperty}"`;
     }
 
     case 'required': {
-      const missingField = params.missingProperty;
-
-      return `${location} is missing the required field '${missingField}'`;
-    }
-
-    case 'propertyNames': {
-      return `${location} has an invalid property name ${JSON.stringify(
-        params.propertyName
-      )}`;
+      return `${location} is missing the required field '${params.missingProperty}'`;
     }
 
     case 'minProperties': {
@@ -143,25 +116,12 @@ export const getMessage = (error: ErrorObject): string => {
       return `${location} must have ${expected} or fewer properties but it has ${actual}`;
     }
 
-    case 'dependencies': {
-      const prop = params.property;
-      const missing = params.missingProperty;
-
-      return `${location} must have property ${missing} when ${prop} is present`;
-    }
-
-    case 'minItems': {
-      const min = params.limit;
-      const actual = (data as any).length;
-
-      return `${location} must have ${min} or more items but it has ${actual}`;
-    }
-
+    case 'minItems':
     case 'maxItems': {
-      const max = params.limit;
-      const actual = (data as any).length;
+      const limit = params.limit;
+      const direction = keyword === 'minItems' ? 'more' : 'fewer';
 
-      return `${location} must have ${max} or fewer items but it has ${actual}`;
+      return `${location} must have ${limit} or ${direction} items`;
     }
 
     case 'uniqueItems': {

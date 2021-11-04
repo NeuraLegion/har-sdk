@@ -94,17 +94,13 @@ export class ErrorCondenser {
       : [thing];
 
   private mergeParameterObjects(objA = {}, objB = {}): Record<string, any> {
-    if (!objA && !objB) {
-      return undefined;
-    }
-
     const res = {};
 
-    Object.keys(objA).forEach((k) => {
+    (objA ? Object.keys(objA) : []).forEach((k) => {
       res[k] = this.arrayify(objA[k]);
     });
 
-    Object.keys(objB).forEach((k) => {
+    (objB ? Object.keys(objB) : []).forEach((k) => {
       res[k] = [...(res[k] || []), ...this.arrayify(objB[k])];
     });
 

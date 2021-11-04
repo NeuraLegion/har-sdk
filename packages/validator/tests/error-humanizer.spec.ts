@@ -8,14 +8,34 @@ describe('ErrorHumanizer', () => {
   const postmanValidator = new PostmanValidator();
   const humanizer = new ErrorHumanizer();
 
+  const getBasePostmanDoc = (): Postman.Document => ({
+    info: {
+      name: 'Invalid Postman document',
+      schema:
+        'https://schema.getpostman.com/json/collection/v2.0.0/collection.json',
+      version: {
+        major: 1,
+        minor: 0,
+        patch: 0
+      }
+    },
+    item: [] as any,
+    variable: []
+  });
+
+  const getBaseSwaggerDoc = (): OpenAPIV2.Document => ({
+    swagger: '2.0',
+    host: 'localhost',
+    info: {
+      title: 'Invalid OpenAPI document',
+      version: '1.0.0'
+    },
+    paths: {}
+  });
+
   it('should return original "errorMessage" if exists', async () => {
     const apiDoc = {
-      swagger: '2.0',
-      host: 'localhost',
-      info: {
-        title: 'Invalid OpenAPI document',
-        version: '1.0.0'
-      },
+      ...getBaseSwaggerDoc(),
       paths: {
         path1: {}
       }
@@ -33,14 +53,7 @@ describe('ErrorHumanizer', () => {
   });
 
   it('should humanize "required" error on root path', async () => {
-    const apiDoc = {
-      swagger: '2.0',
-      info: {
-        title: 'Invalid OpenAPI document',
-        version: '1.0.0'
-      },
-      paths: {}
-    };
+    const { host, ...apiDoc } = getBaseSwaggerDoc();
 
     const result = humanizer
       .humanizeErrors(
@@ -55,14 +68,8 @@ describe('ErrorHumanizer', () => {
 
   it('should humanize "enum" error message', async () => {
     const apiDoc = {
-      swagger: '2.0',
-      host: 'localhost',
-      info: {
-        title: 'Invalid OpenAPI document',
-        version: '1.0.0'
-      },
-      schemes: ['https', 'file'],
-      paths: {}
+      ...getBaseSwaggerDoc(),
+      schemes: ['https', 'file']
     };
 
     const result = humanizer
@@ -78,10 +85,8 @@ describe('ErrorHumanizer', () => {
 
   it('should humanize "type" error message', async () => {
     const apiDoc = {
-      swagger: '2.0',
-      host: 'localhost',
-      info: 42,
-      paths: {}
+      ...getBaseSwaggerDoc(),
+      info: 42
     };
 
     const result = humanizer
@@ -94,20 +99,8 @@ describe('ErrorHumanizer', () => {
   });
 
   it('should humanize "maxLength" error message', async () => {
-    const apiDoc = {
-      info: {
-        name: 'Invalid Postman document',
-        schema:
-          'https://schema.getpostman.com/json/collection/v2.0.0/collection.json',
-        version: {
-          major: 2021,
-          minor: 11,
-          patch: 4,
-          identifier: 'id0123456789'
-        }
-      },
-      item: [] as any
-    };
+    const apiDoc = getBasePostmanDoc();
+    (apiDoc.info.version as Postman.Version).identifier = 'id0123456789';
 
     const result = humanizer
       .humanizeErrors(
@@ -121,19 +114,8 @@ describe('ErrorHumanizer', () => {
   });
 
   it('should humanize "minimum" error message', async () => {
-    const apiDoc = {
-      info: {
-        name: 'Invalid Postman document',
-        schema:
-          'https://schema.getpostman.com/json/collection/v2.0.0/collection.json',
-        version: {
-          major: -1,
-          minor: 11,
-          patch: 4
-        }
-      },
-      item: [] as any
-    };
+    const apiDoc = getBasePostmanDoc();
+    (apiDoc.info.version as Postman.Version).minor = -1;
 
     const result = humanizer
       .humanizeErrors(
@@ -142,19 +124,14 @@ describe('ErrorHumanizer', () => {
       .map((error) => error.message);
 
     result.should.deep.eq([
-      'the value at /info/version/major must be equal to or greater than 0'
+      'the value at /info/version/minor must be equal to or greater than 0'
     ]);
   });
 
   it('should humanize "pattern" error message', async () => {
     const apiDoc = {
-      swagger: '2.0',
-      host: '{test}',
-      info: {
-        title: 'Invalid OpenAPI document',
-        version: '1.0.0'
-      },
-      paths: {}
+      ...getBaseSwaggerDoc(),
+      host: '{test}'
     };
 
     const result = humanizer
@@ -169,17 +146,9 @@ describe('ErrorHumanizer', () => {
   });
 
   it('should humanize string "format" error message', async () => {
-    const apiDoc = {
-      swagger: '2.0',
-      host: 'localhost',
-      info: {
-        title: 'Invalid OpenAPI document',
-        version: '1.0.0',
-        contact: {
-          email: 'dummy'
-        }
-      },
-      paths: {}
+    const apiDoc = getBaseSwaggerDoc();
+    apiDoc.info.contact = {
+      email: 'dummy'
     };
 
     const result = humanizer

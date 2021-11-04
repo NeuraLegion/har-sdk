@@ -37,6 +37,60 @@ export const formatLocation = (error: ErrorObject): string => {
 export const getMessage = (error: ErrorObject): string => {
   const location = formatLocation(error);
 
+  const { keyword } = error;
+
+  let message =
+    /^(min|max)/.test(keyword) || /(Minimum|Maximum)$/.test(keyword)
+      ? getMinMaxMessage(error)
+      : getOtherMessage(error);
+
+  if (!message) {
+    message = error.message;
+  }
+
+  return `${location} ${message}`;
+};
+
+// eslint-disable-next-line
+function getMinMaxMessage(error: ErrorObject): string {
+  const { keyword, params } = error;
+
+  switch (keyword) {
+    case 'minLength':
+    case 'maxLength': {
+      const limit = params.limit;
+      const direction = keyword === 'minLength' ? 'more' : 'fewer';
+
+      return `must be of length ${limit} or ${direction}`;
+    }
+
+    case 'minimum':
+    case 'maximum':
+    case 'exclusiveMinimum':
+    case 'exclusiveMaximum': {
+      const direction = keyword.toLowerCase().includes('minimum')
+        ? 'greater'
+        : 'less';
+      const inclusive = !keyword.startsWith('exclusive');
+
+      return `must be${inclusive ? ' equal to or' : ''} ${direction} than ${
+        params.limit
+      }`;
+    }
+
+    case 'minProperties':
+    case 'maxProperties':
+    case 'minItems':
+    case 'maxItems': {
+      const direction = keyword.startsWith('min') ? 'more' : 'fewer';
+      const entity = keyword.endsWith('Items') ? 'items' : 'properties';
+
+      return `must have ${params.limit} or ${direction} ${entity}`;
+    }
+  }
+}
+
+function getOtherMessage(error: ErrorObject): string {
   const { keyword, params } = error;
 
   switch (keyword) {
@@ -44,7 +98,7 @@ export const getMessage = (error: ErrorObject): string => {
       const list = params.allowedValues.map(JSON.stringify);
       const allowed = humanizeList(list, 'or');
 
-      return `${location} must be one of: ${allowed}`;
+      return `must be one of: ${allowed}`;
     }
 
     case 'type': {
@@ -53,73 +107,31 @@ export const getMessage = (error: ErrorObject): string => {
         : params.type.split(',');
       const expectType = humanizeList(list, 'or');
 
-      return `${location} must be of type ${expectType}`;
-    }
-
-    case 'minLength':
-    case 'maxLength': {
-      const limit = params.limit;
-
-      return `${location} must be of length ${limit} or ${
-        keyword === 'minLength' ? 'more' : 'fewer'
-      }`;
+      return `must be of type ${expectType}`;
     }
 
     case 'pattern': {
-      return `${location} does not match pattern ${params.pattern}`;
+      return `does not match pattern ${params.pattern}`;
     }
 
     case 'format': {
       const label = formatLabelsMap[params.format] || params.format;
 
-      return `${location} must be a valid ${label} string`;
-    }
-
-    case 'minimum':
-    case 'maximum': {
-      const direction = keyword === 'minimum' ? 'greater' : 'less';
-
-      return `${location} must be equal to or ${direction} than ${params.limit}`;
-    }
-
-    case 'exclusiveMinimum':
-    case 'exclusiveMaximum': {
-      const direction = keyword === 'exclusiveMinimum' ? 'greater' : 'less';
-
-      return `${location} must be ${direction} than ${params.limit}`;
+      return `must be a valid ${label} string`;
     }
 
     case 'additionalProperties': {
-      return `${location} has an unexpected property "${params.additionalProperty}"`;
+      return `has an unexpected property "${params.additionalProperty}"`;
     }
 
     case 'required': {
-      return `${location} is missing the required field '${params.missingProperty}'`;
-    }
-
-    case 'minProperties':
-    case 'maxProperties': {
-      const expected = params.limit;
-      const direction = keyword === 'minProperties' ? 'more' : 'fewer';
-
-      return `${location} must have ${expected} or ${direction} properties`;
-    }
-
-    case 'minItems':
-    case 'maxItems': {
-      const limit = params.limit;
-      const direction = keyword === 'minItems' ? 'more' : 'fewer';
-
-      return `${location} must have ${limit} or ${direction} items`;
+      return `is missing the required field '${params.missingProperty}'`;
     }
 
     case 'uniqueItems': {
       const { i, j } = params;
 
-      return `${location} must be unique but elements ${j} and ${i} are the same`;
+      return `must be unique but elements ${j} and ${i} are the same`;
     }
-
-    default:
-      return `${location} ${error.message}`;
   }
-};
+}

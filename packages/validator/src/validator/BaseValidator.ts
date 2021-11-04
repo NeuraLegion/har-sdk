@@ -14,7 +14,7 @@ export abstract class BaseValidator<T extends Document>
 {
   private readonly ajv: Ajv;
 
-  protected constructor(schema: AnySchema | AnySchema[]) {
+  protected constructor(schemas: AnySchema[]) {
     this.ajv = new Ajv({
       allErrors: true,
       strict: false
@@ -23,27 +23,26 @@ export abstract class BaseValidator<T extends Document>
     addFormats(this.ajv);
     ajvErrors(this.ajv);
 
-    (Array.isArray(schema) ? schema : [schema]).forEach((s) =>
-      this.verifySchema(s)
-    );
+    schemas.forEach((s) => this.verifySchema(s));
 
-    this.ajv.addSchema(schema);
+    this.ajv.addSchema(schemas);
   }
 
   protected abstract getSchemaId(document: T): string;
 
   public async validate(document: T): Promise<ErrorObject[]> {
     const schemaId = this.getSchemaId(document);
-    const validate: ValidateFunction | undefined = this.ajv.getSchema(schemaId);
+    let validateFn: ValidateFunction | undefined;
+    if (schemaId) {
+      validateFn = this.ajv.getSchema(schemaId);
+    }
 
-    if (!validate) {
-      throw new Error(
-        'Cannot determine version of schema. Schema ID is missed.'
-      );
+    if (!schemaId || !validateFn) {
+      throw new Error('Unsupported or invalid specification version');
     }
 
     try {
-      await validate(document);
+      await validateFn(document);
 
       return [];
     } catch (err) {

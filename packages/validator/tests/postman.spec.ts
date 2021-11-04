@@ -26,11 +26,11 @@ describe('PostmanValidator', () => {
       }
     };
 
-    validator
+    return validator
       .validate(apiDoc as unknown as Postman.Document)
       .should.be.rejectedWith(
         Error,
-        'Cannot determine version of schema. Schema ID is missed.'
+        'Unsupported or invalid specification version'
       );
   });
 

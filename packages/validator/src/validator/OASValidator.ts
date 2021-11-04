@@ -28,8 +28,8 @@ export class OASValidator extends BaseValidator<OpenAPI.Document> {
       version = this.MIN_ALLOWED_VERSION;
     }
 
-    const major = semver.major(version);
+    const major = semver.valid(version) && semver.major(version);
 
-    return this.VERSION_SCHEMA_MAP[major] || '';
+    return (major && this.VERSION_SCHEMA_MAP[major]) || '';
   }
 }

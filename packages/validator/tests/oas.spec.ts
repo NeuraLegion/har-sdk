@@ -43,7 +43,7 @@ describe('OASValidator', () => {
 
   it('should throw exception if cannot determine version of document', async () => {
     const apiDoc = {
-      swagger: '1.0',
+      swagger: 'xyz',
       host: 'http://localhost:3000',
       info: {
         title: 'Some valid API document',
@@ -52,11 +52,30 @@ describe('OASValidator', () => {
       paths: {}
     };
 
-    validator
+    return validator
       .validate(apiDoc as unknown as OpenAPIV2.Document)
       .should.be.rejectedWith(
         Error,
-        'Cannot determine version of schema. Schema ID is missed.'
+        'Unsupported or invalid specification version'
+      );
+  });
+
+  it('should throw exception in case of unsupported schema version', async () => {
+    const apiDoc = {
+      swagger: '4.0.0',
+      host: 'http://localhost:3000',
+      info: {
+        title: 'Some valid API document',
+        version: '1.0.0'
+      },
+      paths: {}
+    };
+
+    return validator
+      .validate(apiDoc as unknown as OpenAPIV2.Document)
+      .should.be.rejectedWith(
+        Error,
+        'Unsupported or invalid specification version'
       );
   });
 

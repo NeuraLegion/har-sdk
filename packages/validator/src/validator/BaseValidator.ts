@@ -32,12 +32,11 @@ export abstract class BaseValidator<T extends Document>
 
   public async validate(document: T): Promise<ErrorObject[]> {
     const schemaId = this.getSchemaId(document);
-    let validateFn: ValidateFunction | undefined;
-    if (schemaId) {
-      validateFn = this.ajv.getSchema(schemaId);
-    }
+    const validateFn: ValidateFunction = schemaId
+      ? this.ajv.getSchema(schemaId)
+      : null;
 
-    if (!schemaId || !validateFn) {
+    if (!validateFn) {
       throw new Error('Unsupported or invalid specification version');
     }
 

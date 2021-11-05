@@ -560,32 +560,24 @@
             "$ref": "#/definitions/certificate"
           },
           "method": {
-            "anyOf": [
-              {
-                "description": "The Standard HTTP method associated with this request.",
-                "type": "string",
-                "enum": [
-                  "GET",
-                  "PUT",
-                  "POST",
-                  "PATCH",
-                  "DELETE",
-                  "COPY",
-                  "HEAD",
-                  "OPTIONS",
-                  "LINK",
-                  "UNLINK",
-                  "PURGE",
-                  "LOCK",
-                  "UNLOCK",
-                  "PROPFIND",
-                  "VIEW"
-                ]
-              },
-              {
-                "description": "The Custom HTTP method associated with this request.",
-                "type": "string"
-              }
+            "description": "The Standard HTTP method associated with this request.",
+            "type": "string",
+            "enum": [
+              "GET",
+              "PUT",
+              "POST",
+              "PATCH",
+              "DELETE",
+              "COPY",
+              "HEAD",
+              "OPTIONS",
+              "LINK",
+              "UNLINK",
+              "PURGE",
+              "LOCK",
+              "UNLOCK",
+              "PROPFIND",
+              "VIEW"
             ]
           },
           "description": {

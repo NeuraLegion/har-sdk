@@ -11,7 +11,7 @@ describe('PostmanValidator', () => {
   const validator = new PostmanValidator();
 
   it('should successfully validate valid document (Nexploit, json)', async () => {
-    const result = await validator.validate(
+    const result = await validator.verify(
       nexploitPostman as unknown as Postman.Document
     );
     result.should.be.empty;
@@ -27,7 +27,7 @@ describe('PostmanValidator', () => {
     };
 
     return validator
-      .validate(apiDoc as unknown as Postman.Document)
+      .verify(apiDoc as unknown as Postman.Document)
       .should.be.rejectedWith(
         Error,
         'Unsupported or invalid specification version'
@@ -43,7 +43,7 @@ describe('PostmanValidator', () => {
       }
     };
 
-    const result = await validator.validate(
+    const result = await validator.verify(
       apiDoc as unknown as Postman.Document
     );
 

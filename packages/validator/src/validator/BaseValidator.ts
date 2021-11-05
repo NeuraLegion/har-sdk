@@ -30,7 +30,7 @@ export abstract class BaseValidator<T extends Document>
 
   protected abstract getSchemaId(document: T): string;
 
-  public async validate(document: T): Promise<ErrorObject[]> {
+  public async verify(document: T): Promise<ErrorObject[]> {
     const schemaId = this.getSchemaId(document);
     const validateFn: ValidateFunction = schemaId
       ? this.ajv.getSchema(schemaId)

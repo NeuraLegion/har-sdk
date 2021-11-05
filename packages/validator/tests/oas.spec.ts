@@ -16,14 +16,14 @@ describe('OASValidator', () => {
   const validator = new OASValidator();
 
   it('should successfully validate valid oas v2 document (GitHub, json)', async () => {
-    const result = await validator.validate(
+    const result = await validator.verify(
       githubSwagger as unknown as OpenAPIV2.Document
     );
     result.should.be.empty;
   });
 
   it('should successfully validate valid oas v2 document (Petstore, json)', async () => {
-    const result = await validator.validate(
+    const result = await validator.verify(
       petstoreSwagger as unknown as OpenAPIV2.Document
     );
     result.should.be.empty;
@@ -35,7 +35,7 @@ describe('OASValidator', () => {
       'utf8'
     );
 
-    const result = await validator.validate(
+    const result = await validator.verify(
       yaml.load(content) as OpenAPIV3.Document
     );
     result.should.be.empty;
@@ -53,7 +53,7 @@ describe('OASValidator', () => {
     };
 
     return validator
-      .validate(apiDoc as unknown as OpenAPIV2.Document)
+      .verify(apiDoc as unknown as OpenAPIV2.Document)
       .should.be.rejectedWith(
         Error,
         'Unsupported or invalid specification version'
@@ -72,7 +72,7 @@ describe('OASValidator', () => {
     };
 
     return validator
-      .validate(apiDoc as unknown as OpenAPIV2.Document)
+      .verify(apiDoc as unknown as OpenAPIV2.Document)
       .should.be.rejectedWith(
         Error,
         'Unsupported or invalid specification version'
@@ -89,7 +89,7 @@ describe('OASValidator', () => {
       paths: {}
     };
 
-    const result = await validator.validate(
+    const result = await validator.verify(
       apiDoc as unknown as OpenAPIV2.Document
     );
 
@@ -116,7 +116,7 @@ describe('OASValidator', () => {
       paths: {}
     };
 
-    const result = await validator.validate(
+    const result = await validator.verify(
       apiDoc as unknown as OpenAPIV3.Document
     );
 
@@ -155,7 +155,7 @@ describe('OASValidator', () => {
       }
     ];
 
-    const result = await validator.validate(
+    const result = await validator.verify(
       apiDoc as unknown as OpenAPIV3.Document
     );
     result.should.deep.eq(errors);

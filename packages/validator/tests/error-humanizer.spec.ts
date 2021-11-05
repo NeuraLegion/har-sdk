@@ -52,7 +52,7 @@ describe('ErrorHumanizer', () => {
     };
 
     const result = humanizer
-      .humanizeErrors(await oasValidator.validate(apiDoc))
+      .humanizeErrors(await oasValidator.verify(apiDoc))
       .map((error) => error.message);
 
     result.should.deep.eq([
@@ -64,7 +64,7 @@ describe('ErrorHumanizer', () => {
     const { host, ...apiDoc } = getBaseSwaggerDoc();
 
     const result = humanizer
-      .humanizeErrors(await oasValidator.validate(apiDoc))
+      .humanizeErrors(await oasValidator.verify(apiDoc))
       .map((error) => error.message);
 
     result.should.deep.eq([
@@ -79,7 +79,7 @@ describe('ErrorHumanizer', () => {
     };
 
     const result = humanizer
-      .humanizeErrors(await oasValidator.validate(apiDoc))
+      .humanizeErrors(await oasValidator.verify(apiDoc))
       .map((error) => error.message);
 
     result.should.deep.eq([
@@ -94,7 +94,7 @@ describe('ErrorHumanizer', () => {
     } as unknown as OpenAPIV2.Document;
 
     const result = humanizer
-      .humanizeErrors(await oasValidator.validate(apiDoc))
+      .humanizeErrors(await oasValidator.verify(apiDoc))
       .map((error) => error.message);
 
     result.should.deep.eq(['the value at /info must be of type object']);
@@ -116,7 +116,7 @@ describe('ErrorHumanizer', () => {
     } as unknown as Postman.Document;
 
     const result = humanizer
-      .humanizeErrors(await postmanValidator.validate(apiDoc))
+      .humanizeErrors(await postmanValidator.verify(apiDoc))
       .map((error) => error.message);
 
     result.should.deep.eq([
@@ -129,7 +129,7 @@ describe('ErrorHumanizer', () => {
     (apiDoc.info.version as Postman.Version).identifier = 'id0123456789';
 
     const result = humanizer
-      .humanizeErrors(await postmanValidator.validate(apiDoc))
+      .humanizeErrors(await postmanValidator.verify(apiDoc))
       .map((error) => error.message);
 
     result.should.deep.eq([
@@ -142,7 +142,7 @@ describe('ErrorHumanizer', () => {
     (apiDoc.info.version as Postman.Version).minor = -1;
 
     const result = humanizer
-      .humanizeErrors(await postmanValidator.validate(apiDoc))
+      .humanizeErrors(await postmanValidator.verify(apiDoc))
       .map((error) => error.message);
 
     result.should.deep.eq([
@@ -175,7 +175,7 @@ describe('ErrorHumanizer', () => {
     };
 
     const result = humanizer
-      .humanizeErrors(await oasValidator.validate(apiDoc))
+      .humanizeErrors(await oasValidator.verify(apiDoc))
       .map((error) => error.message);
 
     result.should.deep.eq([
@@ -190,7 +190,7 @@ describe('ErrorHumanizer', () => {
     };
 
     const result = humanizer
-      .humanizeErrors(await oasValidator.validate(apiDoc))
+      .humanizeErrors(await oasValidator.verify(apiDoc))
       .map((error) => error.message);
 
     result.should.deep.eq([
@@ -205,7 +205,7 @@ describe('ErrorHumanizer', () => {
     };
 
     const result = humanizer
-      .humanizeErrors(await oasValidator.validate(apiDoc))
+      .humanizeErrors(await oasValidator.verify(apiDoc))
       .map((error) => error.message);
 
     result.should.deep.eq([
@@ -220,7 +220,7 @@ describe('ErrorHumanizer', () => {
     } as OpenAPIV3.Document;
 
     const result = humanizer
-      .humanizeErrors(await oasValidator.validate(apiDoc))
+      .humanizeErrors(await oasValidator.verify(apiDoc))
       .map((error) => error.message);
 
     result.should.deep.eq(['the root value has an unexpected property "foo"']);
@@ -233,7 +233,7 @@ describe('ErrorHumanizer', () => {
     };
 
     const result = humanizer
-      .humanizeErrors(await oasValidator.validate(apiDoc))
+      .humanizeErrors(await oasValidator.verify(apiDoc))
       .map((error) => error.message);
 
     result.should.deep.eq([
@@ -265,7 +265,7 @@ describe('ErrorHumanizer', () => {
     };
 
     const result = humanizer
-      .humanizeErrors(await oasValidator.validate(apiDoc))
+      .humanizeErrors(await oasValidator.verify(apiDoc))
       .map((error) => error.message);
 
     result.should.deep.eq([
@@ -286,7 +286,7 @@ describe('ErrorHumanizer', () => {
     };
 
     const result = humanizer
-      .humanizeErrors(await oasValidator.validate(apiDoc))
+      .humanizeErrors(await oasValidator.verify(apiDoc))
       .map((error) => error.message);
 
     result.should.deep.eq([
@@ -320,7 +320,7 @@ describe('ErrorHumanizer', () => {
     };
 
     const result = humanizer
-      .humanizeErrors(await oasValidator.validate(apiDoc))
+      .humanizeErrors(await oasValidator.verify(apiDoc))
       .map((error) => error.message);
 
     result.should.deep.eq([

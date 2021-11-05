@@ -43,7 +43,7 @@
     "faker"
   ],
   "dependencies": {
-    "@har-sdk/types": "^1.0.0",
+    "@har-sdk/types": "0.0.0",
     "faker": "^5.5.3",
     "json-pointer": "^0.6.1",
     "randexp": "^0.5.3",

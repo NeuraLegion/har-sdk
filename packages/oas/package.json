@@ -44,9 +44,9 @@
     "json"
   ],
   "dependencies": {
-    "@har-sdk/openapi-sampler": "^1.1.0",
-    "@har-sdk/types": "^1.0.0",
-    "@har-sdk/validator": "^1.0.0",
+    "@har-sdk/openapi-sampler": "0.0.0",
+    "@har-sdk/types": "0.0.0",
+    "@har-sdk/validator": "0.0.0",
     "jstoxml": "^2.1.0",
     "qs": "^6.10.1",
     "tslib": "~2.2.0",

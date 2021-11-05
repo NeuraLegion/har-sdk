@@ -30,9 +30,8 @@ describe('ErrorCondenser', () => {
     ]);
   });
 
-  it('should handle empty input', () => {
-    new ErrorCondenser(null).condense().should.be.empty;
-  });
+  it('should handle empty input', () =>
+    new ErrorCondenser(null).condense().should.be.empty);
 
   it('should pick most frequent error message', () => {
     const condenser = new ErrorCondenser([

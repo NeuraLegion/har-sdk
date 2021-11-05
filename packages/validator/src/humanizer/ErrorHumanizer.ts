@@ -1,9 +1,11 @@
-import { ArrayFormatter } from './formatters/ArrayFormatter';
-import { Formatter } from './formatters/Formatter';
-import { NumericFormatter } from './formatters/NumericFormatter';
-import { ObjectFormatter } from './formatters/ObjectFormatter';
-import { StringFormatter } from './formatters/StringFormatter';
-import { TypeFormatter } from './formatters/TypeFormatter';
+import {
+  ArrayFormatter,
+  Formatter,
+  NumericFormatter,
+  ObjectFormatter,
+  StringFormatter,
+  TypeFormatter
+} from './formatters';
 import { HumanizedError } from './HumanizedError';
 import { ErrorObject } from 'ajv';
 
@@ -35,7 +37,7 @@ export class ErrorHumanizer {
     let message = this.formatters.reduce(
       (resultMessage: string, formatter: Formatter) =>
         resultMessage || formatter.format(error),
-      null
+      ''
     );
 
     if (!message) {
@@ -46,10 +48,8 @@ export class ErrorHumanizer {
   }
 
   private formatLocation(error: ErrorObject): string {
-    if (error.instancePath === '') {
-      return 'the root value';
-    }
-
-    return `the value at ${error.instancePath}`;
+    return error.instancePath === ''
+      ? 'the root value'
+      : `the value at ${error.instancePath}`;
   }
 }

@@ -11,21 +11,45 @@ npm i --save @har-sdk/validator
 ## Usage
 
 ```ts
-import { DefaultValidator, Validator } from '@har-sdk/validator';
-import githubSwagger from './github_swagger.json';
+import { OpenAPIV2 } from '@har-sdk/types';
+import { OASValidator, ErrorHumanizer } from '@har-sdk/validator';
 
 const apiDoc = {
-  openapi: '2.0',
-  host: 'http://localhost:3000',
+  swagger: '2.0',
+  host: 'localhost',
   info: {
-    title: 'Some valid API document',
-    version: '1.0.0'
+    title: 'Some valid API document'
   },
   paths: {}
-};
+} as OpenAPIV2.Document;
 
-const result = await validator.validate(apiDoc);
-// array of ErrorObject
+const errors = await new OASValidator().verify(apiDoc as any);
+console.log(errors);
+// [
+//   {
+//     instancePath: '/info',
+//     schemaPath: '#/required',
+//     keyword: 'required',
+//     params: { missingProperty: 'version' },
+//     message: "must have required property 'version'"
+//   }
+// ]
+
+
+const humanizedErrors = await new ErrorHumanizer().humanizeErrors(errors);
+console.log(humanizedErrors);
+// [
+//   {
+//     originalError: {
+//       instancePath: '/info',
+//       schemaPath: '#/required',
+//       keyword: 'required',
+//       params: [Object],
+//       message: "must have required property 'version'"
+//     },
+//     message: "the value at /info is missing the required field 'version'"
+//   }
+// ]
 ```
 
 See [Error Object](https://ajv.js.org/api.html#error-objects)

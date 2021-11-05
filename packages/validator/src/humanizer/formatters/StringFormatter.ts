@@ -1,7 +1,7 @@
 import { Formatter } from './Formatter';
 import { ErrorObject } from 'ajv';
 
-const formatLabelsMap = {
+const formatLabelsMap: Readonly<Record<string, string>> = {
   'date-time': 'date and time',
   'time': 'time',
   'date': 'date',
@@ -24,24 +24,26 @@ const formatLabelsMap = {
 };
 
 export class StringFormatter implements Formatter {
-  public format(error: ErrorObject): string {
-    const { keyword, params } = error;
-
-    switch (keyword) {
+  public format(
+    error:
+      | ErrorObject<'minLength' | 'maxLength', { limit: number }>
+      | ErrorObject<'pattern', { pattern: string }>
+      | ErrorObject<'format', { format: string }>
+  ): string {
+    switch (error.keyword) {
       case 'minLength':
       case 'maxLength': {
-        const limit = params.limit;
-        const direction = keyword === 'minLength' ? 'more' : 'fewer';
+        const direction = error.keyword === 'minLength' ? 'more' : 'fewer';
 
-        return `must be of length ${limit} or ${direction}`;
+        return `must be of length ${error.params.limit} or ${direction}`;
       }
 
-      case 'pattern': {
-        return `does not match pattern ${params.pattern}`;
-      }
+      case 'pattern':
+        return `does not match pattern ${error.params.pattern}`;
 
       case 'format': {
-        const label = formatLabelsMap[params.format] || params.format;
+        const label =
+          formatLabelsMap[error.params.format] || error.params.format;
 
         return `must be a valid ${label} string`;
       }

@@ -2,10 +2,15 @@ import { Formatter } from './Formatter';
 import { ErrorObject } from 'ajv';
 
 export class NumericFormatter implements Formatter {
-  public format(error: ErrorObject): string {
+  public format(
+    error: ErrorObject<
+      'minimum' | 'maximum' | 'exclusiveMinimum' | 'exclusiveMaximum',
+      { limit: number }
+    >
+  ): string {
     const { keyword, params } = error;
 
-    switch (keyword) {
+    switch (error.keyword) {
       case 'minimum':
       case 'maximum':
       case 'exclusiveMinimum':

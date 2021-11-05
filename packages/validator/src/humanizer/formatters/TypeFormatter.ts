@@ -2,29 +2,29 @@ import { Formatter } from './Formatter';
 import { ErrorObject } from 'ajv';
 
 export class TypeFormatter implements Formatter {
-  public format(error: ErrorObject): string {
-    const { keyword, params } = error;
-
-    switch (keyword) {
+  public format(
+    error:
+      | ErrorObject<'enum', { allowedValues: any[] }>
+      | ErrorObject<'type', { type: string | string[] }>
+      | ErrorObject<'const', { allowedValue: any }>
+  ): string {
+    switch (error.keyword) {
       case 'enum': {
-        const list = params.allowedValues.map(JSON.stringify);
-        const allowed = this.humanizeList(list, 'or');
+        const list = error.params.allowedValues.map((x) => JSON.stringify(x));
 
-        return `must be one of: ${allowed}`;
+        return `must be one of: ${this.humanizeList(list, 'or')}`;
       }
 
       case 'type': {
-        const list = Array.isArray(params.type)
-          ? params.type
-          : params.type.split(',');
+        const type = error.params.type;
+        const list = Array.isArray(type) ? type : type.split(',');
         const expectType = this.humanizeList(list, 'or');
 
         return `must be of type ${expectType}`;
       }
 
-      case 'const': {
-        return `must be equal to constant "${params.allowedValue}"`;
-      }
+      case 'const':
+        return `must be equal to constant "${error.params.allowedValue}"`;
     }
   }
 

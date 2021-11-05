@@ -2,23 +2,24 @@ import { Formatter } from './Formatter';
 import { ErrorObject } from 'ajv';
 
 export class ObjectFormatter implements Formatter {
-  public format(error: ErrorObject): string {
-    const { keyword, params } = error;
+  public format(
+    error:
+      | ErrorObject<'additionalProperties', { additionalProperty: string }>
+      | ErrorObject<'required', { missingProperty: string }>
+      | ErrorObject<'minProperties' | 'maxProperties', { limit: number }>
+  ): string {
+    switch (error.keyword) {
+      case 'additionalProperties':
+        return `has an unexpected property "${error.params.additionalProperty}"`;
 
-    switch (keyword) {
-      case 'additionalProperties': {
-        return `has an unexpected property "${params.additionalProperty}"`;
-      }
-
-      case 'required': {
-        return `is missing the required field '${params.missingProperty}'`;
-      }
+      case 'required':
+        return `is missing the required field '${error.params.missingProperty}'`;
 
       case 'minProperties':
       case 'maxProperties': {
-        const direction = keyword === 'minProperties' ? 'more' : 'fewer';
+        const direction = error.keyword === 'minProperties' ? 'more' : 'fewer';
 
-        return `must have ${params.limit} or ${direction} properties`;
+        return `must have ${error.params.limit} or ${direction} properties`;
       }
     }
   }

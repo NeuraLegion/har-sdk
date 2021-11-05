@@ -1,4 +1,5 @@
 import { Formatter } from './Formatter';
+import { WordingHelper } from './WordingHelper';
 import { ErrorObject } from 'ajv';
 
 export class ObjectFormatter implements Formatter {
@@ -16,11 +17,10 @@ export class ObjectFormatter implements Formatter {
         return `is missing the required field '${error.params.missingProperty}'`;
 
       case 'minProperties':
-      case 'maxProperties': {
-        const direction = error.keyword === 'minProperties' ? 'more' : 'fewer';
-
-        return `must have ${error.params.limit} or ${direction} properties`;
-      }
+      case 'maxProperties':
+        return `must have ${
+          error.params.limit
+        } or ${WordingHelper.getComparison(error.keyword)} properties`;
     }
   }
 }

@@ -1,4 +1,5 @@
 import { Formatter } from './Formatter';
+import { WordingHelper } from './WordingHelper';
 import { ErrorObject } from 'ajv';
 
 const formatLabelsMap: Readonly<Record<string, string>> = {
@@ -32,21 +33,18 @@ export class StringFormatter implements Formatter {
   ): string {
     switch (error.keyword) {
       case 'minLength':
-      case 'maxLength': {
-        const direction = error.keyword === 'minLength' ? 'more' : 'fewer';
-
-        return `must be of length ${error.params.limit} or ${direction}`;
-      }
+      case 'maxLength':
+        return `must be of length ${
+          error.params.limit
+        } or ${WordingHelper.getComparison(error.keyword)}`;
 
       case 'pattern':
         return `does not match pattern ${error.params.pattern}`;
 
-      case 'format': {
-        const label =
-          formatLabelsMap[error.params.format] || error.params.format;
-
-        return `must be a valid ${label} string`;
-      }
+      case 'format':
+        return `must be a valid ${
+          formatLabelsMap[error.params.format] || error.params.format
+        } string`;
     }
   }
 }

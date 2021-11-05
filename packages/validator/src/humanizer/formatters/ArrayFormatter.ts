@@ -1,4 +1,5 @@
 import { Formatter } from './Formatter';
+import { WordingHelper } from './WordingHelper';
 import { ErrorObject } from 'ajv';
 
 export class ArrayFormatter implements Formatter {
@@ -9,11 +10,10 @@ export class ArrayFormatter implements Formatter {
   ): string {
     switch (error.keyword) {
       case 'minItems':
-      case 'maxItems': {
-        const direction = error.keyword === 'minItems' ? 'more' : 'fewer';
-
-        return `must have ${error.params.limit} or ${direction} items`;
-      }
+      case 'maxItems':
+        return `must have ${
+          error.params.limit
+        } or ${WordingHelper.getComparison(error.keyword)} items`;
 
       case 'uniqueItems': {
         const { i, j } = error.params;

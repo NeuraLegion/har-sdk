@@ -21,6 +21,10 @@ export class TypeFormatter implements Formatter {
 
         return `must be of type ${expectType}`;
       }
+
+      case 'const': {
+        return `must be equal to constant "${params.allowedValue}"`;
+      }
     }
   }
 

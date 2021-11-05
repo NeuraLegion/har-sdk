@@ -293,4 +293,38 @@ describe('ErrorHumanizer', () => {
       'the value at /paths/~1x/get/responses must have 1 or more properties'
     ]);
   });
+
+  it('should humanize "const" error message', async () => {
+    const apiDoc: OpenAPIV2.Document = {
+      ...getBaseSwaggerDoc(),
+      paths: {
+        '/item/{itemId}': {
+          get: {
+            parameters: [
+              {
+                name: 'petId',
+                in: 'path',
+                required: false,
+                type: 'integer',
+                format: 'int64'
+              }
+            ],
+            responses: {
+              '200': {
+                description: 'success'
+              }
+            }
+          }
+        }
+      }
+    };
+
+    const result = humanizer
+      .humanizeErrors(await oasValidator.validate(apiDoc))
+      .map((error) => error.message);
+
+    result.should.deep.eq([
+      'the value at /paths/~1item~1{itemId}/get/parameters/0/required must be equal to constant "true"'
+    ]);
+  });
 });

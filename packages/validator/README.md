@@ -35,7 +35,6 @@ console.log(errors);
 //   }
 // ]
 
-
 const humanizedErrors = await new ErrorHumanizer().humanizeErrors(errors);
 console.log(humanizedErrors);
 // [

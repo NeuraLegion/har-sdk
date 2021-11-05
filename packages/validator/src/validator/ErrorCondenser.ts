@@ -10,29 +10,22 @@ import { ErrorObject } from 'ajv';
 
 export class ErrorCondenser {
   // tree: instancePath -> message -> errors
-  private tree: Record<string, Record<string, ErrorObject[]>>;
+  private tree?: Record<string, Record<string, ErrorObject[]>>;
 
-  constructor(private readonly errors: ReadonlyArray<ErrorObject>) {}
+  constructor(private readonly errors: ReadonlyArray<ErrorObject>) {
+    this.parseToTree();
+  }
 
   public condense(): ErrorObject[] {
-    if (!Array.isArray(this.errors)) {
-      return [];
-    }
-
-    this.parseToTree();
-
-    const condensedErrors = Object.keys(this.tree).reduce(
-      (res: ErrorObject[], path: string): ErrorObject[] => {
+    const condensedErrors = Object.keys(this.tree).flatMap(
+      (path: string): ErrorObject[] => {
         const frequentMessageErrors: ErrorObject[][] =
           this.detectMostFrequentMessageNames(path).map(
             (name) => this.tree[path][name]
           );
 
-        return res.concat(
-          frequentMessageErrors.map(this.mergeDuplicatedErrors.bind(this))
-        );
-      },
-      []
+        return frequentMessageErrors.map(this.mergeDuplicatedErrors.bind(this));
+      }
     );
 
     return this.filterRedundantIfKeywords(condensedErrors);
@@ -88,10 +81,9 @@ export class ErrorCondenser {
     );
   }
 
-  private readonly arrayify = (thing: any): any[] =>
-    thing === undefined || thing === null || Array.isArray(thing)
-      ? thing
-      : [thing];
+  private arrayify(thing: any): any[] {
+    return thing == null || Array.isArray(thing) ? thing : [thing];
+  }
 
   private mergeParameterObjects(objA = {}, objB = {}): Record<string, any> {
     const res = {};

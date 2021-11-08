@@ -25,8 +25,7 @@ export abstract class BaseOasPathItemObjectParser<D> implements PathNodeParser {
       path,
       jsonPointer: pointer,
       children: Object.keys(pathItemObject)
-        .filter((key: string) => isHttpMethod(key))
-        .map((key) => key as HttpMethod)
+        .filter(isHttpMethod)
         .map(
           (method: HttpMethod): SpecTreeNode =>
             operationObjectsParser.parse(

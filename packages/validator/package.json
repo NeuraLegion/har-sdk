@@ -44,15 +44,17 @@
     "json"
   ],
   "dependencies": {
-    "@har-sdk/types": "^1.0.0",
-    "ajv": "^8.6.0",
-    "ajv-formats": "^2.1.0",
+    "@har-sdk/types": "*",
+    "ajv": "^8.6.3",
+    "ajv-errors": "^3.0.0",
+    "ajv-formats": "^2.1.1",
     "semver": "^7.3.5",
     "tslib": "~2.2.0"
   },
   "devDependencies": {
-    "@types/js-yaml": "^4.0.2",
-    "@types/semver": "^7.3.6",
+    "@types/js-yaml": "^4.0.4",
+    "@types/node": "^16.11.6",
+    "@types/semver": "^7.3.9",
     "js-yaml": "^4.1.0"
   }
 }

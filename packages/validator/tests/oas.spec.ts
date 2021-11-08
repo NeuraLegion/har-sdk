@@ -1,5 +1,9 @@
-import githubSwagger from './github.swagger.json';
+import githubSwagger from './oas2.github.json';
+import petstoreSwagger from './oas2.petstore.json';
 import { OASValidator } from '../src';
+import { ErrorObject } from 'ajv';
+import chaiAsPromised from 'chai-as-promised';
+import { use } from 'chai';
 import yaml from 'js-yaml';
 import { OpenAPIV2, OpenAPIV3 } from '@har-sdk/types';
 import { resolve } from 'path';
@@ -7,32 +11,44 @@ import { readFile } from 'fs';
 import { promisify } from 'util';
 import 'chai/register-should';
 
+use(chaiAsPromised);
+
 describe('OASValidator', () => {
   const validator = new OASValidator();
 
   describe('verify', () => {
-    it('should successfully validate GitHub swagger v2 JSON', async () => {
-      const result = await validator.verify(
-        githubSwagger as unknown as OpenAPIV2.Document
-      );
-      result.errors.should.be.empty;
+    it('should successfully validate valid oas v2 document (GitHub, json)', async () => {
+      const input: OpenAPIV2.Document =
+        githubSwagger as unknown as OpenAPIV2.Document;
+
+      const result = await validator.verify(input);
+
+      result.should.be.empty;
     });
 
-    it('should successfully validate Petstore OpenApi v3 YAML', async () => {
-      const content: string = await promisify(readFile)(
-        resolve('./tests/petstore.oas.yaml'),
-        'utf8'
-      );
+    it('should successfully validate valid oas v2 document (Petstore, json)', async () => {
+      const input: OpenAPIV2.Document =
+        petstoreSwagger as unknown as OpenAPIV2.Document;
 
-      const result = await validator.verify(
-        yaml.load(content) as OpenAPIV3.Document
-      );
-      result.errors.should.be.empty;
+      const result = await validator.verify(input);
+
+      result.should.be.empty;
     });
 
-    it('should throw error if cannot determine version of schema because of schema ID is missed.', async () => {
-      const apiDoc = {
-        swagger: '1.0.0',
+    it('should successfully validate valid oas v3 document (Petstore, yaml)', async () => {
+      const input: OpenAPIV3.Document = yaml.load(
+        await promisify(readFile)(resolve('./tests/oas3.petstore.yaml'), 'utf8')
+      ) as OpenAPIV3.Document;
+
+      const result = await validator.verify(input);
+
+      result.should.be.empty;
+    });
+
+    it('should throw exception if cannot determine version of document', async () => {
+      const input: OpenAPIV2.Document = {
+        swagger: 'xyz',
+        host: 'http://localhost:3000',
         info: {
           title: 'Some valid API document',
           version: '1.0.0'
@@ -40,25 +56,44 @@ describe('OASValidator', () => {
         paths: {}
       };
 
-      try {
-        await validator.verify(apiDoc as unknown as OpenAPIV2.Document);
-      } catch (err) {
-        err.message.should.be.equal(
-          'Cannot determine version of schema. Schema ID is missed.'
-        );
-      }
+      const result = validator.verify(input);
+
+      return result.should.be.rejectedWith(
+        Error,
+        'Unsupported or invalid specification version'
+      );
     });
 
-    it("should throw error if property 'host' does not exist", async () => {
-      const apiDoc = {
+    it('should throw exception in case of unsupported schema version', async () => {
+      const input: OpenAPIV2.Document = {
+        swagger: '4.0.0',
+        host: 'http://localhost:3000',
+        info: {
+          title: 'Some valid API document',
+          version: '1.0.0'
+        },
+        paths: {}
+      };
+
+      const result = validator.verify(input);
+
+      return result.should.be.rejectedWith(
+        Error,
+        'Unsupported or invalid specification version'
+      );
+    });
+
+    it('should return error if oas v2 property `host` does not exist', async () => {
+      const input: OpenAPIV2.Document = {
         swagger: '2.0',
         info: {
-          title: 'Some valid API document',
+          title: 'Invalid OpenAPI document',
           version: '1.0.0'
         },
         paths: {}
       };
-      const errors = [
+
+      const expected: ErrorObject[] = [
         {
           instancePath: '',
           keyword: 'required',
@@ -70,22 +105,22 @@ describe('OASValidator', () => {
         }
       ];
 
-      const result = await validator.verify(
-        apiDoc as unknown as OpenAPIV2.Document
-      );
-      result.errors.should.deep.eq(errors);
+      const result = await validator.verify(input);
+
+      result.should.deep.eq(expected);
     });
 
-    it("should throw error if property 'servers' does not exist", async () => {
-      const apiDoc = {
+    it('should return error if oas v3 property `servers` does not exist', async () => {
+      const input: OpenAPIV3.Document = {
         openapi: '3.0.0',
         info: {
-          title: 'Some valid API document',
+          title: 'Invalid OpenAPI document',
           version: '1.0.0'
         },
         paths: {}
       };
-      const errors = [
+
+      const expected: ErrorObject[] = [
         {
           instancePath: '',
           keyword: 'required',
@@ -97,14 +132,13 @@ describe('OASValidator', () => {
         }
       ];
 
-      const result = await validator.verify(
-        apiDoc as unknown as OpenAPIV3.Document
-      );
-      result.errors.should.deep.eq(errors);
+      const result = await validator.verify(input);
+
+      result.should.deep.eq(expected);
     });
 
-    it("should throw error if property 'url' does not exist", async () => {
-      const apiDoc = {
+    it('should return error if property `url` does not exist inside `servers`', async () => {
+      const input: OpenAPIV3.Document = {
         openapi: '3.0.0',
         servers: [{}],
         info: {
@@ -112,8 +146,9 @@ describe('OASValidator', () => {
           version: '1.0.0'
         },
         paths: {}
-      };
-      const errors = [
+      } as unknown as OpenAPIV3.Document;
+
+      const expected: ErrorObject[] = [
         {
           instancePath: '/servers/0',
           keyword: 'required',
@@ -125,10 +160,9 @@ describe('OASValidator', () => {
         }
       ];
 
-      const result = await validator.verify(
-        apiDoc as unknown as OpenAPIV3.Document
-      );
-      result.errors.should.deep.eq(errors);
+      const result = await validator.verify(input);
+
+      result.should.deep.eq(expected);
     });
   });
 });

@@ -172,7 +172,10 @@
           "$ref": "#/definitions/pathItem"
         }
       },
-      "additionalProperties": false
+      "additionalProperties": false,
+      "errorMessage": {
+        "additionalProperties": "should only have path names that start with `/`"
+      }
     },
     "definitions": {
       "type": "object",
@@ -342,23 +345,29 @@
       },
       "not": {
         "type": "object",
+        "minProperties": 1,
         "additionalProperties": false,
         "patternProperties": {
           "^x-": {
             "$ref": "#/definitions/vendorExtension"
           }
         }
+      },
+      "errorMessage": {
+        "not": "should define at least one response, in addition to any vendor extension (`x-*`) fields",
+        "additionalProperties": "should only have three-digit status codes, `default`, and vendor extensions (`x-*`) as properties"
       }
     },
     "responseValue": {
-      "oneOf": [
-        {
-          "$ref": "#/definitions/response"
-        },
-        {
-          "$ref": "#/definitions/jsonReference"
-        }
-      ]
+      "if": {
+        "required": ["$ref"]
+      },
+      "then": {
+        "$ref": "#/definitions/jsonReference"
+      },
+      "else": {
+        "$ref": "#/definitions/response"
+      }
     },
     "response": {
       "type": "object",
@@ -368,14 +377,28 @@
           "type": "string"
         },
         "schema": {
-          "oneOf": [
-            {
-              "$ref": "#/definitions/schema"
+          "if": {
+            "required": ["$ref"]
+          },
+          "then": {
+            "$ref": "#/definitions/jsonReference"
+          },
+          "else": {
+            "if": {
+              "required": ["type"],
+              "properties": {
+                "type": {
+                  "const": "file"
+                }
+              }
             },
-            {
+            "then": {
               "$ref": "#/definitions/fileSchema"
+            },
+            "else": {
+              "$ref": "#/definitions/schema"
             }
-          ]
+          }
         },
         "headers": {
           "$ref": "#/definitions/headers"
@@ -503,6 +526,8 @@
       "additionalProperties": false
     },
     "headerParameterSubSchema": {
+      "type": "object",
+      "required": ["name", "in", "type"],
       "additionalProperties": false,
       "patternProperties": {
         "^x-": {
@@ -583,6 +608,8 @@
       }
     },
     "queryParameterSubSchema": {
+      "type": "object",
+      "required": ["name", "in", "type"],
       "additionalProperties": false,
       "patternProperties": {
         "^x-": {
@@ -668,6 +695,8 @@
       }
     },
     "formDataParameterSubSchema": {
+      "type": "object",
+      "required": ["name", "in", "type"],
       "additionalProperties": false,
       "patternProperties": {
         "^x-": {
@@ -753,13 +782,14 @@
       }
     },
     "pathParameterSubSchema": {
+      "type": "object",
       "additionalProperties": false,
       "patternProperties": {
         "^x-": {
           "$ref": "#/definitions/vendorExtension"
         }
       },
-      "required": ["required"],
+      "required": ["name", "in", "type", "required"],
       "properties": {
         "required": {
           "type": "boolean",
@@ -833,31 +863,57 @@
         }
       }
     },
-    "nonBodyParameter": {
-      "type": "object",
-      "required": ["name", "in", "type"],
-      "oneOf": [
-        {
-          "$ref": "#/definitions/headerParameterSubSchema"
-        },
-        {
-          "$ref": "#/definitions/formDataParameterSubSchema"
-        },
-        {
-          "$ref": "#/definitions/queryParameterSubSchema"
-        },
-        {
-          "$ref": "#/definitions/pathParameterSubSchema"
-        }
-      ]
-    },
     "parameter": {
-      "oneOf": [
+      "required": ["in"],
+      "properties": {
+        "in": { "enum": ["body", "header", "formData", "query", "path"] }
+      },
+
+      "allOf": [
         {
-          "$ref": "#/definitions/bodyParameter"
+          "if": {
+            "required": ["in"],
+            "properties": { "in": { "const": "body" } }
+          },
+          "then": {
+            "$ref": "#/definitions/bodyParameter"
+          }
         },
         {
-          "$ref": "#/definitions/nonBodyParameter"
+          "if": {
+            "required": ["in"],
+            "properties": { "in": { "const": "header" } }
+          },
+          "then": {
+            "$ref": "#/definitions/headerParameterSubSchema"
+          }
+        },
+        {
+          "if": {
+            "required": ["in"],
+            "properties": { "in": { "const": "formData" } }
+          },
+          "then": {
+            "$ref": "#/definitions/formDataParameterSubSchema"
+          }
+        },
+        {
+          "if": {
+            "required": ["in"],
+            "properties": { "in": { "const": "query" } }
+          },
+          "then": {
+            "$ref": "#/definitions/queryParameterSubSchema"
+          }
+        },
+        {
+          "if": {
+            "required": ["in"],
+            "properties": { "in": { "const": "path" } }
+          },
+          "then": {
+            "$ref": "#/definitions/pathParameterSubSchema"
+          }
         }
       ]
     },
@@ -931,32 +987,22 @@
           "$ref": "http://json-schema.org/draft-07/schema#/properties/enum"
         },
         "additionalProperties": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/schema"
-            },
-            {
-              "type": "boolean"
-            }
-          ],
+          "if": {
+            "type": "object"
+          },
+          "then": {
+            "$ref": "#/definitions/schema"
+          },
+          "else": {
+            "type": "boolean"
+          },
           "default": {}
         },
         "type": {
           "$ref": "http://json-schema.org/draft-07/schema#/properties/type"
         },
         "items": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/schema"
-            },
-            {
-              "type": "array",
-              "minItems": 1,
-              "items": {
-                "$ref": "#/definitions/schema"
-              }
-            }
-          ],
+          "$ref": "#/definitions/schema",
           "default": {}
         },
         "allOf": {
@@ -1162,24 +1208,82 @@
     "securityDefinitions": {
       "type": "object",
       "additionalProperties": {
-        "oneOf": [
+        "required": ["type"],
+        "properties": {
+          "type": { "enum": ["basic", "apiKey", "oauth2"] }
+        },
+        "allOf": [
           {
-            "$ref": "#/definitions/basicAuthenticationSecurity"
+            "if": {
+              "required": ["type"],
+              "properties": {
+                "type": { "enum": ["basic"] }
+              }
+            },
+            "then": { "$ref": "#/definitions/basicAuthenticationSecurity" }
           },
           {
-            "$ref": "#/definitions/apiKeySecurity"
+            "if": {
+              "required": ["type"],
+              "properties": {
+                "type": { "enum": ["apiKey"] }
+              }
+            },
+            "then": { "$ref": "#/definitions/apiKeySecurity" }
           },
           {
-            "$ref": "#/definitions/oauth2ImplicitSecurity"
-          },
-          {
-            "$ref": "#/definitions/oauth2PasswordSecurity"
-          },
-          {
-            "$ref": "#/definitions/oauth2ApplicationSecurity"
-          },
-          {
-            "$ref": "#/definitions/oauth2AccessCodeSecurity"
+            "if": {
+              "required": ["type"],
+              "properties": {
+                "type": { "const": "oauth2" }
+              }
+            },
+            "then": {
+              "required": ["flow"],
+              "properties": {
+                "flow": {
+                  "enum": ["implicit", "password", "application", "accessCode"]
+                }
+              },
+              "allOf": [
+                {
+                  "if": {
+                    "required": ["flow"],
+                    "properties": {
+                      "flow": { "const": "implicit" }
+                    }
+                  },
+                  "then": { "$ref": "#/definitions/oauth2ImplicitSecurity" }
+                },
+                {
+                  "if": {
+                    "required": ["flow"],
+                    "properties": {
+                      "flow": { "const": "password" }
+                    }
+                  },
+                  "then": { "$ref": "#/definitions/oauth2PasswordSecurity" }
+                },
+                {
+                  "if": {
+                    "required": ["flow"],
+                    "properties": {
+                      "flow": { "const": "application" }
+                    }
+                  },
+                  "then": { "$ref": "#/definitions/oauth2ApplicationSecurity" }
+                },
+                {
+                  "if": {
+                    "required": ["flow"],
+                    "properties": {
+                      "flow": { "const": "accessCode" }
+                    }
+                  },
+                  "then": { "$ref": "#/definitions/oauth2AccessCodeSecurity" }
+                }
+              ]
+            }
           }
         ]
       }
@@ -1247,7 +1351,10 @@
         },
         "authorizationUrl": {
           "type": "string",
-          "format": "uri"
+          "format": "uri",
+          "errorMessage": {
+            "format": "should be an absolute URI"
+          }
         },
         "description": {
           "type": "string"
@@ -1277,7 +1384,10 @@
         },
         "tokenUrl": {
           "type": "string",
-          "format": "uri"
+          "format": "uri",
+          "errorMessage": {
+            "format": "should be an absolute URI"
+          }
         },
         "description": {
           "type": "string"
@@ -1307,7 +1417,10 @@
         },
         "tokenUrl": {
           "type": "string",
-          "format": "uri"
+          "format": "uri",
+          "errorMessage": {
+            "format": "should be an absolute URI"
+          }
         },
         "description": {
           "type": "string"
@@ -1337,11 +1450,17 @@
         },
         "authorizationUrl": {
           "type": "string",
-          "format": "uri"
+          "format": "uri",
+          "errorMessage": {
+            "format": "should be an absolute URI"
+          }
         },
         "tokenUrl": {
           "type": "string",
-          "format": "uri"
+          "format": "uri",
+          "errorMessage": {
+            "format": "should be an absolute URI"
+          }
         },
         "description": {
           "type": "string"
@@ -1369,18 +1488,23 @@
     "parametersList": {
       "type": "array",
       "description": "The parameters needed to send a valid API call.",
-      "items": [
-        {
-          "oneOf": [
-            {
-              "$ref": "#/definitions/parameter"
-            },
-            {
-              "$ref": "#/definitions/jsonReference"
+      "items": {
+        "type": "object",
+        "if": {
+          "required": ["$ref"],
+          "properties": {
+            "$ref": {
+              "type": "string"
             }
-          ]
+          }
+        },
+        "then": {
+          "$ref": "#/definitions/jsonReference"
+        },
+        "else": {
+          "$ref": "#/definitions/parameter"
         }
-      ],
+      },
       "uniqueItems": true
     },
     "schemesList": {

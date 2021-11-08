@@ -1,62 +1,62 @@
-import { Validator, ValidatorResult, Document } from './Validator';
-import Ajv, { AnySchema, AsyncSchema, ValidateFunction } from 'ajv';
+import { ErrorCondenser } from './ErrorCondenser';
+import { Validator, Document } from './Validator';
+import Ajv, {
+  AnySchema,
+  AsyncSchema,
+  ValidateFunction,
+  ErrorObject
+} from 'ajv';
 import addFormats from 'ajv-formats';
+import ajvErrors from 'ajv-errors';
 
 export abstract class BaseValidator<T extends Document>
   implements Validator<T>
 {
   private readonly ajv: Ajv;
 
-  protected constructor(schema: AnySchema | AnySchema[]) {
+  protected constructor(schemas: AnySchema[]) {
     this.ajv = new Ajv({
       allErrors: true,
       strict: false
     });
 
     addFormats(this.ajv);
+    ajvErrors(this.ajv);
 
-    (Array.isArray(schema) ? schema : [schema]).forEach((s) =>
-      this.verifySchema(s)
-    );
+    schemas.forEach((s) => this.verifySchema(s));
 
-    this.ajv.addSchema(schema);
+    this.ajv.addSchema(schemas);
   }
 
   protected abstract getSchemaId(document: T): string;
 
-  public async verify(document: T): Promise<ValidatorResult> {
+  public async verify(document: T): Promise<ErrorObject[]> {
     const schemaId = this.getSchemaId(document);
-    const validate: ValidateFunction | undefined = this.ajv.getSchema(schemaId);
+    const validateFn: ValidateFunction = schemaId
+      ? this.ajv.getSchema(schemaId)
+      : null;
 
-    if (!validate) {
-      throw new Error(
-        'Cannot determine version of schema. Schema ID is missed.'
-      );
+    if (!validateFn) {
+      throw new Error('Unsupported or invalid specification version');
     }
 
     try {
-      await validate(document);
+      await validateFn(document);
 
-      return {
-        errors: [],
-        valid: true
-      };
+      return [];
     } catch (err) {
       if (!(err instanceof Ajv.ValidationError)) {
         throw err;
       }
 
-      return {
-        errors: err.errors,
-        valid: false
-      };
+      return new ErrorCondenser(err.errors as ErrorObject[]).condense();
     }
   }
 
   private verifySchema(schema: AnySchema): void {
     if (!(schema as AsyncSchema).$async) {
       throw Error(
-        'Invalid schema: the schema should support an asynchronous validation. Set the "$async" parameter in the schema. Look at https://ajv.js.org/guide/async-validation.html#asynchronous-validation for more details l'
+        'Invalid schema: the schema should support an asynchronous validation. Set the "$async" parameter in the schema. Look at https://ajv.js.org/guide/async-validation.html#asynchronous-validation for more details'
       );
     }
   }

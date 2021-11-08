@@ -637,6 +637,12 @@
                   "items": {
                     "type": "object",
                     "title": "FormParameter",
+                    "required": ["type", "key"],
+                    "properties": {
+                      "type": {
+                        "enum": ["text", "file"]
+                      }
+                    },
                     "anyOf": [
                       {
                         "properties": {
@@ -662,8 +668,7 @@
                           "description": {
                             "$ref": "#/definitions/description"
                           }
-                        },
-                        "required": ["key"]
+                        }
                       },
                       {
                         "properties": {
@@ -689,8 +694,7 @@
                           "description": {
                             "$ref": "#/definitions/description"
                           }
-                        },
-                        "required": ["key"]
+                        }
                       }
                     ]
                   }

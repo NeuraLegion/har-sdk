@@ -59,9 +59,9 @@ export class PostmanBodyParser implements ParametersParser {
       'application/json';
 
     return {
-      paramType: 'requestBody',
       bodyType,
       value,
+      paramType: 'requestBody',
       valueJsonPointer: pointer
     };
   }

@@ -156,6 +156,37 @@ describe('ErrorCondenser', () => {
       result.should.deep.eq(expected);
     });
 
+    it('should filter out self branching errors', () => {
+      const input = [
+        {
+          instancePath: '/item/0/request/body/formdata/0',
+          schemaPath:
+            '#/else/properties/body/else/properties/formdata/items/then/required',
+          keyword: 'required',
+          params: {
+            missingProperty: 'key'
+          },
+          message: "must have required property 'key'"
+        },
+        {
+          instancePath: '/item/0/request/body/formdata/0',
+          schemaPath:
+            '#/else/properties/body/else/properties/formdata/items/if',
+          keyword: 'if',
+          params: {
+            failingKeyword: 'then'
+          },
+          message: 'must match "then" schema'
+        }
+      ];
+
+      const expected = input.slice(0, 1);
+
+      const result = new ErrorCondenser(input).condense();
+
+      result.should.deep.eq(expected);
+    });
+
     it('should keep "if" error if it is single error', () => {
       const input = [
         {

@@ -591,6 +591,18 @@
                   "items": {
                     "type": "object",
                     "title": "FormParameter",
+                    "required": [
+                      "type",
+                      "key"
+                    ],
+                    "properties": {
+                      "type": {
+                        "enum": [
+                          "text",
+                          "file"
+                        ]
+                      }
+                    },
                     "anyOf": [
                       {
                         "properties": {
@@ -616,8 +628,7 @@
                           "description": {
                             "$ref": "#/definitions/description"
                           }
-                        },
-                        "required": ["key"]
+                        }
                       },
                       {
                         "properties": {
@@ -625,7 +636,11 @@
                             "type": "string"
                           },
                           "src": {
-                            "type": ["array", "string", "null"]
+                            "type": [
+                              "array",
+                              "string",
+                              "null"
+                            ]
                           },
                           "disabled": {
                             "type": "boolean",
@@ -643,8 +658,7 @@
                           "description": {
                             "$ref": "#/definitions/description"
                           }
-                        },
-                        "required": ["key"]
+                        }
                       }
                     ]
                   }

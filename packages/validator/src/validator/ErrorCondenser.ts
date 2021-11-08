@@ -102,12 +102,27 @@ export class ErrorCondenser {
   private filterRedundantIfKeywords(errors: ErrorObject[]): ErrorObject[] {
     const paths = Object.keys(this.tree);
 
-    return errors.filter(
-      (error: ErrorObject) =>
-        (error.keyword !== 'if' && error.keyword !== 'anyOf') ||
-        paths
-          .filter((path) => path !== error.instancePath)
-          .every((path) => !path.startsWith(error.instancePath))
+    const nonBranchingPaths = new Set<string>(
+      errors
+        .filter(
+          (error: ErrorObject) =>
+            error.keyword !== 'if' && error.keyword !== 'anyOf'
+        )
+        .map((error) => error.instancePath)
     );
+
+    return errors.filter((error: ErrorObject) => {
+      if (error.keyword !== 'if' && error.keyword !== 'anyOf') {
+        return true;
+      }
+
+      if (nonBranchingPaths.has(error.instancePath)) {
+        return false;
+      }
+
+      return paths
+        .filter((path) => path !== error.instancePath)
+        .every((path) => !path.startsWith(error.instancePath));
+    });
   }
 }

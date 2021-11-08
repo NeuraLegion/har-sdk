@@ -371,13 +371,43 @@ describe('ErrorHumanizer', () => {
       const expectedMessage =
         'the value at /item/0/request/body/formdata/0/type must be one of: "text" or "file"';
 
-      const errors = await postmanValidator.verify(input);
-
       const result = humanizer
-        .humanizeErrors(errors)
+        .humanizeErrors(await postmanValidator.verify(input))
         .map((error) => error.message);
 
       result.should.deep.eq([expectedMessage]);
     });
+  });
+
+  it('should properly humanize "anyOf" postman formdata case with missing key', async () => {
+    const input: Postman.Document = {
+      ...getBasePostmanDoc(),
+      item: [
+        {
+          request: {
+            url: 'http://localhost/create',
+            method: 'POST',
+            body: {
+              formdata: [
+                {
+                  value: 'bar',
+                  type: 'text'
+                }
+              ]
+            }
+          },
+          response: []
+        }
+      ]
+    } as unknown as Postman.Document;
+
+    const expectedMessage =
+      "the value at /item/0/request/body/formdata/0 is missing the required field 'key'";
+
+    const result = humanizer
+      .humanizeErrors(await postmanValidator.verify(input))
+      .map((error) => error.message);
+
+    result.should.deep.eq([expectedMessage]);
   });
 });

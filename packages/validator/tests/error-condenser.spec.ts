@@ -13,26 +13,27 @@ describe('ErrorCondenser', () => {
 
   describe('condense', () => {
     it('should condense duplicated errors', () => {
-      const condenser = new ErrorCondenser(
-        new Array(100).fill(null).map(() => ({
-          ...error,
-          params: {
-            dummy: 42
-          }
-        }))
-      );
-      const result = condenser.condense();
+      const input = new Array(100).fill(null).map(() => ({
+        ...error,
+        params: {
+          dummy: 42
+        }
+      }));
 
-      result.should.deep.eq([
+      const expected = [
         {
           ...error,
           params: { dummy: new Array(100).fill(42) }
         }
-      ]);
+      ];
+
+      const result = new ErrorCondenser(input).condense();
+
+      result.should.deep.eq(expected);
     });
 
     it('should pick most frequent error message', () => {
-      const condenser = new ErrorCondenser([
+      const input = [
         {
           ...error,
           params: null,
@@ -43,13 +44,17 @@ describe('ErrorCondenser', () => {
           message: 'msg2'
         },
         error
-      ]);
+      ];
 
-      condenser.condense().should.deep.eq([{ ...error, message: 'msg2' }]);
+      const expected = [{ ...error, message: 'msg2' }];
+
+      const result = new ErrorCondenser(input).condense();
+
+      result.should.deep.eq(expected);
     });
 
     it('should preserve equally frequent error messages', () => {
-      const condenser = new ErrorCondenser([
+      const input = [
         error,
         {
           ...error,
@@ -61,15 +66,17 @@ describe('ErrorCondenser', () => {
           message: 'msg2'
         },
         error
-      ]);
+      ];
 
-      condenser
-        .condense()
-        .should.deep.eq([error, { ...error, message: 'msg2' }]);
+      const expected = [error, { ...error, message: 'msg2' }];
+
+      const result = new ErrorCondenser(input).condense();
+
+      result.should.deep.eq(expected);
     });
 
     it('should do nothing with errors with different paths', () => {
-      const errors = [
+      const input = [
         error,
         error,
         {
@@ -82,12 +89,15 @@ describe('ErrorCondenser', () => {
         }
       ];
 
-      const condenser = new ErrorCondenser(errors);
-      condenser.condense().should.deep.eq(errors.slice(1));
+      const expected = input.slice(1);
+
+      const result = new ErrorCondenser(input).condense();
+
+      result.should.deep.eq(expected);
     });
 
     it('should filter out ancestor "if" branching errors', () => {
-      const errors = [
+      const input = [
         {
           instancePath: '/paths/~1pet~1{petId}~1uploadImage/post/produces',
           schemaPath: '#/type',
@@ -112,12 +122,15 @@ describe('ErrorCondenser', () => {
         }
       ];
 
-      const condenser = new ErrorCondenser(errors);
-      condenser.condense().should.deep.eq(errors.slice(0, 2));
+      const expected = input.slice(0, 2);
+
+      const result = new ErrorCondenser(input).condense();
+
+      result.should.deep.eq(expected);
     });
 
     it('should keep "if" error if it is single error', () => {
-      const errors = [
+      const input = [
         {
           instancePath: '/paths/~1pet~1{petId}~1uploadImage/post/parameters/0',
           schemaPath: '#/items/if',
@@ -127,8 +140,11 @@ describe('ErrorCondenser', () => {
         }
       ];
 
-      const condenser = new ErrorCondenser(errors);
-      condenser.condense().should.deep.eq(errors);
+      const expected = input;
+
+      const result = new ErrorCondenser(input).condense();
+
+      result.should.deep.eq(expected);
     });
   });
 });

@@ -9,7 +9,7 @@ export enum HttpMethod {
   TRACE = 'TRACE'
 }
 
-export function isHttpMethod(method: string): boolean {
+export function isHttpMethod(method: string): method is HttpMethod {
   return Object.values(HttpMethod).includes(
     method?.toUpperCase() as HttpMethod
   );

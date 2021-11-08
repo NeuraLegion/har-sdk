@@ -10,62 +10,64 @@ use(chaiAsPromised);
 describe('PostmanValidator', () => {
   const validator = new PostmanValidator();
 
-  it('should successfully validate valid document (Nexploit, json)', async () => {
-    const result = await validator.verify(
-      nexploitPostman as unknown as Postman.Document
-    );
-    result.should.be.empty;
-  });
-
-  it('should throw exception if cannot determine version of document', async () => {
-    const apiDoc = {
-      info: {
-        name: 'Invalid Postman document',
-        schema:
-          'https://schema.getpostman.com/json/collection/v1.0.0/collection.json'
-      }
-    };
-
-    return validator
-      .verify(apiDoc as unknown as Postman.Document)
-      .should.be.rejectedWith(
-        Error,
-        'Unsupported or invalid specification version'
+  describe('verify', () => {
+    it('should successfully validate valid document (Nexploit, json)', async () => {
+      const result = await validator.verify(
+        nexploitPostman as unknown as Postman.Document
       );
-  });
+      result.should.be.empty;
+    });
 
-  it('should return list of errors if document is invalid', async () => {
-    const apiDoc = {
-      info: {
-        title: 'Invalid Postman document',
-        schema:
-          'https://schema.getpostman.com/json/collection/v2.1.0/collection.json'
-      }
-    };
+    it('should throw exception if cannot determine version of document', async () => {
+      const apiDoc = {
+        info: {
+          name: 'Invalid Postman document',
+          schema:
+            'https://schema.getpostman.com/json/collection/v1.0.0/collection.json'
+        }
+      };
 
-    const result = await validator.verify(
-      apiDoc as unknown as Postman.Document
-    );
+      return validator
+        .verify(apiDoc as unknown as Postman.Document)
+        .should.be.rejectedWith(
+          Error,
+          'Unsupported or invalid specification version'
+        );
+    });
 
-    result.should.deep.eq([
-      {
-        instancePath: '',
-        schemaPath: '#/required',
-        keyword: 'required',
-        params: {
-          missingProperty: 'item'
+    it('should return list of errors if document is invalid', async () => {
+      const apiDoc = {
+        info: {
+          title: 'Invalid Postman document',
+          schema:
+            'https://schema.getpostman.com/json/collection/v2.1.0/collection.json'
+        }
+      };
+
+      const result = await validator.verify(
+        apiDoc as unknown as Postman.Document
+      );
+
+      result.should.deep.eq([
+        {
+          instancePath: '',
+          schemaPath: '#/required',
+          keyword: 'required',
+          params: {
+            missingProperty: 'item'
+          },
+          message: "must have required property 'item'"
         },
-        message: "must have required property 'item'"
-      },
-      {
-        instancePath: '/info',
-        keyword: 'required',
-        message: "must have required property 'name'",
-        params: {
-          missingProperty: 'name'
-        },
-        schemaPath: '#/required'
-      }
-    ]);
+        {
+          instancePath: '/info',
+          keyword: 'required',
+          message: "must have required property 'name'",
+          params: {
+            missingProperty: 'name'
+          },
+          schemaPath: '#/required'
+        }
+      ]);
+    });
   });
 });

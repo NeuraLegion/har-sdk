@@ -12,7 +12,7 @@ export abstract class BaseOasEditor<
   extends BaseEditor<D>
   implements Editor
 {
-  protected dereferencedDoc: D;
+  protected dereferencedDoc: D | undefined;
 
   protected abstract createPathItemObjectParser(): PathNodeParser;
 

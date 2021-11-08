@@ -50,7 +50,7 @@ describe('oas parser', () => {
       readFileSync(resolve(expectedResultPath), 'utf-8')
     );
 
-    it('should be exception on invalid syntax', async () =>
+    it('should be exception on invalid syntax', () =>
       openApiParser
         .setup('{')
         .should.be.rejectedWith(

@@ -4,8 +4,8 @@ import { SpecTreeNode } from '../../../models';
 import { OpenAPIV2 } from '@har-sdk/types';
 
 export class OasV2Editor extends BaseOasEditor<OpenAPIV2.Document> {
-  public async setup(source: string): Promise<void> {
-    await this.load(source, 'Bad Swagger/OpenAPI V2 specification');
+  public setup(source: string): Promise<void> {
+    return this.load(source, 'Bad Swagger/OpenAPI V2 specification');
   }
 
   public parse(): SpecTreeNode {

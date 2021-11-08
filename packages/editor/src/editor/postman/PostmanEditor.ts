@@ -8,8 +8,8 @@ import { Postman } from '@har-sdk/types';
 export class PostmanEditor extends BaseEditor<Postman.Document> {
   private readonly postmanUrlParser = new PostmanUrlParser();
 
-  public async setup(source: string): Promise<void> {
-    await this.load(source, 'Bad Postman collection');
+  public setup(source: string): Promise<void> {
+    return this.load(source, 'Bad Postman collection');
   }
 
   public parse(): SpecTreeNode {

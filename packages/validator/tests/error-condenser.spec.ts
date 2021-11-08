@@ -129,6 +129,33 @@ describe('ErrorCondenser', () => {
       result.should.deep.eq(expected);
     });
 
+    it('should filter out ancestor "anyOf" branching errors', () => {
+      const input = [
+        {
+          instancePath: '/item/0/request/body/formdata/0/type',
+          schemaPath:
+            '#/else/properties/body/else/properties/formdata/items/anyOf/0/properties/type/const',
+          keyword: 'const',
+          params: { allowedValue: ['text', 'file'] },
+          message: 'must be equal to constant'
+        },
+        {
+          instancePath: '/item/0/request/body/formdata/0',
+          schemaPath:
+            '#/else/properties/body/else/properties/formdata/items/anyOf',
+          keyword: 'anyOf',
+          params: {},
+          message: 'must match a schema in anyOf'
+        }
+      ];
+
+      const expected = input.slice(0, 1);
+
+      const result = new ErrorCondenser(input).condense();
+
+      result.should.deep.eq(expected);
+    });
+
     it('should keep "if" error if it is single error', () => {
       const input = [
         {

@@ -23,8 +23,16 @@ export class TypeFormatter implements Formatter {
         return `must be of type ${expectType}`;
       }
 
-      case 'const':
-        return `must be equal to constant "${error.params.allowedValue}"`;
+      case 'const': {
+        const allowedValue = error.params.allowedValue;
+
+        return Array.isArray(allowedValue)
+          ? `must be one of: ${this.humanizeList(
+              allowedValue.map((x) => JSON.stringify(x)),
+              'or'
+            )}`
+          : `must be equal to constant "${allowedValue}"`;
+      }
     }
   }
 

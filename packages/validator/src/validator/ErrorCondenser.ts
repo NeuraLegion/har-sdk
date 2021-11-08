@@ -104,7 +104,7 @@ export class ErrorCondenser {
 
     return errors.filter(
       (error: ErrorObject) =>
-        error.keyword !== 'if' ||
+        (error.keyword !== 'if' && error.keyword !== 'anyOf') ||
         paths
           .filter((path) => path !== error.instancePath)
           .every((path) => !path.startsWith(error.instancePath))

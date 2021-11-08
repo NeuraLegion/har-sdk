@@ -18,7 +18,7 @@ import { OasV3Editor } from '@har-sdk/editor';
 const editor = new OasV3Editor();
 openApiParser.setup(jsonOrYamlSourceString).then(() => {
   // tree parsing
-  const tree: SpecTreeNode = openApiParser.parse();
+  let tree: SpecTreeNode = openApiParser.parse();
 
   // setting/updating parameter value
   tree = openApiEditor.setParameterValue(

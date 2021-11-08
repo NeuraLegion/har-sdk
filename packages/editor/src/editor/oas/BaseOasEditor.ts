@@ -56,13 +56,13 @@ export abstract class BaseOasEditor<
     const pathItemObjectParser = this.createPathItemObjectParser();
 
     return {
+      parameters,
       jsonPointer: '/',
       path: '/',
       name: this.doc.info.title,
       children: Object.keys(this.doc.paths).map((path: string) =>
         pathItemObjectParser.parse(jsonPointer.compile(['paths', path]))
-      ),
-      parameters
+      )
     };
   }
 

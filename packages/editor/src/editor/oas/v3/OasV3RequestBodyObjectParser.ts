@@ -39,7 +39,7 @@ export class OasV3RequestBodyObjectParser implements ParametersParser {
     mediaTypeObject: OpenAPIV3.MediaTypeObject
   ): SpecTreeRequestBodyParam {
     const value =
-      mediaTypeObject.example ||
+      mediaTypeObject.example ??
       (mediaTypeObject.examples?.[0] as OpenAPIV3.ExampleObject)?.value;
 
     return {

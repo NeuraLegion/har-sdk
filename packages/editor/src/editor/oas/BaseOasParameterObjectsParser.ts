@@ -35,7 +35,7 @@ export abstract class BaseOasParameterObjectsParser<
     return parameters?.map(
       (parameter: P, idx: number): SpecTreeLocationParam =>
         this.parseParameter(`${pointer}/${idx}`, parameter)
-    );
+    ) ?? [];
   }
 
   protected parseParameter(

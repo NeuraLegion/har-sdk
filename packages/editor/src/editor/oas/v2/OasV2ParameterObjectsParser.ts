@@ -9,8 +9,8 @@ export class OasV2ParameterObjectsParser extends BaseOasParameterObjectsParser<
     super(doc, dereferencedDoc);
   }
 
-  protected getParameterValue(paramObj: OpenAPIV2.Parameter): string {
-    return paramObj.default || paramObj?.items?.default;
+  protected getParameterValue(paramObj: OpenAPIV2.Parameter): string | undefined {
+    return paramObj.default ?? paramObj?.items?.default;
   }
 
   protected getValueJsonPointer(paramPointer: string): string {

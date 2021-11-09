@@ -17,9 +17,7 @@ module.exports = {
     },
     'import/resolver': {
       typescript: {
-        project: [
-          './packages/*/tsconfig.json',
-        ]
+        project: ['./packages/*/tsconfig.json']
       }
     }
   },
@@ -163,9 +161,9 @@ module.exports = {
       'off',
       {
         packageDir: [
-          require('./tsconfig.json').references.map(
-            (package) => join(__dirname, package.path)
-          ).concat(__dirname)
+          require('./tsconfig.json')
+            .references.map((package) => join(__dirname, package.path))
+            .concat(__dirname)
         ],
         devDependencies: ['**/*.spec.ts', '**/test{,s}/**'],
         optionalDependencies: false,

@@ -1,47 +1,53 @@
-import nexplotPostman from './nexploit.postman.json';
+import nexploitPostman from './postman.nexploit.json';
 import { PostmanValidator } from '../src';
+import { ErrorObject } from 'ajv';
+import { use } from 'chai';
+import chaiAsPromised from 'chai-as-promised';
 import { Postman } from '@har-sdk/types';
 import 'chai/register-should';
+
+use(chaiAsPromised);
 
 describe('PostmanValidator', () => {
   const validator = new PostmanValidator();
 
   describe('verify', () => {
-    it('should successfully validate postman document', async () => {
-      const result = await validator.verify(
-        nexplotPostman as unknown as Postman.Document
-      );
-      result.errors.should.be.empty;
+    it('should successfully validate valid document (Nexploit, json)', async () => {
+      const input: Postman.Document =
+        nexploitPostman as unknown as Postman.Document;
+
+      const result = await validator.verify(input);
+
+      result.should.be.empty;
     });
 
-    it('should throw error if cannot determine version of document', async () => {
-      const apiDoc = {
+    it('should throw exception if cannot determine version of document', async () => {
+      const input: Postman.Document = {
         info: {
-          name: 'Some valid API document',
+          name: 'Invalid Postman document',
           schema:
             'https://schema.getpostman.com/json/collection/v1.0.0/collection.json'
-        },
-        paths: {}
-      };
+        }
+      } as unknown as Postman.Document;
 
-      try {
-        await validator.verify(apiDoc as unknown as Postman.Document);
-      } catch (err) {
-        (err as Error).message.should.be.equal(
-          'Cannot determine version of schema. Schema ID is missed.'
-        );
-      }
+      const result = validator.verify(input);
+
+      return result.should.be.rejectedWith(
+        Error,
+        'Unsupported or invalid specification version'
+      );
     });
 
-    it('should throw error if document is invalid', async () => {
-      const apiDoc = {
+    it('should return list of errors if document is invalid', async () => {
+      const input: Postman.Document = {
         info: {
-          title: 'Some valid API document',
+          title: 'Invalid Postman document',
           schema:
             'https://schema.getpostman.com/json/collection/v2.1.0/collection.json'
         }
-      };
-      const errors = [
+      } as unknown as Postman.Document;
+
+      const expected: ErrorObject[] = [
         {
           instancePath: '',
           schemaPath: '#/required',
@@ -62,10 +68,9 @@ describe('PostmanValidator', () => {
         }
       ];
 
-      const result = await validator.verify(
-        apiDoc as unknown as Postman.Document
-      );
-      result.errors.should.deep.eq(errors);
+      const result = await validator.verify(input);
+
+      result.should.deep.eq(expected);
     });
   });
 });

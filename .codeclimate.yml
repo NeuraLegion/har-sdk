@@ -1,4 +1,4 @@
-version: "2"
+version: '2'
 checks:
   argument-count:
     config:
@@ -26,13 +26,13 @@ checks:
 plugins:
   eslint:
     enabled: true
-    channel: "eslint-7"
+    channel: 'eslint-7'
     config:
       config: ./.eslintrc.js
       extensions:
         - .ts
 exclude_patterns:
-  - "**/dist/"
-  - "**/node_modules/"
-  - "**/*.spec.ts"
-  - "**/tests/"
+  - '**/dist/'
+  - '**/node_modules/'
+  - '**/*.spec.ts'
+  - '**/tests/'

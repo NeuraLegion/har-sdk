@@ -65,7 +65,7 @@ describe('ErrorHumanizer', () => {
       const { host, ...input } = getBaseSwaggerDoc();
 
       const expectedMessage =
-        "the root value is missing the required field 'host'";
+        'the root value is missing the required field `host`';
 
       const result = humanizer
         .humanizeErrors(await oasValidator.verify(input))
@@ -230,7 +230,7 @@ describe('ErrorHumanizer', () => {
         foo: 42
       } as OpenAPIV3.Document;
 
-      const expectedMessage = 'the root value has an unexpected property "foo"';
+      const expectedMessage = 'the root value has an unexpected property `foo`';
 
       const result = humanizer
         .humanizeErrors(await oasValidator.verify(input))
@@ -402,7 +402,7 @@ describe('ErrorHumanizer', () => {
     } as unknown as Postman.Document;
 
     const expectedMessage =
-      "the value at /item/0/request/body/formdata/0 is missing the required field 'key'";
+      'the value at /item/0/request/body/formdata/0 is missing the required field `key`';
 
     const result = humanizer
       .humanizeErrors(await postmanValidator.verify(input))

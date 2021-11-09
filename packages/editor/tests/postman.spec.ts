@@ -15,13 +15,13 @@ import { resolve } from 'path';
 
 use(chaiAsPromised);
 
-describe('postman parser', () => {
+describe('PostmanEditor', () => {
   const sourcePath = './tests/postman-sample1.json';
   const source = readFileSync(resolve(sourcePath), 'utf-8');
   const expectedResultPath = './tests/postman-sample1.result.json';
 
-  describe('validate postman sample', () => {
-    it('should be validated with no errors', async () => {
+  describe('input validation', () => {
+    it('should be validated with no errors', () => {
       const verifyResultPromise = new PostmanValidator().verify(
         JSON.parse(source)
       );
@@ -33,26 +33,40 @@ describe('postman parser', () => {
     });
   });
 
-  describe('postman tree parser', () => {
-    const postmanTreeParser: TreeParser = new PostmanEditor();
-    const resultTree = JSON.parse(
-      readFileSync(resolve(expectedResultPath), 'utf-8')
-    );
+  describe('TreeParser', () => {
+    let postmanTreeParser: TreeParser;
 
-    it('should be exception on invalid syntax', async () =>
+    beforeEach(() => {
+      postmanTreeParser = new PostmanEditor();
+    });
+
+    it('should be exception on invalid syntax', () =>
       postmanTreeParser
         .setup('{')
         .should.be.rejectedWith(Error, /Bad Postman collection/));
 
     it('should parse valid document', async () => {
+      const expected = JSON.parse(
+        readFileSync(resolve(expectedResultPath), 'utf-8')
+      );
+
       await postmanTreeParser.setup(source);
       const tree = postmanTreeParser.parse();
-      tree.should.deep.eq(resultTree);
+
+      tree.should.deep.eq(expected);
     });
   });
 
-  describe('postman editor', () => {
-    const postmanEditor = new PostmanEditor();
+  describe('Editor', () => {
+    let postmanEditor: PostmanEditor;
+    let tree: SpecTreeNode;
+
+    beforeEach(async () => {
+      postmanEditor = new PostmanEditor();
+
+      await postmanEditor.setup(source);
+      tree = postmanEditor.parse();
+    });
 
     const shouldBeValidDoc = (doc: Postman.Document) =>
       new PostmanValidator().verify(doc).should.eventually.deep.eq({
@@ -60,12 +74,10 @@ describe('postman parser', () => {
         valid: true
       });
 
-    describe('postman parameters editor', () => {
-      it('should set global variable value', async () => {
+    describe('setParameterValue', () => {
+      it('should set global variable value', () => {
         const newValue = 'https://neuralegion.com';
 
-        await postmanEditor.setup(source);
-        let tree = postmanEditor.parse();
         tree = postmanEditor.setParameterValue(
           tree.parameters[0].valueJsonPointer,
           newValue
@@ -85,14 +97,11 @@ describe('postman parser', () => {
         ]);
       });
 
-      it('should change path param value', async () => {
+      it('should change path param value', () => {
         const path =
           '$..children[?(@.path=="{{baseUrl}}/api/v1/subscriptions/:subscriptionId" && @.method=="GET")].parameters[?(@.name=="subscriptionId")]';
         const newValue = 'id42';
 
-        await postmanEditor.setup(source);
-
-        let tree = postmanEditor.parse();
         const queryParam = jsonPath.query(tree, path)[0] as SpecTreeNodeParam;
         queryParam.value.should.eq('<string>');
 
@@ -113,11 +122,8 @@ describe('postman parser', () => {
       });
     });
 
-    describe('postman nodes remover', () => {
-      it('should remove group node', async () => {
-        await postmanEditor.setup(source);
-        let tree = postmanEditor.parse();
-
+    describe('removeNode', () => {
+      it('should remove group node', () => {
         const path = '$..children[?(@.path=="{{baseUrl}}/api/v1/statistics")]';
         const pathNode = jsonPath.query(tree, path)[0] as SpecTreeNode;
 
@@ -133,10 +139,7 @@ describe('postman parser', () => {
         postmanEditor['tree'].should.be.deep.equal(postmanEditor.parse());
       });
 
-      it('should remove endpoint node', async () => {
-        await postmanEditor.setup(source);
-        let tree = postmanEditor.parse();
-
+      it('should remove endpoint node', () => {
         const path =
           '$.children[?(@.path=="{{baseUrl}}/.well-known/change-password")]';
         const endpointNode = jsonPath.query(tree, path)[0] as SpecTreeNode;
@@ -153,10 +156,7 @@ describe('postman parser', () => {
         postmanEditor['tree'].should.be.deep.equal(postmanEditor.parse());
       });
 
-      it('should update indices on remove', async () => {
-        await postmanEditor.setup(source);
-        let tree = postmanEditor.parse();
-
+      it('should update indices on remove', () => {
         const path1 =
           '$..children[?(@.path=="{{baseUrl}}/api/v1/me/feed/activities" && @.method=="DELETE")]';
         const endpointNode1 = jsonPath.query(tree, path1)[0] as SpecTreeNode;
@@ -181,6 +181,18 @@ describe('postman parser', () => {
         endpointNode2Changed.jsonPointer.should.be.equal(
           '/item/0/item/3/item/0/item/1/item/0'
         );
+      });
+    });
+
+    describe('stringify', () => {
+      it('should serialize into json', async () => {
+        await postmanEditor.setup(source);
+
+        const result = postmanEditor.stringify();
+
+        result.should.be.a('string');
+        result.should.match(/^{/);
+        JSON.parse(result).should.be.deep.equal(JSON.parse(source));
       });
     });
   });

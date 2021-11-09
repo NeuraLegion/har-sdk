@@ -18,10 +18,9 @@ import { resolve } from 'path';
 
 use(chaiAsPromised);
 
-describe('oas parser', () => {
+describe('OasV2Editor', () => {
   const sourcePath = './tests/oas2-sample1.yaml';
   const source = readFileSync(resolve(sourcePath), 'utf-8');
-  const expectedResultPath = './tests/oas2-sample1.result.json';
 
   describe('dereference', () => {
     it('should dereference all $refs', async () => {
@@ -31,52 +30,54 @@ describe('oas parser', () => {
     });
   });
 
-  describe('validate basic oas2 sample', () => {
-    it('should be validated with no errors', async () => {
-      const verifyResultPromise = new OASValidator().verify(
-        load(source, { json: true }) as OpenAPIV2.Document
-      );
-
-      return verifyResultPromise.should.eventually.deep.eq({
-        errors: [],
+  describe('input validation', () => {
+    it('should be validated with no errors', () => {
+      const input = load(source, { json: true }) as OpenAPIV2.Document;
+      const expected = {
+        errors: [] as any,
         valid: true
-      });
+      };
+
+      const result = new OASValidator().verify(input);
+
+      return result.should.eventually.deep.eq(expected);
     });
   });
 
-  describe('oas v2 tree parser', () => {
-    const openApiParser: TreeParser = new OasV2Editor();
-    const resultTree = JSON.parse(
-      readFileSync(resolve(expectedResultPath), 'utf-8')
-    );
+  describe('TreeParser', () => {
+    let openApiParser: TreeParser;
+
+    beforeEach(() => {
+      openApiParser = new OasV2Editor();
+    });
 
     it('should be exception on invalid syntax', () =>
       openApiParser
         .setup('{')
-        .should.be.rejectedWith(
-          Error,
-          /Bad Swagger\/OpenAPI V2 specification/
-        ));
+        .should.be.rejectedWith(Error, 'Bad Swagger/OpenAPI V2 specification'));
 
     it('should correctly parse yaml valid document', async () => {
+      const expected = JSON.parse(
+        readFileSync(resolve('./tests/oas2-sample1.result.json'), 'utf-8')
+      );
+
       await openApiParser.setup(source);
       const tree = openApiParser.parse();
 
-      tree.should.deep.eq(resultTree);
-    });
-
-    it('should have host as parameter of root node', async () => {
-      await openApiParser.setup(source);
-      const tree = openApiParser.parse();
-
-      tree.parameters.should.be.instanceOf(Array);
-      tree.parameters.length.should.equal(1);
-      tree.parameters[0].value.should.eq('petstore.swagger.io');
+      tree.should.deep.eq(expected);
     });
   });
 
-  describe('oas v2 editor', () => {
-    const openApiEditor = new OasV2Editor();
+  describe('Editor', () => {
+    let openApiEditor: OasV2Editor;
+    let tree: SpecTreeNode;
+
+    beforeEach(async () => {
+      openApiEditor = new OasV2Editor();
+
+      await openApiEditor.setup(source);
+      tree = openApiEditor.parse();
+    });
 
     const shouldBeValidDoc = (doc: OpenAPIV2.Document) =>
       new OASValidator().verify(doc).should.eventually.deep.eq({
@@ -84,11 +85,8 @@ describe('oas parser', () => {
         valid: true
       });
 
-    describe('oas v2 parameters editor', () => {
-      it('should set host value', async () => {
-        await openApiEditor.setup(source);
-        let tree = openApiEditor.parse();
-
+    describe('setParameterValue', () => {
+      it('should set host value', () => {
         const newValue = 'neuralegion.com';
         tree = openApiEditor.setParameterValue(
           tree.parameters[0].valueJsonPointer,
@@ -109,10 +107,7 @@ describe('oas parser', () => {
         ]);
       });
 
-      it('should set referenced query param value', async () => {
-        await openApiEditor.setup(source);
-        let tree = openApiEditor.parse();
-
+      it('should set referenced query param value', () => {
         const path =
           '$..children[?(@.path=="/pet/findByStatus" && @.method=="GET")].parameters[?(@.name=="status")]';
         const oldValue = 'available';
@@ -141,10 +136,7 @@ describe('oas parser', () => {
         ).items.default.should.equal(oldValue);
       });
 
-      it('should change query param existing value', async () => {
-        await openApiEditor.setup(source);
-        let tree = openApiEditor.parse();
-
+      it('should change query param existing value', () => {
         const path =
           '$..children[?(@.path=="/pet/findByTags" && @.method=="GET")].parameters[?(@.name=="tags")]';
         const newValue = 'dummyTag';
@@ -167,10 +159,7 @@ describe('oas parser', () => {
         ).default.should.equal(newValue);
       });
 
-      it('should set referenced body parameter value', async () => {
-        await openApiEditor.setup(source);
-        let tree = openApiEditor.parse();
-
+      it('should set referenced body parameter value', () => {
         const path =
           '$..children[?(@.path=="/pet/{petId}" && @.method=="PATCH")].parameters[?(@.name=="body")]';
         const newValue = '{"name":"test"}';
@@ -198,11 +187,8 @@ describe('oas parser', () => {
       });
     });
 
-    describe('oas v2 nodes remover', () => {
-      it('should remove path node', async () => {
-        await openApiEditor.setup(source);
-        let tree = openApiEditor.parse();
-
+    describe('removeNode', () => {
+      it('should remove path node', () => {
         const path = '$..children[?(@.path=="/pet/{petId}")]';
         const pathNode = jsonPath.query(tree, path)[0] as SpecTreeNode;
 
@@ -216,10 +202,7 @@ describe('oas parser', () => {
         openApiEditor['tree'].should.be.deep.equal(openApiEditor.parse());
       });
 
-      it('should remove endpoint node', async () => {
-        await openApiEditor.setup(source);
-        let tree = openApiEditor.parse();
-
+      it('should remove endpoint node', () => {
         const path =
           '$..children[?(@.path=="/pet/{petId}" && @.method=="GET")]';
         const endpointNode = jsonPath.query(tree, path)[0] as SpecTreeNode;
@@ -238,17 +221,23 @@ describe('oas parser', () => {
       });
     });
 
-    describe('oas v2 serialization', () => {
+    describe('stringify', () => {
       it('should serialize yaml into yaml', async () => {
         await openApiEditor.setup(source);
-        openApiEditor.stringify().should.be.a('string');
-        openApiEditor.stringify().should.match(/^swagger:/);
+
+        const result = openApiEditor.stringify();
+
+        result.should.be.a('string');
+        result.should.match(/^swagger:/);
       });
 
       it('should serialize json into json', async () => {
         await openApiEditor.setup('{}');
-        openApiEditor.stringify().should.be.a('string');
-        openApiEditor.stringify().should.equal('{}');
+
+        const result = openApiEditor.stringify();
+
+        result.should.be.a('string');
+        result.should.equal('{}');
       });
     });
   });

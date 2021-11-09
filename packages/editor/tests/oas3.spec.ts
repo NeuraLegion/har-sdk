@@ -5,7 +5,6 @@ import {
   SpecTreeNodeParam,
   TreeParser
 } from '../src';
-import $RefParser from '@apidevtools/json-schema-ref-parser';
 import { load } from 'js-yaml';
 import jsonPath from 'jsonpath';
 import 'chai/register-should';
@@ -21,14 +20,6 @@ use(chaiAsPromised);
 describe('OasV3Editor', () => {
   const sourcePath = './tests/oas3-sample1.yaml';
   const source = readFileSync(resolve(sourcePath), 'utf-8');
-
-  describe('dereference', () => {
-    it('should dereference all $refs', async () => {
-      const parser = new $RefParser();
-      const api = await parser.dereference(sourcePath);
-      JSON.stringify(api).should.not.contain('$ref');
-    });
-  });
 
   describe('input validation', () => {
     it('should be validated with no errors', () => {

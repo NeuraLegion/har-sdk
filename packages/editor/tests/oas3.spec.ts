@@ -57,26 +57,26 @@ describe('OasV3Editor', () => {
         .should.be.rejectedWith(Error, 'Bad OpenAPI V3 specification'));
 
     it('should correctly parse yaml valid document', async () => {
+      await openApiParser.setup(source);
       const expected = JSON.parse(
         readFileSync(resolve('./tests/oas3-sample1.result.json'), 'utf-8')
       );
 
-      await openApiParser.setup(source);
-      const tree = openApiParser.parse();
+      const result = openApiParser.parse();
 
-      tree.should.deep.eq(expected);
+      result.should.deep.eq(expected);
     });
   });
 
   describe('Editor', () => {
     let openApiEditor: OasV3Editor;
-    let tree: SpecTreeNode;
+    let inputTree: SpecTreeNode;
 
     beforeEach(async () => {
       openApiEditor = new OasV3Editor();
 
       await openApiEditor.setup(source);
-      tree = openApiEditor.parse();
+      inputTree = openApiEditor.parse();
     });
 
     const shouldBeValidDoc = (doc: OpenAPIV3.Document) =>
@@ -88,137 +88,131 @@ describe('OasV3Editor', () => {
     describe('setParameterValue', () => {
       it('should set servers value', () => {
         const newValue = [{ url: 'https://neuralegion.com' }];
-        tree = openApiEditor.setParameterValue(
-          tree.parameters[0].valueJsonPointer,
-          newValue
-        );
-
-        openApiEditor.getDocument().servers.should.deep.equal(newValue);
-
-        shouldBeValidDoc(openApiEditor.getDocument());
-
-        tree.parameters.should.deep.equal([
+        const expected = [
           {
             paramType: 'variable',
             name: 'servers',
             valueJsonPointer: '/servers',
             value: newValue
           }
-        ]);
+        ];
+        const inputParam: SpecTreeNodeParam = inputTree.parameters[0];
+
+        const result = openApiEditor.setParameterValue(
+          inputParam.valueJsonPointer,
+          newValue
+        );
+
+        result.parameters.should.deep.equal(expected);
+        shouldBeValidDoc(openApiEditor.getDocument());
+        openApiEditor.getDocument().servers.should.deep.equal(newValue);
       });
 
       it('should set referenced query param value', () => {
         const path =
           '$..children[?(@.path=="/pet/findByStatus" && @.method=="GET")].parameters[?(@.name=="status")]';
         const oldValue = 'available';
-        const newValue = 'dummyStatus';
+        const expected = 'dummyStatus';
 
-        const queryParam = jsonPath.query(tree, path)[0];
+        const inputParam: SpecTreeNodeParam = jsonPath.query(
+          inputTree,
+          path
+        )[0];
+        inputParam.value.should.equal(oldValue);
 
-        queryParam.value.should.equal('available');
-
-        tree = openApiEditor.setParameterValue(
-          queryParam.valueJsonPointer,
-          newValue
+        const result = openApiEditor.setParameterValue(
+          inputParam.valueJsonPointer,
+          expected
         );
 
+        jsonPath.query(result, path)[0].value.should.equal(expected);
         shouldBeValidDoc(openApiEditor.getDocument());
-
-        jsonPath.query(tree, path)[0].value.should.equal(newValue);
-
-        (
-          openApiEditor.getDocument().paths['/pet/findByStatus'].get
-            .parameters[0] as OpenAPIV3.ParameterObject
-        ).example.should.equal(newValue);
-
         (
           openApiEditor.getDocument().components.parameters[
             'status'
           ] as OpenAPIV3.ParameterObject
         ).example.should.equal(oldValue);
+        (
+          openApiEditor.getDocument().paths['/pet/findByStatus'].get
+            .parameters[0] as OpenAPIV3.ParameterObject
+        ).example.should.equal(expected);
       });
 
       it('should change query param existing value', () => {
         const path =
           '$..children[?(@.path=="/pet/findByTags" && @.method=="GET")].parameters[?(@.name=="tags")]';
-        const newValue = 'dummyTag';
+        const expected = 'dummyTag';
 
-        const queryParam = jsonPath.query(tree, path)[0] as SpecTreeNodeParam;
-        queryParam.should.not.haveOwnProperty('value');
+        const inputParam: SpecTreeNodeParam = jsonPath.query(
+          inputTree,
+          path
+        )[0] as SpecTreeNodeParam;
+        inputParam.should.not.haveOwnProperty('value');
 
-        tree = openApiEditor.setParameterValue(
-          queryParam.valueJsonPointer,
-          newValue
+        const result = openApiEditor.setParameterValue(
+          inputParam.valueJsonPointer,
+          expected
         );
 
+        jsonPath.query(result, path)[0].value.should.equal(expected);
         shouldBeValidDoc(openApiEditor.getDocument());
-
-        jsonPath.query(tree, path)[0].value.should.equal(newValue);
-
         (
           openApiEditor.getDocument().paths['/pet/findByTags'].get
             .parameters[0] as OpenAPIV3.ParameterObject
-        ).example.should.equal(newValue);
+        ).example.should.equal(expected);
       });
 
       it('should set referenced request body value', () => {
         const path =
           '$..children[?(@.path=="/pet/{petId}" && @.method=="PATCH")].parameters[?(@.bodyType)]';
-        const newValue = '{"name":"test"}';
+        const expected = '{"name":"test"}';
 
-        const bodyNode = jsonPath.query(
-          tree,
+        const inputParam: SpecTreeRequestBodyParam = jsonPath.query(
+          inputTree,
           path
         )[0] as SpecTreeRequestBodyParam;
-        bodyNode.should.not.haveOwnProperty('value');
+        inputParam.should.not.haveOwnProperty('value');
 
-        tree = openApiEditor.setParameterValue(
-          bodyNode.valueJsonPointer,
-          newValue
+        const result = openApiEditor.setParameterValue(
+          inputParam.valueJsonPointer,
+          expected
         );
 
+        jsonPath.query(result, path)[0].value.should.equal(expected);
         shouldBeValidDoc(openApiEditor.getDocument());
-
-        jsonPath.query(tree, path)[0].value.should.equal(newValue);
-
         (
           openApiEditor.getDocument().paths['/pet/{petId}'].patch
             .requestBody as OpenAPIV3.RequestBodyObject
-        ).content[bodyNode.bodyType].example.should.equal(newValue);
+        ).content[inputParam.bodyType].example.should.equal(expected);
       });
     });
 
     describe('removeNode', () => {
       it('should remove path node', () => {
         const path = '$..children[?(@.path=="/pet/{petId}")]';
-        const pathNode = jsonPath.query(tree, path)[0] as SpecTreeNode;
+        const inputNode: SpecTreeNode = jsonPath.query(inputTree, path)[0];
 
-        tree = openApiEditor.removeNode(pathNode.jsonPointer);
+        const result = openApiEditor.removeNode(inputNode.jsonPointer);
 
+        jsonPath.query(result, path).should.be.empty;
         shouldBeValidDoc(openApiEditor.getDocument());
-
-        jsonPath.query(tree, path).should.be.empty;
         openApiEditor.getDocument().paths.should.not.haveOwnProperty(path);
-
-        openApiEditor['tree'].should.be.deep.equal(openApiEditor.parse());
+        result.should.be.deep.equal(openApiEditor.parse());
       });
 
       it('should remove endpoint node', () => {
         const path =
           '$..children[?(@.path=="/pet/{petId}" && @.method=="GET")]';
-        const endpointNode = jsonPath.query(tree, path)[0] as SpecTreeNode;
+        const inputNode: SpecTreeNode = jsonPath.query(inputTree, path)[0];
 
-        tree = openApiEditor.removeNode(endpointNode.jsonPointer);
+        const result = openApiEditor.removeNode(inputNode.jsonPointer);
 
+        jsonPath.query(result, path).should.be.empty;
         shouldBeValidDoc(openApiEditor.getDocument());
-
-        jsonPath.query(tree, path).should.be.empty;
-
         openApiEditor
           .getDocument()
           .paths['/pet/{petId}'].should.not.haveOwnProperty('get');
-
-        openApiEditor['tree'].should.be.deep.equal(openApiEditor.parse());
+        result.should.be.deep.equal(openApiEditor.parse());
       });
     });
 

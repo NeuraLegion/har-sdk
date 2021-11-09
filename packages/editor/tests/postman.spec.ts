@@ -22,14 +22,15 @@ describe('PostmanEditor', () => {
 
   describe('input validation', () => {
     it('should be validated with no errors', () => {
-      const verifyResultPromise = new PostmanValidator().verify(
-        JSON.parse(source)
-      );
-
-      return verifyResultPromise.should.eventually.deep.eq({
-        errors: [],
+      const input: Postman.Document = JSON.parse(source);
+      const expected = {
+        errors: [] as any,
         valid: true
-      });
+      };
+
+      const result = new PostmanValidator().verify(input);
+
+      return result.should.eventually.deep.eq(expected);
     });
   });
 
@@ -43,29 +44,29 @@ describe('PostmanEditor', () => {
     it('should be exception on invalid syntax', () =>
       postmanTreeParser
         .setup('{')
-        .should.be.rejectedWith(Error, /Bad Postman collection/));
+        .should.be.rejectedWith(Error, 'Bad Postman collection'));
 
     it('should parse valid document', async () => {
+      await postmanTreeParser.setup(source);
       const expected = JSON.parse(
         readFileSync(resolve(expectedResultPath), 'utf-8')
       );
 
-      await postmanTreeParser.setup(source);
-      const tree = postmanTreeParser.parse();
+      const result = postmanTreeParser.parse();
 
-      tree.should.deep.eq(expected);
+      result.should.deep.eq(expected);
     });
   });
 
   describe('Editor', () => {
     let postmanEditor: PostmanEditor;
-    let tree: SpecTreeNode;
+    let inputTree: SpecTreeNode;
 
     beforeEach(async () => {
       postmanEditor = new PostmanEditor();
 
       await postmanEditor.setup(source);
-      tree = postmanEditor.parse();
+      inputTree = postmanEditor.parse();
     });
 
     const shouldBeValidDoc = (doc: Postman.Document) =>
@@ -77,110 +78,105 @@ describe('PostmanEditor', () => {
     describe('setParameterValue', () => {
       it('should set global variable value', () => {
         const newValue = 'https://neuralegion.com';
-
-        tree = postmanEditor.setParameterValue(
-          tree.parameters[0].valueJsonPointer,
-          newValue
-        );
-
-        postmanEditor.getDocument().variable[0].value.should.equal(newValue);
-
-        shouldBeValidDoc(postmanEditor.getDocument());
-
-        tree.parameters.should.deep.equal([
+        const expected = [
           {
             paramType: 'variable',
             name: 'baseUrl',
             valueJsonPointer: '/variable/0/value',
             value: newValue
           }
-        ]);
+        ];
+        const inputParam: SpecTreeNodeParam = inputTree.parameters[0];
+
+        const result = postmanEditor.setParameterValue(
+          inputParam.valueJsonPointer,
+          newValue
+        );
+
+        result.parameters.should.deep.equal(expected);
+        shouldBeValidDoc(postmanEditor.getDocument());
+        postmanEditor.getDocument().variable[0].value.should.equal(newValue);
       });
 
       it('should change path param value', () => {
         const path =
           '$..children[?(@.path=="{{baseUrl}}/api/v1/subscriptions/:subscriptionId" && @.method=="GET")].parameters[?(@.name=="subscriptionId")]';
-        const newValue = 'id42';
+        const expected = 'id42';
 
-        const queryParam = jsonPath.query(tree, path)[0] as SpecTreeNodeParam;
-        queryParam.value.should.eq('<string>');
+        const inputParam: SpecTreeNodeParam = jsonPath.query(
+          inputTree,
+          path
+        )[0];
+        inputParam.value.should.eq('<string>');
 
-        tree = postmanEditor.setParameterValue(
-          queryParam.valueJsonPointer,
-          newValue
+        const result = postmanEditor.setParameterValue(
+          inputParam.valueJsonPointer,
+          expected
         );
 
+        jsonPath.query(result, path)[0].value.should.equal(expected);
         shouldBeValidDoc(postmanEditor.getDocument());
-
-        jsonPath.query(tree, path)[0].value.should.equal(newValue);
-
-        const docPath =
-          '$..item[?(@.request.url.raw=="{{baseUrl}}/api/v1/subscriptions/:subscriptionId")].request.url.variable[?(@.key=="subscriptionId")]';
         jsonPath
-          .query(postmanEditor.getDocument(), docPath)[0]
-          .value.should.equal(newValue);
+          .query(
+            postmanEditor.getDocument(),
+            '$..item[?(@.request.url.raw=="{{baseUrl}}/api/v1/subscriptions/:subscriptionId")].request.url.variable[?(@.key=="subscriptionId")]'
+          )[0]
+          .value.should.equal(expected);
       });
     });
 
     describe('removeNode', () => {
       it('should remove group node', () => {
         const path = '$..children[?(@.path=="{{baseUrl}}/api/v1/statistics")]';
-        const pathNode = jsonPath.query(tree, path)[0] as SpecTreeNode;
+        const inputNode: SpecTreeNode = jsonPath.query(inputTree, path)[0];
 
-        tree = postmanEditor.removeNode(pathNode.jsonPointer);
+        const result = postmanEditor.removeNode(inputNode.jsonPointer);
 
+        jsonPath.query(result, path).should.be.empty;
         shouldBeValidDoc(postmanEditor.getDocument());
-
-        jsonPath.query(tree, path).should.be.empty;
         postmanEditor
           .stringify()
           .should.not.include('{{baseUrl}}/api/v1/statistics');
-
-        postmanEditor['tree'].should.be.deep.equal(postmanEditor.parse());
+        result.should.be.deep.equal(postmanEditor.parse());
       });
 
       it('should remove endpoint node', () => {
         const path =
           '$.children[?(@.path=="{{baseUrl}}/.well-known/change-password")]';
-        const endpointNode = jsonPath.query(tree, path)[0] as SpecTreeNode;
+        const inputNode: SpecTreeNode = jsonPath.query(inputTree, path)[0];
 
-        tree = postmanEditor.removeNode(endpointNode.jsonPointer);
+        const result = postmanEditor.removeNode(inputNode.jsonPointer);
 
         shouldBeValidDoc(postmanEditor.getDocument());
 
-        jsonPath.query(tree, path).should.be.empty;
+        jsonPath.query(result, path).should.be.empty;
         postmanEditor
           .stringify()
           .should.not.include('{{baseUrl}}/.well-known/change-password');
-
-        postmanEditor['tree'].should.be.deep.equal(postmanEditor.parse());
+        result.should.be.deep.equal(postmanEditor.parse());
       });
 
       it('should update indices on remove', () => {
         const path1 =
           '$..children[?(@.path=="{{baseUrl}}/api/v1/me/feed/activities" && @.method=="DELETE")]';
-        const endpointNode1 = jsonPath.query(tree, path1)[0] as SpecTreeNode;
-        endpointNode1.jsonPointer.should.be.equal(
+        const inputNode1 = jsonPath.query(inputTree, path1)[0] as SpecTreeNode;
+        inputNode1.jsonPointer.should.be.equal(
           '/item/0/item/3/item/0/item/1/item/0'
         );
 
         const path2 =
           '$..children[?(@.path=="{{baseUrl}}/api/v1/me/feed/activities/:activityId" && @.method=="DELETE")]';
-        const endpointNode2 = jsonPath.query(tree, path2)[0] as SpecTreeNode;
-        endpointNode2.jsonPointer.should.be.equal(
+        const inputNode2 = jsonPath.query(inputTree, path2)[0] as SpecTreeNode;
+        inputNode2.jsonPointer.should.be.equal(
           '/item/0/item/3/item/0/item/1/item/1'
         );
 
-        tree = postmanEditor.removeNode(endpointNode1.jsonPointer);
-        jsonPath.query(tree, path1).should.be.empty;
+        const result = postmanEditor.removeNode(inputNode1.jsonPointer);
 
-        const endpointNode2Changed = jsonPath.query(
-          tree,
-          path2
-        )[0] as SpecTreeNode;
-        endpointNode2Changed.jsonPointer.should.be.equal(
-          '/item/0/item/3/item/0/item/1/item/0'
-        );
+        jsonPath.query(result, path1).should.be.empty;
+        jsonPath
+          .query(result, path2)[0]
+          .jsonPointer.should.be.equal('/item/0/item/3/item/0/item/1/item/0');
       });
     });
 

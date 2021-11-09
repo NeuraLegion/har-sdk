@@ -50,7 +50,7 @@ export class PostmanEditor extends BaseEditor<Postman.Document> {
         return {
           jsonPointer: itemJsonPointer,
           path: this.postmanUrlParser.parse(x.request?.url),
-          method: x.request.method.toUpperCase() as HttpMethod,
+          method: x.request?.method.toUpperCase() as HttpMethod,
           ...(parameters?.length ? { parameters } : {})
         };
       }

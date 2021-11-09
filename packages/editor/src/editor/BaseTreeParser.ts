@@ -54,7 +54,7 @@ export abstract class BaseTreeParser<T> implements TreeParser {
 
   private async loadFromSource(
     source: string
-  ): Promise<{ doc: T; format: 'yaml' | 'json' }> {
+  ): Promise<{ doc: T; format: 'yaml' | 'json' } | undefined> {
     let doc: T | undefined = this.loadFromJson(source);
     let json = true;
 

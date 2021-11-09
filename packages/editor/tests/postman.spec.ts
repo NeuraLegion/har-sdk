@@ -23,14 +23,10 @@ describe('PostmanEditor', () => {
   describe('input validation', () => {
     it('should be validated with no errors', () => {
       const input: Postman.Document = JSON.parse(source);
-      const expected = {
-        errors: [] as any,
-        valid: true
-      };
 
       const result = new PostmanValidator().verify(input);
 
-      return result.should.eventually.deep.eq(expected);
+      return result.should.eventually.deep.eq([]);
     });
   });
 

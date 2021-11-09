@@ -18105,19 +18105,23 @@
               "formdata":  [
                 {
                   "key": "firstName",
-                  "value": "<string>"
+                  "value": "<string>",
+                  "type": "text"
                 },
                 {
                   "key": "lastName",
-                  "value": "<string>"
+                  "value": "<string>",
+                  "type": "text"
                 },
                 {
                   "key": "email",
-                  "value": "<string>"
+                  "value": "<string>",
+                  "type": "text"
                 },
                 {
                   "key": "password",
-                  "value": "<string>"
+                  "value": "<string>",
+                  "type": "text"
                 }
               ]
             },

@@ -24,14 +24,10 @@ describe('OasV2Editor', () => {
   describe('input validation', () => {
     it('should be validated with no errors', () => {
       const input = load(source, { json: true }) as OpenAPIV2.Document;
-      const expected = {
-        errors: [] as any,
-        valid: true
-      };
 
       const result = new OASValidator().verify(input);
 
-      return result.should.eventually.deep.eq(expected);
+      return result.should.eventually.deep.eq([]);
     });
   });
 
@@ -77,10 +73,7 @@ describe('OasV2Editor', () => {
     });
 
     const shouldBeValidDoc = (doc: OpenAPIV2.Document) =>
-      new OASValidator().verify(doc).should.eventually.deep.eq({
-        errors: [],
-        valid: true
-      });
+      new OASValidator().verify(doc).should.eventually.deep.eq([]);
 
     describe('setParameterValue', () => {
       it('should be exception on call "setParameterValue" before "parse"', () => {

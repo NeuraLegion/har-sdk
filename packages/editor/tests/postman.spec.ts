@@ -56,6 +56,12 @@ describe('PostmanEditor', () => {
 
       result.should.deep.eq(expected);
     });
+
+    it('should be exception on call "parse" before "setup"', () =>
+      (() => postmanTreeParser.parse()).should.throw(
+        Error,
+        'You have to call "setup" to initialize the document'
+      ));
   });
 
   describe('Editor', () => {
@@ -76,6 +82,16 @@ describe('PostmanEditor', () => {
       });
 
     describe('setParameterValue', () => {
+      it('should be exception on call "removeNode" before "parse"', () => {
+        const nonInitializedEditor = new PostmanEditor();
+
+        (() =>
+          nonInitializedEditor.setParameterValue('/dummy', 42)).should.throw(
+          Error,
+          'You have to call "parse" to initialize the tree'
+        );
+      });
+
       it('should set global variable value', () => {
         const newValue = 'https://neuralegion.com';
         const expected = [
@@ -126,6 +142,15 @@ describe('PostmanEditor', () => {
     });
 
     describe('removeNode', () => {
+      it('should be exception on call "removeNode" before "parse"', () => {
+        const nonInitializedEditor = new PostmanEditor();
+
+        (() => nonInitializedEditor.removeNode('/dummy')).should.throw(
+          Error,
+          'You have to call "parse" to initialize the tree'
+        );
+      });
+
       it('should remove group node', () => {
         const path = '$..children[?(@.path=="{{baseUrl}}/api/v1/statistics")]';
         const inputNode: SpecTreeNode = jsonPath.query(inputTree, path)[0];

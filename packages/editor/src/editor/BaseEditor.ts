@@ -10,6 +10,8 @@ export abstract class BaseEditor<T>
 {
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   public setParameterValue(valueJsonPointer: string, value: any): SpecTreeNode {
+    this.validateParsedTree();
+
     jsonPointer.set(this.doc, valueJsonPointer, value);
 
     jsonPath.apply(
@@ -22,6 +24,8 @@ export abstract class BaseEditor<T>
   }
 
   public removeNode(nodeJsonPointer: string): SpecTreeNode {
+    this.validateParsedTree();
+
     jsonPointer.remove(this.doc, nodeJsonPointer);
 
     jsonPath.apply(

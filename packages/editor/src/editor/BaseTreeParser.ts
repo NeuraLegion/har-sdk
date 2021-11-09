@@ -18,7 +18,13 @@ export abstract class BaseTreeParser<T> implements TreeParser {
 
   protected validateParsedSource(): void {
     if (!this.doc) {
-      throw new Error('You have to call "parse" to initialize the document.');
+      throw new Error('You have to call "setup" to initialize the document');
+    }
+  }
+
+  protected validateParsedTree(): void {
+    if (!this.tree) {
+      throw new Error('You have to call "parse" to initialize the tree');
     }
   }
 

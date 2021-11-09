@@ -66,6 +66,12 @@ describe('OasV3Editor', () => {
 
       result.should.deep.eq(expected);
     });
+
+    it('should be exception on call "parse" before "setup"', () =>
+      (() => openApiParser.parse()).should.throw(
+        Error,
+        'You have to call "setup" to initialize the document'
+      ));
   });
 
   describe('Editor', () => {
@@ -86,6 +92,16 @@ describe('OasV3Editor', () => {
       });
 
     describe('setParameterValue', () => {
+      it('should be exception on call "setParameterValue" before "parse"', () => {
+        const nonInitializedEditor = new OasV3Editor();
+
+        (() =>
+          nonInitializedEditor.setParameterValue('/dummy', 42)).should.throw(
+          Error,
+          'You have to call "parse" to initialize the tree'
+        );
+      });
+
       it('should set servers value', () => {
         const newValue = [{ url: 'https://neuralegion.com' }];
         const expected = [
@@ -188,6 +204,15 @@ describe('OasV3Editor', () => {
     });
 
     describe('removeNode', () => {
+      it('should be exception on call "removeNode" before "parse"', () => {
+        const nonInitializedEditor = new OasV3Editor();
+
+        (() => nonInitializedEditor.removeNode('/dummy')).should.throw(
+          Error,
+          'You have to call "parse" to initialize the tree'
+        );
+      });
+
       it('should remove path node', () => {
         const path = '$..children[?(@.path=="/pet/{petId}")]';
         const inputNode: SpecTreeNode = jsonPath.query(inputTree, path)[0];

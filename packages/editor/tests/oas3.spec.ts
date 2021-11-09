@@ -223,9 +223,7 @@ describe('OasV3Editor', () => {
     });
 
     describe('stringify', () => {
-      it('should serialize yaml into yaml', async () => {
-        await openApiEditor.setup(source);
-
+      it('should serialize yaml into yaml', () => {
         const result = openApiEditor.stringify();
 
         result.should.be.a('string');

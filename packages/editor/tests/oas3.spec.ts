@@ -76,8 +76,9 @@ describe('OasV3Editor', () => {
       new OASValidator().verify(doc).should.eventually.deep.eq([]);
 
     describe('setParameterValue', () => {
-      it('should be exception on call "setParameterValue" before "parse"', () => {
+      it('should be exception on call "setParameterValue" before "parse"', async () => {
         const nonInitializedEditor = new OasV3Editor();
+        await nonInitializedEditor.setup(source);
 
         (() =>
           nonInitializedEditor.setParameterValue('/dummy', 42)).should.throw(
@@ -188,8 +189,9 @@ describe('OasV3Editor', () => {
     });
 
     describe('removeNode', () => {
-      it('should be exception on call "removeNode" before "parse"', () => {
+      it('should be exception on call "removeNode" before "parse"', async () => {
         const nonInitializedEditor = new OasV3Editor();
+        await nonInitializedEditor.setup(source);
 
         (() => nonInitializedEditor.removeNode('/dummy')).should.throw(
           Error,

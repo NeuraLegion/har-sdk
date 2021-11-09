@@ -78,8 +78,9 @@ describe('PostmanEditor', () => {
       });
 
     describe('setParameterValue', () => {
-      it('should be exception on call "removeNode" before "parse"', () => {
+      it('should be exception on call "removeNode" before "parse"', async () => {
         const nonInitializedEditor = new PostmanEditor();
+        await nonInitializedEditor.setup(source);
 
         (() =>
           nonInitializedEditor.setParameterValue('/dummy', 42)).should.throw(
@@ -138,8 +139,9 @@ describe('PostmanEditor', () => {
     });
 
     describe('removeNode', () => {
-      it('should be exception on call "removeNode" before "parse"', () => {
+      it('should be exception on call "removeNode" before "parse"', async () => {
         const nonInitializedEditor = new PostmanEditor();
+        await nonInitializedEditor.setup(source);
 
         (() => nonInitializedEditor.removeNode('/dummy')).should.throw(
           Error,

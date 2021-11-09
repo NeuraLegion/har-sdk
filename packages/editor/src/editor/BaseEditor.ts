@@ -12,13 +12,11 @@ export abstract class BaseEditor<T>
   public setParameterValue(valueJsonPointer: string, value: any): SpecTreeNode {
     jsonPointer.set(this.doc, valueJsonPointer, value);
 
-    const tree = JSON.parse(JSON.stringify(this.tree));
     jsonPath.apply(
-      tree,
+      this.tree,
       '$..[?(@.valueJsonPointer=="' + valueJsonPointer + '")]',
       (item) => ({ ...item, value })
     );
-    this.tree = tree;
 
     return this.tree;
   }
@@ -26,13 +24,11 @@ export abstract class BaseEditor<T>
   public removeNode(nodeJsonPointer: string): SpecTreeNode {
     jsonPointer.remove(this.doc, nodeJsonPointer);
 
-    const tree = JSON.parse(JSON.stringify(this.tree));
     jsonPath.apply(
-      tree,
+      this.tree,
       '$..[?(@.jsonPointer=="' + nodeJsonPointer + '")]',
       () => undefined
     );
-    this.tree = tree;
 
     return this.parse();
   }

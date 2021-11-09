@@ -83,9 +83,9 @@ describe('PostmanEditor', () => {
           newValue
         );
 
-        postmanEditor['doc'].variable[0].value.should.equal(newValue);
+        postmanEditor.getDocument().variable[0].value.should.equal(newValue);
 
-        shouldBeValidDoc(postmanEditor['doc']);
+        shouldBeValidDoc(postmanEditor.getDocument());
 
         tree.parameters.should.deep.equal([
           {
@@ -110,14 +110,14 @@ describe('PostmanEditor', () => {
           newValue
         );
 
-        shouldBeValidDoc(postmanEditor['doc']);
+        shouldBeValidDoc(postmanEditor.getDocument());
 
         jsonPath.query(tree, path)[0].value.should.equal(newValue);
 
         const docPath =
           '$..item[?(@.request.url.raw=="{{baseUrl}}/api/v1/subscriptions/:subscriptionId")].request.url.variable[?(@.key=="subscriptionId")]';
         jsonPath
-          .query(postmanEditor['doc'], docPath)[0]
+          .query(postmanEditor.getDocument(), docPath)[0]
           .value.should.equal(newValue);
       });
     });
@@ -129,7 +129,7 @@ describe('PostmanEditor', () => {
 
         tree = postmanEditor.removeNode(pathNode.jsonPointer);
 
-        shouldBeValidDoc(postmanEditor['doc']);
+        shouldBeValidDoc(postmanEditor.getDocument());
 
         jsonPath.query(tree, path).should.be.empty;
         postmanEditor
@@ -146,7 +146,7 @@ describe('PostmanEditor', () => {
 
         tree = postmanEditor.removeNode(endpointNode.jsonPointer);
 
-        shouldBeValidDoc(postmanEditor['doc']);
+        shouldBeValidDoc(postmanEditor.getDocument());
 
         jsonPath.query(tree, path).should.be.empty;
         postmanEditor

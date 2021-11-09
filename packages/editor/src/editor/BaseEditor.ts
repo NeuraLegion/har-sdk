@@ -32,4 +32,8 @@ export abstract class BaseEditor<T>
 
     return this.parse();
   }
+
+  public getDocument(): Readonly<T> {
+    return this.doc;
+  }
 }

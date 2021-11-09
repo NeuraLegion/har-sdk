@@ -18,8 +18,6 @@ export abstract class BaseOasEditor<
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   public setParameterValue(valueJsonPointer: string, value: any): SpecTreeNode {
-    this.validateParsedTree();
-
     let refJsonPointer;
     if (!jsonPointer.has(this.doc, valueJsonPointer)) {
       refJsonPointer = this.getRefJsonPointer(valueJsonPointer);
@@ -39,8 +37,6 @@ export abstract class BaseOasEditor<
   }
 
   public removeNode(nodeJsonPointer: string): SpecTreeNode {
-    this.validateParsedTree();
-
     jsonPointer.remove(this.dereferencedDoc, nodeJsonPointer);
 
     return super.removeNode(nodeJsonPointer);

@@ -3,29 +3,43 @@ import { TreeParser } from './TreeParser';
 import { dump, load } from 'js-yaml';
 
 export abstract class BaseTreeParser<T> implements TreeParser {
-  protected doc: T | undefined;
-  protected tree: SpecTreeNode | undefined;
-  protected format: 'yaml' | 'json' | undefined;
+  private _doc: T | undefined;
+  private _format: 'yaml' | 'json' | undefined;
+  private _tree: SpecTreeNode | undefined;
+
+  get doc(): T | undefined {
+    if (!this._doc) {
+      throw new Error('You have to call "setup" to initialize the document');
+    }
+
+    return this._doc;
+  }
+
+  get format(): 'yaml' | 'json' | undefined {
+    if (!this._doc) {
+      throw new Error('You have to call "setup" to initialize the document');
+    }
+
+    return this._format;
+  }
+
+  get tree(): SpecTreeNode | undefined {
+    if (!this._tree) {
+      throw new Error('You have to call "parse" to initialize the tree');
+    }
+
+    return this._tree;
+  }
+
+  set tree(tree: SpecTreeNode) {
+    this._tree = tree;
+  }
 
   public abstract setup(source: string): Promise<void>;
   public abstract parse(): SpecTreeNode;
 
   public stringify(): string {
-    this.validateParsedSource();
-
     return this.format === 'yaml' ? dump(this.doc) : JSON.stringify(this.doc);
-  }
-
-  protected validateParsedSource(): void {
-    if (!this.doc) {
-      throw new Error('You have to call "setup" to initialize the document');
-    }
-  }
-
-  protected validateParsedTree(): void {
-    if (!this.tree) {
-      throw new Error('You have to call "parse" to initialize the tree');
-    }
   }
 
   protected async load(source: string, errorMessage: string): Promise<void> {
@@ -35,7 +49,7 @@ export abstract class BaseTreeParser<T> implements TreeParser {
       throw new Error(errorMessage);
     }
 
-    ({ doc: this.doc, format: this.format } = result);
+    ({ doc: this._doc, format: this._format } = result);
   }
 
   private async loadFromSource(

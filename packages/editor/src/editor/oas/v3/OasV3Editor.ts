@@ -9,8 +9,6 @@ export class OasV3Editor extends BaseOasEditor<OpenAPIV3.Document> {
   }
 
   public parse(): SpecTreeNode {
-    this.validateParsedSource();
-
     this.tree = this.createRootNode([
       {
         paramType: 'variable',

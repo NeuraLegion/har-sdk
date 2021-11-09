@@ -13,8 +13,6 @@ export class PostmanEditor extends BaseEditor<Postman.Document> {
   }
 
   public parse(): SpecTreeNode {
-    this.validateParsedSource();
-
     this.tree = {
       jsonPointer: '/',
       path: '/',

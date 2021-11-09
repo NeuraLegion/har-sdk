@@ -11,10 +11,10 @@ export class ObjectFormatter implements Formatter {
   ): string {
     switch (error.keyword) {
       case 'additionalProperties':
-        return `has an unexpected property "${error.params.additionalProperty}"`;
+        return `has an unexpected property \`${error.params.additionalProperty}\``;
 
       case 'required':
-        return `is missing the required field '${error.params.missingProperty}'`;
+        return `is missing the required field \`${error.params.missingProperty}\``;
 
       case 'minProperties':
       case 'maxProperties':

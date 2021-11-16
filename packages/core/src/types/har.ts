@@ -22,9 +22,9 @@ export interface Log {
    */
   version: string;
   /** Name and version info of the log creator application. */
-  creator: Creator;
+  creator: Tool;
   /** Name and version info of used browser. */
-  browser?: Browser | undefined;
+  browser?: Tool | undefined;
   /**
    * List of all exported (tracked) pages.
    *
@@ -49,23 +49,9 @@ export interface Log {
  * `Creator` and `Browser` objects share the same structure.
  *
  * http://www.softwareishard.com/blog/har-12-spec/#creator
- */
-export interface Creator {
-  /** Name of the application/browser used to export the log. */
-  name: string;
-  /** Version of the application/browser used to export the log. */
-  version: string;
-  /** A comment provided by the user or the application. */
-  comment?: string | undefined;
-}
-/**
- * Infos about application/browser used to export the log.
- *
- * `Browser` and `Creator` objects share the same structure.
- *
  * http://www.softwareishard.com/blog/har-12-spec/#browser
  */
-export interface Browser {
+export interface Tool {
   /** Name of the application/browser used to export the log. */
   name: string;
   /** Version of the application/browser used to export the log. */
@@ -73,6 +59,7 @@ export interface Browser {
   /** A comment provided by the user or the application. */
   comment?: string | undefined;
 }
+
 /**
  * This object represents list of exported pages.
  *

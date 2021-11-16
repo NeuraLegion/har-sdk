@@ -24,7 +24,7 @@
   "module": "./dist/bundle.esm5.js",
   "es2015": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "homepage": "https://github.com/NeuraLegion/har-sdk#readme",
+  "homepage": "https://github.com/NeuraLegion/har-sdk/tree/master/packages/oas#readme",
   "scripts": {
     "prebuild": "npm run compile -- --clean",
     "build": "npm run compile && npm run bundle",

@@ -22,5 +22,3 @@ export interface Importer<T extends ImporterType> {
 
   importSpec(content: string): Promise<Spec<T> | undefined>;
 }
-
-export const Importer: unique symbol = Symbol('Importer');

@@ -1,6 +1,6 @@
 # @har-sdk/core
 
-TBU
+The base package can be used to import specification files (i.e. HAR, OAS and Postman Collection) and detect their type.
 
 ## Setup
 

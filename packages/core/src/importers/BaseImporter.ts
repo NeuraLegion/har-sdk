@@ -42,7 +42,7 @@ export abstract class BaseImporter<T extends ImporterType>
 
     if (!spec) {
       try {
-        spec = load(content) as unknown as T;
+        spec = load(content, { json: true });
       } catch {
         // noop
       }

@@ -28,8 +28,9 @@
     "json"
   ],
   "main": "./dist/bundle.umd.js",
-  "module": "./dist/index.js",
-  "typings": "./dist/index.d.ts",
+  "module": "./dist/bundle.esm5.js",
+  "es2015": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "homepage": "https://github.com/NeuraLegion/har-sdk#readme",
   "scripts": {
     "prebuild": "npm run compile -- --clean",

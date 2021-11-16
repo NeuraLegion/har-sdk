@@ -1,6 +1,7 @@
 import { BaseImporter } from './BaseImporter';
 import { ImporterType } from './ImporterType';
 import { OpenAPIV3 } from '../types';
+import { FileFormat } from './Importer';
 
 export class OASV3Importer extends BaseImporter<ImporterType.OASV3> {
   private readonly SUPPORTED_OPENAPI_VERSION = /^3\.\d+\.\d+$/; // 3.x.x
@@ -20,9 +21,15 @@ export class OASV3Importer extends BaseImporter<ImporterType.OASV3> {
     );
   }
 
-  protected fileName(spec: OpenAPIV3.Document): string | undefined {
-    return `${[spec.info.title, spec.info.version]
+  protected fileName({
+    doc,
+    format
+  }: {
+    doc: OpenAPIV3.Document;
+    format: FileFormat;
+  }): string | undefined {
+    return `${[doc.info.title, doc.info.version]
       .map((x: string) => x.trim())
-      .join(' ')}.har`;
+      .join(' ')}.${format}`;
   }
 }

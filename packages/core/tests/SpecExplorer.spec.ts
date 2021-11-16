@@ -25,7 +25,7 @@ describe('SpecExplorer', () => {
         doc,
         format: 'json',
         type: ImporterType.OASV2,
-        name: 'Test Plain Post Data 1.0.har'
+        name: 'Test Plain Post Data 1.0.json'
       };
 
       // act
@@ -47,7 +47,7 @@ describe('SpecExplorer', () => {
         doc,
         format: 'yaml',
         type: ImporterType.OASV2,
-        name: 'Test Plain Post Data 1.0.har'
+        name: 'Test Plain Post Data 1.0.yaml'
       };
 
       // act
@@ -66,7 +66,7 @@ describe('SpecExplorer', () => {
         doc,
         format: 'json',
         type: ImporterType.OASV3,
-        name: 'Test Plain Post Data 1.0.har'
+        name: 'Test Plain Post Data 1.0.json'
       };
 
       // act
@@ -88,7 +88,7 @@ describe('SpecExplorer', () => {
         doc,
         format: 'yaml',
         type: ImporterType.OASV3,
-        name: 'Test Plain Post Data 1.0.har'
+        name: 'Test Plain Post Data 1.0.yaml'
       };
 
       // act
@@ -107,7 +107,7 @@ describe('SpecExplorer', () => {
         doc,
         format: 'json',
         type: ImporterType.POSTMAN,
-        name: 'Swagger Petstore.har'
+        name: 'Swagger Petstore.json'
       };
 
       // act
@@ -126,7 +126,7 @@ describe('SpecExplorer', () => {
         doc,
         format: 'json',
         type: ImporterType.POSTMAN,
-        name: 'Swagger Petstore.har'
+        name: 'Swagger Petstore.json'
       };
 
       // act

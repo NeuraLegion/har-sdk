@@ -85,7 +85,7 @@ describe('PostmanImporter', () => {
       // assert
       result.should.deep.eq({
         type: ImporterType.POSTMAN,
-        name: 'example.har',
+        name: 'example.json',
         format: 'json',
         doc: {
           info: {

@@ -1,6 +1,7 @@
 import { BaseImporter } from './BaseImporter';
 import { ImporterType } from './ImporterType';
 import { Postman } from '../types';
+import { FileFormat } from './Importer';
 
 export class PostmanImporter extends BaseImporter<ImporterType.POSTMAN> {
   private readonly POSTMAN_SCHEMAS: ReadonlySet<string> = new Set([
@@ -23,7 +24,13 @@ export class PostmanImporter extends BaseImporter<ImporterType.POSTMAN> {
     return this.POSTMAN_SCHEMAS.has(schemaId?.trim().toLowerCase());
   }
 
-  protected fileName(api: Postman.Document): string | undefined {
-    return api.info.name ? `${api.info.name.trim()}.har` : undefined;
+  protected fileName({
+    doc,
+    format
+  }: {
+    doc: Postman.Document;
+    format: FileFormat;
+  }): string | undefined {
+    return doc.info.name ? `${doc.info.name.trim()}.${format}` : undefined;
   }
 }

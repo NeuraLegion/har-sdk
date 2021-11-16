@@ -1,6 +1,7 @@
 import { BaseImporter } from './BaseImporter';
 import { ImporterType } from './ImporterType';
 import { OpenAPIV2 } from '../types';
+import { FileFormat } from './Importer';
 
 export class OASV2Importer extends BaseImporter<ImporterType.OASV2> {
   private readonly SUPPORTED_SWAGGER_VERSION = '2.0';
@@ -18,9 +19,15 @@ export class OASV2Importer extends BaseImporter<ImporterType.OASV2> {
     return spec?.swagger?.trim() === this.SUPPORTED_SWAGGER_VERSION;
   }
 
-  protected fileName(spec: OpenAPIV2.Document): string {
-    return `${[spec.info.title, spec.info.version]
+  protected fileName({
+    doc,
+    format
+  }: {
+    doc: OpenAPIV2.Document;
+    format: FileFormat;
+  }): string {
+    return `${[doc.info.title, doc.info.version]
       .map((x: string) => x.trim())
-      .join(' ')}.har`;
+      .join(' ')}.${format}`;
   }
 }

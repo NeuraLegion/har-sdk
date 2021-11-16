@@ -67,7 +67,7 @@ describe('OASV3Importer', () => {
       // assert
       result.should.deep.eq({
         type: ImporterType.OASV3,
-        name: 'example v1.har',
+        name: 'example v1.json',
         format: 'json',
         doc: {
           openapi: '3.0.1',

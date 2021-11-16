@@ -67,7 +67,7 @@ describe('OASV2Importer', () => {
       // assert
       result.should.deep.eq({
         type: ImporterType.OASV2,
-        name: 'example v1.har',
+        name: 'example v1.json',
         format: 'json',
         doc: {
           swagger: '2.0',

@@ -23,7 +23,7 @@ export abstract class BaseImporter<T extends ImporterType>
 
     if (file && this.isSupported(file.doc)) {
       const { format, doc } = file;
-      const name = this.fileName(doc);
+      const name = this.fileName({ format, doc });
 
       return {
         doc,
@@ -34,7 +34,10 @@ export abstract class BaseImporter<T extends ImporterType>
     }
   }
 
-  protected fileName(_: SpecType<T>): string | undefined {
+  protected fileName(_: {
+    doc: SpecType<T>;
+    format: FileFormat;
+  }): string | undefined {
     return;
   }
 

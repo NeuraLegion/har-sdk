@@ -1,0 +1,35 @@
+{
+  "log": {
+    "version": "1.2",
+    "entries": [
+      {
+        "startedDateTime": "2021-07-09T23:28:52.627Z",
+        "time": 85,
+        "request": {
+          "method": "GET",
+          "url": "https://httpbin.org/post",
+          "httpVersion": "HTTP/1.1",
+          "cookies": [],
+          "headers": [],
+          "queryString": [],
+          "bodySize": -1,
+          "headersSize": -1
+        },
+        "response": {
+          "status": 200,
+          "statusText": "OK",
+          "httpVersion": "HTTP/1.1",
+          "redirectURL": "",
+          "cookies": [],
+          "content": {
+            "size": -1,
+            "mimeType": "text/plain"
+          },
+          "headers": [],
+          "headersSize": -1,
+          "bodySize": -1
+        }
+      }
+    ]
+  }
+}

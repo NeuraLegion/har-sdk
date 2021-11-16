@@ -1,0 +1,27 @@
+{
+  "info": {
+    "name": "Swagger Petstore",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "List all pets",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/pets?limit=65976852",
+          "host": ["{{baseUrl}}"],
+          "path": ["pets"],
+          "query": [
+            {
+              "key": "limit",
+              "value": "65976852",
+              "description": "How many items to return at one time (max 100)"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

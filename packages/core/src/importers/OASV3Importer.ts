@@ -1,9 +1,8 @@
-import { BaseImporter } from './BaseImporter';
 import { ImporterType } from './ImporterType';
 import { OpenAPIV3 } from '../types';
-import { FileFormat } from './Importer';
+import { BaseOASImporter } from './BaseOASImporter';
 
-export class OASV3Importer extends BaseImporter<ImporterType.OASV3> {
+export class OASV3Importer extends BaseOASImporter<ImporterType.OASV3> {
   private readonly SUPPORTED_OPENAPI_VERSION = /^3\.\d+\.\d+$/; // 3.x.x
 
   constructor() {
@@ -19,17 +18,5 @@ export class OASV3Importer extends BaseImporter<ImporterType.OASV3> {
     return !!(
       spec?.openapi && this.SUPPORTED_OPENAPI_VERSION.test(spec.openapi)
     );
-  }
-
-  protected fileName({
-    doc,
-    format
-  }: {
-    doc: OpenAPIV3.Document;
-    format: FileFormat;
-  }): string | undefined {
-    return `${[doc.info.title, doc.info.version]
-      .map((x: string) => x.trim())
-      .join(' ')}.${format}`;
   }
 }

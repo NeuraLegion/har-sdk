@@ -1,43 +1,39 @@
-import typescript from 'rollup-plugin-typescript2';
-import commonjs from '@rollup/plugin-commonjs';
-import resolve from '@rollup/plugin-node-resolve';
+import typescript from '@rollup/plugin-typescript';
 import json from '@rollup/plugin-json';
-import autoExternal from 'rollup-plugin-auto-external';
 import { terser } from 'rollup-plugin-terser';
-import { visualizer } from 'rollup-plugin-visualizer';
 import { join } from 'path';
 
 const cwd = process.cwd();
 const packagePath = join(cwd, 'package.json');
 const pkg = require(packagePath);
 
-export default {
+export default async () => ({
   input: 'src/index.ts',
   output: [
-    { format: 'es', file: pkg.module },
-    { format: 'umd', file: pkg.main, name: pkg.name }
+    { format: 'es', file: pkg.module, sourcemap: true },
+    {
+      format: 'umd',
+      file: pkg.main,
+      name: pkg.name,
+      sourcemap: true,
+      esModule: false
+    }
+  ],
+  external: [
+    /node_modules/
   ],
   plugins: [
-    json(),
-    resolve({ preferBuiltins: false }),
-    commonjs({ include: /node_modules/ }),
+    json({ compact: true }),
     typescript({
-      clean: true,
       tsconfig: 'tsconfig.build.json'
     }),
-    autoExternal({ packagePath }),
     terser({
       ecma: 2020,
-      mangle: { toplevel: true },
-      compress: {
-        module: true,
-        toplevel: true,
-        unsafe_arrows: true,
-        drop_console: true,
-        drop_debugger: true
-      },
-      output: { quote_style: 1 }
+      module: true,
+      warnings: true
     }),
-    ...(process.env.ANALYZE !== '1' ? [visualizer()] : [])
+    ...(process.env.ANALYZE === '1'
+      ? [(await import('rollup-plugin-visualizer')).visualizer()]
+      : [])
   ]
-};
+});

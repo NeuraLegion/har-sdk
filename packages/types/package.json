@@ -43,6 +43,6 @@
     "json"
   ],
   "dependencies": {
-    "openapi-types": "^9.1.0"
+    "@har-sdk/core": "*"
   }
 }

@@ -1,4 +1,4 @@
-import { OpenAPIV2, OpenAPIV3, OpenAPI, Postman } from './collection';
+import { OpenAPIV2, OpenAPIV3, OpenAPI, Postman } from '@har-sdk/core';
 
 type Document = OpenAPI.Document | Postman.Document;
 

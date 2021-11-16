@@ -68,6 +68,7 @@ describe('OASV3Importer', () => {
       result.should.deep.eq({
         type: ImporterType.OASV3,
         name: 'example v1.har',
+        format: 'json',
         doc: {
           openapi: '3.0.1',
           info: { version: 'v1', title: 'example' },

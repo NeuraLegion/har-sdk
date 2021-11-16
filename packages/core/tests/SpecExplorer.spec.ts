@@ -23,6 +23,7 @@ describe('SpecExplorer', () => {
       const input = JSON.stringify(doc);
       const expected = {
         doc,
+        format: 'json',
         type: ImporterType.OASV2,
         name: 'Test Plain Post Data 1.0.har'
       };
@@ -44,6 +45,7 @@ describe('SpecExplorer', () => {
       const doc = load(input, { json: true });
       const expected = {
         doc,
+        format: 'yaml',
         type: ImporterType.OASV2,
         name: 'Test Plain Post Data 1.0.har'
       };
@@ -62,6 +64,7 @@ describe('SpecExplorer', () => {
       const input = JSON.stringify(doc);
       const expected = {
         doc,
+        format: 'json',
         type: ImporterType.OASV3,
         name: 'Test Plain Post Data 1.0.har'
       };
@@ -83,6 +86,7 @@ describe('SpecExplorer', () => {
       const doc = load(input, { json: true });
       const expected = {
         doc,
+        format: 'yaml',
         type: ImporterType.OASV3,
         name: 'Test Plain Post Data 1.0.har'
       };
@@ -101,6 +105,7 @@ describe('SpecExplorer', () => {
       const input = JSON.stringify(doc);
       const expected = {
         doc,
+        format: 'json',
         type: ImporterType.POSTMAN,
         name: 'Swagger Petstore.har'
       };
@@ -119,6 +124,7 @@ describe('SpecExplorer', () => {
       const input = JSON.stringify(doc);
       const expected = {
         doc,
+        format: 'json',
         type: ImporterType.POSTMAN,
         name: 'Swagger Petstore.har'
       };
@@ -137,6 +143,7 @@ describe('SpecExplorer', () => {
       const expected = {
         doc,
         name: undefined as string,
+        format: 'json',
         type: ImporterType.HAR
       };
       const input = JSON.stringify(doc);

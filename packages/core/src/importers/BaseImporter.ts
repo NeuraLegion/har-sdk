@@ -1,6 +1,11 @@
-import { Importer, Spec, SpecType } from './Importer';
+import { FileFormat, Importer, Spec, SpecType } from './Importer';
 import { ImporterType } from './ImporterType';
 import { load } from 'js-yaml';
+
+interface LoadedFile {
+  doc: unknown;
+  format: FileFormat;
+}
 
 export abstract class BaseImporter<T extends ImporterType>
   implements Importer<T>
@@ -14,14 +19,16 @@ export abstract class BaseImporter<T extends ImporterType>
   public abstract isSupported(spec: unknown): spec is SpecType<T>;
 
   public async importSpec(content: string): Promise<Spec<T> | undefined> {
-    const doc: unknown | undefined = this.readContent(content.trim());
+    const file: LoadedFile | undefined = this.load(content.trim());
 
-    if (doc && this.isSupported(doc)) {
+    if (file && this.isSupported(file.doc)) {
+      const { format, doc } = file;
       const name = this.fileName(doc);
 
       return {
         doc,
         name,
+        format,
         type: this.type
       };
     }
@@ -31,23 +38,31 @@ export abstract class BaseImporter<T extends ImporterType>
     return;
   }
 
-  protected readContent(content: string): unknown | undefined {
-    let spec: unknown | undefined;
+  protected load(content: string): LoadedFile | undefined {
+    let doc: unknown | undefined = this.loadFromJson(content);
+    let format: FileFormat = 'json';
 
+    if (!doc) {
+      doc = this.loadFromYaml(content);
+      format = 'yaml';
+    }
+
+    return doc ? { doc, format } : undefined;
+  }
+
+  private loadFromJson(source: string): unknown | undefined {
     try {
-      spec = JSON.parse(content);
+      return JSON.parse(source);
     } catch {
       // noop
     }
+  }
 
-    if (!spec) {
-      try {
-        spec = load(content, { json: true });
-      } catch {
-        // noop
-      }
+  private loadFromYaml(source: string): unknown | undefined {
+    try {
+      return load(source, { json: true });
+    } catch {
+      // noop
     }
-
-    return spec;
   }
 }

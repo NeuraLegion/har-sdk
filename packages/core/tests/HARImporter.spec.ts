@@ -69,6 +69,7 @@ describe('HARImporter', () => {
       // assert
       result.should.deep.eq({
         name: undefined,
+        format: 'json',
         doc: { log: { version: '1.2', entries: [] } },
         type: ImporterType.HAR
       });

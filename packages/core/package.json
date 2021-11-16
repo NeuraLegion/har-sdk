@@ -1,0 +1,52 @@
+{
+  "name": "@har-sdk/core",
+  "version": "0.0.0",
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NeuraLegion/har-sdk.git"
+  },
+  "author": {
+    "name": "Artem Derevnjuk",
+    "email": "artem.derevnjuk@neuralegion.com"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/NeuraLegion/har-sdk/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist/**"
+  ],
+  "keywords": [
+    "postman",
+    "oas",
+    "swagger",
+    "har",
+    "api"
+  ],
+  "main": "./dist/bundle.umd.js",
+  "module": "./dist/bundle.esm5.js",
+  "es2015": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "homepage": "https://github.com/NeuraLegion/har-sdk/tree/master/packages/core#readme",
+  "scripts": {
+    "prebuild": "npm run compile -- --clean",
+    "build": "npm run compile && npm run bundle",
+    "bundle": "rollup -c ../../rollup.config.js",
+    "lint": "eslint --ignore-path ../../.eslintignore .",
+    "format": "prettier --ignore-path ../../.prettierignore --check .",
+    "compile": "tsc -b tsconfig.build.json"
+  },
+  "dependencies": {
+    "@types/har-format": "^1.2.8",
+    "js-yaml": "^4.1.0",
+    "openapi-types": "^9.3.1",
+    "tslib": "~2.2.0"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.4"
+  }
+}

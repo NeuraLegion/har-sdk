@@ -19,6 +19,7 @@
     { "path": "packages/postman" },
     { "path": "packages/validator" },
     { "path": "packages/types" },
-    { "path": "packages/editor" }
+    { "path": "packages/editor" },
+    { "path": "packages/core" }
   ]
 }

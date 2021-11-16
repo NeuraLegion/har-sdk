@@ -2,7 +2,6 @@ import { BaseValidator } from './BaseValidator';
 import schemaV2 from '../schemas/postman/v2.0.0.json';
 import schemaV21 from '../schemas/postman/v2.1.0.json';
 import { Postman } from '@har-sdk/types';
-import { URL } from 'url';
 
 export class PostmanValidator extends BaseValidator<Postman.Document> {
   private readonly VERSION_SCHEMA_MAP: Readonly<Record<string, string>> = {
@@ -16,9 +15,8 @@ export class PostmanValidator extends BaseValidator<Postman.Document> {
 
   protected getSchemaId(document: Postman.Document): string {
     const versions = Object.keys(this.VERSION_SCHEMA_MAP);
-    const url = new URL(document.info.schema);
 
-    const version = url.pathname
+    const version = document.info.schema
       .split('/')
       .find((str) => versions.includes(str));
 

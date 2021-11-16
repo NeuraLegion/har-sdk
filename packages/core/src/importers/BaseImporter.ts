@@ -16,13 +16,15 @@ export abstract class BaseImporter<T extends ImporterType>
   public async importSpec(content: string): Promise<Spec<T> | undefined> {
     const doc: unknown | undefined = this.readContent(content.trim());
 
-    return doc && this.isSupported(doc)
-      ? {
-          doc,
-          type: this.type,
-          name: this.fileName(doc)
-        }
-      : undefined;
+    if (doc && this.isSupported(doc)) {
+      const name = this.fileName(doc);
+
+      return {
+        doc,
+        name,
+        type: this.type
+      };
+    }
   }
 
   protected fileName(_: SpecType<T>): string | undefined {

@@ -36,11 +36,9 @@
   "keywords": [
     "swagger",
     "postman",
-    "types",
-    "yml",
-    "yaml",
-    "har",
-    "json"
+    "oas",
+    "openapi",
+    "har"
   ],
   "dependencies": {
     "@har-sdk/core": "*"

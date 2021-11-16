@@ -38,10 +38,9 @@
   "keywords": [
     "swagger",
     "oas",
-    "yml",
-    "yaml",
+    "openapi",
     "har",
-    "json"
+    "api"
   ],
   "dependencies": {
     "@har-sdk/openapi-sampler": "*",

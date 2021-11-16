@@ -38,10 +38,10 @@
   "keywords": [
     "swagger",
     "validator",
-    "yml",
-    "yaml",
-    "har",
-    "json"
+    "oas",
+    "openapi",
+    "postman",
+    "har"
   ],
   "dependencies": {
     "@har-sdk/types": "*",

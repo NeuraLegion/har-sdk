@@ -65,13 +65,9 @@ export class DefaultHarBuilder implements HarBuilder {
   private buildHarRequest(request: Request): HarRequest {
     return {
       method: (request.method && request.method.toUpperCase()) || '',
-      url: (request.uri && request.uri.href) || '',
-      httpVersion: 'HTTP/1.1',
-      cookies: this.buildHarCookies(
-        request.headers &&
-          request.headers.cookie &&
-          request.headers.cookie.split(';')
-      ),
+      url: this.buildRequestURL(request.uri.href) || '',
+      httpVersion: request.response?.httpVersion ?? 'HTTP/1.1',
+      cookies: this.buildHarCookies(request.headers?.cookie?.split(';')),
       headers: this.buildHarHeaders(
         (request.req && request.req._headers) || request.headers
       ),
@@ -340,5 +336,9 @@ export class DefaultHarBuilder implements HarBuilder {
     }
 
     return harContent;
+  }
+
+  private buildRequestURL(url: string): string {
+    return url.split('#', 2)[0];
   }
 }

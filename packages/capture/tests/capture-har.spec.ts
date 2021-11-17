@@ -1,63 +1,169 @@
-import { Server } from './mocks/Server';
-import { captureHar } from '../src';
 import 'chai/register-should';
+import { captureHar } from '../src';
+import nock from 'nock';
 
 describe('Capture HAR', () => {
-  const server: Server = new Server();
+  before(() => {
+    nock.disableNetConnect();
+    nock.enableNetConnect('127.0.0.1');
+  });
 
-  beforeEach(() => server.stop());
+  afterEach(() => nock.cleanAll());
 
-  it('Captures simple requests', async () => {
-    const address = await server.start((_, res) => res.end('body'));
+  after(() => nock.enableNetConnect());
 
-    const har = await captureHar({ url: `http://localhost:${address.port}` });
+  it('should capture a simple GET requests', async () => {
+    // arrange
+    const url = 'http://localhost:8000/';
 
+    nock(url)
+      .replyContentLength()
+      .get(`/`)
+      .reply(200, 'body', { 'content-type': 'text/plain' });
+
+    // act
+    const har = await captureHar({ url });
+
+    // assert
     har.should.have.nested.property('log.entries[0].request.method', 'GET');
-    har.should.have.nested.property(
-      'log.entries[0].request.url',
-      `http://localhost:${address.port}/`
-    );
+    har.should.have.nested.property('log.entries[0].request.url', url);
     har.should.have.nested.property(
       'log.entries[0].request.headers[0].name',
       'host'
     );
     har.should.have.nested.property(
       'log.entries[0].request.headers[0].value',
-      `localhost:${address.port}`
+      `localhost:8000`
     );
 
     har.should.have.nested.property('log.entries[0].response.status', 200);
     har.should.have.nested.property('log.entries[0].response.content.size', 4);
     har.should.have.nested.property(
       'log.entries[0].response.content.mimeType',
-      'x-unknown'
+      'text/plain'
     );
     har.should.have.nested.property(
       'log.entries[0].response.content.text',
       'body'
     );
-    har.should.have.nested.property(
-      'log.entries[0].response._remoteAddress',
-      '127.0.0.1'
-    );
   });
 
-  it('Accepts a url directly', async () => {
-    const address = await server.start((_, res) => res.end('body'));
+  it('should accept a url directly', async () => {
+    // arrange
+    const url = 'http://localhost:8000/';
 
-    const har = await captureHar(`http://localhost:${address.port}`);
+    nock(url)
+      .replyContentLength()
+      .get(`/`)
+      .reply(200, 'body', { 'content-type': 'text/plain' });
 
+    // act
+    const har = await captureHar(`http://localhost:8000/`);
+
+    // assert
     har.should.have.nested.property(
       'log.entries[0].request.url',
-      `http://localhost:${address.port}/`
+      `http://localhost:8000/`
     );
   });
 
-  it('Parses querystring', async () => {
-    const address = await server.start((_, res) => res.end('body'));
+  it('should rewrite the host header when it is defined', async () => {
+    // arrange
+    const url = 'http://localhost:8000/';
+    const redirectUrl = 'http://localhost:3000/';
+
+    nock(url)
+      .replyContentLength()
+      .get(`/`)
+      .reply(301, '', { location: redirectUrl });
+
+    nock(redirectUrl).replyContentLength().get(`/`).reply(200);
+
+    // act
+    const har = await captureHar({
+      url,
+      followRedirect: true
+    });
+
+    // assert
+    har.should.have.nested.property('log.entries[0].request.url', url);
+    har.should.have.nested.property(
+      'log.entries[0].response.redirectURL',
+      redirectUrl
+    );
+    har.should.have.nested.property('log.entries[1].request.url', redirectUrl);
+    har.should.have.nested.property(
+      'log.entries[0].request.headers[0].name',
+      'host'
+    );
+    har.should.have.nested.property(
+      'log.entries[0].request.headers[0].value',
+      `localhost:8000`
+    );
+    har.should.have.nested.property(
+      'log.entries[1].request.headers[0].name',
+      'host'
+    );
+    har.should.have.nested.property(
+      'log.entries[1].request.headers[0].value',
+      `localhost:3000`
+    );
+  });
+
+  it('should resolve relative URLs', async () => {
+    // arrange
+    const url = 'http://localhost:8000/';
+
+    nock(url)
+      .replyContentLength()
+      .get(`/`)
+      .reply(301, '', { location: '../../../../' });
+
+    // act
+    const har = await captureHar({
+      url,
+      followRedirect: true,
+      maxRedirects: 1
+    });
+
+    // assert
+    har.should.have.nested.property('log.entries[0].response.status', 301);
+    har.should.have.nested.property('log.entries[0].response.redirectURL', url);
+  });
+
+  it('should ignore fragments in request URLs', async () => {
+    // arrange
+    const expected = 'http://localhost:8000/pdf';
+    const url = `${expected}#print`;
+
+    nock(url)
+      .replyContentLength()
+      .get(`/`)
+      .reply(200, 'body', { 'content-type': 'text/plain' });
+
+    // act
+    const har = await captureHar({
+      url,
+      followRedirect: true,
+      maxRedirects: 1
+    });
+
+    // assert
+    har.should.have.nested.property('log.entries[0].request.url', expected);
+  });
+
+  it('should parse querystring', async () => {
+    // arrange
+    const url = 'http://localhost:8000/';
+
+    nock(url)
+      .replyContentLength()
+      .get(`/`)
+      .query({ param1: 'bar', param2: 'foo' })
+      .reply(200, 'body', { 'content-type': 'text/plain' });
 
     const har = await captureHar({
-      url: `http://localhost:${address.port}?param1=value1&param2=value2`
+      url: `http://localhost:8000?param1=bar&param2=foo`
     });
 
     har.should.have.nested.property(
@@ -66,7 +172,7 @@ describe('Capture HAR', () => {
     );
     har.should.have.nested.property(
       'log.entries[0].request.queryString[0].value',
-      'value1'
+      'bar'
     );
     har.should.have.nested.property(
       'log.entries[0].request.queryString[1].name',
@@ -74,13 +180,18 @@ describe('Capture HAR', () => {
     );
     har.should.have.nested.property(
       'log.entries[0].request.queryString[1].value',
-      'value2'
+      'foo'
     );
   });
 
-  it('Handles ENOTFOUND (DNS level error)', async () => {
+  it('should handle ENOTFOUND (DNS level error)', async () => {
+    // arrange
+    nock.enableNetConnect();
+
+    // act
     const har = await captureHar({ url: 'http://x' });
 
+    // assert
     har.should.have.nested.property('log.entries[0].request.method', 'GET');
     har.should.have.nested.property('log.entries[0].request.url', 'http://x/');
 

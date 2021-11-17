@@ -3,7 +3,7 @@ import { OpenAPIV3 } from '../types';
 import { BaseOASImporter } from './BaseOASImporter';
 
 export class OASV3Importer extends BaseOASImporter<ImporterType.OASV3> {
-  private readonly SUPPORTED_OPENAPI_VERSION = /^3\.\d+\.\d+$/; // 3.x.x
+  private readonly SUPPORTED_OPENAPI_VERSION = /^3\.0\.\d+$/; // 3.0.x
 
   constructor() {
     super();

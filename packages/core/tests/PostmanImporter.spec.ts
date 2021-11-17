@@ -40,7 +40,7 @@ describe('PostmanImporter', () => {
       result.should.be.true;
     });
 
-    it('should refuse to support of an incompatibility version', () => {
+    it('should refuse to support of an incompatible version', () => {
       // act
       const result = importer.isSupported({
         id: '70fa9b38-91c0-7e67-0ead-b31622bdc152',

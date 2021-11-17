@@ -10,7 +10,7 @@ describe('HARImporter', () => {
   });
 
   describe('isSupported', () => {
-    it('should refuse to support of an incompatibility version', () => {
+    it('should refuse to support of an incompatible version', () => {
       // act
       const result = importer.isSupported({
         log: { version: '0.1', entries: [] }

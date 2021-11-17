@@ -22,7 +22,7 @@ describe('OASV2Importer', () => {
       result.should.be.true;
     });
 
-    it('should refuse to support of an incompatibility version', () => {
+    it('should refuse to support of an incompatible version', () => {
       // act
       const result = importer.isSupported({
         openapi: '3.0.0',

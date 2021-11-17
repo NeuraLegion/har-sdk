@@ -1,7 +1,8 @@
 {
-  "name": "@har-sdk/oas",
+  "name": "@har-sdk/core",
   "version": "0.0.0",
   "private": false,
+  "description": "The base package can be used to import specification files (i.e. HAR, OAS and Postman Collection) and detect their type.",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/NeuraLegion/har-sdk.git"
@@ -20,43 +21,35 @@
   "files": [
     "dist/**"
   ],
+  "keywords": [
+    "postman",
+    "oas",
+    "openapi",
+    "swagger",
+    "har",
+    "api"
+  ],
   "main": "./dist/bundle.umd.js",
   "module": "./dist/bundle.esm5.js",
   "es2015": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "homepage": "https://github.com/NeuraLegion/har-sdk/tree/master/packages/oas#readme",
+  "homepage": "https://github.com/NeuraLegion/har-sdk/tree/master/packages/core#readme",
   "scripts": {
     "prebuild": "npm run compile -- --clean",
     "build": "npm run compile && npm run bundle",
     "bundle": "rollup -c ../../rollup.config.js",
     "compile": "tsc -b tsconfig.build.json",
     "lint": "eslint --ignore-path ../../.eslintignore .",
-    "format": "prettier --ignore-path ../../.prettierignore --check .",
+    "format": "prettier --ignore-path ../../.prettierignore --check **/*.ts",
     "test": "cross-env NODE_ENV=test mocha tests/**/*.spec.ts",
     "coverage": "nyc npm t -- --reporter xunit --reporter-options output=.mocha/testspec.xunit.xml"
   },
-  "keywords": [
-    "swagger",
-    "oas",
-    "openapi",
-    "har",
-    "api"
-  ],
   "dependencies": {
-    "@har-sdk/openapi-sampler": "*",
-    "@har-sdk/types": "*",
-    "@har-sdk/validator": "*",
-    "jstoxml": "^2.1.0",
-    "qs": "^6.10.1",
-    "tslib": "~2.2.0",
-    "url-template": "^2.0.8"
+    "js-yaml": "^4.1.0",
+    "openapi-types": "^9.1.0",
+    "tslib": "~2.2.0"
   },
   "devDependencies": {
-    "@types/har-format": "^1.2.7",
-    "@types/js-yaml": "^4.0.2",
-    "@types/jstoxml": "^2.0.1",
-    "@types/qs": "^6.9.7",
-    "@types/url-template": "^2.0.28",
-    "js-yaml": "^4.1.0"
+    "@types/js-yaml": "^4.0.4"
   }
 }

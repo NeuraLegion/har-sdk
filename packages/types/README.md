@@ -1,5 +1,7 @@
 # @har-sdk/types
 
+**THIS PACKAGE HAS BEEN DEPRECATED. THE DEVELOPMENT HAS MOVED TO A [@HAR-SDK/CORE](https://github.com/NeuraLegion/har-sdk/tree/master/packages/oas#readme) PACKAGE**
+
 Types for OpenAPI and Postman documents
 
 ## Setup

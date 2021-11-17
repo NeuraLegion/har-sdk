@@ -1,0 +1,32 @@
+openapi: 3.0.0
+info:
+  version: '1.0'
+  title: Test Plain Post Data
+servers:
+  - url: '{scheme}://httpbin.org'
+    variables:
+      scheme:
+        enum:
+          - https
+          - http
+        default: https
+tags:
+  - name: post
+paths:
+  /post:
+    post:
+      security: []
+      tags:
+        - post
+      summary: post
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+              example: Hello World
+      responses:
+        '200':
+          description: OK

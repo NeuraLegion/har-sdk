@@ -23,9 +23,7 @@
   "keywords": [
     "postman",
     "har",
-    "api",
-    "har",
-    "json"
+    "api"
   ],
   "main": "./dist/bundle.umd.js",
   "module": "./dist/bundle.esm5.js",

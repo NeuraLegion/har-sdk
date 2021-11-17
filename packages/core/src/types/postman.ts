@@ -10,10 +10,11 @@ export namespace Postman {
   }
 
   export interface Version extends PropertyBaseDefinition {
-    identifier?: string;
     major: number;
     minor: number;
     patch: number;
+    raw?: string;
+    identifier?: string;
   }
 
   export interface Property extends PropertyBaseDefinition {
@@ -48,7 +49,7 @@ export namespace Postman {
   }
 
   export interface VariableScope {
-    variable: Variable[];
+    variable?: Variable[];
   }
 
   export interface Cookie {

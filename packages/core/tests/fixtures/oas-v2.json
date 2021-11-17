@@ -1,0 +1,46 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0",
+    "title": "Test Plain Post Data"
+  },
+  "host": "httpbin.org",
+  "schemes": [
+    "https"
+  ],
+  "tags": [
+    {
+      "name": "post"
+    }
+  ],
+  "paths": {
+    "/post": {
+      "post": {
+        "security": [],
+        "tags": [
+          "post"
+        ],
+        "summary": "post",
+        "consumes": [
+          "text/plain"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "Hello World"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  }
+}

@@ -47,10 +47,10 @@ describe('OASV3Importer', () => {
     });
   });
 
-  describe('importSpec', () => {
+  describe('import', () => {
     it('should return nothing if JSON file is broken', async () => {
       // act
-      const result = await importer.importSpec(
+      const result = await importer.import(
         `{"openapi": "3.0.0","info": {"title": "Callback Example",`
       );
 
@@ -60,7 +60,7 @@ describe('OASV3Importer', () => {
 
     it('should return the spec with expected type', async () => {
       // act
-      const result = await importer.importSpec(
+      const result = await importer.import(
         `{ "openapi": "3.0.1", "info": { "version": "v1", "title": "example" }, "servers": [{"url": "http://example.com/"}],"paths": {}}`
       );
 

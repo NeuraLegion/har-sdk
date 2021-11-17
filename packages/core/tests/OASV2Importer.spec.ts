@@ -47,10 +47,10 @@ describe('OASV2Importer', () => {
     });
   });
 
-  describe('importSpec', () => {
+  describe('import', () => {
     it('should return nothing if JSON file is broken', async () => {
       // act
-      const result = await importer.importSpec(
+      const result = await importer.import(
         `{"swagger": "2.0","info": {"title": "Example",`
       );
 
@@ -60,7 +60,7 @@ describe('OASV2Importer', () => {
 
     it('should return the spec with expected type', async () => {
       // act
-      const result = await importer.importSpec(
+      const result = await importer.import(
         `{ "swagger": "2.0", "info": { "version": "v1", "title": "example" }, "host": "example.com","paths": {}}`
       );
 

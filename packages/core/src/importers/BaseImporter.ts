@@ -1,24 +1,28 @@
-import { FileFormat, Importer, Spec, SpecType } from './Importer';
-import { ImporterType } from './ImporterType';
+import { Importer } from './Importer';
+import { DocFormat, Spec, Doc, DocType } from './Spec';
 import { load } from 'js-yaml';
 
 interface LoadedFile {
   doc: unknown;
-  format: FileFormat;
+  format: DocFormat;
 }
 
-export abstract class BaseImporter<T extends ImporterType>
-  implements Importer<T>
+export abstract class BaseImporter<
+  TDocType extends DocType,
+  TDoc = Doc<TDocType>
+> implements Importer<TDocType, TDoc>
 {
   protected constructor() {
     // noop
   }
 
-  abstract get type(): T;
+  abstract get type(): TDocType;
 
-  public abstract isSupported(spec: unknown): spec is SpecType<T>;
+  public abstract isSupported(spec: unknown): spec is TDoc;
 
-  public async importSpec(content: string): Promise<Spec<T> | undefined> {
+  public async import(
+    content: string
+  ): Promise<Spec<TDocType, TDoc> | undefined> {
     const file: LoadedFile | undefined = this.load(content.trim());
 
     if (file && this.isSupported(file.doc)) {
@@ -34,16 +38,13 @@ export abstract class BaseImporter<T extends ImporterType>
     }
   }
 
-  protected fileName(_: {
-    doc: SpecType<T>;
-    format: FileFormat;
-  }): string | undefined {
+  protected fileName(_: { doc: TDoc; format: DocFormat }): string | undefined {
     return;
   }
 
   protected load(content: string): LoadedFile | undefined {
     let doc: unknown | undefined = this.loadFromJson(content);
-    let format: FileFormat = 'json';
+    let format: DocFormat = 'json';
 
     if (!doc) {
       doc = this.loadFromYaml(content);

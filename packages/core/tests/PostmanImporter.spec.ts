@@ -65,10 +65,10 @@ describe('PostmanImporter', () => {
     });
   });
 
-  describe('importSpec', () => {
+  describe('import', () => {
     it('should return nothing if JSON is broken', async () => {
       // act
-      const result = await importer.importSpec(
+      const result = await importer.import(
         `{ "info": { "schema": 'https://schema.getpostman.com/json/collection/v2.0.0/collection.json' },`
       );
 
@@ -78,7 +78,7 @@ describe('PostmanImporter', () => {
 
     it('should return the spec with expected type', async () => {
       // act
-      const result = await importer.importSpec(
+      const result = await importer.import(
         `{ "info": { "schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json", "name": "example" }, "item": [], "variable": []}`
       );
 

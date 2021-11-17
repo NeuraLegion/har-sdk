@@ -1,7 +1,7 @@
 import { BaseImporter } from './BaseImporter';
 import { ImporterType } from './ImporterType';
 import { Postman } from '../types';
-import { FileFormat } from './Importer';
+import { DocFormat } from './Spec';
 
 export class PostmanImporter extends BaseImporter<ImporterType.POSTMAN> {
   private readonly POSTMAN_SCHEMAS: ReadonlySet<string> = new Set([
@@ -29,7 +29,7 @@ export class PostmanImporter extends BaseImporter<ImporterType.POSTMAN> {
     format
   }: {
     doc: Postman.Document;
-    format: FileFormat;
+    format: DocFormat;
   }): string | undefined {
     return doc.info.name ? `${doc.info.name.trim()}.${format}` : undefined;
   }

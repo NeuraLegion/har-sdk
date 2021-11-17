@@ -1,5 +1,5 @@
 import 'chai/register-should';
-import { ImporterType, Spec, SpecExplorer } from '../src';
+import { ImporterType, Spec, SpecImporter } from '../src';
 import { load } from 'js-yaml';
 import chaiAsPromised from 'chai-as-promised';
 import { use } from 'chai';
@@ -9,14 +9,14 @@ import { resolve } from 'path';
 
 use(chaiAsPromised);
 
-describe('SpecExplorer', () => {
-  let specExplorer: SpecExplorer;
+describe('SpecImporter', () => {
+  let specExplorer: SpecImporter;
 
   beforeEach(() => {
-    specExplorer = new SpecExplorer();
+    specExplorer = new SpecImporter();
   });
 
-  describe('tryToImportSpec', () => {
+  describe('import', () => {
     it('should import OAS v2 (JSON)', async () => {
       // arrange
       const doc = await import('./fixtures/oas-v2.json');
@@ -29,8 +29,7 @@ describe('SpecExplorer', () => {
       };
 
       // act
-      const result: Spec<ImporterType.OASV2> =
-        await specExplorer.tryToImportSpec(input);
+      const result: Spec<ImporterType.OASV2> = await specExplorer.import(input);
 
       // assert
       result.should.deep.eq(expected);
@@ -51,8 +50,7 @@ describe('SpecExplorer', () => {
       };
 
       // act
-      const result: Spec<ImporterType.OASV2> =
-        await specExplorer.tryToImportSpec(input);
+      const result: Spec<ImporterType.OASV2> = await specExplorer.import(input);
 
       // assert
       result.should.deep.eq(expected);
@@ -70,8 +68,7 @@ describe('SpecExplorer', () => {
       };
 
       // act
-      const result: Spec<ImporterType.OASV3> =
-        await specExplorer.tryToImportSpec(input);
+      const result: Spec<ImporterType.OASV3> = await specExplorer.import(input);
 
       // assert
       result.should.deep.eq(expected);
@@ -92,8 +89,7 @@ describe('SpecExplorer', () => {
       };
 
       // act
-      const result: Spec<ImporterType.OASV3> =
-        await specExplorer.tryToImportSpec(input);
+      const result: Spec<ImporterType.OASV3> = await specExplorer.import(input);
 
       // assert
       result.should.deep.eq(expected);
@@ -111,8 +107,9 @@ describe('SpecExplorer', () => {
       };
 
       // act
-      const result: Spec<ImporterType.POSTMAN> =
-        await specExplorer.tryToImportSpec(input);
+      const result: Spec<ImporterType.POSTMAN> = await specExplorer.import(
+        input
+      );
 
       // assert
       result.should.deep.eq(expected);
@@ -130,8 +127,9 @@ describe('SpecExplorer', () => {
       };
 
       // act
-      const result: Spec<ImporterType.POSTMAN> =
-        await specExplorer.tryToImportSpec(input);
+      const result: Spec<ImporterType.POSTMAN> = await specExplorer.import(
+        input
+      );
 
       // assert
       result.should.deep.eq(expected);
@@ -149,25 +147,22 @@ describe('SpecExplorer', () => {
       const input = JSON.stringify(doc);
 
       // act
-      const result = await specExplorer.tryToImportSpec(input);
+      const result = await specExplorer.import(input);
 
       // assert
       result.should.deep.eq(expected);
     });
 
-    it('should raise an error if no importers found', async () => {
+    it('should return an undefined if no importers found', async () => {
       // arrange
       const doc = { foo: 'bar' };
       const input = JSON.stringify(doc);
 
       // act
-      const promise = specExplorer.tryToImportSpec(input);
+      const result = await specExplorer.import(input);
 
       // assert
-      await promise.should.be.rejectedWith(
-        Error,
-        'No importers found for the file'
-      );
+      (typeof result).should.eq('undefined');
     });
   });
 });

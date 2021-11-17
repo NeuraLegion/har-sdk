@@ -10,13 +10,13 @@ npm i --save @har-sdk/core
 
 ## Usage
 
-To import a specification you just need to create an instance of `SpecExplorer` and call its `tryToImportSpec` method passing the data file. The explorer performs syntatic analisis and parse provioded file.
+To import a specification you just need to create an instance of `SpecImporter` and call its `import` method passing the data file. The importer performs syntactic analysis and parses a provided file.
 
 ```ts
-import { SpecExplorer } from '@har-sdk/core';
+import { SpecImporter } from '@har-sdk/core';
 import petstore from './petstore.collection.json';
 
-const result = await new SpecExplorer().tryToImportSpec(petstore);
+const result = await new SpecImporter().tryToImportSpec(petstore);
 console.log(result);
 // {
 //   type: 'postman',
@@ -37,27 +37,29 @@ console.log(result);
 To configure the list of importers, you can pass them as an array to the constructor.
 
 ```ts
-import { SpecExplorer, HarImporter } from '@har-sdk/core';
+import { SpecImporter, HarImporter } from '@har-sdk/core';
 
-const explorer = new SpecExplorer([new HarImporter()]);
+const explorer = new SpecImporter([new HarImporter()]);
 ```
 
 To extend an explorer by adding a new custom importer, you can easily implement an `Importer` interface.
 
 ```ts
-import { Importer, SpecType, Spec } from '@har-sdk/core';
+import { Importer, Doc, Spec, Importer } from '@har-sdk/core';
 
-class RamlImporter {
-  get type() {
+class RamlImporter implements Importer<'raml'> {
+  get type(): 'raml' {
     return 'raml';
   }
 
-  isSupported(spec) {
-    // implementation
-  }
-
-  async importSpec(content) {
-    // implementation
+  async import(content: string): Promise<Spec<'raml'>> {
+    // your code
+    
+    return {
+      // other fields
+      type: this.type,
+      format: 'yaml'
+    }
   }
 }
 ```

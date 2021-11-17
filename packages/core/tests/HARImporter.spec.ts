@@ -49,10 +49,10 @@ describe('HARImporter', () => {
     });
   });
 
-  describe('importSpec', () => {
+  describe('import', () => {
     it('should return nothing if JSON file is broken', async () => {
       // act
-      const result = await importer.importSpec(
+      const result = await importer.import(
         `{ "log": { "version": "1.2", "entries": [`
       );
 
@@ -62,7 +62,7 @@ describe('HARImporter', () => {
 
     it('should return the spec with expected type', async () => {
       // act
-      const result = await importer.importSpec(
+      const result = await importer.import(
         `{ "log": { "version": "1.2", "entries": [] } }`
       );
 

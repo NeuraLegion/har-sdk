@@ -1,11 +1,11 @@
 import { BaseImporter } from './BaseImporter';
-import { ImporterType } from './ImporterType';
-import { FileFormat } from './Importer';
 import { OpenAPI } from '../types';
+import { DocFormat } from './Spec';
+import { ImporterType } from './ImporterType';
 
 export abstract class BaseOASImporter<
-  T extends ImporterType.OASV2 | ImporterType.OASV3
-> extends BaseImporter<T> {
+  TDocType extends ImporterType.OASV2 | ImporterType.OASV3
+> extends BaseImporter<TDocType> {
   protected constructor() {
     super();
   }
@@ -15,7 +15,7 @@ export abstract class BaseOASImporter<
     format
   }: {
     doc: OpenAPI.Document;
-    format: FileFormat;
+    format: DocFormat;
   }): string {
     return `${[doc.info.title, doc.info.version]
       .map((x: string) => x.trim())

@@ -48,6 +48,42 @@ describe('Capture HAR', () => {
     );
   });
 
+  it('should parse set-cookie', async () => {
+    // arrange
+    const url = 'http://localhost:8000/';
+
+    nock(url)
+      .replyContentLength()
+      .get(`/`)
+      .reply(200, 'body', {
+        'set-cookie': [
+          'foo=bar; Path=/; Domain=example.com',
+          'equation=E%3Dmc%5E2; Path=/; Domain=example.com'
+        ]
+      });
+
+    // act
+    const har = await captureHar(`http://localhost:8000/`);
+
+    // assert
+    har.should.have.nested.property(
+      'log.entries[0].response.cookies[0].name',
+      `foo`
+    );
+    har.should.have.nested.property(
+      'log.entries[0].response.cookies[0].value',
+      `bar`
+    );
+    har.should.have.nested.property(
+      'log.entries[0].response.cookies[1].name',
+      `equation`
+    );
+    har.should.have.nested.property(
+      'log.entries[0].response.cookies[1].value',
+      `E=mc^2`
+    );
+  });
+
   it('should accept a url directly', async () => {
     // arrange
     const url = 'http://localhost:8000/';

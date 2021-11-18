@@ -9,19 +9,16 @@ import {
   Options,
   Request
 } from './HarBuilder';
-import { Parser } from '../parser';
 import { isReadable, transformBinaryToUtf8 } from '../utils';
 import Har from 'har-format';
 import { Headers, Response } from 'request';
-import tough from 'tough-cookie';
+import { parse, Cookie } from 'set-cookie-parser';
 import contentType from 'content-type';
 import querystring from 'qs';
 
 export class DefaultHarBuilder implements HarBuilder {
   private readonly BASE64_PATTERN =
     /^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$/;
-
-  constructor(private readonly parser: Parser) {}
 
   public buildHarEntry({
     request,
@@ -66,8 +63,10 @@ export class DefaultHarBuilder implements HarBuilder {
     return {
       method: (request.method && request.method.toUpperCase()) || '',
       url: this.buildRequestURL(request.uri.href) || '',
-      httpVersion: request.response?.httpVersion ?? 'HTTP/1.1',
-      cookies: this.buildHarCookies(request.headers?.cookie?.split(';')),
+      httpVersion: this.buildHttpVersion(request.response),
+      cookies: this.buildHarCookies(
+        request.headers?.cookie?.split(/;(?=(?:[^"]*"[^"]*")*[^"]*$)/)
+      ),
       headers: this.buildHarHeaders(
         (request.req && request.req._headers) || request.headers
       ),
@@ -80,6 +79,10 @@ export class DefaultHarBuilder implements HarBuilder {
     };
   }
 
+  private buildHttpVersion(response: Response): string {
+    return `HTTP/${response?.httpVersion ?? '1.1'}`;
+  }
+
   private buildHarResponse({
     response,
     error,
@@ -87,18 +90,11 @@ export class DefaultHarBuilder implements HarBuilder {
     redirectUrl,
     meta
   }: BuilderEntryParams): HarResponse {
-    const setCookieHeader =
-      response?.headers && response.headers['set-cookie']
-        ? Array.isArray(response.headers['set-cookie'])
-          ? response.headers['set-cookie']
-          : [response.headers['set-cookie']]
-        : [];
-
     const harResponse: HarResponse = {
       status: response?.statusCode && !error ? response.statusCode : 0,
       statusText: response?.statusMessage || '',
-      httpVersion: this.parser.parseHttpVersion(response),
-      cookies: this.buildHarCookies(setCookieHeader),
+      httpVersion: this.buildHttpVersion(response),
+      cookies: this.buildHarCookies(response?.headers?.['set-cookie'] ?? []),
       headers: this.buildHarHeaders(response?.headers),
       content: this.buildHarContent(response, harConfig),
       redirectURL: redirectUrl,
@@ -117,13 +113,19 @@ export class DefaultHarBuilder implements HarBuilder {
     return harResponse;
   }
 
-  private buildHarCookie(cookie: tough.Cookie): Har.Cookie {
+  private buildHarCookie(cookie: Cookie): Har.Cookie {
     const harCookie: Har.Cookie = {
-      name: cookie.key,
-      value: cookie.value,
-      httpOnly: cookie.httpOnly,
-      secure: cookie.secure
+      name: cookie.name,
+      value: decodeURIComponent(cookie.value)
     };
+
+    if (cookie.secure != null) {
+      harCookie.secure = cookie.secure;
+    }
+
+    if (cookie.httpOnly != null) {
+      harCookie.httpOnly = cookie.httpOnly;
+    }
 
     if (cookie.path) {
       harCookie.path = cookie.path;
@@ -133,22 +135,37 @@ export class DefaultHarBuilder implements HarBuilder {
       harCookie.domain = cookie.domain;
     }
 
-    if (cookie.expires instanceof Date) {
-      harCookie.expires = cookie.expires.toISOString();
+    const expires = this.buildExpires(cookie);
+
+    if (expires) {
+      harCookie.expires = expires;
     }
 
     return harCookie;
   }
 
-  private buildHarCookies(cookies: string[]): Har.Cookie[] {
-    if (!cookies) {
+  private buildExpires(cookie: Cookie): string {
+    if (typeof cookie.maxAge === 'number') {
+      return new Date(
+        new Date().getTime() + 1000 * cookie.maxAge
+      ).toISOString();
+    } else if (cookie.expires instanceof Date) {
+      return cookie.expires.toISOString();
+    }
+  }
+
+  private buildHarCookies(value: string | string[]): Har.Cookie[] {
+    if (!value) {
       return [];
     }
 
-    return cookies
-      .map((cookie) => tough.parse(cookie))
-      .filter((cookie) => cookie)
-      .map((cookie) => this.buildHarCookie(cookie));
+    const cookies = (Array.isArray(value) ? value : [value]).map((x) =>
+      x.trim()
+    );
+
+    return parse(cookies, {
+      silent: true
+    }).map((cookie) => this.buildHarCookie(cookie));
   }
 
   private buildFlattenedNameValueMap(
@@ -158,18 +175,19 @@ export class DefaultHarBuilder implements HarBuilder {
       return [];
     }
 
-    return Object.keys(obj).reduce((result, key) => {
-      const value = obj[key];
+    return Object.keys(obj).reduce((result, name) => {
+      const value = obj[name];
+
       if (Array.isArray(value)) {
         return result.concat(
           value.map((v) => ({
-            name: key,
+            name,
             value: transformBinaryToUtf8(v)
           }))
         );
       } else {
         return result.concat({
-          name: key,
+          name,
           value: transformBinaryToUtf8(value)
         });
       }

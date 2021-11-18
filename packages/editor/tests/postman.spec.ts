@@ -107,8 +107,8 @@ describe('PostmanEditor', () => {
         );
 
         result.parameters.should.deep.equal(expected);
-        shouldBeValidDoc(postmanEditor.getDocument());
-        postmanEditor.getDocument().variable[0].value.should.equal(newValue);
+        shouldBeValidDoc(postmanEditor.doc);
+        postmanEditor.doc.variable[0].value.should.equal(newValue);
       });
 
       it('should change path param value', () => {
@@ -128,10 +128,10 @@ describe('PostmanEditor', () => {
         );
 
         jsonPath.query(result, path)[0].value.should.equal(expected);
-        shouldBeValidDoc(postmanEditor.getDocument());
+        shouldBeValidDoc(postmanEditor.doc);
         jsonPath
           .query(
-            postmanEditor.getDocument(),
+            postmanEditor.doc,
             '$..item[?(@.request.url.raw=="{{baseUrl}}/api/v1/subscriptions/:subscriptionId")].request.url.variable[?(@.key=="subscriptionId")]'
           )[0]
           .value.should.equal(expected);
@@ -156,7 +156,7 @@ describe('PostmanEditor', () => {
         const result = postmanEditor.removeNode(inputNode.jsonPointer);
 
         jsonPath.query(result, path).should.be.empty;
-        shouldBeValidDoc(postmanEditor.getDocument());
+        shouldBeValidDoc(postmanEditor.doc);
         postmanEditor
           .stringify()
           .should.not.include('{{baseUrl}}/api/v1/statistics');
@@ -170,7 +170,7 @@ describe('PostmanEditor', () => {
 
         const result = postmanEditor.removeNode(inputNode.jsonPointer);
 
-        shouldBeValidDoc(postmanEditor.getDocument());
+        shouldBeValidDoc(postmanEditor.doc);
 
         jsonPath.query(result, path).should.be.empty;
         postmanEditor

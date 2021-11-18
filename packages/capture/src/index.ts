@@ -17,8 +17,8 @@ export const captureHar = async (
   requestConfig: Request.OptionsWithUrl | string,
   harConfig?: Options
 ): Promise<Har> => {
+  const builder = new DefaultHarBuilder();
   const parser = new DefaultParser();
-  const builder = new DefaultHarBuilder(parser);
   const capture = new DefaultCapture(builder, parser);
 
   const entries = await capture.captureEntries(

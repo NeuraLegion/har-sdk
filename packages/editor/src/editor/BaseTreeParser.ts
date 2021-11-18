@@ -1,8 +1,10 @@
 import { SpecTreeNode } from '../models';
-import { TreeParser } from './TreeParser';
+import { TreeParser, Document } from './TreeParser';
 import { dump, load } from 'js-yaml';
 
-export abstract class BaseTreeParser<T> implements TreeParser {
+export abstract class BaseTreeParser<T extends Document = Document>
+  implements TreeParser<T>
+{
   private _doc: T | undefined;
   private _format: 'yaml' | 'json' | undefined;
   private _tree: SpecTreeNode | undefined;

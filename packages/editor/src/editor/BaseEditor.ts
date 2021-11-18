@@ -1,10 +1,11 @@
 import { SpecTreeNode } from '../models';
 import { Editor } from './Editor';
 import { BaseTreeParser } from './BaseTreeParser';
+import { Document } from './TreeParser';
 import jsonPath from 'jsonpath';
 import jsonPointer from 'json-pointer';
 
-export abstract class BaseEditor<T>
+export abstract class BaseEditor<T extends Document>
   extends BaseTreeParser<T>
   implements Editor
 {
@@ -31,9 +32,5 @@ export abstract class BaseEditor<T>
     );
 
     return this.parse();
-  }
-
-  public getDocument(): Readonly<T> {
-    return this.doc;
   }
 }

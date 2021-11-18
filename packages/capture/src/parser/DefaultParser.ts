@@ -4,12 +4,6 @@ import { Response } from 'request';
 import { URL } from 'url';
 
 export class DefaultParser implements Parser {
-  public parseHttpVersion(response: Response): string {
-    const version = (response && response.httpVersion) || null;
-
-    return version ? `HTTP/${version}` : 'unknown';
-  }
-
   public parseRedirectUrl(
     response: Response
   ): [Record<string, string> | null, string] {

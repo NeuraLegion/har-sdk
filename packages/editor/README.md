@@ -13,12 +13,12 @@ npm i --save @har-sdk/editor
 ## Usage
 
 ```ts
-import { OasV3Editor } from '@har-sdk/editor';
+import { OasV3Editor, SpecTreeNode } from '@har-sdk/editor';
 
-const editor = new OasV3Editor();
-openApiParser.setup(jsonOrYamlSourceString).then(() => {
+const openApiEditor = new OasV3Editor();
+openApiEditor.setup(jsonOrYamlSourceString).then(() => {
   // tree parsing
-  let tree: SpecTreeNode = openApiParser.parse();
+  let tree: SpecTreeNode = openApiEditor.parse();
 
   // setting/updating parameter value
   tree = openApiEditor.setParameterValue(
@@ -31,7 +31,7 @@ openApiParser.setup(jsonOrYamlSourceString).then(() => {
   // removing specific node
   tree = openApiEditor.removeNode(tree.children[1].jsonPointer);
 
-  // serizalization
+  // serialization
   const serializedUpdatedSpec = openApiEditor.stringify();
 });
 ```

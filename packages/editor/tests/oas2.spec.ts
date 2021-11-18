@@ -105,8 +105,8 @@ describe('OasV2Editor', () => {
         );
 
         result.parameters.should.deep.equal(expected);
-        shouldBeValidDoc(openApiEditor.getDocument());
-        openApiEditor.getDocument().host.should.equal(newValue);
+        shouldBeValidDoc(openApiEditor.doc);
+        openApiEditor.doc.host.should.equal(newValue);
       });
 
       it('should set referenced query param value', () => {
@@ -127,15 +127,13 @@ describe('OasV2Editor', () => {
         );
 
         jsonPath.query(result, path)[0].value.should.equal(expected);
-        shouldBeValidDoc(openApiEditor.getDocument());
+        shouldBeValidDoc(openApiEditor.doc);
         (
-          openApiEditor.getDocument().paths['/pet/findByStatus'].get
+          openApiEditor.doc.paths['/pet/findByStatus'].get
             .parameters[0] as OpenAPIV2.ParameterObject
         ).default.should.equal(expected);
         (
-          openApiEditor.getDocument().parameters[
-            'status'
-          ] as OpenAPIV2.ParameterObject
+          openApiEditor.doc.parameters['status'] as OpenAPIV2.ParameterObject
         ).items.default.should.equal(oldValue);
       });
 
@@ -156,9 +154,9 @@ describe('OasV2Editor', () => {
         );
 
         jsonPath.query(result, path)[0].value.should.equal(expected);
-        shouldBeValidDoc(openApiEditor.getDocument());
+        shouldBeValidDoc(openApiEditor.doc);
         (
-          openApiEditor.getDocument().paths['/pet/findByTags'].get
+          openApiEditor.doc.paths['/pet/findByTags'].get
             .parameters[0] as OpenAPIV2.ParameterObject
         ).default.should.equal(expected);
       });
@@ -180,13 +178,11 @@ describe('OasV2Editor', () => {
         );
 
         jsonPath.query(result, path)[0].value.should.equal(expected);
-        shouldBeValidDoc(openApiEditor.getDocument());
+        shouldBeValidDoc(openApiEditor.doc);
         (
-          openApiEditor
-            .getDocument()
-            .paths['/pet/{petId}'].patch.parameters.find(
-              (p) => (p as OpenAPIV2.Parameter).name === 'body'
-            ) as OpenAPIV2.Parameter
+          openApiEditor.doc.paths['/pet/{petId}'].patch.parameters.find(
+            (p) => (p as OpenAPIV2.Parameter).name === 'body'
+          ) as OpenAPIV2.Parameter
         ).default.should.equal(expected);
       });
     });
@@ -209,8 +205,8 @@ describe('OasV2Editor', () => {
         const result = openApiEditor.removeNode(inputNode.jsonPointer);
 
         jsonPath.query(result, path).should.be.empty;
-        shouldBeValidDoc(openApiEditor.getDocument());
-        openApiEditor.getDocument().paths.should.not.haveOwnProperty(path);
+        shouldBeValidDoc(openApiEditor.doc);
+        openApiEditor.doc.paths.should.not.haveOwnProperty(path);
         result.should.be.deep.equal(openApiEditor.parse());
       });
 
@@ -222,10 +218,10 @@ describe('OasV2Editor', () => {
         const result = openApiEditor.removeNode(inputNode.jsonPointer);
 
         jsonPath.query(result, path).should.be.empty;
-        shouldBeValidDoc(openApiEditor.getDocument());
-        openApiEditor
-          .getDocument()
-          .paths['/pet/{petId}'].should.not.haveOwnProperty('get');
+        shouldBeValidDoc(openApiEditor.doc);
+        openApiEditor.doc.paths['/pet/{petId}'].should.not.haveOwnProperty(
+          'get'
+        );
         result.should.be.deep.equal(openApiEditor.parse());
       });
     });

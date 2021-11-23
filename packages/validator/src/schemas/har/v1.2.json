@@ -39,7 +39,8 @@
               "type": "array",
               "items": {
                 "$ref": "#/definitions/entry"
-              }
+              },
+              "minItems": 1
             },
             "comment": {
               "type": "string"

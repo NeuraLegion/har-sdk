@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "http://www.softwareishard.com/blog/har-12-spec/",
+  "$id": "https://github.com/ahmadnassri/har-spec/blob/master/versions/1.2.md/",
   "$async": true,
   "type": "object",
   "additionalProperties": false,

@@ -4,7 +4,7 @@ import { Har } from '@har-sdk/types';
 
 export class HarValidator extends BaseValidator<Har> {
   private readonly SCHEMA_ID =
-    'http://www.softwareishard.com/blog/har-12-spec/';
+    'https://github.com/ahmadnassri/har-spec/blob/master/versions/1.2.md/';
 
   constructor() {
     super([schema]);

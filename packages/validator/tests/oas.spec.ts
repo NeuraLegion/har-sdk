@@ -1,5 +1,5 @@
-import githubSwagger from './oas2.github.json';
-import petstoreSwagger from './oas2.petstore.json';
+import githubSwagger from './fixtures/oas2.github.json';
+import petstoreSwagger from './fixtures/oas2.petstore.json';
 import { OASValidator } from '../src';
 import { ErrorObject } from 'ajv';
 import chaiAsPromised from 'chai-as-promised';
@@ -37,7 +37,10 @@ describe('OASValidator', () => {
 
     it('should successfully validate valid oas v3 document (Petstore, yaml)', async () => {
       const input: OpenAPIV3.Document = yaml.load(
-        await promisify(readFile)(resolve('./tests/oas3.petstore.yaml'), 'utf8')
+        await promisify(readFile)(
+          resolve('./tests/fixtures/oas3.petstore.yaml'),
+          'utf8'
+        )
       ) as OpenAPIV3.Document;
 
       const result = await validator.verify(input);

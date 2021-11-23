@@ -1,4 +1,4 @@
-import nexploitPostman from './postman.nexploit.json';
+import nexploitPostman from './fixtures/postman.nexploit.json';
 import { PostmanValidator } from '../src';
 import { ErrorObject } from 'ajv';
 import { use } from 'chai';

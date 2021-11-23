@@ -4,5 +4,10 @@
     "baseUrl": ".",
     "rootDir": "."
   },
-  "include": ["src/**/*", "src/schemas/**/*.json", "tests/**/*", "tests/*.json"]
+  "include": [
+    "src/**/*",
+    "src/schemas/**/*.json",
+    "tests/**/*",
+    "tests/**/*.json"
+  ]
 }

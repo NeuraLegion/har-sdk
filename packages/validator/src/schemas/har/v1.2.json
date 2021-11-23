@@ -1,0 +1,330 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "http://www.softwareishard.com/blog/har-12-spec/",
+  "$async": true,
+  "type": "object",
+  "properties": {
+    "log": {
+      "$ref": "#/definitions/log"
+    }
+  },
+  "required": ["log"],
+  "definitions": {
+    "log": {
+      "$id": "#/definitions/log",
+      "description": "HTTP Archive structure.",
+      "type": "object",
+      "required": ["version", "creator", "entries"],
+      "properties": {
+        "log": {
+          "type": "object",
+          "properties": {
+            "version": {
+              "type": "string",
+              "default": "1.1"
+            },
+            "creator": {
+              "$ref": "#/definitions/creator"
+            },
+            "browser": {
+              "$ref": "#/definitions/creator"
+            },
+            "pages": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/page"
+              }
+            },
+            "entries": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/entry"
+              }
+            },
+            "comment": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "creator": {
+      "$id": "#/definitions/creator",
+      "description": "Name and version info of the log creator app.",
+      "type": "object",
+      "required": ["name", "version"],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "comment": {
+          "type": "string"
+        }
+      }
+    },
+    "page": {
+      "$id": "#/definitions/page",
+      "description": "Exported web page",
+      "required": ["startedDateTime", "id", "title", "pageTimings"],
+      "properties": {
+        "startedDateTime": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^(d{4})(-)?(dd)(-)?(dd)(T)?(dd)(:)?(dd)(:)?(dd)(.d+)?(Z|([+-])(dd)(:)?(dd))"
+        },
+        "id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "pageTimings": {
+          "$ref": "#/definitions/pageTimings"
+        },
+        "comment": {
+          "type": "string"
+        }
+      }
+    },
+    "pageTimings": {
+      "$id": "#/definitions/pageTimings",
+      "description": "Timing info about page load",
+      "properties": {
+        "onContentLoad": {
+          "type": "number",
+          "minimum": -1
+        },
+        "onLoad": {
+          "type": "number",
+          "minimum": -1
+        },
+        "comment": {
+          "type": "string"
+        }
+      }
+    },
+    "entry": {
+      "$id": "#/definitions/entry",
+      "description": "Request and Response related info",
+      "required": [
+        "startedDateTime",
+        "time",
+        "request",
+        "response",
+        "cache",
+        "timings"
+      ],
+      "properties": {
+        "pageref": { "type": "string" },
+        "startedDateTime": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^(d{4})(-)?(dd)(-)?(dd)(T)?(dd)(:)?(dd)(:)?(dd)(.d+)?(Z|([+-])(dd)(:)?(dd))"
+        },
+        "time": { "type": "number", "minimum": 0 },
+        "request": { "$ref": "#/definitions/request" },
+        "response": { "$ref": "#/definitions/response" },
+        "cache": { "$ref": "#/definitions/cache" },
+        "timings": { "$ref": "#/definitions/timings" },
+        "serverIPAddress": {
+          "type": "string"
+        },
+        "connection": { "type": "string" },
+        "comment": { "type": "string" }
+      }
+    },
+    "request": {
+      "$id": "request",
+      "description": "Monitored request",
+      "required": [
+        "method",
+        "url",
+        "httpVersion",
+        "cookies",
+        "headers",
+        "queryString",
+        "headersSize",
+        "bodySize"
+      ],
+      "properties": {
+        "method": {
+          "type": "string",
+          "description": "The Standard HTTP method associated with this request.",
+          "enum": [
+            "GET",
+            "PUT",
+            "POST",
+            "PATCH",
+            "DELETE",
+            "COPY",
+            "HEAD",
+            "OPTIONS",
+            "LINK",
+            "UNLINK",
+            "PURGE",
+            "LOCK",
+            "UNLOCK",
+            "PROPFIND",
+            "VIEW"
+          ]
+        },
+        "url": { "type": "string" },
+        "httpVersion": { "type": "string" },
+        "cookies": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/cookie" }
+        },
+        "headers": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/record" }
+        },
+        "queryString": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/record" }
+        },
+        "postData": { "$ref": "#/definitions/postData" },
+        "headersSize": { "type": "integer", "minimum": -1 },
+        "bodySize": { "type": "integer", "minimum": -1 },
+        "comment": { "type": "string" }
+      }
+    },
+    "record": {
+      "$id": "#/definitions/record",
+      "required": ["name", "value"],
+      "description": "Helper name-value pair structure.",
+      "properties": {
+        "name": { "type": "string" },
+        "value": { "type": "string" },
+        "comment": { "type": "string" }
+      }
+    },
+    "response": {
+      "$id": "#/definitions/response",
+      "description": "Monitored Response.",
+      "required": [
+        "status",
+        "statusText",
+        "httpVersion",
+        "cookies",
+        "headers",
+        "content",
+        "redirectURL",
+        "headersSize",
+        "bodySize"
+      ],
+      "properties": {
+        "status": { "type": "integer" },
+        "statusText": { "type": "string" },
+        "httpVersion": { "type": "string" },
+        "cookies": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/cookie" }
+        },
+        "headers": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/record" }
+        },
+        "content": { "$ref": "#/definitions/content" },
+        "redirectURL": { "type": "string" },
+        "headersSize": { "type": "integer", "minimum": -1 },
+        "bodySize": { "type": "integer", "minimum": -1 },
+        "comment": { "type": "string" }
+      }
+    },
+    "cookie": {
+      "$id": "#/definitions/cookie",
+      "description": "Cookie description.",
+      "required": ["name", "value"],
+      "properties": {
+        "name": { "type": "string" },
+        "value": { "type": "string" },
+        "path": { "type": "string" },
+        "domain": { "type": "string" },
+        "expires": { "type": "string" },
+        "httpOnly": { "type": "boolean" },
+        "secure": { "type": "boolean" },
+        "comment": { "type": "string" }
+      }
+    },
+    "postData": {
+      "$id": "#/definitions/postData",
+      "description": "Posted data info.",
+      "required": ["mimeType"],
+      "properties": {
+        "mimeType": { "type": "string" },
+        "text": { "type": "string" },
+        "params": {
+          "type": "array",
+          "required": ["name"],
+          "properties": {
+            "name": { "type": "string" },
+            "value": { "type": "string" },
+            "fileName": { "type": "string" },
+            "content": { "type": "string" },
+            "comment": { "type": "string" }
+          }
+        },
+        "comment": { "type": "string" }
+      }
+    },
+    "content": {
+      "$id": "#/definitions/content",
+      "description": "Response content",
+      "required": ["size", "mimeType"],
+      "properties": {
+        "size": { "type": "integer" },
+        "compression": { "type": "integer" },
+        "mimeType": { "type": "string" },
+        "text": { "type": "string" },
+        "encoding": { "type": "string" },
+        "comment": { "type": "string" }
+      }
+    },
+    "cache": {
+      "$id": "#/definitions/cache",
+      "description": "Info about a response coming from the cache.",
+      "properties": {
+        "beforeRequest": { "$ref": "#/definitions/cacheEntry" },
+        "afterRequest": { "$ref": "#/definitions/cacheEntry" },
+        "comment": { "type": "string" }
+      }
+    },
+    "cacheEntry": {
+      "$id": "#/definitions/cacheEntry",
+      "description": "Info about cache entry.",
+      "required": ["lastAccess", "eTag", "hitCount"],
+      "properties": {
+        "expires": {
+          "type": "string",
+          "optional": "true",
+          "pattern": "^(\\d{4})(-)?(\\d\\d)(-)?(\\d\\d)(T)?(\\d\\d)(:)?(\\d\\d)(:)?(\\d\\d)(\\.\\d+)?(Z|([+-])(\\d\\d)(:)?(\\d\\d))?"
+        },
+        "lastAccess": {
+          "type": "string",
+          "pattern": "^(\\d{4})(-)?(\\d\\d)(-)?(\\d\\d)(T)?(\\d\\d)(:)?(\\d\\d)(:)?(\\d\\d)(\\.\\d+)?(Z|([+-])(\\d\\d)(:)?(\\d\\d))?"
+        },
+        "eTag": { "type": "string" },
+        "hitCount": { "type": "integer" },
+        "comment": { "type": "string" }
+      }
+    },
+    "timings": {
+      "$id": "#/definitions/timings",
+      "required": ["send", "wait", "receive"],
+      "description": "Info about request-response timing.",
+      "properties": {
+        "dns": { "type": "number", "minimum": -1 },
+        "connect": { "type": "number", "minimum": -1 },
+        "blocked": { "type": "number", "minimum": -1 },
+        "send": { "type": "number" },
+        "wait": { "type": "number" },
+        "receive": { "type": "number" },
+        "ssl": { "type": "number", "minimum": -1 },
+        "comment": { "type": "string" }
+      }
+    }
+  }
+}

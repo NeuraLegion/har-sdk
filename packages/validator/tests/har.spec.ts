@@ -21,7 +21,7 @@ describe('HarValidator', () => {
       result.should.be.empty;
     });
 
-    it('should return error if entries are empty.', async () => {
+    it('should return error if entries are empty', async () => {
       // arrange
       const input = {
         log: {

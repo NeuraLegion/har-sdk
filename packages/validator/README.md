@@ -1,6 +1,6 @@
 # @har-sdk/validator
 
-A validator for OpenAPI and Postman documents.
+A validator for HAR v1.2 Spec, OpenAPI and Postman documents.
 
 ## Setup
 

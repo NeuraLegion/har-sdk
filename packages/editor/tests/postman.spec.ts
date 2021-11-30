@@ -72,10 +72,7 @@ describe('PostmanEditor', () => {
     });
 
     const shouldBeValidDoc = (doc: Postman.Document) =>
-      new PostmanValidator().verify(doc).should.eventually.deep.eq({
-        errors: [],
-        valid: true
-      });
+      new PostmanValidator().verify(doc).should.eventually.deep.eq([]);
 
     describe('setParameterValue', () => {
       it('should be exception on call "removeNode" before "parse"', async () => {
@@ -107,8 +104,9 @@ describe('PostmanEditor', () => {
         );
 
         result.parameters.should.deep.equal(expected);
-        shouldBeValidDoc(postmanEditor.doc);
         postmanEditor.doc.variable[0].value.should.equal(newValue);
+
+        return shouldBeValidDoc(postmanEditor.doc);
       });
 
       it('should change path param value', () => {
@@ -128,13 +126,14 @@ describe('PostmanEditor', () => {
         );
 
         jsonPath.query(result, path)[0].value.should.equal(expected);
-        shouldBeValidDoc(postmanEditor.doc);
         jsonPath
           .query(
             postmanEditor.doc,
             '$..item[?(@.request.url.raw=="{{baseUrl}}/api/v1/subscriptions/:subscriptionId")].request.url.variable[?(@.key=="subscriptionId")]'
           )[0]
           .value.should.equal(expected);
+
+        return shouldBeValidDoc(postmanEditor.doc);
       });
     });
 
@@ -156,11 +155,12 @@ describe('PostmanEditor', () => {
         const result = postmanEditor.removeNode(inputNode.jsonPointer);
 
         jsonPath.query(result, path).should.be.empty;
-        shouldBeValidDoc(postmanEditor.doc);
         postmanEditor
           .stringify()
           .should.not.include('{{baseUrl}}/api/v1/statistics');
         result.should.be.deep.equal(postmanEditor.parse());
+
+        return shouldBeValidDoc(postmanEditor.doc);
       });
 
       it('should remove endpoint node', () => {
@@ -170,13 +170,13 @@ describe('PostmanEditor', () => {
 
         const result = postmanEditor.removeNode(inputNode.jsonPointer);
 
-        shouldBeValidDoc(postmanEditor.doc);
-
         jsonPath.query(result, path).should.be.empty;
         postmanEditor
           .stringify()
           .should.not.include('{{baseUrl}}/.well-known/change-password');
         result.should.be.deep.equal(postmanEditor.parse());
+
+        return shouldBeValidDoc(postmanEditor.doc);
       });
 
       it('should update indices on remove', () => {

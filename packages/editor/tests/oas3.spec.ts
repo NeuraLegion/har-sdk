@@ -105,8 +105,9 @@ describe('OasV3Editor', () => {
         );
 
         result.parameters.should.deep.equal(expected);
-        shouldBeValidDoc(openApiEditor.doc);
         openApiEditor.doc.servers.should.deep.equal(newValue);
+
+        return shouldBeValidDoc(openApiEditor.doc);
       });
 
       it('should set referenced query param value', () => {
@@ -127,7 +128,6 @@ describe('OasV3Editor', () => {
         );
 
         jsonPath.query(result, path)[0].value.should.equal(expected);
-        shouldBeValidDoc(openApiEditor.doc);
         (
           openApiEditor.doc.components.parameters[
             'status'
@@ -137,6 +137,8 @@ describe('OasV3Editor', () => {
           openApiEditor.doc.paths['/pet/findByStatus'].get
             .parameters[0] as OpenAPIV3.ParameterObject
         ).example.should.equal(expected);
+
+        return shouldBeValidDoc(openApiEditor.doc);
       });
 
       it('should change query param existing value', () => {
@@ -156,11 +158,12 @@ describe('OasV3Editor', () => {
         );
 
         jsonPath.query(result, path)[0].value.should.equal(expected);
-        shouldBeValidDoc(openApiEditor.doc);
         (
           openApiEditor.doc.paths['/pet/findByTags'].get
             .parameters[0] as OpenAPIV3.ParameterObject
         ).example.should.equal(expected);
+
+        return shouldBeValidDoc(openApiEditor.doc);
       });
 
       it('should set referenced request body value', () => {
@@ -180,11 +183,12 @@ describe('OasV3Editor', () => {
         );
 
         jsonPath.query(result, path)[0].value.should.equal(expected);
-        shouldBeValidDoc(openApiEditor.doc);
         (
           openApiEditor.doc.paths['/pet/{petId}'].patch
             .requestBody as OpenAPIV3.RequestBodyObject
         ).content[inputParam.bodyType].example.should.equal(expected);
+
+        return shouldBeValidDoc(openApiEditor.doc);
       });
     });
 
@@ -206,9 +210,10 @@ describe('OasV3Editor', () => {
         const result = openApiEditor.removeNode(inputNode.jsonPointer);
 
         jsonPath.query(result, path).should.be.empty;
-        shouldBeValidDoc(openApiEditor.doc);
         openApiEditor.doc.paths.should.not.haveOwnProperty(path);
         result.should.be.deep.equal(openApiEditor.parse());
+
+        return shouldBeValidDoc(openApiEditor.doc);
       });
 
       it('should remove endpoint node', () => {
@@ -219,11 +224,12 @@ describe('OasV3Editor', () => {
         const result = openApiEditor.removeNode(inputNode.jsonPointer);
 
         jsonPath.query(result, path).should.be.empty;
-        shouldBeValidDoc(openApiEditor.doc);
         openApiEditor.doc.paths['/pet/{petId}'].should.not.haveOwnProperty(
           'get'
         );
         result.should.be.deep.equal(openApiEditor.parse());
+
+        return shouldBeValidDoc(openApiEditor.doc);
       });
     });
 

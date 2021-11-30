@@ -80,7 +80,7 @@ export class OasV2ParameterObjectsParser extends BaseOasParameterObjectsParser<
       paramType: 'requestBody',
       bodyType: mimeType,
       ...(value != null ? { value } : {}),
-      valueJsonPointer: `${pointer}/schema/default`
+      valueJsonPointer: this.getValueJsonPointer(`${pointer}/schema`)
     }));
   }
 }

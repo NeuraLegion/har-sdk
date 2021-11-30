@@ -9,13 +9,18 @@ export class OasV3ParameterObjectsParser extends BaseOasParameterObjectsParser<
     super(doc, dereferencedDoc);
   }
 
-  protected getParameterValue(paramObj: OpenAPIV3.ParameterObject): string | undefined {
+  protected getParameterValue(
+    paramObj: OpenAPIV3.ParameterObject
+  ): string | undefined {
     return (
       paramObj.example ?? (paramObj.schema as OpenAPIV3.SchemaObject).default
     );
   }
 
-  protected getValueJsonPointer(paramPointer: string): string {
+  protected getValueJsonPointer(
+    _paramObj: OpenAPIV3.ParameterObject,
+    paramPointer: string
+  ): string {
     return `${paramPointer}/example`;
   }
 }

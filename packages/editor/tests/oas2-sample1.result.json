@@ -16,7 +16,7 @@
               "location": "body",
               "name": "body",
               "paramType": "location",
-              "valueJsonPointer": "/paths/~1pet/put/parameters/0/default"
+              "valueJsonPointer": "/paths/~1pet/put/parameters/0/schema/default"
             }
           ]
         },
@@ -29,7 +29,7 @@
               "location": "body",
               "name": "body",
               "paramType": "location",
-              "valueJsonPointer": "/paths/~1pet/post/parameters/0/default"
+              "valueJsonPointer": "/paths/~1pet/post/parameters/0/schema/default"
             }
           ]
         }
@@ -152,7 +152,7 @@
               "location": "body",
               "name": "body",
               "paramType": "location",
-              "valueJsonPointer": "/paths/~1pet~1{petId}/patch/parameters/1/default"
+              "valueJsonPointer": "/paths/~1pet~1{petId}/patch/parameters/1/schema/default"
             }
           ]
         }

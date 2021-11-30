@@ -25,17 +25,22 @@ export abstract class BaseOasParameterObjectsParser<
     param: OpenAPIV2.Parameter | OpenAPIV3.ParameterObject
   ): string;
 
-  protected abstract getValueJsonPointer(paramPointer: string): string;
+  protected abstract getValueJsonPointer(
+    param: OpenAPIV2.Parameter | OpenAPIV3.ParameterObject,
+    paramPointer: string
+  ): string;
 
   public parse(pointer: string): SpecTreeNodeParam[] {
     const parameters: P[] = jsonPointer.has(this.doc, pointer)
       ? jsonPointer.get(this.doc, pointer)
       : undefined;
 
-    return parameters?.map(
-      (parameter: P, idx: number): SpecTreeLocationParam =>
-        this.parseParameter(`${pointer}/${idx}`, parameter)
-    ) ?? [];
+    return (
+      parameters?.map(
+        (parameter: P, idx: number): SpecTreeLocationParam =>
+          this.parseParameter(`${pointer}/${idx}`, parameter)
+      ) ?? []
+    );
   }
 
   protected parseParameter(
@@ -54,7 +59,7 @@ export abstract class BaseOasParameterObjectsParser<
       paramType: 'location',
       name: paramObj.name,
       ...(value != null ? { value } : {}),
-      valueJsonPointer: this.getValueJsonPointer(pointer),
+      valueJsonPointer: this.getValueJsonPointer(paramObj, pointer),
       location: paramObj.in as ParamLocation
     };
   }

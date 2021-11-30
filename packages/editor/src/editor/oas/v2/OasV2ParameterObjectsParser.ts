@@ -29,7 +29,7 @@ export class OasV2ParameterObjectsParser extends BaseOasParameterObjectsParser<
         ): SpecTreeNodeParam[] => {
           const parameterPointer = `${pointer}/${idx}`;
 
-          const paramObj: OpenAPIV2.Parameter = this.getParameterObject(
+          const paramObj = this.getParameterObject(
             parameterPointer,
             parameter
           ) as OpenAPIV2.Parameter;

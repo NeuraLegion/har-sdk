@@ -13,9 +13,13 @@
           "jsonPointer": "/paths/~1pet/put",
           "parameters": [
             {
-              "location": "body",
-              "name": "body",
-              "paramType": "location",
+              "bodyType": "application/json",
+              "paramType": "requestBody",
+              "valueJsonPointer": "/paths/~1pet/put/parameters/0/schema/default"
+            },
+            {
+              "bodyType": "application/xml",
+              "paramType": "requestBody",
               "valueJsonPointer": "/paths/~1pet/put/parameters/0/schema/default"
             }
           ]
@@ -26,9 +30,13 @@
           "jsonPointer": "/paths/~1pet/post",
           "parameters": [
             {
-              "location": "body",
-              "name": "body",
-              "paramType": "location",
+              "bodyType": "application/json",
+              "paramType": "requestBody",
+              "valueJsonPointer": "/paths/~1pet/post/parameters/0/schema/default"
+            },
+            {
+              "bodyType": "application/xml",
+              "paramType": "requestBody",
               "valueJsonPointer": "/paths/~1pet/post/parameters/0/schema/default"
             }
           ]
@@ -105,13 +113,13 @@
               "location": "path"
             },
             {
-              "location": "formData",
+              "location": "body",
               "name": "name",
               "paramType": "location",
               "valueJsonPointer": "/paths/~1pet~1{petId}/post/parameters/1/default"
             },
             {
-              "location": "formData",
+              "location": "body",
               "name": "status",
               "paramType": "location",
               "valueJsonPointer": "/paths/~1pet~1{petId}/post/parameters/2/default"
@@ -149,9 +157,8 @@
               "valueJsonPointer": "/paths/~1pet~1{petId}/patch/parameters/0/default"
             },
             {
-              "location": "body",
-              "name": "body",
-              "paramType": "location",
+              "bodyType": "application/json",
+              "paramType": "requestBody",
               "valueJsonPointer": "/paths/~1pet~1{petId}/patch/parameters/1/schema/default"
             }
           ]

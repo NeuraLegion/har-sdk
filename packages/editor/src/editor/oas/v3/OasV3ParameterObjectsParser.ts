@@ -17,10 +17,7 @@ export class OasV3ParameterObjectsParser extends BaseOasParameterObjectsParser<
     );
   }
 
-  protected getValueJsonPointer(
-    _paramObj: OpenAPIV3.ParameterObject,
-    paramPointer: string
-  ): string {
+  protected getValueJsonPointer(paramPointer: string): string {
     return `${paramPointer}/example`;
   }
 }

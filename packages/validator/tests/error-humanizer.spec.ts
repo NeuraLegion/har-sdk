@@ -239,6 +239,24 @@ describe('ErrorHumanizer', () => {
       result.should.deep.eq([expectedMessage]);
     });
 
+    it('should humanize "additionalProperties" error message with multiple properties', async () => {
+      const input: OpenAPIV3.Document = {
+        ...getBaseOasDoc(),
+        foo: 42,
+        bar: 42,
+        baz: 42
+      } as OpenAPIV3.Document;
+
+      const expectedMessage =
+        'the root value has an unexpected properties `foo`, `bar`, and `baz`';
+
+      const result = humanizer
+        .humanizeErrors(await oasValidator.verify(input))
+        .map((error) => error.message);
+
+      result.should.deep.eq([expectedMessage]);
+    });
+
     it('should humanize "uniqueItems" error message', async () => {
       const input: OpenAPIV3.Document = {
         ...getBaseOasDoc(),

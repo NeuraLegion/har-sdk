@@ -10,8 +10,15 @@ export class ObjectFormatter implements Formatter {
       | ErrorObject<'minProperties' | 'maxProperties', { limit: number }>
   ): string {
     switch (error.keyword) {
-      case 'additionalProperties':
-        return `has an unexpected property \`${error.params.additionalProperty}\``;
+      case 'additionalProperties': {
+        const props = error.params.additionalProperty;
+
+        return Array.isArray(props)
+          ? `has an unexpected properties ${WordingHelper.humanizeList(
+              props.map((prop) => `\`${prop}\``)
+            )}`
+          : `has an unexpected property \`${props}\``;
+      }
 
       case 'required':
         return `is missing the required field \`${error.params.missingProperty}\``;

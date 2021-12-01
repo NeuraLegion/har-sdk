@@ -216,7 +216,7 @@ describe('ErrorHumanizer', () => {
 
       const expected = {
         message:
-          'Error at /info/version/identifier: must be of length 10 or fewer',
+          'Error at /info/version/identifier: The property `identifier` must have a value of length 10 or fewer characters',
         locationParts: [
           {
             text: 'Error at'
@@ -228,7 +228,7 @@ describe('ErrorHumanizer', () => {
         ],
         messageParts: [
           {
-            text: 'must be of length 10 or fewer'
+            text: 'The property `identifier` must have a value of length 10 or fewer characters'
           }
         ]
       };
@@ -329,7 +329,7 @@ describe('ErrorHumanizer', () => {
 
       const expected = {
         message:
-          'Error at /host: does not match pattern ^[^{}/ :\\\\]+(?::\\d+)?$',
+          'Error at /host: The property `host` must have a value that matches the pattern `^[^{}/ :\\\\]+(?::\\d+)?$`',
         locationParts: [
           {
             text: 'Error at'
@@ -341,7 +341,7 @@ describe('ErrorHumanizer', () => {
         ],
         messageParts: [
           {
-            text: 'does not match pattern ^[^{}/ :\\\\]+(?::\\d+)?$'
+            text: 'The property `host` must have a value that matches the pattern `^[^{}/ :\\\\]+(?::\\d+)?$`'
           }
         ]
       };
@@ -361,7 +361,7 @@ describe('ErrorHumanizer', () => {
 
       const expected = {
         message:
-          'Error at /info/contact/email: must be a valid email address string',
+          'Error at /info/contact/email: The property `email` must have a value that is a valid email address string',
         locationParts: [
           {
             text: 'Error at'
@@ -373,7 +373,7 @@ describe('ErrorHumanizer', () => {
         ],
         messageParts: [
           {
-            text: 'must be a valid email address string'
+            text: 'The property `email` must have a value that is a valid email address string'
           }
         ]
       };

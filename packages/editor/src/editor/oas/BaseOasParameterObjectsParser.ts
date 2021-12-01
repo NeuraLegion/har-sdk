@@ -17,7 +17,7 @@ export abstract class BaseOasParameterObjectsParser<
 > implements ParametersParser
 {
   protected constructor(
-    private readonly doc: D,
+    protected readonly doc: D,
     private readonly dereferencedDoc: D
   ) {}
 
@@ -25,10 +25,7 @@ export abstract class BaseOasParameterObjectsParser<
     param: OpenAPIV2.Parameter | OpenAPIV3.ParameterObject
   ): string;
 
-  protected abstract getValueJsonPointer(
-    param: OpenAPIV2.Parameter | OpenAPIV3.ParameterObject,
-    paramPointer: string
-  ): string;
+  protected abstract getValueJsonPointer(paramPointer: string): string;
 
   public parse(pointer: string): SpecTreeNodeParam[] {
     const parameters: P[] = jsonPointer.has(this.doc, pointer)
@@ -37,21 +34,24 @@ export abstract class BaseOasParameterObjectsParser<
 
     return (
       parameters?.map(
-        (parameter: P, idx: number): SpecTreeLocationParam =>
+        (parameter: P, idx: number): SpecTreeNodeParam =>
           this.parseParameter(`${pointer}/${idx}`, parameter)
       ) ?? []
     );
   }
 
-  protected parseParameter(
+  protected getParameterObject(
     pointer: string,
     parameter: P
-  ): SpecTreeLocationParam {
-    const paramObj: OpenAPIV2.Parameter | OpenAPIV3.ParameterObject = (
-      parameter as { $ref: string }
-    ).$ref
+  ): OpenAPIV2.Parameter | OpenAPIV3.ParameterObject {
+    return (parameter as { $ref: string }).$ref
       ? jsonPointer.get(this.dereferencedDoc, pointer)
       : (parameter as OpenAPIV2.Parameter);
+  }
+
+  protected parseParameter(pointer: string, parameter: P): SpecTreeNodeParam {
+    const paramObj: OpenAPIV2.Parameter | OpenAPIV3.ParameterObject =
+      this.getParameterObject(pointer, parameter);
 
     const value = this.getParameterValue(paramObj);
 
@@ -59,8 +59,8 @@ export abstract class BaseOasParameterObjectsParser<
       paramType: 'location',
       name: paramObj.name,
       ...(value != null ? { value } : {}),
-      valueJsonPointer: this.getValueJsonPointer(paramObj, pointer),
+      valueJsonPointer: this.getValueJsonPointer(pointer),
       location: paramObj.in as ParamLocation
-    };
+    } as SpecTreeLocationParam;
   }
 }

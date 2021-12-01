@@ -166,7 +166,7 @@ describe('OasV2Editor', () => {
 
       it('should set referenced body parameter value', () => {
         const path =
-          '$..children[?(@.path=="/pet/{petId}" && @.method=="PATCH")].parameters[?(@.name=="body")]';
+          '$..children[?(@.path=="/pet/{petId}" && @.method=="PATCH")].parameters[?(@.paramType=="requestBody")]';
         const expected = '{"name":"test"}';
 
         const inputParam: SpecTreeRequestBodyParam = jsonPath.query(

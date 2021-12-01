@@ -1,4 +1,4 @@
-import { SpecTreeNode, HttpMethod } from '../../models';
+import { SpecTreeNode, HttpMethod, SpecTreeNodeParam } from '../../models';
 import { BaseEditor } from '../BaseEditor';
 import { PostmanParametersParser } from './PostmanParametersParser';
 import { PostmanUrlParser } from './PostmanUrlParser';
@@ -13,12 +13,14 @@ export class PostmanEditor extends BaseEditor<Postman.Document> {
   }
 
   public parse(): SpecTreeNode {
+    const parameters = new PostmanVariablesParser(this.doc).parse('/variable');
+
     this.tree = {
       jsonPointer: '/',
       path: '/',
       name: this.doc.info.name,
       children: this.createNodes(this.doc, ''),
-      parameters: new PostmanVariablesParser(this.doc).parse('/variable')
+      ...(parameters?.length ? { parameters } : {})
     };
 
     return this.tree;
@@ -37,28 +39,12 @@ export class PostmanEditor extends BaseEditor<Postman.Document> {
         );
 
         if (this.isItemGroup(x)) {
-          const children = this.createNodes(x, itemJsonPointer);
-
-          return [
-            {
-              jsonPointer: itemJsonPointer,
-              path: this.postmanUrlParser.getGroupPath(children),
-              children,
-              ...(parameters?.length ? { parameters } : {})
-            }
-          ];
+          return [this.createGroupNode(x, itemJsonPointer, parameters)];
         }
 
-        return x.request
-          ? [
-              {
-                jsonPointer: itemJsonPointer,
-                path: this.postmanUrlParser.parse(x.request.url),
-                method: x.request.method.toUpperCase() as HttpMethod,
-                ...(parameters?.length ? { parameters } : {})
-              }
-            ]
-          : [];
+        const node = this.createSingleNode(x, itemJsonPointer, parameters);
+
+        return node ? [node] : [];
       }
     );
   }
@@ -67,5 +53,33 @@ export class PostmanEditor extends BaseEditor<Postman.Document> {
     x: Postman.Item | Postman.ItemGroup
   ): x is Postman.ItemGroup {
     return Array.isArray((x as Postman.ItemGroup).item);
+  }
+
+  private createGroupNode(
+    itemGroup: Postman.ItemGroup,
+    pointer: string,
+    parameters: SpecTreeNodeParam[]
+  ): SpecTreeNode {
+    const children = this.createNodes(itemGroup, pointer);
+
+    return {
+      jsonPointer: pointer,
+      path: this.postmanUrlParser.getGroupPath(children),
+      children,
+      ...(parameters?.length ? { parameters } : {})
+    };
+  }
+
+  private createSingleNode(
+    item: Postman.Item,
+    pointer: string,
+    parameters: SpecTreeNodeParam[]
+  ): SpecTreeNode {
+    return {
+      jsonPointer: pointer,
+      path: this.postmanUrlParser.parse(item.request.url),
+      method: item.request.method.toUpperCase() as HttpMethod,
+      ...(parameters?.length ? { parameters } : {})
+    };
   }
 }

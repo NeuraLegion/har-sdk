@@ -58,6 +58,29 @@ describe('PostmanEditor', () => {
         Error,
         'You have to call "setup" to initialize the document'
       ));
+
+    it('should not be npe on empty item node', async () => {
+      await postmanTreeParser.setup(
+        JSON.stringify({
+          info: {
+            name: 'Postman document',
+            schema:
+              'https://schema.getpostman.com/json/collection/v2.1.0/collection.json'
+          },
+          item: []
+        })
+      );
+      const expected = {
+        jsonPointer: '/',
+        path: '/',
+        name: 'Postman document',
+        children: [] as any[]
+      };
+
+      const result = postmanTreeParser.parse();
+
+      result.should.deep.eq(expected);
+    });
   });
 
   describe('Editor', () => {

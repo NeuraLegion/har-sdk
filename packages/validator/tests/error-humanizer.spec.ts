@@ -216,7 +216,7 @@ describe('ErrorHumanizer', () => {
 
       const expected = {
         message:
-          'Error at /info/version/identifier: The property `identifier` must have a value of length 10 or fewer characters',
+          'Error at /info/version/identifier: The property `identifier` must have a value of length 10 or less characters',
         locationParts: [
           {
             text: 'Error at'
@@ -228,7 +228,7 @@ describe('ErrorHumanizer', () => {
         ],
         messageParts: [
           {
-            text: 'The property `identifier` must have a value of length 10 or fewer characters'
+            text: 'The property `identifier` must have a value of length 10 or less characters'
           }
         ]
       };
@@ -458,7 +458,7 @@ describe('ErrorHumanizer', () => {
 
       const expected = {
         message:
-          'Error at /tags: The property `tags` must have unique values, but there are the same elements at indexes 0 and 1',
+          'Error at /tags: The property `tags` must have unique values, but the elements at indexes 0 and 1 are the same',
         locationParts: [
           {
             text: 'Error at'
@@ -470,7 +470,7 @@ describe('ErrorHumanizer', () => {
         ],
         messageParts: [
           {
-            text: 'The property `tags` must have unique values, but there are the same elements at indexes 0 and 1'
+            text: 'The property `tags` must have unique values, but the elements at indexes 0 and 1 are the same'
           }
         ]
       };
@@ -597,7 +597,7 @@ describe('ErrorHumanizer', () => {
 
       const expected = {
         message:
-          'Error at /paths/~1item~1{itemId}/get/parameters/0/required: The property `required` must be equal to constant "true"',
+          'Error at /paths/~1item~1{itemId}/get/parameters/0/required: The property `required` must be equal to the constant "true"',
         locationParts: [
           {
             text: 'Error at'
@@ -609,7 +609,7 @@ describe('ErrorHumanizer', () => {
         ],
         messageParts: [
           {
-            text: 'The property `required` must be equal to constant "true"'
+            text: 'The property `required` must be equal to the constant "true"'
           }
         ]
       };

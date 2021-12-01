@@ -20,7 +20,7 @@ export class ArrayFormatter implements Formatter {
       case 'uniqueItems': {
         const { i, j } = error.params;
 
-        return `The property \`${propName}\` must have unique values, but there are the same elements at indexes ${j} and ${i}`;
+        return `The property \`${propName}\` must have unique values, but the elements at indexes ${j} and ${i} are the same`;
       }
     }
   }

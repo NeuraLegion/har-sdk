@@ -37,7 +37,7 @@ export class TypeFormatter implements Formatter {
               allowedValue.map((x) => JSON.stringify(x)),
               'or'
             )}`
-          : `The property \`${propName}\` must be equal to constant "${allowedValue}"`;
+          : `The property \`${propName}\` must be equal to the constant "${allowedValue}"`;
       }
     }
   }

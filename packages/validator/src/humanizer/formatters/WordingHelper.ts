@@ -1,6 +1,6 @@
 export class WordingHelper {
   public static getComparison(keyword: string): string {
-    return keyword.startsWith('min') ? 'more' : 'fewer';
+    return keyword.startsWith('min') ? 'more' : 'less';
   }
 
   public static humanizeList(arr: string[], conjunction = 'and'): string {

@@ -392,7 +392,7 @@ describe('ErrorHumanizer', () => {
       } as OpenAPIV3.Document;
 
       const expected = {
-        message: 'Error at the schema root: has an unexpected property `foo`',
+        message: 'Error at the schema root: The property `foo` is unexpected',
         locationParts: [
           {
             text: 'Error at'
@@ -404,7 +404,7 @@ describe('ErrorHumanizer', () => {
         ],
         messageParts: [
           {
-            text: 'has an unexpected property `foo`'
+            text: 'The property `foo` is unexpected'
           }
         ]
       };
@@ -426,7 +426,7 @@ describe('ErrorHumanizer', () => {
 
       const expected = {
         message:
-          'Error at the schema root: has an unexpected properties `foo`, `bar`, and `baz`',
+          'Error at the schema root: The properties `foo`, `bar`, and `baz` are unexpected',
         locationParts: [
           {
             text: 'Error at'
@@ -438,7 +438,7 @@ describe('ErrorHumanizer', () => {
         ],
         messageParts: [
           {
-            text: 'has an unexpected properties `foo`, `bar`, and `baz`'
+            text: 'The properties `foo`, `bar`, and `baz` are unexpected'
           }
         ]
       };
@@ -546,7 +546,7 @@ describe('ErrorHumanizer', () => {
 
       const expected = {
         message:
-          'Error at /paths/~1x/get/responses: must have 1 or more properties',
+          'Error at /paths/~1x/get/responses: The property `responses` must have 1 or more properties',
         locationParts: [
           {
             text: 'Error at'
@@ -558,7 +558,7 @@ describe('ErrorHumanizer', () => {
         ],
         messageParts: [
           {
-            text: 'must have 1 or more properties'
+            text: 'The property `responses` must have 1 or more properties'
           }
         ]
       };

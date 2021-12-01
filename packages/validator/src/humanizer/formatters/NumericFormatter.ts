@@ -1,4 +1,5 @@
 import { Formatter } from './Formatter';
+import { WordingHelper } from './WordingHelper';
 import { ErrorObject } from 'ajv';
 
 export class NumericFormatter implements Formatter {
@@ -9,6 +10,7 @@ export class NumericFormatter implements Formatter {
     >
   ): string {
     const { keyword, params } = error;
+    const propName = WordingHelper.extractPropertyName(error.instancePath);
 
     switch (error.keyword) {
       case 'minimum':
@@ -20,9 +22,9 @@ export class NumericFormatter implements Formatter {
           : 'less';
         const inclusive = !keyword.startsWith('exclusive');
 
-        return `must be${inclusive ? ' equal to or' : ''} ${direction} than ${
-          params.limit
-        }`;
+        return `The property \`${propName}\` must have a value${
+          inclusive ? ' equal to or' : ''
+        } ${direction} than ${params.limit}`;
       }
     }
   }

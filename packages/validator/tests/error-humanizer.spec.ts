@@ -246,7 +246,7 @@ describe('ErrorHumanizer', () => {
 
       const expected = {
         message:
-          'Error at /info/version/minor: must be equal to or greater than 0',
+          'Error at /info/version/minor: The property `minor` must have a value equal to or greater than 0',
         locationParts: [
           {
             text: 'Error at'
@@ -258,7 +258,7 @@ describe('ErrorHumanizer', () => {
         ],
         messageParts: [
           {
-            text: 'must be equal to or greater than 0'
+            text: 'The property `minor` must have a value equal to or greater than 0'
           }
         ]
       };
@@ -296,12 +296,7 @@ describe('ErrorHumanizer', () => {
 
       const expected = {
         message:
-          'Error at /paths/~1x/get/responses/200/content/application~1json/schema/multipleOf: must be greater than 0',
-        messageParts: [
-          {
-            text: 'must be greater than 0'
-          }
-        ],
+          'Error at /paths/~1x/get/responses/200/content/application~1json/schema/multipleOf: The property `multipleOf` must have a value greater than 0',
         locationParts: [
           {
             text: 'Error at'
@@ -310,6 +305,11 @@ describe('ErrorHumanizer', () => {
             text: '/paths/~1x/get/responses/200/content/application~1json/schema/multipleOf',
             jsonPointer:
               '/paths/~1x/get/responses/200/content/application~1json/schema/multipleOf'
+          }
+        ],
+        messageParts: [
+          {
+            text: 'The property `multipleOf` must have a value greater than 0'
           }
         ]
       };

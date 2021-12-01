@@ -144,7 +144,8 @@ describe('ErrorHumanizer', () => {
       } as unknown as OpenAPIV2.Document;
 
       const expected = {
-        message: 'Error at /info: must be of type object',
+        message:
+          'Error at /info: The property `info` must have a value of type `Object`',
         locationParts: [
           {
             text: 'Error at'
@@ -156,7 +157,7 @@ describe('ErrorHumanizer', () => {
         ],
         messageParts: [
           {
-            text: 'must be of type object'
+            text: 'The property `info` must have a value of type `Object`'
           }
         ]
       };
@@ -185,7 +186,7 @@ describe('ErrorHumanizer', () => {
 
       const expected = {
         message:
-          'Error at /item/0/response/0/body: must be of type null or string',
+          'Error at /item/0/response/0/body: The property `body` must have a value of type `Null` or `String`',
         locationParts: [
           {
             text: 'Error at'
@@ -197,7 +198,7 @@ describe('ErrorHumanizer', () => {
         ],
         messageParts: [
           {
-            text: 'must be of type null or string'
+            text: 'The property `body` must have a value of type `Null` or `String`'
           }
         ]
       };

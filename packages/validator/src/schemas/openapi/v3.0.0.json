@@ -389,7 +389,7 @@
           "minItems": 1,
           "uniqueItems": true,
           "errorMessage": {
-            "type": "The property `required` should be an array of property names required within an object schema"
+            "type": "The property `required` must have a value that is an array of valid property names"
           }
         },
         "enum": {

@@ -28,8 +28,8 @@ export class PostmanEditor extends BaseEditor<Postman.Document> {
     folder: Postman.ItemGroup,
     groupJsonPointer: string
   ): SpecTreeNode[] {
-    return folder.item.map(
-      (x: Postman.ItemGroup | Postman.Item, idx: number): SpecTreeNode => {
+    return folder.item.flatMap(
+      (x: Postman.ItemGroup | Postman.Item, idx: number): SpecTreeNode[] => {
         const itemJsonPointer = `${groupJsonPointer}/item/${idx.toString(10)}`;
 
         const parameters = new PostmanParametersParser(this.doc).parse(
@@ -39,20 +39,26 @@ export class PostmanEditor extends BaseEditor<Postman.Document> {
         if (this.isItemGroup(x)) {
           const children = this.createNodes(x, itemJsonPointer);
 
-          return {
-            jsonPointer: itemJsonPointer,
-            path: this.postmanUrlParser.getGroupPath(children),
-            children,
-            ...(parameters?.length ? { parameters } : {})
-          };
+          return [
+            {
+              jsonPointer: itemJsonPointer,
+              path: this.postmanUrlParser.getGroupPath(children),
+              children,
+              ...(parameters?.length ? { parameters } : {})
+            }
+          ];
         }
 
-        return {
-          jsonPointer: itemJsonPointer,
-          path: this.postmanUrlParser.parse(x.request?.url),
-          method: x.request?.method.toUpperCase() as HttpMethod,
-          ...(parameters?.length ? { parameters } : {})
-        };
+        return x.request
+          ? [
+              {
+                jsonPointer: itemJsonPointer,
+                path: this.postmanUrlParser.parse(x.request.url),
+                method: x.request.method.toUpperCase() as HttpMethod,
+                ...(parameters?.length ? { parameters } : {})
+              }
+            ]
+          : [];
       }
     );
   }

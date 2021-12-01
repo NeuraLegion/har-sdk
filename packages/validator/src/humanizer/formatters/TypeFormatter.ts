@@ -14,11 +14,9 @@ export class TypeFormatter implements Formatter {
     switch (error.keyword) {
       case 'enum': {
         const list = error.params.allowedValues.map((x) => JSON.stringify(x));
+        const expected = WordingHelper.humanizeList(list, 'or');
 
-        return `The property \`${propName}\` must have one of the following values: ${WordingHelper.humanizeList(
-          list,
-          'or'
-        )}`;
+        return `The property \`${propName}\` must have one of the following values: ${expected}`;
       }
 
       case 'type': {
@@ -26,9 +24,9 @@ export class TypeFormatter implements Formatter {
         const list = (Array.isArray(type) ? type : type.split(',')).map(
           (item) => `\`${item[0].toUpperCase()}${item.slice(1)}\``
         );
-        const expectType = WordingHelper.humanizeList(list, 'or');
+        const expected = WordingHelper.humanizeList(list, 'or');
 
-        return `The property \`${propName}\` must have a value of type ${expectType}`;
+        return `The property \`${propName}\` must have a value of type ${expected}`;
       }
 
       case 'const': {

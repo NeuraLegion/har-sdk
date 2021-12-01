@@ -27,11 +27,13 @@ const errors = await new OASValidator().verify(apiDoc as any);
 console.log(errors);
 // [
 //   {
-//     instancePath: '/info',
-//     schemaPath: '#/required',
-//     keyword: 'required',
-//     params: { missingProperty: 'version' },
-//     message: "must have required property 'version'"
+//     "instancePath": "/info",
+//     "schemaPath": "#/required",
+//     "keyword": "required",
+//     "params": {
+//       "missingProperty": "version"
+//     },
+//     "message": "must have required property 'version'"
 //   }
 // ]
 
@@ -39,14 +41,25 @@ const humanizedErrors = await new ErrorHumanizer().humanizeErrors(errors);
 console.log(humanizedErrors);
 // [
 //   {
-//     originalError: {
-//       instancePath: '/info',
-//       schemaPath: '#/required',
-//       keyword: 'required',
-//       params: [Object],
-//       message: "must have required property 'version'"
+//     "originalError": {
+//       "instancePath": "/info",
+//       "schemaPath": "#/required",
+//       "keyword": "required",
+//       "params": {
+//         "missingProperty": "version"
+//       },
+//       "message": "must have required property 'version'"
 //     },
-//     message: "the value at /info is missing the required field 'version'"
+//     "message": "the value at /info is missing the required field `version`",
+//     "messageParts": [
+//       {
+//         "text": "the value at /info",
+//         "jsonPointer": "/info"
+//       },
+//       {
+//         "text": "is missing the required field `version`"
+//       }
+//     ]
 //   }
 // ]
 ```

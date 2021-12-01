@@ -27,11 +27,13 @@ export class ErrorHumanizer {
   public humanizeError(error: ErrorObject): HumanizedError {
     return {
       originalError: error,
-      message: this.humanizeErrorMessage(error)
+      ...this.humanizeErrorMessage(error)
     };
   }
 
-  public humanizeErrorMessage(error: ErrorObject): string {
+  public humanizeErrorMessage(
+    error: ErrorObject
+  ): Pick<HumanizedError, 'message' | 'messageParts'> {
     const location = this.formatLocation(error);
 
     let message = this.formatters.reduce(
@@ -44,7 +46,18 @@ export class ErrorHumanizer {
       message = error.message;
     }
 
-    return `${location} ${message}`;
+    return {
+      message: `${location} ${message}`,
+      messageParts: [
+        {
+          text: location,
+          jsonPointer: error.instancePath
+        },
+        {
+          text: message
+        }
+      ]
+    };
   }
 
   private formatLocation(error: ErrorObject): string {

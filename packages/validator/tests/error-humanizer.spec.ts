@@ -53,7 +53,7 @@ describe('ErrorHumanizer', () => {
 
       const expected = {
         message:
-          'Error at /paths: The property paths must have path names that start with "/"',
+          'Error at /paths: The property `paths` must have path names that start with "/"',
         locationParts: [
           {
             text: 'Error at'
@@ -65,7 +65,7 @@ describe('ErrorHumanizer', () => {
         ],
         messageParts: [
           {
-            text: 'The property paths must have path names that start with "/"'
+            text: 'The property `paths` must have path names that start with "/"'
           }
         ]
       };
@@ -81,8 +81,7 @@ describe('ErrorHumanizer', () => {
       const { host, ...input } = getBaseSwaggerDoc();
 
       const expected = {
-        message:
-          'Error at the schema root: is missing the required field `host`',
+        message: 'Error at the schema root: The property `host` is required',
         locationParts: [
           {
             text: 'Error at'
@@ -94,7 +93,7 @@ describe('ErrorHumanizer', () => {
         ],
         messageParts: [
           {
-            text: 'is missing the required field `host`'
+            text: 'The property `host` is required'
           }
         ]
       };
@@ -693,7 +692,7 @@ describe('ErrorHumanizer', () => {
 
     const expected = {
       message:
-        'Error at /item/0/request/body/formdata/0: is missing the required field `key`',
+        'Error at /item/0/request/body/formdata/0: The property `key` is required',
       locationParts: [
         {
           text: 'Error at'
@@ -705,7 +704,7 @@ describe('ErrorHumanizer', () => {
       ],
       messageParts: [
         {
-          text: 'is missing the required field `key`'
+          text: 'The property `key` is required'
         }
       ]
     };

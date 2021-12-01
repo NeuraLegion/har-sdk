@@ -21,7 +21,7 @@ export class ObjectFormatter implements Formatter {
       }
 
       case 'required':
-        return `is missing the required field \`${error.params.missingProperty}\``;
+        return `The property \`${error.params.missingProperty}\` is required`;
 
       case 'minProperties':
       case 'maxProperties':

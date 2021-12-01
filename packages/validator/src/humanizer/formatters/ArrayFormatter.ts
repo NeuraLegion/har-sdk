@@ -8,17 +8,19 @@ export class ArrayFormatter implements Formatter {
       | ErrorObject<'maxItems' | 'minItems', { limit: number }>
       | ErrorObject<'uniqueItems', { i: number; j: number }>
   ): string {
+    const propName = WordingHelper.extractPropertyName(error.instancePath);
+
     switch (error.keyword) {
       case 'minItems':
       case 'maxItems':
-        return `must have ${
+        return `The property \`${propName}\` must have ${
           error.params.limit
         } or ${WordingHelper.getComparison(error.keyword)} items`;
 
       case 'uniqueItems': {
         const { i, j } = error.params;
 
-        return `must be unique but elements ${j} and ${i} are the same`;
+        return `The property \`${propName}\` must have unique values, but there are the same elements at indexes ${j} and ${i}`;
       }
     }
   }

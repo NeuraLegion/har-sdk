@@ -458,7 +458,7 @@ describe('ErrorHumanizer', () => {
 
       const expected = {
         message:
-          'Error at /tags: must be unique but elements 0 and 1 are the same',
+          'Error at /tags: The property `tags` must have unique values, but there are the same elements at indexes 0 and 1',
         locationParts: [
           {
             text: 'Error at'
@@ -470,7 +470,7 @@ describe('ErrorHumanizer', () => {
         ],
         messageParts: [
           {
-            text: 'must be unique but elements 0 and 1 are the same'
+            text: 'The property `tags` must have unique values, but there are the same elements at indexes 0 and 1'
           }
         ]
       };
@@ -507,7 +507,7 @@ describe('ErrorHumanizer', () => {
 
       const expected = {
         message:
-          'Error at /paths/~1x/get/responses/200/content/application~1json/schema/required: must have 1 or more items',
+          'Error at /paths/~1x/get/responses/200/content/application~1json/schema/required: The property `required` must have 1 or more items',
         locationParts: [
           {
             text: 'Error at'
@@ -520,7 +520,7 @@ describe('ErrorHumanizer', () => {
         ],
         messageParts: [
           {
-            text: 'must have 1 or more items'
+            text: 'The property `required` must have 1 or more items'
           }
         ]
       };

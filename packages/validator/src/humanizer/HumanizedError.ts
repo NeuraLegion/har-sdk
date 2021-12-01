@@ -9,4 +9,5 @@ export interface HumanizedError {
   originalError: ErrorObject;
   message: string;
   messageParts: ErrorMessagePart[];
+  locationParts: ErrorMessagePart[];
 }

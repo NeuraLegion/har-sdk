@@ -174,7 +174,7 @@
       },
       "additionalProperties": false,
       "errorMessage": {
-        "additionalProperties": "should only have path names that start with `/`"
+        "additionalProperties": "The property `paths` must have path names that start with \"/\""
       }
     },
     "definitions": {
@@ -354,8 +354,8 @@
         }
       },
       "errorMessage": {
-        "not": "should define at least one response, in addition to any vendor extension (`x-*`) fields",
-        "additionalProperties": "should only have three-digit status codes, `default`, and vendor extensions (`x-*`) as properties"
+        "not": "The property `response` must define at least one response, in addition to any vendor extension (`x-*`) fields",
+        "additionalProperties": "The property `response` must have the following values: three-digit status codes, `default`, and vendor extensions (`x-*`)"
       }
     },
     "responseValue": {
@@ -1353,7 +1353,7 @@
           "type": "string",
           "format": "uri",
           "errorMessage": {
-            "format": "should be an absolute URI"
+            "format": "The property `authorizationUrl` must have a value that is an absolute URI"
           }
         },
         "description": {
@@ -1386,7 +1386,7 @@
           "type": "string",
           "format": "uri",
           "errorMessage": {
-            "format": "should be an absolute URI"
+            "format": "The property `tokenUrl` must have a value that is an absolute URI"
           }
         },
         "description": {
@@ -1419,7 +1419,7 @@
           "type": "string",
           "format": "uri",
           "errorMessage": {
-            "format": "should be an absolute URI"
+            "format": "The property `tokenUrl` must have a value that is an absolute URI"
           }
         },
         "description": {
@@ -1452,14 +1452,14 @@
           "type": "string",
           "format": "uri",
           "errorMessage": {
-            "format": "should be an absolute URI"
+            "format": "The property `authorizationUrl` must have a value that is an absolute URI"
           }
         },
         "tokenUrl": {
           "type": "string",
           "format": "uri",
           "errorMessage": {
-            "format": "should be an absolute URI"
+            "format": "The property `tokenUrl` must have a value that is an absolute URI"
           }
         },
         "description": {

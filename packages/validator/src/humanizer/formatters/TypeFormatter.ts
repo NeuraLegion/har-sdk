@@ -12,8 +12,12 @@ export class TypeFormatter implements Formatter {
     switch (error.keyword) {
       case 'enum': {
         const list = error.params.allowedValues.map((x) => JSON.stringify(x));
+        const propName = WordingHelper.extractPropertyName(error.instancePath);
 
-        return `must be one of: ${WordingHelper.humanizeList(list, 'or')}`;
+        return `The property \`${propName}\` must have one of the following values: ${WordingHelper.humanizeList(
+          list,
+          'or'
+        )}`;
       }
 
       case 'type': {
@@ -26,6 +30,7 @@ export class TypeFormatter implements Formatter {
 
       case 'const': {
         const allowedValue = error.params.allowedValue;
+        error;
 
         return Array.isArray(allowedValue)
           ? `must be one of: ${WordingHelper.humanizeList(

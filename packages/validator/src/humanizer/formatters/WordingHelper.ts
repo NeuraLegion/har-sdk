@@ -18,4 +18,11 @@ export class WordingHelper {
       arr[arr.length - 1]
     }`;
   }
+
+  public static extractPropertyName(pointer: string): string {
+    return pointer
+      .replace(/\/\d+$/, '')
+      .split('/')
+      .pop();
+  }
 }

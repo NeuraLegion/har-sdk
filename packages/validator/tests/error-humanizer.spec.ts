@@ -597,7 +597,7 @@ describe('ErrorHumanizer', () => {
 
       const expected = {
         message:
-          'Error at /paths/~1item~1{itemId}/get/parameters/0/required: must be equal to constant "true"',
+          'Error at /paths/~1item~1{itemId}/get/parameters/0/required: The property `required` must be equal to constant "true"',
         locationParts: [
           {
             text: 'Error at'
@@ -609,7 +609,7 @@ describe('ErrorHumanizer', () => {
         ],
         messageParts: [
           {
-            text: 'must be equal to constant "true"'
+            text: 'The property `required` must be equal to constant "true"'
           }
         ]
       };
@@ -646,7 +646,7 @@ describe('ErrorHumanizer', () => {
 
       const expected = {
         message:
-          'Error at /item/0/request/body/formdata/0/type: must be one of: "text" or "file"',
+          'Error at /item/0/request/body/formdata/0/type: The property `type` must be equal to one of the following: "text" or "file"',
         locationParts: [
           { text: 'Error at' },
           {
@@ -656,7 +656,7 @@ describe('ErrorHumanizer', () => {
         ],
         messageParts: [
           {
-            text: 'must be one of: "text" or "file"'
+            text: 'The property `type` must be equal to one of the following: "text" or "file"'
           }
         ]
       };

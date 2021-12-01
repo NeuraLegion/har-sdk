@@ -35,11 +35,11 @@ export class TypeFormatter implements Formatter {
         const allowedValue = error.params.allowedValue;
 
         return Array.isArray(allowedValue)
-          ? `must be one of: ${WordingHelper.humanizeList(
+          ? `The property \`${propName}\` must be equal to one of the following: ${WordingHelper.humanizeList(
               allowedValue.map((x) => JSON.stringify(x)),
               'or'
             )}`
-          : `must be equal to constant "${allowedValue}"`;
+          : `The property \`${propName}\` must be equal to constant "${allowedValue}"`;
       }
     }
   }

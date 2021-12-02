@@ -1,6 +1,5 @@
 /* eslint-disable max-depth */
 import { Converter } from './Converter';
-import { resolveRef } from '../utils/resolveRef';
 import { isObject } from '../utils/isObject';
 import { normalizeUrl } from '../utils/normalizeUrl';
 import { Flattener } from '../utils/Flattener';
@@ -9,12 +8,21 @@ import {
   removeTrailingSlash
 } from '../utils/stringHelpers';
 import { Validator } from '@har-sdk/validator';
-import { OpenAPI, OpenAPIV3, isOASV2, isOASV3 } from '@har-sdk/types';
 import { sample } from '@har-sdk/openapi-sampler';
-import { Request, QueryString, Header, PostData } from 'har-format';
+import {
+  OpenAPI,
+  OpenAPIV3,
+  isOASV2,
+  isOASV3,
+  Request,
+  QueryString,
+  Header,
+  PostData
+} from '@har-sdk/types';
 import template from 'url-template';
 import { toXML } from 'jstoxml';
 import querystring from 'qs';
+import $RefParser, { JSONSchema } from '@apidevtools/json-schema-ref-parser';
 
 interface HarRequest {
   readonly method: string;
@@ -38,8 +46,15 @@ export class DefaultConverter implements Converter {
   public async convert(spec: OpenAPI.Document): Promise<Request[]> {
     await this.validator.verify(spec);
 
-    const baseUrl: string = normalizeUrl(this.getBaseUrl(spec));
-    const requests: HarRequest[] = this.parseSwaggerDoc(spec, baseUrl);
+    const dereferenceSpec = (await new $RefParser().dereference(
+      JSON.parse(JSON.stringify(spec)) as JSONSchema
+    )) as OpenAPI.Document;
+
+    const baseUrl = normalizeUrl(this.getBaseUrl(dereferenceSpec));
+    const requests: HarRequest[] = this.parseSwaggerDoc(
+      dereferenceSpec,
+      baseUrl
+    );
 
     return requests.map((x: HarRequest) => x.har);
   }
@@ -337,11 +352,7 @@ export class DefaultConverter implements Converter {
       return queryStrings;
     }
 
-    for (let param of spec.paths[path][method].parameters) {
-      if (typeof param['$ref'] === 'string' && !/^http/.test(param['$ref'])) {
-        param = resolveRef(spec, param['$ref']);
-      }
-
+    for (const param of spec.paths[path][method].parameters) {
       if (
         typeof param.in !== 'undefined' &&
         param.in.toLowerCase() === 'query'

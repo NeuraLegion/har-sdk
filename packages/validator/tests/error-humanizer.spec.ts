@@ -53,21 +53,26 @@ describe('ErrorHumanizer', () => {
 
       const expected = {
         message:
-          'the value at /paths should only have path names that start with `/`',
-        messageParts: [
+          'Error at /paths: The property `paths` must have path names that start with "/"',
+        locationParts: [
           {
-            text: 'the value at /paths',
-            jsonPointer: '/paths'
+            text: 'Error at'
           },
           {
-            text: 'should only have path names that start with `/`'
+            text: '/paths',
+            jsonPointer: '/paths'
+          }
+        ],
+        messageParts: [
+          {
+            text: 'The property `paths` must have path names that start with "/"'
           }
         ]
       };
 
       const result = humanizer
         .humanizeErrors(await oasValidator.verify(input))
-        .map(({ message, messageParts }) => ({ message, messageParts }));
+        .map(({ originalError, ...rest }) => ({ ...rest }));
 
       result.should.deep.eq([expected]);
     });
@@ -76,21 +81,26 @@ describe('ErrorHumanizer', () => {
       const { host, ...input } = getBaseSwaggerDoc();
 
       const expected = {
-        message: 'the root value is missing the required field `host`',
-        messageParts: [
+        message: 'Error at the schema root: The property `host` is required',
+        locationParts: [
           {
-            text: 'the root value',
-            jsonPointer: ''
+            text: 'Error at'
           },
           {
-            text: 'is missing the required field `host`'
+            text: 'the schema root',
+            jsonPointer: ''
+          }
+        ],
+        messageParts: [
+          {
+            text: 'The property `host` is required'
           }
         ]
       };
 
       const result = humanizer
         .humanizeErrors(await oasValidator.verify(input))
-        .map(({ message, messageParts }) => ({ message, messageParts }));
+        .map(({ originalError, ...rest }) => ({ ...rest }));
 
       result.should.deep.eq([expected]);
     });
@@ -103,21 +113,26 @@ describe('ErrorHumanizer', () => {
 
       const expected = {
         message:
-          'the value at /schemes/1 must be one of: "http", "https", "ws", or "wss"',
-        messageParts: [
+          'Error at /schemes/1: The property `schemes` must have one of the following values: "http", "https", "ws", or "wss"',
+        locationParts: [
           {
-            text: 'the value at /schemes/1',
-            jsonPointer: '/schemes/1'
+            text: 'Error at'
           },
           {
-            text: 'must be one of: "http", "https", "ws", or "wss"'
+            text: '/schemes/1',
+            jsonPointer: '/schemes/1'
+          }
+        ],
+        messageParts: [
+          {
+            text: 'The property `schemes` must have one of the following values: "http", "https", "ws", or "wss"'
           }
         ]
       };
 
       const result = humanizer
         .humanizeErrors(await oasValidator.verify(input))
-        .map(({ message, messageParts }) => ({ message, messageParts }));
+        .map(({ originalError, ...rest }) => ({ ...rest }));
 
       result.should.deep.eq([expected]);
     });
@@ -129,21 +144,27 @@ describe('ErrorHumanizer', () => {
       } as unknown as OpenAPIV2.Document;
 
       const expected = {
-        message: 'the value at /info must be of type object',
-        messageParts: [
+        message:
+          'Error at /info: The property `info` must have a value of type `Object`',
+        locationParts: [
           {
-            text: 'the value at /info',
-            jsonPointer: '/info'
+            text: 'Error at'
           },
           {
-            text: 'must be of type object'
+            text: '/info',
+            jsonPointer: '/info'
+          }
+        ],
+        messageParts: [
+          {
+            text: 'The property `info` must have a value of type `Object`'
           }
         ]
       };
 
       const result = humanizer
         .humanizeErrors(await oasValidator.verify(input))
-        .map(({ message, messageParts }) => ({ message, messageParts }));
+        .map(({ originalError, ...rest }) => ({ ...rest }));
 
       result.should.deep.eq([expected]);
     });
@@ -165,21 +186,26 @@ describe('ErrorHumanizer', () => {
 
       const expected = {
         message:
-          'the value at /item/0/response/0/body must be of type null or string',
-        messageParts: [
+          'Error at /item/0/response/0/body: The property `body` must have a value of type `Null` or `String`',
+        locationParts: [
           {
-            text: 'the value at /item/0/response/0/body',
-            jsonPointer: '/item/0/response/0/body'
+            text: 'Error at'
           },
           {
-            text: 'must be of type null or string'
+            text: '/item/0/response/0/body',
+            jsonPointer: '/item/0/response/0/body'
+          }
+        ],
+        messageParts: [
+          {
+            text: 'The property `body` must have a value of type `Null` or `String`'
           }
         ]
       };
 
       const result = humanizer
         .humanizeErrors(await postmanValidator.verify(input))
-        .map(({ message, messageParts }) => ({ message, messageParts }));
+        .map(({ originalError, ...rest }) => ({ ...rest }));
 
       result.should.deep.eq([expected]);
     });
@@ -190,21 +216,26 @@ describe('ErrorHumanizer', () => {
 
       const expected = {
         message:
-          'the value at /info/version/identifier must be of length 10 or fewer',
-        messageParts: [
+          'Error at /info/version/identifier: The property `identifier` must have a value of length 10 or less characters',
+        locationParts: [
           {
-            text: 'the value at /info/version/identifier',
-            jsonPointer: '/info/version/identifier'
+            text: 'Error at'
           },
           {
-            text: 'must be of length 10 or fewer'
+            text: '/info/version/identifier',
+            jsonPointer: '/info/version/identifier'
+          }
+        ],
+        messageParts: [
+          {
+            text: 'The property `identifier` must have a value of length 10 or less characters'
           }
         ]
       };
 
       const result = humanizer
         .humanizeErrors(await postmanValidator.verify(input))
-        .map(({ message, messageParts }) => ({ message, messageParts }));
+        .map(({ originalError, ...rest }) => ({ ...rest }));
 
       result.should.deep.eq([expected]);
     });
@@ -215,21 +246,26 @@ describe('ErrorHumanizer', () => {
 
       const expected = {
         message:
-          'the value at /info/version/minor must be equal to or greater than 0',
-        messageParts: [
+          'Error at /info/version/minor: The property `minor` must have a value equal to or greater than 0',
+        locationParts: [
           {
-            text: 'the value at /info/version/minor',
-            jsonPointer: '/info/version/minor'
+            text: 'Error at'
           },
           {
-            text: 'must be equal to or greater than 0'
+            text: '/info/version/minor',
+            jsonPointer: '/info/version/minor'
+          }
+        ],
+        messageParts: [
+          {
+            text: 'The property `minor` must have a value equal to or greater than 0'
           }
         ]
       };
 
       const result = humanizer
         .humanizeErrors(await postmanValidator.verify(input))
-        .map(({ message, messageParts }) => ({ message, messageParts }));
+        .map(({ originalError, ...rest }) => ({ ...rest }));
 
       result.should.deep.eq([expected]);
     });
@@ -260,22 +296,27 @@ describe('ErrorHumanizer', () => {
 
       const expected = {
         message:
-          'the value at /paths/~1x/get/responses/200/content/application~1json/schema/multipleOf must be greater than 0',
-        messageParts: [
+          'Error at /paths/~1x/get/responses/200/content/application~1json/schema/multipleOf: The property `multipleOf` must have a value greater than 0',
+        locationParts: [
           {
-            text: 'the value at /paths/~1x/get/responses/200/content/application~1json/schema/multipleOf',
-            jsonPointer:
-              '/paths/~1x/get/responses/200/content/application~1json/schema/multipleOf'
+            text: 'Error at'
           },
           {
-            text: 'must be greater than 0'
+            text: '/paths/~1x/get/responses/200/content/application~1json/schema/multipleOf',
+            jsonPointer:
+              '/paths/~1x/get/responses/200/content/application~1json/schema/multipleOf'
+          }
+        ],
+        messageParts: [
+          {
+            text: 'The property `multipleOf` must have a value greater than 0'
           }
         ]
       };
 
       const result = humanizer
         .humanizeErrors(await oasValidator.verify(input))
-        .map(({ message, messageParts }) => ({ message, messageParts }));
+        .map(({ originalError, ...rest }) => ({ ...rest }));
 
       result.should.deep.eq([expected]);
     });
@@ -288,21 +329,26 @@ describe('ErrorHumanizer', () => {
 
       const expected = {
         message:
-          'the value at /host does not match pattern ^[^{}/ :\\\\]+(?::\\d+)?$',
-        messageParts: [
+          'Error at /host: The property `host` must have a value that matches the pattern `^[^{}/ :\\\\]+(?::\\d+)?$`',
+        locationParts: [
           {
-            text: 'the value at /host',
-            jsonPointer: '/host'
+            text: 'Error at'
           },
           {
-            text: 'does not match pattern ^[^{}/ :\\\\]+(?::\\d+)?$'
+            text: '/host',
+            jsonPointer: '/host'
+          }
+        ],
+        messageParts: [
+          {
+            text: 'The property `host` must have a value that matches the pattern `^[^{}/ :\\\\]+(?::\\d+)?$`'
           }
         ]
       };
 
       const result = humanizer
         .humanizeErrors(await oasValidator.verify(input))
-        .map(({ message, messageParts }) => ({ message, messageParts }));
+        .map(({ originalError, ...rest }) => ({ ...rest }));
 
       result.should.deep.eq([expected]);
     });
@@ -315,21 +361,26 @@ describe('ErrorHumanizer', () => {
 
       const expected = {
         message:
-          'the value at /info/contact/email must be a valid email address string',
-        messageParts: [
+          'Error at /info/contact/email: The property `email` must have a value that is a valid email address string',
+        locationParts: [
           {
-            text: 'the value at /info/contact/email',
-            jsonPointer: '/info/contact/email'
+            text: 'Error at'
           },
           {
-            text: 'must be a valid email address string'
+            text: '/info/contact/email',
+            jsonPointer: '/info/contact/email'
+          }
+        ],
+        messageParts: [
+          {
+            text: 'The property `email` must have a value that is a valid email address string'
           }
         ]
       };
 
       const result = humanizer
         .humanizeErrors(await oasValidator.verify(input))
-        .map(({ message, messageParts }) => ({ message, messageParts }));
+        .map(({ originalError, ...rest }) => ({ ...rest }));
 
       result.should.deep.eq([expected]);
     });
@@ -341,21 +392,26 @@ describe('ErrorHumanizer', () => {
       } as OpenAPIV3.Document;
 
       const expected = {
-        message: 'the root value has an unexpected property `foo`',
-        messageParts: [
+        message: 'Error at the schema root: The property `foo` is unexpected',
+        locationParts: [
           {
-            text: 'the root value',
-            jsonPointer: ''
+            text: 'Error at'
           },
           {
-            text: 'has an unexpected property `foo`'
+            text: 'the schema root',
+            jsonPointer: ''
+          }
+        ],
+        messageParts: [
+          {
+            text: 'The property `foo` is unexpected'
           }
         ]
       };
 
       const result = humanizer
         .humanizeErrors(await oasValidator.verify(input))
-        .map(({ message, messageParts }) => ({ message, messageParts }));
+        .map(({ originalError, ...rest }) => ({ ...rest }));
 
       result.should.deep.eq([expected]);
     });
@@ -370,21 +426,26 @@ describe('ErrorHumanizer', () => {
 
       const expected = {
         message:
-          'the root value has an unexpected properties `foo`, `bar`, and `baz`',
-        messageParts: [
+          'Error at the schema root: The properties `foo`, `bar`, and `baz` are unexpected',
+        locationParts: [
           {
-            text: 'the root value',
-            jsonPointer: ''
+            text: 'Error at'
           },
           {
-            text: 'has an unexpected properties `foo`, `bar`, and `baz`'
+            text: 'the schema root',
+            jsonPointer: ''
+          }
+        ],
+        messageParts: [
+          {
+            text: 'The properties `foo`, `bar`, and `baz` are unexpected'
           }
         ]
       };
 
       const result = humanizer
         .humanizeErrors(await oasValidator.verify(input))
-        .map(({ message, messageParts }) => ({ message, messageParts }));
+        .map(({ originalError, ...rest }) => ({ ...rest }));
 
       result.should.deep.eq([expected]);
     });
@@ -397,21 +458,26 @@ describe('ErrorHumanizer', () => {
 
       const expected = {
         message:
-          'the value at /tags must be unique but elements 0 and 1 are the same',
-        messageParts: [
+          'Error at /tags: The property `tags` must have unique values, but the elements at indexes 0 and 1 are the same',
+        locationParts: [
           {
-            text: 'the value at /tags',
-            jsonPointer: '/tags'
+            text: 'Error at'
           },
           {
-            text: 'must be unique but elements 0 and 1 are the same'
+            text: '/tags',
+            jsonPointer: '/tags'
+          }
+        ],
+        messageParts: [
+          {
+            text: 'The property `tags` must have unique values, but the elements at indexes 0 and 1 are the same'
           }
         ]
       };
 
       const result = humanizer
         .humanizeErrors(await oasValidator.verify(input))
-        .map(({ message, messageParts }) => ({ message, messageParts }));
+        .map(({ originalError, ...rest }) => ({ ...rest }));
 
       result.should.deep.eq([expected]);
     });
@@ -441,22 +507,27 @@ describe('ErrorHumanizer', () => {
 
       const expected = {
         message:
-          'the value at /paths/~1x/get/responses/200/content/application~1json/schema/required must have 1 or more items',
-        messageParts: [
+          'Error at /paths/~1x/get/responses/200/content/application~1json/schema/required: The property `required` must have 1 or more items',
+        locationParts: [
           {
-            text: 'the value at /paths/~1x/get/responses/200/content/application~1json/schema/required',
-            jsonPointer:
-              '/paths/~1x/get/responses/200/content/application~1json/schema/required'
+            text: 'Error at'
           },
           {
-            text: 'must have 1 or more items'
+            text: '/paths/~1x/get/responses/200/content/application~1json/schema/required',
+            jsonPointer:
+              '/paths/~1x/get/responses/200/content/application~1json/schema/required'
+          }
+        ],
+        messageParts: [
+          {
+            text: 'The property `required` must have 1 or more items'
           }
         ]
       };
 
       const result = humanizer
         .humanizeErrors(await oasValidator.verify(input))
-        .map(({ message, messageParts }) => ({ message, messageParts }));
+        .map(({ originalError, ...rest }) => ({ ...rest }));
 
       result.should.deep.eq([expected]);
     });
@@ -475,21 +546,26 @@ describe('ErrorHumanizer', () => {
 
       const expected = {
         message:
-          'the value at /paths/~1x/get/responses must have 1 or more properties',
-        messageParts: [
+          'Error at /paths/~1x/get/responses: The property `responses` must have 1 or more properties',
+        locationParts: [
           {
-            text: 'the value at /paths/~1x/get/responses',
-            jsonPointer: '/paths/~1x/get/responses'
+            text: 'Error at'
           },
           {
-            text: 'must have 1 or more properties'
+            text: '/paths/~1x/get/responses',
+            jsonPointer: '/paths/~1x/get/responses'
+          }
+        ],
+        messageParts: [
+          {
+            text: 'The property `responses` must have 1 or more properties'
           }
         ]
       };
 
       const result = humanizer
         .humanizeErrors(await oasValidator.verify(input))
-        .map(({ message, messageParts }) => ({ message, messageParts }));
+        .map(({ originalError, ...rest }) => ({ ...rest }));
 
       result.should.deep.eq([expected]);
     });
@@ -521,21 +597,26 @@ describe('ErrorHumanizer', () => {
 
       const expected = {
         message:
-          'the value at /paths/~1item~1{itemId}/get/parameters/0/required must be equal to constant "true"',
-        messageParts: [
+          'Error at /paths/~1item~1{itemId}/get/parameters/0/required: The property `required` must be equal to the constant "true"',
+        locationParts: [
           {
-            text: 'the value at /paths/~1item~1{itemId}/get/parameters/0/required',
-            jsonPointer: '/paths/~1item~1{itemId}/get/parameters/0/required'
+            text: 'Error at'
           },
           {
-            text: 'must be equal to constant "true"'
+            text: '/paths/~1item~1{itemId}/get/parameters/0/required',
+            jsonPointer: '/paths/~1item~1{itemId}/get/parameters/0/required'
+          }
+        ],
+        messageParts: [
+          {
+            text: 'The property `required` must be equal to the constant "true"'
           }
         ]
       };
 
       const result = humanizer
         .humanizeErrors(await oasValidator.verify(input))
-        .map(({ message, messageParts }) => ({ message, messageParts }));
+        .map(({ originalError, ...rest }) => ({ ...rest }));
 
       result.should.deep.eq([expected]);
     });
@@ -565,21 +646,24 @@ describe('ErrorHumanizer', () => {
 
       const expected = {
         message:
-          'the value at /item/0/request/body/formdata/0/type must be one of: "text" or "file"',
+          'Error at /item/0/request/body/formdata/0/type: The property `type` must be equal to one of the following: "text" or "file"',
+        locationParts: [
+          { text: 'Error at' },
+          {
+            text: '/item/0/request/body/formdata/0/type',
+            jsonPointer: '/item/0/request/body/formdata/0/type'
+          }
+        ],
         messageParts: [
           {
-            text: 'the value at /item/0/request/body/formdata/0/type',
-            jsonPointer: '/item/0/request/body/formdata/0/type'
-          },
-          {
-            text: 'must be one of: "text" or "file"'
+            text: 'The property `type` must be equal to one of the following: "text" or "file"'
           }
         ]
       };
 
       const result = humanizer
         .humanizeErrors(await postmanValidator.verify(input))
-        .map(({ message, messageParts }) => ({ message, messageParts }));
+        .map(({ originalError, ...rest }) => ({ ...rest }));
 
       result.should.deep.eq([expected]);
     });
@@ -609,21 +693,26 @@ describe('ErrorHumanizer', () => {
 
     const expected = {
       message:
-        'the value at /item/0/request/body/formdata/0 is missing the required field `key`',
-      messageParts: [
+        'Error at /item/0/request/body/formdata/0: The property `key` is required',
+      locationParts: [
         {
-          text: 'the value at /item/0/request/body/formdata/0',
-          jsonPointer: '/item/0/request/body/formdata/0'
+          text: 'Error at'
         },
         {
-          text: 'is missing the required field `key`'
+          text: '/item/0/request/body/formdata/0',
+          jsonPointer: '/item/0/request/body/formdata/0'
+        }
+      ],
+      messageParts: [
+        {
+          text: 'The property `key` is required'
         }
       ]
     };
 
     const result = humanizer
       .humanizeErrors(await postmanValidator.verify(input))
-      .map(({ message, messageParts }) => ({ message, messageParts }));
+      .map(({ originalError, ...rest }) => ({ ...rest }));
 
     result.should.deep.eq([expected]);
   });

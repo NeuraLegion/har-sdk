@@ -389,7 +389,7 @@
           "minItems": 1,
           "uniqueItems": true,
           "errorMessage": {
-            "type": "should be an array of property names required within an object schema"
+            "type": "The property `required` must have a value that is an array of valid property names"
           }
         },
         "enum": {
@@ -779,7 +779,7 @@
       },
       "additionalProperties": false,
       "errorMessage": {
-        "additionalProperties": "should only have path names that start with `/`"
+        "additionalProperties": "The property `paths` must have path names that start with \"/\""
       }
     },
     "PathItem": {
@@ -951,8 +951,8 @@
         }
       },
       "errorMessage": {
-        "not": "should define at least one response, in addition to any vendor extension (`x-*`) fields",
-        "additionalProperties": "should only have three-digit status codes, `default`, and vendor extensions (`x-*`) as properties"
+        "not": "The property `response` must define at least one response, in addition to any vendor extension (`x-*`) fields",
+        "additionalProperties": "The property `response` must have the following values: three-digit status codes, `default`, and vendor extensions (`x-*`)"
       }
     },
     "SecurityRequirement": {
@@ -1002,7 +1002,7 @@
     },
     "ExampleXORExamples": {
       "description": "Example and examples are mutually exclusive",
-      "errorMessage": "should not have both `example` and `examples`, as they are mutually exclusive",
+      "errorMessage": "The property must have either `example` or `examples`, but not both, as they are mutually exclusive",
       "not": {
         "required": ["example", "examples"]
       }
@@ -1010,7 +1010,7 @@
     "SchemaXORContent": {
       "description": "Schema and content are mutually exclusive, at least one is required",
       "errorMessage": {
-        "not": "should have either a `schema` or `content` property"
+        "not": "The property must have either a `schema` or `content` option"
       },
       "not": {
         "required": ["schema", "content"]
@@ -1022,7 +1022,7 @@
       "else": {
         "required": ["content"],
         "description": "Some properties are not allowed if content is present",
-        "errorMessage": "should not have `style`, `explode`, `allowReserved`, `example`, or `examples` when `content` is present",
+        "errorMessage": "The property must not have `style`, `explode`, `allowReserved`, `example`, or `examples` when `content` is present",
         "allOf": [
           {
             "not": {
@@ -1147,7 +1147,7 @@
       },
       "errorMessage": {
         "properties": {
-          "in": "Parameter location (`in`) must be one of the following: `path`, `query`, `header`, `cookie`"
+          "in": "The property `in` must have one of the following values: \"path\", \"query\", \"header\", \"cookie\""
         }
       },
       "allOf": [

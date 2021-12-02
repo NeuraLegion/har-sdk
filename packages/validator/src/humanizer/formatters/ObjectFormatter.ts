@@ -14,20 +14,23 @@ export class ObjectFormatter implements Formatter {
         const props = error.params.additionalProperty;
 
         return Array.isArray(props)
-          ? `has an unexpected properties ${WordingHelper.humanizeList(
+          ? `The properties ${WordingHelper.humanizeList(
               props.map((prop) => `\`${prop}\``)
-            )}`
-          : `has an unexpected property \`${props}\``;
+            )} are unexpected`
+          : `The property \`${props}\` is unexpected`;
       }
 
       case 'required':
-        return `is missing the required field \`${error.params.missingProperty}\``;
+        return `The property \`${error.params.missingProperty}\` is required`;
 
       case 'minProperties':
-      case 'maxProperties':
-        return `must have ${
+      case 'maxProperties': {
+        const propName = WordingHelper.extractPropertyName(error.instancePath);
+
+        return `The property \`${propName}\` must have ${
           error.params.limit
         } or ${WordingHelper.getComparison(error.keyword)} properties`;
+      }
     }
   }
 }

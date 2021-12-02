@@ -6,7 +6,7 @@ import {
   StringFormatter,
   TypeFormatter
 } from './formatters';
-import { HumanizedError } from './HumanizedError';
+import { HumanizedError, ErrorMessagePart } from './HumanizedError';
 import { ErrorObject } from 'ajv';
 
 // based on https://github.com/segmentio/action-destinations/tree/main/packages/ajv-human-errors
@@ -33,8 +33,11 @@ export class ErrorHumanizer {
 
   public humanizeErrorMessage(
     error: ErrorObject
-  ): Pick<HumanizedError, 'message' | 'messageParts'> {
-    const location = this.formatLocation(error);
+  ): Omit<HumanizedError, 'originalError'> {
+    const locationMessageParts = this.formatLocation(error);
+    const locationMessage = locationMessageParts
+      .map((part) => part.text)
+      .join(' ');
 
     let message = this.formatters.reduce(
       (resultMessage: string, formatter: Formatter) =>
@@ -47,22 +50,26 @@ export class ErrorHumanizer {
     }
 
     return {
-      message: `${location} ${message}`,
+      message: `${locationMessage}: ${message}`,
       messageParts: [
-        {
-          text: location,
-          jsonPointer: error.instancePath
-        },
         {
           text: message
         }
-      ]
+      ],
+      locationParts: locationMessageParts
     };
   }
 
-  private formatLocation(error: ErrorObject): string {
-    return error.instancePath === ''
-      ? 'the root value'
-      : `the value at ${error.instancePath}`;
+  private formatLocation(error: ErrorObject): ErrorMessagePart[] {
+    return [
+      {
+        text: 'Error at'
+      },
+      {
+        text:
+          error.instancePath === '' ? 'the schema root' : error.instancePath,
+        jsonPointer: error.instancePath
+      }
+    ];
   }
 }

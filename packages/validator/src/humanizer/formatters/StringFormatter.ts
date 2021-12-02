@@ -31,18 +31,20 @@ export class StringFormatter implements Formatter {
       | ErrorObject<'pattern', { pattern: string }>
       | ErrorObject<'format', { format: string }>
   ): string {
+    const propName = WordingHelper.extractPropertyName(error.instancePath);
+
     switch (error.keyword) {
       case 'minLength':
       case 'maxLength':
-        return `must be of length ${
+        return `The property \`${propName}\` must have a value of length ${
           error.params.limit
-        } or ${WordingHelper.getComparison(error.keyword)}`;
+        } or ${WordingHelper.getComparison(error.keyword)} characters`;
 
       case 'pattern':
-        return `does not match pattern ${error.params.pattern}`;
+        return `The property \`${propName}\` must have a value that matches the pattern \`${error.params.pattern}\``;
 
       case 'format':
-        return `must be a valid ${
+        return `The property \`${propName}\` must have a value that is a valid ${
           formatLabelsMap[error.params.format] || error.params.format
         } string`;
     }

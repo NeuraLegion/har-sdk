@@ -1,6 +1,6 @@
 export class WordingHelper {
   public static getComparison(keyword: string): string {
-    return keyword.startsWith('min') ? 'more' : 'fewer';
+    return keyword.startsWith('min') ? 'more' : 'less';
   }
 
   public static humanizeList(arr: string[], conjunction = 'and'): string {
@@ -17,5 +17,12 @@ export class WordingHelper {
     return `${arr.slice(0, -1).join(', ')}, ${conjunction} ${
       arr[arr.length - 1]
     }`;
+  }
+
+  public static extractPropertyName(pointer: string): string {
+    return pointer
+      .replace(/\/\d+$/, '')
+      .split('/')
+      .pop();
   }
 }

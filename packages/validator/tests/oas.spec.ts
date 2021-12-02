@@ -1,5 +1,6 @@
 import githubSwagger from './fixtures/oas2.github.json';
 import petstoreSwagger from './fixtures/oas2.petstore.json';
+import spoonacularOas from './fixtures/oas3.spoonacular.json';
 import { OASValidator } from '../src';
 import { ErrorObject } from 'ajv';
 import chaiAsPromised from 'chai-as-promised';
@@ -42,6 +43,14 @@ describe('OASValidator', () => {
           'utf8'
         )
       ) as OpenAPIV3.Document;
+
+      const result = await validator.verify(input);
+
+      result.should.be.empty;
+    });
+
+    it('should successfully validate valid oas v3 document (spoonacular, json)', async () => {
+      const input: OpenAPIV3.Document = spoonacularOas as OpenAPIV3.Document;
 
       const result = await validator.verify(input);
 

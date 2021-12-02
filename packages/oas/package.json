@@ -43,6 +43,7 @@
     "api"
   ],
   "dependencies": {
+    "@apidevtools/json-schema-ref-parser": "^9.0.9",
     "@har-sdk/openapi-sampler": "*",
     "@har-sdk/types": "*",
     "@har-sdk/validator": "*",

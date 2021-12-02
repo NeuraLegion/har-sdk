@@ -176,5 +176,33 @@ describe('OASValidator', () => {
 
       result.should.deep.eq(expected);
     });
+
+    it('should return error if `servers` does not contain at least one item', async () => {
+      const input: OpenAPIV3.Document = {
+        openapi: '3.0.0',
+        servers: [],
+        info: {
+          title: 'Some valid API document',
+          version: '1.0.0'
+        },
+        paths: {}
+      } as unknown as OpenAPIV3.Document;
+
+      const expected: ErrorObject[] = [
+        {
+          instancePath: '/servers',
+          keyword: 'minItems',
+          message: 'must NOT have fewer than 1 items',
+          params: {
+            limit: 1
+          },
+          schemaPath: '#/properties/servers/minItems'
+        }
+      ];
+
+      const result = await validator.verify(input);
+
+      result.should.deep.eq(expected);
+    });
   });
 });

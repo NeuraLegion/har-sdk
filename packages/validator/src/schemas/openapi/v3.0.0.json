@@ -20,7 +20,8 @@
       "type": "array",
       "items": {
         "$ref": "#/definitions/Server"
-      }
+      },
+      "minItems": 1
     },
     "security": {
       "type": "array",

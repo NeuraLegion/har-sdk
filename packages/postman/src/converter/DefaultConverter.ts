@@ -1,11 +1,14 @@
 import { Converter } from './Converter';
 import { VariableParser, VariableParserFactory } from '../parser';
-import { Validator } from '@har-sdk/validator';
-import { Postman } from '@har-sdk/types';
-import Har from 'har-format';
+import {
+  Postman,
+  Request,
+  Header,
+  QueryString,
+  PostData
+} from '@har-sdk/types';
 import { lookup } from 'mime-types';
 import { parse as parseQS, stringify } from 'qs';
-import { ok } from 'assert';
 import { format, parse, URL, UrlObject } from 'url';
 import { basename, extname } from 'path';
 
@@ -19,7 +22,6 @@ export class DefaultConverter implements Converter {
   private readonly DEFAULT_PROTOCOL = 'https';
 
   constructor(
-    private readonly validator: Validator<Postman.Document>,
     private readonly parserFactory: VariableParserFactory,
     options: {
       environment?: Record<string, string>;
@@ -33,27 +35,25 @@ export class DefaultConverter implements Converter {
     );
   }
 
-  public async convert(collection: Postman.Document): Promise<Har.Request[]> {
-    await this.validator.verify(collection);
-
+  public async convert(collection: Postman.Document): Promise<Request[]> {
     return this.traverse(collection, [...this.variables]);
   }
 
   private traverse(
     folder: Postman.ItemGroup,
     variables: Postman.Variable[]
-  ): Har.Request[] {
+  ): Request[] {
     variables = [...(folder?.variable ?? []), ...variables];
 
     return folder.item.reduce(
-      (items: Har.Request[], x: Postman.ItemGroup | Postman.Item) => {
+      (items: Request[], x: Postman.ItemGroup | Postman.Item) => {
         const subVariables = [...(x?.variable ?? []), ...variables];
 
         if (this.isGroup(x)) {
           return items.concat(this.traverse(x, subVariables));
         }
 
-        const request: Har.Request | undefined = this.convertRequest(
+        const request: Request | undefined = this.convertRequest(
           x,
           subVariables
         );
@@ -75,15 +75,17 @@ export class DefaultConverter implements Converter {
   private convertRequest(
     item: Postman.Item,
     variables: Postman.Variable[]
-  ): Har.Request | undefined {
+  ): Request | undefined {
     if (item.request) {
       const { method, header, body, auth, url: urlObject } = item.request;
 
-      ok(method, 'Method is not defined.');
+      if (!method) {
+        throw new Error('Method is not defined.');
+      }
 
       const url: string = this.convertUrl(urlObject, variables);
 
-      const request: Har.Request = {
+      const request: Request = {
         url,
         method: (method ?? 'GET').toUpperCase(),
         headers: this.convertHeaders(header ?? '', variables),
@@ -104,7 +106,7 @@ export class DefaultConverter implements Converter {
   }
 
   private authRequest(
-    request: Har.Request,
+    request: Request,
     auth: Postman.RequestAuth,
     variables: Postman.Variable[]
   ): void {
@@ -138,7 +140,7 @@ export class DefaultConverter implements Converter {
   }
 
   private oauth2(
-    request: Har.Request,
+    request: Request,
     options: Record<string, string>,
     variables: Postman.Variable[]
   ) {
@@ -147,7 +149,7 @@ export class DefaultConverter implements Converter {
     }
 
     const headerIdx: number = request.headers.findIndex(
-      (x: Har.Header) => x.name.toLowerCase() === 'authorization'
+      (x: Header) => x.name.toLowerCase() === 'authorization'
     );
 
     if (headerIdx !== -1) {
@@ -155,7 +157,7 @@ export class DefaultConverter implements Converter {
     }
 
     const queryIdx: number = request.queryString.findIndex(
-      (x: Har.QueryString) => x.name.toLowerCase() === 'access_token'
+      (x: QueryString) => x.name.toLowerCase() === 'access_token'
     );
 
     if (queryIdx !== -1) {
@@ -188,14 +190,14 @@ export class DefaultConverter implements Converter {
   }
 
   private bearerAuth(
-    request: Har.Request,
+    request: Request,
     options: Record<string, string>,
     variables: Postman.Variable[]
   ): void {
     const parser: VariableParser =
       this.parserFactory.createEnvVariableParser(variables);
     const idx: number = request.headers.findIndex(
-      (x: Har.Header) => x.name.toLowerCase() === 'authorization'
+      (x: Header) => x.name.toLowerCase() === 'authorization'
     );
 
     if (idx !== -1) {
@@ -216,14 +218,14 @@ export class DefaultConverter implements Converter {
   }
 
   private basicAuth(
-    request: Har.Request,
+    request: Request,
     options: Record<string, string>,
     variables: Postman.Variable[]
   ) {
     const parser: VariableParser =
       this.parserFactory.createEnvVariableParser(variables);
     const idx: number = request.headers.findIndex(
-      (x: Har.Header) => x.name.toLowerCase() === 'authorization'
+      (x: Header) => x.name.toLowerCase() === 'authorization'
     );
 
     if (idx !== -1) {
@@ -244,7 +246,7 @@ export class DefaultConverter implements Converter {
   }
 
   private apiKeyAuth(
-    request: Har.Request,
+    request: Request,
     options: Record<string, string>,
     variables: Postman.Variable[]
   ): void {
@@ -255,7 +257,7 @@ export class DefaultConverter implements Converter {
       AuthLocation[(options.addTokenTo ?? 'header').toUpperCase()];
 
     const idx: number = request[target].findIndex(
-      (x: Har.QueryString | Har.Header) =>
+      (x: QueryString | Header) =>
         x.name.toLowerCase() === options.key.toLowerCase()
     );
 
@@ -272,7 +274,7 @@ export class DefaultConverter implements Converter {
   private convertBody(
     body: Postman.RequestBody,
     variables: Postman.Variable[]
-  ): Har.PostData {
+  ): PostData {
     const parser: VariableParser =
       this.parserFactory.createEnvVariableParser(variables);
 
@@ -292,7 +294,7 @@ export class DefaultConverter implements Converter {
     }
   }
 
-  private file(body: Postman.RequestBody): Har.PostData {
+  private file(body: Postman.RequestBody): PostData {
     return {
       mimeType: 'application/octet-stream',
       text:
@@ -300,10 +302,7 @@ export class DefaultConverter implements Converter {
     };
   }
 
-  private graphql(
-    body: Postman.RequestBody,
-    parser: VariableParser
-  ): Har.PostData {
+  private graphql(body: Postman.RequestBody, parser: VariableParser): PostData {
     const { query, variables } = body.graphql ?? {};
 
     return {
@@ -315,7 +314,7 @@ export class DefaultConverter implements Converter {
   private formData(
     body: Postman.RequestBody,
     parser: VariableParser
-  ): Har.PostData {
+  ): PostData {
     return {
       mimeType: 'multipart/form-data',
       params: Array.isArray(body.formdata)
@@ -345,7 +344,7 @@ export class DefaultConverter implements Converter {
   private urlencoded(
     body: Postman.RequestBody,
     parser: VariableParser
-  ): Har.PostData {
+  ): PostData {
     let params: { name: string; value: string | undefined }[];
 
     if (Array.isArray(body.urlencoded)) {
@@ -384,13 +383,10 @@ export class DefaultConverter implements Converter {
       text,
       params,
       mimeType: 'application/x-www-form-urlencoded'
-    } as unknown as Har.PostData;
+    } as unknown as PostData;
   }
 
-  private rawBody(
-    body: Postman.RequestBody,
-    parser: VariableParser
-  ): Har.PostData {
+  private rawBody(body: Postman.RequestBody, parser: VariableParser): PostData {
     return {
       mimeType: this.getMimetype(body.options?.raw?.language ?? 'json'),
       text: parser.parse(body.raw ?? '')
@@ -419,7 +415,7 @@ export class DefaultConverter implements Converter {
   private convertHeaders(
     headers: Postman.Header[] | string,
     variables: Postman.Variable[]
-  ): Har.Header[] {
+  ): Header[] {
     const parser: VariableParser =
       this.parserFactory.createEnvVariableParser(variables);
 
@@ -509,7 +505,9 @@ export class DefaultConverter implements Converter {
       ? url.host.join('.')
       : url.host;
 
-    ok(host, 'Host is not defined.');
+    if (!host) {
+      throw new Error('Host is not defined.');
+    }
 
     if (host) {
       host = env.parse(host);
@@ -574,7 +572,7 @@ export class DefaultConverter implements Converter {
   private convertQuery(
     url: Postman.Url | string,
     variables: Postman.Variable[]
-  ): Har.QueryString[] {
+  ): QueryString[] {
     let query: Record<string, undefined | string | string[]> | undefined;
 
     if (typeof url === 'string') {

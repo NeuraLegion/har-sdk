@@ -1,23 +1,22 @@
 /* eslint-disable max-depth */
 import { Converter } from './Converter';
-import { isObject } from '../utils/isObject';
-import { normalizeUrl } from '../utils/normalizeUrl';
-import { Flattener } from '../utils/Flattener';
 import {
+  Flattener,
+  isObject,
+  normalizeUrl,
   removeLeadingSlash,
   removeTrailingSlash
-} from '../utils/stringHelpers';
-import { Validator } from '@har-sdk/validator';
+} from '../utils';
 import { sample } from '@har-sdk/openapi-sampler';
 import {
-  OpenAPI,
-  OpenAPIV3,
+  Header,
   isOASV2,
   isOASV3,
-  Request,
+  OpenAPI,
+  OpenAPIV3,
+  PostData,
   QueryString,
-  Header,
-  PostData
+  Request
 } from '@har-sdk/types';
 import template from 'url-template';
 import { toXML } from 'jstoxml';
@@ -37,15 +36,9 @@ export class DefaultConverter implements Converter {
   private readonly BOUNDARY = '956888039105887155673143';
   private readonly BASE64_PATTERN =
     /^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$/;
-
-  constructor(
-    private readonly validator: Validator<OpenAPI.Document>,
-    private readonly flattener: Flattener
-  ) {}
+  private readonly flattener = new Flattener();
 
   public async convert(spec: OpenAPI.Document): Promise<Request[]> {
-    await this.validator.verify(spec);
-
     const dereferenceSpec = (await new $RefParser().dereference(
       JSON.parse(JSON.stringify(spec)) as JSONSchema
     )) as OpenAPI.Document;

@@ -1,6 +1,5 @@
-import { Postman } from '@har-sdk/types';
-import HarV1 from 'har-format';
+import { Postman, Request } from '@har-sdk/types';
 
 export interface Converter {
-  convert(collection: Postman.Document): Promise<HarV1.Request[]>;
+  convert(collection: Postman.Document): Promise<Request[]>;
 }

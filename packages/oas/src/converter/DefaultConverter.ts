@@ -8,9 +8,17 @@ import {
   removeTrailingSlash
 } from '../utils/stringHelpers';
 import { Validator } from '@har-sdk/validator';
-import { OpenAPI, OpenAPIV3, isOASV2, isOASV3 } from '@har-sdk/types';
 import { sample } from '@har-sdk/openapi-sampler';
-import { Request, QueryString, Header, PostData } from 'har-format';
+import {
+  OpenAPI,
+  OpenAPIV3,
+  isOASV2,
+  isOASV3,
+  Request,
+  QueryString,
+  Header,
+  PostData
+} from '@har-sdk/types';
 import template from 'url-template';
 import { toXML } from 'jstoxml';
 import querystring from 'qs';

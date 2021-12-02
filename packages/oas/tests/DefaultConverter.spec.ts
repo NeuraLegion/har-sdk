@@ -1,8 +1,7 @@
 import githubSwagger from './fixtures/github.swagger.json';
 import { oas2har } from '../src';
 import yaml from 'js-yaml';
-import Har from 'har-format';
-import { OpenAPIV2, OpenAPIV3 } from '@har-sdk/types';
+import { OpenAPIV2, OpenAPIV3, Request } from '@har-sdk/types';
 import { resolve } from 'path';
 import { readFile } from 'fs';
 import { promisify } from 'util';
@@ -11,7 +10,7 @@ import 'chai/register-should';
 describe('DefaultConverter', () => {
   describe('convert', () => {
     it('should convert GitHub OAS v2 (JSON) to HAR', async () => {
-      const [firstRequest]: Har.Request[] = await oas2har(
+      const [firstRequest]: Request[] = await oas2har(
         githubSwagger as unknown as OpenAPIV2.Document
       );
 
@@ -26,7 +25,7 @@ describe('DefaultConverter', () => {
         'utf8'
       );
 
-      const [firstRequest]: Har.Request[] = await oas2har(
+      const [firstRequest]: Request[] = await oas2har(
         yaml.load(content) as OpenAPIV3.Document
       );
 
@@ -41,7 +40,7 @@ describe('DefaultConverter', () => {
         'utf8'
       );
 
-      const [firstRequest]: Har.Request[] = await oas2har(
+      const [firstRequest]: Request[] = await oas2har(
         yaml.load(content) as OpenAPIV3.Document
       );
 
@@ -56,7 +55,7 @@ describe('DefaultConverter', () => {
         'utf8'
       );
 
-      const [firstRequest]: Har.Request[] = await oas2har(
+      const [firstRequest]: Request[] = await oas2har(
         yaml.load(content) as OpenAPIV3.Document
       );
 

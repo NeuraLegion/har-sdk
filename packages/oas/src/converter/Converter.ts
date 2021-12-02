@@ -1,6 +1,5 @@
-import HarV1 from 'har-format';
-import { OpenAPI } from '@har-sdk/types';
+import { OpenAPI, Request } from '@har-sdk/types';
 
 export interface Converter {
-  convert(collection: OpenAPI.Document): Promise<HarV1.Request[]>;
+  convert(collection: OpenAPI.Document): Promise<Request[]>;
 }

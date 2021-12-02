@@ -46,7 +46,6 @@
     "@apidevtools/json-schema-ref-parser": "^9.0.9",
     "@har-sdk/openapi-sampler": "*",
     "@har-sdk/types": "*",
-    "@har-sdk/validator": "*",
     "jstoxml": "^2.1.0",
     "qs": "^6.10.1",
     "tslib": "~2.2.0",

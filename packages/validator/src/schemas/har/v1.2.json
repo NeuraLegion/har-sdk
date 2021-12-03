@@ -115,11 +115,7 @@
         "cache": { "$ref": "#/definitions/cache" },
         "timings": { "$ref": "#/definitions/timings" },
         "serverIPAddress": {
-          "type": "string",
-          "if": { "format": "ipv4" },
-          "else": {
-            "format": "ipv6"
-          }
+          "type": "string"
         },
         "connection": {
           "type": "string"

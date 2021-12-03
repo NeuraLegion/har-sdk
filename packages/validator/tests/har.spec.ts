@@ -1,6 +1,8 @@
 import 'chai/register-should';
 import validJson from './fixtures/har.valid.json';
 import missedCookieName from './fixtures/har.missed-cookie-name.json';
+import missedServerIP from './fixtures/har.missed-server-ip.json';
+import invalidServerIP from './fixtures/har.invalid-server-ip.json';
 import wrongMethodValueHar from './fixtures/har.wrong-method-value.json';
 import { HarValidator } from '../src';
 import { ErrorObject } from 'ajv';
@@ -19,6 +21,37 @@ describe('HarValidator', () => {
 
       // assert
       result.should.be.empty;
+    });
+
+    it('should successfully validate HAR if server IP is missed', async () => {
+      // arrange
+      const input = missedServerIP as unknown as Har;
+
+      // act
+      const result = await validator.verify(input);
+
+      // assert
+      result.should.be.empty;
+    });
+
+    it.skip('should return error if server IP is not valid IP address', async () => {
+      // arrange
+      const input = invalidServerIP as unknown as Har;
+      const expected: ErrorObject[] = [
+        {
+          instancePath: '/log/entries/0/serverIPAddress',
+          schemaPath: '#/properties/serverIPAddress/else/else/format',
+          keyword: 'format',
+          params: { format: 'ipv4' },
+          message: 'must match format "ipv4"'
+        }
+      ];
+
+      // act
+      const result = await validator.verify(input);
+
+      // assert
+      result.should.deep.eq(expected);
     });
 
     it('should return error if entries are empty', async () => {

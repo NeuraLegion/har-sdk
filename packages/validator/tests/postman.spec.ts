@@ -72,5 +72,64 @@ describe('PostmanValidator', () => {
 
       result.should.deep.eq(expected);
     });
+
+    it('should return list of errors if no items', async () => {
+      const input: Postman.Document = {
+        info: {
+          name: 'Postman document',
+          schema:
+            'https://schema.getpostman.com/json/collection/v2.1.0/collection.json'
+        },
+        item: []
+      } as unknown as Postman.Document;
+
+      const expected: ErrorObject[] = [
+        {
+          instancePath: '/item',
+          schemaPath: '#/properties/item/minItems',
+          keyword: 'minItems',
+          params: {
+            limit: 1
+          },
+          message: 'must NOT have fewer than 1 items'
+        }
+      ];
+
+      const result = await validator.verify(input);
+
+      result.should.deep.eq(expected);
+    });
+
+    it('should return a list of errors if no items in item-group', async () => {
+      const input: Postman.Document = {
+        info: {
+          name: 'Postman document',
+          schema:
+            'https://schema.getpostman.com/json/collection/v2.1.0/collection.json'
+        },
+        item: [
+          {
+            name: 'Folder',
+            item: []
+          }
+        ]
+      } as unknown as Postman.Document;
+
+      const expected: ErrorObject[] = [
+        {
+          instancePath: '/item/0/item',
+          schemaPath: '#/properties/item/minItems',
+          keyword: 'minItems',
+          params: {
+            limit: 1
+          },
+          message: 'must NOT have fewer than 1 items'
+        }
+      ];
+
+      const result = await validator.verify(input);
+
+      result.should.deep.eq(expected);
+    });
   });
 });

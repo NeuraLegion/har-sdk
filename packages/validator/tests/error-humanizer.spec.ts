@@ -18,7 +18,13 @@ describe('ErrorHumanizer', () => {
         patch: 0
       }
     },
-    item: [] as any,
+    item: [
+      {
+        request: {
+          url: 'https://example.com'
+        }
+      }
+    ],
     variable: []
   });
 

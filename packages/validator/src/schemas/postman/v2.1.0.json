@@ -21,7 +21,8 @@
         "else": {
           "$ref": "#/definitions/item-group"
         }
-      }
+      },
+      "minItems": 1
     },
     "event": {
       "$ref": "#/definitions/event-list"
@@ -405,15 +406,17 @@
           "type": "array",
           "items": {
             "title": "Items",
-            "anyOf": [
-              {
-                "$ref": "#/definitions/item"
-              },
-              {
-                "$ref": "#/definitions/item-group"
-              }
-            ]
-          }
+            "if": {
+              "required": ["request"]
+            },
+            "then": {
+              "$ref": "#/definitions/item"
+            },
+            "else": {
+              "$ref": "#/definitions/item-group"
+            }
+          },
+          "minItems": 1
         },
         "event": {
           "$ref": "#/definitions/event-list"

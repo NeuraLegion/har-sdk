@@ -9,7 +9,7 @@ import {
 } from '@har-sdk/types';
 import { lookup } from 'mime-types';
 import { parse as parseQS, stringify } from 'qs';
-import { format, parse, URL, UrlObject } from 'url';
+import { format, URL, UrlObject } from 'url';
 import { basename, extname } from 'path';
 
 export enum AuthLocation {
@@ -116,8 +116,8 @@ export class DefaultConverter implements Converter {
       return;
     }
 
-    const options: Record<string, string> = Object.fromEntries(
-      params.map((val: Postman.Variable) => [val.key, val.value])
+    const options = Object.fromEntries(
+      params.map((val: Postman.Variable) => [val.key, val.value].map(String))
     );
 
     switch (auth.type) {
@@ -148,44 +148,31 @@ export class DefaultConverter implements Converter {
       return;
     }
 
-    const headerIdx: number = request.headers.findIndex(
-      (x: Header) => x.name.toLowerCase() === 'authorization'
-    );
-
-    if (headerIdx !== -1) {
-      request.headers.splice(headerIdx, 1);
-    }
-
-    const queryIdx: number = request.queryString.findIndex(
-      (x: QueryString) => x.name.toLowerCase() === 'access_token'
-    );
-
-    if (queryIdx !== -1) {
-      request.queryString.splice(queryIdx, 1);
-    }
-
     const target: AuthLocation =
       AuthLocation[(options.addTokenTo ?? 'header').toUpperCase()];
+    const parser = this.parserFactory.createEnvVariableParser(variables);
 
-    const parser: VariableParser =
-      this.parserFactory.createEnvVariableParser(variables);
+    this.removeCredentials(request, target);
 
-    if (target === AuthLocation.QUERY) {
-      request.queryString.push({
-        name: 'access_token',
-        value: parser.parse(options.accessToken)
-      });
-    }
+    switch (target) {
+      case AuthLocation.QUERY: {
+        request.queryString.push({
+          name: 'access_token',
+          value: parser.parse(options.accessToken)
+        });
+        break;
+      }
+      case AuthLocation.HEADER: {
+        const prefix: string = !options.headerPrefix
+          ? 'Bearer '
+          : options.headerPrefix;
 
-    if (target === AuthLocation.HEADER) {
-      const prefix: string = !options.headerPrefix
-        ? 'Bearer '
-        : options.headerPrefix;
-
-      request.headers.push({
-        name: 'Authorization',
-        value: `${prefix.trim()} ${parser.parse(options.accessToken)}`
-      });
+        request.headers.push({
+          name: 'authorization',
+          value: `${prefix.trim()} ${parser.parse(options.accessToken)}`
+        });
+        break;
+      }
     }
   }
 
@@ -194,27 +181,29 @@ export class DefaultConverter implements Converter {
     options: Record<string, string>,
     variables: Postman.Variable[]
   ): void {
-    const parser: VariableParser =
-      this.parserFactory.createEnvVariableParser(variables);
-    const idx: number = request.headers.findIndex(
-      (x: Header) => x.name.toLowerCase() === 'authorization'
-    );
+    const parser = this.parserFactory.createEnvVariableParser(variables);
 
-    if (idx !== -1) {
-      request.headers.splice(idx, 1);
-    }
+    this.removeCredentials(request, AuthLocation.HEADER);
 
-    const value: string =
-      'Bearer ' +
-      parser
-        .parse(options.token)
-        .replace(/^Bearer/, '')
-        .trim();
+    const value = `Bearer ${parser
+      .parse(options.token)
+      .replace(/^Bearer/, '')
+      .trim()}`;
 
     request.headers.push({
       value,
-      name: 'Authorization'
+      name: 'authorization'
     });
+  }
+
+  private removeCredentials(request: Request, from: AuthLocation): void {
+    const idx: number = request[from].findIndex((x: Header) =>
+      ['access_token', 'authorization'].includes(x.name.toLowerCase().trim())
+    );
+
+    if (idx !== -1) {
+      request[from].splice(idx, 1);
+    }
   }
 
   private basicAuth(
@@ -222,26 +211,18 @@ export class DefaultConverter implements Converter {
     options: Record<string, string>,
     variables: Postman.Variable[]
   ) {
-    const parser: VariableParser =
-      this.parserFactory.createEnvVariableParser(variables);
-    const idx: number = request.headers.findIndex(
-      (x: Header) => x.name.toLowerCase() === 'authorization'
-    );
+    const parser = this.parserFactory.createEnvVariableParser(variables);
 
-    if (idx !== -1) {
-      request.headers.splice(idx, 1);
-    }
+    this.removeCredentials(request, AuthLocation.HEADER);
 
-    const value: string =
-      'Basic ' +
-      Buffer.from(
-        `${parser.parse(options.username)}:${parser.parse(options.password)}`,
-        'utf8'
-      ).toString('base64');
+    const value = `Basic ${Buffer.from(
+      `${parser.parse(options.username)}:${parser.parse(options.password)}`,
+      'utf8'
+    ).toString('base64')}`;
 
     request.headers.push({
       value,
-      name: 'Authorization'
+      name: 'authorization'
     });
   }
 
@@ -250,20 +231,11 @@ export class DefaultConverter implements Converter {
     options: Record<string, string>,
     variables: Postman.Variable[]
   ): void {
-    const parser: VariableParser =
-      this.parserFactory.createEnvVariableParser(variables);
-
+    const parser = this.parserFactory.createEnvVariableParser(variables);
     const target: AuthLocation =
-      AuthLocation[(options.addTokenTo ?? 'header').toUpperCase()];
+      AuthLocation[(options.in ?? 'header').toUpperCase()];
 
-    const idx: number = request[target].findIndex(
-      (x: QueryString | Header) =>
-        x.name.toLowerCase() === options.key.toLowerCase()
-    );
-
-    if (idx !== -1) {
-      request[target].splice(idx, 1);
-    }
+    this.removeCredentials(request, target);
 
     request[target].push({
       name: parser.parse(options.key),
@@ -333,7 +305,7 @@ export class DefaultConverter implements Converter {
             return {
               fileName,
               contentType,
-              name: parser.parse(x.key ?? ''),
+              name: parser.parse(x.key),
               value: parser.parse(x.value ?? '')
             };
           })
@@ -349,7 +321,7 @@ export class DefaultConverter implements Converter {
 
     if (Array.isArray(body.urlencoded)) {
       params = body.urlencoded.map((x: Postman.QueryParam) => ({
-        name: parser.parse(x.key ?? ''),
+        name: parser.parse(x.key),
         value: parser.parse(x.value ?? '')
       }));
     } else {
@@ -373,7 +345,7 @@ export class DefaultConverter implements Converter {
         : stringify(
             Object.fromEntries(
               (body.urlencoded ?? []).map((x: Postman.QueryParam) => [
-                parser.parse(x.key ?? ''),
+                parser.parse(x.key),
                 parser.parse(x.value ?? '')
               ])
             )
@@ -473,7 +445,7 @@ export class DefaultConverter implements Converter {
       );
     }
 
-    const url: URL = new URL(urlString);
+    const url = new URL(urlString);
 
     if (url.pathname) {
       url.pathname = url.pathname
@@ -562,8 +534,8 @@ export class DefaultConverter implements Converter {
     return Array.isArray(url.query)
       ? Object.fromEntries(
           url.query.map((x: Postman.QueryParam) => [
-            (x.key ?? '').trim(),
-            (x.value ?? '').trim()
+            x.key.trim(),
+            x.value ?? ''
           ])
         )
       : undefined;
@@ -576,7 +548,7 @@ export class DefaultConverter implements Converter {
     let query: Record<string, undefined | string | string[]> | undefined;
 
     if (typeof url === 'string') {
-      query = parse(url, true).query;
+      query = Object.fromEntries(new URL(url).searchParams);
     } else {
       query = this.prepareQueries(url);
     }

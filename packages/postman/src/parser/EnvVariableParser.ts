@@ -12,7 +12,7 @@ export class EnvVariableParser extends BaseVariableParser {
   }
 
   public parse(value: string): string {
-    let replacer: Replacer = new Replacer(value);
+    let replacer = new Replacer(value);
 
     do {
       replacer = replacer.replace(

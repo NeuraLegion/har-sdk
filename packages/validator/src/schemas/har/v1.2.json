@@ -115,7 +115,19 @@
         "cache": { "$ref": "#/definitions/cache" },
         "timings": { "$ref": "#/definitions/timings" },
         "serverIPAddress": {
-          "type": "string"
+          "type": "string",
+          "if": {
+            "format": "ipv6"
+          },
+          "else": {
+            "if": {
+              "minLength": 1
+            },
+            "then": {
+              "format": "ipv4"
+            }
+          },
+          "errorMessage": "The property `serverIPAddress` must have a value that is either IPv4 or IPv6 format"
         },
         "connection": {
           "type": "string"

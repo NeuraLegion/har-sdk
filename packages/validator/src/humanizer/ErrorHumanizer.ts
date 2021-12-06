@@ -1,5 +1,6 @@
 import {
   ArrayFormatter,
+  CustomErrorMessageFormatter,
   Formatter,
   NumericFormatter,
   ObjectFormatter,
@@ -14,6 +15,7 @@ import { ErrorObject } from 'ajv';
 export class ErrorHumanizer {
   private readonly formatters: ReadonlyArray<Formatter> = [
     new ArrayFormatter(),
+    new CustomErrorMessageFormatter(),
     new NumericFormatter(),
     new ObjectFormatter(),
     new StringFormatter(),

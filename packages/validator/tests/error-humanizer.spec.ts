@@ -77,6 +77,49 @@ describe('ErrorHumanizer', () => {
       result.should.deep.eq([expected]);
     });
 
+    it('should parameterize original "errorMessage" if necessary', async () => {
+      const input: OpenAPIV3.Document = {
+        ...getBaseOasDoc(),
+        components: {
+          headers: {
+            CustomHeader: {
+              schema: {},
+              content: {
+                'application/json': {
+                  example: 42
+                }
+              }
+            }
+          }
+        }
+      };
+
+      const expected = {
+        message:
+          'Error at /components/headers/CustomHeader: The property `CustomHeader` must have either a `schema` or `content` option',
+        locationParts: [
+          {
+            text: 'Error at'
+          },
+          {
+            text: '/components/headers/CustomHeader',
+            jsonPointer: '/components/headers/CustomHeader'
+          }
+        ],
+        messageParts: [
+          {
+            text: 'The property `CustomHeader` must have either a `schema` or `content` option'
+          }
+        ]
+      };
+
+      const result = humanizer
+        .humanizeErrors(await oasValidator.verify(input))
+        .map(({ originalError, ...rest }) => ({ ...rest }));
+
+      result.should.deep.eq([expected]);
+    });
+
     it('should humanize "required" error on root path', async () => {
       const { host, ...input } = getBaseSwaggerDoc();
 

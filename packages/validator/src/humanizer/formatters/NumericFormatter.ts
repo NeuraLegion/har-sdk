@@ -1,14 +1,14 @@
-import { Formatter } from './Formatter';
+import { BaseFormatter } from './BaseFormatter';
 import { WordingHelper } from './WordingHelper';
 import { ErrorObject } from 'ajv';
 
-export class NumericFormatter implements Formatter {
-  public supportedKeywords = [
+export class NumericFormatter extends BaseFormatter {
+  protected readonly supportedKeywords = new Set<string>([
     'minimum',
     'maximum',
     'exclusiveMinimum',
     'exclusiveMaximum'
-  ];
+  ]);
 
   public format(
     error: ErrorObject<

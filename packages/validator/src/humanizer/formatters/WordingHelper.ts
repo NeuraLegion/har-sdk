@@ -32,8 +32,7 @@ export class WordingHelper {
     index: number | null;
   } {
     // eslint-disable-next-line @typescript-eslint/typedef,@typescript-eslint/naming-convention
-    const [_dummy, name, index] =
-      /([^/]+)(?:\/(\d+))?$/g.exec(jsonPointer) || [];
+    const [_, name, index] = /([^/]+)(?:\/(\d+))?$/g.exec(jsonPointer) || [];
 
     if (!index) {
       return { name, index: null };

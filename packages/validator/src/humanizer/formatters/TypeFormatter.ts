@@ -1,9 +1,13 @@
-import { Formatter } from './Formatter';
+import { BaseFormatter } from './BaseFormatter';
 import { WordingHelper } from './WordingHelper';
 import { ErrorObject } from 'ajv';
 
-export class TypeFormatter implements Formatter {
-  public supportedKeywords = ['enum', 'type', 'const'];
+export class TypeFormatter extends BaseFormatter {
+  protected readonly supportedKeywords = new Set<string>([
+    'enum',
+    'type',
+    'const'
+  ]);
 
   public format(
     error:

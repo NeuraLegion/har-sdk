@@ -1,9 +1,13 @@
-import { Formatter } from './Formatter';
+import { BaseFormatter } from './BaseFormatter';
 import { WordingHelper } from './WordingHelper';
 import { ErrorObject } from 'ajv';
 
-export class ArrayFormatter implements Formatter {
-  public supportedKeywords = ['maxItems', 'minItems', 'uniqueItems'];
+export class ArrayFormatter extends BaseFormatter {
+  protected readonly supportedKeywords = new Set<string>([
+    'maxItems',
+    'minItems',
+    'uniqueItems'
+  ]);
 
   public format(
     error:

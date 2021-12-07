@@ -1,4 +1,4 @@
-import { Formatter } from './Formatter';
+import { BaseFormatter } from './BaseFormatter';
 import { WordingHelper } from './WordingHelper';
 import { ErrorObject } from 'ajv';
 
@@ -24,8 +24,13 @@ const formatLabelsMap: Readonly<Record<string, string>> = {
   'regex': 'regular expression'
 };
 
-export class StringFormatter implements Formatter {
-  public supportedKeywords = ['minLength', 'maxLength', 'pattern', 'format'];
+export class StringFormatter extends BaseFormatter {
+  protected readonly supportedKeywords = new Set<string>([
+    'minLength',
+    'maxLength',
+    'pattern',
+    'format'
+  ]);
 
   public format(
     error:

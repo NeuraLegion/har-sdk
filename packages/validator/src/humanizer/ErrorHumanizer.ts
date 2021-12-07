@@ -43,9 +43,7 @@ export class ErrorHumanizer {
 
     const message =
       this.formatters
-        .find((formatter) =>
-          formatter.supportedKeywords.includes(error.keyword)
-        )
+        .find((formatter) => formatter.canProcessKeyword(error.keyword))
         ?.format(error) ?? error.message;
 
     return {

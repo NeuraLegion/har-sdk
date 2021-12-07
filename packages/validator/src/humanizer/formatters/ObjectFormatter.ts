@@ -1,14 +1,14 @@
-import { Formatter } from './Formatter';
+import { BaseFormatter } from './BaseFormatter';
 import { WordingHelper } from './WordingHelper';
 import { ErrorObject } from 'ajv';
 
-export class ObjectFormatter implements Formatter {
-  public supportedKeywords = [
+export class ObjectFormatter extends BaseFormatter {
+  protected readonly supportedKeywords = new Set<string>([
     'additionalProperties',
     'required',
     'minProperties',
     'maxProperties'
-  ];
+  ]);
 
   public format(
     error:

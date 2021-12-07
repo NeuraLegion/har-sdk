@@ -1,7 +1,6 @@
 import { ErrorObject } from 'ajv';
 
 export interface Formatter {
-  supportedKeywords: ReadonlyArray<string>;
-
+  canProcessKeyword(keyword: string): boolean;
   format(error: ErrorObject): string | undefined;
 }

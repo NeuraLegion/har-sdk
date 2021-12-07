@@ -41,15 +41,12 @@ export class ErrorHumanizer {
       .map((part) => part.text)
       .join(' ');
 
-    let message = this.formatters.reduce(
-      (resultMessage: string, formatter: Formatter) =>
-        resultMessage || formatter.format(error),
-      ''
-    );
-
-    if (!message) {
-      message = error.message;
-    }
+    const message =
+      this.formatters
+        .find((formatter) =>
+          formatter.supportedKeywords.includes(error.keyword)
+        )
+        ?.format(error) ?? error.message;
 
     return {
       message: `${locationMessage}: ${message}`,

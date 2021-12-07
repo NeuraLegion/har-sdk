@@ -3,6 +3,13 @@ import { WordingHelper } from './WordingHelper';
 import { ErrorObject } from 'ajv';
 
 export class NumericFormatter implements Formatter {
+  public supportedKeywords = [
+    'minimum',
+    'maximum',
+    'exclusiveMinimum',
+    'exclusiveMaximum'
+  ];
+
   public format(
     error: ErrorObject<
       'minimum' | 'maximum' | 'exclusiveMinimum' | 'exclusiveMaximum',
@@ -10,8 +17,6 @@ export class NumericFormatter implements Formatter {
     >
   ): string {
     const { keyword, params } = error;
-    const propName = WordingHelper.extractPropertyName(error.instancePath);
-
     switch (error.keyword) {
       case 'minimum':
       case 'maximum':
@@ -22,7 +27,9 @@ export class NumericFormatter implements Formatter {
           : 'less';
         const inclusive = !keyword.startsWith('exclusive');
 
-        return `The property \`${propName}\` must have a value${
+        return `${WordingHelper.humanizeTarget(
+          error.instancePath
+        )} must have a value${
           inclusive ? ' equal to or' : ''
         } ${direction} than ${params.limit}`;
       }

@@ -3,16 +3,11 @@ import { WordingHelper } from './WordingHelper';
 import { ErrorObject } from 'ajv';
 
 export class CustomErrorMessageFormatter implements Formatter {
+  public supportedKeywords = ['errorMessage'];
+
   public format(error: ErrorObject<'errorMessage'>): string {
-    if (error.keyword !== 'errorMessage') {
-      return;
-    }
+    const target = WordingHelper.humanizeTarget(error.instancePath);
 
-    const propName = WordingHelper.extractPropertyName(error.instancePath);
-
-    return error.message.replace(
-      /^The property must/,
-      `The property \`${propName}\` must`
-    );
+    return error.message.replace(/^The property must/, `${target} must`);
   }
 }

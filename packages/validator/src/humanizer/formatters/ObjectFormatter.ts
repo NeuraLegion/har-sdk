@@ -3,6 +3,13 @@ import { WordingHelper } from './WordingHelper';
 import { ErrorObject } from 'ajv';
 
 export class ObjectFormatter implements Formatter {
+  public supportedKeywords = [
+    'additionalProperties',
+    'required',
+    'minProperties',
+    'maxProperties'
+  ];
+
   public format(
     error:
       | ErrorObject<'additionalProperties', { additionalProperty: string }>
@@ -25,11 +32,9 @@ export class ObjectFormatter implements Formatter {
 
       case 'minProperties':
       case 'maxProperties': {
-        const propName = WordingHelper.extractPropertyName(error.instancePath);
-
-        return `The property \`${propName}\` must have ${
+        return `${WordingHelper.humanizeTarget(error.instancePath)} must have ${
           error.params.limit
-        } or ${WordingHelper.getComparison(error.keyword)} properties`;
+        } or ${WordingHelper.humanizeComparison(error.keyword)} properties`;
       }
     }
   }

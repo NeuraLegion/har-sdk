@@ -1,4 +1,4 @@
-import { Formatter } from './Formatter';
+import { BaseFormatter } from './BaseFormatter';
 import { WordingHelper } from './WordingHelper';
 import { ErrorObject } from 'ajv';
 
@@ -24,27 +24,34 @@ const formatLabelsMap: Readonly<Record<string, string>> = {
   'regex': 'regular expression'
 };
 
-export class StringFormatter implements Formatter {
+export class StringFormatter extends BaseFormatter {
+  protected readonly supportedKeywords = new Set<string>([
+    'minLength',
+    'maxLength',
+    'pattern',
+    'format'
+  ]);
+
   public format(
     error:
       | ErrorObject<'minLength' | 'maxLength', { limit: number }>
       | ErrorObject<'pattern', { pattern: string }>
       | ErrorObject<'format', { format: string }>
   ): string {
-    const propName = WordingHelper.extractPropertyName(error.instancePath);
+    const target = WordingHelper.humanizeTarget(error.instancePath);
 
     switch (error.keyword) {
       case 'minLength':
       case 'maxLength':
-        return `The property \`${propName}\` must have a value of length ${
+        return `${target} must have a value of length ${
           error.params.limit
-        } or ${WordingHelper.getComparison(error.keyword)} characters`;
+        } or ${WordingHelper.humanizeComparison(error.keyword)} characters`;
 
       case 'pattern':
-        return `The property \`${propName}\` must have a value that matches the pattern \`${error.params.pattern}\``;
+        return `${target} must have a value that matches the pattern \`${error.params.pattern}\``;
 
       case 'format':
-        return `The property \`${propName}\` must have a value that is a valid ${
+        return `${target} must have a value that is a valid ${
           formatLabelsMap[error.params.format] || error.params.format
         } string`;
     }

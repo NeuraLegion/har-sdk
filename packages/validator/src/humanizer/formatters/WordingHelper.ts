@@ -1,5 +1,5 @@
 export class WordingHelper {
-  public static getComparison(keyword: string): string {
+  public static humanizeComparison(keyword: string): string {
     return keyword.startsWith('min') ? 'more' : 'less';
   }
 
@@ -19,10 +19,27 @@ export class WordingHelper {
     }`;
   }
 
-  public static extractPropertyName(pointer: string): string {
-    return pointer
-      .replace(/\/\d+$/, '')
-      .split('/')
-      .pop();
+  public static humanizeTarget(jsonPointer: string): string {
+    const { name, index } = WordingHelper.extractTarget(jsonPointer);
+
+    return index !== null
+      ? `The element at index ${index} in the array \`${name}\``
+      : `The property \`${name}\``;
+  }
+
+  private static extractTarget(jsonPointer: string): {
+    name: string;
+    index: number | null;
+  } {
+    // eslint-disable-next-line @typescript-eslint/typedef,@typescript-eslint/naming-convention
+    const [_, name, index] = /([^/]+)(?:\/(\d+))?$/g.exec(jsonPointer) || [];
+
+    if (!index) {
+      return { name, index: null };
+    }
+
+    return +index < 100
+      ? { name, index: +index }
+      : { name: index, index: null };
   }
 }

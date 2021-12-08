@@ -162,7 +162,7 @@ describe('ErrorHumanizer', () => {
 
       const expected = {
         message:
-          'Error at /schemes/1: The property `schemes` must have one of the following values: "http", "https", "ws", or "wss"',
+          'Error at /schemes/1: The element at index 1 in the array `schemes` must have one of the following values: "http", "https", "ws", or "wss"',
         locationParts: [
           {
             text: 'Error at'
@@ -174,7 +174,7 @@ describe('ErrorHumanizer', () => {
         ],
         messageParts: [
           {
-            text: 'The property `schemes` must have one of the following values: "http", "https", "ws", or "wss"'
+            text: 'The element at index 1 in the array `schemes` must have one of the following values: "http", "https", "ws", or "wss"'
           }
         ]
       };

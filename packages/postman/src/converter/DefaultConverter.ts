@@ -9,7 +9,7 @@ import {
   normalizeUrl
 } from '@har-sdk/core';
 import { lookup } from 'mime-types';
-import { parse as parseQS, stringify } from 'qs';
+import { parse, stringify } from 'qs';
 import { format, URL, UrlObject } from 'url';
 import { basename, extname } from 'path';
 
@@ -326,7 +326,7 @@ export class DefaultConverter implements Converter {
       }));
     } else {
       params = Object.entries(
-        parseQS(body.urlencoded ?? '') as Record<
+        parse(body.urlencoded ?? '') as Record<
           string,
           undefined | string | string[]
         >

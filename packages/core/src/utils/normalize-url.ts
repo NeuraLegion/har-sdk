@@ -17,17 +17,19 @@ const normalizePathName = (pathname: string): string =>
 
 const DEFAULT_PROTOCOL = 'https';
 
-export const normalizeUrl = (urlString: string): string => {
-  const hasRelativeProtocol = urlString.startsWith('//');
-  const isRelativeUrl = !hasRelativeProtocol && /^\.*\//.test(urlString);
+const prependProtocolIfNecessary = (url: string): string => {
+  const hasRelativeProtocol = /^\/{2}/.test(url);
+  const isRelativeUrl = !hasRelativeProtocol && /^\.+\//.test(url);
 
   if (!isRelativeUrl) {
-    urlString = urlString.replace(
-      /^(?!(?:\w+:)?\/\/)|^\/\//,
-      `${DEFAULT_PROTOCOL}://`
-    );
+    url = url.replace(/^(?!(?:\w+:)?\/\/)|^\/\//, `${DEFAULT_PROTOCOL}://`);
   }
 
+  return url;
+};
+
+export const normalizeUrl = (value: string): string => {
+  let urlString = prependProtocolIfNecessary(value);
   const url = new URL(urlString);
 
   if (url.pathname) {

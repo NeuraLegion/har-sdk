@@ -1,16 +1,16 @@
 import { Converter } from './Converter';
 import { VariableParser, VariableParserFactory } from '../parser';
 import {
-  Postman,
-  Request,
   Header,
-  QueryString,
+  normalizeUrl,
   PostData,
-  normalizeUrl
+  Postman,
+  QueryString,
+  Request
 } from '@har-sdk/core';
 import { lookup } from 'mime-types';
 import { parse, stringify } from 'qs';
-import { format, URL, UrlObject } from 'url';
+import { URL } from 'url';
 import { basename, extname } from 'path';
 
 export enum AuthLocation {
@@ -425,69 +425,67 @@ export class DefaultConverter implements Converter {
       return envParser.parse(value);
     }
 
-    const urlObject: UrlObject = this.prepareUrl(value, envParser);
+    const urlObject = this.buildUrl(value, envParser);
 
-    let urlString: string = decodeURI(format(urlObject));
+    let urlString: string = decodeURI(urlObject.toString());
 
     urlString = envParser.parse(urlString);
 
     return normalizeUrl(encodeURI(urlString));
   }
 
-  private prepareUrl(url: Postman.Url, env: VariableParser): UrlObject {
-    let host: string | undefined = Array.isArray(url.host)
-      ? url.host.join('.')
-      : url.host;
+  // eslint-disable-next-line complexity
+  private buildUrl(url: Postman.Url, env: VariableParser): URL {
+    let { host, protocol } = url;
 
     if (!host) {
       throw new Error('Host is not defined.');
     }
 
     if (host) {
-      host = env.parse(host);
+      host = env.parse(Array.isArray(host) ? host.join('.') : host);
     }
-
-    let protocol: string | undefined = url.protocol;
 
     if (protocol) {
-      protocol = env.parse(protocol)?.replace(/:?$/, ':');
+      protocol = env.parse(protocol);
     }
 
-    const fragments: VariableParser =
-      this.parserFactory.createUrlVariableParser(url.variable);
+    const u = new URL(`${protocol}//${host}`);
 
-    let pathname: string = Array.isArray(url.path)
+    if (url.port) {
+      u.port = url.port;
+    }
+
+    if (url.hash) {
+      u.hash = url.hash;
+    }
+
+    const parser = this.parserFactory.createUrlVariableParser(url.variable);
+
+    const pathname = Array.isArray(url.path)
       ? url.path
           .map((x: string | Postman.Variable) =>
-            fragments.parse(typeof x === 'string' ? x : x.value ?? '')
+            parser.parse(typeof x === 'string' ? x : x.value ?? '')
           )
           .join('/')
       : url.path;
 
     if (pathname) {
-      pathname = env
-        .parse(pathname)
-        .replace(/^\/?([^/]+(?:\/[^/]+)*)\/?$/, '/$1');
+      u.pathname = env.parse(pathname);
     }
 
     const query = this.prepareQueries(url);
 
-    let auth = '';
+    u.search = stringify(query ?? {}, {
+      format: 'RFC3986',
+      encode: false,
+      addQueryPrefix: true
+    });
 
-    if (url.auth) {
-      auth += url.auth.user ?? '';
-      auth += ':' + (url.auth.password ?? '');
-    }
+    u.username = url.auth?.user ?? '';
+    u.password = url.auth?.password ?? '';
 
-    return {
-      auth,
-      query,
-      protocol,
-      host,
-      pathname,
-      port: url.port,
-      hash: url.hash
-    };
+    return u;
   }
 
   private prepareQueries(

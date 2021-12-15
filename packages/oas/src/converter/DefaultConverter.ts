@@ -391,32 +391,32 @@ export class DefaultConverter implements Converter {
 
     const pathObj = spec.paths[path][method];
 
-    // 'accept' header:
+    // 'content-type' header:
     if (typeof pathObj.consumes !== 'undefined') {
-      for (const type of pathObj.consumes) {
+      for (const value of pathObj.consumes) {
         headers.push({
-          name: 'accept',
-          value: type
+          value,
+          name: 'content-type'
         });
       }
     }
 
-    // 'content-type' header:
+    // 'accept' header:
     if (typeof pathObj.produces !== 'undefined') {
-      for (const type2 of pathObj.produces) {
+      for (const value of pathObj.produces) {
         headers.push({
-          name: 'content-type',
-          value: type2
+          value,
+          name: 'accept'
         });
       }
     }
 
     // v3 'content-type' header:
     if (pathObj.requestBody && pathObj.requestBody.content) {
-      for (const type3 of Object.keys(pathObj.requestBody.content)) {
+      for (const value of Object.keys(pathObj.requestBody.content)) {
         headers.push({
-          name: 'content-type',
-          value: type3
+          value,
+          name: 'content-type'
         });
       }
     }

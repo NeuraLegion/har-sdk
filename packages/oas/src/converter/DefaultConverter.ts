@@ -31,6 +31,8 @@ interface HarRequest {
 }
 
 export class DefaultConverter implements Converter {
+  private readonly JPG_IMAGE = '/9j/2w==';
+  private readonly PNG_IMAGE = 'iVBORw0KGgo=';
   private readonly REGEX_EXTRACT_VARS = /{([^{}]*?)}/g;
   private readonly VARS_SUBREPLACE_LIMIT = 30;
   private readonly BOUNDARY = '956888039105887155673143';
@@ -281,11 +283,11 @@ export class DefaultConverter implements Converter {
 
       case 'image/jpg':
       case 'image/jpeg':
-        return '/9j/2w==';
+        return this.JPG_IMAGE;
 
       case 'image/png':
       case 'image/*':
-        return 'iVBORw0KGgo=';
+        return this.PNG_IMAGE;
 
       default:
         return typeof value === 'object' ? JSON.stringify(value) : value;

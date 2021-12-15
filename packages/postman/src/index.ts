@@ -1,6 +1,6 @@
 import { DefaultConverter } from './converter';
 import { DefaultGenerators, DefaultVariableParserFactory } from './parser';
-import { Postman, Request } from '@har-sdk/types';
+import { Postman, Request } from '@har-sdk/core';
 
 export const postman2har = async (
   collection: Postman.Document,

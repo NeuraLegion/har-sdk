@@ -5,8 +5,9 @@ import {
   Request,
   Header,
   QueryString,
-  PostData
-} from '@har-sdk/types';
+  PostData,
+  normalizeUrl
+} from '@har-sdk/core';
 import { lookup } from 'mime-types';
 import { parse as parseQS, stringify } from 'qs';
 import { format, URL, UrlObject } from 'url';
@@ -19,7 +20,6 @@ export enum AuthLocation {
 
 export class DefaultConverter implements Converter {
   private readonly variables: ReadonlyArray<Postman.Variable>;
-  private readonly DEFAULT_PROTOCOL = 'https';
 
   constructor(
     private readonly parserFactory: VariableParserFactory,
@@ -431,45 +431,7 @@ export class DefaultConverter implements Converter {
 
     urlString = envParser.parse(urlString);
 
-    return this.normalizeUrl(encodeURI(urlString));
-  }
-
-  private normalizeUrl(urlString: string): string {
-    const hasRelativeProtocol = urlString.startsWith('//');
-    const isRelativeUrl = !hasRelativeProtocol && /^\.*\//.test(urlString);
-
-    if (!isRelativeUrl) {
-      urlString = urlString.replace(
-        /^(?!(?:\w+:)?\/\/)|^\/\//,
-        this.DEFAULT_PROTOCOL
-      );
-    }
-
-    const url = new URL(urlString);
-
-    if (url.pathname) {
-      url.pathname = url.pathname
-        .replace(/(?<!https?:)\/{2,}/g, '/')
-        .replace(/\/$/, '');
-
-      try {
-        url.pathname = decodeURI(url.pathname);
-      } catch {
-        // noop
-      }
-    }
-
-    if (url.hostname) {
-      url.hostname = url.hostname.replace(/\.$/, '');
-    }
-
-    urlString = url.toString();
-
-    if (url.pathname === '/' && url.hash === '') {
-      urlString = urlString.replace(/\/$/, '');
-    }
-
-    return urlString;
+    return normalizeUrl(encodeURI(urlString));
   }
 
   private prepareUrl(url: Postman.Url, env: VariableParser): UrlObject {

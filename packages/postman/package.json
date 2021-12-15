@@ -39,7 +39,7 @@
     "compile": "tsc -b tsconfig.build.json"
   },
   "dependencies": {
-    "@har-sdk/types": "*",
+    "@har-sdk/core": "*",
     "ajv": "^6.12.6",
     "faker": "^5.5.3",
     "mime-types": "^2.1.31",

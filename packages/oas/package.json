@@ -44,8 +44,8 @@
   ],
   "dependencies": {
     "@apidevtools/json-schema-ref-parser": "^9.0.9",
+    "@har-sdk/core": "*",
     "@har-sdk/openapi-sampler": "*",
-    "@har-sdk/types": "*",
     "jstoxml": "^2.1.0",
     "qs": "^6.10.1",
     "tslib": "~2.2.0",

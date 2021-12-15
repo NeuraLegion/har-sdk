@@ -1,5 +1,5 @@
 import { DefaultConverter } from './converter';
-import { OpenAPI, Request } from '@har-sdk/types';
+import { OpenAPI, Request } from '@har-sdk/core';
 
 export const oas2har = (collection: OpenAPI.Document): Promise<Request[]> => {
   if (!collection) {

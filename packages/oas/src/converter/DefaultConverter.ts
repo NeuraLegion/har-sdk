@@ -281,13 +281,11 @@ export class DefaultConverter implements Converter {
 
       case 'image/jpg':
       case 'image/jpeg':
-        return Buffer.from([0xff, 0xd8, 0xff, 0xdb]).toString('base64');
+        return '/9j/2w==';
 
       case 'image/png':
       case 'image/*':
-        return Buffer.from([
-          0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a
-        ]).toString('base64');
+        return 'iVBORw0KGgo=';
 
       default:
         return typeof value === 'object' ? JSON.stringify(value) : value;

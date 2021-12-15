@@ -20,7 +20,7 @@ import {
 } from '@har-sdk/types';
 import template from 'url-template';
 import { toXML } from 'jstoxml';
-import querystring from 'qs';
+import { stringify } from 'qs';
 import $RefParser, { JSONSchema } from '@apidevtools/json-schema-ref-parser';
 
 interface HarRequest {
@@ -99,8 +99,8 @@ export class DefaultConverter implements Converter {
         : '');
 
     const har: Request = {
-      url: encodeURI(url),
       queryString,
+      url: encodeURI(url),
       method: method.toUpperCase(),
       headers: this.getHeadersArray(spec, path, method),
       httpVersion: 'HTTP/1.1',
@@ -203,7 +203,7 @@ export class DefaultConverter implements Converter {
 
     return {
       mimeType: contentType.includes('multipart')
-        ? contentType + `; boundary=${this.BOUNDARY}`
+        ? `${contentType}; boundary=${this.BOUNDARY}`
         : contentType,
       text: this.encodeValue(encodedData, contentType, encoding)
     };
@@ -216,7 +216,7 @@ export class DefaultConverter implements Converter {
         return JSON.stringify(value);
 
       case 'application/x-www-form-urlencoded':
-        return querystring.stringify(value, {
+        return stringify(value, {
           format: 'RFC3986',
           encode: false
         });
@@ -566,16 +566,13 @@ export class DefaultConverter implements Converter {
 
     const object = isObject(transposed) ? transposed : { [name]: transposed };
 
-    const queryString = querystring.stringify(
-      !ignoreValues(value) ? object : '',
-      {
-        delimiter,
-        arrayFormat,
-        format: 'RFC3986',
-        encode: false,
-        addQueryPrefix: false
-      }
-    );
+    const queryString = stringify(!ignoreValues(value) ? object : '', {
+      delimiter,
+      arrayFormat,
+      format: 'RFC3986',
+      encode: false,
+      addQueryPrefix: false
+    });
 
     return {
       queryString,

@@ -297,7 +297,7 @@
       "required": ["lastAccess", "eTag", "hitCount"],
       "properties": {
         "expires": {
-          "type": "string"
+          "type": ["string", "boolean"]
         },
         "lastAccess": {
           "type": "string"

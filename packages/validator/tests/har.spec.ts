@@ -8,6 +8,7 @@ import wrongMethodValueHar from './fixtures/har.wrong-method-value.json';
 import negativeBodySize from './fixtures/har.negative-body-size.json';
 import invalidExpiresInCookie from './fixtures/har.invalid-expires-in-cookie.json';
 import nullableCacheRequest from './fixtures/har.nullable-cache-request.json';
+import boolExpires from './fixtures/har.bool-expires.json';
 import { HarValidator } from '../src';
 import { ErrorObject } from 'ajv';
 import { Har } from '@har-sdk/types';
@@ -164,6 +165,17 @@ describe('HarValidator', () => {
     it('should successfully validate HAR if "beforeRequest" or/and "afterRequest" are null', async () => {
       // arrange
       const input = nullableCacheRequest as unknown as Har;
+
+      // act
+      const result = await validator.verify(input);
+
+      // assert
+      result.should.be.empty;
+    });
+
+    it('should successfully validate HAR if "expires" is boolean in a "cacheEntry"', async () => {
+      // arrange
+      const input = boolExpires as unknown as Har;
 
       // act
       const result = await validator.verify(input);

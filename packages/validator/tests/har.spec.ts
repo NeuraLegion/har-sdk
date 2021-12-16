@@ -137,7 +137,7 @@ describe('HarValidator', () => {
       result.should.deep.eq(expected);
     });
 
-    it('should successfully validate HAR if "headerSize" is missed', async () => {
+    it('should successfully validate HAR if "headersSize" is missed', async () => {
       // arrange
       const input = missedHeadersSize as unknown as Har;
 

@@ -204,5 +204,82 @@ describe('OASValidator', () => {
 
       result.should.deep.eq(expected);
     });
+
+    it('should return error if `servers[].url` is empty', async () => {
+      const input: OpenAPIV3.Document = {
+        openapi: '3.0.0',
+        servers: [{ url: '' }],
+        info: {
+          title: 'Some valid API document',
+          version: '1.0.0'
+        },
+        paths: {}
+      } as unknown as OpenAPIV3.Document;
+
+      const expected: ErrorObject[] = [
+        {
+          instancePath: '/servers/0/url',
+          keyword: 'format',
+          message: 'must match format "uri"',
+          params: {
+            format: 'uri'
+          },
+          schemaPath: '#/else/properties/url/format'
+        }
+      ];
+
+      const result = await validator.verify(input);
+
+      result.should.deep.eq(expected);
+    });
+
+    it('should return error if `servers[].url` uses template syntax w/o declared variables', async () => {
+      const input: OpenAPIV3.Document = {
+        openapi: '3.0.0',
+        servers: [{ url: 'http://example.com/search{?q,lang}' }],
+        info: {
+          title: 'Some valid API document',
+          version: '1.0.0'
+        },
+        paths: {}
+      } as unknown as OpenAPIV3.Document;
+
+      const expected: ErrorObject[] = [
+        {
+          instancePath: '/servers/0/url',
+          keyword: 'format',
+          message: 'must match format "uri"',
+          params: {
+            format: 'uri'
+          },
+          schemaPath: '#/else/properties/url/format'
+        }
+      ];
+
+      const result = await validator.verify(input);
+
+      result.should.deep.eq(expected);
+    });
+
+    it('should successfully validate `servers[].url` with template syntax if `variables` presents', async () => {
+      const input: OpenAPIV3.Document = {
+        openapi: '3.0.0',
+        servers: [
+          {
+            url: '{protocol}://example.com/search{?q,lang}',
+            variables: {}
+          }
+        ],
+        info: {
+          title: 'Some valid API document',
+          version: '1.0.0'
+        },
+        paths: {}
+      } as unknown as OpenAPIV3.Document;
+
+      const result = await validator.verify(input);
+
+      result.should.deep.eq([]);
+    });
   });
 });

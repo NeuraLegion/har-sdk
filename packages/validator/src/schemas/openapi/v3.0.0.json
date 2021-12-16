@@ -141,6 +141,25 @@
           }
         }
       },
+      "if": {
+        "required": ["variables"]
+      },
+      "then": {
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "uri-template"
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "uri"
+          }
+        }
+      },
       "patternProperties": {
         "^x-": {}
       },

@@ -273,8 +273,22 @@
     "cache": {
       "description": "Info about a response coming from the cache.",
       "properties": {
-        "beforeRequest": { "$ref": "#/definitions/cacheEntry" },
-        "afterRequest": { "$ref": "#/definitions/cacheEntry" },
+        "beforeRequest": {
+          "if": {
+            "type": "null"
+          },
+          "else": {
+            "$ref": "#/definitions/cacheEntry"
+          }
+        },
+        "afterRequest": {
+          "if": {
+            "type": "null"
+          },
+          "else": {
+            "$ref": "#/definitions/cacheEntry"
+          }
+        },
         "comment": { "type": "string" }
       }
     },

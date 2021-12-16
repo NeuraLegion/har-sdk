@@ -17,7 +17,8 @@ export abstract class BaseValidator<T extends Document>
   protected constructor(schemas: AnySchema[]) {
     this.ajv = new Ajv({
       allErrors: true,
-      strict: false
+      strict: false,
+      useDefaults: true
     });
 
     addFormats(this.ajv);

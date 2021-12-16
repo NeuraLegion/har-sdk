@@ -65,8 +65,7 @@
       "required": ["startedDateTime", "id", "title", "pageTimings"],
       "properties": {
         "startedDateTime": {
-          "type": "string",
-          "format": "date-time"
+          "type": "string"
         },
         "id": {
           "type": "string"
@@ -104,8 +103,7 @@
       "properties": {
         "pageref": { "type": "string" },
         "startedDateTime": {
-          "type": "string",
-          "format": "date-time"
+          "type": "string"
         },
         "time": { "type": "number", "minimum": 0, "default": 0 },
         "request": { "$ref": "#/definitions/request" },
@@ -232,7 +230,9 @@
         "value": { "type": "string" },
         "path": { "type": "string" },
         "domain": { "type": "string" },
-        "expires": { "type": ["string", "null"], "format": "date-time" },
+        "expires": {
+          "type": ["string", "null"]
+        },
         "httpOnly": { "type": "boolean" },
         "secure": { "type": "boolean" },
         "comment": { "type": "string" }
@@ -283,12 +283,10 @@
       "required": ["lastAccess", "eTag", "hitCount"],
       "properties": {
         "expires": {
-          "type": "string",
-          "format": "date-time"
+          "type": "string"
         },
         "lastAccess": {
-          "type": "string",
-          "format": "date-time"
+          "type": "string"
         },
         "eTag": { "type": "string" },
         "hitCount": { "type": "integer" },

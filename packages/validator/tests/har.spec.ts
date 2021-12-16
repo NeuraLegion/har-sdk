@@ -1,6 +1,7 @@
 import 'chai/register-should';
 import validJson from './fixtures/har.valid.json';
 import missedCookieName from './fixtures/har.missed-cookie-name.json';
+import missedHeadersSize from './fixtures/har.missed-headers-size.json';
 import missedServerIP from './fixtures/har.missed-server-ip.json';
 import invalidServerIP from './fixtures/har.invalid-server-ip.json';
 import wrongMethodValueHar from './fixtures/har.wrong-method-value.json';
@@ -133,6 +134,17 @@ describe('HarValidator', () => {
 
       // assert
       result.should.deep.eq(expected);
+    });
+
+    it('should successfully validate HAR if "headerSize" is missed', async () => {
+      // arrange
+      const input = missedHeadersSize as unknown as Har;
+
+      // act
+      const result = await validator.verify(input);
+
+      // assert
+      result.should.be.empty;
     });
 
     it('should return error if method accepts wrong value', async () => {

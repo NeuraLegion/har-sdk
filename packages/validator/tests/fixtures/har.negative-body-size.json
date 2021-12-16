@@ -1,0 +1,94 @@
+{
+  "log": {
+    "version": "1.2",
+    "creator": {
+      "name": "WebInspector",
+      "version": "537.36"
+    },
+    "entries": [
+      {
+        "cache": {},
+        "connection": "125554",
+        "request": {
+          "method": "GET",
+          "url": "https://brokencrystals.neuralegion.com/",
+          "httpVersion": "HTTP/1.1",
+          "headers": [
+            {
+              "name": "Host",
+              "value": "brokencrystals.neuralegion.com"
+            },
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.81 Safari/537.36"
+            }
+          ],
+          "queryString": [],
+          "cookies": [],
+          "headersSize": 1305,
+          "bodySize": 0
+        },
+        "response": {
+          "status": 200,
+          "statusText": "OK",
+          "httpVersion": "HTTP/1.1",
+          "headers": [
+            {
+              "name": "Server",
+              "value": "nginx/1.19.8"
+            },
+            {
+              "name": "Date",
+              "value": "Mon, 18 Oct 2021 09:51:50 GMT"
+            },
+            {
+              "name": "Content-Type",
+              "value": "text/html"
+            },
+            {
+              "name": "Content-Length",
+              "value": "7465"
+            },
+            {
+              "name": "Last-Modified",
+              "value": "Wed, 13 Oct 2021 12:12:15 GMT"
+            },
+            {
+              "name": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "name": "ETag",
+              "value": "\"6166cd1f-1d29\""
+            },
+            {
+              "name": "Accept-Ranges",
+              "value": "bytes"
+            }
+          ],
+          "cookies": [],
+          "content": {
+            "size": 7465,
+            "mimeType": "text/html",
+            "compression": 0
+          },
+          "redirectURL": "",
+          "headersSize": 240,
+          "bodySize": -7465
+        },
+        "serverIPAddress": "1.1.1.1",
+        "startedDateTime": "2021-10-18T09:51:49.609Z",
+        "time": 853.6939999903552,
+        "timings": {
+          "blocked": 3.432999976212159,
+          "dns": 0,
+          "ssl": 283.47700000000003,
+          "connect": 566.048,
+          "send": 0.1069999999999709,
+          "wait": 283.5960000015609,
+          "receive": 0.510000012582168
+        }
+      }
+    ]
+  }
+}

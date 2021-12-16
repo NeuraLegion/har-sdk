@@ -266,7 +266,7 @@ describe('OASValidator', () => {
         openapi: '3.0.0',
         servers: [
           {
-            url: 'http://example.com/search{?q,lang}',
+            url: '{protocol}://example.com/search{?q,lang}',
             variables: {}
           }
         ],

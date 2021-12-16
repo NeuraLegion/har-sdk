@@ -308,7 +308,6 @@
       }
     },
     "timings": {
-      "required": ["send", "wait", "receive"],
       "description": "Info about request-response timing.",
       "properties": {
         "dns": { "type": "number", "default": -1 },

@@ -141,9 +141,7 @@
         "httpVersion",
         "cookies",
         "headers",
-        "queryString",
-        "headersSize",
-        "bodySize"
+        "queryString"
       ],
       "properties": {
         "method": {
@@ -182,8 +180,8 @@
           "items": { "$ref": "#/definitions/record" }
         },
         "postData": { "$ref": "#/definitions/postData" },
-        "headersSize": { "type": "integer", "default": -1 },
-        "bodySize": { "type": "integer", "default": -1 },
+        "headersSize": { "type": ["integer", "null"], "default": -1 },
+        "bodySize": { "type": ["integer", "null"], "default": -1 },
         "comment": { "type": "string" }
       }
     },
@@ -205,9 +203,7 @@
         "cookies",
         "headers",
         "content",
-        "redirectURL",
-        "headersSize",
-        "bodySize"
+        "redirectURL"
       ],
       "properties": {
         "status": { "type": "integer" },
@@ -223,8 +219,8 @@
         },
         "content": { "$ref": "#/definitions/content" },
         "redirectURL": { "type": "string" },
-        "headersSize": { "type": "integer", "default": -1 },
-        "bodySize": { "type": "integer", "default": -1 },
+        "headersSize": { "type": ["integer", "null"], "default": -1 },
+        "bodySize": { "type": ["integer", "null"], "default": -1 },
         "comment": { "type": "string" }
       }
     },

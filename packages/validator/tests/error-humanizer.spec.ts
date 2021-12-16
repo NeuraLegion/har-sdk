@@ -40,7 +40,7 @@ describe('ErrorHumanizer', () => {
 
   const getBaseOasDoc = (): OpenAPIV3.Document => ({
     openapi: '3.0.1',
-    servers: [{ url: 'localhost' }],
+    servers: [{ url: 'http://localhost' }],
     info: {
       title: 'Invalid OpenAPI document',
       version: '1.0.0'

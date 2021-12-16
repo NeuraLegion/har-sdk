@@ -10,6 +10,7 @@ import invalidExpiresInCookie from './fixtures/har.invalid-expires-in-cookie.jso
 import nullableCacheRequest from './fixtures/har.nullable-cache-request.json';
 import boolExpires from './fixtures/har.bool-expires.json';
 import missedTimings from './fixtures/har.missed-timings.json';
+import missedSizeAndMimeType from './fixtures/har.missed-size-and-mime-type.json';
 import { HarValidator } from '../src';
 import { ErrorObject } from 'ajv';
 import { Har } from '@har-sdk/types';
@@ -199,6 +200,17 @@ describe('HarValidator', () => {
     it('should successfully validate HAR if "timings" are empty', async () => {
       // arrange
       const input = missedTimings as unknown as Har;
+
+      // act
+      const result = await validator.verify(input);
+
+      // assert
+      result.should.be.empty;
+    });
+
+    it('should successfully validate HAR if "size" or/and "mimeType" are missed in content', async () => {
+      // arrange
+      const input = missedSizeAndMimeType as unknown as Har;
 
       // act
       const result = await validator.verify(input);

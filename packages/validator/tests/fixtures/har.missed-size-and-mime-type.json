@@ -1,0 +1,70 @@
+{
+  "log": {
+    "version": "1.2",
+    "creator": {
+      "name": "test",
+      "version": "0.0.0"
+    },
+    "entries": [
+      {
+        "cache": {},
+        "time": 168.28799998620525,
+        "serverIPAddress": "0.0.0.0",
+        "startedDateTime": "2021-11-23T17:34:45.082Z",
+        "timings": {},
+        "request": {
+          "method": "POST",
+          "url": "https://httpbin.org/post",
+          "httpVersion": "HTTP/1.1",
+          "cookies": [],
+          "headers": [
+            {
+              "name": "content-type",
+              "value": "multipart/form-data"
+            }
+          ],
+          "queryString": [],
+          "postData": {
+            "mimeType": "multipart/form-data",
+            "params": [
+              {
+                "name": "foo",
+                "value": "bar"
+              },
+              {
+                "name": "baz",
+                "value": "quz",
+                "fileName": "quz.txt",
+                "contentType": "text/plain"
+              }
+            ]
+          },
+          "bodySize": -1,
+          "headersSize": -1
+        },
+        "response": {
+          "status": 200,
+          "statusText": "OK",
+          "httpVersion": "HTTP/1.1",
+          "cookies": [],
+          "headers": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Content-Length",
+              "value": "623"
+            }
+          ],
+          "content": {
+            "text": "{\"args\":{},\"data\":\"\",\"files\":{},\"form\":{\"foo\":\"bar\"},\"headers\":{\"Accept\":\"*/*\",\"Accept-Encoding\":\"gzip, deflate, br\",\"Cache-Control\":\"no-cache\",\"Content-Length\":\"161\",\"Content-Type\":\"multipart"
+          },
+          "redirectURL": "",
+          "headersSize": -1,
+          "bodySize": -1
+        }
+      }
+    ]
+  }
+}

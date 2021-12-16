@@ -1,0 +1,67 @@
+{
+  "log": {
+    "version": "1.2",
+    "creator": {
+      "name": "test",
+      "version": "0.0.0"
+    },
+    "entries": [
+      {
+        "cache": {},
+        "time": 168.28799998620525,
+        "serverIPAddress": "0.0.0.0",
+        "startedDateTime": "2021-11-23T17:34:45.082Z",
+        "timings": {
+          "blocked": 2.759000030424446,
+          "dns": -1,
+          "ssl": -1,
+          "connect": -1,
+          "send": 0.2549999999999999,
+          "wait": 164.83800001190602,
+          "receive": 0.43599994387477636,
+          "_blocked_queueing": 1.1430000304244459
+        },
+        "request": {
+          "method": "GET",
+          "url": "https://httpbin.org/cookies",
+          "httpVersion": "HTTP/1.1",
+          "cookies": [
+            {
+              "name": "bar",
+              "value": "baz",
+              "expires": "+02:002009-07-24T19:20:30.123"
+            }
+          ],
+          "headers": [],
+          "queryString": [],
+          "bodySize": -1,
+          "headersSize": -1
+        },
+        "response": {
+          "status": 200,
+          "statusText": "OK",
+          "httpVersion": "HTTP/1.1",
+          "cookies": [],
+          "headers": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Content-Length",
+              "value": "59"
+            }
+          ],
+          "content": {
+            "size": 59,
+            "mimeType": "application/json",
+            "text": "{\"cookies\":{\"bar\":\"baz\",\"foo\":\"bar\"}}"
+          },
+          "redirectURL": "",
+          "headersSize": -1,
+          "bodySize": -1
+        }
+      }
+    ]
+  }
+}

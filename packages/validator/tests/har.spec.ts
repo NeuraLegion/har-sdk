@@ -6,6 +6,7 @@ import missedServerIP from './fixtures/har.missed-server-ip.json';
 import invalidServerIP from './fixtures/har.invalid-server-ip.json';
 import wrongMethodValueHar from './fixtures/har.wrong-method-value.json';
 import negativeBodySize from './fixtures/har.negative-body-size.json';
+import invalidExpiresInCookie from './fixtures/har.invalid-expires-in-cookie.json';
 import { HarValidator } from '../src';
 import { ErrorObject } from 'ajv';
 import { Har } from '@har-sdk/types';
@@ -140,6 +141,17 @@ describe('HarValidator', () => {
     it('should successfully validate HAR if "headersSize" is missed', async () => {
       // arrange
       const input = missedHeadersSize as unknown as Har;
+
+      // act
+      const result = await validator.verify(input);
+
+      // assert
+      result.should.be.empty;
+    });
+
+    it('should successfully validate HAR even if "expires" is not date-time string', async () => {
+      // arrange
+      const input = invalidExpiresInCookie as unknown as Har;
 
       // act
       const result = await validator.verify(input);

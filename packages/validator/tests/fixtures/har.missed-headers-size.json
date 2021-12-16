@@ -37,7 +37,8 @@
           ],
           "headers": [],
           "queryString": [],
-          "bodySize": -1
+          "bodySize": -1,
+          "headersSize": null
         },
         "response": {
           "status": 200,

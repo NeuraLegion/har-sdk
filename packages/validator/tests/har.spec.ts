@@ -9,6 +9,7 @@ import negativeBodySize from './fixtures/har.negative-body-size.json';
 import invalidExpiresInCookie from './fixtures/har.invalid-expires-in-cookie.json';
 import nullableCacheRequest from './fixtures/har.nullable-cache-request.json';
 import boolExpires from './fixtures/har.bool-expires.json';
+import missedTimings from './fixtures/har.missed-timings.json';
 import { HarValidator } from '../src';
 import { ErrorObject } from 'ajv';
 import { Har } from '@har-sdk/types';
@@ -187,6 +188,17 @@ describe('HarValidator', () => {
     it('should successfully validate HAR if "bodySize" is less than -1', async () => {
       // arrange
       const input = negativeBodySize as unknown as Har;
+
+      // act
+      const result = await validator.verify(input);
+
+      // assert
+      result.should.be.empty;
+    });
+
+    it('should successfully validate HAR if "timings" are empty', async () => {
+      // arrange
+      const input = missedTimings as unknown as Har;
 
       // act
       const result = await validator.verify(input);

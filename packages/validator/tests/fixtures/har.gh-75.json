@@ -7,39 +7,48 @@
     },
     "pages": [
       {
-        "startedDateTime": "2009-04-16T12:07:25.123+01:00",
+        "comment": "Non `date-time` format of `startedDateTime`",
+        "startedDateTime": "+02:002009-04-16T12:07:25.123",
         "id": "page_0",
         "title": "Test Page",
         "pageTimings": {
-          "onContentLoad": 1720,
-          "onLoad": null,
-          "comment": ""
-        },
-        "comment": ""
+          "comment": "Negative values of `onContentLoad` and `onLoad`",
+          "onContentLoad": -1720,
+          "onLoad": -1720
+        }
+      },
+      {
+        "startedDateTime": "+02:002009-04-16T12:07:25.123",
+        "id": "page_1",
+        "title": "Test Page 1",
+        "pageTimings": {
+          "comment": "Null values of `onContentLoad` and `onLoad`",
+          "onContentLoad": null,
+          "onLoad": null
+        }
       }
     ],
     "entries": [
       {
+        "comment": "Non `date-time` format of `startedDateTime`",
         "cache": {
+          "comment": "Null values of `beforeRequest` and `afterRequest`",
           "beforeRequest": null,
-          "afterRequest": {
-            "expires": true,
-            "lastAccess": "2021-11-23T17:34:45",
-            "eTag": "",
-            "hitCount": 0,
-            "comment": ""
-          }
+          "afterRequest": null
         },
         "time": 168.28799998620525,
-        "serverIPAddress": "[2a00:1450:4001:810::2004]",
-        "startedDateTime": "2021-11-23T17:34:45.082Z",
-        "timings": {},
+        "startedDateTime": "+03:002021-11-23T17:34:45.082",
+        "timings": {
+          "comment": "Missing `send`, `wait` and `receive`"
+        },
         "request": {
+          "comment": "Negative values of `bodySize` and `headersSize`",
           "method": "POST",
           "url": "https://httpbin.org/post",
           "httpVersion": "HTTP/1.1",
           "cookies": [
             {
+              "comment": "Non `date-time` format of `expires`",
               "name": "bar",
               "value": "baz",
               "expires": "+02:002009-07-24T19:20:30.123"
@@ -67,10 +76,11 @@
               }
             ]
           },
-          "bodySize": -1,
-          "headersSize": null
+          "bodySize": -42,
+          "headersSize": -42
         },
         "response": {
+          "comment": "Negative values of `bodySize` and `headersSize`",
           "status": 200,
           "statusText": "OK",
           "httpVersion": "HTTP/1.1",
@@ -86,11 +96,92 @@
             }
           ],
           "content": {
+            "comment": "Missing `size` and `mimeType`",
             "text": "{\"args\":{},\"data\":\"\",\"files\":{},\"form\":{\"foo\":\"bar\"},\"headers\":{\"Accept\":\"*/*\",\"Accept-Encoding\":\"gzip, deflate, br\",\"Cache-Control\":\"no-cache\",\"Content-Length\":\"161\",\"Content-Type\":\"multipart/form-data; boundary=--------------------------"
           },
           "redirectURL": "",
-          "headersSize": -1,
-          "bodySize": -7465
+          "headersSize": -4242,
+          "bodySize": -4242
+        }
+      },
+      {
+        "comment": "IPv6 value in brackets of `serverIPAddress`",
+        "cache": {
+          "comment": "Missing `lastAccess`, `eTag` and `hitCount` in cache entries",
+          "beforeRequest": {},
+          "afterRequest": {}
+        },
+        "time": 168.28799998620525,
+        "serverIPAddress": "[2a00:1450:4001:810::2004]",
+        "startedDateTime": "2021-11-23T17:35:45.082+03:00",
+        "timings": {
+          "comment": "Negative `dns`, `connect`, `blocked` and `ssl`",
+          "dns": -42,
+          "connect": -42,
+          "blocked": -42,
+          "ssl": -42
+        },
+        "request": {
+          "comment": "Null values of `bodySize` and `headersSize`",
+          "method": "GET",
+          "url": "https://httpbin.org/get",
+          "httpVersion": "HTTP/1.1",
+          "cookies": [],
+          "headers": [],
+          "queryString": [],
+          "bodySize": null,
+          "headersSize": null
+        },
+        "response": {
+          "comment": "Null values of `bodySize` and `headersSize`",
+          "status": 200,
+          "statusText": "OK",
+          "httpVersion": "HTTP/1.1",
+          "cookies": [],
+          "headers": [],
+          "content": {
+            "text": ""
+          },
+          "redirectURL": "",
+          "bodySize": null,
+          "headersSize": null
+        }
+      },
+      {
+        "cache": {
+          "beforeRequest": {
+            "comment": "Non `date-time` values of `expires` and `lastAccess`",
+            "expires": "+03:002021-11-23T17:35:45.082",
+            "lastAccess": "+03:002021-11-23T17:35:45.082"
+          },
+          "afterRequest": {
+            "comment": "Boolean value of `expires`",
+            "expires": true
+          }
+        },
+        "time": 168.28799998620525,
+        "startedDateTime": "+03:002021-11-23T17:35:45.082",
+        "timings": {},
+        "request": {
+          "comment": "Missing `bodySize` and `headersSize`",
+          "method": "GET",
+          "url": "https://httpbin.org/get",
+          "httpVersion": "HTTP/1.1",
+          "cookies": [],
+          "headers": [],
+          "queryString": []
+        },
+        "response": {
+          "comment": "Missing `bodySize` and `headersSize`",
+          "status": 200,
+          "statusText": "OK",
+          "httpVersion": "HTTP/1.1",
+          "cookies": [],
+          "headers": [],
+          "content": {
+            "text": ""
+          },
+          "redirectURL": ""
         }
       }
     ]

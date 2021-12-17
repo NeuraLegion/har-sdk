@@ -46,28 +46,45 @@ describe('HarValidator', () => {
           params: {
             errors: [
               {
-                emUsed: true,
                 instancePath: '/log/entries/0/serverIPAddress',
-                schemaPath: '#/properties/serverIPAddress/else/then/format',
+                schemaPath:
+                  '#/properties/serverIPAddress/else/else/then/format',
                 keyword: 'format',
-                params: { format: 'ipv4' },
-                message: 'must match format "ipv4"'
+                params: {
+                  format: 'ipv4'
+                },
+                message: 'must match format "ipv4"',
+                emUsed: true
               },
               {
-                emUsed: true,
+                instancePath: '/log/entries/0/serverIPAddress',
+                schemaPath: '#/properties/serverIPAddress/else/else/if',
+                keyword: 'if',
+                params: {
+                  failingKeyword: 'then'
+                },
+                message: 'must match "then" schema',
+                emUsed: true
+              },
+              {
                 instancePath: '/log/entries/0/serverIPAddress',
                 schemaPath: '#/properties/serverIPAddress/else/if',
                 keyword: 'if',
-                params: { failingKeyword: 'then' },
-                message: 'must match "then" schema'
+                params: {
+                  failingKeyword: 'else'
+                },
+                message: 'must match "else" schema',
+                emUsed: true
               },
               {
-                emUsed: true,
                 instancePath: '/log/entries/0/serverIPAddress',
                 schemaPath: '#/properties/serverIPAddress/if',
                 keyword: 'if',
-                params: { failingKeyword: 'else' },
-                message: 'must match "else" schema'
+                params: {
+                  failingKeyword: 'else'
+                },
+                message: 'must match "else" schema',
+                emUsed: true
               }
             ]
           },

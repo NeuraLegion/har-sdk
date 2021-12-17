@@ -1,7 +1,7 @@
 import githubSwagger from './fixtures/github.swagger.json';
 import { oas2har } from '../src';
 import yaml from 'js-yaml';
-import { OpenAPIV2, OpenAPIV3, Request } from '@har-sdk/types';
+import { OpenAPIV2, OpenAPIV3, Request } from '@har-sdk/core';
 import { resolve } from 'path';
 import { readFile } from 'fs';
 import { promisify } from 'util';

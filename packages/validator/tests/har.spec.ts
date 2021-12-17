@@ -1,17 +1,10 @@
 import 'chai/register-should';
 import validJson from './fixtures/har.valid.json';
 import missedCookieName from './fixtures/har.missed-cookie-name.json';
-import missedHeadersSize from './fixtures/har.missed-headers-size.json';
 import missedServerIP from './fixtures/har.missed-server-ip.json';
 import invalidServerIP from './fixtures/har.invalid-server-ip.json';
 import wrongMethodValueHar from './fixtures/har.wrong-method-value.json';
-import negativeBodySize from './fixtures/har.negative-body-size.json';
-import invalidExpiresInCookie from './fixtures/har.invalid-expires-in-cookie.json';
-import nullableCacheRequest from './fixtures/har.nullable-cache-request.json';
-import boolExpires from './fixtures/har.bool-expires.json';
-import missedTimings from './fixtures/har.missed-timings.json';
-import missedSizeAndMimeType from './fixtures/har.missed-size-and-mime-type.json';
-import pages from './fixtures/har.pages.json';
+import harGh75 from './fixtures/har.gh-75.json';
 import { HarValidator } from '../src';
 import { ErrorObject } from 'ajv';
 import { Har } from '@har-sdk/types';
@@ -143,86 +136,9 @@ describe('HarValidator', () => {
       result.should.deep.eq(expected);
     });
 
-    it('should successfully validate HAR if "headersSize" is missed', async () => {
+    it('should successfully validate HAR from GitHub issue: #75', async () => {
       // arrange
-      const input = missedHeadersSize as unknown as Har;
-
-      // act
-      const result = await validator.verify(input);
-
-      // assert
-      result.should.be.empty;
-    });
-
-    it('should successfully validate HAR even if "expires" is not date-time string', async () => {
-      // arrange
-      const input = invalidExpiresInCookie as unknown as Har;
-
-      // act
-      const result = await validator.verify(input);
-
-      // assert
-      result.should.be.empty;
-    });
-
-    it('should successfully validate HAR if "beforeRequest" or/and "afterRequest" are null', async () => {
-      // arrange
-      const input = nullableCacheRequest as unknown as Har;
-
-      // act
-      const result = await validator.verify(input);
-
-      // assert
-      result.should.be.empty;
-    });
-
-    it('should successfully validate HAR if "expires" is boolean in a "cacheEntry"', async () => {
-      // arrange
-      const input = boolExpires as unknown as Har;
-
-      // act
-      const result = await validator.verify(input);
-
-      // assert
-      result.should.be.empty;
-    });
-
-    it('should successfully validate HAR if "bodySize" is less than -1', async () => {
-      // arrange
-      const input = negativeBodySize as unknown as Har;
-
-      // act
-      const result = await validator.verify(input);
-
-      // assert
-      result.should.be.empty;
-    });
-
-    it('should successfully validate HAR if "timings" are empty', async () => {
-      // arrange
-      const input = missedTimings as unknown as Har;
-
-      // act
-      const result = await validator.verify(input);
-
-      // assert
-      result.should.be.empty;
-    });
-
-    it('should successfully validate HAR if "onLoad" or "onContentLoad" are null', async () => {
-      // arrange
-      const input = pages as unknown as Har;
-
-      // act
-      const result = await validator.verify(input);
-
-      // assert
-      result.should.be.empty;
-    });
-
-    it('should successfully validate HAR if "size" or/and "mimeType" are missed in content', async () => {
-      // arrange
-      const input = missedSizeAndMimeType as unknown as Har;
+      const input = harGh75 as unknown as Har;
 
       // act
       const result = await validator.verify(input);

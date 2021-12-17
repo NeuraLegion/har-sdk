@@ -11,6 +11,7 @@ import nullableCacheRequest from './fixtures/har.nullable-cache-request.json';
 import boolExpires from './fixtures/har.bool-expires.json';
 import missedTimings from './fixtures/har.missed-timings.json';
 import missedSizeAndMimeType from './fixtures/har.missed-size-and-mime-type.json';
+import pages from './fixtures/har.pages.json';
 import { HarValidator } from '../src';
 import { ErrorObject } from 'ajv';
 import { Har } from '@har-sdk/types';
@@ -200,6 +201,17 @@ describe('HarValidator', () => {
     it('should successfully validate HAR if "timings" are empty', async () => {
       // arrange
       const input = missedTimings as unknown as Har;
+
+      // act
+      const result = await validator.verify(input);
+
+      // assert
+      result.should.be.empty;
+    });
+
+    it('should successfully validate HAR if "onLoad" or "onContentLoad" are null', async () => {
+      // arrange
+      const input = pages as unknown as Har;
 
       // act
       const result = await validator.verify(input);

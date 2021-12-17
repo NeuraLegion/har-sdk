@@ -85,11 +85,11 @@
       "description": "Timing info about page load",
       "properties": {
         "onContentLoad": {
-          "type": "number",
+          "type": ["number", "null"],
           "default": -1
         },
         "onLoad": {
-          "type": "number",
+          "type": ["number", "null"],
           "default": -1
         },
         "comment": {

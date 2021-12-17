@@ -105,13 +105,15 @@
         }
       },
       {
+        "comment": "IPv6 value in brackets of `serverIPAddress`",
         "cache": {
           "comment": "Missing `lastAccess`, `eTag` and `hitCount` in cache entries",
           "beforeRequest": {},
           "afterRequest": {}
         },
         "time": 168.28799998620525,
-        "startedDateTime": "+03:002021-11-23T17:35:45.082",
+        "serverIPAddress": "[2a00:1450:4001:810::2004]",
+        "startedDateTime": "2021-11-23T17:35:45.082+03:00",
         "timings": {
           "comment": "Negative `dns`, `connect`, `blocked` and `ssl`",
           "dns": -42,

@@ -68,5 +68,19 @@ describe('DefaultConverter', () => {
         { name: 'limit', value: '500' }
       ]);
     });
+
+    it('should substitute variables in servers', async () => {
+      const content: string = await promisify(readFile)(
+        resolve('./tests/fixtures/servers-with-variables.oas.yaml'),
+        'utf8'
+      );
+
+      const [firstRequest]: Request[] = await oas2har(
+        yaml.load(content) as OpenAPIV3.Document
+      );
+
+      firstRequest.method.should.equal('GET');
+      firstRequest.url.should.equal('https://petstore.swagger.io:8443/v2/pets');
+    });
   });
 });

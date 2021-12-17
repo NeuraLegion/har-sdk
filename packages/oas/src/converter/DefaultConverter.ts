@@ -31,8 +31,6 @@ interface HarRequest {
 }
 
 export class DefaultConverter implements Converter {
-  private readonly REGEX_EXTRACT_VARS = /{([^{}]*?)}/g;
-  private readonly VARS_SUBREPLACE_LIMIT = 30;
   private readonly BOUNDARY = '956888039105887155673143';
   private readonly BASE64_PATTERN =
     /^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$/;
@@ -658,33 +656,15 @@ export class DefaultConverter implements Converter {
     if (isOASV3(spec) && spec.servers?.length) {
       return spec.servers.map((server: OpenAPIV3.ServerObject) => {
         const variables = server.variables || {};
+        const templateUrl = template.parse(server.url);
+        const params = {};
 
-        let urlString: string = removeTrailingSlash(server.url);
-        let substitutions = 0;
-        let replacements = 0;
+        for (const [param, variable] of Object.entries(variables)) {
+          const data = sample(variable, {}, spec);
+          Object.assign(params, { [param]: data });
+        }
 
-        do {
-          urlString = urlString.replace(
-            this.REGEX_EXTRACT_VARS,
-            (match: string, token: string) => {
-              replacements += 1;
-
-              const variable = variables[token];
-
-              if (!variable || !variable.default) {
-                return match;
-              }
-
-              return variable.default;
-            }
-          );
-
-          if (replacements) {
-            substitutions += 1;
-          }
-        } while (replacements && substitutions < this.VARS_SUBREPLACE_LIMIT);
-
-        return urlString;
+        return removeTrailingSlash(templateUrl.expand(params));
       });
     }
 

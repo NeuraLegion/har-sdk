@@ -117,10 +117,15 @@
           },
           "else": {
             "if": {
-              "minLength": 1
+              "pattern": "^\\[([^\\]]+)\\](?::([0-9]+))?$"
             },
-            "then": {
-              "format": "ipv4"
+            "else": {
+              "if": {
+                "minLength": 1
+              },
+              "then": {
+                "format": "ipv4"
+              }
             }
           },
           "errorMessage": "The property `serverIPAddress` must have a value that is either IPv4 or IPv6 format"

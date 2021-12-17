@@ -31,6 +31,7 @@
           }
         },
         "time": 168.28799998620525,
+        "serverIPAddress": "[2a00:1450:4001:810::2004]",
         "startedDateTime": "2021-11-23T17:34:45.082Z",
         "timings": {},
         "request": {

@@ -4,6 +4,7 @@ import missedCookieName from './fixtures/har.missed-cookie-name.json';
 import missedServerIP from './fixtures/har.missed-server-ip.json';
 import invalidServerIP from './fixtures/har.invalid-server-ip.json';
 import wrongMethodValueHar from './fixtures/har.wrong-method-value.json';
+import harGh75 from './fixtures/har.gh-75.json';
 import { HarValidator } from '../src';
 import { ErrorObject } from 'ajv';
 import { Har } from '@har-sdk/types';
@@ -45,28 +46,45 @@ describe('HarValidator', () => {
           params: {
             errors: [
               {
-                emUsed: true,
                 instancePath: '/log/entries/0/serverIPAddress',
-                schemaPath: '#/properties/serverIPAddress/else/then/format',
+                schemaPath:
+                  '#/properties/serverIPAddress/else/else/then/format',
                 keyword: 'format',
-                params: { format: 'ipv4' },
-                message: 'must match format "ipv4"'
+                params: {
+                  format: 'ipv4'
+                },
+                message: 'must match format "ipv4"',
+                emUsed: true
               },
               {
-                emUsed: true,
+                instancePath: '/log/entries/0/serverIPAddress',
+                schemaPath: '#/properties/serverIPAddress/else/else/if',
+                keyword: 'if',
+                params: {
+                  failingKeyword: 'then'
+                },
+                message: 'must match "then" schema',
+                emUsed: true
+              },
+              {
                 instancePath: '/log/entries/0/serverIPAddress',
                 schemaPath: '#/properties/serverIPAddress/else/if',
                 keyword: 'if',
-                params: { failingKeyword: 'then' },
-                message: 'must match "then" schema'
+                params: {
+                  failingKeyword: 'else'
+                },
+                message: 'must match "else" schema',
+                emUsed: true
               },
               {
-                emUsed: true,
                 instancePath: '/log/entries/0/serverIPAddress',
                 schemaPath: '#/properties/serverIPAddress/if',
                 keyword: 'if',
-                params: { failingKeyword: 'else' },
-                message: 'must match "else" schema'
+                params: {
+                  failingKeyword: 'else'
+                },
+                message: 'must match "else" schema',
+                emUsed: true
               }
             ]
           },
@@ -133,6 +151,17 @@ describe('HarValidator', () => {
 
       // assert
       result.should.deep.eq(expected);
+    });
+
+    it('should successfully validate HAR from GitHub issue: #75', async () => {
+      // arrange
+      const input = harGh75 as unknown as Har;
+
+      // act
+      const result = await validator.verify(input);
+
+      // assert
+      result.should.be.empty;
     });
 
     it('should return error if method accepts wrong value', async () => {

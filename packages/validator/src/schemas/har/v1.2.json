@@ -65,8 +65,7 @@
       "required": ["startedDateTime", "id", "title", "pageTimings"],
       "properties": {
         "startedDateTime": {
-          "type": "string",
-          "format": "date-time"
+          "type": "string"
         },
         "id": {
           "type": "string"
@@ -86,13 +85,11 @@
       "description": "Timing info about page load",
       "properties": {
         "onContentLoad": {
-          "type": "number",
-          "minimum": -1,
+          "type": ["number", "null"],
           "default": -1
         },
         "onLoad": {
-          "type": "number",
-          "minimum": -1,
+          "type": ["number", "null"],
           "default": -1
         },
         "comment": {
@@ -106,8 +103,7 @@
       "properties": {
         "pageref": { "type": "string" },
         "startedDateTime": {
-          "type": "string",
-          "format": "date-time"
+          "type": "string"
         },
         "time": { "type": "number", "minimum": 0, "default": 0 },
         "request": { "$ref": "#/definitions/request" },
@@ -121,10 +117,15 @@
           },
           "else": {
             "if": {
-              "minLength": 1
+              "pattern": "^\\[([^\\]]+)\\](?::([0-9]+))?$"
             },
-            "then": {
-              "format": "ipv4"
+            "else": {
+              "if": {
+                "minLength": 1
+              },
+              "then": {
+                "format": "ipv4"
+              }
             }
           },
           "errorMessage": "The property `serverIPAddress` must have a value that is either IPv4 or IPv6 format"
@@ -143,9 +144,7 @@
         "httpVersion",
         "cookies",
         "headers",
-        "queryString",
-        "headersSize",
-        "bodySize"
+        "queryString"
       ],
       "properties": {
         "method": {
@@ -184,8 +183,8 @@
           "items": { "$ref": "#/definitions/record" }
         },
         "postData": { "$ref": "#/definitions/postData" },
-        "headersSize": { "type": "integer", "minimum": -1, "default": -1 },
-        "bodySize": { "type": "integer", "minimum": -1, "default": -1 },
+        "headersSize": { "type": ["integer", "null"], "default": -1 },
+        "bodySize": { "type": ["integer", "null"], "default": -1 },
         "comment": { "type": "string" }
       }
     },
@@ -207,9 +206,7 @@
         "cookies",
         "headers",
         "content",
-        "redirectURL",
-        "headersSize",
-        "bodySize"
+        "redirectURL"
       ],
       "properties": {
         "status": { "type": "integer" },
@@ -225,8 +222,8 @@
         },
         "content": { "$ref": "#/definitions/content" },
         "redirectURL": { "type": "string" },
-        "headersSize": { "type": "integer", "minimum": -1, "default": -1 },
-        "bodySize": { "type": "integer", "minimum": -1, "default": -1 },
+        "headersSize": { "type": ["integer", "null"], "default": -1 },
+        "bodySize": { "type": ["integer", "null"], "default": -1 },
         "comment": { "type": "string" }
       }
     },
@@ -238,7 +235,9 @@
         "value": { "type": "string" },
         "path": { "type": "string" },
         "domain": { "type": "string" },
-        "expires": { "type": ["string", "null"], "format": "date-time" },
+        "expires": {
+          "type": ["string", "null"]
+        },
         "httpOnly": { "type": "boolean" },
         "secure": { "type": "boolean" },
         "comment": { "type": "string" }
@@ -266,7 +265,6 @@
     },
     "content": {
       "description": "Response content",
-      "required": ["size", "mimeType"],
       "properties": {
         "size": { "type": "integer" },
         "compression": { "type": "integer" },
@@ -279,22 +277,33 @@
     "cache": {
       "description": "Info about a response coming from the cache.",
       "properties": {
-        "beforeRequest": { "$ref": "#/definitions/cacheEntry" },
-        "afterRequest": { "$ref": "#/definitions/cacheEntry" },
+        "beforeRequest": {
+          "if": {
+            "type": "null"
+          },
+          "else": {
+            "$ref": "#/definitions/cacheEntry"
+          }
+        },
+        "afterRequest": {
+          "if": {
+            "type": "null"
+          },
+          "else": {
+            "$ref": "#/definitions/cacheEntry"
+          }
+        },
         "comment": { "type": "string" }
       }
     },
     "cacheEntry": {
       "description": "Info about cache entry.",
-      "required": ["lastAccess", "eTag", "hitCount"],
       "properties": {
         "expires": {
-          "type": "string",
-          "format": "date-time"
+          "type": ["string", "boolean"]
         },
         "lastAccess": {
-          "type": "string",
-          "format": "date-time"
+          "type": "string"
         },
         "eTag": { "type": "string" },
         "hitCount": { "type": "integer" },
@@ -302,16 +311,15 @@
       }
     },
     "timings": {
-      "required": ["send", "wait", "receive"],
       "description": "Info about request-response timing.",
       "properties": {
-        "dns": { "type": "number", "minimum": -1, "default": -1 },
-        "connect": { "type": "number", "minimum": -1, "default": -1 },
-        "blocked": { "type": "number", "minimum": -1, "default": -1 },
+        "dns": { "type": "number", "default": -1 },
+        "connect": { "type": "number", "default": -1 },
+        "blocked": { "type": "number", "default": -1 },
         "send": { "type": "number" },
         "wait": { "type": "number" },
         "receive": { "type": "number" },
-        "ssl": { "type": "number", "minimum": -1, "default": -1 },
+        "ssl": { "type": "number", "default": -1 },
         "comment": { "type": "string" }
       }
     }

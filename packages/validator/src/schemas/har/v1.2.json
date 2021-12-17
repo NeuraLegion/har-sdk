@@ -293,7 +293,6 @@
     },
     "cacheEntry": {
       "description": "Info about cache entry.",
-      "required": ["lastAccess", "eTag", "hitCount"],
       "properties": {
         "expires": {
           "type": ["string", "boolean"]

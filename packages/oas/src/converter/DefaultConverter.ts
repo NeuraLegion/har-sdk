@@ -29,8 +29,6 @@ interface HarRequest {
 export class DefaultConverter implements Converter {
   private readonly JPG_IMAGE = '/9j/2w==';
   private readonly PNG_IMAGE = 'iVBORw0KGgo=';
-  private readonly REGEX_EXTRACT_VARS = /{([^{}]*?)}/g;
-  private readonly VARS_SUBREPLACE_LIMIT = 30;
   private readonly BOUNDARY = '956888039105887155673143';
   private readonly BASE64_PATTERN =
     /^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$/;
@@ -392,32 +390,32 @@ export class DefaultConverter implements Converter {
 
     const pathObj = spec.paths[path][method];
 
-    // 'accept' header:
+    // 'content-type' header:
     if (typeof pathObj.consumes !== 'undefined') {
-      for (const type of pathObj.consumes) {
+      for (const value of pathObj.consumes) {
         headers.push({
-          name: 'accept',
-          value: type
+          value,
+          name: 'content-type'
         });
       }
     }
 
-    // 'content-type' header:
+    // 'accept' header:
     if (typeof pathObj.produces !== 'undefined') {
-      for (const type2 of pathObj.produces) {
+      for (const value of pathObj.produces) {
         headers.push({
-          name: 'content-type',
-          value: type2
+          value,
+          name: 'accept'
         });
       }
     }
 
     // v3 'content-type' header:
     if (pathObj.requestBody && pathObj.requestBody.content) {
-      for (const type3 of Object.keys(pathObj.requestBody.content)) {
+      for (const value of Object.keys(pathObj.requestBody.content)) {
         headers.push({
-          name: 'content-type',
-          value: type3
+          value,
+          name: 'content-type'
         });
       }
     }
@@ -656,33 +654,15 @@ export class DefaultConverter implements Converter {
     if (this.isOASV3(spec) && spec.servers?.length) {
       return spec.servers.map((server: OpenAPIV3.ServerObject) => {
         const variables = server.variables || {};
+        const templateUrl = template.parse(server.url);
+        const params = {};
 
-        let urlString: string = removeTrailingSlash(server.url);
-        let substitutions = 0;
-        let replacements = 0;
+        for (const [param, variable] of Object.entries(variables)) {
+          const data = sample(variable, {}, spec);
+          Object.assign(params, { [param]: data });
+        }
 
-        do {
-          urlString = urlString.replace(
-            this.REGEX_EXTRACT_VARS,
-            (match: string, token: string) => {
-              replacements += 1;
-
-              const variable = variables[token];
-
-              if (!variable || !variable.default) {
-                return match;
-              }
-
-              return variable.default;
-            }
-          );
-
-          if (replacements) {
-            substitutions += 1;
-          }
-        } while (replacements && substitutions < this.VARS_SUBREPLACE_LIMIT);
-
-        return urlString;
+        return removeTrailingSlash(templateUrl.expand(params));
       });
     }
 

@@ -1,4 +1,8 @@
-import { URL } from 'url';
+const URL =
+  typeof (global as any).window !== 'undefined'
+    ? (global as any).window.URL
+    : // eslint-disable-next-line @typescript-eslint/no-var-requires
+      require('url').URL;
 
 export const removeTrailingSlash = (path: string): string =>
   path.replace(/\/$/, '');

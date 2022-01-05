@@ -10,8 +10,13 @@ import {
 } from '@har-sdk/core';
 import { lookup } from 'mime-types';
 import { parse, stringify } from 'qs';
-import { URL } from 'url';
 import { basename, extname } from 'path';
+
+const URL =
+  typeof (global as any).window !== 'undefined'
+    ? (global as any).window.URL
+    : // eslint-disable-next-line @typescript-eslint/no-var-requires
+      require('url').URL;
 
 export enum AuthLocation {
   QUERY = 'queryString',
@@ -435,7 +440,7 @@ export class DefaultConverter implements Converter {
   }
 
   // eslint-disable-next-line complexity
-  private buildUrl(url: Postman.Url, env: VariableParser): URL {
+  private buildUrl(url: Postman.Url, env: VariableParser): typeof URL {
     let { host, protocol } = url;
 
     if (!host) {

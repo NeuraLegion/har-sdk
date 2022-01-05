@@ -450,7 +450,9 @@ export class DefaultConverter implements Converter {
       protocol = env.parse(protocol);
     }
 
-    const u = new URL(`${protocol}//${host}`);
+    const u = new URL(
+      normalizeUrl(`${protocol?.replace(/:?$/, ':') || ''}//${host}`)
+    );
 
     if (url.port) {
       u.port = url.port;

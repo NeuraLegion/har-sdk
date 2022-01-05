@@ -443,13 +443,7 @@ export class DefaultConverter implements Converter {
   private buildUrl(url: Postman.Url, env: VariableParser): typeof URL {
     let { host, protocol } = url;
 
-    if (!host) {
-      throw new Error('Host is not defined.');
-    }
-
-    if (host) {
-      host = env.parse(Array.isArray(host) ? host.join('.') : host);
-    }
+    host = this.buildHost(host, env);
 
     if (protocol) {
       protocol = env.parse(protocol);
@@ -493,6 +487,20 @@ export class DefaultConverter implements Converter {
     u.password = url.auth?.password ?? '';
 
     return u;
+  }
+
+  private buildHost(host: string | string[], env: VariableParser): string {
+    if (!host || !host.length) {
+      throw new Error('Host is not defined.');
+    }
+
+    host = env.parse(Array.isArray(host) ? host.join('.') : host);
+
+    try {
+      return new URL(host).host;
+    } catch {
+      return host;
+    }
   }
 
   private prepareQueries(

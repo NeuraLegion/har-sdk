@@ -441,16 +441,14 @@ export class DefaultConverter implements Converter {
 
   // eslint-disable-next-line complexity
   private buildUrl(url: Postman.Url, env: VariableParser): typeof URL {
-    let { host, protocol } = url;
-
-    host = this.buildHost(host, env);
-
-    if (protocol) {
-      protocol = env.parse(protocol);
-    }
+    const { host, protocol } = url;
 
     const u = new URL(
-      normalizeUrl(`${protocol?.replace(/:?$/, ':') || ''}//${host}`)
+      normalizeUrl(
+        `${
+          protocol ? env.parse(protocol).replace(/:?$/, ':') : ''
+        }//${this.buildHost(host, env)}`
+      )
     );
 
     if (url.port) {
@@ -461,23 +459,12 @@ export class DefaultConverter implements Converter {
       u.hash = url.hash;
     }
 
-    const parser = this.parserFactory.createUrlVariableParser(url.variable);
-
-    const pathname = Array.isArray(url.path)
-      ? url.path
-          .map((x: string | Postman.Variable) =>
-            parser.parse(typeof x === 'string' ? x : x.value ?? '')
-          )
-          .join('/')
-      : url.path;
-
+    const pathname = this.buildPathname(url);
     if (pathname) {
       u.pathname = env.parse(pathname);
     }
 
-    const query = this.prepareQueries(url);
-
-    u.search = stringify(query ?? {}, {
+    u.search = stringify(this.prepareQueries(url) ?? {}, {
       format: 'RFC3986',
       encode: false,
       addQueryPrefix: true
@@ -501,6 +488,18 @@ export class DefaultConverter implements Converter {
     } catch {
       return host;
     }
+  }
+
+  private buildPathname(url: Postman.Url): string {
+    const parser = this.parserFactory.createUrlVariableParser(url.variable);
+
+    return Array.isArray(url.path)
+      ? url.path
+          .map((x: string | Postman.Variable) =>
+            parser.parse(typeof x === 'string' ? x : x.value ?? '')
+          )
+          .join('/')
+      : url.path;
   }
 
   private prepareQueries(

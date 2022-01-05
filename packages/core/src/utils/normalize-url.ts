@@ -32,6 +32,7 @@ const prependProtocolIfNecessary = (url: string): string => {
   return url;
 };
 
+// eslint-disable-next-line complexity
 export const normalizeUrl = (value: string): string => {
   let urlString = prependProtocolIfNecessary(value);
   const url = new URL(urlString);

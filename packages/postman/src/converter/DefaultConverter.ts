@@ -3,6 +3,7 @@ import { VariableParser, VariableParserFactory } from '../parser';
 import {
   Header,
   normalizeUrl,
+  parseUrl,
   PostData,
   Postman,
   QueryString,
@@ -11,12 +12,6 @@ import {
 import { lookup } from 'mime-types';
 import { parse, stringify } from 'qs';
 import { basename, extname } from 'path';
-
-const URL =
-  typeof (global as any).window !== 'undefined'
-    ? (global as any).window.URL
-    : // eslint-disable-next-line @typescript-eslint/no-var-requires
-      require('url').URL;
 
 export enum AuthLocation {
   QUERY = 'queryString',
@@ -430,26 +425,18 @@ export class DefaultConverter implements Converter {
       return envParser.parse(value);
     }
 
-    const urlObject = this.buildUrl(value, envParser);
-
-    let urlString: string = decodeURI(urlObject.toString());
+    let urlString: string = decodeURI(this.buildUrlString(value, envParser));
 
     urlString = envParser.parse(urlString);
 
     return normalizeUrl(encodeURI(urlString));
   }
 
-  // eslint-disable-next-line complexity
-  private buildUrl(url: Postman.Url, env: VariableParser): typeof URL {
+  private buildUrlString(url: Postman.Url, env: VariableParser): string {
     const { host, protocol } = url;
 
-    const u = new URL(
-      normalizeUrl(
-        `${
-          protocol ? env.parse(protocol).replace(/:?$/, ':') : ''
-        }//${this.buildHost(host, env)}`
-      )
-    );
+    const p = protocol ? env.parse(protocol).replace(/:?$/, ':') : '';
+    const u = parseUrl(normalizeUrl(`${p}//${this.buildHost(host, env)}`));
 
     if (url.port) {
       u.port = url.port;
@@ -473,7 +460,7 @@ export class DefaultConverter implements Converter {
     u.username = url.auth?.user ?? '';
     u.password = url.auth?.password ?? '';
 
-    return u;
+    return u.toString();
   }
 
   private buildHost(host: string | string[], env: VariableParser): string {
@@ -484,7 +471,7 @@ export class DefaultConverter implements Converter {
     host = env.parse(Array.isArray(host) ? host.join('.') : host);
 
     try {
-      return new URL(host).host;
+      return parseUrl(host).host;
     } catch {
       return host;
     }
@@ -522,7 +509,7 @@ export class DefaultConverter implements Converter {
     let query: Record<string, undefined | string | string[]> | undefined;
 
     if (typeof url === 'string') {
-      query = Object.fromEntries(new URL(url).searchParams);
+      query = Object.fromEntries(parseUrl(url).searchParams);
     } else {
       query = this.prepareQueries(url);
     }

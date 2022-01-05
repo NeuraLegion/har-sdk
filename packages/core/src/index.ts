@@ -1,3 +1,8 @@
 export * from './importers';
 export * from './types';
-export { normalizeUrl, removeLeadingSlash, removeTrailingSlash } from './utils';
+export {
+  normalizeUrl,
+  parseUrl,
+  removeLeadingSlash,
+  removeTrailingSlash
+} from './utils';

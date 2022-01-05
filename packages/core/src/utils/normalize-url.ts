@@ -1,3 +1,5 @@
+import type { URL as URLType } from 'url';
+
 const URL =
   typeof (global as any).window !== 'undefined'
     ? (global as any).window.URL
@@ -32,28 +34,19 @@ const prependProtocolIfNecessary = (url: string): string => {
   return url;
 };
 
-// eslint-disable-next-line complexity
 export const normalizeUrl = (value: string): string => {
-  let urlString = prependProtocolIfNecessary(value);
-  const url = new URL(urlString);
+  const url = new URL(prependProtocolIfNecessary(value));
 
-  if (url.pathname) {
-    try {
-      url.pathname = normalizePathName(url.pathname);
-    } catch {
-      // noop
-    }
+  try {
+    url.pathname = normalizePathName(url.pathname);
+  } catch {
+    // noop
   }
 
-  if (url.searchParams) {
-    url.searchParams.sort();
-  }
+  url.searchParams.sort();
+  url.hostname = url.hostname.replace(/\.$/, '');
 
-  if (url.hostname) {
-    url.hostname = url.hostname.replace(/\.$/, '');
-  }
-
-  urlString = url.toString();
+  let urlString = url.toString();
 
   if (url.pathname === '/' && url.hash === '') {
     urlString = removeTrailingSlash(urlString);
@@ -61,3 +54,5 @@ export const normalizeUrl = (value: string): string => {
 
   return urlString;
 };
+
+export const parseUrl = (value: string): URLType => new URL(value);

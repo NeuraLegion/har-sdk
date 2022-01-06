@@ -1491,7 +1491,11 @@
               "variable": [
                 {
                   "key": "batchResultId",
-                  "value": null
+                  "value": "{{$guid}}"
+                },
+                {
+                  "key": "dummy",
+                  "type": "text"
                 }
               ]
             }
@@ -11104,7 +11108,7 @@
     },
     {
       "key": "version",
-      "value": "53.0"
+      "value": "{{$randomSemver}}"
     },
     {
       "key": "username",
@@ -11144,7 +11148,7 @@
     },
     {
       "key": "_userId",
-      "value": "{{$randomUuid}}"
+      "value": "{{$guid}}"
     },
     {
       "key": "_orgId",

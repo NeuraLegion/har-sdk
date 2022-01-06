@@ -159,4 +159,57 @@ describe('NumberSampler', () => {
 
     result.should.be.eq(-1);
   });
+
+  it('should correctly sample integer with multipleOf', () => {
+    const schema = {
+      type: 'integer',
+      multipleOf: 10
+    };
+    const result = sample(schema);
+
+    result.should.be.eq(10);
+  });
+
+  it('should correctly sample integer with multipleOf', () => {
+    const schema = {
+      type: 'integer',
+      minimum: 25,
+      multipleOf: 10
+    };
+    const result = sample(schema);
+
+    result.should.be.eq(30);
+  });
+
+  it('should correctly sample number with float multipleOf', () => {
+    const schema = {
+      type: 'number',
+      multipleOf: 13.3
+    };
+    const result = sample(schema);
+
+    result.should.be.eq(13.3);
+  });
+
+  it('should correctly sample number with float multipleOf and minimum', () => {
+    const schema = {
+      type: 'number',
+      minimum: 135,
+      multipleOf: 13.3
+    };
+    const result = sample(schema);
+
+    result.should.be.eq(146.3);
+  });
+
+  it('should correctly sample number with float multipleOf and negative minimum', () => {
+    const schema = {
+      type: 'number',
+      minimum: -20,
+      multipleOf: 13.3
+    };
+    const result = sample(schema);
+
+    result.should.be.eq(-13.3);
+  });
 });

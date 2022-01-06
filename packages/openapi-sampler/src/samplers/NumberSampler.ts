@@ -14,9 +14,13 @@ export class NumberSampler implements Sampler {
       res = this.sampleUsingMaximum(schema, integer);
     }
 
+    // TODO proper support for multipleOf with maximum constrain
+    if (schema.multipleOf) {
+      return this.roundUp(res ?? schema.multipleOf, schema.multipleOf);
+    }
+
     return res ?? 42;
 
-    // TODO support for multipleOf
     // if (schema.multipleOf) {
     //   min = Math.ceil(min / schema.multipleOf) * schema.multipleOf;
     //   max = Math.floor(max / schema.multipleOf) * schema.multipleOf;
@@ -56,5 +60,13 @@ export class NumberSampler implements Sampler {
     return exclusiveMaximum
       ? schemaMaximum - (integer ? 1 : this.EPS)
       : schemaMaximum;
+  }
+
+  private roundUp(value: number, multipleOf: number): number {
+    if (!multipleOf || !value) {
+      return 0;
+    }
+
+    return Math.ceil(value / multipleOf) * multipleOf;
   }
 }

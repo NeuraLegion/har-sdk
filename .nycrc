@@ -9,7 +9,8 @@
     "**/*.spec.ts",
     "test{,s}/**",
     ".coverage/**",
-    "**/*.{js,cjs,mjs,d.ts}"
+    "**/*.{js,cjs,mjs,d.ts}",
+    "**/DefaultGenerators.ts"
   ],
   "excludeNodeModules": true
 }

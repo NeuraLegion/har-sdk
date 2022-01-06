@@ -5,7 +5,7 @@ import 'chai/register-should';
 
 describe('DefaultConverter', () => {
   describe('convert', () => {
-    it('should convert empty Postman v2.1.0 to HAR', async () => {
+    it('should convert empty Postman collection to HAR', async () => {
       const result: Request[] = await postman2har({
         info: {
           name: 'Postman document',
@@ -18,7 +18,7 @@ describe('DefaultConverter', () => {
       result.should.be.empty;
     });
 
-    it('should convert Postman v2.1.0 to HAR', async () => {
+    it('should convert Postman v2.1.0 collection to HAR', async () => {
       const [firstRequest]: Request[] = await postman2har(
         postmanCollection as unknown as Postman.Document,
         {

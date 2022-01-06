@@ -11108,7 +11108,7 @@
     },
     {
       "key": "version",
-      "value": "{{$randomSemver}}"
+      "value": "53.0"
     },
     {
       "key": "username",
@@ -11160,7 +11160,7 @@
     },
     {
       "key": "webstoreId",
-      "value": ""
+      "value": "{{$guid}}"
     }
   ]
 }

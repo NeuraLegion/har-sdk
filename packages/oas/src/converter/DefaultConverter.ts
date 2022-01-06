@@ -1,7 +1,7 @@
 /* eslint-disable max-depth */
 import { Converter } from './Converter';
-import { Flattener, isDefinedProperty, isObject } from '../utils';
-import { sample } from '@har-sdk/openapi-sampler';
+import { Flattener, isObject } from '../utils';
+import $RefParser, { JSONSchema } from '@apidevtools/json-schema-ref-parser';
 import {
   Header,
   normalizeUrl,
@@ -14,10 +14,10 @@ import {
   Request,
   OpenAPIV2
 } from '@har-sdk/core';
-import template from 'url-template';
+import { sample } from '@har-sdk/openapi-sampler';
 import { toXML } from 'jstoxml';
 import { stringify } from 'qs';
-import $RefParser, { JSONSchema } from '@apidevtools/json-schema-ref-parser';
+import template from 'url-template';
 
 interface HarRequest {
   readonly method: string;
@@ -678,16 +678,10 @@ export class DefaultConverter implements Converter {
   }
 
   private isOASV2(doc: OpenAPI.Document): doc is OpenAPIV2.Document {
-    return isDefinedProperty<OpenAPIV2.Document>(
-      doc as OpenAPIV2.Document,
-      'swagger'
-    );
+    return 'swagger' in doc;
   }
 
   private isOASV3(doc: OpenAPI.Document): doc is OpenAPIV3.Document {
-    return isDefinedProperty<OpenAPIV3.Document>(
-      doc as OpenAPIV3.Document,
-      'openapi'
-    );
+    return 'openapi' in doc;
   }
 }

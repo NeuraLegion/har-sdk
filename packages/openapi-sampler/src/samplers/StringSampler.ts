@@ -1,7 +1,5 @@
-import { ensureLength, toRFCDateTime } from '../utils';
 import { Sampler, OpenAPISchema } from './Sampler';
-import faker from 'faker';
-import randexp from 'randexp';
+import RandExp from 'randexp';
 
 export class StringSampler implements Sampler {
   public sample(schema: OpenAPISchema): any {
@@ -12,83 +10,65 @@ export class StringSampler implements Sampler {
   }
 }
 
-const emailSample = () => faker.internet.email().toLowerCase();
-
-const passwordSample = (min: number, max: number) =>
-  ensureLength(faker.internet.password(), min, max);
-
-const commonDateTimeSample = (min: number, max: number, omitTime?: boolean) => {
-  const res = toRFCDateTime(new Date(), omitTime, false);
-
-  if (res.length < min) {
+const checkLength = (
+  value: string,
+  format: string,
+  min: number,
+  max: number
+) => {
+  if (min && value.length < min) {
     throw new Error(
-      `Using minLength = ${min} is incorrect with format "date-time"`
+      `Using minLength = ${min} is incorrect with format "${format}"`
     );
   }
 
-  if (max && res.length > max) {
+  if (max && value.length > max) {
     throw new Error(
-      `Using maxLength = ${max} is incorrect with format "date-time"`
+      `Using maxLength = ${max} is incorrect with format "${format}"`
     );
   }
 
-  return res;
+  return value;
 };
 
-const dateTimeSample = (min: number, max: number) =>
-  commonDateTimeSample(min, max);
+const adjustLength = (sample: string, min: number, max: number): string => {
+  const minLength = min ? min : 0;
+  const maxLength = max ? max : sample.length;
 
-const dateSample = (min: number, max: number) =>
-  commonDateTimeSample(min, max, true);
+  return minLength > sample.length
+    ? sample
+        .repeat(Math.trunc(minLength / sample.length) + 1)
+        .substring(0, minLength)
+    : sample.substr(0, Math.min(Math.max(sample.length, minLength), maxLength));
+};
 
 const defaultSample = (min: number, max: number) =>
-  ensureLength(faker.lorem.word(), min, max);
-
-const ipv4Sample = () => faker.internet.ip();
-
-const ipv6Sample = () => faker.internet.ipv6();
-
-const hostnameSample = () => faker.internet.domainName();
-
-const uriSample = () => faker.internet.url();
-
-const binarySample = () => toBase64(faker.random.words(3));
-
-const uuidSample = () => faker.datatype.uuid();
-
-const toBase64 = (data: any) => Buffer.from(data).toString('base64');
+  adjustLength('lorem', min, max);
 
 const patternSample = (min: number, max: number, pattern: string | RegExp) => {
-  const res = new randexp(pattern).gen();
+  const randExp = new RandExp(pattern);
+  randExp.randInt = (a, b) => Math.floor((a + b) / 2);
 
-  if (res.length < min) {
-    throw new Error(
-      `Using minLength = ${min} is incorrect with pattern ${pattern}`
-    );
-  }
-
-  if (max && res.length > max) {
-    throw new Error(
-      `Using maxLength = ${max} is incorrect with pattern ${pattern}`
-    );
-  }
-
-  return res;
+  return checkLength(randExp.gen(), 'pattern', min, max);
 };
 
+const binarySample = () => 'ZHVtbXkgYmluYXJ5IHNhbXBsZQA=';
+
 const stringFormats = {
-  'email': emailSample,
-  'password': passwordSample,
-  'date-time': dateTimeSample,
-  'date': dateSample,
-  'ipv4': ipv4Sample,
-  'ipv6': ipv6Sample,
-  'hostname': hostnameSample,
-  'uri': uriSample,
+  'email': () => 'jon.snow@targaryen.com',
+  'password': (min: number, max: number) => adjustLength('p@$$w0rd', min, max),
+  'date-time': (min: number, max: number) =>
+    checkLength('2021-12-31T23:34:00Z', 'date-time', min, max),
+  'date': (min: number, max: number) =>
+    checkLength('2021-12-31', 'date', min, max),
+  'ipv4': () => '208.67.222.222',
+  'ipv6': () => '0000:0000:0000:0000:0000:ffff:d043:dcdc',
+  'hostname': () => 'brokencrystals.com',
+  'uri': () => 'https://github.com/NeuraLegion/brokencrystals',
   'byte': binarySample,
   'binary': binarySample,
   'base64': binarySample,
-  'uuid': uuidSample,
+  'uuid': () => 'fbdf5a53-161e-4460-98ad-0e39408d8689',
   'pattern': patternSample,
   'default': defaultSample
 };

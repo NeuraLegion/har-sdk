@@ -1,4 +1,4 @@
-import { IJsonSchema, OpenAPI, OpenAPIV2, OpenAPIV3 } from '@har-sdk/types';
+import { IJsonSchema, OpenAPI, OpenAPIV2, OpenAPIV3 } from '@har-sdk/core';
 
 export interface Options {
   skipReadOnly?: boolean;

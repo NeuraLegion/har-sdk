@@ -1,6 +1,6 @@
 import { Options, Sample, Specification, Traverse } from '../traverse';
 import { Sampler, OpenAPISchema } from './Sampler';
-import { OpenAPIV2, OpenAPIV3 } from '@har-sdk/types';
+import { OpenAPIV2, OpenAPIV3 } from '@har-sdk/core';
 
 export class ArraySampler implements Sampler {
   constructor(private readonly traverse: Traverse) {}

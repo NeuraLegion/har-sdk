@@ -18,6 +18,7 @@ describe('Example', () => {
     const result = sample(schema);
     result.should.deep.equal(obj);
   });
+
   it('should use falsy example', () => {
     const schema = {
       type: 'string',
@@ -26,6 +27,7 @@ describe('Example', () => {
     const result = sample(schema);
     result.should.deep.equal(false);
   });
+
   it('should use enum', () => {
     const enumList = ['test1', 'test2'];
     const schema = {
@@ -33,6 +35,6 @@ describe('Example', () => {
       enum: enumList
     };
     const result = sample(schema);
-    result.should.be.oneOf(enumList);
+    result.should.be.eq(enumList[0]);
   });
 });

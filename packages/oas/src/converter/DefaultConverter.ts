@@ -1,6 +1,6 @@
 /* eslint-disable max-depth */
 import { Converter } from './Converter';
-import { Flattener, isDefined, isObject } from '../utils';
+import { Flattener, isDefinedProperty, isObject } from '../utils';
 import { sample } from '@har-sdk/openapi-sampler';
 import {
   Header,
@@ -678,10 +678,16 @@ export class DefaultConverter implements Converter {
   }
 
   private isOASV2(doc: OpenAPI.Document): doc is OpenAPIV2.Document {
-    return isDefined((doc as OpenAPIV2.Document).swagger);
+    return isDefinedProperty<OpenAPIV2.Document>(
+      doc as OpenAPIV2.Document,
+      'swagger'
+    );
   }
 
   private isOASV3(doc: OpenAPI.Document): doc is OpenAPIV3.Document {
-    return isDefined((doc as OpenAPIV3.Document).openapi);
+    return isDefinedProperty<OpenAPIV3.Document>(
+      doc as OpenAPIV3.Document,
+      'openapi'
+    );
   }
 }

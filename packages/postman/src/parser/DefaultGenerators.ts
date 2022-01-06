@@ -7,7 +7,7 @@ export class DefaultGenerators implements Generators {
   private readonly DIRECTORY_PATHS: ReadonlyArray<string> = directories;
 
   public guid(): string {
-    return faker.random.uuid();
+    return faker.datatype.uuid();
   }
 
   // The current timestamp

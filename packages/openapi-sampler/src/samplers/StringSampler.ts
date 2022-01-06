@@ -54,7 +54,7 @@ const uriSample = () => faker.internet.url();
 
 const binarySample = () => toBase64(faker.random.words(3));
 
-const uuidSample = () => faker.random.uuid();
+const uuidSample = () => faker.datatype.uuid();
 
 const toBase64 = (data: any) => Buffer.from(data).toString('base64');
 

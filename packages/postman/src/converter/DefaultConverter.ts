@@ -18,6 +18,7 @@ export enum AuthLocation {
   HEADER = 'headers'
 }
 
+/* istanbul ignore next */
 export class DefaultConverter implements Converter {
   private readonly variables: ReadonlyArray<Postman.Variable>;
 

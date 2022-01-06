@@ -1,64 +1,60 @@
 import { Sampler, OpenAPISchema } from './Sampler';
 
 export class NumberSampler implements Sampler {
-  private readonly DECIMALS = 2;
-  private readonly MAX_VALUE = Number.MAX_SAFE_INTEGER;
-  private readonly MIN_VALUE = Number.MIN_SAFE_INTEGER;
+  private readonly EPS = 0.001;
 
-  // eslint-disable-next-line complexity
-  public sample(schema: OpenAPISchema): any {
+  public sample(schema: OpenAPISchema): number {
     const type = schema.type ? schema.type : 'number';
-    const isInt = type === 'integer';
+    const integer = type === 'integer';
 
-    const schemaMin =
-      schema.minimum && schema.exclusiveMinimum
-        ? schema.minimum + 1
-        : schema.minimum;
-
-    const schemaMax =
-      schema.maximum && schema.exclusiveMaximum
-        ? schema.maximum - 1
-        : schema.maximum;
-
-    let min = schemaMin ? schemaMin : this.MIN_VALUE;
-    let max = schemaMax ? schemaMax : this.MAX_VALUE;
-
-    if (schema.multipleOf && schema.multipleOf > 0) {
-      min = Math.ceil(min / schema.multipleOf) * schema.multipleOf;
-      max = Math.floor(max / schema.multipleOf) * schema.multipleOf;
+    let res;
+    if ('minimum' in schema) {
+      res = this.sampleUsingMinimum(schema, integer);
+    } else if ('maximum' in schema) {
+      res = this.sampleUsingMaximum(schema, integer);
     }
 
-    let sampledNumber;
-    if (
-      schema.exclusiveMaximum &&
-      schema.exclusiveMinimum &&
-      Math.abs(min - max) === 1
-    ) {
-      if (isInt) {
-        throw new Error('Invalid min and max boundaries supplied.');
-      }
-      sampledNumber = (max + min) / 2;
+    return res ?? 42;
+
+    // TODO support for multipleOf
+    // if (schema.multipleOf) {
+    //   min = Math.ceil(min / schema.multipleOf) * schema.multipleOf;
+    //   max = Math.floor(max / schema.multipleOf) * schema.multipleOf;
+    // }
+
+    // TODO ensure boundaries
+    // throw new Error('Invalid min and max boundaries supplied.');
+  }
+
+  private sampleUsingMinimum(schema: OpenAPISchema, integer: boolean): number {
+    let exclusiveMinimum = !!schema.exclusiveMinimum;
+
+    let schemaMinimum;
+    if (integer && !Number.isInteger(schema.minimum)) {
+      schemaMinimum = Math.ceil(schema.minimum);
+      exclusiveMinimum = false;
     } else {
-      sampledNumber = this.getRandomInt(min, max);
+      schemaMinimum = schema.minimum;
     }
 
-    return this.format(sampledNumber, schema.format);
+    return exclusiveMinimum
+      ? schemaMinimum + (integer ? 1 : this.EPS)
+      : schemaMinimum;
   }
 
-  private getRandomInt(min: number, max: number): number {
-    min = Math.ceil(min);
-    max = Math.floor(max);
+  private sampleUsingMaximum(schema: OpenAPISchema, integer: boolean): number {
+    let exclusiveMaximum = !!schema.exclusiveMaximum;
 
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
-
-  private format(num: number, formatString: string): string | number {
-    switch (formatString) {
-      case 'float':
-      case 'double':
-        return num.toFixed(this.DECIMALS);
-      default:
-        return num;
+    let schemaMaximum;
+    if (integer && !Number.isInteger(schema.maximum)) {
+      schemaMaximum = Math.floor(schema.maximum);
+      exclusiveMaximum = false;
+    } else {
+      schemaMaximum = schema.maximum;
     }
+
+    return exclusiveMaximum
+      ? schemaMaximum - (integer ? 1 : this.EPS)
+      : schemaMaximum;
   }
 }

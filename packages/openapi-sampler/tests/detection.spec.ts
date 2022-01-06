@@ -14,7 +14,7 @@ describe('Detection', () => {
       }
     };
     const result = sample(schema);
-    (result.a > 10).should.equal(true);
+    (result.a >= 10).should.equal(true);
     result.b.should.be.a('string');
   });
 });

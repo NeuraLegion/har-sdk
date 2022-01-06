@@ -10,17 +10,6 @@ describe('Primitives', () => {
     result.should.eq('lorem');
   });
 
-  it('should sample number', () => {
-    const schema = {
-      type: 'number',
-      min: 10
-    };
-    const result = sample(schema);
-
-    // TODO
-    result.should.be.a('number');
-  });
-
   it('should sample deterministic boolean', () => {
     const schema = {
       type: 'boolean'

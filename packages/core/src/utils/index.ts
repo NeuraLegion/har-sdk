@@ -1,2 +1,2 @@
 export * from './first';
-export * from './normalize-url';
+export * from './url';

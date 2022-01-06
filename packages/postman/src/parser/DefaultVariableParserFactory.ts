@@ -3,7 +3,7 @@ import { VariableParser } from './VariableParser';
 import { EnvVariableParser } from './EnvVariableParser';
 import { UrlVariableParser } from './UrlVariableParser';
 import { Generators } from './Generators';
-import { Postman } from '@har-sdk/types';
+import { Postman } from '@har-sdk/core';
 
 export class DefaultVariableParserFactory implements VariableParserFactory {
   constructor(private readonly generators: Generators) {}

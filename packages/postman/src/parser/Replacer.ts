@@ -17,24 +17,24 @@ export class Replacer {
     regex: RegExp,
     strategy: string | ((...args: string[]) => string)
   ): this {
-    let replacements = 0;
+    this._replacements = 0;
 
     this.value = this.value.replace(
       regex,
       typeof strategy === 'function'
         ? (...args: string[]) => {
-            replacements += 1;
+            this._replacements += 1;
 
             return strategy(...args);
           }
         : () => {
-            replacements += 1;
+            this._replacements += 1;
 
             return strategy;
           }
     );
 
-    if (replacements) {
+    if (this.replacements) {
       this._substitutions += 1;
     }
 

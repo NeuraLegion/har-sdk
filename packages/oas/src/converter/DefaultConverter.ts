@@ -1,27 +1,23 @@
 /* eslint-disable max-depth */
 import { Converter } from './Converter';
-import {
-  Flattener,
-  isObject,
-  normalizeUrl,
-  removeLeadingSlash,
-  removeTrailingSlash
-} from '../utils';
-import { sample } from '@har-sdk/openapi-sampler';
+import { Flattener, isObject } from '../utils';
+import $RefParser, { JSONSchema } from '@apidevtools/json-schema-ref-parser';
 import {
   Header,
-  isOASV2,
-  isOASV3,
+  normalizeUrl,
+  removeTrailingSlash,
+  removeLeadingSlash,
   OpenAPI,
   OpenAPIV3,
   PostData,
   QueryString,
-  Request
-} from '@har-sdk/types';
-import template from 'url-template';
+  Request,
+  OpenAPIV2
+} from '@har-sdk/core';
+import { sample } from '@har-sdk/openapi-sampler';
 import { toXML } from 'jstoxml';
-import querystring from 'qs';
-import $RefParser, { JSONSchema } from '@apidevtools/json-schema-ref-parser';
+import { stringify } from 'qs';
+import template from 'url-template';
 
 interface HarRequest {
   readonly method: string;
@@ -31,6 +27,8 @@ interface HarRequest {
 }
 
 export class DefaultConverter implements Converter {
+  private readonly JPG_IMAGE = '/9j/2w==';
+  private readonly PNG_IMAGE = 'iVBORw0KGgo=';
   private readonly BOUNDARY = '956888039105887155673143';
   private readonly BASE64_PATTERN =
     /^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$/;
@@ -63,8 +61,9 @@ export class DefaultConverter implements Converter {
       );
 
       for (const [method] of methods) {
-        const url: string =
-          removeTrailingSlash(baseUrl) + '/' + removeLeadingSlash(path);
+        const url = `${removeTrailingSlash(baseUrl)}/${removeLeadingSlash(
+          path
+        )}`;
         const har = this.createHar(spec, baseUrl, path, method);
 
         harList.push({
@@ -97,8 +96,8 @@ export class DefaultConverter implements Converter {
         : '');
 
     const har: Request = {
-      url: encodeURI(url),
       queryString,
+      url: encodeURI(url),
       method: method.toUpperCase(),
       headers: this.getHeadersArray(spec, path, method),
       httpVersion: 'HTTP/1.1',
@@ -125,33 +124,31 @@ export class DefaultConverter implements Converter {
   ): PostData | null {
     const pathObj = spec.paths[path][method];
 
-    if (typeof pathObj.parameters !== 'undefined') {
-      for (const param of pathObj.parameters) {
-        if (
-          typeof param.in !== 'undefined' &&
-          param.in.toLowerCase() === 'body' &&
-          typeof param.schema !== 'undefined'
-        ) {
-          try {
-            const data = sample(param.schema, { skipReadOnly: true }, spec);
+    for (const param of pathObj.parameters || []) {
+      if (
+        typeof param.in !== 'undefined' &&
+        param.in.toLowerCase() === 'body' &&
+        typeof param.schema !== 'undefined'
+      ) {
+        try {
+          const data = sample(param.schema, { skipReadOnly: true }, spec);
 
-            let consumes;
+          let consumes;
 
-            if (pathObj.consumes && pathObj.consumes.length) {
-              consumes = pathObj.consumes;
-            } else if (isOASV2(spec) && spec.consumes && spec.consumes.length) {
-              consumes = spec.consumes;
-            }
-
-            const paramContentType = sample({
-              type: 'array',
-              examples: consumes ? consumes : ['application/json']
-            });
-
-            return this.encodePayload(data, paramContentType);
-          } catch {
-            return null;
+          if (pathObj.consumes?.length) {
+            consumes = pathObj.consumes;
+          } else if (this.isOASV2(spec) && spec.consumes?.length) {
+            consumes = spec.consumes;
           }
+
+          const paramContentType = sample({
+            type: 'array',
+            examples: consumes || ['application/json']
+          });
+
+          return this.encodePayload(data, paramContentType);
+        } catch {
+          return null;
         }
       }
     }
@@ -201,7 +198,7 @@ export class DefaultConverter implements Converter {
 
     return {
       mimeType: contentType.includes('multipart')
-        ? contentType + `; boundary=${this.BOUNDARY}`
+        ? `${contentType}; boundary=${this.BOUNDARY}`
         : contentType,
       text: this.encodeValue(encodedData, contentType, encoding)
     };
@@ -214,7 +211,7 @@ export class DefaultConverter implements Converter {
         return JSON.stringify(value);
 
       case 'application/x-www-form-urlencoded':
-        return querystring.stringify(value, {
+        return stringify(value, {
           format: 'RFC3986',
           encode: false
         });
@@ -279,13 +276,11 @@ export class DefaultConverter implements Converter {
 
       case 'image/jpg':
       case 'image/jpeg':
-        return Buffer.from([0xff, 0xd8, 0xff, 0xdb]).toString('base64');
+        return this.JPG_IMAGE;
 
       case 'image/png':
       case 'image/*':
-        return Buffer.from([
-          0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a
-        ]).toString('base64');
+        return this.PNG_IMAGE;
 
       default:
         return typeof value === 'object' ? JSON.stringify(value) : value;
@@ -449,9 +444,9 @@ export class DefaultConverter implements Converter {
     }
 
     let definedSchemes;
-    if (isOASV2(spec) && spec.securityDefinitions) {
+    if (this.isOASV2(spec) && spec.securityDefinitions) {
       definedSchemes = spec.securityDefinitions;
-    } else if (isOASV3(spec) && spec.components) {
+    } else if (this.isOASV3(spec) && spec.components) {
       definedSchemes = spec.components.securitySchemes;
     }
 
@@ -566,16 +561,13 @@ export class DefaultConverter implements Converter {
 
     const object = isObject(transposed) ? transposed : { [name]: transposed };
 
-    const queryString = querystring.stringify(
-      !ignoreValues(value) ? object : '',
-      {
-        delimiter,
-        arrayFormat,
-        format: 'RFC3986',
-        encode: false,
-        addQueryPrefix: false
-      }
-    );
+    const queryString = stringify(!ignoreValues(value) ? object : '', {
+      delimiter,
+      arrayFormat,
+      format: 'RFC3986',
+      encode: false,
+      addQueryPrefix: false
+    });
 
     return {
       queryString,
@@ -653,7 +645,7 @@ export class DefaultConverter implements Converter {
   }
 
   private parseUrls(spec: OpenAPI.Document): string[] {
-    if (isOASV3(spec) && spec.servers?.length) {
+    if (this.isOASV3(spec) && spec.servers?.length) {
       return spec.servers.map((server: OpenAPIV3.ServerObject) => {
         const variables = server.variables || {};
         const templateUrl = template.parse(server.url);
@@ -668,7 +660,7 @@ export class DefaultConverter implements Converter {
       });
     }
 
-    if (isOASV2(spec) && spec.host) {
+    if (this.isOASV2(spec) && spec.host) {
       const basePath: string =
         typeof spec.basePath !== 'undefined'
           ? removeLeadingSlash(spec.basePath)
@@ -683,5 +675,13 @@ export class DefaultConverter implements Converter {
     }
 
     return [];
+  }
+
+  private isOASV2(doc: OpenAPI.Document): doc is OpenAPIV2.Document {
+    return 'swagger' in doc;
+  }
+
+  private isOASV3(doc: OpenAPI.Document): doc is OpenAPIV3.Document {
+    return 'openapi' in doc;
   }
 }

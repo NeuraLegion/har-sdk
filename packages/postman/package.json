@@ -36,10 +36,12 @@
     "bundle": "rollup -c ../../rollup.config.js",
     "lint": "eslint --ignore-path ../../.eslintignore .",
     "format": "prettier --ignore-path ../../.prettierignore --check .",
-    "compile": "tsc -b tsconfig.build.json"
+    "compile": "tsc -b tsconfig.build.json",
+    "test": "cross-env NODE_ENV=test mocha tests/**/*.spec.ts",
+    "coverage": "nyc npm t -- --reporter xunit --reporter-options output=.mocha/testspec.xunit.xml"
   },
   "dependencies": {
-    "@har-sdk/types": "*",
+    "@har-sdk/core": "*",
     "ajv": "^6.12.6",
     "faker": "^5.5.3",
     "mime-types": "^2.1.31",

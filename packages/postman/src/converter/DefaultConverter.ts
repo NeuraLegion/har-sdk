@@ -1,15 +1,16 @@
 import { Converter } from './Converter';
 import { VariableParser, VariableParserFactory } from '../parser';
 import {
-  Postman,
-  Request,
   Header,
+  normalizeUrl,
+  parseUrl,
+  PostData,
+  Postman,
   QueryString,
-  PostData
-} from '@har-sdk/types';
+  Request
+} from '@har-sdk/core';
 import { lookup } from 'mime-types';
-import { parse as parseQS, stringify } from 'qs';
-import { format, URL, UrlObject } from 'url';
+import { parse, stringify } from 'qs';
 import { basename, extname } from 'path';
 
 export enum AuthLocation {
@@ -19,7 +20,6 @@ export enum AuthLocation {
 
 export class DefaultConverter implements Converter {
   private readonly variables: ReadonlyArray<Postman.Variable>;
-  private readonly DEFAULT_PROTOCOL = 'https';
 
   constructor(
     private readonly parserFactory: VariableParserFactory,
@@ -27,7 +27,7 @@ export class DefaultConverter implements Converter {
       environment?: Record<string, string>;
     }
   ) {
-    this.variables = Object.entries(options?.environment ?? {}).map(
+    this.variables = Object.entries(options.environment ?? {}).map(
       ([key, value]: [string, string]) => ({
         key,
         value
@@ -105,6 +105,7 @@ export class DefaultConverter implements Converter {
     }
   }
 
+  /* istanbul ignore next */
   private authRequest(
     request: Request,
     auth: Postman.RequestAuth,
@@ -139,6 +140,7 @@ export class DefaultConverter implements Converter {
     }
   }
 
+  /* istanbul ignore next */
   private oauth2(
     request: Request,
     options: Record<string, string>,
@@ -176,6 +178,7 @@ export class DefaultConverter implements Converter {
     }
   }
 
+  /* istanbul ignore next */
   private bearerAuth(
     request: Request,
     options: Record<string, string>,
@@ -196,6 +199,7 @@ export class DefaultConverter implements Converter {
     });
   }
 
+  /* istanbul ignore next */
   private removeCredentials(request: Request, from: AuthLocation): void {
     const idx: number = request[from].findIndex((x: Header) =>
       ['access_token', 'authorization'].includes(x.name.toLowerCase().trim())
@@ -206,6 +210,7 @@ export class DefaultConverter implements Converter {
     }
   }
 
+  /* istanbul ignore next */
   private basicAuth(
     request: Request,
     options: Record<string, string>,
@@ -226,6 +231,7 @@ export class DefaultConverter implements Converter {
     });
   }
 
+  /* istanbul ignore next */
   private apiKeyAuth(
     request: Request,
     options: Record<string, string>,
@@ -326,7 +332,7 @@ export class DefaultConverter implements Converter {
       }));
     } else {
       params = Object.entries(
-        parseQS(body.urlencoded ?? '') as Record<
+        parse(body.urlencoded ?? '') as Record<
           string,
           undefined | string | string[]
         >
@@ -425,107 +431,68 @@ export class DefaultConverter implements Converter {
       return envParser.parse(value);
     }
 
-    const urlObject: UrlObject = this.prepareUrl(value, envParser);
-
-    let urlString: string = decodeURI(format(urlObject));
+    let urlString: string = decodeURI(this.buildUrlString(value, envParser));
 
     urlString = envParser.parse(urlString);
 
-    return this.normalizeUrl(encodeURI(urlString));
+    return normalizeUrl(encodeURI(urlString));
   }
 
-  private normalizeUrl(urlString: string): string {
-    const hasRelativeProtocol = urlString.startsWith('//');
-    const isRelativeUrl = !hasRelativeProtocol && /^\.*\//.test(urlString);
+  private buildUrlString(url: Postman.Url, env: VariableParser): string {
+    const { host, protocol } = url;
 
-    if (!isRelativeUrl) {
-      urlString = urlString.replace(
-        /^(?!(?:\w+:)?\/\/)|^\/\//,
-        this.DEFAULT_PROTOCOL
-      );
+    const p = protocol ? env.parse(protocol).replace(/:?$/, ':') : '';
+    const u = parseUrl(normalizeUrl(`${p}//${this.buildHost(host, env)}`));
+
+    if (url.port) {
+      u.port = url.port;
     }
 
-    const url = new URL(urlString);
-
-    if (url.pathname) {
-      url.pathname = url.pathname
-        .replace(/(?<!https?:)\/{2,}/g, '/')
-        .replace(/\/$/, '');
-
-      try {
-        url.pathname = decodeURI(url.pathname);
-      } catch {
-        // noop
-      }
+    if (url.hash) {
+      u.hash = url.hash;
     }
 
-    if (url.hostname) {
-      url.hostname = url.hostname.replace(/\.$/, '');
+    const pathname = this.buildPathname(url);
+    if (pathname) {
+      u.pathname = env.parse(pathname);
     }
 
-    urlString = url.toString();
+    u.search = stringify(this.prepareQueries(url) ?? {}, {
+      format: 'RFC3986',
+      encode: false,
+      addQueryPrefix: true
+    });
 
-    if (url.pathname === '/' && url.hash === '') {
-      urlString = urlString.replace(/\/$/, '');
-    }
+    u.username = url.auth?.user ?? '';
+    u.password = url.auth?.password ?? '';
 
-    return urlString;
+    return u.toString();
   }
 
-  private prepareUrl(url: Postman.Url, env: VariableParser): UrlObject {
-    let host: string | undefined = Array.isArray(url.host)
-      ? url.host.join('.')
-      : url.host;
-
-    if (!host) {
+  private buildHost(host: string | string[], env: VariableParser): string {
+    if (!host || !host.length) {
       throw new Error('Host is not defined.');
     }
 
-    if (host) {
-      host = env.parse(host);
+    host = env.parse(Array.isArray(host) ? host.join('.') : host);
+
+    try {
+      return parseUrl(host).host;
+    } catch {
+      return host;
     }
+  }
 
-    let protocol: string | undefined = url.protocol;
+  private buildPathname(url: Postman.Url): string {
+    const parser = this.parserFactory.createUrlVariableParser(url.variable);
 
-    if (protocol) {
-      protocol = env.parse(protocol)?.replace(/:?$/, ':');
-    }
-
-    const fragments: VariableParser =
-      this.parserFactory.createUrlVariableParser(url.variable);
-
-    let pathname: string = Array.isArray(url.path)
+    return Array.isArray(url.path)
       ? url.path
           .map((x: string | Postman.Variable) =>
-            fragments.parse(typeof x === 'string' ? x : x.value ?? '')
+            parser.parse(typeof x === 'string' ? x : x.value ?? '')
           )
           .join('/')
       : url.path;
-
-    if (pathname) {
-      pathname = env
-        .parse(pathname)
-        .replace(/^\/?([^/]+(?:\/[^/]+)*)\/?$/, '/$1');
-    }
-
-    const query = this.prepareQueries(url);
-
-    let auth = '';
-
-    if (url.auth) {
-      auth += url.auth.user ?? '';
-      auth += ':' + (url.auth.password ?? '');
-    }
-
-    return {
-      auth,
-      query,
-      protocol,
-      host,
-      pathname,
-      port: url.port,
-      hash: url.hash
-    };
   }
 
   private prepareQueries(
@@ -548,7 +515,7 @@ export class DefaultConverter implements Converter {
     let query: Record<string, undefined | string | string[]> | undefined;
 
     if (typeof url === 'string') {
-      query = Object.fromEntries(new URL(url).searchParams);
+      query = Object.fromEntries(parseUrl(url).searchParams);
     } else {
       query = this.prepareQueries(url);
     }

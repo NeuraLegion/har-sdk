@@ -2,12 +2,13 @@ import { directories, locales } from '../helpers';
 import { Generators } from './Generators';
 import faker from 'faker';
 
+/* istanbul ignore next */
 export class DefaultGenerators implements Generators {
   private readonly LOCALES: ReadonlyArray<string> = locales;
   private readonly DIRECTORY_PATHS: ReadonlyArray<string> = directories;
 
   public guid(): string {
-    return faker.random.uuid();
+    return faker.datatype.uuid();
   }
 
   // The current timestamp

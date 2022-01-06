@@ -1,7 +1,7 @@
 import { BaseValidator } from './BaseValidator';
 import schemaV2 from '../schemas/openapi/v2.0.0.json';
 import schemaV3 from '../schemas/openapi/v3.0.0.json';
-import { isOASV3, OpenAPI } from '@har-sdk/types';
+import { isOASV3, OpenAPI, OpenAPIV2 } from '@har-sdk/types';
 import semver from 'semver';
 
 export class OASValidator extends BaseValidator<OpenAPI.Document> {
@@ -18,7 +18,9 @@ export class OASValidator extends BaseValidator<OpenAPI.Document> {
 
   protected getSchemaId(document: OpenAPI.Document): string {
     let version = (
-      isOASV3(document) ? document.openapi : document.swagger || ''
+      isOASV3(document)
+        ? document.openapi
+        : (document as OpenAPIV2.Document).swagger || ''
     ).trim();
 
     if (

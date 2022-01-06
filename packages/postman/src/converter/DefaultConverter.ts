@@ -18,7 +18,6 @@ export enum AuthLocation {
   HEADER = 'headers'
 }
 
-/* istanbul ignore next */
 export class DefaultConverter implements Converter {
   private readonly variables: ReadonlyArray<Postman.Variable>;
 
@@ -106,6 +105,7 @@ export class DefaultConverter implements Converter {
     }
   }
 
+  /* istanbul ignore next */
   private authRequest(
     request: Request,
     auth: Postman.RequestAuth,
@@ -140,6 +140,7 @@ export class DefaultConverter implements Converter {
     }
   }
 
+  /* istanbul ignore next */
   private oauth2(
     request: Request,
     options: Record<string, string>,
@@ -177,6 +178,7 @@ export class DefaultConverter implements Converter {
     }
   }
 
+  /* istanbul ignore next */
   private bearerAuth(
     request: Request,
     options: Record<string, string>,
@@ -197,6 +199,7 @@ export class DefaultConverter implements Converter {
     });
   }
 
+  /* istanbul ignore next */
   private removeCredentials(request: Request, from: AuthLocation): void {
     const idx: number = request[from].findIndex((x: Header) =>
       ['access_token', 'authorization'].includes(x.name.toLowerCase().trim())
@@ -207,6 +210,7 @@ export class DefaultConverter implements Converter {
     }
   }
 
+  /* istanbul ignore next */
   private basicAuth(
     request: Request,
     options: Record<string, string>,
@@ -227,6 +231,7 @@ export class DefaultConverter implements Converter {
     });
   }
 
+  /* istanbul ignore next */
   private apiKeyAuth(
     request: Request,
     options: Record<string, string>,

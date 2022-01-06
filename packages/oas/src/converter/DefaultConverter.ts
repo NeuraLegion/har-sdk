@@ -124,37 +124,31 @@ export class DefaultConverter implements Converter {
   ): PostData | null {
     const pathObj = spec.paths[path][method];
 
-    if (typeof pathObj.parameters !== 'undefined') {
-      for (const param of pathObj.parameters) {
-        if (
-          typeof param.in !== 'undefined' &&
-          param.in.toLowerCase() === 'body' &&
-          typeof param.schema !== 'undefined'
-        ) {
-          try {
-            const data = sample(param.schema, { skipReadOnly: true }, spec);
+    for (const param of pathObj.parameters || []) {
+      if (
+        typeof param.in !== 'undefined' &&
+        param.in.toLowerCase() === 'body' &&
+        typeof param.schema !== 'undefined'
+      ) {
+        try {
+          const data = sample(param.schema, { skipReadOnly: true }, spec);
 
-            let consumes;
+          let consumes;
 
-            if (pathObj.consumes && pathObj.consumes.length) {
-              consumes = pathObj.consumes;
-            } else if (
-              this.isOASV2(spec) &&
-              spec.consumes &&
-              spec.consumes.length
-            ) {
-              consumes = spec.consumes;
-            }
-
-            const paramContentType = sample({
-              type: 'array',
-              examples: consumes ? consumes : ['application/json']
-            });
-
-            return this.encodePayload(data, paramContentType);
-          } catch {
-            return null;
+          if (pathObj.consumes?.length) {
+            consumes = pathObj.consumes;
+          } else if (this.isOASV2(spec) && spec.consumes?.length) {
+            consumes = spec.consumes;
           }
+
+          const paramContentType = sample({
+            type: 'array',
+            examples: consumes || ['application/json']
+          });
+
+          return this.encodePayload(data, paramContentType);
+        } catch {
+          return null;
         }
       }
     }

@@ -52,7 +52,7 @@ const patternSample = (min: number, max: number, pattern: string | RegExp) => {
   return checkLength(randExp.gen(), 'pattern', min, max);
 };
 
-const binarySample = () => 'ZHVtbXkgYmluYXJ5IHNhbXBsZQA=';
+const base64sample = () => 'ZHVtbXkgYmluYXJ5IHNhbXBsZQA=';
 
 const stringFormats = {
   'email': () => 'jon.snow@targaryen.com',
@@ -65,9 +65,9 @@ const stringFormats = {
   'ipv6': () => '0000:0000:0000:0000:0000:ffff:d043:dcdc',
   'hostname': () => 'brokencrystals.com',
   'uri': () => 'https://github.com/NeuraLegion/brokencrystals',
-  'byte': binarySample,
-  'binary': binarySample,
-  'base64': binarySample,
+  'byte': base64sample,
+  'binary': () => '\\x01\\x02\\x03\\x04\\x05',
+  'base64': base64sample,
   'uuid': () => 'fbdf5a53-161e-4460-98ad-0e39408d8689',
   'pattern': patternSample,
   'default': defaultSample

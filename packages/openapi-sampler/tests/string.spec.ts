@@ -62,7 +62,7 @@ describe('StringSampler', () => {
       format: 'binary'
     };
     const result = sample(schema);
-    result.should.eq('ZHVtbXkgYmluYXJ5IHNhbXBsZQA=');
+    result.should.eq('\\x01\\x02\\x03\\x04\\x05');
   });
 
   it('should sample deterministic default value for unknown format', () => {

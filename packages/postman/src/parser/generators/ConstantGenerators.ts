@@ -1,5 +1,6 @@
 import { Generators } from './Generators';
 
+/* istanbul ignore next */
 export class ConstantGenerators implements Generators {
   public guid(): string {
     return 'e404c70f-a628-4db6-97ed-a8fe697507c8';

@@ -18,14 +18,10 @@ export class NumberSampler implements Sampler {
 
     if (schema.multipleOf) {
       res = this.roundUp(res ?? schema.multipleOf, schema.multipleOf);
-
-      return usingMaximum ? res - schema.multipleOf : res;
+      res = usingMaximum ? res - schema.multipleOf : res;
     }
 
-    return res ?? 42;
-
-    // TODO ensure boundaries
-    // throw new Error('Invalid min and max boundaries supplied.');
+    return this.ensureBoundaries(schema, res ?? 42);
   }
 
   private sampleUsingMinimum(schema: OpenAPISchema, integer: boolean): number {
@@ -66,5 +62,69 @@ export class NumberSampler implements Sampler {
     }
 
     return Math.ceil(value / multipleOf) * multipleOf;
+  }
+
+  private ensureBoundaries(schema: OpenAPISchema, value: number): number {
+    let valid = true;
+
+    if ('minimum' in schema) {
+      valid = this.isValidMinimum(schema, value);
+    }
+
+    if (valid && 'maximum' in schema) {
+      valid = this.isValidMaximum(schema, value);
+    }
+
+    if (
+      valid &&
+      schema.multipleOf &&
+      !Number.isInteger(value / schema.multipleOf)
+    ) {
+      valid = false;
+    }
+
+    if (!valid) {
+      throw new Error(
+        `Cannot sample numeric by boundaries: ${this.formatConditions(schema)}`
+      );
+    }
+
+    return value;
+  }
+
+  private isValidMinimum(schema: OpenAPISchema, value: number): boolean {
+    const exclusiveMinimum = !!schema.exclusiveMinimum;
+
+    return exclusiveMinimum ? value > schema.minimum : value >= schema.minimum;
+  }
+
+  private isValidMaximum(schema: OpenAPISchema, value: number): boolean {
+    const exclusiveMaximum = !!schema.exclusiveMaximum;
+
+    return exclusiveMaximum ? value < schema.maximum : value <= schema.maximum;
+  }
+
+  private formatConditions(schema: OpenAPISchema): string {
+    let res = '';
+
+    if ('minimum' in schema) {
+      const exclusiveMinimum = !!schema.exclusiveMinimum;
+
+      res += `${schema.minimum} ${exclusiveMinimum ? '<' : '<='} `;
+    }
+
+    res += 'x';
+
+    if ('maximum' in schema) {
+      const exclusiveMaximum = !!schema.exclusiveMaximum;
+
+      res += ` ${exclusiveMaximum ? '<' : '<='} ${schema.maximum}`;
+    }
+
+    if ('multipleOf' in schema) {
+      res += `, multipleOf: ${schema.multipleOf}`;
+    }
+
+    return res;
   }
 }

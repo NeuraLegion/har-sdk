@@ -10,13 +10,18 @@ import 'chai/register-should';
 describe('DefaultConverter', () => {
   describe('convert', () => {
     it('should convert GitHub OAS v2 (JSON) to HAR', async () => {
-      const [firstRequest]: Request[] = await oas2har(
+      const expected = JSON.parse(
+        await promisify(readFile)(
+          resolve('./tests/fixtures/github.swagger.result.json'),
+          'utf-8'
+        )
+      );
+
+      const result: Request[] = await oas2har(
         githubSwagger as unknown as OpenAPIV2.Document
       );
 
-      firstRequest.method.should.equal('GET');
-      firstRequest.url.should.equal('https://api.github.com/emojis');
-      firstRequest.httpVersion.should.equal('HTTP/1.1');
+      result.should.deep.eq(expected);
     });
 
     it('should convert Petstore OAS v3 (YAML) to HAR', async () => {
@@ -25,13 +30,18 @@ describe('DefaultConverter', () => {
         'utf8'
       );
 
-      const [firstRequest]: Request[] = await oas2har(
+      const expected = JSON.parse(
+        await promisify(readFile)(
+          resolve('./tests/fixtures/petstore.oas.result.json'),
+          'utf-8'
+        )
+      );
+
+      const result: Request[] = await oas2har(
         yaml.load(content) as OpenAPIV3.Document
       );
 
-      firstRequest.method.should.equal('PUT');
-      firstRequest.url.should.equal('https://petstore.swagger.io/v2/pet');
-      firstRequest.httpVersion.should.equal('HTTP/1.1');
+      result.should.deep.eq(expected);
     });
 
     it('should generate multipart/form-data according to OAS definition', async () => {
@@ -40,13 +50,18 @@ describe('DefaultConverter', () => {
         'utf8'
       );
 
-      const [firstRequest]: Request[] = await oas2har(
+      const expected = JSON.parse(
+        await promisify(readFile)(
+          resolve('./tests/fixtures/multipart.oas.result.json'),
+          'utf-8'
+        )
+      );
+
+      const result: Request[] = await oas2har(
         yaml.load(content) as OpenAPIV3.Document
       );
 
-      firstRequest.method.should.equal('PUT');
-      firstRequest.url.should.equal('https://petstore.swagger.io/v2/pet');
-      firstRequest.postData?.mimeType.should.contain('multipart/form-data');
+      result.should.deep.eq(expected);
     });
 
     it('should convert OAS v3 spec even if parameters are declared via ref', async () => {
@@ -55,18 +70,18 @@ describe('DefaultConverter', () => {
         'utf8'
       );
 
-      const [firstRequest]: Request[] = await oas2har(
+      const expected = JSON.parse(
+        await promisify(readFile)(
+          resolve('./tests/fixtures/refs.oas.result.json'),
+          'utf-8'
+        )
+      );
+
+      const result: Request[] = await oas2har(
         yaml.load(content) as OpenAPIV3.Document
       );
 
-      firstRequest.method.should.equal('GET');
-      firstRequest.url.should.equal(
-        'https://petstore.swagger.io/v2/pets?query=doggie&limit=500'
-      );
-      firstRequest.queryString.should.have.deep.members([
-        { name: 'query', value: 'doggie' },
-        { name: 'limit', value: '500' }
-      ]);
+      result.should.deep.eq(expected);
     });
 
     it('should substitute variables in servers', async () => {
@@ -75,12 +90,18 @@ describe('DefaultConverter', () => {
         'utf8'
       );
 
-      const [firstRequest]: Request[] = await oas2har(
+      const expected = JSON.parse(
+        await promisify(readFile)(
+          resolve('./tests/fixtures/servers-with-variables.oas.result.json'),
+          'utf-8'
+        )
+      );
+
+      const result: Request[] = await oas2har(
         yaml.load(content) as OpenAPIV3.Document
       );
 
-      firstRequest.method.should.equal('GET');
-      firstRequest.url.should.equal('https://petstore.swagger.io:8443/v2/pets');
+      result.should.deep.eq(expected);
     });
   });
 });

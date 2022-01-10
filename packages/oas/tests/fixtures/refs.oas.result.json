@@ -1,0 +1,26 @@
+[
+  {
+    "queryString": [
+      {
+        "name": "query",
+        "value": "doggie"
+      },
+      {
+        "name": "limit",
+        "value": "500"
+      }
+    ],
+    "url": "https://petstore.swagger.io/v2/pets?query=doggie&limit=500",
+    "method": "GET",
+    "headers": [
+      {
+        "name": "authorization",
+        "value": "Bearer REPLACE_BEARER_TOKEN"
+      }
+    ],
+    "httpVersion": "HTTP/1.1",
+    "cookies": [],
+    "headersSize": 0,
+    "bodySize": 0
+  }
+]

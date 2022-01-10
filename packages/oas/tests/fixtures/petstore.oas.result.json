@@ -1,0 +1,355 @@
+[
+  {
+    "queryString": [],
+    "url": "https://petstore.swagger.io/v2/pet",
+    "method": "PUT",
+    "headers": [
+      {
+        "value": "application/json",
+        "name": "content-type"
+      },
+      {
+        "value": "application/xml",
+        "name": "content-type"
+      },
+      {
+        "name": "authorization",
+        "value": "Bearer REPLACE_BEARER_TOKEN"
+      }
+    ],
+    "httpVersion": "HTTP/1.1",
+    "cookies": [],
+    "headersSize": 0,
+    "bodySize": 0,
+    "postData": {
+      "mimeType": "application/json",
+      "text": "{\"id\":42,\"category\":{\"id\":42,\"name\":\"lorem\"},\"name\":\"doggie\",\"photoUrls\":[\"lorem\"],\"tags\":[{\"id\":42,\"name\":\"lorem\"}],\"status\":\"available\"}"
+    }
+  },
+  {
+    "queryString": [],
+    "url": "https://petstore.swagger.io/v2/pet",
+    "method": "POST",
+    "headers": [
+      {
+        "value": "application/json",
+        "name": "content-type"
+      },
+      {
+        "value": "application/xml",
+        "name": "content-type"
+      },
+      {
+        "name": "authorization",
+        "value": "Bearer REPLACE_BEARER_TOKEN"
+      }
+    ],
+    "httpVersion": "HTTP/1.1",
+    "cookies": [],
+    "headersSize": 0,
+    "bodySize": 0,
+    "postData": {
+      "mimeType": "application/json",
+      "text": "{\"id\":42,\"category\":{\"id\":42,\"name\":\"lorem\"},\"name\":\"doggie\",\"photoUrls\":[\"lorem\"],\"tags\":[{\"id\":42,\"name\":\"lorem\"}],\"status\":\"available\"}"
+    }
+  },
+  {
+    "queryString": [
+      {
+        "name": "status",
+        "value": "available"
+      }
+    ],
+    "url": "https://petstore.swagger.io/v2/pet/findByStatus?status=available",
+    "method": "GET",
+    "headers": [
+      {
+        "name": "authorization",
+        "value": "Bearer REPLACE_BEARER_TOKEN"
+      }
+    ],
+    "httpVersion": "HTTP/1.1",
+    "cookies": [],
+    "headersSize": 0,
+    "bodySize": 0
+  },
+  {
+    "queryString": [
+      {
+        "name": "tags",
+        "value": "lorem"
+      }
+    ],
+    "url": "https://petstore.swagger.io/v2/pet/findByTags?tags=lorem",
+    "method": "GET",
+    "headers": [
+      {
+        "name": "authorization",
+        "value": "Bearer REPLACE_BEARER_TOKEN"
+      }
+    ],
+    "httpVersion": "HTTP/1.1",
+    "cookies": [],
+    "headersSize": 0,
+    "bodySize": 0
+  },
+  {
+    "queryString": [],
+    "url": "https://petstore.swagger.io/v2/pet/42",
+    "method": "GET",
+    "headers": [
+      {
+        "name": "api_key",
+        "value": "REPLACE_KEY_VALUE"
+      }
+    ],
+    "httpVersion": "HTTP/1.1",
+    "cookies": [],
+    "headersSize": 0,
+    "bodySize": 0
+  },
+  {
+    "queryString": [],
+    "url": "https://petstore.swagger.io/v2/pet/42",
+    "method": "POST",
+    "headers": [
+      {
+        "value": "application/x-www-form-urlencoded",
+        "name": "content-type"
+      },
+      {
+        "name": "authorization",
+        "value": "Bearer REPLACE_BEARER_TOKEN"
+      }
+    ],
+    "httpVersion": "HTTP/1.1",
+    "cookies": [],
+    "headersSize": 0,
+    "bodySize": 0,
+    "postData": {
+      "mimeType": "application/x-www-form-urlencoded",
+      "text": "name=lorem&status=lorem"
+    }
+  },
+  {
+    "queryString": [],
+    "url": "https://petstore.swagger.io/v2/pet/42",
+    "method": "DELETE",
+    "headers": [
+      {
+        "name": "api_key",
+        "value": "lorem"
+      },
+      {
+        "name": "authorization",
+        "value": "Bearer REPLACE_BEARER_TOKEN"
+      }
+    ],
+    "httpVersion": "HTTP/1.1",
+    "cookies": [],
+    "headersSize": 0,
+    "bodySize": 0
+  },
+  {
+    "queryString": [],
+    "url": "https://petstore.swagger.io/v2/pet/42/uploadImage",
+    "method": "POST",
+    "headers": [
+      {
+        "value": "multipart/form-data",
+        "name": "content-type"
+      },
+      {
+        "name": "authorization",
+        "value": "Bearer REPLACE_BEARER_TOKEN"
+      }
+    ],
+    "httpVersion": "HTTP/1.1",
+    "cookies": [],
+    "headersSize": 0,
+    "bodySize": 0,
+    "postData": {
+      "mimeType": "multipart/form-data; boundary=956888039105887155673143",
+      "text": "--956888039105887155673143\r\nContent-Disposition: form-data; name=\"additionalMetadata\"\r\n\r\nlorem\r\n--956888039105887155673143\r\nContent-Disposition: form-data; name=\"file\"\r\n\r\n\\x01\\x02\\x03\\x04\\x05\r\n--956888039105887155673143--"
+    }
+  },
+  {
+    "queryString": [],
+    "url": "https://petstore.swagger.io/v2/store/inventory",
+    "method": "GET",
+    "headers": [
+      {
+        "name": "api_key",
+        "value": "REPLACE_KEY_VALUE"
+      }
+    ],
+    "httpVersion": "HTTP/1.1",
+    "cookies": [],
+    "headersSize": 0,
+    "bodySize": 0
+  },
+  {
+    "queryString": [],
+    "url": "https://petstore.swagger.io/v2/store/order",
+    "method": "POST",
+    "headers": [
+      {
+        "value": "*/*",
+        "name": "content-type"
+      }
+    ],
+    "httpVersion": "HTTP/1.1",
+    "cookies": [],
+    "headersSize": 0,
+    "bodySize": 0,
+    "postData": {
+      "mimeType": "*/*",
+      "text": "{\"id\":42,\"petId\":42,\"quantity\":42,\"shipDate\":\"2021-12-31T23:34:00Z\",\"status\":\"placed\",\"complete\":false}"
+    }
+  },
+  {
+    "queryString": [],
+    "url": "https://petstore.swagger.io/v2/store/order/1",
+    "method": "GET",
+    "headers": [],
+    "httpVersion": "HTTP/1.1",
+    "cookies": [],
+    "headersSize": 0,
+    "bodySize": 0
+  },
+  {
+    "queryString": [],
+    "url": "https://petstore.swagger.io/v2/store/order/1",
+    "method": "DELETE",
+    "headers": [],
+    "httpVersion": "HTTP/1.1",
+    "cookies": [],
+    "headersSize": 0,
+    "bodySize": 0
+  },
+  {
+    "queryString": [],
+    "url": "https://petstore.swagger.io/v2/user",
+    "method": "POST",
+    "headers": [
+      {
+        "value": "*/*",
+        "name": "content-type"
+      }
+    ],
+    "httpVersion": "HTTP/1.1",
+    "cookies": [],
+    "headersSize": 0,
+    "bodySize": 0,
+    "postData": {
+      "mimeType": "*/*",
+      "text": "{\"id\":42,\"username\":\"lorem\",\"firstName\":\"lorem\",\"lastName\":\"lorem\",\"email\":\"lorem\",\"password\":\"lorem\",\"phone\":\"lorem\",\"userStatus\":42}"
+    }
+  },
+  {
+    "queryString": [],
+    "url": "https://petstore.swagger.io/v2/user/createWithArray",
+    "method": "POST",
+    "headers": [
+      {
+        "value": "*/*",
+        "name": "content-type"
+      }
+    ],
+    "httpVersion": "HTTP/1.1",
+    "cookies": [],
+    "headersSize": 0,
+    "bodySize": 0,
+    "postData": {
+      "mimeType": "*/*",
+      "text": "[{\"id\":42,\"username\":\"lorem\",\"firstName\":\"lorem\",\"lastName\":\"lorem\",\"email\":\"lorem\",\"password\":\"lorem\",\"phone\":\"lorem\",\"userStatus\":42}]"
+    }
+  },
+  {
+    "queryString": [],
+    "url": "https://petstore.swagger.io/v2/user/createWithList",
+    "method": "POST",
+    "headers": [
+      {
+        "value": "*/*",
+        "name": "content-type"
+      }
+    ],
+    "httpVersion": "HTTP/1.1",
+    "cookies": [],
+    "headersSize": 0,
+    "bodySize": 0,
+    "postData": {
+      "mimeType": "*/*",
+      "text": "[{\"id\":42,\"username\":\"lorem\",\"firstName\":\"lorem\",\"lastName\":\"lorem\",\"email\":\"lorem\",\"password\":\"lorem\",\"phone\":\"lorem\",\"userStatus\":42}]"
+    }
+  },
+  {
+    "queryString": [
+      {
+        "name": "username",
+        "value": "lorem"
+      },
+      {
+        "name": "password",
+        "value": "lorem"
+      }
+    ],
+    "url": "https://petstore.swagger.io/v2/user/login?username=lorem&password=lorem",
+    "method": "GET",
+    "headers": [],
+    "httpVersion": "HTTP/1.1",
+    "cookies": [],
+    "headersSize": 0,
+    "bodySize": 0
+  },
+  {
+    "queryString": [],
+    "url": "https://petstore.swagger.io/v2/user/logout",
+    "method": "GET",
+    "headers": [],
+    "httpVersion": "HTTP/1.1",
+    "cookies": [],
+    "headersSize": 0,
+    "bodySize": 0
+  },
+  {
+    "queryString": [],
+    "url": "https://petstore.swagger.io/v2/user/lorem",
+    "method": "GET",
+    "headers": [],
+    "httpVersion": "HTTP/1.1",
+    "cookies": [],
+    "headersSize": 0,
+    "bodySize": 0
+  },
+  {
+    "queryString": [],
+    "url": "https://petstore.swagger.io/v2/user/lorem",
+    "method": "PUT",
+    "headers": [
+      {
+        "value": "*/*",
+        "name": "content-type"
+      }
+    ],
+    "httpVersion": "HTTP/1.1",
+    "cookies": [],
+    "headersSize": 0,
+    "bodySize": 0,
+    "postData": {
+      "mimeType": "*/*",
+      "text": "{\"id\":42,\"username\":\"lorem\",\"firstName\":\"lorem\",\"lastName\":\"lorem\",\"email\":\"lorem\",\"password\":\"lorem\",\"phone\":\"lorem\",\"userStatus\":42}"
+    }
+  },
+  {
+    "queryString": [],
+    "url": "https://petstore.swagger.io/v2/user/lorem",
+    "method": "DELETE",
+    "headers": [],
+    "httpVersion": "HTTP/1.1",
+    "cookies": [],
+    "headersSize": 0,
+    "bodySize": 0
+  }
+]

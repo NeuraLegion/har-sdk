@@ -22,6 +22,23 @@ describe('DefaultConverter', () => {
     });
 
     it('should convert Postman v2.1.0 collection to HAR', async () => {
+      const [firstRequest]: Request[] = await postman2har(
+        postmanCollection as unknown as Postman.Document,
+        {
+          environment: {
+            _endpoint: 'example.com'
+          }
+        }
+      );
+
+      firstRequest.method.should.equal('POST');
+      firstRequest.url.should.equal(
+        'https://example.com/services/data/v53.0/async-queries'
+      );
+      firstRequest.httpVersion.should.equal('HTTP/1.1');
+    });
+
+    it('should convert Postman v2.1.0 collection to HAR (dryRun)', async () => {
       const expected = JSON.parse(
         await promisify(readFile)(
           resolve(

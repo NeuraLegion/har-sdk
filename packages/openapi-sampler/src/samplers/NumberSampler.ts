@@ -8,23 +8,21 @@ export class NumberSampler implements Sampler {
     const integer = type === 'integer';
 
     let res;
+    let usingMaximum = false;
     if ('minimum' in schema) {
       res = this.sampleUsingMinimum(schema, integer);
     } else if ('maximum' in schema) {
+      usingMaximum = true;
       res = this.sampleUsingMaximum(schema, integer);
     }
 
-    // TODO proper support for multipleOf with maximum constrain
     if (schema.multipleOf) {
-      return this.roundUp(res ?? schema.multipleOf, schema.multipleOf);
+      res = this.roundUp(res ?? schema.multipleOf, schema.multipleOf);
+
+      return usingMaximum ? res - schema.multipleOf : res;
     }
 
     return res ?? 42;
-
-    // if (schema.multipleOf) {
-    //   min = Math.ceil(min / schema.multipleOf) * schema.multipleOf;
-    //   max = Math.floor(max / schema.multipleOf) * schema.multipleOf;
-    // }
 
     // TODO ensure boundaries
     // throw new Error('Invalid min and max boundaries supplied.');

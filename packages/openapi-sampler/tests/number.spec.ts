@@ -212,4 +212,38 @@ describe('NumberSampler', () => {
 
     result.should.be.eq(-13.3);
   });
+
+  it('should correctly sample number with float multipleOf and maximum', () => {
+    const schema = {
+      type: 'number',
+      maximum: 20,
+      multipleOf: 3.5
+    };
+    const result = sample(schema);
+
+    result.should.be.eq(17.5);
+  });
+
+  it('should correctly sample number with float multipleOf and negative maximum', () => {
+    const schema = {
+      type: 'number',
+      minimum: -10,
+      multipleOf: 3.5
+    };
+    const result = sample(schema);
+
+    result.should.be.eq(-7);
+  });
+
+  it('should correctly sample number with float multipleOf, minimum, and maximum', () => {
+    const schema = {
+      type: 'number',
+      minimum: 10,
+      maximum: 15,
+      multipleOf: 3.5
+    };
+    const result = sample(schema);
+
+    result.should.be.eq(10.5);
+  });
 });

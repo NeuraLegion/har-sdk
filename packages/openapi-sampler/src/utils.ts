@@ -22,4 +22,4 @@ export const mergeDeep = (
     Array.isArray(objects[objects.length - 1]) ? [] : {}
   );
 
-export const randomArrayElement = <T>(x: T[]): T | undefined => x[0];
+export const firstArrayElement = <T>(x: T[]): T | undefined => x[0];

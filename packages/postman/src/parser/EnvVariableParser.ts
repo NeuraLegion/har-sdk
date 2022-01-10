@@ -1,6 +1,6 @@
 import { Replacer } from './Replacer';
 import { BaseVariableParser } from './BaseVariableParser';
-import { Generators } from './Generators';
+import { Generators } from './generators';
 import { Postman } from '@har-sdk/core';
 
 export class EnvVariableParser extends BaseVariableParser {

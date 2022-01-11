@@ -18,7 +18,7 @@ import { resolve } from 'path';
 use(chaiAsPromised);
 
 describe('OasV2Editor', () => {
-  const sourcePath = './tests/oas2-sample1.yaml';
+  const sourcePath = './tests/fixtures/oas2-sample1.yaml';
   const source = readFileSync(resolve(sourcePath), 'utf-8');
 
   describe('input validation', () => {
@@ -46,7 +46,10 @@ describe('OasV2Editor', () => {
     it('should correctly parse yaml valid document', async () => {
       await openApiParser.setup(source);
       const expected = JSON.parse(
-        readFileSync(resolve('./tests/oas2-sample1.result.json'), 'utf-8')
+        readFileSync(
+          resolve('./tests/fixtures/oas2-sample1.result.json'),
+          'utf-8'
+        )
       );
 
       const result = openApiParser.parse();

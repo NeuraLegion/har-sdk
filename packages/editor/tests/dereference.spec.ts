@@ -9,7 +9,7 @@ describe('$RefParser', () => {
   });
 
   it('should dereference all $refs in oas v2 document', async () => {
-    const inputFilePath = './tests/oas2-sample1.yaml';
+    const inputFilePath = './tests/fixtures/oas2-sample1.yaml';
 
     const result = await parser.dereference(inputFilePath);
 
@@ -17,7 +17,7 @@ describe('$RefParser', () => {
   });
 
   it('should dereference all $refs in oas v3 document', async () => {
-    const inputFilePath = './tests/oas3-sample1.yaml';
+    const inputFilePath = './tests/fixtures/oas3-sample1.yaml';
 
     const result = await parser.dereference(inputFilePath);
 

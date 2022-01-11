@@ -16,9 +16,9 @@ import { resolve } from 'path';
 use(chaiAsPromised);
 
 describe('PostmanEditor', () => {
-  const sourcePath = './tests/postman-sample1.json';
+  const sourcePath = './tests/fixtures/postman-sample1.json';
   const source = readFileSync(resolve(sourcePath), 'utf-8');
-  const expectedResultPath = './tests/postman-sample1.result.json';
+  const expectedResultPath = './tests/fixtures/postman-sample1.result.json';
 
   describe('input validation', () => {
     it('should be validated with no errors', () => {

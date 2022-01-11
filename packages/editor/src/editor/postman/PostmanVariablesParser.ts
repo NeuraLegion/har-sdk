@@ -1,7 +1,7 @@
 import { SpecTreeNodeParam, SpecTreeNodeVariableParam } from '../../models';
 import { ParametersParser } from '../ParametersParser';
 import jsonPointer from 'json-pointer';
-import { Postman } from '@har-sdk/types';
+import { Postman } from '@har-sdk/core';
 
 export class PostmanVariablesParser implements ParametersParser {
   constructor(private readonly doc: Postman.Document) {}

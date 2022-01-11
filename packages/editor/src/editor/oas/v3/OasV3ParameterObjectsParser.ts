@@ -1,5 +1,5 @@
 import { BaseOasParameterObjectsParser } from '../BaseOasParameterObjectsParser';
-import { OpenAPIV3 } from '@har-sdk/types';
+import { OpenAPIV3 } from '@har-sdk/core';
 
 export class OasV3ParameterObjectsParser extends BaseOasParameterObjectsParser<
   OpenAPIV3.Document,

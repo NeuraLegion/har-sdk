@@ -5,7 +5,7 @@ import {
 } from '../../../models';
 import { BaseOasParameterObjectsParser } from '../BaseOasParameterObjectsParser';
 import jsonPointer from 'json-pointer';
-import { OpenAPIV2 } from '@har-sdk/types';
+import { OpenAPIV2 } from '@har-sdk/core';
 
 export class OasV2ParameterObjectsParser extends BaseOasParameterObjectsParser<
   OpenAPIV2.Document,

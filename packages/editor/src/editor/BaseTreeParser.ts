@@ -1,12 +1,13 @@
 import { SpecTreeNode } from '../models';
 import { TreeParser, Document } from './TreeParser';
+import { DocFormat } from '@har-sdk/core';
 import { dump, load } from 'js-yaml';
 
 export abstract class BaseTreeParser<T extends Document = Document>
   implements TreeParser<T>
 {
   private _doc: T | undefined;
-  private _format: 'yaml' | 'json' | undefined;
+  private _format: DocFormat | undefined;
   private _tree: SpecTreeNode | undefined;
 
   get doc(): T | undefined {
@@ -17,7 +18,7 @@ export abstract class BaseTreeParser<T extends Document = Document>
     return this._doc;
   }
 
-  get format(): 'yaml' | 'json' | undefined {
+  get format(): DocFormat | undefined {
     if (!this._doc) {
       throw new Error('You have to call "setup" to initialize the document');
     }
@@ -37,35 +38,38 @@ export abstract class BaseTreeParser<T extends Document = Document>
     this._tree = tree;
   }
 
-  public abstract setup(source: string): Promise<void>;
+  public abstract setup(source: string, format?: DocFormat): Promise<void>;
   public abstract parse(): SpecTreeNode;
 
   public stringify(): string {
     return this.format === 'yaml' ? dump(this.doc) : JSON.stringify(this.doc);
   }
 
-  protected async load(source: string, errorMessage: string): Promise<void> {
-    const result = await this.loadFromSource(source);
+  protected async load(source: string, format?: DocFormat): Promise<boolean> {
+    const result = await this.loadFromSource(source, format);
 
-    if (!result) {
-      throw new Error(errorMessage);
+    if (result) {
+      ({ doc: this._doc, format: this._format } = result);
     }
 
-    ({ doc: this._doc, format: this._format } = result);
+    return !!result;
   }
 
   private async loadFromSource(
-    source: string
-  ): Promise<{ doc: T; format: 'yaml' | 'json' } | undefined> {
-    let doc: T | undefined = this.loadFromJson(source);
-    let json = true;
+    source: string,
+    format?: DocFormat
+  ): Promise<{ doc: T; format: DocFormat } | undefined> {
+    let doc: T | undefined;
 
-    if (!doc) {
-      doc = this.loadFromYaml(source);
-      json = false;
+    if ((!format || format === 'json') && (doc = this.loadFromJson(source))) {
+      return { doc, format: 'json' };
     }
 
-    return doc ? { doc, format: json ? 'json' : 'yaml' } : undefined;
+    if ((!format || format === 'yaml') && (doc = this.loadFromYaml(source))) {
+      return { doc, format: 'yaml' };
+    }
+
+    return undefined;
   }
 
   private loadFromJson(source: string): T | undefined {

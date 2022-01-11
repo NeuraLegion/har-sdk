@@ -50,7 +50,7 @@
   },
   "dependencies": {
     "@apidevtools/json-schema-ref-parser": "^9.0.9",
-    "@har-sdk/types": "*",
+    "@har-sdk/core": "*",
     "@har-sdk/validator": "*",
     "@types/jsonpath": "^0.2.0",
     "js-yaml": "^4.1.0",

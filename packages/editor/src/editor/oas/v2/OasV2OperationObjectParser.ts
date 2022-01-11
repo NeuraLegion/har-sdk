@@ -1,6 +1,6 @@
 import { BaseOasOperationObjectParser } from '../BaseOasOperationObjectParser';
 import { OasV2ParameterObjectsParser } from './OasV2ParameterObjectsParser';
-import { OpenAPIV2 } from '@har-sdk/types';
+import { OpenAPIV2 } from '@har-sdk/core';
 
 export class OasV2OperationObjectParser extends BaseOasOperationObjectParser {
   constructor(

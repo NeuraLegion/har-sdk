@@ -8,7 +8,7 @@ import {
 import { load } from 'js-yaml';
 import jsonPath from 'jsonpath';
 import 'chai/register-should';
-import { OpenAPIV2 } from '@har-sdk/types';
+import { OpenAPIV2 } from '@har-sdk/core';
 import { OASValidator } from '@har-sdk/validator';
 import chaiAsPromised from 'chai-as-promised';
 import { use } from 'chai';
@@ -43,8 +43,27 @@ describe('OasV2Editor', () => {
         .setup('{')
         .should.be.rejectedWith(Error, 'Bad Swagger/OpenAPI V2 specification'));
 
-    it('should correctly parse yaml valid document', async () => {
+    it('should correctly parse valid yaml document', async () => {
       await openApiParser.setup(source);
+      const expected = JSON.parse(
+        readFileSync(
+          resolve('./tests/fixtures/oas2-sample1.result.json'),
+          'utf-8'
+        )
+      );
+
+      const result = openApiParser.parse();
+
+      result.should.deep.eq(expected);
+    });
+
+    it('should correctly parse valid json document', async () => {
+      const sourceJson = readFileSync(
+        resolve('./tests/fixtures/oas2-sample1.json'),
+        'utf-8'
+      );
+      await openApiParser.setup(sourceJson);
+
       const expected = JSON.parse(
         readFileSync(
           resolve('./tests/fixtures/oas2-sample1.result.json'),

@@ -2,7 +2,7 @@ import { SpecTreeNode } from '../../../models';
 import { BaseOasOperationObjectParser } from '../BaseOasOperationObjectParser';
 import { OasV3ParameterObjectsParser } from './OasV3ParameterObjectsParser';
 import { OasV3RequestBodyObjectParser } from './OasV3RequestBodyObjectParser';
-import { OpenAPIV3 } from '@har-sdk/types';
+import { OpenAPIV3 } from '@har-sdk/core';
 
 export class OasV3OperationObjectParser extends BaseOasOperationObjectParser {
   constructor(

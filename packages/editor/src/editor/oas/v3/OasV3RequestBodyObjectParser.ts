@@ -1,6 +1,6 @@
 import { ParametersParser } from '../../ParametersParser';
 import { SpecTreeNodeParam, SpecTreeRequestBodyParam } from '../../../models';
-import { OpenAPIV3 } from '@har-sdk/types';
+import { OpenAPIV3 } from '@har-sdk/core';
 import jsonPointer from 'json-pointer';
 
 export class OasV3RequestBodyObjectParser implements ParametersParser {

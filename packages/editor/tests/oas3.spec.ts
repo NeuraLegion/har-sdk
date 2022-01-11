@@ -8,7 +8,7 @@ import {
 import { load } from 'js-yaml';
 import jsonPath from 'jsonpath';
 import 'chai/register-should';
-import { OpenAPIV3 } from '@har-sdk/types';
+import { OpenAPIV3 } from '@har-sdk/core';
 import { OASValidator } from '@har-sdk/validator';
 import chaiAsPromised from 'chai-as-promised';
 import { use } from 'chai';

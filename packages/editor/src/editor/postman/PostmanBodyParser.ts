@@ -6,7 +6,7 @@ import {
   ParamLocation
 } from '../../models';
 import { PostmanHeadersParser } from './PostmanHeadersParser';
-import { Postman } from '@har-sdk/types';
+import { Postman } from '@har-sdk/core';
 import jsonPointer from 'json-pointer';
 
 export class PostmanBodyParser implements ParametersParser {

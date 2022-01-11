@@ -4,7 +4,7 @@ import {
   SpecTreeNodeParam,
   SpecTreeNode
 } from '../src';
-import { Postman } from '@har-sdk/types';
+import { Postman } from '@har-sdk/core';
 import jsonPath from 'jsonpath';
 import 'chai/register-should';
 import { PostmanValidator } from '@har-sdk/validator';

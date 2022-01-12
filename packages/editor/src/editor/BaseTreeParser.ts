@@ -3,6 +3,8 @@ import { TreeParser, Document } from './TreeParser';
 import { DocFormat } from '@har-sdk/core';
 import { dump, load } from 'js-yaml';
 
+type LoadResult<T> = { doc: T; format: DocFormat };
+
 export abstract class BaseTreeParser<T extends Document = Document>
   implements TreeParser<T>
 {
@@ -58,31 +60,31 @@ export abstract class BaseTreeParser<T extends Document = Document>
   private async loadFromSource(
     source: string,
     format?: DocFormat
-  ): Promise<{ doc: T; format: DocFormat } | undefined> {
-    let doc: T | undefined;
+  ): Promise<LoadResult<T> | undefined> {
+    const docFormats: DocFormat[] = ['json', 'yaml'];
 
-    if ((!format || format === 'json') && (doc = this.loadFromJson(source))) {
-      return { doc, format: 'json' };
-    }
+    return docFormats.reduce(
+      (res: LoadResult<T> | undefined, docFormat: DocFormat) => {
+        if (res || (format && format !== docFormat)) {
+          return res;
+        }
 
-    if ((!format || format === 'yaml') && (doc = this.loadFromYaml(source))) {
-      return { doc, format: 'yaml' };
-    }
-
-    return undefined;
+        const doc = this.loadFrom(source, docFormat);
+        if (doc) {
+          return { doc, format: docFormat };
+        }
+      },
+      undefined
+    );
   }
 
-  private loadFromJson(source: string): T | undefined {
+  private loadFrom(source: string, format: DocFormat): T | undefined {
     try {
-      return JSON.parse(source);
-    } catch {
-      // noop
-    }
-  }
-
-  private loadFromYaml(source: string): T | undefined {
-    try {
-      return load(source, { json: true }) as T;
+      if (format === 'json') {
+        return JSON.parse(source);
+      } else {
+        return load(source, { json: true }) as T;
+      }
     } catch {
       // noop
     }

@@ -9,10 +9,7 @@ export class PostmanEditor extends BaseEditor<Postman.Document> {
   private readonly postmanUrlParser = new PostmanUrlParser();
 
   public async setup(source: string, format?: DocFormat): Promise<void> {
-    const res = await this.load(source, format);
-    if (!res) {
-      throw new Error('Bad Postman collection');
-    }
+    await this.load(source, 'Bad Postman collection', format);
   }
 
   public parse(): SpecTreeNode {

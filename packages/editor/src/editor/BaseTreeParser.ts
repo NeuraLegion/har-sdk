@@ -47,14 +47,21 @@ export abstract class BaseTreeParser<T extends Document = Document>
     return this.format === 'yaml' ? dump(this.doc) : JSON.stringify(this.doc);
   }
 
-  protected async load(source: string, format?: DocFormat): Promise<boolean> {
+  protected async load(
+    source: string,
+    errorMessage: string,
+    format?: DocFormat
+  ): Promise<void> {
     const result = await this.loadFromSource(source, format);
 
-    if (result) {
-      ({ doc: this._doc, format: this._format } = result);
-    }
+    ({ doc: this._doc, format: this._format } = result || {
+      doc: undefined,
+      format: undefined
+    });
 
-    return !!result;
+    if (!result) {
+      throw new Error(errorMessage);
+    }
   }
 
   private async loadFromSource(

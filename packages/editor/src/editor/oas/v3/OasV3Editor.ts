@@ -5,10 +5,7 @@ import { DocFormat, OpenAPIV3 } from '@har-sdk/core';
 
 export class OasV3Editor extends BaseOasEditor<OpenAPIV3.Document> {
   public async setup(source: string, format?: DocFormat): Promise<void> {
-    const res = await this.load(source, format);
-    if (!res) {
-      throw new Error('Bad OpenAPI V3 specification');
-    }
+    return this.load(source, 'Bad OpenAPI V3 specification', format);
   }
 
   public parse(): SpecTreeNode {

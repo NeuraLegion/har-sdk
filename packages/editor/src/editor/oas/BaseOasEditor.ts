@@ -42,16 +42,16 @@ export abstract class BaseOasEditor<
     return super.removeNode(nodeJsonPointer);
   }
 
-  protected async load(source: string, format?: DocFormat): Promise<boolean> {
-    const res = await super.load(source, format);
+  protected async load(
+    source: string,
+    errorMessage: string,
+    format?: DocFormat
+  ): Promise<void> {
+    await super.load(source, errorMessage, format);
 
-    if (res) {
-      this.dereferencedDoc = (await new $RefParser().dereference(
-        JSON.parse(JSON.stringify(this.doc))
-      )) as D;
-    }
-
-    return res;
+    this.dereferencedDoc = (await new $RefParser().dereference(
+      JSON.parse(JSON.stringify(this.doc))
+    )) as D;
   }
 
   protected createRootNode(

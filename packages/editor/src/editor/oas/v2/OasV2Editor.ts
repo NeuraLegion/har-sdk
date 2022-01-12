@@ -5,10 +5,7 @@ import { DocFormat, OpenAPIV2 } from '@har-sdk/core';
 
 export class OasV2Editor extends BaseOasEditor<OpenAPIV2.Document> {
   public async setup(source: string, format?: DocFormat): Promise<void> {
-    const res = await this.load(source, format);
-    if (!res) {
-      throw new Error('Bad Swagger/OpenAPI V2 specification');
-    }
+    return this.load(source, 'Bad Swagger/OpenAPI V2 specification', format);
   }
 
   public parse(): SpecTreeNode {

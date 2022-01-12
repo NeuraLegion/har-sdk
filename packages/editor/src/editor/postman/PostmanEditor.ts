@@ -8,8 +8,8 @@ import { DocFormat, Postman } from '@har-sdk/core';
 export class PostmanEditor extends BaseEditor<Postman.Document> {
   private readonly postmanUrlParser = new PostmanUrlParser();
 
-  public async setup(source: string, format?: DocFormat): Promise<void> {
-    await this.load(source, 'Bad Postman collection', format);
+  public setup(source: string, format?: DocFormat): Promise<void> {
+    return this.load(source, 'Bad Postman collection', format);
   }
 
   public parse(): SpecTreeNode {

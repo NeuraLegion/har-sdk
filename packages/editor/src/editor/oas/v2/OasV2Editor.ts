@@ -4,7 +4,7 @@ import { SpecTreeNode } from '../../../models';
 import { DocFormat, OpenAPIV2 } from '@har-sdk/core';
 
 export class OasV2Editor extends BaseOasEditor<OpenAPIV2.Document> {
-  public async setup(source: string, format?: DocFormat): Promise<void> {
+  public setup(source: string, format?: DocFormat): Promise<void> {
     return this.load(source, 'Bad Swagger/OpenAPI V2 specification', format);
   }
 

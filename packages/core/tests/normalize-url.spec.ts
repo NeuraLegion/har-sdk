@@ -1,5 +1,5 @@
 import 'chai/register-should';
-import { normalizeUrl } from '../src/utils';
+import { normalizeUrl } from '../src';
 
 describe('normalizeUrl', () => {
   [
@@ -7,10 +7,6 @@ describe('normalizeUrl', () => {
     { input: 'http://example.com//', output: 'http://example.com' },
     { input: '//example.com', output: 'https://example.com' },
     { input: 'example.com/path', output: 'https://example.com/path' },
-    {
-      input: 'http://example.com/pets/?offset=10&limit=10',
-      output: 'http://example.com/pets?limit=10&offset=10'
-    },
     {
       input: 'http://example.com/pets/?offset=10&limit=10',
       output: 'http://example.com/pets?limit=10&offset=10'
@@ -38,6 +34,10 @@ describe('normalizeUrl', () => {
     {
       input: 'https://user:password@example.com',
       output: 'https://user:password@example.com'
+    },
+    {
+      input: 'HTTP://example.COM////foo////dummy/../bar/?',
+      output: 'http://example.com/foo/bar'
     }
   ].forEach(({ input, output }) =>
     it(`should return ${output} for ${input}`, () => {

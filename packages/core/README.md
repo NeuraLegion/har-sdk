@@ -14,23 +14,22 @@ To import a specification you just need to create an instance of `SpecImporter` 
 
 ```ts
 import { SpecImporter } from '@har-sdk/core';
-import petstore from './petstore.collection.json';
 
-const result = await new SpecImporter().tryToImportSpec(petstore);
+const result = await new SpecImporter().import(sourceAsString);
 console.log(result);
 // {
 //   type: 'postman',
 //   format: 'json',
 //   doc: {
 //     info: {
-//       name: 'Swagger Petstore',
+//       name: 'Postman Sample',
 //       schema: 'https://schema.getpostman.com/json/collection/v2.1.0/collection.json'
 //     },
 //     item: [
 //       // ...
 //     ]
 //   },
-//   name: 'Swagger Petstore.json'
+//   name: 'Postman Sample.json'
 // }
 ```
 
@@ -54,12 +53,20 @@ class RamlImporter implements Importer<'raml'> {
 
   async import(content: string): Promise<Spec<'raml'>> {
     // your code
-    
+
     return {
       // other fields
       type: this.type,
       format: 'yaml'
-    }
+    };
   }
 }
+```
+
+`utils` package contains a set of useful utilities like `normalizeUrl`:
+
+```ts
+import { normalizeUrl } from '@har-sdk/core';
+
+normalizeUrl('HTTP://example.COM////foo////dummy/../bar/?'); // http://example.com/foo/bar
 ```

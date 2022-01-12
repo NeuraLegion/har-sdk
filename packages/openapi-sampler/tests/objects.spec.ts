@@ -10,6 +10,7 @@ describe('Objects', () => {
     const result = sample(schema);
     result.should.deep.equal({});
   });
+
   it('should sample object with property', () => {
     const schema = {
       type: 'object',
@@ -22,6 +23,7 @@ describe('Objects', () => {
     const result = sample(schema);
     result.title.should.be.a('string');
   });
+
   it('should sample object with property with default value', () => {
     const schema = {
       type: 'object',
@@ -37,6 +39,7 @@ describe('Objects', () => {
       title: 'Example'
     });
   });
+
   it('should sample object with more than one property', () => {
     const schema = {
       type: 'object',
@@ -57,6 +60,7 @@ describe('Objects', () => {
       amount: 10
     });
   });
+
   it('should sample both properties and additionalProperties', () => {
     const schema = {
       type: 'object',

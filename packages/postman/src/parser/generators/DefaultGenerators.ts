@@ -1,4 +1,4 @@
-import { directories, locales } from '../helpers';
+import { directories, locales } from '../../helpers';
 import { Generators } from './Generators';
 import faker from 'faker';
 

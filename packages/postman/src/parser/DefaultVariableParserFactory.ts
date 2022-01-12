@@ -2,7 +2,7 @@ import { VariableParserFactory } from './VariableParserFactory';
 import { VariableParser } from './VariableParser';
 import { EnvVariableParser } from './EnvVariableParser';
 import { UrlVariableParser } from './UrlVariableParser';
-import { Generators } from './Generators';
+import { Generators } from './generators';
 import { Postman } from '@har-sdk/core';
 
 export class DefaultVariableParserFactory implements VariableParserFactory {

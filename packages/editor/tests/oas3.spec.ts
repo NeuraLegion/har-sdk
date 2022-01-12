@@ -8,7 +8,7 @@ import {
 import { load } from 'js-yaml';
 import jsonPath from 'jsonpath';
 import 'chai/register-should';
-import { OpenAPIV3 } from '@har-sdk/types';
+import { OpenAPIV3 } from '@har-sdk/core';
 import { OASValidator } from '@har-sdk/validator';
 import chaiAsPromised from 'chai-as-promised';
 import { use } from 'chai';
@@ -18,7 +18,7 @@ import { resolve } from 'path';
 use(chaiAsPromised);
 
 describe('OasV3Editor', () => {
-  const sourcePath = './tests/oas3-sample1.yaml';
+  const sourcePath = './tests/fixtures/oas3-sample1.yaml';
   const source = readFileSync(resolve(sourcePath), 'utf-8');
 
   describe('input validation', () => {
@@ -46,7 +46,10 @@ describe('OasV3Editor', () => {
     it('should correctly parse yaml valid document', async () => {
       await openApiParser.setup(source);
       const expected = JSON.parse(
-        readFileSync(resolve('./tests/oas3-sample1.result.json'), 'utf-8')
+        readFileSync(
+          resolve('./tests/fixtures/oas3-sample1.result.json'),
+          'utf-8'
+        )
       );
 
       const result = openApiParser.parse();

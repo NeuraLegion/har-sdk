@@ -2,7 +2,7 @@ import { Editor } from '../Editor';
 import { SpecTreeNode, SpecTreeNodeVariableParam } from '../../models';
 import { BaseEditor } from '../BaseEditor';
 import { PathNodeParser } from '../PathNodeParser';
-import { OpenAPIV3, OpenAPIV2 } from '@har-sdk/types';
+import { DocFormat, OpenAPIV3, OpenAPIV2 } from '@har-sdk/core';
 import $RefParser from '@apidevtools/json-schema-ref-parser';
 import jsonPointer from 'json-pointer';
 
@@ -42,8 +42,12 @@ export abstract class BaseOasEditor<
     return super.removeNode(nodeJsonPointer);
   }
 
-  protected async load(source: string, errorMessage: string): Promise<void> {
-    await super.load(source, errorMessage);
+  protected async load(
+    source: string,
+    errorMessage: string,
+    format?: DocFormat
+  ): Promise<void> {
+    await super.load(source, errorMessage, format);
 
     this.dereferencedDoc = (await new $RefParser().dereference(
       JSON.parse(JSON.stringify(this.doc))

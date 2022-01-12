@@ -1,11 +1,11 @@
 import { SpecTreeNode } from '../../../models';
 import { BaseOasEditor } from '../BaseOasEditor';
 import { OasV3PathItemObjectParser } from './OasV3PathItemObjectParser';
-import { OpenAPIV3 } from '@har-sdk/types';
+import { DocFormat, OpenAPIV3 } from '@har-sdk/core';
 
 export class OasV3Editor extends BaseOasEditor<OpenAPIV3.Document> {
-  public setup(source: string): Promise<void> {
-    return this.load(source, 'Bad OpenAPI V3 specification');
+  public setup(source: string, format?: DocFormat): Promise<void> {
+    return this.load(source, 'Bad OpenAPI V3 specification', format);
   }
 
   public parse(): SpecTreeNode {

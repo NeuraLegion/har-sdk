@@ -1,5 +1,5 @@
 import { SpecTreeNode } from '../../models';
-import { Postman } from '@har-sdk/types';
+import { Postman } from '@har-sdk/core';
 
 export class PostmanUrlParser {
   public parse(url: Postman.Url | string): string {

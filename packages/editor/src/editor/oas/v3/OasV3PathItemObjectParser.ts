@@ -2,7 +2,7 @@ import { SpecTreeNodeParam, SpecTreeNodeVariableParam } from '../../../models';
 import { BaseOasPathItemObjectParser } from '../BaseOasPathItemObjectParser';
 import { OasV3OperationObjectParser } from './OasV3OperationObjectParser';
 import { OasV3ParameterObjectsParser } from './OasV3ParameterObjectsParser';
-import { OpenAPIV3 } from '@har-sdk/types';
+import { OpenAPIV3 } from '@har-sdk/core';
 import jsonPointer from 'json-pointer';
 
 export class OasV3PathItemObjectParser extends BaseOasPathItemObjectParser<OpenAPIV3.Document> {

@@ -1,5 +1,5 @@
 import { Parser } from '../Parser';
-import { Postman } from '@har-sdk/types';
+import { Postman } from '@har-sdk/core';
 import jsonPointer from 'json-pointer';
 
 export class PostmanHeadersParser implements Parser<Postman.Header[]> {

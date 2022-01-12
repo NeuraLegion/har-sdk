@@ -4,7 +4,7 @@ import {
   SpecTreeLocationParam,
   ParamLocation
 } from '../../models';
-import { OpenAPIV2, OpenAPIV3 } from '@har-sdk/types';
+import { OpenAPIV2, OpenAPIV3 } from '@har-sdk/core';
 import jsonPointer from 'json-pointer';
 
 export abstract class BaseOasParameterObjectsParser<

@@ -3,13 +3,13 @@ import { BaseEditor } from '../BaseEditor';
 import { PostmanParametersParser } from './PostmanParametersParser';
 import { PostmanUrlParser } from './PostmanUrlParser';
 import { PostmanVariablesParser } from './PostmanVariablesParser';
-import { Postman } from '@har-sdk/types';
+import { DocFormat, Postman } from '@har-sdk/core';
 
 export class PostmanEditor extends BaseEditor<Postman.Document> {
   private readonly postmanUrlParser = new PostmanUrlParser();
 
-  public setup(source: string): Promise<void> {
-    return this.load(source, 'Bad Postman collection');
+  public setup(source: string, format?: DocFormat): Promise<void> {
+    return this.load(source, 'Bad Postman collection', format);
   }
 
   public parse(): SpecTreeNode {

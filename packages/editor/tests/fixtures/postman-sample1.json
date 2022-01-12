@@ -599,9 +599,11 @@
                         },
                         "url": {
                           "host": ["{{baseUrl}}"],
-                          "path": [{
-                            "value": "api/v1/files/:fileId/tree"
-                          }],
+                          "path": [
+                            {
+                              "value": "api/v1/files/:fileId/tree"
+                            }
+                          ],
                           "variable": [
                             {
                               "key": "fileId",
@@ -1043,8 +1045,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "graphql",
-                  "graphql": {
-                  }
+                  "graphql": {}
                 },
                 "header": [],
                 "url": {
@@ -1349,10 +1350,12 @@
               ]
             }
           ],
-          "variable": [{
-            "key": "foo",
-            "value": "bar"
-          }]
+          "variable": [
+            {
+              "key": "foo",
+              "value": "bar"
+            }
+          ]
         },
         {
           "name": "me",
@@ -1649,9 +1652,11 @@
                         "url": {
                           "raw": "{{baseUrl}}/api/v1/me/feed/subscriptions",
                           "host": "{{baseUrl}}",
-                          "path": [{
-                            "value": "/api/v1/me/feed/subscriptions"
-                          }]
+                          "path": [
+                            {
+                              "value": "/api/v1/me/feed/subscriptions"
+                            }
+                          ]
                         },
                         "description": "Returns the feed preferences as a list of verbs grouped by object."
                       },
@@ -18102,7 +18107,7 @@
             "method": "POST",
             "body": {
               "mode": "formdata",
-              "formdata":  [
+              "formdata": [
                 {
                   "key": "firstName",
                   "value": "<string>",

@@ -1,11 +1,11 @@
 import { OasV2PathItemObjectParser } from './OasV2PathItemObjectParser';
 import { BaseOasEditor } from '../BaseOasEditor';
 import { SpecTreeNode } from '../../../models';
-import { OpenAPIV2 } from '@har-sdk/types';
+import { DocFormat, OpenAPIV2 } from '@har-sdk/core';
 
 export class OasV2Editor extends BaseOasEditor<OpenAPIV2.Document> {
-  public setup(source: string): Promise<void> {
-    return this.load(source, 'Bad Swagger/OpenAPI V2 specification');
+  public setup(source: string, format?: DocFormat): Promise<void> {
+    return this.load(source, 'Bad Swagger/OpenAPI V2 specification', format);
   }
 
   public parse(): SpecTreeNode {

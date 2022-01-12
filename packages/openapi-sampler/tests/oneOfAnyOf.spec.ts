@@ -14,7 +14,7 @@ describe('oneOf and anyOf', () => {
       ]
     };
     const result = sample(schema);
-    (typeof result).should.be.oneOf(['string', 'number']);
+    result.should.be.a('string');
   });
 
   it('should support anyOf', () => {
@@ -29,7 +29,7 @@ describe('oneOf and anyOf', () => {
       ]
     };
     const result = sample(schema);
-    (typeof result).should.be.oneOf(['string', 'number']);
+    result.should.be.a('string');
   });
 
   it('should prefer oneOf if anyOf and oneOf are on the same level ', () => {

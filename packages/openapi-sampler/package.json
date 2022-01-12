@@ -39,18 +39,15 @@
     "oas",
     "swagger",
     "instantiator",
-    "sampler",
-    "faker"
+    "sampler"
   ],
   "dependencies": {
-    "@har-sdk/types": "*",
-    "faker": "^5.5.3",
+    "@har-sdk/core": "*",
     "json-pointer": "^0.6.1",
     "randexp": "^0.5.3",
     "tslib": "~2.2.0"
   },
   "devDependencies": {
-    "@types/faker": "^5.5.7",
     "@types/json-pointer": "^1.0.31"
   }
 }

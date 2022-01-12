@@ -1,9 +1,8 @@
 import { Options, Sample, Schema, Specification, Traverse } from './Traverse';
-import { mergeDeep } from '../utils';
+import { mergeDeep, firstArrayElement } from '../utils';
 import { Sampler, OpenAPISchema } from '../samplers';
 import JsonPointer from 'json-pointer';
-import faker from 'faker';
-import { OpenAPIV2, OpenAPIV3 } from '@har-sdk/types';
+import { OpenAPIV2, OpenAPIV3 } from '@har-sdk/core';
 
 const schemaKeywordTypes = {
   multipleOf: 'number',
@@ -97,19 +96,11 @@ export class DefaultTraverse implements Traverse {
         );
       }
 
-      return this.traverse(
-        faker.random.arrayElement(schema.oneOf),
-        options,
-        spec
-      );
+      return this.traverse(firstArrayElement(schema.oneOf), options, spec);
     }
 
     if (schema.anyOf && schema.anyOf.length) {
-      return this.traverse(
-        faker.random.arrayElement(schema.anyOf),
-        options,
-        spec
-      );
+      return this.traverse(firstArrayElement(schema.anyOf), options, spec);
     }
 
     let example: any;
@@ -120,9 +111,9 @@ export class DefaultTraverse implements Traverse {
     } else if ((schema as any).const !== undefined) {
       example = (schema as any).const;
     } else if (schema.enum && schema.enum.length) {
-      example = faker.random.arrayElement(schema.enum);
+      example = firstArrayElement(schema.enum);
     } else if ((schema as any).examples && (schema as any).examples.length) {
-      example = faker.random.arrayElement((schema as any).examples);
+      example = firstArrayElement((schema as any).examples);
     } else {
       type = schema.type as string;
 

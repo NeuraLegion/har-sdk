@@ -1,5 +1,3 @@
-import type { URL as URLType } from 'url';
-
 const URL =
   typeof (global as any).window !== 'undefined'
     ? (global as any).window.URL
@@ -55,4 +53,4 @@ export const normalizeUrl = (value: string): string => {
   return urlString;
 };
 
-export const parseUrl = (value: string): URLType => new URL(value);
+export const parseUrl = (value: string): typeof URL => new URL(value);

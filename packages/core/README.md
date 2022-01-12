@@ -63,7 +63,7 @@ class RamlImporter implements Importer<'raml'> {
 }
 ```
 
-`utils` package contains a set of useful utilities like `normalizeUrl`:
+The package also contains a set of useful utilities like `normalizeUrl`:
 
 ```ts
 import { normalizeUrl } from '@har-sdk/core';

@@ -263,12 +263,13 @@ describe('OasV2Editor', () => {
       });
 
       it('should serialize json into json', async () => {
-        await openApiEditor.setup('{}');
+        const jsonSource = JSON.stringify(load(source, { json: true }));
 
+        await openApiEditor.setup(jsonSource);
         const result = openApiEditor.stringify();
 
         result.should.be.a('string');
-        result.should.equal('{}');
+        result.should.equal(jsonSource);
       });
     });
   });

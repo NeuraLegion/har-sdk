@@ -1,5 +1,5 @@
 import { ErrorHumanizer, OASValidator, PostmanValidator } from '../src';
-import { OpenAPIV2, Postman, OpenAPIV3 } from '@har-sdk/types';
+import { OpenAPIV2, Postman, OpenAPIV3 } from '@har-sdk/core';
 import 'chai/register-should';
 
 describe('ErrorHumanizer', () => {

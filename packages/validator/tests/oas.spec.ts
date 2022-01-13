@@ -6,7 +6,7 @@ import { ErrorObject } from 'ajv';
 import chaiAsPromised from 'chai-as-promised';
 import { use } from 'chai';
 import yaml from 'js-yaml';
-import { OpenAPIV2, OpenAPIV3 } from '@har-sdk/types';
+import { OpenAPIV2, OpenAPIV3 } from '@har-sdk/core';
 import { resolve } from 'path';
 import { readFile } from 'fs';
 import { promisify } from 'util';

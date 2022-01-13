@@ -1,7 +1,7 @@
 import { BaseValidator } from './BaseValidator';
 import schemaV2 from '../schemas/postman/v2.0.0.json';
 import schemaV21 from '../schemas/postman/v2.1.0.json';
-import { Postman } from '@har-sdk/types';
+import { Postman } from '@har-sdk/core';
 
 export class PostmanValidator extends BaseValidator<Postman.Document> {
   private readonly VERSION_SCHEMA_MAP: Readonly<Record<string, string>> = {

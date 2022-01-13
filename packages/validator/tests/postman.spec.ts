@@ -3,7 +3,7 @@ import { PostmanValidator } from '../src';
 import { ErrorObject } from 'ajv';
 import { use } from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import { Postman } from '@har-sdk/types';
+import { Postman } from '@har-sdk/core';
 import 'chai/register-should';
 
 use(chaiAsPromised);

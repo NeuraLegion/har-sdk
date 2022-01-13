@@ -1,9 +1,7 @@
 import { SpecTreeNode } from '../models';
 import { TreeParser, Document } from './TreeParser';
-import { DocFormat } from '@har-sdk/core';
-import { dump, load } from 'js-yaml';
-
-type LoadResult<T> = { doc: T; format: DocFormat };
+import { DocFormat, SpecImporter } from '@har-sdk/core';
+import { dump } from 'js-yaml';
 
 export abstract class BaseTreeParser<T extends Document = Document>
   implements TreeParser<T>
@@ -52,48 +50,14 @@ export abstract class BaseTreeParser<T extends Document = Document>
     errorMessage: string,
     format?: DocFormat
   ): Promise<void> {
-    const result = await this.loadFromSource(source, format);
+    const importer = new SpecImporter();
+    const spec = await importer.import(source, format);
 
-    ({ doc: this._doc, format: this._format } = result || {
-      doc: undefined,
-      format: undefined
-    });
+    this._doc = spec?.doc as T;
+    this._format = spec?.format;
 
-    if (!result) {
+    if (!spec) {
       throw new Error(errorMessage);
-    }
-  }
-
-  private async loadFromSource(
-    source: string,
-    format?: DocFormat
-  ): Promise<LoadResult<T> | undefined> {
-    const docFormats: DocFormat[] = ['json', 'yaml'];
-
-    return docFormats.reduce(
-      (res: LoadResult<T> | undefined, docFormat: DocFormat) => {
-        if (res || (format && format !== docFormat)) {
-          return res;
-        }
-
-        const doc = this.loadFrom(source, docFormat);
-        if (doc) {
-          return { doc, format: docFormat };
-        }
-      },
-      undefined
-    );
-  }
-
-  private loadFrom(source: string, format: DocFormat): T | undefined {
-    try {
-      if (format === 'json') {
-        return JSON.parse(source);
-      } else {
-        return load(source, { json: true }) as T;
-      }
-    } catch {
-      // noop
     }
   }
 }

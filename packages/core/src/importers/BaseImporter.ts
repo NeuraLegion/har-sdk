@@ -1,17 +1,16 @@
+import { LoaderFactory } from '../loaders/LoaderFactory';
 import { Importer } from './Importer';
 import { DocFormat, Spec, Doc, DocType } from './Spec';
-import { load } from 'js-yaml';
 
-interface LoadedFile {
-  doc: unknown;
-  format: DocFormat;
-}
+type LoadResult<T> = { doc: T; format: DocFormat };
 
 export abstract class BaseImporter<
   TDocType extends DocType,
   TDoc = Doc<TDocType>
 > implements Importer<TDocType, TDoc>
 {
+  private readonly loaderFactory = new LoaderFactory();
+
   protected constructor() {
     // noop
   }
@@ -21,12 +20,16 @@ export abstract class BaseImporter<
   public abstract isSupported(spec: unknown): spec is TDoc;
 
   public async import(
-    content: string
+    content: string,
+    expectedFormat?: DocFormat
   ): Promise<Spec<TDocType, TDoc> | undefined> {
-    const file: LoadedFile | undefined = this.load(content.trim());
+    const loadResult: LoadResult<TDoc> | undefined = this.load(
+      content.trim(),
+      expectedFormat
+    );
 
-    if (file && this.isSupported(file.doc)) {
-      const { format, doc } = file;
+    if (loadResult && this.isSupported(loadResult.doc)) {
+      const { format, doc } = loadResult;
       const name = this.fileName({ format, doc });
 
       return {
@@ -42,31 +45,30 @@ export abstract class BaseImporter<
     return;
   }
 
-  protected load(content: string): LoadedFile | undefined {
-    let doc: unknown | undefined = this.loadFromJson(content);
-    let format: DocFormat = 'json';
+  private load(
+    source: string,
+    format?: DocFormat
+  ): LoadResult<TDoc> | undefined {
+    const docFormats: DocFormat[] = ['json', 'yaml'];
 
-    if (!doc) {
-      doc = this.loadFromYaml(content);
-      format = 'yaml';
-    }
+    return docFormats.reduce(
+      (res: LoadResult<TDoc> | undefined, docFormat: DocFormat) => {
+        if (res || (format && format !== docFormat)) {
+          return res;
+        }
 
-    return doc ? { doc, format } : undefined;
-  }
-
-  private loadFromJson(source: string): unknown | undefined {
-    try {
-      return JSON.parse(source);
-    } catch {
-      // noop
-    }
-  }
-
-  private loadFromYaml(source: string): unknown | undefined {
-    try {
-      return load(source, { json: true });
-    } catch {
-      // noop
-    }
+        try {
+          const doc = this.loaderFactory
+            .getLoader(docFormat)
+            .load(source) as TDoc;
+          if (doc) {
+            return { doc, format: docFormat };
+          }
+        } catch (e) {
+          // noop
+        }
+      },
+      undefined
+    );
   }
 }

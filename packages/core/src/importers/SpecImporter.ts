@@ -1,4 +1,4 @@
-import { Doc, DocType, Spec } from './Spec';
+import { Doc, DocType, Spec, DocFormat } from './Spec';
 import { Importer } from './Importer';
 import { first } from '../utils';
 import { OASV3Importer } from './OASV3Importer';
@@ -17,13 +17,19 @@ export class SpecImporter implements Importer<DocType> {
   ) {}
 
   public import<TDocType extends DocType, TDoc = Doc<TDocType>>(
-    value: string
+    value: string,
+    format?: DocFormat
   ): Promise<Spec<TDocType, TDoc> | undefined>;
-  public async import(value: string): Promise<Spec<DocType> | undefined> {
+  public async import(
+    value: string,
+    format?: DocFormat
+  ): Promise<Spec<DocType> | undefined> {
     let spec: Spec<DocType> | undefined;
 
     try {
-      const promises = this.importers.map((importer) => importer.import(value));
+      const promises = this.importers.map((importer) =>
+        importer.import(value, format)
+      );
 
       spec = await first(promises, (val) => !!val);
     } catch {

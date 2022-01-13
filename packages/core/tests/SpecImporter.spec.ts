@@ -17,19 +17,29 @@ describe('SpecImporter', () => {
   });
 
   describe('import', () => {
+    const sourceJsonOasV2 = readFileSync(
+      resolve('./tests/fixtures/oas-v2.json'),
+      'utf8'
+    );
+
+    const sourceYamlOasV2 = readFileSync(
+      resolve('./tests/fixtures/oas-v2.yaml'),
+      'utf8'
+    );
+
     it('should import OAS v2 (JSON)', async () => {
       // arrange
-      const doc = await import('./fixtures/oas-v2.json');
-      const input = JSON.stringify(doc);
       const expected = {
-        doc,
+        doc: JSON.parse(sourceJsonOasV2),
         format: 'json',
         type: ImporterType.OASV2,
         name: 'Test Plain Post Data 1.0.json'
       };
 
       // act
-      const result: Spec<ImporterType.OASV2> = await specImporter.import(input);
+      const result: Spec<ImporterType.OASV2> = await specImporter.import(
+        sourceJsonOasV2
+      );
 
       // assert
       result.should.deep.eq(expected);
@@ -37,11 +47,7 @@ describe('SpecImporter', () => {
 
     it('should import OAS v2 (YAML)', async () => {
       // arrange
-      const input = await promisify(readFile)(
-        resolve('./tests/fixtures/oas-v2.yaml'),
-        'utf8'
-      );
-      const doc = load(input, { json: true });
+      const doc = load(sourceYamlOasV2, { json: true });
       const expected = {
         doc,
         format: 'yaml',
@@ -50,7 +56,9 @@ describe('SpecImporter', () => {
       };
 
       // act
-      const result: Spec<ImporterType.OASV2> = await specImporter.import(input);
+      const result: Spec<ImporterType.OASV2> = await specImporter.import(
+        sourceYamlOasV2
+      );
 
       // assert
       result.should.deep.eq(expected);
@@ -164,48 +172,29 @@ describe('SpecImporter', () => {
       // assert
       (typeof result).should.eq('undefined');
     });
-  });
-
-  describe('DocFormat', () => {
-    const sourceJson = readFileSync(
-      resolve('./tests/fixtures/oas-v2.json'),
-      'utf8'
-    );
-
-    const sourceYaml = readFileSync(
-      resolve('./tests/fixtures/oas-v3.yaml'),
-      'utf8'
-    );
-
-    it('should correctly parse valid yaml document without forced format', async () => {
-      const result = await specImporter.import(sourceYaml);
-
-      result.format.should.eq('yaml');
-      result.doc.should.be.an('object');
-    });
 
     it('should correctly parse valid yaml document with forced "yaml" format', async () => {
-      const result = await specImporter.import(sourceYaml, 'yaml');
+      const result = await specImporter.import(sourceYamlOasV2, 'yaml');
 
       result.format.should.eq('yaml');
       result.doc.should.be.an('object');
     });
 
     it('should refuse to parse yaml with forced "json" format', async () => {
-      const result = await specImporter.import(sourceYaml, 'json');
+      const result = await specImporter.import(sourceYamlOasV2, 'json');
 
       (typeof result).should.eq('undefined');
     });
 
     it('should correctly parse valid json document without forced format', async () => {
-      const result = await specImporter.import(sourceJson);
+      const result = await specImporter.import(sourceJsonOasV2);
 
       result.format.should.eq('json');
       result.doc.should.be.an('object');
     });
 
-    it('should correctly parse valid json document as yaml', async () => {
-      const result = await specImporter.import(sourceJson, 'yaml');
+    it('should correctly parse valid json document with forced "yaml" format', async () => {
+      const result = await specImporter.import(sourceJsonOasV2, 'yaml');
 
       result.format.should.eq('yaml');
       result.doc.should.be.an('object');

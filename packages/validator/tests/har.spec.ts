@@ -7,7 +7,7 @@ import wrongMethodValueHar from './fixtures/har.wrong-method-value.json';
 import harGh75 from './fixtures/har.gh-75.json';
 import { HarValidator } from '../src';
 import { ErrorObject } from 'ajv';
-import { Har } from '@har-sdk/types';
+import { Har } from '@har-sdk/core';
 
 describe('HarValidator', () => {
   const validator = new HarValidator();

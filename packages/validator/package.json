@@ -44,7 +44,7 @@
     "har"
   ],
   "dependencies": {
-    "@har-sdk/types": "*",
+    "@har-sdk/core": "*",
     "ajv": "^8.6.3",
     "ajv-errors": "^3.0.0",
     "ajv-formats": "^2.1.1",

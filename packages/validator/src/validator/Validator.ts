@@ -1,4 +1,4 @@
-import { Har, OpenAPI, Postman } from '@har-sdk/types';
+import { Har, OpenAPI, Postman } from '@har-sdk/core';
 import { ErrorObject } from 'ajv';
 
 export type Document = OpenAPI.Document | Postman.Document | Har;

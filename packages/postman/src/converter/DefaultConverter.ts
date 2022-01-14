@@ -20,11 +20,13 @@ export enum AuthLocation {
 
 export class DefaultConverter implements Converter {
   private readonly variables: ReadonlyArray<Postman.Variable>;
+  private readonly dryRun: boolean;
 
   constructor(
     private readonly parserFactory: VariableParserFactory,
     options: {
       environment?: Record<string, string>;
+      dryRun?: boolean;
     }
   ) {
     this.variables = Object.entries(options.environment ?? {}).map(
@@ -33,6 +35,7 @@ export class DefaultConverter implements Converter {
         value
       })
     );
+    this.dryRun = !!options.dryRun;
   }
 
   public async convert(collection: Postman.Document): Promise<Request[]> {
@@ -306,7 +309,8 @@ export class DefaultConverter implements Converter {
               : fileName;
 
             const contentType: string | undefined =
-              x.contentType ?? (lookup(extension ?? '') || undefined);
+              x.contentType ??
+              (this.dryRun ? undefined : lookup(extension ?? '') || undefined);
 
             return {
               fileName,

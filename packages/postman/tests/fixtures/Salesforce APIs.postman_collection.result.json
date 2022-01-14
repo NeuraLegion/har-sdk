@@ -1277,7 +1277,8 @@
           "value": "{\"cropY\":\"0\",\"cropX\":\"0\",\"cropSize\":\"200\"}"
         },
         {
-          "fileName": "",
+          "fileName": "photo.jpg",
+          "contentType": "image/jpeg",
           "name": "fileUpload",
           "value": ""
         }

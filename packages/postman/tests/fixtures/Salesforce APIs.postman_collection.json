@@ -2339,7 +2339,8 @@
                     {
                       "key": "fileUpload",
                       "type": "file",
-                      "src": []
+                      "contentType": "image/jpeg",
+                      "src": "photo.jpg"
                     }
                   ]
                 },

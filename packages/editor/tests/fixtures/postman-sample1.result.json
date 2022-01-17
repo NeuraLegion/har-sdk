@@ -349,14 +349,14 @@
                           "name": "targetIds",
                           "paramType": "location",
                           "value": "<string>[]",
-                          "valueJsonPointer": "/item/0/item/3/item/0/item/0/item/0/request/body/urlencoded/0"
+                          "valueJsonPointer": "/item/0/item/3/item/0/item/0/item/0/request/body/urlencoded/0/value"
                         },
                         {
                           "location": "body",
                           "name": "keepHistory",
                           "paramType": "location",
                           "value": "true",
-                          "valueJsonPointer": "/item/0/item/3/item/0/item/0/item/0/request/body/urlencoded/1"
+                          "valueJsonPointer": "/item/0/item/3/item/0/item/0/item/0/request/body/urlencoded/1/value"
                         }
                       ]
                     },
@@ -3632,28 +3632,28 @@
               "name": "firstName",
               "paramType": "location",
               "value": "<string>",
-              "valueJsonPointer": "/item/0/item/31/request/body/formdata/0"
+              "valueJsonPointer": "/item/0/item/31/request/body/formdata/0/value"
             },
             {
               "location": "body",
               "name": "lastName",
               "paramType": "location",
               "value": "<string>",
-              "valueJsonPointer": "/item/0/item/31/request/body/formdata/1"
+              "valueJsonPointer": "/item/0/item/31/request/body/formdata/1/value"
             },
             {
               "location": "body",
               "name": "email",
               "paramType": "location",
               "value": "<string>",
-              "valueJsonPointer": "/item/0/item/31/request/body/formdata/2"
+              "valueJsonPointer": "/item/0/item/31/request/body/formdata/2/value"
             },
             {
               "location": "body",
               "name": "password",
               "paramType": "location",
               "value": "<string>",
-              "valueJsonPointer": "/item/0/item/31/request/body/formdata/3"
+              "valueJsonPointer": "/item/0/item/31/request/body/formdata/3/value"
             }
           ]
         }

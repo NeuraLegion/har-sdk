@@ -78,4 +78,46 @@ describe('EnvVariableParser', () => {
 
     result.should.match(/https:\/\/test\.[A-Z]+\/api\/v1/);
   });
+
+  it('should keep unsubstituted variable in non-dry run mode', () => {
+    const parser = new EnvVariableParser(
+      [{ key: 'foo', value: 'bar' }],
+      generators,
+      {
+        dryRun: false
+      }
+    );
+
+    const result = parser.parse('{{baseUrl}}');
+
+    result.should.be.eq('{{baseUrl}}');
+  });
+
+  it('should throw exception on missing variable in dry run mode', () => {
+    const parser = new EnvVariableParser(
+      [{ key: 'foo', value: 'bar' }],
+      generators,
+      {
+        dryRun: true
+      }
+    );
+
+    const result = () => parser.parse('{{baseUrl}}');
+
+    result.should.throw(Error, 'Undefined variable: `baseUrl`');
+  });
+
+  it('should throw exception on missing nested variable in dry run mode', () => {
+    const parser = new EnvVariableParser(
+      [{ key: 'baseUrl', value: 'https://{{hostname}}' }],
+      generators,
+      {
+        dryRun: true
+      }
+    );
+
+    const result = () => parser.parse('{{baseUrl}}');
+
+    result.should.throw(Error, 'Undefined variable: `hostname`');
+  });
 });

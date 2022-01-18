@@ -1,3 +1,4 @@
+import { ParserOptions } from './ParserOptions';
 import { VariableParser } from './VariableParser';
 import { Generators } from './generators';
 import { Postman } from '@har-sdk/core';
@@ -5,7 +6,8 @@ import { Postman } from '@har-sdk/core';
 export abstract class BaseVariableParser implements VariableParser {
   protected constructor(
     private readonly variables: Postman.Variable[],
-    private readonly generators: Generators
+    private readonly generators: Generators,
+    private readonly options: ParserOptions = {}
   ) {}
 
   public abstract parse(value: string): string;
@@ -33,5 +35,9 @@ export abstract class BaseVariableParser implements VariableParser {
       default:
         return this.generators.randomAlphaNumeric();
     }
+  }
+
+  protected isDryRun(): boolean {
+    return !!this.options.dryRun;
   }
 }

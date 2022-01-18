@@ -841,7 +841,7 @@
               },
               {
                 "key": "Authorization",
-                "value": "Bearer {{init_access_token}}",
+                "value": "Bearer {{initAccessToken}}",
                 "type": "text"
               }
             ],
@@ -11148,6 +11148,10 @@
       "value": ""
     },
     {
+      "key": "_refreshToken",
+      "value": ""
+    },
+    {
       "key": "_userId",
       "value": "{{$guid}}"
     },
@@ -11157,6 +11161,10 @@
     },
     {
       "key": "_jobId",
+      "value": ""
+    },
+    {
+      "key": "_batchId",
       "value": ""
     },
     {

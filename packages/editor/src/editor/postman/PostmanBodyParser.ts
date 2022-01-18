@@ -73,7 +73,7 @@ export class PostmanBodyParser implements ParametersParser {
     return params.map((param, idx) => ({
       paramType: 'location',
       location: ParamLocation.BODY,
-      valueJsonPointer: `${paramsJsonPointer}/${idx}`,
+      valueJsonPointer: `${paramsJsonPointer}/${idx}/value`,
       name: param.key,
       value: param.value
     }));

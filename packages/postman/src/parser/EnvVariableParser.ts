@@ -35,7 +35,7 @@ export class EnvVariableParser extends BaseVariableParser {
   private replace(match: string, token: string): string {
     let variable: Postman.Variable | (() => any) | undefined = this.find(token);
 
-    if (!variable && this.isDryRun()) {
+    if (!variable && this.dryRun) {
       throw new Error(`Undefined variable: \`${token}\``);
     }
 

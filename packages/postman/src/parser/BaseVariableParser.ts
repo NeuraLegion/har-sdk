@@ -4,6 +4,10 @@ import { Generators } from './generators';
 import { Postman } from '@har-sdk/core';
 
 export abstract class BaseVariableParser implements VariableParser {
+  get dryRun(): boolean {
+    return !!this.options.dryRun;
+  }
+
   protected constructor(
     private readonly variables: Postman.Variable[],
     private readonly generators: Generators,
@@ -35,9 +39,5 @@ export abstract class BaseVariableParser implements VariableParser {
       default:
         return this.generators.randomAlphaNumeric();
     }
-  }
-
-  protected isDryRun(): boolean {
-    return !!this.options.dryRun;
   }
 }

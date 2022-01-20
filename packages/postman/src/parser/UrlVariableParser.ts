@@ -3,20 +3,18 @@ import { Generators } from './generators';
 import { Postman } from '@har-sdk/core';
 
 export class UrlVariableParser extends BaseVariableParser {
-  private readonly PATH_VARIABLE_IDENTIFIER = ':';
+  private readonly REGEX_PATH_VARIABLE_IDENTIFIER = /^:/;
 
   constructor(variables: Postman.Variable[], generators: Generators) {
     super(variables, generators);
   }
 
   public parse(value: string): string {
-    if (
-      value.startsWith(this.PATH_VARIABLE_IDENTIFIER) &&
-      value !== this.PATH_VARIABLE_IDENTIFIER
-    ) {
-      let variable: Postman.Variable | (() => unknown) | undefined = this.find(
-        this.normalizeKey(value)
-      );
+    if (this.REGEX_PATH_VARIABLE_IDENTIFIER.test(value) && value.length > 1) {
+      const token = value.replace(this.REGEX_PATH_VARIABLE_IDENTIFIER, '');
+
+      let variable: Postman.Variable | (() => unknown) | undefined =
+        this.find(token);
 
       if (typeof variable === 'function') {
         variable = {
@@ -24,11 +22,16 @@ export class UrlVariableParser extends BaseVariableParser {
         };
       }
 
-      if (
-        variable &&
-        typeof variable.value === 'string' &&
-        variable.value !== 'schema type not provided'
-      ) {
+      if (!variable) {
+        throw new Error(`Undefined variable: \`${token}\``);
+      }
+
+      // https://github.com/postmanlabs/openapi-to-postman/issues/27
+      if (variable.value === 'schema type not provided') {
+        throw new Error(`Unexpected value of \`${token}\` variable.`);
+      }
+
+      if (!(variable.value === undefined || variable.value === null)) {
         return variable.value;
       }
 
@@ -36,9 +39,5 @@ export class UrlVariableParser extends BaseVariableParser {
     }
 
     return value;
-  }
-
-  private normalizeKey(token: string): string {
-    return token.replace(/^:/, '');
   }
 }

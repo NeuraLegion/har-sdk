@@ -1,5 +1,4 @@
-import { ParserOptions } from './ParserOptions';
-
-export interface ConverterOptions extends ParserOptions {
+export interface ConverterOptions {
+  readonly dryRun?: boolean;
   readonly environment?: Record<string, string>;
 }

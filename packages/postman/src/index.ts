@@ -18,9 +18,8 @@ export const postman2har = async (
   const generators = options?.dryRun
     ? new ConstantGenerators()
     : new DefaultGenerators();
-  const parserFactory = new DefaultVariableParserFactory(generators, {
-    dryRun: !!options.dryRun
-  });
+
+  const parserFactory = new DefaultVariableParserFactory(generators);
   const converter = new DefaultConverter(parserFactory, options);
 
   return converter.convert(collection);

@@ -1,22 +1,16 @@
-import { ParserOptions } from './ParserOptions';
 import { VariableParser } from './VariableParser';
 import { Generators } from './generators';
 import { Postman } from '@har-sdk/core';
 
 export abstract class BaseVariableParser implements VariableParser {
-  get dryRun(): boolean {
-    return !!this.options.dryRun;
-  }
-
   protected constructor(
     private readonly variables: Postman.Variable[],
-    private readonly generators: Generators,
-    private readonly options: ParserOptions = {}
+    private readonly generators: Generators
   ) {}
 
   public abstract parse(value: string): string;
 
-  public find(key: string): Postman.Variable | (() => any) | undefined {
+  public find(key: string): Postman.Variable | (() => unknown) | undefined {
     const variable: Postman.Variable | undefined = this.variables.find(
       (x: Postman.Variable) => x.key === key
     );

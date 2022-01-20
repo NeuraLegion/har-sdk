@@ -1,4 +1,3 @@
-import { ParserOptions } from './ParserOptions';
 import { VariableParserFactory } from './VariableParserFactory';
 import { VariableParser } from './VariableParser';
 import { EnvVariableParser } from './EnvVariableParser';
@@ -7,15 +6,12 @@ import { Generators } from './generators';
 import { Postman } from '@har-sdk/core';
 
 export class DefaultVariableParserFactory implements VariableParserFactory {
-  constructor(
-    private readonly generators: Generators,
-    private readonly options: ParserOptions = {}
-  ) {}
+  constructor(private readonly generators: Generators) {}
 
   public createEnvVariableParser(
     variables: Postman.Variable[]
   ): VariableParser {
-    return new EnvVariableParser(variables, this.generators, this.options);
+    return new EnvVariableParser(variables, this.generators);
   }
 
   public createUrlVariableParser(

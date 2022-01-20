@@ -1,4 +1,3 @@
-import { ParserOptions } from './ParserOptions';
 import { Replacer } from './Replacer';
 import { BaseVariableParser } from './BaseVariableParser';
 import { Generators } from './generators';
@@ -8,12 +7,8 @@ export class EnvVariableParser extends BaseVariableParser {
   private readonly REGEX_EXTRACT_VARS = /{{([^{}]*?)}}/g;
   private readonly VARS_SUBSTITUTIONS_LIMIT = 30;
 
-  constructor(
-    variables: Postman.Variable[],
-    generators: Generators,
-    options: ParserOptions = {}
-  ) {
-    super(variables, generators, options);
+  constructor(variables: Postman.Variable[], generators: Generators) {
+    super(variables, generators);
   }
 
   public parse(value: string): string {
@@ -33,11 +28,8 @@ export class EnvVariableParser extends BaseVariableParser {
   }
 
   private replace(match: string, token: string): string {
-    let variable: Postman.Variable | (() => any) | undefined = this.find(token);
-
-    if (!variable && this.dryRun) {
-      throw new Error(`Undefined variable: \`${token}\``);
-    }
+    let variable: Postman.Variable | (() => unknown) | undefined =
+      this.find(token);
 
     if (typeof variable === 'function') {
       variable = {
@@ -45,10 +37,10 @@ export class EnvVariableParser extends BaseVariableParser {
       };
     }
 
-    if (!variable || !variable.value) {
-      return match;
+    if (!variable) {
+      throw new Error(`Undefined variable: \`${token}\``);
     }
 
-    return variable.value;
+    return variable.value ?? match;
   }
 }

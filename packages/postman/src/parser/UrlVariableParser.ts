@@ -14,7 +14,7 @@ export class UrlVariableParser extends BaseVariableParser {
       value.startsWith(this.PATH_VARIABLE_IDENTIFIER) &&
       value !== this.PATH_VARIABLE_IDENTIFIER
     ) {
-      let variable: Postman.Variable | (() => any) | undefined = this.find(
+      let variable: Postman.Variable | (() => unknown) | undefined = this.find(
         this.normalizeKey(value)
       );
 

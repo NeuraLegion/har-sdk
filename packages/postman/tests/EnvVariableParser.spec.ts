@@ -12,11 +12,8 @@ describe('EnvVariableParser', () => {
     result.should.equal('');
   });
 
-  it('should return original string in case of missing variables', () => {
-    const parser = new EnvVariableParser(
-      [{ key: 'baseURL', value: 'https://test.com' }],
-      generators
-    );
+  it('should return original string if value is null or undefined', () => {
+    const parser = new EnvVariableParser([{ key: 'baseUrl' }], generators);
 
     const result = parser.parse('{{baseUrl}}');
 
@@ -79,27 +76,10 @@ describe('EnvVariableParser', () => {
     result.should.match(/https:\/\/test\.[A-Z]+\/api\/v1/);
   });
 
-  it('should keep unsubstituted variable in non-dry run mode', () => {
+  it('should throw exception if variable is not defined', () => {
     const parser = new EnvVariableParser(
       [{ key: 'foo', value: 'bar' }],
-      generators,
-      {
-        dryRun: false
-      }
-    );
-
-    const result = parser.parse('{{baseUrl}}');
-
-    result.should.be.eq('{{baseUrl}}');
-  });
-
-  it('should throw exception on missing variable in dry run mode', () => {
-    const parser = new EnvVariableParser(
-      [{ key: 'foo', value: 'bar' }],
-      generators,
-      {
-        dryRun: true
-      }
+      generators
     );
 
     const result = () => parser.parse('{{baseUrl}}');
@@ -107,13 +87,10 @@ describe('EnvVariableParser', () => {
     result.should.throw(Error, 'Undefined variable: `baseUrl`');
   });
 
-  it('should throw exception on missing nested variable in dry run mode', () => {
+  it('should throw exception on missing nested variable', () => {
     const parser = new EnvVariableParser(
       [{ key: 'baseUrl', value: 'https://{{hostname}}' }],
-      generators,
-      {
-        dryRun: true
-      }
+      generators
     );
 
     const result = () => parser.parse('{{baseUrl}}');

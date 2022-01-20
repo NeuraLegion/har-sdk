@@ -16,6 +16,18 @@ export class UrlVariableParser extends BaseVariableParser {
       let variable: Postman.Variable | (() => unknown) | undefined =
         this.find(token);
 
+      /**
+       * TODO: add support for dynamic variables, e.g.:
+       * ```json
+       * "path": ["user", ":userId"],
+       * "variable": [
+       *   {
+       *     "key": "userId",
+       *     "value": "{{$guid}}"
+       *   }
+       * ]
+       * ```
+       */
       if (typeof variable === 'function') {
         variable = {
           value: variable()?.toString()
@@ -28,7 +40,7 @@ export class UrlVariableParser extends BaseVariableParser {
 
       // https://github.com/postmanlabs/openapi-to-postman/issues/27
       if (variable.value === 'schema type not provided') {
-        throw new Error(`Unexpected value of \`${token}\` variable.`);
+        throw new Error(`Unexpected value of \`${token}\` variable`);
       }
 
       if (!(variable.value === undefined || variable.value === null)) {

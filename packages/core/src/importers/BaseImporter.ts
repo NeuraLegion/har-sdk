@@ -1,5 +1,6 @@
-import { LoaderFactory } from '../loaders/LoaderFactory';
+import { Loader, LoaderFactory, SyntaxErrorDetails } from '../loaders';
 import { Importer } from './Importer';
+import { ImporterErrorProvider } from './ImporterErrorProvider';
 import { DocFormat, Spec, Doc, DocType } from './Spec';
 
 type LoadResult<T> = { doc: T; format: DocFormat };
@@ -7,9 +8,11 @@ type LoadResult<T> = { doc: T; format: DocFormat };
 export abstract class BaseImporter<
   TDocType extends DocType,
   TDoc = Doc<TDocType>
-> implements Importer<TDocType, TDoc>
+> implements Importer<TDocType, TDoc>, ImporterErrorProvider
 {
+  private readonly docFormats: DocFormat[] = ['json', 'yaml'];
   private readonly loaderFactory = new LoaderFactory();
+  private readonly loaders = new Map<DocFormat, Loader>();
 
   protected constructor() {
     // noop
@@ -41,6 +44,10 @@ export abstract class BaseImporter<
     }
   }
 
+  public getErrorDetails(format: DocFormat): SyntaxErrorDetails | undefined {
+    return this.getLoader(format)?.getSyntaxErrorDetails();
+  }
+
   protected fileName(_: { doc: TDoc; format: DocFormat }): string | undefined {
     return;
   }
@@ -49,18 +56,16 @@ export abstract class BaseImporter<
     source: string,
     format?: DocFormat
   ): LoadResult<TDoc> | undefined {
-    const docFormats: DocFormat[] = ['json', 'yaml'];
+    this.initLoaders();
 
-    return docFormats.reduce(
+    return this.docFormats.reduce(
       (res: LoadResult<TDoc> | undefined, docFormat: DocFormat) => {
         if (res || (format && format !== docFormat)) {
           return res;
         }
 
         try {
-          const doc = this.loaderFactory
-            .getLoader(docFormat)
-            .load(source) as TDoc;
+          const doc = this.getLoader(docFormat).load(source) as TDoc;
           if (doc) {
             return { doc, format: docFormat };
           }
@@ -70,5 +75,16 @@ export abstract class BaseImporter<
       },
       undefined
     );
+  }
+
+  private initLoaders(): void {
+    this.loaders.clear();
+    this.docFormats.forEach((docFormat: DocFormat) => {
+      this.loaders.set(docFormat, this.loaderFactory.getLoader(docFormat));
+    });
+  }
+
+  private getLoader(docFormat: DocFormat): Loader {
+    return this.loaders.get(docFormat);
   }
 }

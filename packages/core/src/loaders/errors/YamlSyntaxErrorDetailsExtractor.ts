@@ -1,12 +1,8 @@
-import { BaseErrorUnifier } from './BaseErrorUnifier';
+import { BaseSyntaxErrorDetailsExtractor } from './BaseSyntaxErrorDetailsExtractor';
 import { YAMLException } from 'js-yaml';
 
-export class YamlErrorUnifier extends BaseErrorUnifier<YAMLException> {
+export class YamlSyntaxErrorDetailsExtractor extends BaseSyntaxErrorDetailsExtractor<YAMLException> {
   private readonly LOCATION_PATTERN = /\((\d+):(\d+)\)$/;
-
-  constructor(source: string) {
-    super(source);
-  }
 
   protected extractMessage(error: YAMLException): string {
     return error.message;

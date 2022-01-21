@@ -27,7 +27,7 @@ describe('YamlSyntaxErrorDetailsExtractor', () => {
     );
     const expected: SyntaxErrorDetails = {
       message: 'bad indentation of a mapping entry (5:3)',
-      offset: 37,
+      offset: 33,
       snippet: ` 2 |   bar: 42
  3 | dummy:
  4 |  'item1'

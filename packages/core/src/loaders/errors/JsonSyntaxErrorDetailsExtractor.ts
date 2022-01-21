@@ -25,6 +25,8 @@ export class JsonSyntaxErrorDetailsExtractor extends BaseSyntaxErrorDetailsExtra
   ];
 
   protected extractOffset(error: SyntaxError): number | undefined {
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SyntaxError
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error/lineNumber
     const position =
       'lineNumber' in error && 'columnNumber' in error
         ? (error as unknown as PositionedSyntaxError)

@@ -56,6 +56,8 @@ describe('OASV3Importer', () => {
 
       // assert
       (typeof result).should.eq('undefined');
+      importer.getErrorDetails('json').should.be.not.null;
+      importer.getErrorDetails('yaml').should.be.not.null;
     });
 
     it('should return the spec with expected type', async () => {

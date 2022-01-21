@@ -27,8 +27,11 @@ export abstract class BaseLoader implements Loader {
   }
 
   public getSyntaxErrorDetails(): SyntaxErrorDetails {
-    return this.error && this.isSupportedError(this.error)
-      ? this.syntaxErrorDetailsExtractor.extract(this.error, this.source)
-      : { message: this.error.message };
+    return (
+      this.error &&
+      (this.isSupportedError(this.error)
+        ? this.syntaxErrorDetailsExtractor.extract(this.error, this.source)
+        : { message: this.error.message })
+    );
   }
 }

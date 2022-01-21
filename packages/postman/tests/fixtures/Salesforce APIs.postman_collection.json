@@ -8224,7 +8224,7 @@
                       "variable": [
                         {
                           "key": "SOBJECT_API_NAME",
-                          "value": "Account",
+                          "value": "{{objectName}}",
                           "description": "Object API Name"
                         },
                         {
@@ -11170,6 +11170,10 @@
     {
       "key": "webstoreId",
       "value": "{{$guid}}"
+    },
+    {
+      "key": "objectName",
+      "value": "Account"
     }
   ]
 }

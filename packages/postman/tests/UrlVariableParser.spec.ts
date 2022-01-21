@@ -42,6 +42,17 @@ describe('UrlVariableParser', () => {
     result.should.equal('1');
   });
 
+  it('should preserve nested env variable', () => {
+    const parser = new UrlVariableParser(
+      [{ key: 'jobId', value: '{{_jobId}}' }],
+      generators
+    );
+
+    const result = parser.parse(':jobId');
+
+    result.should.equal('{{_jobId}}');
+  });
+
   it('should throw exception if variable is not defined', () => {
     const parser = new UrlVariableParser(
       [{ key: 'foo', value: 'bar' }],

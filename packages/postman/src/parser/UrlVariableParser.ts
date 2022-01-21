@@ -16,18 +16,6 @@ export class UrlVariableParser extends BaseVariableParser {
       let variable: Postman.Variable | (() => unknown) | undefined =
         this.find(token);
 
-      /**
-       * TODO: add support for dynamic variables, e.g.:
-       * ```json
-       * "path": ["user", ":userId"],
-       * "variable": [
-       *   {
-       *     "key": "userId",
-       *     "value": "{{$guid}}"
-       *   }
-       * ]
-       * ```
-       */
       if (typeof variable === 'function') {
         variable = {
           value: variable()?.toString()

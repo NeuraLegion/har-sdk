@@ -19,7 +19,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/async-queries/%7B%7B_jobId%7D%7D",
+    "url": "https://example.com/services/data/v53.0/async-queries/1",
     "method": "GET",
     "headers": [
       {
@@ -38,7 +38,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/async-queries/%7B%7B_jobId%7D%7D",
+    "url": "https://example.com/services/data/v53.0/async-queries/1",
     "method": "DELETE",
     "headers": [
       {
@@ -170,7 +170,7 @@
         },
         {
           "name": "client_secret",
-          "value": "{{clientSecret}}"
+          "value": ""
         },
         {
           "name": "redirect_uri",
@@ -202,7 +202,7 @@
     "queryString": [],
     "cookies": [],
     "postData": {
-      "text": "grant_type=password&client_id=3MVG98_Psg5cppyYCmk1gZNC25o00SXpgpodlS29IZ6pXiHkt3xuPa5qIjBTtEgdsiMuIWVN_8F0jnwEtbDh4&client_secret=%7B%7BclientSecret%7D%7D&username=Erik_Doyle&password=ZM4aWX5ESu79_MK%7B%7BsecretToken%7D%7D",
+      "text": "grant_type=password&client_id=3MVG98_Psg5cppyYCmk1gZNC25o00SXpgpodlS29IZ6pXiHkt3xuPa5qIjBTtEgdsiMuIWVN_8F0jnwEtbDh4&client_secret=&username=Erik_Doyle&password=ZM4aWX5ESu79_MK",
       "params": [
         {
           "name": "grant_type",
@@ -214,7 +214,7 @@
         },
         {
           "name": "client_secret",
-          "value": "{{clientSecret}}"
+          "value": ""
         },
         {
           "name": "username",
@@ -222,7 +222,7 @@
         },
         {
           "name": "password",
-          "value": "ZM4aWX5ESu79_MK{{secretToken}}"
+          "value": "ZM4aWX5ESu79_MK"
         }
       ],
       "mimeType": "application/x-www-form-urlencoded"
@@ -243,7 +243,7 @@
     "queryString": [],
     "cookies": [],
     "postData": {
-      "text": "grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Atoken-exchange&subject_token_type=urn%3Aietf%3Aparams%3Aoauth%3Atoken-type%3Aaccess_token&subject_token=%7B%7B_accessToken%7D%7D&actor_token_type=urn%3Aietf%3Aparams%3Aoauth%3Atoken-type%3Ajwt&actor_token=",
+      "text": "grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Atoken-exchange&subject_token_type=urn%3Aietf%3Aparams%3Aoauth%3Atoken-type%3Aaccess_token&subject_token=&actor_token_type=urn%3Aietf%3Aparams%3Aoauth%3Atoken-type%3Ajwt&actor_token=",
       "params": [
         {
           "name": "grant_type",
@@ -255,7 +255,7 @@
         },
         {
           "name": "subject_token",
-          "value": "{{_accessToken}}"
+          "value": ""
         },
         {
           "name": "actor_token_type",
@@ -284,7 +284,7 @@
     "queryString": [],
     "cookies": [],
     "postData": {
-      "text": "grant_type=refresh_token&client_id=3MVG98_Psg5cppyYCmk1gZNC25o00SXpgpodlS29IZ6pXiHkt3xuPa5qIjBTtEgdsiMuIWVN_8F0jnwEtbDh4&client_secret=%7B%7BclientSecret%7D%7D&refresh_token=%7B%7B_refreshToken%7D%7D",
+      "text": "grant_type=refresh_token&client_id=3MVG98_Psg5cppyYCmk1gZNC25o00SXpgpodlS29IZ6pXiHkt3xuPa5qIjBTtEgdsiMuIWVN_8F0jnwEtbDh4&client_secret=&refresh_token=",
       "params": [
         {
           "name": "grant_type",
@@ -296,11 +296,11 @@
         },
         {
           "name": "client_secret",
-          "value": "{{clientSecret}}"
+          "value": ""
         },
         {
           "name": "refresh_token",
-          "value": "{{_refreshToken}}"
+          "value": ""
         }
       ],
       "mimeType": "application/x-www-form-urlencoded"
@@ -321,11 +321,11 @@
     "queryString": [],
     "cookies": [],
     "postData": {
-      "text": "token=%7B%7B_accessToken%7D%7D",
+      "text": "token=",
       "params": [
         {
           "name": "token",
-          "value": "{{_accessToken}}"
+          "value": ""
         }
       ],
       "mimeType": "application/x-www-form-urlencoded"
@@ -385,11 +385,11 @@
     "queryString": [],
     "cookies": [],
     "postData": {
-      "text": "token=%7B%7B_accessToken%7D%7D&token_type_hint=access_token&client_id=3MVG98_Psg5cppyYCmk1gZNC25o00SXpgpodlS29IZ6pXiHkt3xuPa5qIjBTtEgdsiMuIWVN_8F0jnwEtbDh4&client_secret=%7B%7BclientSecret%7D%7D",
+      "text": "token=&token_type_hint=access_token&client_id=3MVG98_Psg5cppyYCmk1gZNC25o00SXpgpodlS29IZ6pXiHkt3xuPa5qIjBTtEgdsiMuIWVN_8F0jnwEtbDh4&client_secret=",
       "params": [
         {
           "name": "token",
-          "value": "{{_accessToken}}"
+          "value": ""
         },
         {
           "name": "token_type_hint",
@@ -401,7 +401,7 @@
         },
         {
           "name": "client_secret",
-          "value": "{{clientSecret}}"
+          "value": ""
         }
       ],
       "mimeType": "application/x-www-form-urlencoded"
@@ -424,7 +424,7 @@
       },
       {
         "name": "Authorization",
-        "value": "Bearer {{init_access_token}}"
+        "value": "Bearer "
       }
     ],
     "queryString": [],
@@ -462,7 +462,7 @@
     "cookies": [],
     "postData": {
       "mimeType": "application/json",
-      "text": "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<env:Envelope xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"\n    xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n    xmlns:env=\"http://schemas.xmlsoap.org/soap/envelope/\">\n  <env:Body>\n    <n1:login xmlns:n1=\"urn:partner.soap.sforce.com\">\n      <n1:username><![CDATA[Erik_Doyle]]></n1:username>\n      <n1:password><![CDATA[ZM4aWX5ESu79_MK{{secretToken}}]]></n1:password>\n    </n1:login>\n  </env:Body>\n</env:Envelope>"
+      "text": "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<env:Envelope xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"\n    xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n    xmlns:env=\"http://schemas.xmlsoap.org/soap/envelope/\">\n  <env:Body>\n    <n1:login xmlns:n1=\"urn:partner.soap.sforce.com\">\n      <n1:username><![CDATA[Erik_Doyle]]></n1:username>\n      <n1:password><![CDATA[ZM4aWX5ESu79_MK]]></n1:password>\n    </n1:login>\n  </env:Body>\n</env:Envelope>"
     },
     "headersSize": -1,
     "bodySize": -1,
@@ -479,7 +479,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/id/%7B%7B_orgId%7D%7D/e404c70f-a628-4db6-97ed-a8fe697507c8",
+    "url": "https://example.com/id/1/e404c70f-a628-4db6-97ed-a8fe697507c8",
     "method": "GET",
     "headers": [
       {
@@ -494,7 +494,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/jobs/query/%7B%7B_jobId%7D%7D",
+    "url": "https://example.com/services/data/v53.0/jobs/query/1",
     "method": "GET",
     "headers": [
       {
@@ -509,7 +509,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/jobs/query/%7B%7B_jobId%7D%7D/results?locator=&maxRecords=",
+    "url": "https://example.com/services/data/v53.0/jobs/query/1/results?locator=&maxRecords=",
     "method": "GET",
     "headers": [
       {
@@ -574,7 +574,7 @@
     "headers": [
       {
         "name": "X-SFDC-Session",
-        "value": "{{_accessToken}}"
+        "value": ""
       },
       {
         "name": "Content-Type",
@@ -620,12 +620,12 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/async/53.0/job/%7B%7B_jobId%7D%7D/spec",
+    "url": "https://example.com/services/async/53.0/job/1/spec",
     "method": "POST",
     "headers": [
       {
         "name": "X-SFDC-Session",
-        "value": "{{_accessToken}}"
+        "value": ""
       },
       {
         "name": "Content-Type",
@@ -655,12 +655,12 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/async/53.0/job/%7B%7B_jobId%7D%7D/batch",
+    "url": "https://example.com/services/async/53.0/job/1/batch",
     "method": "POST",
     "headers": [
       {
         "name": "X-SFDC-Session",
-        "value": "{{_accessToken}}"
+        "value": ""
       },
       {
         "name": "Content-Type",
@@ -694,12 +694,12 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/async/53.0/job/%7B%7B_jobId%7D%7D",
+    "url": "https://example.com/services/async/53.0/job/1",
     "method": "POST",
     "headers": [
       {
         "name": "X-SFDC-Session",
-        "value": "{{_accessToken}}"
+        "value": ""
       },
       {
         "name": "Content-Type",
@@ -729,12 +729,12 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/async/53.0/job/%7B%7B_jobId%7D%7D/batch",
+    "url": "https://example.com/services/async/53.0/job/1/batch",
     "method": "GET",
     "headers": [
       {
         "name": "X-SFDC-Session",
-        "value": "{{_accessToken}}"
+        "value": ""
       },
       {
         "name": "Accept-Encoding",
@@ -752,12 +752,12 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/async/53.0/job/%7B%7B_jobId%7D%7D/batch/%7B%7B_batchId%7D%7D/result",
+    "url": "https://example.com/services/async/53.0/job/1/batch/19/result",
     "method": "GET",
     "headers": [
       {
         "name": "X-SFDC-Session",
-        "value": "{{_accessToken}}"
+        "value": ""
       },
       {
         "name": "Accept-Encoding",
@@ -775,12 +775,12 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/async/53.0/job/%7B%7B_jobId%7D%7D/batch/%7B%7B_batchId%7D%7D/result/e404c70f-a628-4db6-97ed-a8fe697507c8",
+    "url": "https://example.com/services/async/53.0/job/1/batch/19/result/e404c70f-a628-4db6-97ed-a8fe697507c8",
     "method": "GET",
     "headers": [
       {
         "name": "X-SFDC-Session",
-        "value": "{{_accessToken}}"
+        "value": ""
       },
       {
         "name": "Accept-Encoding",
@@ -817,7 +817,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/jobs/query/%7B%7B_jobId%7D%7D",
+    "url": "https://example.com/services/data/v53.0/jobs/query/1",
     "method": "PATCH",
     "headers": [
       {
@@ -836,7 +836,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/jobs/query/%7B%7B_jobId%7D%7D",
+    "url": "https://example.com/services/data/v53.0/jobs/query/1",
     "method": "GET",
     "headers": [
       {
@@ -851,7 +851,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/jobs/query/%7B%7B_jobId%7D%7D",
+    "url": "https://example.com/services/data/v53.0/jobs/query/1",
     "method": "DELETE",
     "headers": [
       {
@@ -870,7 +870,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/jobs/query/%7B%7B_jobId%7D%7D/results?locator=&maxRecords=",
+    "url": "https://example.com/services/data/v53.0/jobs/query/1/results?locator=&maxRecords=",
     "method": "GET",
     "headers": [
       {
@@ -949,7 +949,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/jobs/ingest/%7B%7B_jobId%7D%7D/batches",
+    "url": "https://example.com/services/data/v53.0/jobs/ingest/1/batches",
     "method": "PUT",
     "headers": [
       {
@@ -968,7 +968,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/jobs/ingest/%7B%7B_jobId%7D%7D",
+    "url": "https://example.com/services/data/v53.0/jobs/ingest/1",
     "method": "PATCH",
     "headers": [
       {
@@ -987,7 +987,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/jobs/ingest/%7B%7B_jobId%7D%7D",
+    "url": "https://example.com/services/data/v53.0/jobs/ingest/1",
     "method": "DELETE",
     "headers": [
       {
@@ -1006,7 +1006,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/jobs/ingest/%7B%7B_jobId%7D%7D",
+    "url": "https://example.com/services/data/v53.0/jobs/ingest/1",
     "method": "GET",
     "headers": [
       {
@@ -1036,7 +1036,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/jobs/ingest/%7B%7B_jobId%7D%7D/successfulResults",
+    "url": "https://example.com/services/data/v53.0/jobs/ingest/1/successfulResults",
     "method": "GET",
     "headers": [
       {
@@ -1051,7 +1051,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/jobs/ingest/%7B%7B_jobId%7D%7D/failedResults",
+    "url": "https://example.com/services/data/v53.0/jobs/ingest/1/failedResults",
     "method": "GET",
     "headers": [
       {
@@ -1066,7 +1066,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/jobs/ingest/%7B%7B_jobId%7D%7D/unprocessedrecords",
+    "url": "https://example.com/services/data/v53.0/jobs/ingest/1/unprocessedrecords",
     "method": "GET",
     "headers": [
       {
@@ -2158,7 +2158,7 @@
     "cookies": [],
     "postData": {
       "mimeType": "application/json",
-      "text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:tns=\"http://soap.sforce.com/2006/04/metadata\">\n\t<soapenv:Header>\n\t<tns:SessionHeader>\n\t\t<tns:sessionId>{{_accessToken}}</tns:sessionId>\n\t</tns:SessionHeader>\n\t</soapenv:Header>\n\t<soapenv:Body>\n\t\t<tns:describeMetadata>\n\t\t\t<asOfVersion>53.0</asOfVersion>\n\t\t</tns:describeMetadata>\n\t</soapenv:Body>\n</soapenv:Envelope>"
+      "text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:tns=\"http://soap.sforce.com/2006/04/metadata\">\n\t<soapenv:Header>\n\t<tns:SessionHeader>\n\t\t<tns:sessionId></tns:sessionId>\n\t</tns:SessionHeader>\n\t</soapenv:Header>\n\t<soapenv:Body>\n\t\t<tns:describeMetadata>\n\t\t\t<asOfVersion>53.0</asOfVersion>\n\t\t</tns:describeMetadata>\n\t</soapenv:Body>\n</soapenv:Envelope>"
     },
     "headersSize": -1,
     "bodySize": -1,
@@ -2189,7 +2189,7 @@
     "cookies": [],
     "postData": {
       "mimeType": "application/json",
-      "text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:tns=\"http://soap.sforce.com/2006/04/metadata\">\n\t<soapenv:Header>\n\t<tns:SessionHeader>\n\t\t<tns:sessionId>{{_accessToken}}</tns:sessionId>\n\t</tns:SessionHeader>\n\t</soapenv:Header>\n\t<soapenv:Body>\n\t\t<tns:describeValueType>\n\t\t\t<type>{http://soap.sforce.com/2006/04/metadata}INSERT_METADATA_TYPE_NAME</type>\n\t\t</tns:describeValueType>\n\t</soapenv:Body>\n</soapenv:Envelope>"
+      "text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:tns=\"http://soap.sforce.com/2006/04/metadata\">\n\t<soapenv:Header>\n\t<tns:SessionHeader>\n\t\t<tns:sessionId></tns:sessionId>\n\t</tns:SessionHeader>\n\t</soapenv:Header>\n\t<soapenv:Body>\n\t\t<tns:describeValueType>\n\t\t\t<type>{http://soap.sforce.com/2006/04/metadata}INSERT_METADATA_TYPE_NAME</type>\n\t\t</tns:describeValueType>\n\t</soapenv:Body>\n</soapenv:Envelope>"
     },
     "headersSize": -1,
     "bodySize": -1,
@@ -2220,7 +2220,7 @@
     "cookies": [],
     "postData": {
       "mimeType": "application/json",
-      "text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:tns=\"http://soap.sforce.com/2006/04/metadata\">\n    <soapenv:Header>\n        <tns:SessionHeader>\n            <tns:sessionId>{{_accessToken}}</tns:sessionId>\n        </tns:SessionHeader>\n    </soapenv:Header>\n    <soapenv:Body>\n        <tns:listMetadata>\n            <listMetadataQuery>\n                <type>CustomObject</type>\n                <folder></folder>\n            </listMetadataQuery>\n            <asOfVersion>53.0</asOfVersion>\n        </tns:listMetadata>\n    </soapenv:Body>\n</soapenv:Envelope>"
+      "text": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:tns=\"http://soap.sforce.com/2006/04/metadata\">\n    <soapenv:Header>\n        <tns:SessionHeader>\n            <tns:sessionId></tns:sessionId>\n        </tns:SessionHeader>\n    </soapenv:Header>\n    <soapenv:Body>\n        <tns:listMetadata>\n            <listMetadataQuery>\n                <type>CustomObject</type>\n                <folder></folder>\n            </listMetadataQuery>\n            <asOfVersion>53.0</asOfVersion>\n        </tns:listMetadata>\n    </soapenv:Body>\n</soapenv:Envelope>"
     },
     "headersSize": -1,
     "bodySize": -1,

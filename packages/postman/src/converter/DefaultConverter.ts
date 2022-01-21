@@ -1,5 +1,9 @@
 import { Converter } from './Converter';
-import { VariableParser, VariableParserFactory } from '../parser';
+import {
+  ConverterOptions,
+  VariableParser,
+  VariableParserFactory
+} from '../parser';
 import {
   Header,
   normalizeUrl,
@@ -24,10 +28,7 @@ export class DefaultConverter implements Converter {
 
   constructor(
     private readonly parserFactory: VariableParserFactory,
-    options: {
-      environment?: Record<string, string>;
-      dryRun?: boolean;
-    }
+    options: ConverterOptions = {}
   ) {
     this.variables = Object.entries(options.environment ?? {}).map(
       ([key, value]: [string, string]) => ({

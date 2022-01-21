@@ -12,11 +12,8 @@ describe('EnvVariableParser', () => {
     result.should.equal('');
   });
 
-  it('should return original string in case of missing variables', () => {
-    const parser = new EnvVariableParser(
-      [{ key: 'baseURL', value: 'https://test.com' }],
-      generators
-    );
+  it('should return original string if value is null or undefined', () => {
+    const parser = new EnvVariableParser([{ key: 'baseUrl' }], generators);
 
     const result = parser.parse('{{baseUrl}}');
 
@@ -77,5 +74,27 @@ describe('EnvVariableParser', () => {
     const result = parser.parse('{{baseUrl}}');
 
     result.should.match(/https:\/\/test\.[A-Z]+\/api\/v1/);
+  });
+
+  it('should throw exception if variable is not defined', () => {
+    const parser = new EnvVariableParser(
+      [{ key: 'foo', value: 'bar' }],
+      generators
+    );
+
+    const result = () => parser.parse('{{baseUrl}}');
+
+    result.should.throw(Error, 'Undefined variable: `baseUrl`');
+  });
+
+  it('should throw exception on missing nested variable', () => {
+    const parser = new EnvVariableParser(
+      [{ key: 'baseUrl', value: 'https://{{hostname}}' }],
+      generators
+    );
+
+    const result = () => parser.parse('{{baseUrl}}');
+
+    result.should.throw(Error, 'Undefined variable: `hostname`');
   });
 });

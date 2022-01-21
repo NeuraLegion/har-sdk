@@ -57,17 +57,9 @@ describe('JsonLoader', () => {
       }
     }
   ].forEach(({ input, output }) =>
-    it(`should return ${output} for ${input}`, () => {
-      // act
-      try {
-        loader.load(input);
-      } catch {
-        // noop
-      }
-      const result = loader.getSyntaxErrorDetails();
-
-      // assert
-      result.should.deep.eq(output);
+    it(`should throw specific error for invalid input \`${input}\``, () => {
+      (() => loader.load(input)).should.throw(SyntaxError, output.message);
+      output.message.should.contain(loader.getSyntaxErrorDetails().message);
     })
   );
 

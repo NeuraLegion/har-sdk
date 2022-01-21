@@ -5,7 +5,11 @@ export class YamlSyntaxErrorDetailsExtractor extends BaseSyntaxErrorDetailsExtra
   private readonly LOCATION_PATTERN = /\((\d+):(\d+)\)$/;
 
   protected extractMessage(error: YAMLException): string {
-    return error.message.split('\n')[0].replace(/^YAMLException: /, '');
+    return error.message
+      .split('\n')[0]
+      .replace(/^YAMLException: /, '')
+      .replace(this.LOCATION_PATTERN, '')
+      .trim();
   }
 
   protected extractOffset(error: YAMLException): number | undefined {

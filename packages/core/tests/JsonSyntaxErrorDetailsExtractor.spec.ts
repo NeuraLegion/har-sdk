@@ -39,8 +39,7 @@ describe('JsonSyntaxErrorDetailsExtractor', () => {
 
     // assert
     result.should.be.deep.eq({
-      message:
-        'bad control character in string literal at line 3 column 16 of the JSON data',
+      message: 'bad control character in string literal',
       offset: 18
     });
   });
@@ -57,7 +56,7 @@ describe('JsonSyntaxErrorDetailsExtractor', () => {
 
     // assert
     result.should.be.deep.eq({
-      message: 'Unexpected token \\n in JSON at position 17',
+      message: 'Unexpected token \\n in JSON',
       offset: 17
     });
   });
@@ -66,7 +65,7 @@ describe('JsonSyntaxErrorDetailsExtractor', () => {
     // arrange
     const inputSource = 'abc';
     const inputError = {
-      message: 'error',
+      message: 'custom',
       lineNumber: 42,
       columnNumber: 42
     } as unknown as SyntaxError;
@@ -76,7 +75,7 @@ describe('JsonSyntaxErrorDetailsExtractor', () => {
 
     // assert
     result.should.be.deep.eq({
-      message: 'error',
+      message: 'custom',
       offset: inputSource.length
     });
   });

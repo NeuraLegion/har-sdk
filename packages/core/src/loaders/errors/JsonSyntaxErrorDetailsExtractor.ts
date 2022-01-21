@@ -11,7 +11,7 @@ export class JsonSyntaxErrorDetailsExtractor extends BaseSyntaxErrorDetailsExtra
   // see https://gist.github.com/pmstss/0cf3a26dd3c805389ef583c0279532e7 for details
   private readonly LOCATION_PATTERNS = [
     {
-      pattern: /(\d+)$/,
+      pattern: /at position (\d+)$/,
       positionExtractor: (matchRes: RegExpMatchArray): ErrorPosition =>
         +matchRes[1]
     },
@@ -39,7 +39,10 @@ export class JsonSyntaxErrorDetailsExtractor extends BaseSyntaxErrorDetailsExtra
   }
 
   protected extractMessage(error: SyntaxError): string {
-    return error.message.replace(/^JSON.parse: /, '');
+    return error.message
+      .replace(/^JSON.parse: /, '')
+      .replace(/ at line \d+ column \d+ of the JSON data$/, '')
+      .replace(/ at position \d+$/, '');
   }
 
   private extractByLocationPatterns(

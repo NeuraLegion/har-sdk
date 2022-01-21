@@ -30,17 +30,17 @@ export abstract class BaseSyntaxErrorDetailsExtractor<T extends Error>
     const details: SyntaxErrorDetails = {
       message: this.extractMessage(error),
       offset: this.extractOffset(error),
-      sample: this.extractSample(error)
+      snippet: this.extractSnippet(error)
     };
 
     return {
       message: details.message,
       ...(details.offset !== undefined ? { offset: details.offset } : {}),
-      ...(details.sample !== undefined ? { sample: details.sample } : {})
+      ...(details.snippet !== undefined ? { snippet: details.snippet } : {})
     };
   }
 
-  protected extractSample(_error: T): string | undefined {
+  protected extractSnippet(_error: T): string | undefined {
     return undefined;
   }
 

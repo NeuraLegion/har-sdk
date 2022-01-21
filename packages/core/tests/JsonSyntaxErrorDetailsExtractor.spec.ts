@@ -61,6 +61,25 @@ describe('JsonSyntaxErrorDetailsExtractor', () => {
     });
   });
 
+  it(`should returned zero-based offset`, () => {
+    // arrange
+    const inputSource = 'abc';
+    const inputError = {
+      message: 'custom',
+      lineNumber: 1,
+      columnNumber: 1
+    } as unknown as SyntaxError;
+
+    // act
+    const result = extractor.extract(inputError, inputSource);
+
+    // assert
+    result.should.be.deep.eq({
+      message: 'custom',
+      offset: 0
+    });
+  });
+
   it(`should limit returned offset to source length`, () => {
     // arrange
     const inputSource = 'abc';

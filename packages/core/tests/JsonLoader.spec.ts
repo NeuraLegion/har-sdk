@@ -55,6 +55,13 @@ describe('JsonLoader', () => {
       output: {
         message: 'Unexpected end of JSON input'
       }
+    },
+    {
+      input: '.',
+      output: {
+        message: 'Unexpected token . in JSON at position 0',
+        offset: 0
+      }
     }
   ].forEach(({ input, output }) =>
     it(`should throw specific error for invalid input \`${input}\``, () => {

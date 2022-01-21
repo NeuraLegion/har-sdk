@@ -25,34 +25,31 @@ export class JsonSyntaxErrorDetailsExtractor extends BaseSyntaxErrorDetailsExtra
   ];
 
   protected extractOffset(error: SyntaxError): number | undefined {
-    let position: number | ErrorPosition;
+    const position =
+      'lineNumber' in error && 'columnNumber' in error
+        ? (error as unknown as PositionedSyntaxError)
+        : this.extractByLocationPatterns(error.message);
 
-    if ('lineNumber' in error && 'columnNumber' in error) {
-      const positionedError = error as unknown as PositionedSyntaxError;
-      position = {
-        lineNumber: positionedError.lineNumber,
-        columnNumber: positionedError.columnNumber
-      };
-    }
+    return typeof position === 'number'
+      ? position
+      : position &&
+          this.calculateOffset(position.lineNumber, position.columnNumber);
+  }
 
-    const { message } = error;
+  protected extractMessage(error: SyntaxError): string {
+    return error.message.replace(/^JSON.parse: /, '');
+  }
 
+  private extractByLocationPatterns(
+    message: string
+  ): number | ErrorPosition | undefined {
     for (let idx = 0; idx < this.LOCATION_PATTERNS.length; ++idx) {
       const locationPattern = this.LOCATION_PATTERNS[idx];
 
       const matchRes = message.match(locationPattern.pattern);
       if (matchRes) {
-        position = locationPattern.positionExtractor(matchRes);
-        break;
+        return locationPattern.positionExtractor(matchRes);
       }
     }
-
-    return typeof position === 'number'
-      ? position
-      : this.calculateOffset(position.lineNumber, position.columnNumber);
-  }
-
-  protected extractMessage(error: SyntaxError): string {
-    return error.message.replace(/^JSON.parse: /, '');
   }
 }

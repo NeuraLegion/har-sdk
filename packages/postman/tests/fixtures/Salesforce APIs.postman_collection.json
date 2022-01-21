@@ -841,7 +841,7 @@
               },
               {
                 "key": "Authorization",
-                "value": "Bearer {{init_access_token}}",
+                "value": "Bearer {{initAccessToken}}",
                 "type": "text"
               }
             ],
@@ -8224,7 +8224,7 @@
                       "variable": [
                         {
                           "key": "SOBJECT_API_NAME",
-                          "value": "Account",
+                          "value": "{{objectName}}",
                           "description": "Object API Name"
                         },
                         {
@@ -11148,20 +11148,32 @@
       "value": ""
     },
     {
+      "key": "_refreshToken",
+      "value": ""
+    },
+    {
       "key": "_userId",
       "value": "{{$guid}}"
     },
     {
       "key": "_orgId",
-      "value": ""
+      "value": "1"
     },
     {
       "key": "_jobId",
-      "value": ""
+      "value": "1"
+    },
+    {
+      "key": "_batchId",
+      "value": "19"
     },
     {
       "key": "webstoreId",
       "value": "{{$guid}}"
+    },
+    {
+      "key": "objectName",
+      "value": "Account"
     }
   ]
 }

@@ -1,17 +1,15 @@
 import { DefaultConverter } from './converter';
 import {
+  ConstantGenerators,
   DefaultGenerators,
   DefaultVariableParserFactory,
-  ConstantGenerators
+  ConverterOptions
 } from './parser';
 import { Postman, Request } from '@har-sdk/core';
 
 export const postman2har = async (
   collection: Postman.Document,
-  options?: {
-    environment?: Record<string, string>;
-    dryRun?: boolean;
-  }
+  options: ConverterOptions = {}
 ): Promise<Request[]> => {
   if (!collection) {
     throw new TypeError('Please provide a valid Postman collection.');
@@ -20,8 +18,9 @@ export const postman2har = async (
   const generators = options?.dryRun
     ? new ConstantGenerators()
     : new DefaultGenerators();
+
   const parserFactory = new DefaultVariableParserFactory(generators);
-  const converter = new DefaultConverter(parserFactory, options ?? {});
+  const converter = new DefaultConverter(parserFactory, options);
 
   return converter.convert(collection);
 };

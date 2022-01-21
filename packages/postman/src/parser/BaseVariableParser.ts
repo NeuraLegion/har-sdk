@@ -3,6 +3,8 @@ import { Generators } from './generators';
 import { Postman } from '@har-sdk/core';
 
 export abstract class BaseVariableParser implements VariableParser {
+  private readonly REGEX_DYNAMIC_VARIABLE = /^\$/;
+
   protected constructor(
     private readonly variables: Postman.Variable[],
     private readonly generators: Generators
@@ -10,20 +12,20 @@ export abstract class BaseVariableParser implements VariableParser {
 
   public abstract parse(value: string): string;
 
-  public find(key: string): Postman.Variable | (() => any) | undefined {
-    const variable: Postman.Variable | undefined = this.variables.find(
+  public find(key: string): Postman.Variable | (() => unknown) | undefined {
+    let variable: Postman.Variable | undefined = this.variables.find(
       (x: Postman.Variable) => x.key === key
     );
 
-    if (!variable && key.startsWith('$')) {
-      return this.generators[key.replace(/^\$/, '')];
+    if (!variable && this.REGEX_DYNAMIC_VARIABLE.test(key)) {
+      variable = this.generators[key.replace(this.REGEX_DYNAMIC_VARIABLE, '')];
     }
 
     return variable;
   }
 
-  protected sample(variable?: Postman.Variable): string {
-    switch (variable?.type?.toLowerCase()) {
+  protected sample(variable: Postman.Variable): string {
+    switch (variable.type?.toLowerCase()) {
       case 'string':
       case 'text':
         return this.generators.randomWord();

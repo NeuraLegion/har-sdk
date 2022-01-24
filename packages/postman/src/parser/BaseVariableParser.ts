@@ -7,7 +7,7 @@ export abstract class BaseVariableParser implements VariableParser {
   private readonly REGEX_DYNAMIC_VARIABLE = /^\$/;
 
   protected constructor(
-    protected readonly scope: LexicalScope,
+    public readonly scope: LexicalScope,
     private readonly generators: Generators
   ) {}
 

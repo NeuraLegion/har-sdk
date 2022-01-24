@@ -87,7 +87,13 @@ export class DefaultConverter implements Converter {
         throw new Error('Method is not defined.');
       }
 
-      const url: string = this.convertUrl(urlObject, scope);
+      const url: string = this.convertUrl(
+        urlObject,
+        scope.concat(
+          'url',
+          typeof urlObject === 'string' ? [] : urlObject.variable
+        )
+      );
 
       const request: Request = {
         url,
@@ -420,9 +426,7 @@ export class DefaultConverter implements Converter {
   }
 
   private convertUrl(value: Postman.Url | string, scope: LexicalScope): string {
-    const envParser = this.parserFactory.createEnvVariableParser(
-      scope.combine(typeof value === 'string' ? [] : value.variable)
-    );
+    const envParser = this.parserFactory.createEnvVariableParser(scope);
 
     if (typeof value === 'string') {
       return envParser.parse(value);
@@ -449,7 +453,7 @@ export class DefaultConverter implements Converter {
       u.hash = url.hash;
     }
 
-    const pathname = this.buildPathname(url);
+    const pathname = this.buildPathname(url, env.scope);
     if (pathname) {
       u.pathname = env.parse(pathname);
     }
@@ -480,8 +484,8 @@ export class DefaultConverter implements Converter {
     }
   }
 
-  private buildPathname(url: Postman.Url): string {
-    const parser = this.parserFactory.createUrlVariableParser(url.variable);
+  private buildPathname(url: Postman.Url, scope: LexicalScope): string {
+    const parser = this.parserFactory.createUrlVariableParser(scope);
 
     return Array.isArray(url.path)
       ? url.path

@@ -1,6 +1,7 @@
 import { Replacer } from './Replacer';
 import { BaseVariableParser } from './BaseVariableParser';
 import { Generators } from './generators';
+import { NoSuchVariable } from './errors';
 import { Postman } from '@har-sdk/core';
 
 export class EnvVariableParser extends BaseVariableParser {
@@ -38,7 +39,7 @@ export class EnvVariableParser extends BaseVariableParser {
     }
 
     if (!variable) {
-      throw new Error(`Undefined variable: \`${token}\``);
+      throw new NoSuchVariable(token);
     }
 
     return variable.value ?? match;

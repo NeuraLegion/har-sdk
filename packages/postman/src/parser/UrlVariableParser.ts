@@ -1,5 +1,6 @@
 import { BaseVariableParser } from './BaseVariableParser';
 import { Generators } from './generators';
+import { NoSuchVariable } from './errors';
 import { Postman } from '@har-sdk/core';
 
 export class UrlVariableParser extends BaseVariableParser {
@@ -23,7 +24,7 @@ export class UrlVariableParser extends BaseVariableParser {
       }
 
       if (!variable) {
-        throw new Error(`Undefined variable: \`${token}\``);
+        throw new NoSuchVariable(token);
       }
 
       // https://github.com/postmanlabs/openapi-to-postman/issues/27

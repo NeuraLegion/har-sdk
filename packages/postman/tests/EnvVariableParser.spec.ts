@@ -1,11 +1,15 @@
-import { EnvVariableParser, DefaultGenerators } from '../src/parser';
+import {
+  EnvVariableParser,
+  DefaultGenerators,
+  LexicalScope
+} from '../src/parser';
 import 'chai/register-should';
 
 describe('EnvVariableParser', () => {
   const generators = new DefaultGenerators();
 
   it('should correctly handle empty string', () => {
-    const parser = new EnvVariableParser([], generators);
+    const parser = new EnvVariableParser(new LexicalScope(''), generators);
 
     const result = parser.parse('');
 
@@ -13,7 +17,10 @@ describe('EnvVariableParser', () => {
   });
 
   it('should return original string if value is null or undefined', () => {
-    const parser = new EnvVariableParser([{ key: 'baseUrl' }], generators);
+    const parser = new EnvVariableParser(
+      new LexicalScope('', [{ key: 'baseUrl' }]),
+      generators
+    );
 
     const result = parser.parse('{{baseUrl}}');
 
@@ -22,7 +29,7 @@ describe('EnvVariableParser', () => {
 
   it('should substitute single variable', () => {
     const parser = new EnvVariableParser(
-      [{ key: 'baseUrl', value: 'https://test.com' }],
+      new LexicalScope('', [{ key: 'baseUrl', value: 'https://test.com' }]),
       generators
     );
 
@@ -33,7 +40,9 @@ describe('EnvVariableParser', () => {
 
   it('should substitute dynamic variable', () => {
     const parser = new EnvVariableParser(
-      [{ key: 'baseUrl', value: 'https://test.com/{{$randomInt}}' }],
+      new LexicalScope('', [
+        { key: 'baseUrl', value: 'https://test.com/{{$randomInt}}' }
+      ]),
       generators
     );
 
@@ -44,13 +53,13 @@ describe('EnvVariableParser', () => {
 
   it('should substitute nested variables', () => {
     const parser = new EnvVariableParser(
-      [
+      new LexicalScope('', [
         { key: 'baseUrl', value: 'https://{{hostname}}/{{path}}' },
         { key: 'hostname', value: '{{companyName}}.{{domainTld}}' },
         { key: 'path', value: 'api/v1' },
         { key: 'companyName', value: 'test' },
         { key: 'domainTld', value: 'com' }
-      ],
+      ]),
       generators
     );
 
@@ -61,13 +70,13 @@ describe('EnvVariableParser', () => {
 
   it('should substitute nested dynamic variables', () => {
     const parser = new EnvVariableParser(
-      [
+      new LexicalScope('', [
         { key: 'baseUrl', value: 'https://{{hostname}}/{{path}}' },
         { key: 'hostname', value: '{{companyName}}.{{domainTld}}' },
         { key: 'path', value: 'api/v1' },
         { key: 'companyName', value: 'test' },
         { key: 'domainTld', value: '{{$randomAbbreviation}}' }
-      ],
+      ]),
       generators
     );
 
@@ -78,7 +87,7 @@ describe('EnvVariableParser', () => {
 
   it('should throw exception if variable is not defined', () => {
     const parser = new EnvVariableParser(
-      [{ key: 'foo', value: 'bar' }],
+      new LexicalScope('', [{ key: 'foo', value: 'bar' }]),
       generators
     );
 
@@ -89,7 +98,7 @@ describe('EnvVariableParser', () => {
 
   it('should throw exception on missing nested variable', () => {
     const parser = new EnvVariableParser(
-      [{ key: 'baseUrl', value: 'https://{{hostname}}' }],
+      new LexicalScope('', [{ key: 'baseUrl', value: 'https://{{hostname}}' }]),
       generators
     );
 

@@ -1,11 +1,15 @@
-import { DefaultGenerators, UrlVariableParser } from '../src/parser';
+import {
+  DefaultGenerators,
+  LexicalScope,
+  UrlVariableParser
+} from '../src/parser';
 import 'chai/register-should';
 
 describe('UrlVariableParser', () => {
   const generators = new DefaultGenerators();
 
   it('should correctly handle empty string', () => {
-    const parser = new UrlVariableParser([], generators);
+    const parser = new UrlVariableParser(new LexicalScope(''), generators);
 
     const result = parser.parse('');
 
@@ -13,7 +17,7 @@ describe('UrlVariableParser', () => {
   });
 
   it('should return original string if it is not the path parameter', () => {
-    const parser = new UrlVariableParser([], generators);
+    const parser = new UrlVariableParser(new LexicalScope(''), generators);
 
     const result = parser.parse('jobId');
 
@@ -22,7 +26,7 @@ describe('UrlVariableParser', () => {
 
   it('should return value according to type if value is null or undefined', () => {
     const parser = new UrlVariableParser(
-      [{ key: 'jobId', type: 'number' }],
+      new LexicalScope('', [{ key: 'jobId', type: 'number' }]),
       generators
     );
 
@@ -33,7 +37,7 @@ describe('UrlVariableParser', () => {
 
   it('should substitute single variable', () => {
     const parser = new UrlVariableParser(
-      [{ key: 'jobId', value: '1' }],
+      new LexicalScope('', [{ key: 'jobId', value: '1' }]),
       generators
     );
 
@@ -44,7 +48,7 @@ describe('UrlVariableParser', () => {
 
   it('should preserve nested env variable', () => {
     const parser = new UrlVariableParser(
-      [{ key: 'jobId', value: '{{_jobId}}' }],
+      new LexicalScope('', [{ key: 'jobId', value: '{{_jobId}}' }]),
       generators
     );
 
@@ -55,7 +59,7 @@ describe('UrlVariableParser', () => {
 
   it('should throw exception if variable is not defined', () => {
     const parser = new UrlVariableParser(
-      [{ key: 'foo', value: 'bar' }],
+      new LexicalScope('', [{ key: 'foo', value: 'bar' }]),
       generators
     );
 
@@ -66,7 +70,9 @@ describe('UrlVariableParser', () => {
 
   it('should throw exception if wrong value is assigned to variable (postmanlabs/openapi-to-postman#27)', () => {
     const parser = new UrlVariableParser(
-      [{ key: 'jobId', value: 'schema type not provided' }],
+      new LexicalScope('', [
+        { key: 'jobId', value: 'schema type not provided' }
+      ]),
       generators
     );
 

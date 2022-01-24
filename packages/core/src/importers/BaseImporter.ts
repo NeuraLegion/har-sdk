@@ -79,9 +79,9 @@ export abstract class BaseImporter<
 
   private initLoaders(): void {
     this.loaders.clear();
-    this.docFormats.forEach((docFormat: DocFormat) => {
-      this.loaders.set(docFormat, this.loaderFactory.getLoader(docFormat));
-    });
+    this.docFormats.forEach((docFormat: DocFormat) =>
+      this.loaders.set(docFormat, this.loaderFactory.getLoader(docFormat))
+    );
   }
 
   private getLoader(docFormat: DocFormat): Loader | undefined {

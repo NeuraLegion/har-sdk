@@ -12,35 +12,35 @@ describe('JsonLoader', () => {
     {
       input: '[1, 2, 3, 4,]',
       output: {
-        message: 'Unexpected token ] in JSON at position 12',
+        message: 'Unexpected token ] in JSON',
         offset: 12
       }
     },
     {
       input: '{"foo": 1,}',
       output: {
-        message: 'Unexpected token } in JSON at position 10',
+        message: 'Unexpected token } in JSON',
         offset: 10
       }
     },
     {
       input: "{'foo': 1}",
       output: {
-        message: "Unexpected token ' in JSON at position 1",
+        message: "Unexpected token ' in JSON",
         offset: 1
       }
     },
     {
       input: '{"foo": 01}',
       output: {
-        message: 'Unexpected number in JSON at position 9',
+        message: 'Unexpected number in JSON',
         offset: 9
       }
     },
     {
       input: '{"foo": 1.}',
       output: {
-        message: 'Unexpected token } in JSON at position 10',
+        message: 'Unexpected token } in JSON',
         offset: 10
       }
     },
@@ -59,14 +59,17 @@ describe('JsonLoader', () => {
     {
       input: '.',
       output: {
-        message: 'Unexpected token . in JSON at position 0',
+        message: 'Unexpected token . in JSON',
         offset: 0
       }
     }
   ].forEach(({ input, output }) =>
     it(`should throw specific error for invalid input \`${input}\``, () => {
-      (() => loader.load(input)).should.throw(SyntaxError, output.message);
-      output.message.should.contain(loader.getSyntaxErrorDetails().message);
+      (() => loader.load(input)).should.throw(SyntaxError);
+
+      const result = loader.getSyntaxErrorDetails();
+
+      result.should.deep.eq(output);
     })
   );
 

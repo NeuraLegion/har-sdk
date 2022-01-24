@@ -27,16 +27,14 @@ export abstract class BaseSyntaxErrorDetailsExtractor<T extends Error>
     this.source = source;
     this._lineOffsets = undefined;
 
-    const details: SyntaxErrorDetails = {
-      message: this.extractMessage(error),
-      offset: this.extractOffset(error),
-      snippet: this.extractSnippet(error)
-    };
+    const message = this.extractMessage(error);
+    const offset = this.extractOffset(error);
+    const snippet = this.extractSnippet(error);
 
     return {
-      message: details.message,
-      ...(details.offset !== undefined ? { offset: details.offset } : {}),
-      ...(details.snippet !== undefined ? { snippet: details.snippet } : {})
+      message,
+      ...(offset !== undefined ? { offset } : {}),
+      ...(snippet !== undefined ? { snippet } : {})
     };
   }
 

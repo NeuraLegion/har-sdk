@@ -12,12 +12,16 @@ export class JsonSyntaxErrorDetailsExtractor extends BaseSyntaxErrorDetailsExtra
   private readonly LOCATION_PATTERNS = [
     {
       pattern: /at position (\d+)$/,
-      positionExtractor: (matchRes: RegExpMatchArray): ErrorPosition =>
-        +matchRes[1]
+      positionExtractor: ([, position]: RegExpMatchArray): ErrorPosition =>
+        +position
     },
     {
       pattern: /at line (\d+) column (\d+)/,
-      positionExtractor: ([, line, column]: RegExpMatchArray): ErrorPosition => ({
+      positionExtractor: ([
+        ,
+        line,
+        column
+      ]: RegExpMatchArray): ErrorPosition => ({
         lineNumber: +line,
         columnNumber: +column
       })

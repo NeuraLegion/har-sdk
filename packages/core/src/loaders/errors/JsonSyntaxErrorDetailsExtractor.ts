@@ -17,9 +17,9 @@ export class JsonSyntaxErrorDetailsExtractor extends BaseSyntaxErrorDetailsExtra
     },
     {
       pattern: /at line (\d+) column (\d+)/,
-      positionExtractor: (matchRes: RegExpMatchArray): ErrorPosition => ({
-        lineNumber: +matchRes[1],
-        columnNumber: +matchRes[2]
+      positionExtractor: ([, line, column]: RegExpMatchArray): ErrorPosition => ({
+        lineNumber: +line,
+        columnNumber: +column
       })
     }
   ];

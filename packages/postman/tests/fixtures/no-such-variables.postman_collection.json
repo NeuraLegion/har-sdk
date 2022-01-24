@@ -1,0 +1,33 @@
+{
+  "info": {
+    "_postman_id": "ef94f8d6-3f56-4533-b9de-877ded64696f",
+    "name": "Swagger Petstore",
+    "description": "This is a sample server Petstore server.  You can find out more about     Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).      For this sample, you can use the api key `special-key` to test the authorization     filters.\n\nContact Support:\n Email: apiteam@swagger.io",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "get Public Keys",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/:version/public_keys?user_id=<integer>&page=<integer>&per_page=<integer>&action=<string>",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", ":version", "public_keys"],
+          "query": [
+            {
+              "key": "user_id",
+              "value": "schema type not provided",
+              "description": "User ID.  Provide a value of `0` to operate the current session's user."
+            }
+          ],
+          "variable": []
+        },
+        "description": "List Public Keys"
+      },
+      "response": []
+    }
+  ],
+  "variable": []
+}

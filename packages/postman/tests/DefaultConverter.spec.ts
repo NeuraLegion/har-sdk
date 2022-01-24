@@ -1,10 +1,16 @@
+import 'chai/register-should';
 import { postman2har } from '../src';
-import postmanCollection from './fixtures/Salesforce APIs.postman_collection.json';
+import collection from './fixtures/Salesforce APIs.postman_collection.json';
+import collectionWithoutVariables from './fixtures/no-such-variables.postman_collection.json';
+import { NoSuchVariable } from '../src/parser';
 import { Postman, Request } from '@har-sdk/core';
+import chaiAsPromised from 'chai-as-promised';
+import { use } from 'chai';
 import { readFile } from 'fs';
 import { resolve } from 'path';
 import { promisify } from 'util';
-import 'chai/register-should';
+
+use(chaiAsPromised);
 
 describe('DefaultConverter', () => {
   describe('convert', () => {
@@ -23,7 +29,7 @@ describe('DefaultConverter', () => {
 
     it('should convert Postman v2.1.0 collection to HAR', async () => {
       const [firstRequest]: Request[] = await postman2har(
-        postmanCollection as unknown as Postman.Document,
+        collection as unknown as Postman.Document,
         {
           environment: {
             _endpoint: 'example.com'
@@ -49,7 +55,7 @@ describe('DefaultConverter', () => {
       );
 
       const result: Request[] = await postman2har(
-        postmanCollection as unknown as Postman.Document,
+        collection as unknown as Postman.Document,
         {
           environment: {
             _endpoint: 'example.com'
@@ -59,6 +65,16 @@ describe('DefaultConverter', () => {
       );
 
       JSON.parse(JSON.stringify(result)).should.deep.eq(expected);
+    });
+
+    it('should throw an error while resolving variables', async () => {
+      const result = postman2har(
+        collectionWithoutVariables as unknown as Postman.Document
+      );
+
+      return result.should.eventually.be
+        .rejectedWith(NoSuchVariable)
+        .that.has.property('jsonPointer', '/item/0/url');
     });
   });
 });

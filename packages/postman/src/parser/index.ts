@@ -1,4 +1,5 @@
 export * from './generators';
+export * from './errors';
 export { LexicalScope } from './LexicalScope';
 export { ConverterOptions } from './ConverterOptions';
 export { DefaultVariableParserFactory } from './DefaultVariableParserFactory';

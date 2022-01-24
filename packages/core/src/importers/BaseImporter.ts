@@ -84,7 +84,7 @@ export abstract class BaseImporter<
     });
   }
 
-  private getLoader(docFormat: DocFormat): Loader {
+  private getLoader(docFormat: DocFormat): Loader | undefined {
     return this.loaders.get(docFormat);
   }
 }

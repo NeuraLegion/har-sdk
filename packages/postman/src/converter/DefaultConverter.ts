@@ -2,7 +2,8 @@ import { Converter } from './Converter';
 import {
   ConverterOptions,
   VariableParser,
-  VariableParserFactory
+  VariableParserFactory,
+  LexicalScope
 } from '../parser';
 import {
   Header,
@@ -40,27 +41,26 @@ export class DefaultConverter implements Converter {
   }
 
   public async convert(collection: Postman.Document): Promise<Request[]> {
-    return this.traverse(collection, [...this.variables]);
+    const scope = new LexicalScope('', [...this.variables]);
+
+    return this.traverse(collection, scope);
   }
 
-  private traverse(
-    folder: Postman.ItemGroup,
-    variables: Postman.Variable[]
-  ): Request[] {
-    variables = [...(folder?.variable ?? []), ...variables];
+  private traverse(folder: Postman.ItemGroup, scope: LexicalScope): Request[] {
+    scope.combine(folder.variable ?? []);
 
     return folder.item.reduce(
-      (items: Request[], x: Postman.ItemGroup | Postman.Item) => {
-        const subVariables = [...(x?.variable ?? []), ...variables];
+      (items: Request[], x: Postman.ItemGroup | Postman.Item, idx: number) => {
+        const subScope = scope.concat(
+          `/item/${idx.toString(10)}`,
+          x.variable ?? []
+        );
 
         if (this.isGroup(x)) {
-          return items.concat(this.traverse(x, subVariables));
+          return items.concat(this.traverse(x, subScope));
         }
 
-        const request: Request | undefined = this.convertRequest(
-          x,
-          subVariables
-        );
+        const request: Request | undefined = this.convertRequest(x, subScope);
 
         if (request) {
           items.push(request);
@@ -78,7 +78,7 @@ export class DefaultConverter implements Converter {
 
   private convertRequest(
     item: Postman.Item,
-    variables: Postman.Variable[]
+    scope: LexicalScope
   ): Request | undefined {
     if (item.request) {
       const { method, header, body, auth, url: urlObject } = item.request;
@@ -87,22 +87,22 @@ export class DefaultConverter implements Converter {
         throw new Error('Method is not defined.');
       }
 
-      const url: string = this.convertUrl(urlObject, variables);
+      const url: string = this.convertUrl(urlObject, scope);
 
       const request: Request = {
         url,
         method: (method ?? 'GET').toUpperCase(),
-        headers: this.convertHeaders(header ?? '', variables),
-        queryString: this.convertQuery(url, variables),
+        headers: this.convertHeaders(header ?? '', scope),
+        queryString: this.convertQuery(url, scope),
         cookies: [],
-        postData: body && this.convertBody(body, variables),
+        postData: body && this.convertBody(body, scope),
         headersSize: -1,
         bodySize: -1,
         httpVersion: 'HTTP/1.1'
       };
 
       if (auth) {
-        this.authRequest(request, auth, variables);
+        this.authRequest(request, auth, scope);
       }
 
       return request;
@@ -113,7 +113,7 @@ export class DefaultConverter implements Converter {
   private authRequest(
     request: Request,
     auth: Postman.RequestAuth,
-    variables: Postman.Variable[]
+    scope: LexicalScope
   ): void {
     const params: Postman.Variable[] | undefined = auth[auth.type];
 
@@ -127,16 +127,16 @@ export class DefaultConverter implements Converter {
 
     switch (auth.type) {
       case 'apikey':
-        this.apiKeyAuth(request, options, variables);
+        this.apiKeyAuth(request, options, scope);
         break;
       case 'basic':
-        this.basicAuth(request, options, variables);
+        this.basicAuth(request, options, scope);
         break;
       case 'bearer':
-        this.bearerAuth(request, options, variables);
+        this.bearerAuth(request, options, scope);
         break;
       case 'oauth2':
-        this.oauth2(request, options, variables);
+        this.oauth2(request, options, scope);
         break;
       case 'noauth':
       default:
@@ -148,7 +148,7 @@ export class DefaultConverter implements Converter {
   private oauth2(
     request: Request,
     options: Record<string, string>,
-    variables: Postman.Variable[]
+    scope: LexicalScope
   ) {
     if (!options.accessToken || options.tokenType === 'mac') {
       return;
@@ -156,7 +156,7 @@ export class DefaultConverter implements Converter {
 
     const target: AuthLocation =
       AuthLocation[(options.addTokenTo ?? 'header').toUpperCase()];
-    const parser = this.parserFactory.createEnvVariableParser(variables);
+    const parser = this.parserFactory.createEnvVariableParser(scope);
 
     this.removeCredentials(request, target);
 
@@ -186,9 +186,9 @@ export class DefaultConverter implements Converter {
   private bearerAuth(
     request: Request,
     options: Record<string, string>,
-    variables: Postman.Variable[]
+    scope: LexicalScope
   ): void {
-    const parser = this.parserFactory.createEnvVariableParser(variables);
+    const parser = this.parserFactory.createEnvVariableParser(scope);
 
     this.removeCredentials(request, AuthLocation.HEADER);
 
@@ -218,9 +218,9 @@ export class DefaultConverter implements Converter {
   private basicAuth(
     request: Request,
     options: Record<string, string>,
-    variables: Postman.Variable[]
+    scope: LexicalScope
   ) {
-    const parser = this.parserFactory.createEnvVariableParser(variables);
+    const parser = this.parserFactory.createEnvVariableParser(scope);
 
     this.removeCredentials(request, AuthLocation.HEADER);
 
@@ -239,9 +239,9 @@ export class DefaultConverter implements Converter {
   private apiKeyAuth(
     request: Request,
     options: Record<string, string>,
-    variables: Postman.Variable[]
+    scope: LexicalScope
   ): void {
-    const parser = this.parserFactory.createEnvVariableParser(variables);
+    const parser = this.parserFactory.createEnvVariableParser(scope);
     const target: AuthLocation =
       AuthLocation[(options.in ?? 'header').toUpperCase()];
 
@@ -255,10 +255,9 @@ export class DefaultConverter implements Converter {
 
   private convertBody(
     body: Postman.RequestBody,
-    variables: Postman.Variable[]
+    scope: LexicalScope
   ): PostData {
-    const parser: VariableParser =
-      this.parserFactory.createEnvVariableParser(variables);
+    const parser = this.parserFactory.createEnvVariableParser(scope);
 
     switch (body.mode) {
       case 'raw':
@@ -397,10 +396,9 @@ export class DefaultConverter implements Converter {
 
   private convertHeaders(
     headers: Postman.Header[] | string,
-    variables: Postman.Variable[]
+    scope: LexicalScope
   ): Header[] {
-    const parser: VariableParser =
-      this.parserFactory.createEnvVariableParser(variables);
+    const parser = this.parserFactory.createEnvVariableParser(scope);
 
     if (Array.isArray(headers)) {
       return headers.map((x: Postman.Header) => ({
@@ -421,16 +419,10 @@ export class DefaultConverter implements Converter {
     });
   }
 
-  private convertUrl(
-    value: Postman.Url | string,
-    variables: Postman.Variable[]
-  ): string {
-    const subVariables = typeof value === 'string' ? [] : value.variable;
-    const envParser: VariableParser =
-      this.parserFactory.createEnvVariableParser([
-        ...(subVariables ?? []),
-        ...variables
-      ]);
+  private convertUrl(value: Postman.Url | string, scope: LexicalScope): string {
+    const envParser = this.parserFactory.createEnvVariableParser(
+      scope.combine(typeof value === 'string' ? [] : value.variable)
+    );
 
     if (typeof value === 'string') {
       return envParser.parse(value);
@@ -515,22 +507,18 @@ export class DefaultConverter implements Converter {
 
   private convertQuery(
     url: Postman.Url | string,
-    variables: Postman.Variable[]
+    scope: LexicalScope
   ): QueryString[] {
-    let query: Record<string, undefined | string | string[]> | undefined;
-
-    if (typeof url === 'string') {
-      query = Object.fromEntries(parseUrl(url).searchParams);
-    } else {
-      query = this.prepareQueries(url);
-    }
+    const query: Record<string, undefined | string | string[]> | undefined =
+      typeof url === 'string'
+        ? Object.fromEntries(parseUrl(url).searchParams)
+        : this.prepareQueries(url);
 
     if (!query) {
       return [];
     }
 
-    const envParser: VariableParser =
-      this.parserFactory.createEnvVariableParser(variables);
+    const envParser = this.parserFactory.createEnvVariableParser(scope);
 
     return Object.entries(query).map(
       ([name, value]: [string, undefined | string | string[]]) => ({

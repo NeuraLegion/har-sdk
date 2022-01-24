@@ -31,7 +31,7 @@ export class LexicalScope {
     relativePath: string,
     variables: Postman.Variable[]
   ): LexicalScope {
-    const aggregatedVariables = [...(variables ?? []), ...this.variables];
+    const aggregatedVariables = [...variables, ...this.variables];
     const nextPointer = `${this.jsonPointer}/${removeLeadingSlash(
       relativePath
     )}`;
@@ -52,17 +52,5 @@ export class LexicalScope {
 
   public [Symbol.iterator](): IterableIterator<Postman.Variable> {
     return this.variables[Symbol.iterator]();
-  }
-
-  public entries(): IterableIterator<[number, Postman.Variable]> {
-    return this.variables.entries();
-  }
-
-  public keys(): IterableIterator<number> {
-    return this.variables.keys();
-  }
-
-  public values(): IterableIterator<Postman.Variable> {
-    return this.variables.values();
   }
 }

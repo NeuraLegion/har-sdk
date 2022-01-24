@@ -2,14 +2,15 @@ import { Replacer } from './Replacer';
 import { BaseVariableParser } from './BaseVariableParser';
 import { Generators } from './generators';
 import { NoSuchVariable } from './errors';
+import { LexicalScope } from './LexicalScope';
 import { Postman } from '@har-sdk/core';
 
 export class EnvVariableParser extends BaseVariableParser {
   private readonly REGEX_EXTRACT_VARS = /{{([^{}]*?)}}/g;
   private readonly VARS_SUBSTITUTIONS_LIMIT = 30;
 
-  constructor(variables: Postman.Variable[], generators: Generators) {
-    super(variables, generators);
+  constructor(scope: LexicalScope, generators: Generators) {
+    super(scope, generators);
   }
 
   public parse(value: string): string {
@@ -39,7 +40,7 @@ export class EnvVariableParser extends BaseVariableParser {
     }
 
     if (!variable) {
-      throw new NoSuchVariable(token);
+      throw new NoSuchVariable(token, this.scope.jsonPointer);
     }
 
     return variable.value ?? match;

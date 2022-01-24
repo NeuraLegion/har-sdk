@@ -1,19 +1,20 @@
 import { VariableParser } from './VariableParser';
 import { Generators } from './generators';
+import { LexicalScope } from './LexicalScope';
 import { Postman } from '@har-sdk/core';
 
 export abstract class BaseVariableParser implements VariableParser {
   private readonly REGEX_DYNAMIC_VARIABLE = /^\$/;
 
   protected constructor(
-    private readonly variables: Postman.Variable[],
+    protected readonly scope: LexicalScope,
     private readonly generators: Generators
   ) {}
 
   public abstract parse(value: string): string;
 
   public find(key: string): Postman.Variable | (() => unknown) | undefined {
-    let variable: Postman.Variable | undefined = this.variables.find(
+    let variable: Postman.Variable | undefined = this.scope.find(
       (x: Postman.Variable) => x.key === key
     );
 

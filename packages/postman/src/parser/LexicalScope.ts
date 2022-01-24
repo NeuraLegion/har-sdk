@@ -41,9 +41,9 @@ export class LexicalScope {
 
   public find(
     predicate: (
-      value?: Postman.Variable,
-      index?: number,
-      obj?: Postman.Variable[]
+      value: Postman.Variable,
+      index: number,
+      obj: Postman.Variable[]
     ) => unknown,
     thisArg?: unknown
   ): Postman.Variable | undefined {

@@ -6,16 +6,11 @@ import {
 
 export class LexicalScope {
   public readonly jsonPointer: string;
+  private readonly variables: Postman.Variable[];
 
-  get variables(): readonly Postman.Variable[] {
-    return this._variables;
-  }
-
-  private _variables: Postman.Variable[];
-
-  constructor(jsonPointer: string, variables: Postman.Variable[]) {
+  constructor(jsonPointer: string, variables: Postman.Variable[] = []) {
     this.jsonPointer = removeTrailingSlash(jsonPointer);
-    this._variables = [...variables];
+    this.variables = [...variables];
   }
 
   public combine(scopeOrVariables: LexicalScope | Postman.Variable[]): this {
@@ -27,7 +22,7 @@ export class LexicalScope {
       variables = [...scopeOrVariables.variables];
     }
 
-    this._variables.unshift(...variables);
+    this.variables.unshift(...variables);
 
     return this;
   }
@@ -42,5 +37,32 @@ export class LexicalScope {
     )}`;
 
     return new LexicalScope(nextPointer, aggregatedVariables);
+  }
+
+  public find(
+    predicate: (
+      value?: Postman.Variable,
+      index?: number,
+      obj?: Postman.Variable[]
+    ) => unknown,
+    thisArg?: unknown
+  ): Postman.Variable | undefined {
+    return this.variables.find(predicate, thisArg ?? this);
+  }
+
+  public [Symbol.iterator](): IterableIterator<Postman.Variable> {
+    return this.variables[Symbol.iterator]();
+  }
+
+  public entries(): IterableIterator<[number, Postman.Variable]> {
+    return this.variables.entries();
+  }
+
+  public keys(): IterableIterator<number> {
+    return this.variables.keys();
+  }
+
+  public values(): IterableIterator<Postman.Variable> {
+    return this.variables.values();
   }
 }

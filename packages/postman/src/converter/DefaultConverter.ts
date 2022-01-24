@@ -87,19 +87,16 @@ export class DefaultConverter implements Converter {
         throw new Error('Method is not defined.');
       }
 
-      const url: string = this.convertUrl(
-        urlObject,
-        scope.concat(
-          'url',
-          typeof urlObject === 'string' ? [] : urlObject.variable
-        )
+      const urlScope = scope.concat(
+        'url',
+        typeof urlObject === 'string' ? [] : urlObject.variable
       );
-
+      const url: string = this.convertUrl(urlObject, urlScope);
       const request: Request = {
         url,
         method: (method ?? 'GET').toUpperCase(),
         headers: this.convertHeaders(header ?? '', scope),
-        queryString: this.convertQuery(url, scope),
+        queryString: this.convertQuery(url, urlScope),
         cookies: [],
         postData: body && this.convertBody(body, scope),
         headersSize: -1,

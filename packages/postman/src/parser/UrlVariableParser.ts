@@ -1,6 +1,6 @@
 import { BaseVariableParser } from './BaseVariableParser';
 import { Generators } from './generators';
-import { NoSuchVariable } from './errors';
+import { NoSuchVariable, UnexpectedVariable } from './errors';
 import { Postman } from '@har-sdk/core';
 
 export class UrlVariableParser extends BaseVariableParser {
@@ -29,7 +29,7 @@ export class UrlVariableParser extends BaseVariableParser {
 
       // https://github.com/postmanlabs/openapi-to-postman/issues/27
       if (variable.value === 'schema type not provided') {
-        throw new Error(`Unexpected value of \`${token}\` variable`);
+        throw new UnexpectedVariable(token);
       }
 
       if (!(variable.value === undefined || variable.value === null)) {

@@ -31,7 +31,7 @@ export class LexicalScope {
     relativePath: string,
     variables: Postman.Variable[]
   ): LexicalScope {
-    const aggregatedVariables = [...variables, ...this.variables];
+    const aggregatedVariables = [...(variables ?? []), ...this.variables];
     const nextPointer = `${this.jsonPointer}/${removeLeadingSlash(
       relativePath
     )}`;

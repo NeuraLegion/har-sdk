@@ -91,10 +91,10 @@ export class DefaultConverter implements Converter {
         'url',
         typeof urlObject === 'string' ? [] : urlObject.variable
       );
-      const url: string = this.convertUrl(urlObject, urlScope);
+      const url = this.convertUrl(urlObject, urlScope);
       const request: Request = {
         url,
-        method: (method ?? 'GET').toUpperCase(),
+        method: method.toUpperCase(),
         headers: this.convertHeaders(header ?? '', scope),
         queryString: this.convertQuery(url, urlScope),
         cookies: [],

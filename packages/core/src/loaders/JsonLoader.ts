@@ -1,7 +1,16 @@
-import { Loader } from './Loader';
+import { BaseLoader } from './BaseLoader';
+import { JsonSyntaxErrorDetailsExtractor } from './errors';
 
-export class JsonLoader implements Loader {
-  public load(source: string): unknown {
-    return JSON.parse(source);
+export class JsonLoader extends BaseLoader {
+  constructor() {
+    super(new JsonSyntaxErrorDetailsExtractor());
+  }
+
+  protected parse(): unknown {
+    return JSON.parse(this.source);
+  }
+
+  protected isSupportedError(error: Error): boolean {
+    return error instanceof SyntaxError;
   }
 }

@@ -5,6 +5,7 @@ import { ConverterOptions } from './ConverterOptions';
 import {
   Header,
   normalizeUrl,
+  Param,
   parseUrl,
   PostData,
   Postman,
@@ -275,27 +276,26 @@ export class DefaultConverter implements Converter {
     return {
       mimeType: 'multipart/form-data',
       params: Array.isArray(body.formdata)
-        ? body.formdata.map((x: Postman.FormParam) => {
-            const fileName: string | undefined = x.src
-              ? basename(Array.isArray(x.src) ? x.src.pop() ?? '' : x.src)
-              : undefined;
-
-            const extension: string | undefined = fileName
-              ? extname(fileName)
-              : fileName;
-
-            const contentType: string | undefined =
-              x.contentType ??
-              (this.dryRun ? undefined : lookup(extension ?? '') || undefined);
-
-            return {
-              fileName,
-              contentType,
-              name: x.key,
-              value: x.value ?? ''
-            };
-          })
+        ? body.formdata.map((x: Postman.FormParam) => this.formDataField(x))
         : []
+    };
+  }
+
+  private formDataField(x: Postman.FormParam): Param {
+    const fileName = basename(
+      (Array.isArray(x.src) ? x.src.pop() : x.src) ?? ''
+    );
+    const extension = extname(fileName);
+
+    const contentType: string | undefined =
+      x.contentType ??
+      (this.dryRun ? undefined : lookup(extension) || undefined);
+
+    return {
+      contentType,
+      name: x.key,
+      value: x.value ?? '',
+      fileName: fileName || undefined
     };
   }
 

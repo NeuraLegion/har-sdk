@@ -9,20 +9,34 @@
     {
       "name": "get Public Keys",
       "request": {
-        "method": "GET",
-        "header": [],
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "type": "text",
+            "value": "{{contentType}}"
+          }
+        ],
         "url": {
-          "raw": "{{baseUrl}}/api/:version/public_keys?user_id=<integer>&page=<integer>&per_page=<integer>&action=<string>",
+          "raw": "{{baseUrl}}/:prefix/:apiVersion/public_keys?user_id=<integer>&page=<integer>&per_page=<integer>&action=<string>",
           "host": ["{{baseUrl}}"],
-          "path": ["api", ":version", "public_keys"],
+          "path": [":prefix", ":apiVersion", "public_keys"],
           "query": [
             {
               "key": "user_id",
-              "value": "schema type not provided",
-              "description": "User ID.  Provide a value of `0` to operate the current session's user."
+              "value": "{{userId}}"
             }
           ],
-          "variable": []
+          "variable": [
+            {
+              "key": "prefix",
+              "value": "{{apiPrefix}}"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"{{propName}}\": \"Boolean\",\n    \"batchRequests\": \"Subrequest[]\"\n}"
         },
         "description": "List Public Keys"
       },

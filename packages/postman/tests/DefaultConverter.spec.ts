@@ -2,7 +2,7 @@ import 'chai/register-should';
 import { postman2har } from '../src';
 import collection from './fixtures/Salesforce APIs.postman_collection.json';
 import collectionWithoutVariables from './fixtures/no-such-variables.postman_collection.json';
-import { NoSuchVariable } from '../src/parser';
+import { VariableError } from '../src/parser';
 import { Postman, Request } from '@har-sdk/core';
 import chaiAsPromised from 'chai-as-promised';
 import { use } from 'chai';
@@ -67,14 +67,50 @@ describe('DefaultConverter', () => {
       JSON.parse(JSON.stringify(result)).should.deep.eq(expected);
     });
 
-    it('should throw an error while resolving variables', async () => {
-      const result = postman2har(
-        collectionWithoutVariables as unknown as Postman.Document
-      );
+    [
+      {
+        expected: '/item/0/header/0/value',
+        exclude: 'contentType'
+      },
+      { expected: '/item/0/url/host/0', exclude: 'baseUrl' },
+      {
+        expected: '/item/0/url/path/1',
+        exclude: 'apiVersion'
+      },
+      {
+        expected: '/item/0/url/variable/0/value',
+        exclude: 'apiPrefix'
+      },
+      {
+        expected: '/item/0/body/raw',
+        exclude: 'propName'
+      },
+      {
+        expected: '/item/0/url/query/0/value',
+        exclude: 'userId'
+      }
+    ].forEach(({ expected, exclude }: { expected: string; exclude: string }) =>
+      it(`should throw an error while resolving variables in ${expected}`, async () => {
+        const environment = {
+          baseUrl: 'http://example.com',
+          apiVersion: 'v59',
+          contentType: 'application/json',
+          apiPrefix: 'api',
+          propName: 'haltOnError',
+          userId: '1'
+        };
 
-      return result.should.eventually.be
-        .rejectedWith(NoSuchVariable)
-        .that.has.property('jsonPointer', '/item/0/url');
-    });
+        delete environment[exclude];
+
+        const result = postman2har(
+          collectionWithoutVariables as unknown as Postman.Document,
+          { environment }
+        );
+
+        return result.should.eventually.be
+          .rejectedWith(VariableError)
+          .that.has.property('jsonPointer', expected);
+      })
+    );
   });
 });

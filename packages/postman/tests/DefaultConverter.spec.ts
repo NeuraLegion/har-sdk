@@ -78,7 +78,7 @@ describe('DefaultConverter', () => {
         exclude: 'apiVersion'
       },
       {
-        expected: '/item/0/url/variable/0/value',
+        expected: '/item/0/url/path/0',
         exclude: 'apiPrefix'
       },
       {
@@ -103,7 +103,9 @@ describe('DefaultConverter', () => {
         delete environment[exclude];
 
         const result = postman2har(
-          collectionWithoutVariables as unknown as Postman.Document,
+          JSON.parse(
+            JSON.stringify(collectionWithoutVariables)
+          ) as unknown as Postman.Document,
           { environment }
         );
 

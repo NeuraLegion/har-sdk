@@ -78,40 +78,42 @@ export class DefaultConverter implements Converter {
     scope: LexicalScope
   ): Request | undefined {
     if (item.request) {
-      const {
-        method,
-        header,
-        body,
-        auth,
-        url: urlObject
-      } = this.variableResolver.resolve(item.request, scope);
+      const request = this.variableResolver.resolve(item.request, scope);
 
-      if (!method) {
+      if (!request.method) {
         throw new ConvertError(
           'Request must have method field',
           scope.jsonPointer
         );
       }
 
-      const url = this.convertUrl(urlObject, scope);
-      const request: Request = {
-        url,
-        method: method.toUpperCase(),
-        headers: this.convertHeaders(header ?? ''),
-        queryString: this.convertQuery(url),
-        cookies: [],
-        postData: body && this.convertBody(body, scope),
-        headersSize: -1,
-        bodySize: -1,
-        httpVersion: 'HTTP/1.1'
-      };
-
-      if (auth) {
-        this.authRequest(request, auth);
-      }
-
-      return request;
+      return this.createHarRequest(request, scope);
     }
+  }
+
+  private createHarRequest(
+    { auth, body, header, method, url: urlObject }: Postman.Request,
+    scope: LexicalScope
+  ): Request {
+    const url = this.convertUrl(urlObject, scope);
+
+    const harRequest: Request = {
+      url,
+      method: method.toUpperCase(),
+      headers: this.convertHeaders(header ?? ''),
+      queryString: this.convertQuery(url),
+      cookies: [],
+      postData: body && this.convertBody(body, scope),
+      headersSize: -1,
+      bodySize: -1,
+      httpVersion: 'HTTP/1.1'
+    };
+
+    if (auth) {
+      this.authRequest(harRequest, auth);
+    }
+
+    return harRequest;
   }
 
   /* istanbul ignore next */
@@ -311,13 +313,10 @@ export class DefaultConverter implements Converter {
           string,
           undefined | string | string[]
         >
-      ).map(
-        // eslint-disable-next-line @typescript-eslint/typedef
-        ([name, value]) => ({
-          name,
-          value: Array.isArray(value) ? value.join('&') : value
-        })
-      );
+      ).map(([name, value]: [string, string | string[]]) => ({
+        name,
+        value: Array.isArray(value) ? value.join('&') : value
+      }));
     }
 
     const text: string =
@@ -386,23 +385,16 @@ export class DefaultConverter implements Converter {
   }
 
   private convertUrl(value: Postman.Url | string, scope: LexicalScope): string {
-    return typeof value !== 'string'
-      ? normalizeUrl(this.buildUrlString(value, scope))
-      : value;
+    return normalizeUrl(
+      typeof value !== 'string' ? this.buildUrlString(value, scope) : value
+    );
   }
 
   private buildUrlString(url: Postman.Url, scope: LexicalScope): string {
     const { host, protocol } = url;
 
-    if (!host || !host.length) {
-      throw new ConvertError(
-        'The host for the URL is mandatory',
-        `${scope.jsonPointer}/url/host`
-      );
-    }
-
     const p = protocol ? protocol.replace(/:?$/, ':') : '';
-    const u = parseUrl(normalizeUrl(`${p}//${this.buildHost(host)}`));
+    const u = parseUrl(normalizeUrl(`${p}//${this.buildHost(host, scope)}`));
 
     if (url.port) {
       u.port = url.port;
@@ -430,7 +422,14 @@ export class DefaultConverter implements Converter {
     return u.toString();
   }
 
-  private buildHost(host: string | string[]): string {
+  private buildHost(host: string | string[], scope: LexicalScope): string {
+    if (!host || !host.length) {
+      throw new ConvertError(
+        'The host for the URL is mandatory',
+        `${scope.jsonPointer}/url/host`
+      );
+    }
+
     host = Array.isArray(host) ? host.join('.') : host;
 
     try {

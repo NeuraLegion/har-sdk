@@ -36,7 +36,8 @@ export class DefaultConverter implements Converter {
 
   public async convert(spec: OpenAPI.Document): Promise<Request[]> {
     const dereferenceSpec = (await new $RefParser().dereference(
-      JSON.parse(JSON.stringify(spec)) as JSONSchema
+      JSON.parse(JSON.stringify(spec)) as JSONSchema,
+      { resolve: { file: false, http: false } }
     )) as OpenAPI.Document;
 
     const baseUrl = normalizeUrl(this.getBaseUrl(dereferenceSpec));

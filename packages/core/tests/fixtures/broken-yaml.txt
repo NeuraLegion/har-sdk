@@ -1,0 +1,7 @@
+foo:
+  bar: 42
+dummy:
+ 'item1'
+ item2
+x:
+  y: 42

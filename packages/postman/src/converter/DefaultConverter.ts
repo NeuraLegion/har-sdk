@@ -1,5 +1,5 @@
 import { Converter } from './Converter';
-import { LexicalScope } from '../parser';
+import { ConvertError, LexicalScope } from '../parser';
 import { VariableResolver } from './VariableResolver';
 import { ConverterOptions } from './ConverterOptions';
 import {
@@ -87,17 +87,20 @@ export class DefaultConverter implements Converter {
       } = this.variableResolver.resolve(item.request, scope);
 
       if (!method) {
-        throw new Error('Method is not defined.');
+        throw new ConvertError(
+          'Request must have method field',
+          scope.jsonPointer
+        );
       }
 
-      const url = this.convertUrl(urlObject);
+      const url = this.convertUrl(urlObject, scope);
       const request: Request = {
         url,
         method: method.toUpperCase(),
         headers: this.convertHeaders(header ?? ''),
         queryString: this.convertQuery(url),
         cookies: [],
-        postData: body && this.convertBody(body),
+        postData: body && this.convertBody(body, scope),
         headersSize: -1,
         bodySize: -1,
         httpVersion: 'HTTP/1.1'
@@ -226,7 +229,10 @@ export class DefaultConverter implements Converter {
     });
   }
 
-  private convertBody(body: Postman.RequestBody): PostData {
+  private convertBody(
+    body: Postman.RequestBody,
+    scope: LexicalScope
+  ): PostData {
     switch (body.mode) {
       case 'raw':
         return this.rawBody(body);
@@ -239,7 +245,10 @@ export class DefaultConverter implements Converter {
       case 'graphql':
         return this.graphql(body);
       default:
-        throw new Error('"mode" is not supported.');
+        throw new ConvertError(
+          'Unknown type of data associated with the body',
+          `${scope.jsonPointer}/body/mode`
+        );
     }
   }
 
@@ -376,14 +385,21 @@ export class DefaultConverter implements Converter {
     });
   }
 
-  private convertUrl(value: Postman.Url | string): string {
+  private convertUrl(value: Postman.Url | string, scope: LexicalScope): string {
     return typeof value !== 'string'
-      ? normalizeUrl(this.buildUrlString(value))
+      ? normalizeUrl(this.buildUrlString(value, scope))
       : value;
   }
 
-  private buildUrlString(url: Postman.Url): string {
+  private buildUrlString(url: Postman.Url, scope: LexicalScope): string {
     const { host, protocol } = url;
+
+    if (!host || !host.length) {
+      throw new ConvertError(
+        'The host for the URL is mandatory',
+        `${scope.jsonPointer}/url/host`
+      );
+    }
 
     const p = protocol ? protocol.replace(/:?$/, ':') : '';
     const u = parseUrl(normalizeUrl(`${p}//${this.buildHost(host)}`));
@@ -415,10 +431,6 @@ export class DefaultConverter implements Converter {
   }
 
   private buildHost(host: string | string[]): string {
-    if (!host || !host.length) {
-      throw new Error('Host is not defined.');
-    }
-
     host = Array.isArray(host) ? host.join('.') : host;
 
     try {

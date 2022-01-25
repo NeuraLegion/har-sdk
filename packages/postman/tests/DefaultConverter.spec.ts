@@ -64,7 +64,7 @@ describe('DefaultConverter', () => {
         }
       );
 
-      result.should.deep.eq(expected);
+      JSON.parse(JSON.stringify(result)).should.deep.eq(expected);
     });
 
     [

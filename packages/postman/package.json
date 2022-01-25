@@ -42,17 +42,16 @@
   },
   "dependencies": {
     "@har-sdk/core": "*",
-    "ajv": "^6.12.6",
     "faker": "^5.5.3",
+    "json-pointer": "^0.6.1",
     "mime-types": "^2.1.31",
     "qs": "^6.10.1",
-    "semver": "^7.3.5",
     "tslib": "~2.2.0"
   },
   "devDependencies": {
     "@types/faker": "^5.5.7",
+    "@types/json-pointer": "^1.0.31",
     "@types/mime-types": "^2.1.0",
-    "@types/qs": "^6.9.7",
-    "@types/semver": "^7.3.7"
+    "@types/qs": "^6.9.7"
   }
 }

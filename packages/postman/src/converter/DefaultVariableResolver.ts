@@ -30,6 +30,8 @@ export class DefaultVariableResolver implements VariableResolver {
   }
 
   public resolve(root: Postman.Request, scope: LexicalScope): Postman.Request {
+    root = JSON.parse(JSON.stringify(root)) as Postman.Request;
+
     const refs = jsonPointer.dict(root);
     const targetRefs = Object.entries(refs).filter(
       ([ref, value]: [string, unknown]) => this.canResolveVariable(value, ref)

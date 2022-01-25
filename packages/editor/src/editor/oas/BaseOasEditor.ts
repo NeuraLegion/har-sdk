@@ -50,7 +50,8 @@ export abstract class BaseOasEditor<
     await super.load(source, errorMessage, format);
 
     this.dereferencedDoc = (await new $RefParser().dereference(
-      JSON.parse(JSON.stringify(this.doc))
+      JSON.parse(JSON.stringify(this.doc)),
+      { resolve: { file: false, http: false } }
     )) as D;
   }
 

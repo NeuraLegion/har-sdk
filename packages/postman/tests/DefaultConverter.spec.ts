@@ -2,7 +2,7 @@ import 'chai/register-should';
 import { postman2har } from '../src';
 import collection from './fixtures/Salesforce APIs.postman_collection.json';
 import collectionWithoutVariables from './fixtures/no-such-variables.postman_collection.json';
-import { VariableError } from '../src/parser';
+import { ConvertError } from '../src/parser';
 import { Postman, Request } from '@har-sdk/core';
 import chaiAsPromised from 'chai-as-promised';
 import { use } from 'chai';
@@ -110,7 +110,7 @@ describe('DefaultConverter', () => {
         );
 
         return result.should.eventually.be
-          .rejectedWith(VariableError)
+          .rejectedWith(ConvertError)
           .that.has.property('jsonPointer', expected);
       })
     );

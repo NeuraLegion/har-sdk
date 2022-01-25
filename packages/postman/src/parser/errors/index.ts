@@ -1,3 +1,3 @@
 export * from './NoSuchVariable';
 export * from './UnexpectedVariable';
-export * from './VariableError';
+export * from './ConvertError';

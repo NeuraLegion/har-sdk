@@ -1,7 +1,10 @@
-import { VariableError } from './VariableError';
+import { ConvertError } from './ConvertError';
 
-export class NoSuchVariable extends VariableError {
+export class NoSuchVariable extends ConvertError {
+  public readonly variableName: string;
+
   constructor(variableName: string, jsonPointer?: string) {
-    super(`Undefined variable: \`${variableName}\``, variableName, jsonPointer);
+    super(`Undefined variable: \`${variableName}\``, jsonPointer);
+    this.variableName = variableName;
   }
 }

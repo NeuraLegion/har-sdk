@@ -75,11 +75,7 @@ describe('JsonLoader', () => {
 
   it(`should be no errors for valid json input`, () => {
     // act
-    try {
-      loader.load('{"key": "value"}');
-    } catch {
-      // noop
-    }
+    loader.load('{"key": "value"}');
     const result = loader.getSyntaxErrorDetails();
 
     // assert

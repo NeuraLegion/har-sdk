@@ -27,11 +27,7 @@ describe('YamlLoader', () => {
 
   it(`should be no errors on valid yaml input`, () => {
     // act
-    try {
-      loader.load('foo: bar');
-    } catch {
-      // noop
-    }
+    loader.load('foo: bar');
     const result = loader.getSyntaxErrorDetails();
 
     // assert

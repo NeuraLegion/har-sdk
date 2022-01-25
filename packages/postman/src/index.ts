@@ -1,9 +1,12 @@
-import { DefaultConverter, DefaultVariableResolver } from './converter';
+import {
+  ConverterOptions,
+  DefaultConverter,
+  DefaultVariableResolver
+} from './converter';
 import {
   ConstantGenerators,
   DefaultGenerators,
-  DefaultVariableParserFactory,
-  ConverterOptions
+  DefaultVariableParserFactory
 } from './parser';
 import { Postman, Request } from '@har-sdk/core';
 

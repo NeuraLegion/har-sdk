@@ -1,6 +1,7 @@
 import { Converter } from './Converter';
-import { ConverterOptions, LexicalScope } from '../parser';
+import { LexicalScope } from '../parser';
 import { VariableResolver } from './VariableResolver';
+import { ConverterOptions } from './ConverterOptions';
 import {
   Header,
   normalizeUrl,

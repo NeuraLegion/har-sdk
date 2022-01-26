@@ -32,8 +32,31 @@ const prependProtocolIfNecessary = (url: string): string => {
   return url;
 };
 
+export const parseUrl = (value: string): typeof URL => {
+  const url = new URL(value);
+
+  if (!validateUrl(url)) {
+    throw new TypeError(`Invalid URL: ${url}`);
+  }
+
+  return url;
+};
+
+export const validateUrl = (value: string | typeof URL): boolean => {
+  let url;
+
+  try {
+    url = typeof value === 'string' ? parseUrl(value) : value;
+  } catch {
+    // noop
+  }
+
+  // verify an opaque origin https://html.spec.whatwg.org/#ascii-serialisation-of-an-origin
+  return !!(url && url.hostname && url.origin && url.origin !== 'null');
+};
+
 export const normalizeUrl = (value: string): string => {
-  const url = new URL(prependProtocolIfNecessary(value));
+  const url = parseUrl(prependProtocolIfNecessary(value));
 
   try {
     url.pathname = normalizePathName(url.pathname);
@@ -52,5 +75,3 @@ export const normalizeUrl = (value: string): string => {
 
   return urlString;
 };
-
-export const parseUrl = (value: string): typeof URL => new URL(value);

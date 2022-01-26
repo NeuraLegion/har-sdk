@@ -42,7 +42,7 @@ export class DefaultConverter implements Converter {
       { resolve: { file: false, http: false } }
     )) as OpenAPI.Document;
 
-    const baseUrl = normalizeUrl(this.getBaseUrl(dereferenceSpec));
+    const baseUrl = this.getBaseUrl(dereferenceSpec);
     const requests: HarRequest[] = this.parseSwaggerDoc(
       dereferenceSpec,
       baseUrl
@@ -89,17 +89,19 @@ export class DefaultConverter implements Converter {
     method: string,
     queryParamValues: Record<string, string> = {}
   ): Request {
-    const queryString: QueryString[] =
+    const queryString =
       this.getQueryStrings(spec, path, method, queryParamValues) || [];
-    const url = `${baseUrl}${this.serializePath(spec, path, method)}${
+    const rawUrl = `${baseUrl}${this.serializePath(spec, path, method)}${
       queryString.length
         ? `?${queryString.map((x) => `${x.name}=${x.value}`).join('&')}`
         : ''
     }`;
+    const jsonPointer = pointer.compile(['paths', path, method]);
+    const url = this.normalizeUrl(rawUrl, { jsonPointer });
 
     const har: Request = {
       queryString,
-      url: encodeURI(url),
+      url,
       method: method.toUpperCase(),
       headers: this.getHeadersArray(spec, path, method),
       httpVersion: 'HTTP/1.1',
@@ -116,6 +118,14 @@ export class DefaultConverter implements Converter {
     }
 
     return har;
+  }
+
+  private normalizeUrl(url: string, context?: { jsonPointer: string }) {
+    try {
+      return normalizeUrl(url);
+    } catch (e) {
+      throw new ConvertError(e.message, context?.jsonPointer);
+    }
   }
 
   // eslint-disable-next-line complexity
@@ -698,16 +708,24 @@ export class DefaultConverter implements Converter {
   }
 
   private parseHost(spec: OpenAPIV2.Document): string[] {
-    const basePath: string =
-      typeof spec.basePath !== 'undefined'
-        ? removeLeadingSlash(spec.basePath)
-        : '';
-    const host: string = removeTrailingSlash(spec.host);
+    const basePath = removeLeadingSlash(
+      typeof spec.basePath !== 'undefined' ? spec.basePath : ''
+    ).trim();
+    const host = removeTrailingSlash(
+      typeof spec.host !== 'undefined' ? spec.host : ''
+    ).trim();
+
+    if (!host) {
+      throw new ConvertError('Missing mandatory `host` field', '/host');
+    }
+
     const schemes: string[] =
       typeof spec.schemes !== 'undefined' ? spec.schemes : ['https'];
 
-    return schemes.map(
-      (x: string) => `${x}://${removeTrailingSlash(`${host}/${basePath}`)}`
+    return schemes.map((x: string, idx: number) =>
+      this.normalizeUrl(`${x}://${host}/${basePath}`, {
+        jsonPointer: pointer.compile(['schemes', idx.toString()])
+      })
     );
   }
 
@@ -715,25 +733,25 @@ export class DefaultConverter implements Converter {
     return spec.servers.map((server: OpenAPIV3.ServerObject, idx: number) => {
       const variables = server.variables || {};
       const params = Object.entries(variables).reduce(
-        (acc, [param, variable]: [string, OpenAPIV3.ServerVariableObject]) => {
-          const jsonPointer = pointer.compile([
-            'servers',
-            idx.toString(),
-            'variables',
-            param
-          ]);
-          const data = this.sample(variable, {
+        (acc, [param, variable]: [string, OpenAPIV3.ServerVariableObject]) => ({
+          ...acc,
+          [param]: this.sample(variable, {
             spec,
-            jsonPointer
-          });
-
-          return { ...acc, [param]: data };
-        },
+            jsonPointer: pointer.compile([
+              'servers',
+              idx.toString(),
+              'variables',
+              param
+            ])
+          })
+        }),
         {}
       );
       const templateUrl = template.parse(server.url);
+      const rawUrl = templateUrl.expand(params);
+      const jsonPointer = pointer.compile(['servers', idx.toString()]);
 
-      return removeTrailingSlash(templateUrl.expand(params));
+      return this.normalizeUrl(rawUrl, { jsonPointer });
     });
   }
 

@@ -70,49 +70,95 @@ describe('DefaultConverter', () => {
     [
       {
         expected: '/item/0/request/header/0/value',
-        exclude: 'contentType'
-      },
-      { expected: '/item/0/request/url/host/0', exclude: 'baseUrl' },
-      {
-        expected: '/item/0/request/url/path/1',
-        exclude: 'apiVersion'
-      },
-      {
-        expected: '/item/0/request/url/path/0',
-        exclude: 'apiPrefix'
-      },
-      {
-        expected: '/item/0/request/body/raw',
-        exclude: 'propName'
-      },
-      {
-        expected: '/item/0/request/url/query/0/value',
-        exclude: 'userId'
-      }
-    ].forEach(({ expected, exclude }: { expected: string; exclude: string }) =>
-      it(`should throw an error while resolving variables in ${expected}`, async () => {
-        const environment = {
+        input: {
           baseUrl: 'http://example.com',
+          apiVersion: 'v59',
+          apiPrefix: 'api',
+          propName: 'haltOnError',
+          userId: '1'
+        }
+      },
+      {
+        expected: '/item/0/request/url/host/0',
+        input: {
           apiVersion: 'v59',
           contentType: 'application/json',
           apiPrefix: 'api',
           propName: 'haltOnError',
           userId: '1'
-        };
+        }
+      },
+      {
+        expected: '/item/0/request/url',
+        input: {
+          baseUrl: 'kk    k://',
+          contentType: 'application/json',
+          apiVersion: 'v59',
+          apiPrefix: 'api',
+          propName: 'haltOnError',
+          userId: '1'
+        }
+      },
+      {
+        expected: '/item/0/request/url/path/1',
+        input: {
+          baseUrl: 'http://example.com',
+          contentType: 'application/json',
+          apiPrefix: 'api',
+          propName: 'haltOnError',
+          userId: '1'
+        }
+      },
+      {
+        expected: '/item/0/request/url/path/0',
+        input: {
+          baseUrl: 'http://example.com',
+          apiVersion: 'v59',
+          contentType: 'application/json',
+          propName: 'haltOnError',
+          userId: '1'
+        }
+      },
+      {
+        expected: '/item/0/request/body/raw',
+        input: {
+          baseUrl: 'http://example.com',
+          apiVersion: 'v59',
+          contentType: 'application/json',
+          apiPrefix: 'api',
+          userId: '1'
+        }
+      },
+      {
+        expected: '/item/0/request/url/query/0/value',
+        input: {
+          baseUrl: 'http://example.com',
+          apiVersion: 'v59',
+          contentType: 'application/json',
+          apiPrefix: 'api',
+          propName: 'haltOnError'
+        }
+      }
+    ].forEach(
+      ({
+        expected,
+        input
+      }: {
+        input: Record<string, string>;
+        expected: string;
+      }) =>
+        it(`should throw an error while resolving variables in ${expected}`, async () => {
+          const result = postman2har(
+            JSON.parse(
+              JSON.stringify(collectionWithoutVariables)
+            ) as unknown as Postman.Document,
+            { environment: input }
+          );
 
-        delete environment[exclude];
-
-        const result = postman2har(
-          JSON.parse(
-            JSON.stringify(collectionWithoutVariables)
-          ) as unknown as Postman.Document,
-          { environment }
-        );
-
-        return result.should.be
-          .rejectedWith(ConvertError)
-          .and.eventually.have.property('jsonPointer', expected);
-      })
+          return result.should.be
+            .rejectedWith(ConvertError)
+            .and.eventually.have.property('jsonPointer', expected);
+        })
     );
   });
 });

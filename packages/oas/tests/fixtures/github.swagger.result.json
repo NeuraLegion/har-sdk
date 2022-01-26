@@ -792,7 +792,7 @@
         "value": "lorem"
       }
     ],
-    "url": "https://api.github.com/issues?filter=all&state=open&labels=lorem&sort=created&direction=desc&since=lorem",
+    "url": "https://api.github.com/issues?direction=desc&filter=all&labels=lorem&since=lorem&sort=created&state=open",
     "method": "GET",
     "headers": [
       {
@@ -879,7 +879,7 @@
         "value": "updated"
       }
     ],
-    "url": "https://api.github.com/legacy/repos/search/lorem?order=desc&language=lorem&start_page=lorem&sort=updated",
+    "url": "https://api.github.com/legacy/repos/search/lorem?language=lorem&order=desc&sort=updated&start_page=lorem",
     "method": "GET",
     "headers": [
       {
@@ -962,7 +962,7 @@
         "value": "updated"
       }
     ],
-    "url": "https://api.github.com/legacy/user/search/lorem?order=desc&start_page=lorem&sort=updated",
+    "url": "https://api.github.com/legacy/user/search/lorem?order=desc&sort=updated&start_page=lorem",
     "method": "GET",
     "headers": [
       {
@@ -1553,7 +1553,7 @@
         "value": "lorem"
       }
     ],
-    "url": "https://api.github.com/orgs/lorem/issues?filter=all&state=open&labels=lorem&sort=created&direction=desc&since=lorem",
+    "url": "https://api.github.com/orgs/lorem/issues?direction=desc&filter=all&labels=lorem&since=lorem&sort=created&state=open",
     "method": "GET",
     "headers": [
       {
@@ -2575,7 +2575,7 @@
         "value": "lorem"
       }
     ],
-    "url": "https://api.github.com/repos/lorem/lorem/commits?since=lorem&sha=lorem&path=lorem&author=lorem&until=lorem",
+    "url": "https://api.github.com/repos/lorem/lorem/commits?author=lorem&path=lorem&sha=lorem&since=lorem&until=lorem",
     "method": "GET",
     "headers": [
       {
@@ -4045,7 +4045,7 @@
         "value": "lorem"
       }
     ],
-    "url": "https://api.github.com/repos/lorem/lorem/issues?filter=all&state=open&labels=lorem&sort=created&direction=desc&since=lorem",
+    "url": "https://api.github.com/repos/lorem/lorem/issues?direction=desc&filter=all&labels=lorem&since=lorem&sort=created&state=open",
     "method": "GET",
     "headers": [
       {
@@ -4132,7 +4132,7 @@
         "value": "lorem"
       }
     ],
-    "url": "https://api.github.com/repos/lorem/lorem/issues/comments?direction=lorem&sort=created&since=lorem",
+    "url": "https://api.github.com/repos/lorem/lorem/issues/comments?direction=lorem&since=lorem&sort=created",
     "method": "GET",
     "headers": [
       {
@@ -5126,7 +5126,7 @@
         "value": "due_date"
       }
     ],
-    "url": "https://api.github.com/repos/lorem/lorem/milestones?state=open&direction=lorem&sort=due_date",
+    "url": "https://api.github.com/repos/lorem/lorem/milestones?direction=lorem&sort=due_date&state=open",
     "method": "GET",
     "headers": [
       {
@@ -5444,7 +5444,7 @@
         "value": "lorem"
       }
     ],
-    "url": "https://api.github.com/repos/lorem/lorem/pulls?state=open&head=lorem&base=lorem",
+    "url": "https://api.github.com/repos/lorem/lorem/pulls?base=lorem&head=lorem&state=open",
     "method": "GET",
     "headers": [
       {
@@ -5531,7 +5531,7 @@
         "value": "lorem"
       }
     ],
-    "url": "https://api.github.com/repos/lorem/lorem/pulls/comments?direction=lorem&sort=created&since=lorem",
+    "url": "https://api.github.com/repos/lorem/lorem/pulls/comments?direction=lorem&since=lorem&sort=created",
     "method": "GET",
     "headers": [
       {
@@ -8019,7 +8019,7 @@
         "value": "lorem"
       }
     ],
-    "url": "https://api.github.com/user/issues?filter=all&state=open&labels=lorem&sort=created&direction=desc&since=lorem",
+    "url": "https://api.github.com/user/issues?direction=desc&filter=all&labels=lorem&since=lorem&sort=created&state=open",
     "method": "GET",
     "headers": [
       {

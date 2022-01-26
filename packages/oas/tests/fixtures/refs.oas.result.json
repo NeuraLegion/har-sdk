@@ -10,7 +10,7 @@
         "value": "500"
       }
     ],
-    "url": "https://petstore.swagger.io/v2/pets?query=doggie&limit=500",
+    "url": "https://petstore.swagger.io/v2/pets?limit=500&query=doggie",
     "method": "GET",
     "headers": [
       {

@@ -109,9 +109,9 @@ describe('DefaultConverter', () => {
           { environment }
         );
 
-        return result.should.eventually.be
+        return result.should.be
           .rejectedWith(ConvertError)
-          .that.has.property('jsonPointer', expected);
+          .and.eventually.have.property('jsonPointer', expected);
       })
     );
   });

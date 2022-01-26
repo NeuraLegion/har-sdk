@@ -1,11 +1,16 @@
 import githubSwagger from './fixtures/github.swagger.json';
 import { oas2har } from '../src';
+import { ConvertError } from '../src/errors';
 import yaml from 'js-yaml';
 import { OpenAPIV2, OpenAPIV3, Request } from '@har-sdk/core';
+import { use } from 'chai';
+import chaiAsPromised from 'chai-as-promised';
 import { resolve } from 'path';
 import { readFile } from 'fs';
 import { promisify } from 'util';
 import 'chai/register-should';
+
+use(chaiAsPromised);
 
 describe('DefaultConverter', () => {
   describe('convert', () => {
@@ -102,6 +107,32 @@ describe('DefaultConverter', () => {
       );
 
       result.should.deep.eq(expected);
+    });
+
+    it('should throw an exception if `servers` are not defined', async () => {
+      const content: string = await promisify(readFile)(
+        resolve('./tests/fixtures/missed-servers.oas.yaml'),
+        'utf8'
+      );
+
+      const result = oas2har(yaml.load(content) as OpenAPIV3.Document);
+
+      return result.should.be
+        .rejectedWith(ConvertError)
+        .and.eventually.have.property('jsonPointer', '/servers');
+    });
+
+    it('should throw an exception if `host` is not defined', async () => {
+      const content: string = await promisify(readFile)(
+        resolve('./tests/fixtures/missed-host.oas.yaml'),
+        'utf8'
+      );
+
+      const result = oas2har(yaml.load(content) as OpenAPIV2.Document);
+
+      return result.should.be
+        .rejectedWith(ConvertError)
+        .and.eventually.have.property('jsonPointer', '/host');
     });
   });
 });

@@ -79,6 +79,8 @@ export class DefaultConverter implements Converter {
     scope: LexicalScope
   ): Request | undefined {
     if (item.request) {
+      scope = scope.concat('/request', []);
+
       const request = this.variableResolver.resolve(item.request, scope);
 
       if (!request.method) {

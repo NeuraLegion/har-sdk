@@ -69,24 +69,24 @@ describe('DefaultConverter', () => {
 
     [
       {
-        expected: '/item/0/header/0/value',
+        expected: '/item/0/request/header/0/value',
         exclude: 'contentType'
       },
-      { expected: '/item/0/url/host/0', exclude: 'baseUrl' },
+      { expected: '/item/0/request/url/host/0', exclude: 'baseUrl' },
       {
-        expected: '/item/0/url/path/1',
+        expected: '/item/0/request/url/path/1',
         exclude: 'apiVersion'
       },
       {
-        expected: '/item/0/url/path/0',
+        expected: '/item/0/request/url/path/0',
         exclude: 'apiPrefix'
       },
       {
-        expected: '/item/0/body/raw',
+        expected: '/item/0/request/body/raw',
         exclude: 'propName'
       },
       {
-        expected: '/item/0/url/query/0/value',
+        expected: '/item/0/request/url/query/0/value',
         exclude: 'userId'
       }
     ].forEach(({ expected, exclude }: { expected: string; exclude: string }) =>

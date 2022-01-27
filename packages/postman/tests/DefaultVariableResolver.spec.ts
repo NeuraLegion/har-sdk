@@ -72,7 +72,7 @@ describe('DefaultVariableResolver', () => {
       });
     });
 
-    it('should skip particular path variables', () => {
+    it('should resolve particular path variables', () => {
       // arrange
       const request = {
         url: {

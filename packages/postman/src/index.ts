@@ -10,6 +10,8 @@ import {
 } from './parser';
 import { Postman, Request } from '@har-sdk/core';
 
+export * from './parser/errors';
+
 export const postman2har = async (
   collection: Postman.Document,
   options: ConverterOptions = {}

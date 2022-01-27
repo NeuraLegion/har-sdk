@@ -1,6 +1,5 @@
 import githubSwagger from './fixtures/github.swagger.json';
-import { oas2har } from '../src';
-import { ConvertError } from '../src/errors';
+import { ConvertError, oas2har } from '../src';
 import yaml from 'js-yaml';
 import { OpenAPIV2, OpenAPIV3, Request } from '@har-sdk/core';
 import { use } from 'chai';
@@ -109,30 +108,64 @@ describe('DefaultConverter', () => {
       result.should.deep.eq(expected);
     });
 
-    it('should throw an exception if `servers` are not defined', async () => {
-      const content: string = await promisify(readFile)(
-        resolve('./tests/fixtures/missed-servers.oas.yaml'),
-        'utf8'
-      );
+    [
+      {
+        input: 'convert-error-on-servers.oas.yaml',
+        expected: '/servers'
+      },
+      {
+        input: 'convert-error-on-host.swagger.yaml',
+        expected: '/host'
+      },
+      {
+        input: 'convert-error-on-body.swagger.yaml',
+        expected: '/paths/~1store~1order~1{orderId}/put/parameters/3/schema'
+      },
+      {
+        input: 'convert-error-on-header.swagger.yaml',
+        expected: '/paths/~1store~1order~1{orderId}/put/parameters/2'
+      },
+      {
+        input: 'convert-error-on-path.swagger.yaml',
+        expected: '/paths/~1store~1order~1{orderId}/put/parameters/0'
+      },
+      {
+        input: 'convert-error-on-query.swagger.yaml',
+        expected: '/paths/~1store~1order~1{orderId}/put/parameters/1'
+      },
+      {
+        input: 'convert-error-on-body.oas.yaml',
+        expected:
+          '/paths/~1store~1order~1{orderId}/put/requestBody/content/application~1json/schema'
+      },
+      {
+        input: 'convert-error-on-header.oas.yaml',
+        expected: '/paths/~1store~1order~1{orderId}/put/parameters/2/schema'
+      },
+      {
+        input: 'convert-error-on-path.oas.yaml',
+        expected: '/paths/~1store~1order~1{orderId}/put/parameters/0/schema'
+      },
+      {
+        input: 'convert-error-on-query.oas.yaml',
+        expected: '/paths/~1store~1order~1{orderId}/put/parameters/1/schema'
+      }
+    ].forEach(({ input, expected }) =>
+      it(`should throw an convert error on ${input.replace(
+        /^convert-error-on-(.+)\.(.+)\.yaml$/,
+        '$1 ($2)'
+      )}`, async () => {
+        const content: string = await promisify(readFile)(
+          resolve(`./tests/fixtures/${input}`),
+          'utf8'
+        );
 
-      const result = oas2har(yaml.load(content) as OpenAPIV3.Document);
+        const result = oas2har(yaml.load(content) as OpenAPIV2.Document);
 
-      return result.should.be
-        .rejectedWith(ConvertError)
-        .and.eventually.have.property('jsonPointer', '/servers');
-    });
-
-    it('should throw an exception if `host` is not defined', async () => {
-      const content: string = await promisify(readFile)(
-        resolve('./tests/fixtures/missed-host.oas.yaml'),
-        'utf8'
-      );
-
-      const result = oas2har(yaml.load(content) as OpenAPIV2.Document);
-
-      return result.should.be
-        .rejectedWith(ConvertError)
-        .and.eventually.have.property('jsonPointer', '/host');
-    });
+        return result.should.be
+          .rejectedWith(ConvertError)
+          .and.eventually.have.property('jsonPointer', expected);
+      })
+    );
   });
 });

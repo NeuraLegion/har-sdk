@@ -1277,10 +1277,10 @@
           "value": "{\"cropY\":\"0\",\"cropX\":\"0\",\"cropSize\":\"200\"}"
         },
         {
-          "fileName": "photo.jpg",
           "contentType": "image/jpeg",
           "name": "fileUpload",
-          "value": ""
+          "value": "",
+          "fileName": "photo.jpg"
         }
       ]
     },
@@ -1315,7 +1315,6 @@
           "value": "{\"cropY\":\"0\",\"cropX\":\"0\",\"cropSize\":\"200\"}"
         },
         {
-          "fileName": "",
           "name": "fileUpload",
           "value": ""
         }
@@ -1396,7 +1395,6 @@
       "mimeType": "multipart/form-data",
       "params": [
         {
-          "fileName": "",
           "name": "fileData",
           "value": ""
         }

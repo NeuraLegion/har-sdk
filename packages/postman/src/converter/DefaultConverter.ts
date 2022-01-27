@@ -1,12 +1,11 @@
 import { Converter } from './Converter';
-import {
-  ConverterOptions,
-  VariableParser,
-  VariableParserFactory
-} from '../parser';
+import { ConvertError, LexicalScope } from '../parser';
+import { VariableResolver } from './VariableResolver';
+import { ConverterOptions } from './ConverterOptions';
 import {
   Header,
   normalizeUrl,
+  Param,
   parseUrl,
   PostData,
   Postman,
@@ -27,7 +26,7 @@ export class DefaultConverter implements Converter {
   private readonly dryRun: boolean;
 
   constructor(
-    private readonly parserFactory: VariableParserFactory,
+    private readonly variableResolver: VariableResolver,
     options: ConverterOptions = {}
   ) {
     this.variables = Object.entries(options.environment ?? {}).map(
@@ -40,27 +39,26 @@ export class DefaultConverter implements Converter {
   }
 
   public async convert(collection: Postman.Document): Promise<Request[]> {
-    return this.traverse(collection, [...this.variables]);
+    const scope = new LexicalScope('', [...this.variables]);
+
+    return this.traverse(collection, scope);
   }
 
-  private traverse(
-    folder: Postman.ItemGroup,
-    variables: Postman.Variable[]
-  ): Request[] {
-    variables = [...(folder?.variable ?? []), ...variables];
+  private traverse(folder: Postman.ItemGroup, scope: LexicalScope): Request[] {
+    scope.combine(folder.variable ?? []);
 
     return folder.item.reduce(
-      (items: Request[], x: Postman.ItemGroup | Postman.Item) => {
-        const subVariables = [...(x?.variable ?? []), ...variables];
+      (items: Request[], x: Postman.ItemGroup | Postman.Item, idx: number) => {
+        const subScope = scope.concat(
+          `/item/${idx.toString(10)}`,
+          x.variable ?? []
+        );
 
         if (this.isGroup(x)) {
-          return items.concat(this.traverse(x, subVariables));
+          return items.concat(this.traverse(x, subScope));
         }
 
-        const request: Request | undefined = this.convertRequest(
-          x,
-          subVariables
-        );
+        const request: Request | undefined = this.convertRequest(x, subScope);
 
         if (request) {
           items.push(request);
@@ -78,43 +76,51 @@ export class DefaultConverter implements Converter {
 
   private convertRequest(
     item: Postman.Item,
-    variables: Postman.Variable[]
+    scope: LexicalScope
   ): Request | undefined {
     if (item.request) {
-      const { method, header, body, auth, url: urlObject } = item.request;
+      scope = scope.concat('/request', []);
 
-      if (!method) {
-        throw new Error('Method is not defined.');
+      const request = this.variableResolver.resolve(item.request, scope);
+
+      if (!request.method) {
+        throw new ConvertError(
+          'Request must have method field',
+          scope.jsonPointer
+        );
       }
 
-      const url: string = this.convertUrl(urlObject, variables);
-
-      const request: Request = {
-        url,
-        method: (method ?? 'GET').toUpperCase(),
-        headers: this.convertHeaders(header ?? '', variables),
-        queryString: this.convertQuery(url, variables),
-        cookies: [],
-        postData: body && this.convertBody(body, variables),
-        headersSize: -1,
-        bodySize: -1,
-        httpVersion: 'HTTP/1.1'
-      };
-
-      if (auth) {
-        this.authRequest(request, auth, variables);
-      }
-
-      return request;
+      return this.createHarRequest(request, scope);
     }
   }
 
+  private createHarRequest(
+    { auth, body, header, method, url: urlObject }: Postman.Request,
+    scope: LexicalScope
+  ): Request {
+    const url = this.convertUrl(urlObject, scope);
+
+    const harRequest: Request = {
+      url,
+      method: method.toUpperCase(),
+      headers: this.convertHeaders(header ?? ''),
+      queryString: this.convertQuery(url),
+      cookies: [],
+      postData: body && this.convertBody(body, scope),
+      headersSize: -1,
+      bodySize: -1,
+      httpVersion: 'HTTP/1.1'
+    };
+
+    if (auth) {
+      this.authRequest(harRequest, auth);
+    }
+
+    return harRequest;
+  }
+
   /* istanbul ignore next */
-  private authRequest(
-    request: Request,
-    auth: Postman.RequestAuth,
-    variables: Postman.Variable[]
-  ): void {
+  private authRequest(request: Request, auth: Postman.RequestAuth): void {
     const params: Postman.Variable[] | undefined = auth[auth.type];
 
     if (!params) {
@@ -127,16 +133,16 @@ export class DefaultConverter implements Converter {
 
     switch (auth.type) {
       case 'apikey':
-        this.apiKeyAuth(request, options, variables);
+        this.apiKeyAuth(request, options);
         break;
       case 'basic':
-        this.basicAuth(request, options, variables);
+        this.basicAuth(request, options);
         break;
       case 'bearer':
-        this.bearerAuth(request, options, variables);
+        this.bearerAuth(request, options);
         break;
       case 'oauth2':
-        this.oauth2(request, options, variables);
+        this.oauth2(request, options);
         break;
       case 'noauth':
       default:
@@ -145,18 +151,13 @@ export class DefaultConverter implements Converter {
   }
 
   /* istanbul ignore next */
-  private oauth2(
-    request: Request,
-    options: Record<string, string>,
-    variables: Postman.Variable[]
-  ) {
+  private oauth2(request: Request, options: Record<string, string>): void {
     if (!options.accessToken || options.tokenType === 'mac') {
       return;
     }
 
     const target: AuthLocation =
       AuthLocation[(options.addTokenTo ?? 'header').toUpperCase()];
-    const parser = this.parserFactory.createEnvVariableParser(variables);
 
     this.removeCredentials(request, target);
 
@@ -164,7 +165,7 @@ export class DefaultConverter implements Converter {
       case AuthLocation.QUERY: {
         request.queryString.push({
           name: 'access_token',
-          value: parser.parse(options.accessToken)
+          value: options.accessToken
         });
         break;
       }
@@ -175,7 +176,7 @@ export class DefaultConverter implements Converter {
 
         request.headers.push({
           name: 'authorization',
-          value: `${prefix.trim()} ${parser.parse(options.accessToken)}`
+          value: `${prefix.trim()} ${options.accessToken}`
         });
         break;
       }
@@ -183,19 +184,10 @@ export class DefaultConverter implements Converter {
   }
 
   /* istanbul ignore next */
-  private bearerAuth(
-    request: Request,
-    options: Record<string, string>,
-    variables: Postman.Variable[]
-  ): void {
-    const parser = this.parserFactory.createEnvVariableParser(variables);
-
+  private bearerAuth(request: Request, options: Record<string, string>): void {
     this.removeCredentials(request, AuthLocation.HEADER);
 
-    const value = `Bearer ${parser
-      .parse(options.token)
-      .replace(/^Bearer/, '')
-      .trim()}`;
+    const value = `Bearer ${options.token.replace(/^Bearer/, '').trim()}`;
 
     request.headers.push({
       value,
@@ -215,17 +207,11 @@ export class DefaultConverter implements Converter {
   }
 
   /* istanbul ignore next */
-  private basicAuth(
-    request: Request,
-    options: Record<string, string>,
-    variables: Postman.Variable[]
-  ) {
-    const parser = this.parserFactory.createEnvVariableParser(variables);
-
+  private basicAuth(request: Request, options: Record<string, string>): void {
     this.removeCredentials(request, AuthLocation.HEADER);
 
     const value = `Basic ${Buffer.from(
-      `${parser.parse(options.username)}:${parser.parse(options.password)}`,
+      `${options.username}:${options.password}`,
       'utf8'
     ).toString('base64')}`;
 
@@ -236,43 +222,38 @@ export class DefaultConverter implements Converter {
   }
 
   /* istanbul ignore next */
-  private apiKeyAuth(
-    request: Request,
-    options: Record<string, string>,
-    variables: Postman.Variable[]
-  ): void {
-    const parser = this.parserFactory.createEnvVariableParser(variables);
+  private apiKeyAuth(request: Request, options: Record<string, string>): void {
     const target: AuthLocation =
       AuthLocation[(options.in ?? 'header').toUpperCase()];
 
     this.removeCredentials(request, target);
 
     request[target].push({
-      name: parser.parse(options.key),
-      value: parser.parse(options.value)
+      name: options.key,
+      value: options.value
     });
   }
 
   private convertBody(
     body: Postman.RequestBody,
-    variables: Postman.Variable[]
+    scope: LexicalScope
   ): PostData {
-    const parser: VariableParser =
-      this.parserFactory.createEnvVariableParser(variables);
-
     switch (body.mode) {
       case 'raw':
-        return this.rawBody(body, parser);
+        return this.rawBody(body);
       case 'urlencoded':
-        return this.urlencoded(body, parser);
+        return this.urlencoded(body);
       case 'formdata':
-        return this.formData(body, parser);
+        return this.formData(body);
       case 'file':
         return this.file(body);
       case 'graphql':
-        return this.graphql(body, parser);
+        return this.graphql(body);
       default:
-        throw new Error('"mode" is not supported.');
+        throw new ConvertError(
+          'Unknown type of data associated with the body',
+          `${scope.jsonPointer}/body/mode`
+        );
     }
   }
 
@@ -284,56 +265,49 @@ export class DefaultConverter implements Converter {
     };
   }
 
-  private graphql(body: Postman.RequestBody, parser: VariableParser): PostData {
+  private graphql(body: Postman.RequestBody): PostData {
     const { query, variables } = body.graphql ?? {};
 
     return {
       mimeType: 'application/json',
-      text: JSON.stringify({ query, variables: parser.parse(variables) })
+      text: JSON.stringify({ query, variables })
     };
   }
 
-  private formData(
-    body: Postman.RequestBody,
-    parser: VariableParser
-  ): PostData {
+  private formData(body: Postman.RequestBody): PostData {
     return {
       mimeType: 'multipart/form-data',
       params: Array.isArray(body.formdata)
-        ? body.formdata.map((x: Postman.FormParam) => {
-            const fileName: string | undefined = x.src
-              ? basename(Array.isArray(x.src) ? x.src.pop() ?? '' : x.src)
-              : undefined;
-
-            const extension: string | undefined = fileName
-              ? extname(fileName)
-              : fileName;
-
-            const contentType: string | undefined =
-              x.contentType ??
-              (this.dryRun ? undefined : lookup(extension ?? '') || undefined);
-
-            return {
-              fileName,
-              contentType,
-              name: parser.parse(x.key),
-              value: parser.parse(x.value ?? '')
-            };
-          })
+        ? body.formdata.map((x: Postman.FormParam) => this.formDataField(x))
         : []
     };
   }
 
-  private urlencoded(
-    body: Postman.RequestBody,
-    parser: VariableParser
-  ): PostData {
+  private formDataField(x: Postman.FormParam): Param {
+    const fileName = basename(
+      (Array.isArray(x.src) ? x.src.pop() : x.src) ?? ''
+    );
+    const extension = extname(fileName);
+
+    const contentType: string | undefined =
+      x.contentType ??
+      (this.dryRun ? undefined : lookup(extension) || undefined);
+
+    return {
+      contentType,
+      name: x.key,
+      value: x.value ?? '',
+      fileName: fileName || undefined
+    };
+  }
+
+  private urlencoded(body: Postman.RequestBody): PostData {
     let params: { name: string; value: string | undefined }[];
 
     if (Array.isArray(body.urlencoded)) {
       params = body.urlencoded.map((x: Postman.QueryParam) => ({
-        name: parser.parse(x.key),
-        value: parser.parse(x.value ?? '')
+        name: x.key,
+        value: x.value ?? ''
       }));
     } else {
       params = Object.entries(
@@ -341,13 +315,10 @@ export class DefaultConverter implements Converter {
           string,
           undefined | string | string[]
         >
-      ).map(
-        // eslint-disable-next-line @typescript-eslint/typedef
-        ([name, value]) => ({
-          name,
-          value: Array.isArray(value) ? value.join('&') : value
-        })
-      );
+      ).map(([name, value]: [string, string | string[]]) => ({
+        name,
+        value: Array.isArray(value) ? value.join('&') : value
+      }));
     }
 
     const text: string =
@@ -356,8 +327,8 @@ export class DefaultConverter implements Converter {
         : stringify(
             Object.fromEntries(
               (body.urlencoded ?? []).map((x: Postman.QueryParam) => [
-                parser.parse(x.key),
-                parser.parse(x.value ?? '')
+                x.key,
+                x.value ?? ''
               ])
             )
           );
@@ -369,10 +340,10 @@ export class DefaultConverter implements Converter {
     } as unknown as PostData;
   }
 
-  private rawBody(body: Postman.RequestBody, parser: VariableParser): PostData {
+  private rawBody(body: Postman.RequestBody): PostData {
     return {
       mimeType: this.getMimetype(body.options?.raw?.language ?? 'json'),
-      text: parser.parse(body.raw ?? '')
+      text: body.raw ?? ''
     };
   }
 
@@ -395,17 +366,11 @@ export class DefaultConverter implements Converter {
     }
   }
 
-  private convertHeaders(
-    headers: Postman.Header[] | string,
-    variables: Postman.Variable[]
-  ): Header[] {
-    const parser: VariableParser =
-      this.parserFactory.createEnvVariableParser(variables);
-
+  private convertHeaders(headers: Postman.Header[] | string): Header[] {
     if (Array.isArray(headers)) {
       return headers.map((x: Postman.Header) => ({
         name: x.key,
-        value: parser.parse(x.value ?? '')
+        value: x.value ?? ''
       }));
     }
 
@@ -416,38 +381,22 @@ export class DefaultConverter implements Converter {
 
       return {
         name,
-        value: parser.parse(value ?? '')
+        value: value ?? ''
       };
     });
   }
 
-  private convertUrl(
-    value: Postman.Url | string,
-    variables: Postman.Variable[]
-  ): string {
-    const subVariables = typeof value === 'string' ? [] : value.variable;
-    const envParser: VariableParser =
-      this.parserFactory.createEnvVariableParser([
-        ...(subVariables ?? []),
-        ...variables
-      ]);
-
-    if (typeof value === 'string') {
-      return envParser.parse(value);
-    }
-
-    let urlString: string = decodeURI(this.buildUrlString(value, envParser));
-
-    urlString = envParser.parse(urlString);
-
-    return normalizeUrl(encodeURI(urlString));
+  private convertUrl(value: Postman.Url | string, scope: LexicalScope): string {
+    return normalizeUrl(
+      typeof value !== 'string' ? this.buildUrlString(value, scope) : value
+    );
   }
 
-  private buildUrlString(url: Postman.Url, env: VariableParser): string {
+  private buildUrlString(url: Postman.Url, scope: LexicalScope): string {
     const { host, protocol } = url;
 
-    const p = protocol ? env.parse(protocol).replace(/:?$/, ':') : '';
-    const u = parseUrl(normalizeUrl(`${p}//${this.buildHost(host, env)}`));
+    const p = protocol ? protocol.replace(/:?$/, ':') : '';
+    const u = parseUrl(normalizeUrl(`${p}//${this.buildHost(host, scope)}`));
 
     if (url.port) {
       u.port = url.port;
@@ -458,8 +407,9 @@ export class DefaultConverter implements Converter {
     }
 
     const pathname = this.buildPathname(url);
+
     if (pathname) {
-      u.pathname = env.parse(pathname);
+      u.pathname = pathname;
     }
 
     u.search = stringify(this.prepareQueries(url) ?? {}, {
@@ -474,12 +424,15 @@ export class DefaultConverter implements Converter {
     return u.toString();
   }
 
-  private buildHost(host: string | string[], env: VariableParser): string {
+  private buildHost(host: string | string[], scope: LexicalScope): string {
     if (!host || !host.length) {
-      throw new Error('Host is not defined.');
+      throw new ConvertError(
+        'The host for the URL is mandatory',
+        `${scope.jsonPointer}/url/host`
+      );
     }
 
-    host = env.parse(Array.isArray(host) ? host.join('.') : host);
+    host = Array.isArray(host) ? host.join('.') : host;
 
     try {
       return parseUrl(host).host;
@@ -489,12 +442,10 @@ export class DefaultConverter implements Converter {
   }
 
   private buildPathname(url: Postman.Url): string {
-    const parser = this.parserFactory.createUrlVariableParser(url.variable);
-
     return Array.isArray(url.path)
       ? url.path
           .map((x: string | Postman.Variable) =>
-            parser.parse(typeof x === 'string' ? x : x.value ?? '')
+            typeof x === 'string' ? x : x.value ?? ''
           )
           .join('/')
       : url.path;
@@ -513,31 +464,20 @@ export class DefaultConverter implements Converter {
       : undefined;
   }
 
-  private convertQuery(
-    url: Postman.Url | string,
-    variables: Postman.Variable[]
-  ): QueryString[] {
-    let query: Record<string, undefined | string | string[]> | undefined;
-
-    if (typeof url === 'string') {
-      query = Object.fromEntries(parseUrl(url).searchParams);
-    } else {
-      query = this.prepareQueries(url);
-    }
+  private convertQuery(url: Postman.Url | string): QueryString[] {
+    const query: Record<string, undefined | string | string[]> | undefined =
+      typeof url === 'string'
+        ? Object.fromEntries(parseUrl(url).searchParams)
+        : this.prepareQueries(url);
 
     if (!query) {
       return [];
     }
 
-    const envParser: VariableParser =
-      this.parserFactory.createEnvVariableParser(variables);
-
     return Object.entries(query).map(
       ([name, value]: [string, undefined | string | string[]]) => ({
         name,
-        value: envParser.parse(
-          (Array.isArray(value) ? value.join(',') : value) ?? ''
-        )
+        value: (Array.isArray(value) ? value.join(',') : value) ?? ''
       })
     );
   }

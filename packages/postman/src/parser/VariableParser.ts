@@ -1,7 +1,11 @@
+import { LexicalScope } from './LexicalScope';
 import { Postman } from '@har-sdk/core';
 
 export interface VariableParser {
-  find(key: string): Postman.Variable | (() => any) | undefined;
+  find(
+    key: string,
+    scope: LexicalScope
+  ): Postman.Variable | (() => any) | undefined;
 
-  parse(value: string): string;
+  parse(value: string, scope: LexicalScope): string;
 }

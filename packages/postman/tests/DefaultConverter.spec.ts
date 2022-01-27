@@ -1,10 +1,16 @@
+import 'chai/register-should';
 import { postman2har } from '../src';
-import postmanCollection from './fixtures/Salesforce APIs.postman_collection.json';
+import collection from './fixtures/Salesforce APIs.postman_collection.json';
+import collectionWithoutVariables from './fixtures/no-such-variables.postman_collection.json';
+import { ConvertError } from '../src/parser';
 import { Postman, Request } from '@har-sdk/core';
+import chaiAsPromised from 'chai-as-promised';
+import { use } from 'chai';
 import { readFile } from 'fs';
 import { resolve } from 'path';
 import { promisify } from 'util';
-import 'chai/register-should';
+
+use(chaiAsPromised);
 
 describe('DefaultConverter', () => {
   describe('convert', () => {
@@ -23,7 +29,7 @@ describe('DefaultConverter', () => {
 
     it('should convert Postman v2.1.0 collection to HAR', async () => {
       const [firstRequest]: Request[] = await postman2har(
-        postmanCollection as unknown as Postman.Document,
+        collection as unknown as Postman.Document,
         {
           environment: {
             _endpoint: 'example.com'
@@ -49,7 +55,7 @@ describe('DefaultConverter', () => {
       );
 
       const result: Request[] = await postman2har(
-        postmanCollection as unknown as Postman.Document,
+        collection as unknown as Postman.Document,
         {
           environment: {
             _endpoint: 'example.com'
@@ -60,5 +66,53 @@ describe('DefaultConverter', () => {
 
       JSON.parse(JSON.stringify(result)).should.deep.eq(expected);
     });
+
+    [
+      {
+        expected: '/item/0/request/header/0/value',
+        exclude: 'contentType'
+      },
+      { expected: '/item/0/request/url/host/0', exclude: 'baseUrl' },
+      {
+        expected: '/item/0/request/url/path/1',
+        exclude: 'apiVersion'
+      },
+      {
+        expected: '/item/0/request/url/path/0',
+        exclude: 'apiPrefix'
+      },
+      {
+        expected: '/item/0/request/body/raw',
+        exclude: 'propName'
+      },
+      {
+        expected: '/item/0/request/url/query/0/value',
+        exclude: 'userId'
+      }
+    ].forEach(({ expected, exclude }: { expected: string; exclude: string }) =>
+      it(`should throw an error while resolving variables in ${expected}`, async () => {
+        const environment = {
+          baseUrl: 'http://example.com',
+          apiVersion: 'v59',
+          contentType: 'application/json',
+          apiPrefix: 'api',
+          propName: 'haltOnError',
+          userId: '1'
+        };
+
+        delete environment[exclude];
+
+        const result = postman2har(
+          JSON.parse(
+            JSON.stringify(collectionWithoutVariables)
+          ) as unknown as Postman.Document,
+          { environment }
+        );
+
+        return result.should.be
+          .rejectedWith(ConvertError)
+          .and.eventually.have.property('jsonPointer', expected);
+      })
+    );
   });
 });

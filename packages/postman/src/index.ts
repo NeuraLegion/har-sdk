@@ -1,9 +1,12 @@
-import { DefaultConverter } from './converter';
+import {
+  ConverterOptions,
+  DefaultConverter,
+  DefaultVariableResolver
+} from './converter';
 import {
   ConstantGenerators,
   DefaultGenerators,
-  DefaultVariableParserFactory,
-  ConverterOptions
+  DefaultVariableParserFactory
 } from './parser';
 import { Postman, Request } from '@har-sdk/core';
 
@@ -20,7 +23,8 @@ export const postman2har = async (
     : new DefaultGenerators();
 
   const parserFactory = new DefaultVariableParserFactory(generators);
-  const converter = new DefaultConverter(parserFactory, options);
+  const varResolver = new DefaultVariableResolver(parserFactory);
+  const converter = new DefaultConverter(varResolver, options);
 
   return converter.convert(collection);
 };

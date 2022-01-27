@@ -1,6 +1,7 @@
 /* eslint-disable max-depth */
 import { Converter } from './Converter';
 import { Flattener, isObject } from '../utils';
+import { ConvertError } from '../errors';
 import $RefParser, { JSONSchema } from '@apidevtools/json-schema-ref-parser';
 import {
   Header,
@@ -628,7 +629,10 @@ export class DefaultConverter implements Converter {
     const urls: string[] = this.parseUrls(spec);
 
     if (!Array.isArray(urls) || !urls.length) {
-      throw new Error('None server or host is defined.');
+      throw new ConvertError(
+        'Target must be specified',
+        this.isOASV2(spec) ? '/host' : '/servers'
+      );
     }
 
     let preferredUrls: string[] = urls.filter(
@@ -671,7 +675,7 @@ export class DefaultConverter implements Converter {
         typeof spec.schemes !== 'undefined' ? spec.schemes : ['https'];
 
       return schemes.map(
-        (x: string) => x + '://' + removeTrailingSlash(host + '/' + basePath)
+        (x: string) => `${x}://${removeTrailingSlash(`${host}/${basePath}`)}`
       );
     }
 

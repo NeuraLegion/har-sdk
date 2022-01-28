@@ -9,6 +9,6 @@
 
 ## 📝 License
 
-Copyright © 2021 [NeuraLegion](https://github.com/NeuraLegion).
+Copyright © 2022 [NeuraLegion](https://github.com/NeuraLegion).
 
 This project is licensed under the MIT License - see the [LICENSE file](LICENSE) for details.

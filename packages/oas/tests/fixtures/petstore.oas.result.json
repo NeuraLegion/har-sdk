@@ -295,7 +295,7 @@
         "value": "lorem"
       }
     ],
-    "url": "https://petstore.swagger.io/v2/user/login?username=lorem&password=lorem",
+    "url": "https://petstore.swagger.io/v2/user/login?password=lorem&username=lorem",
     "method": "GET",
     "headers": [],
     "httpVersion": "HTTP/1.1",

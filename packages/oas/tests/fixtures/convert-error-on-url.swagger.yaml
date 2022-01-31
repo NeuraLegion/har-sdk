@@ -13,9 +13,10 @@ info:
   termsOfService: 'http://swagger.io/terms/'
   title: Swagger Petstore
   version: 1.0.0
+host: 'petstore.swagger.io:8443'
 basePath: /v2
 schemes:
-  - https
+  - kkk
 paths:
   '/store/order/{orderId}':
     put:

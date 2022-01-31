@@ -386,10 +386,20 @@ export class DefaultConverter implements Converter {
     });
   }
 
-  private convertUrl(value: Postman.Url | string, scope: LexicalScope): string {
-    return normalizeUrl(
-      typeof value !== 'string' ? this.buildUrlString(value, scope) : value
-    );
+  private convertUrl(
+    value: Postman.Url | string,
+    parentScope: LexicalScope
+  ): string {
+    const scope = parentScope.concat('/url', []);
+
+    try {
+      const url =
+        typeof value !== 'string' ? this.buildUrlString(value, scope) : value;
+
+      return normalizeUrl(url);
+    } catch (e) {
+      throw new ConvertError(e.message, scope.jsonPointer);
+    }
   }
 
   private buildUrlString(url: Postman.Url, scope: LexicalScope): string {
@@ -428,7 +438,7 @@ export class DefaultConverter implements Converter {
     if (!host || !host.length) {
       throw new ConvertError(
         'The host for the URL is mandatory',
-        `${scope.jsonPointer}/url/host`
+        `${scope.jsonPointer}/host`
       );
     }
 

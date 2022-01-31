@@ -110,6 +110,14 @@ describe('DefaultConverter', () => {
 
     [
       {
+        input: 'convert-error-on-url.oas.yaml',
+        expected: '/servers/0'
+      },
+      {
+        input: 'convert-error-on-url.swagger.yaml',
+        expected: '/schemes/0'
+      },
+      {
         input: 'convert-error-on-servers.oas.yaml',
         expected: '/servers'
       },

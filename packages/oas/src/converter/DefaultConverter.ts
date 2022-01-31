@@ -6,19 +6,20 @@ import $RefParser, { JSONSchema } from '@apidevtools/json-schema-ref-parser';
 import {
   Header,
   normalizeUrl,
-  removeTrailingSlash,
-  removeLeadingSlash,
   OpenAPI,
+  OpenAPIV2,
   OpenAPIV3,
   PostData,
   QueryString,
-  Request,
-  OpenAPIV2
+  removeLeadingSlash,
+  removeTrailingSlash,
+  Request
 } from '@har-sdk/core';
-import { sample } from '@har-sdk/openapi-sampler';
+import { sample, Schema } from '@har-sdk/openapi-sampler';
 import { toXML } from 'jstoxml';
 import { stringify } from 'qs';
 import template from 'url-template';
+import pointer from 'json-pointer';
 
 interface HarRequest {
   readonly method: string;
@@ -90,12 +91,11 @@ export class DefaultConverter implements Converter {
   ): Request {
     const queryString: QueryString[] =
       this.getQueryStrings(spec, path, method, queryParamValues) || [];
-    const url =
-      baseUrl +
-      this.serializePath(spec, path, method) +
-      (queryString.length
-        ? '?' + queryString.map((x) => `${x.name}=${x.value}`).join('&')
-        : '');
+    const url = `${baseUrl}${this.serializePath(spec, path, method)}${
+      queryString.length
+        ? `?${queryString.map((x) => `${x.name}=${x.value}`).join('&')}`
+        : ''
+    }`;
 
     const har: Request = {
       queryString,
@@ -125,6 +125,7 @@ export class DefaultConverter implements Converter {
     method: string
   ): PostData | null {
     const pathObj = spec.paths[path][method];
+    const tokens = ['paths', path, method];
 
     for (const param of pathObj.parameters || []) {
       if (
@@ -132,50 +133,53 @@ export class DefaultConverter implements Converter {
         param.in.toLowerCase() === 'body' &&
         typeof param.schema !== 'undefined'
       ) {
-        try {
-          const data = sample(param.schema, { skipReadOnly: true }, spec);
+        const data = this.sampleParam(param, {
+          spec,
+          tokens,
+          idx: pathObj.parameters.indexOf(param)
+        });
 
-          let consumes;
+        let consumes;
 
-          if (pathObj.consumes?.length) {
-            consumes = pathObj.consumes;
-          } else if (this.isOASV2(spec) && spec.consumes?.length) {
-            consumes = spec.consumes;
-          }
-
-          const paramContentType = sample({
-            type: 'array',
-            examples: consumes || ['application/json']
-          });
-
-          return this.encodePayload(data, paramContentType);
-        } catch {
-          return null;
+        if (pathObj.consumes?.length) {
+          consumes = pathObj.consumes;
+        } else if (this.isOASV2(spec) && spec.consumes?.length) {
+          consumes = spec.consumes;
         }
+
+        const paramContentType = this.sample({
+          type: 'array',
+          examples: consumes || ['application/json']
+        });
+
+        return this.encodePayload(data, paramContentType);
       }
     }
 
-    const content = spec.paths[path][method].requestBody
-      ? spec.paths[path][method].requestBody.content
-      : null;
+    const content = pathObj.requestBody?.content ?? {};
+    const keys = Object.keys(content);
 
-    const keys = Object.keys(content || {});
     if (!keys.length) {
       return null;
     }
 
-    const contentType = sample({
+    const contentType = this.sample({
       type: 'array',
       examples: keys
     });
+    const sampleContent = content[contentType];
 
-    if (content[contentType] && content[contentType].schema) {
-      const sampleContent = content[contentType];
-      const data = sample(
-        content[contentType].schema,
-        { skipReadOnly: true },
-        spec
-      );
+    if (sampleContent?.schema) {
+      const data = this.sample(sampleContent.schema, {
+        spec,
+        jsonPointer: pointer.compile([
+          ...tokens,
+          'requestBody',
+          'content',
+          contentType,
+          'schema'
+        ])
+      });
 
       return this.encodePayload(data, contentType, sampleContent.encoding);
     }
@@ -335,40 +339,44 @@ export class DefaultConverter implements Converter {
     values: Record<string, string> = {}
   ): QueryString[] {
     const queryStrings: QueryString[] = [];
+    const pathObj = spec.paths[path][method];
+    const tokens = ['paths', path, method];
 
-    if (typeof spec.paths[path][method].parameters === 'undefined') {
+    if (typeof pathObj.parameters === 'undefined') {
       return queryStrings;
     }
 
-    for (const param of spec.paths[path][method].parameters) {
+    for (const param of pathObj.parameters) {
       if (
         typeof param.in !== 'undefined' &&
         param.in.toLowerCase() === 'query'
       ) {
-        const data = sample(param.schema || param, {}, spec);
+        const data = this.sampleParam(param, {
+          spec,
+          tokens,
+          idx: pathObj.parameters.indexOf(param)
+        });
 
         if (typeof values[param.name] !== 'undefined') {
           queryStrings.push({
             name: param.name,
-            value: values[param.name] + ''
+            value: `${values[param.name]}`
           });
+        } else if (typeof param.default === 'undefined') {
+          queryStrings.push(
+            ...this.paramsSerialization(param.name, data, {
+              style:
+                param.style === 'undefined'
+                  ? param.collectionFormat
+                  : param.style,
+              explode: param.explode
+            }).values
+          );
         } else {
-          if (typeof param.default === 'undefined') {
-            queryStrings.push(
-              ...this.paramsSerialization(param.name, data, {
-                style:
-                  param.style === 'undefined'
-                    ? param.collectionFormat
-                    : param.style,
-                explode: param.explode
-              }).values
-            );
-          } else {
-            queryStrings.push({
-              name: param.name,
-              value: param.default + ''
-            });
-          }
+          queryStrings.push({
+            name: param.name,
+            value: `${param.default}`
+          });
         }
       }
     }
@@ -383,8 +391,8 @@ export class DefaultConverter implements Converter {
     method: string
   ): Header[] {
     const headers: Header[] = [];
-
     const pathObj = spec.paths[path][method];
+    const tokens = ['paths', path, method];
 
     // 'content-type' header:
     if (typeof pathObj.consumes !== 'undefined') {
@@ -417,18 +425,21 @@ export class DefaultConverter implements Converter {
     }
 
     // headers defined in path object:
-    if (typeof pathObj.parameters !== 'undefined') {
-      for (const param of pathObj.parameters) {
-        if (
-          typeof param.in !== 'undefined' &&
-          param.in.toLowerCase() === 'header'
-        ) {
-          const data = sample(param.schema || param, {}, spec);
-          headers.push({
-            name: param.name.toLowerCase(),
-            value: typeof data === 'object' ? JSON.stringify(data) : data
-          });
-        }
+    for (const param of pathObj.parameters || []) {
+      if (
+        typeof param.in !== 'undefined' &&
+        param.in.toLowerCase() === 'header'
+      ) {
+        const data = this.sampleParam(param, {
+          spec,
+          tokens,
+          idx: pathObj.parameters.indexOf(param)
+        });
+
+        headers.push({
+          name: param.name.toLowerCase(),
+          value: typeof data === 'object' ? JSON.stringify(data) : data
+        });
       }
     }
 
@@ -494,7 +505,7 @@ export class DefaultConverter implements Converter {
     if (basicAuthDef) {
       headers.push({
         name: 'authorization',
-        value: 'Basic ' + 'REPLACE_BASIC_AUTH'
+        value: `Basic REPLACE_BASIC_AUTH`
       });
     } else if (apiKeyAuthDef) {
       headers.push({
@@ -504,11 +515,30 @@ export class DefaultConverter implements Converter {
     } else if (oauthDef) {
       headers.push({
         name: 'authorization',
-        value: 'Bearer ' + 'REPLACE_BEARER_TOKEN'
+        value: `Bearer REPLACE_BEARER_TOKEN`
       });
     }
 
     return headers;
+  }
+
+  private sampleParam(
+    param: OpenAPI.Parameter,
+    context: {
+      spec: OpenAPI.Document;
+      idx: number;
+      tokens: string[];
+    }
+  ): any {
+    return this.sample('schema' in param ? param.schema : param, {
+      spec: context.spec,
+      jsonPointer: pointer.compile([
+        ...context.tokens,
+        'parameters',
+        context.idx.toString(),
+        ...('schema' in param ? ['schema'] : [])
+      ])
+    });
   }
 
   private paramsSerialization(name: string, value: any, options: any): any {
@@ -589,15 +619,15 @@ export class DefaultConverter implements Converter {
       });
       values = Object.entries(flatten).map(([n, x]: any[]) => ({
         name: n,
-        value: x + ''
+        value: `${x}`
       }));
     } else if (Array.isArray(value)) {
-      values = value.map((x) => ({ name, value: x + '' }));
+      values = value.map((x) => ({ name, value: `${x}` }));
     } else {
       values = [
         {
           name,
-          value: value + ''
+          value: `${value}`
         }
       ];
     }
@@ -612,11 +642,17 @@ export class DefaultConverter implements Converter {
   ): string {
     const templateUrl = template.parse(path);
     const params = {};
+    const pathObj = spec.paths[path][method];
+    const tokens = ['paths', path, method];
 
-    if (typeof spec.paths[path][method].parameters !== 'undefined') {
-      for (const param of spec.paths[path][method].parameters) {
+    if (typeof pathObj.parameters !== 'undefined') {
+      for (const param of pathObj.parameters) {
         if (param?.in.toLowerCase() === 'path') {
-          const data = sample(param.schema || param, {}, spec);
+          const data = this.sampleParam(param, {
+            spec,
+            tokens,
+            idx: pathObj.parameters.indexOf(param)
+          });
           Object.assign(params, { [param.name]: data });
         }
       }
@@ -643,7 +679,7 @@ export class DefaultConverter implements Converter {
       preferredUrls = urls;
     }
 
-    return sample({
+    return this.sample({
       type: 'array',
       examples: preferredUrls
     });
@@ -651,35 +687,72 @@ export class DefaultConverter implements Converter {
 
   private parseUrls(spec: OpenAPI.Document): string[] {
     if (this.isOASV3(spec) && spec.servers?.length) {
-      return spec.servers.map((server: OpenAPIV3.ServerObject) => {
-        const variables = server.variables || {};
-        const templateUrl = template.parse(server.url);
-        const params = {};
-
-        for (const [param, variable] of Object.entries(variables)) {
-          const data = sample(variable, {}, spec);
-          Object.assign(params, { [param]: data });
-        }
-
-        return removeTrailingSlash(templateUrl.expand(params));
-      });
+      return this.parseServers(spec);
     }
 
     if (this.isOASV2(spec) && spec.host) {
-      const basePath: string =
-        typeof spec.basePath !== 'undefined'
-          ? removeLeadingSlash(spec.basePath)
-          : '';
-      const host: string = removeTrailingSlash(spec.host);
-      const schemes: string[] =
-        typeof spec.schemes !== 'undefined' ? spec.schemes : ['https'];
-
-      return schemes.map(
-        (x: string) => `${x}://${removeTrailingSlash(`${host}/${basePath}`)}`
-      );
+      return this.parseHost(spec);
     }
 
     return [];
+  }
+
+  private parseHost(spec: OpenAPIV2.Document): string[] {
+    const basePath: string =
+      typeof spec.basePath !== 'undefined'
+        ? removeLeadingSlash(spec.basePath)
+        : '';
+    const host: string = removeTrailingSlash(spec.host);
+    const schemes: string[] =
+      typeof spec.schemes !== 'undefined' ? spec.schemes : ['https'];
+
+    return schemes.map(
+      (x: string) => `${x}://${removeTrailingSlash(`${host}/${basePath}`)}`
+    );
+  }
+
+  private parseServers(spec: OpenAPIV3.Document): string[] {
+    return spec.servers.map((server: OpenAPIV3.ServerObject, idx: number) => {
+      const variables = server.variables || {};
+      const params = Object.entries(variables).reduce(
+        (acc, [param, variable]: [string, OpenAPIV3.ServerVariableObject]) => {
+          const jsonPointer = pointer.compile([
+            'servers',
+            idx.toString(),
+            'variables',
+            param
+          ]);
+          const data = this.sample(variable, {
+            spec,
+            jsonPointer
+          });
+
+          return { ...acc, [param]: data };
+        },
+        {}
+      );
+      const templateUrl = template.parse(server.url);
+
+      return removeTrailingSlash(templateUrl.expand(params));
+    });
+  }
+
+  /**
+   * To exclude extra fields that are used in response only, {@link Options.skipReadOnly} must be used.
+   * @see {@link https://swagger.io/docs/specification/data-models/data-types/#readonly-writeonly | Read-Only and Write-Only Properties}
+   */
+  private sample(
+    schema: Schema,
+    context?: {
+      spec?: OpenAPI.Document;
+      jsonPointer?: string;
+    }
+  ): any | undefined {
+    try {
+      return sample(schema, { skipReadOnly: true, quiet: true }, context?.spec);
+    } catch (e) {
+      throw new ConvertError(e.message, context?.jsonPointer);
+    }
   }
 
   private isOASV2(doc: OpenAPI.Document): doc is OpenAPIV2.Document {

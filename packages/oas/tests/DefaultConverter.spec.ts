@@ -114,6 +114,10 @@ describe('DefaultConverter', () => {
         expected: '/servers'
       },
       {
+        input: 'convert-error-on-variable.oas.yaml',
+        expected: '/servers/0/variables/port'
+      },
+      {
         input: 'convert-error-on-host.swagger.yaml',
         expected: '/host'
       },

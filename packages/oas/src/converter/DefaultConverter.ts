@@ -15,7 +15,7 @@ import {
   removeTrailingSlash,
   Request
 } from '@har-sdk/core';
-import { Options, sample, Schema } from '@har-sdk/openapi-sampler';
+import { sample, Schema } from '@har-sdk/openapi-sampler';
 import { toXML } from 'jstoxml';
 import { stringify } from 'qs';
 import template from 'url-template';
@@ -170,22 +170,16 @@ export class DefaultConverter implements Converter {
     const sampleContent = content[contentType];
 
     if (sampleContent?.schema) {
-      const data = this.sample(
-        sampleContent.schema,
-        {
-          skipReadOnly: true
-        },
-        {
-          spec,
-          jsonPointer: pointer.compile([
-            ...tokens,
-            'requestBody',
-            'content',
-            contentType,
-            'schema'
-          ])
-        }
-      );
+      const data = this.sample(sampleContent.schema, {
+        spec,
+        jsonPointer: pointer.compile([
+          ...tokens,
+          'requestBody',
+          'content',
+          contentType,
+          'schema'
+        ])
+      });
 
       return this.encodePayload(data, contentType, sampleContent.encoding);
     }
@@ -536,19 +530,15 @@ export class DefaultConverter implements Converter {
       tokens: string[];
     }
   ): any {
-    return this.sample(
-      'schema' in param ? param.schema : param,
-      {},
-      {
-        spec: context.spec,
-        jsonPointer: pointer.compile([
-          ...context.tokens,
-          'parameters',
-          context.idx.toString(),
-          ...('schema' in param ? ['schema'] : [])
-        ])
-      }
-    );
+    return this.sample('schema' in param ? param.schema : param, {
+      spec: context.spec,
+      jsonPointer: pointer.compile([
+        ...context.tokens,
+        'parameters',
+        context.idx.toString(),
+        ...('schema' in param ? ['schema'] : [])
+      ])
+    });
   }
 
   private paramsSerialization(name: string, value: any, options: any): any {
@@ -732,14 +722,10 @@ export class DefaultConverter implements Converter {
             'variables',
             param
           ]);
-          const data = this.sample(
-            variable,
-            {},
-            {
-              spec,
-              jsonPointer
-            }
-          );
+          const data = this.sample(variable, {
+            spec,
+            jsonPointer
+          });
 
           return { ...acc, [param]: data };
         },
@@ -751,16 +737,19 @@ export class DefaultConverter implements Converter {
     });
   }
 
+  /**
+   * To exclude extra fields that are used in response only, {@link Options.skipReadOnly} must be used.
+   * @see {@link https://swagger.io/docs/specification/data-models/data-types/#readonly-writeonly | Read-Only and Write-Only Properties}
+   */
   private sample(
     schema: Schema,
-    options?: Options,
     context?: {
       spec?: OpenAPI.Document;
       jsonPointer?: string;
-    } & Options
+    }
   ): any | undefined {
     try {
-      return sample(schema, options, context?.spec);
+      return sample(schema, { skipReadOnly: true, quiet: true }, context?.spec);
     } catch (e) {
       throw new ConvertError(e.message, context?.jsonPointer);
     }

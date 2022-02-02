@@ -21,7 +21,10 @@ export class PostmanImporter extends BaseImporter<ImporterType.POSTMAN> {
   public isSupported(spec: any): spec is Postman.Document {
     const schemaId = spec?.info?.schema;
 
-    return this.POSTMAN_SCHEMAS.has(schemaId?.trim().toLowerCase());
+    return (
+      typeof schemaId === 'string' &&
+      this.POSTMAN_SCHEMAS.has(schemaId.trim().toLowerCase())
+    );
   }
 
   protected fileName({
@@ -31,6 +34,8 @@ export class PostmanImporter extends BaseImporter<ImporterType.POSTMAN> {
     doc: Postman.Document;
     format: DocFormat;
   }): string | undefined {
-    return doc.info.name ? `${doc.info.name.trim()}.${format}` : undefined;
+    return typeof doc?.info?.name === 'string'
+      ? `${doc.info.name.trim()}.${format}`
+      : undefined;
   }
 }

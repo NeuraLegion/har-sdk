@@ -136,12 +136,13 @@ export class DefaultConverter implements Converter {
   ): PostData | null {
     const pathObj = spec.paths[path][method];
     const tokens = ['paths', path, method];
+    const params = Array.isArray(pathObj.parameters) ? pathObj.parameters : [];
 
-    for (const param of pathObj.parameters || []) {
+    for (const param of params) {
       if (
-        typeof param.in !== 'undefined' &&
+        typeof param.in === 'string' &&
         param.in.toLowerCase() === 'body' &&
-        typeof param.schema !== 'undefined'
+        'schema' in param
       ) {
         const data = this.sampleParam(param, {
           spec,
@@ -351,20 +352,14 @@ export class DefaultConverter implements Converter {
     const queryStrings: QueryString[] = [];
     const pathObj = spec.paths[path][method];
     const tokens = ['paths', path, method];
+    const params = Array.isArray(pathObj.parameters) ? pathObj.parameters : [];
 
-    if (typeof pathObj.parameters === 'undefined') {
-      return queryStrings;
-    }
-
-    for (const param of pathObj.parameters) {
-      if (
-        typeof param.in !== 'undefined' &&
-        param.in.toLowerCase() === 'query'
-      ) {
+    for (const param of params) {
+      if (typeof param.in === 'string' && param.in.toLowerCase() === 'query') {
         const data = this.sampleParam(param, {
           spec,
           tokens,
-          idx: pathObj.parameters.indexOf(param)
+          idx: params.indexOf(param)
         });
 
         if (typeof values[param.name] !== 'undefined') {
@@ -405,7 +400,7 @@ export class DefaultConverter implements Converter {
     const tokens = ['paths', path, method];
 
     // 'content-type' header:
-    if (typeof pathObj.consumes !== 'undefined') {
+    if (Array.isArray(pathObj.consumes)) {
       for (const value of pathObj.consumes) {
         headers.push({
           value,
@@ -415,7 +410,7 @@ export class DefaultConverter implements Converter {
     }
 
     // 'accept' header:
-    if (typeof pathObj.produces !== 'undefined') {
+    if (Array.isArray(pathObj.produces)) {
       for (const value of pathObj.produces) {
         headers.push({
           value,
@@ -425,7 +420,7 @@ export class DefaultConverter implements Converter {
     }
 
     // v3 'content-type' header:
-    if (pathObj.requestBody && pathObj.requestBody.content) {
+    if (pathObj.requestBody?.content) {
       for (const value of Object.keys(pathObj.requestBody.content)) {
         headers.push({
           value,
@@ -434,16 +429,15 @@ export class DefaultConverter implements Converter {
       }
     }
 
+    const params = Array.isArray(pathObj.parameters) ? pathObj.parameters : [];
+
     // headers defined in path object:
-    for (const param of pathObj.parameters || []) {
-      if (
-        typeof param.in !== 'undefined' &&
-        param.in.toLowerCase() === 'header'
-      ) {
+    for (const param of params) {
+      if (typeof param.in === 'string' && param.in.toLowerCase() === 'header') {
         const data = this.sampleParam(param, {
           spec,
           tokens,
-          idx: pathObj.parameters.indexOf(param)
+          idx: params.indexOf(param)
         });
 
         headers.push({
@@ -456,9 +450,9 @@ export class DefaultConverter implements Converter {
     // security:
     let securityObj: Record<string, string[]>[];
 
-    if (typeof pathObj.security !== 'undefined') {
+    if (Array.isArray(pathObj.security)) {
       securityObj = pathObj.security;
-    } else if (typeof spec.security !== 'undefined') {
+    } else if (Array.isArray(spec.security)) {
       securityObj = spec.security;
     }
 
@@ -467,6 +461,7 @@ export class DefaultConverter implements Converter {
     }
 
     let definedSchemes;
+
     if (this.isOASV2(spec) && spec.securityDefinitions) {
       definedSchemes = spec.securityDefinitions;
     } else if (this.isOASV3(spec) && spec.components) {
@@ -517,9 +512,9 @@ export class DefaultConverter implements Converter {
         name: 'authorization',
         value: `Basic REPLACE_BASIC_AUTH`
       });
-    } else if (apiKeyAuthDef) {
+    } else if (typeof (apiKeyAuthDef as any)?.name === 'string') {
       headers.push({
-        name: (apiKeyAuthDef as any).name?.toLowerCase(),
+        name: (apiKeyAuthDef as any).name.toLowerCase(),
         value: 'REPLACE_KEY_VALUE'
       });
     } else if (oauthDef) {
@@ -651,24 +646,23 @@ export class DefaultConverter implements Converter {
     method: string
   ): string {
     const templateUrl = template.parse(path);
-    const params = {};
+    const pathParams = {};
     const pathObj = spec.paths[path][method];
     const tokens = ['paths', path, method];
+    const params = Array.isArray(pathObj.parameters) ? pathObj.parameters : [];
 
-    if (typeof pathObj.parameters !== 'undefined') {
-      for (const param of pathObj.parameters) {
-        if (param?.in.toLowerCase() === 'path') {
-          const data = this.sampleParam(param, {
-            spec,
-            tokens,
-            idx: pathObj.parameters.indexOf(param)
-          });
-          Object.assign(params, { [param.name]: data });
-        }
+    for (const param of params) {
+      if (typeof param.in === 'string' && param.in.toLowerCase() === 'path') {
+        const data = this.sampleParam(param, {
+          spec,
+          tokens,
+          idx: pathObj.parameters.indexOf(param)
+        });
+        Object.assign(pathParams, { [param.name]: data });
       }
     }
 
-    return templateUrl.expand(params);
+    return templateUrl.expand(pathParams);
   }
 
   private getBaseUrl(spec: OpenAPI.Document): string {
@@ -709,18 +703,19 @@ export class DefaultConverter implements Converter {
 
   private parseHost(spec: OpenAPIV2.Document): string[] {
     const basePath = removeLeadingSlash(
-      typeof spec.basePath !== 'undefined' ? spec.basePath : ''
+      typeof spec.basePath === 'string' ? spec.basePath : ''
     ).trim();
     const host = removeTrailingSlash(
-      typeof spec.host !== 'undefined' ? spec.host : ''
+      typeof spec.host === 'string' ? spec.host : ''
     ).trim();
 
     if (!host) {
       throw new ConvertError('Missing mandatory `host` field', '/host');
     }
 
-    const schemes: string[] =
-      typeof spec.schemes !== 'undefined' ? spec.schemes : ['https'];
+    const schemes: string[] = Array.isArray(spec.schemes)
+      ? spec.schemes
+      : ['https'];
 
     return schemes.map((x: string, idx: number) =>
       this.normalizeUrl(`${x}://${host}/${basePath}`, {

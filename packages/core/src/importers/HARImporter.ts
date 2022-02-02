@@ -15,10 +15,12 @@ export class HARImporter extends BaseImporter<ImporterType.HAR> {
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   public isSupported(spec: any): spec is Har {
+    const version = spec?.log?.version;
+
     return !!(
-      spec?.log?.version &&
-      Array.isArray(spec.log.entries) &&
-      this.SUPPORTED_HAR_VERSION.test(spec.log.version)
+      typeof version === 'string' &&
+      this.SUPPORTED_HAR_VERSION.test(version.trim()) &&
+      Array.isArray(spec.log.entries)
     );
   }
 }

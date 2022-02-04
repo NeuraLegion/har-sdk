@@ -21,7 +21,21 @@ describe('StringSampler', () => {
     result.should.eq('44');
   });
 
-  it('should throw on invalid maxLength pattern constrain', () => {
+  it('should throw on controversial minLength/maxLength constrains', () => {
+    const schema = {
+      type: 'string',
+      maxLength: 5,
+      minLength: 10
+    };
+
+    const result = () => sample(schema);
+
+    result.should.throw(
+      /Cannot sample string by boundaries: minLength=10, maxLength=5, format=default/
+    );
+  });
+
+  xit('should throw on invalid maxLength pattern constrain', () => {
     const schema = {
       type: 'string',
       format: 'pattern',
@@ -92,6 +106,23 @@ describe('StringSampler', () => {
 
     const result = () => sample(schema);
 
-    result.should.throw(/Using minLength = 11 is incorrect with format "date"/);
+    result.should.throw(
+      /Cannot sample string by boundaries: minLength=11, format=date/
+    );
+  });
+
+  it('should throw on invalid date minLength and maxLength constrains', () => {
+    const schema = {
+      type: 'string',
+      format: 'date',
+      minLength: 11,
+      maxLength: 20
+    };
+
+    const result = () => sample(schema);
+
+    result.should.throw(
+      /Cannot sample string by boundaries: minLength=11, maxLength=20, format=date/
+    );
   });
 });

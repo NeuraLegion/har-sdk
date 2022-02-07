@@ -21,7 +21,7 @@ describe('StringSampler', () => {
     result.should.eq('44');
   });
 
-  it('should throw on controversial minLength/maxLength constrains', () => {
+  it('should throw on controversial minLength and maxLength constrains', () => {
     const schema = {
       type: 'string',
       maxLength: 5,
@@ -35,7 +35,7 @@ describe('StringSampler', () => {
     );
   });
 
-  xit('should throw on invalid maxLength pattern constrain', () => {
+  it('should throw on controversial maxLength and pattern constrains', () => {
     const schema = {
       type: 'string',
       format: 'pattern',
@@ -46,7 +46,7 @@ describe('StringSampler', () => {
     const result = () => sample(schema);
 
     result.should.throw(
-      /Using maxLength = 5 is incorrect with format "pattern"/
+      /Cannot sample string by boundaries: maxLength=5, format=pattern/
     );
   });
 

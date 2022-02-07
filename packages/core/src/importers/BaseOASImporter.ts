@@ -16,9 +16,14 @@ export abstract class BaseOASImporter<
   }: {
     doc: OpenAPI.Document;
     format: DocFormat;
-  }): string {
-    return `${[doc.info.title, doc.info.version]
-      .map((x: string) => x.trim())
-      .join(' ')}.${format}`;
+  }): string | undefined {
+    if (
+      typeof doc?.info?.title === 'string' &&
+      typeof doc.info.version === 'string'
+    ) {
+      return `${[doc.info.title, doc.info.version]
+        .map((x: string) => x.trim())
+        .join(' ')}.${format}`;
+    }
   }
 }

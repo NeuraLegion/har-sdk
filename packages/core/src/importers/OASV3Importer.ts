@@ -15,8 +15,11 @@ export class OASV3Importer extends BaseOASImporter<ImporterType.OASV3> {
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   public isSupported(spec: any): spec is OpenAPIV3.Document {
-    return !!(
-      spec?.openapi && this.SUPPORTED_OPENAPI_VERSION.test(spec.openapi)
+    const version = spec?.openapi;
+
+    return (
+      typeof version === 'string' &&
+      this.SUPPORTED_OPENAPI_VERSION.test(version.trim())
     );
   }
 }

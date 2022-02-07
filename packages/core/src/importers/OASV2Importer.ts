@@ -15,6 +15,11 @@ export class OASV2Importer extends BaseOASImporter<ImporterType.OASV2> {
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   public isSupported(spec: any): spec is OpenAPIV2.Document {
-    return spec?.swagger?.trim() === this.SUPPORTED_SWAGGER_VERSION;
+    const version = spec?.swagger;
+
+    return (
+      typeof version === 'string' &&
+      version.trim() === this.SUPPORTED_SWAGGER_VERSION
+    );
   }
 }

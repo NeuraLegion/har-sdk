@@ -65,7 +65,9 @@ export class DefaultHarBuilder implements HarBuilder {
       url: this.buildRequestURL(request.uri.href) || '',
       httpVersion: this.buildHttpVersion(request.response),
       cookies: this.buildHarCookies(
-        request.headers?.cookie?.split(/;(?=(?:[^"]*"[^"]*")*[^"]*$)/)
+        typeof request.headers?.cookie === 'string'
+          ? request.headers.cookie.split(/;(?=(?:[^"]*"[^"]*")*[^"]*$)/)
+          : []
       ),
       headers: this.buildHarHeaders(
         (request.req && request.req._headers) || request.headers

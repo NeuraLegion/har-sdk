@@ -16,7 +16,11 @@ export class StringSampler implements Sampler {
     'binary': () => '\\x01\\x02\\x03\\x04\\x05',
     'base64': () => 'ZHVtbXkgYmluYXJ5IHNhbXBsZQA=',
     'uuid': () => 'fbdf5a53-161e-4460-98ad-0e39408d8689',
-    'pattern': this.patternSample,
+    'pattern': (
+      _min: number,
+      _max: number,
+      { pattern }: { pattern: string | RegExp }
+    ) => this.patternSample(pattern),
     'default': (min: number, max: number) =>
       this.adjustLength('lorem', min, max)
   };
@@ -30,11 +34,7 @@ export class StringSampler implements Sampler {
     return this.checkLength(sampler(min || 0, max, schema), format, min, max);
   }
 
-  private patternSample(
-    _min: number,
-    _max: number,
-    { pattern }: { pattern: string | RegExp }
-  ): string {
+  private patternSample(pattern: string | RegExp): string {
     const randExp = new RandExp(pattern);
     randExp.randInt = (a, b) => Math.floor((a + b) / 2);
 

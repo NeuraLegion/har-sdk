@@ -54,6 +54,63 @@ describe('StringSampler', () => {
         format: 'date-time'
       },
       expected: '2021-12-31T23:34:00Z'
+    },
+    {
+      input: {
+        type: 'string',
+        format: 'ipv4',
+        maxLength: 100
+      },
+      expected: '208.67.222.222'
+    },
+    {
+      input: {
+        type: 'string',
+        format: 'ipv6',
+        minLength: 39
+      },
+      expected: '0000:0000:0000:0000:0000:ffff:d043:dcdc'
+    },
+    {
+      input: {
+        type: 'string',
+        format: 'hostname',
+        minLength: 1
+      },
+      expected: 'brokencrystals.com'
+    },
+    {
+      input: {
+        type: 'string',
+        format: 'uri'
+      },
+      expected: 'https://github.com/NeuraLegion/brokencrystals'
+    },
+    {
+      input: {
+        type: 'string',
+        format: 'byte',
+        minLength: 1,
+        maxLength: 100
+      },
+      expected: 'ZHVtbXkgYmluYXJ5IHNhbXBsZQA='
+    },
+    {
+      input: {
+        type: 'string',
+        format: 'base64',
+        minLength: 28
+      },
+      expected: 'ZHVtbXkgYmluYXJ5IHNhbXBsZQA='
+    },
+    {
+      input: {
+        type: 'string',
+        format: 'uuid',
+        minLength: 1,
+        maxLength: 36
+      },
+      expected: 'fbdf5a53-161e-4460-98ad-0e39408d8689'
     }
   ].forEach(({ input, expected }) => {
     const { type, format, ...restrictions } = input;
@@ -99,11 +156,19 @@ describe('StringSampler', () => {
       input: {
         type: 'string',
         format: 'date',
-        minLength: 11,
-        maxLength: 20
+        minLength: 1,
+        maxLength: 9
       },
       expected:
-        'Cannot sample string by boundaries: minLength=11, maxLength=20, format=date'
+        'Cannot sample string by boundaries: minLength=1, maxLength=9, format=date'
+    },
+    {
+      input: {
+        type: 'string',
+        format: 'uuid',
+        maxLength: 35
+      },
+      expected: 'Cannot sample string by boundaries: maxLength=35, format=uuid'
     }
   ].forEach(({ input, expected }) => {
     const { type, ...restrictions } = input;

@@ -1,0 +1,40 @@
+[
+  {
+    "queryString": [],
+    "url": "https://petstore.swagger.io/pets",
+    "method": "GET",
+    "headers": [],
+    "httpVersion": "HTTP/1.1",
+    "cookies": [],
+    "headersSize": 0,
+    "bodySize": 0
+  },
+  {
+    "queryString": [
+      {
+        "name": "dummy",
+        "value": ""
+      }
+    ],
+    "url": "https://petstore.swagger.io/store/order?dummy=",
+    "method": "PUT",
+    "headers": [
+      {
+        "value": "application/json",
+        "name": "content-type"
+      },
+      {
+        "name": "api_key",
+        "value": "null"
+      }
+    ],
+    "httpVersion": "HTTP/1.1",
+    "cookies": [],
+    "headersSize": 0,
+    "bodySize": 0,
+    "postData": {
+      "mimeType": "application/json",
+      "text": "null"
+    }
+  }
+]

@@ -1,0 +1,25 @@
+[
+  {
+    "queryString": [],
+    "url": "https://petstore.swagger.io/v2/dummy",
+    "method": "POST",
+    "headers": [
+      {
+        "value": "multipart/form-data",
+        "name": "content-type"
+      },
+      {
+        "value": "application/json",
+        "name": "accept"
+      }
+    ],
+    "httpVersion": "HTTP/1.1",
+    "cookies": [],
+    "headersSize": 0,
+    "bodySize": 0,
+    "postData": {
+      "mimeType": "multipart/form-data; boundary=956888039105887155673143",
+      "text": "\r\n--956888039105887155673143--"
+    }
+  }
+]

@@ -1,0 +1,26 @@
+swagger: '2.0'
+info:
+  title: Swagger Petstore
+  version: 1.0.0
+host: petstore.swagger.io
+basePath: /v2
+schemes:
+  - https
+paths:
+  '/dummy':
+    post:
+      consumes:
+        - multipart/form-data
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          schema: {}
+      responses:
+        200:
+          description: successful operation
+          schema: {}
+externalDocs:
+  description: Find out more about Swagger
+  url: 'http://swagger.io'

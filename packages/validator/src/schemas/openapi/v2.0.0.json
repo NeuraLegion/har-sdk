@@ -948,13 +948,15 @@
           "$ref": "http://json-schema.org/draft-07/schema#/properties/maximum"
         },
         "exclusiveMaximum": {
-          "type": "boolean"
+          "type": "boolean",
+          "default": false
         },
         "minimum": {
           "$ref": "http://json-schema.org/draft-07/schema#/properties/minimum"
         },
         "exclusiveMinimum": {
-          "type": "boolean"
+          "type": "boolean",
+          "default": false
         },
         "maxLength": {
           "$ref": "http://json-schema.org/draft-07/schema#/definitions/nonNegativeInteger"
@@ -1542,13 +1544,15 @@
       "$ref": "http://json-schema.org/draft-07/schema#/properties/maximum"
     },
     "exclusiveMaximum": {
-      "type": "boolean"
+      "type": "boolean",
+      "default": false
     },
     "minimum": {
       "$ref": "http://json-schema.org/draft-07/schema#/properties/minimum"
     },
     "exclusiveMinimum": {
-      "type": "boolean"
+      "type": "boolean",
+      "default": false
     },
     "maxLength": {
       "$ref": "http://json-schema.org/draft-07/schema#/definitions/nonNegativeInteger"

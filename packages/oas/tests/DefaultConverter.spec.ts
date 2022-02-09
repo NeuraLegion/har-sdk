@@ -179,5 +179,39 @@ describe('DefaultConverter', () => {
           .and.eventually.have.property('jsonPointer', expected);
       })
     );
+
+    [
+      {
+        input: 'empty-schema.swagger.yaml',
+        expected: 'empty-schema.swagger.result.json'
+      },
+      {
+        input: 'empty-schema.oas.yaml',
+        expected: 'empty-schema.oas.result.json'
+      }
+    ].forEach(({ input: inputFilename, expected: expectedFilename }) =>
+      it(`should correctly handle empty schemas ${inputFilename.replace(
+        /^[^.]+\.(.+)\.yaml$/,
+        '($1)'
+      )}`, async () => {
+        const input: OpenAPIV2.Document = yaml.load(
+          await promisify(readFile)(
+            resolve(`./tests/fixtures/${inputFilename}`),
+            'utf8'
+          )
+        ) as OpenAPIV2.Document;
+
+        const expected = JSON.parse(
+          await promisify(readFile)(
+            resolve(`./tests/fixtures/${expectedFilename}`),
+            'utf8'
+          )
+        );
+
+        const result = oas2har(input);
+
+        return result.should.eventually.deep.eq(expected);
+      })
+    );
   });
 });

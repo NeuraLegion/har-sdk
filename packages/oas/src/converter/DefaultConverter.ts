@@ -248,7 +248,7 @@ export class DefaultConverter implements Converter {
         const EOL = '\r\n';
 
         // eslint-disable-next-line no-case-declarations
-        let rawData = Object.keys(value)
+        let rawData = Object.keys(value || {})
           .reduce((params: string[], key: string) => {
             const multipartContentType = this.getMultipartContentType(
               value[key],

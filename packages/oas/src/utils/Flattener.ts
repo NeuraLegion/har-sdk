@@ -9,14 +9,17 @@ export class Flattener {
 
     config.verify();
 
-    const paths = (ob: Record<string, any> = {}, head: string = ''): string[] =>
-      Object.entries(ob).reduce((product, [key, value]: [string, any]) => {
-        const fullPath = config.format(head, key);
+    const paths = (ob: Record<string, any>, head: string = ''): string[] =>
+      Object.entries(ob || {}).reduce(
+        (product, [key, value]: [string, any]) => {
+          const fullPath = config.format(head, key);
 
-        return isObject(value)
-          ? product.concat(paths(value, fullPath))
-          : product.concat(fullPath, value.toString());
-      }, []);
+          return isObject(value)
+            ? product.concat(paths(value, fullPath))
+            : product.concat(fullPath, value.toString());
+        },
+        []
+      );
 
     return paths(obj);
   }
@@ -31,7 +34,7 @@ export class Flattener {
 
     const toReturn = {};
 
-    const objKeys = Object.keys(obj);
+    const objKeys = Object.keys(obj || {});
     for (const key of objKeys) {
       if (typeof obj[key] == 'object' && obj[key] !== null) {
         const flatObject = this.toFlattenObject(obj[key]);

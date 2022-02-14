@@ -52,13 +52,18 @@ describe('DefaultConverter', () => {
       },
       {
         // TODO support for `deepObject` style and `allowReserved` keyword
-        input: 'query-params.oas.yaml',
-        expected: 'query-params.oas.result.json',
+        input: 'params-query.oas.yaml',
+        expected: 'params-query.oas.result.json',
         message: 'should correctly convert oas query parameters'
       },
       {
-        input: 'query-params.swagger.yaml',
-        expected: 'query-params.swagger.result.json',
+        input: 'params-query.swagger.yaml',
+        expected: 'params-query.swagger.result.json',
+        message: 'should correctly convert swagger query parameters'
+      },
+      {
+        input: 'params-path.oas.yaml',
+        expected: 'params-path.oas.result.json',
         message: 'should correctly convert swagger query parameters'
       }
     ].forEach(({ input: inputFile, expected: expectedFile, message }) => {

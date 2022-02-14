@@ -646,24 +646,57 @@ export class DefaultConverter implements Converter {
     path: string,
     method: string
   ): string {
-    const templateUrl = template.parse(path);
-    const pathParams = {};
     const pathObj = spec.paths[path][method];
-    const tokens = ['paths', path, method];
-    const params = Array.isArray(pathObj.parameters) ? pathObj.parameters : [];
+    const params: (OpenAPIV2.Parameter | OpenAPIV3.ParameterObject)[] =
+      Array.isArray(pathObj.parameters) ? pathObj.parameters : [];
+    const pathParams = params.filter(
+      (p) => typeof p.in === 'string' && p.in.toLowerCase() === 'path'
+    );
 
-    for (const param of params) {
-      if (typeof param.in === 'string' && param.in.toLowerCase() === 'path') {
-        const data = this.sampleParam(param, {
-          spec,
-          tokens,
-          idx: pathObj.parameters.indexOf(param)
-        });
-        Object.assign(pathParams, { [param.name]: data });
-      }
+    const uriTemplatePath = pathParams.reduce(
+      (res, param) =>
+        res.replace(`{${param.name}}`, this.getParamUriTemplate(param)),
+      path
+    );
+
+    const tokens = ['paths', path, method];
+
+    return template.parse(uriTemplatePath).expand(
+      pathParams.reduce(
+        (res: Record<string, any>, param) => ({
+          ...res,
+          [param.name]: this.sampleParam(param, {
+            spec,
+            tokens,
+            idx: params.indexOf(param)
+          })
+        }),
+        {}
+      )
+    );
+  }
+
+  private getParamUriTemplate({
+    name,
+    style,
+    explode
+  }: OpenAPIV2.Parameter | OpenAPIV3.ParameterObject): string {
+    const suffix = explode ? '*' : '';
+
+    let prefix;
+    switch (style) {
+      case 'label':
+        prefix = '.';
+        break;
+      case 'matrix':
+        prefix = ';';
+        break;
+      case 'simple':
+      default:
+        prefix = '';
     }
 
-    return templateUrl.expand(pathParams);
+    return `{${prefix}${name}${suffix}}`;
   }
 
   private getBaseUrl(spec: OpenAPI.Document): string {

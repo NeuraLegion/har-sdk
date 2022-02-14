@@ -1,0 +1,306 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Query Parameters Test
+servers:
+  - url: http://petstore.swagger.io/v1
+paths:
+  # Primitives
+
+  /defaultStylePrimitiveParam/{p}:
+    get:
+      parameters:
+        - name: p
+          in: path
+          required: true
+          schema:
+            type: string
+      responses: &responses
+        '200':
+          description: OK
+          content:
+            application/json:
+              example:
+                ok: true
+
+  /simpleStylePrimitiveParam/{p}:
+    get:
+      parameters:
+        - name: p
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses: *responses
+
+  /simpleStylePrimitiveParamExploded/{p}/:
+    get:
+      parameters:
+        - name: p
+          in: path
+          required: true
+          style: simple
+          explode: true
+          schema:
+            type: string
+      responses: *responses
+
+  /labelStylePrimitiveParam/{p}:
+    get:
+      parameters:
+        - name: p
+          in: path
+          required: true
+          style: label
+          explode: false
+          schema:
+            type: string
+      responses: *responses
+
+  /labelStylePrimitiveParamExploded/{p}:
+    get:
+      parameters:
+        - name: p
+          in: path
+          required: true
+          style: label
+          explode: true
+          schema:
+            type: string
+      responses: *responses
+
+  /matrixStylePrimitiveParam/{p}:
+    get:
+      parameters:
+        - name: p
+          in: path
+          required: true
+          style: matrix
+          explode: false
+          schema:
+            type: string
+      responses: *responses
+
+  /matrixStylePrimitiveParamExploded/{p}:
+    get:
+      parameters:
+        - name: p
+          in: path
+          required: true
+          style: matrix
+          explode: true
+          schema:
+            type: string
+      responses: *responses
+
+  # Arrays
+
+  /defaultStyleArrayParam/{p}:
+    get:
+      parameters:
+        - name: p
+          in: path
+          required: true
+          schema:
+            type: array
+            minItems: 2
+            items:
+              type: string
+      responses: *responses
+
+  /simpleStyleArrayParam/{p}:
+    get:
+      parameters:
+        - name: p
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: array
+            minItems: 2
+            items:
+              type: string
+      responses: *responses
+
+  /simpleStyleArrayParamExploded/{p}/:
+    get:
+      parameters:
+        - name: p
+          in: path
+          required: true
+          style: simple
+          explode: true
+          schema:
+            type: array
+            minItems: 2
+            items:
+              type: string
+      responses: *responses
+
+  /labelStyleArrayParam/{p}:
+    get:
+      parameters:
+        - name: p
+          in: path
+          required: true
+          style: label
+          explode: false
+          schema:
+            type: array
+            minItems: 2
+            items:
+              type: string
+      responses: *responses
+
+  /labelStyleArrayParamExploded/{p}:
+    get:
+      parameters:
+        - name: p
+          in: path
+          required: true
+          style: label
+          explode: true
+          schema:
+            type: array
+            minItems: 2
+            items:
+              type: string
+      responses: *responses
+
+  /matrixStyleArrayParam/{p}:
+    get:
+      parameters:
+        - name: p
+          in: path
+          required: true
+          style: matrix
+          explode: false
+          schema:
+            type: array
+            minItems: 2
+            items:
+              type: string
+      responses: *responses
+
+  /matrixStyleArrayParamExploded/{p}:
+    get:
+      parameters:
+        - name: p
+          in: path
+          required: true
+          style: matrix
+          explode: true
+          schema:
+            type: array
+            minItems: 2
+            items:
+              type: string
+      responses: *responses
+
+  # Objects
+
+  /defaultStyleObjectParam/{p}:
+    get:
+      parameters:
+        - name: p
+          in: path
+          required: true
+          schema:
+            type: object
+            default:
+              a: 42
+              b: xyz
+      responses: *responses
+
+  /simpleStyleObjectParam/{p}:
+    get:
+      parameters:
+        - name: p
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: object
+            default:
+              a: 42
+              b: xyz
+      responses: *responses
+
+  /simpleStyleObjectParamExploded/{p}/:
+    get:
+      parameters:
+        - name: p
+          in: path
+          required: true
+          style: simple
+          explode: true
+          schema:
+            type: object
+            default:
+              a: 42
+              b: xyz
+      responses: *responses
+
+  /labelStyleObjectParam/{p}:
+    get:
+      parameters:
+        - name: p
+          in: path
+          required: true
+          style: label
+          explode: false
+          schema:
+            type: object
+            default:
+              a: 42
+              b: xyz
+      responses: *responses
+
+  /labelStyleObjectParamExploded/{p}:
+    get:
+      parameters:
+        - name: p
+          in: path
+          required: true
+          style: label
+          explode: true
+          schema:
+            type: object
+            default:
+              a: 42
+              b: xyz
+      responses: *responses
+
+  /matrixStyleObjectParam/{p}:
+    get:
+      parameters:
+        - name: p
+          in: path
+          required: true
+          style: matrix
+          explode: false
+          schema:
+            type: object
+            default:
+              a: 42
+              b: xyz
+      responses: *responses
+
+  /matrixStyleObjectParamExploded/{p}:
+    get:
+      parameters:
+        - name: p
+          in: path
+          required: true
+          style: matrix
+          explode: true
+          schema:
+            type: object
+            default:
+              a: 42
+              b: xyz
+      responses: *responses

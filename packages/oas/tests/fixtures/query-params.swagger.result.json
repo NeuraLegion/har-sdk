@@ -102,12 +102,7 @@
     ],
     "url": "http://petstore.swagger.io/v1/enumArrayParam?p=a%2Ca",
     "method": "GET",
-    "headers": [
-      {
-        "value": "application/json",
-        "name": "accept"
-      }
-    ],
+    "headers": [],
     "httpVersion": "HTTP/1.1",
     "cookies": [],
     "headersSize": 0,

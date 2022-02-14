@@ -557,7 +557,7 @@ export class DefaultConverter implements Converter {
       switch (options.style) {
         case 'spaceDelimited':
         case 'ssv':
-          return '%20';
+          return ' ';
         case 'pipeDelimited':
         case 'pipes':
           return '|';

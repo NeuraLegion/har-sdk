@@ -1,11 +1,10 @@
-import githubSwagger from './fixtures/github.swagger.json';
 import { ConvertError, oas2har } from '../src';
-import yaml from 'js-yaml';
-import { OpenAPIV2, OpenAPIV3, Request } from '@har-sdk/core';
+import yaml, { load } from 'js-yaml';
+import { OpenAPIV2, Request } from '@har-sdk/core';
 import { use } from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { resolve } from 'path';
-import { readFile } from 'fs';
+import { readFile, readFileSync } from 'fs';
 import { promisify } from 'util';
 import 'chai/register-should';
 
@@ -13,99 +12,68 @@ use(chaiAsPromised);
 
 describe('DefaultConverter', () => {
   describe('convert', () => {
-    it('should convert GitHub OAS v2 (JSON) to HAR', async () => {
-      const expected = JSON.parse(
-        await promisify(readFile)(
-          resolve('./tests/fixtures/github.swagger.result.json'),
+    [
+      {
+        input: 'github.swagger.json',
+        expected: 'github.swagger.result.json',
+        message: 'should convert GitHub OAS v2 (JSON) to HAR'
+      },
+      {
+        input: 'petstore.oas.yaml',
+        expected: 'petstore.oas.result.json',
+        message: 'should convert Petstore OAS v3 (YAML) to HAR'
+      },
+      {
+        input: 'multipart.oas.yaml',
+        expected: 'multipart.oas.result.json',
+        message:
+          'should generate multipart/form-data according to OAS definition'
+      },
+      {
+        input: 'refs.oas.yaml',
+        expected: 'refs.oas.result.json',
+        message:
+          'should convert OAS v3 spec even if parameters are declared via ref'
+      },
+      {
+        input: 'servers-with-variables.oas.yaml',
+        expected: 'servers-with-variables.oas.result.json',
+        message: 'should substitute variables in servers'
+      },
+      {
+        input: 'empty-schema.swagger.yaml',
+        expected: 'empty-schema.swagger.result.json',
+        message: 'should correctly handle empty schemas (swagger)'
+      },
+      {
+        input: 'empty-schema.oas.yaml',
+        expected: 'empty-schema.oas.result.json',
+        message: 'should correctly handle empty schemas (oas)'
+      },
+      {
+        // TODO support for `deepObject` style and `allowReserved` keyword
+        input: 'query-params.oas.yaml',
+        expected: 'query-params.oas.result.json',
+        message: 'should correctly convert oas query parameters'
+      }
+    ].forEach(({ input: inputFile, expected: expectedFile, message }) => {
+      it(message, async () => {
+        const content = readFileSync(
+          resolve(`./tests/fixtures/${inputFile}`),
           'utf-8'
-        )
-      );
+        );
+        const input = inputFile.endsWith('json')
+          ? JSON.parse(content)
+          : load(content);
 
-      const result: Request[] = await oas2har(
-        githubSwagger as unknown as OpenAPIV2.Document
-      );
+        const expected = JSON.parse(
+          readFileSync(resolve(`./tests/fixtures/${expectedFile}`), 'utf-8')
+        );
 
-      result.should.deep.eq(expected);
-    });
+        const result: Request[] = await oas2har(input as any);
 
-    it('should convert Petstore OAS v3 (YAML) to HAR', async () => {
-      const content: string = await promisify(readFile)(
-        resolve('./tests/fixtures/petstore.oas.yaml'),
-        'utf8'
-      );
-
-      const expected = JSON.parse(
-        await promisify(readFile)(
-          resolve('./tests/fixtures/petstore.oas.result.json'),
-          'utf-8'
-        )
-      );
-
-      const result: Request[] = await oas2har(
-        yaml.load(content) as OpenAPIV3.Document
-      );
-
-      result.should.deep.eq(expected);
-    });
-
-    it('should generate multipart/form-data according to OAS definition', async () => {
-      const content: string = await promisify(readFile)(
-        resolve('./tests/fixtures/multipart.oas.yaml'),
-        'utf8'
-      );
-
-      const expected = JSON.parse(
-        await promisify(readFile)(
-          resolve('./tests/fixtures/multipart.oas.result.json'),
-          'utf-8'
-        )
-      );
-
-      const result: Request[] = await oas2har(
-        yaml.load(content) as OpenAPIV3.Document
-      );
-
-      result.should.deep.eq(expected);
-    });
-
-    it('should convert OAS v3 spec even if parameters are declared via ref', async () => {
-      const content: string = await promisify(readFile)(
-        resolve('./tests/fixtures/refs.oas.yaml'),
-        'utf8'
-      );
-
-      const expected = JSON.parse(
-        await promisify(readFile)(
-          resolve('./tests/fixtures/refs.oas.result.json'),
-          'utf-8'
-        )
-      );
-
-      const result: Request[] = await oas2har(
-        yaml.load(content) as OpenAPIV3.Document
-      );
-
-      result.should.deep.eq(expected);
-    });
-
-    it('should substitute variables in servers', async () => {
-      const content: string = await promisify(readFile)(
-        resolve('./tests/fixtures/servers-with-variables.oas.yaml'),
-        'utf8'
-      );
-
-      const expected = JSON.parse(
-        await promisify(readFile)(
-          resolve('./tests/fixtures/servers-with-variables.oas.result.json'),
-          'utf-8'
-        )
-      );
-
-      const result: Request[] = await oas2har(
-        yaml.load(content) as OpenAPIV3.Document
-      );
-
-      result.should.deep.eq(expected);
+        result.should.deep.eq(expected);
+      });
     });
 
     [
@@ -177,40 +145,6 @@ describe('DefaultConverter', () => {
         return result.should.be
           .rejectedWith(ConvertError)
           .and.eventually.have.property('jsonPointer', expected);
-      })
-    );
-
-    [
-      {
-        input: 'empty-schema.swagger.yaml',
-        expected: 'empty-schema.swagger.result.json'
-      },
-      {
-        input: 'empty-schema.oas.yaml',
-        expected: 'empty-schema.oas.result.json'
-      }
-    ].forEach(({ input: inputFilename, expected: expectedFilename }) =>
-      it(`should correctly handle empty schemas ${inputFilename.replace(
-        /^[^.]+\.(.+)\.yaml$/,
-        '($1)'
-      )}`, async () => {
-        const input: OpenAPIV2.Document = yaml.load(
-          await promisify(readFile)(
-            resolve(`./tests/fixtures/${inputFilename}`),
-            'utf8'
-          )
-        ) as OpenAPIV2.Document;
-
-        const expected = JSON.parse(
-          await promisify(readFile)(
-            resolve(`./tests/fixtures/${expectedFilename}`),
-            'utf8'
-          )
-        );
-
-        const result = oas2har(input);
-
-        return result.should.eventually.deep.eq(expected);
       })
     );
   });

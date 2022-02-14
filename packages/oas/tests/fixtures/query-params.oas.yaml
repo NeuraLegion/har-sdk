@@ -1,0 +1,141 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Query Parameters Test
+servers:
+  - url: http://petstore.swagger.io/v1
+paths:
+  /formStyleParamArray:
+    get:
+      parameters:
+        - name: p
+          in: query
+          style: form
+          explode: false
+          schema:
+            type: array
+            minItems: 2
+            items:
+              type: string
+      responses: &responses
+        '200':
+          description: OK
+          content:
+            application/json:
+              example:
+                ok: true
+
+  /formStyleParamArrayExploded:
+    get:
+      parameters:
+        - name: p
+          in: query
+          style: form
+          explode: true
+          schema:
+            type: array
+            minItems: 2
+            items:
+              type: string
+      responses: *responses
+
+  /formStyleParamObject:
+    get:
+      parameters:
+        - name: p
+          in: query
+          style: form
+          explode: false
+          schema:
+            type: object
+            example:
+              key: x
+              value: 42
+      responses: *responses
+
+  /formStyleParamObjectExploded:
+    get:
+      parameters:
+        - name: p
+          in: query
+          style: form
+          explode: true
+          schema:
+            type: object
+            example:
+              key: x
+              value: 42
+      responses: *responses
+
+  /spaceDelimitedStyleParam:
+    get:
+      parameters:
+        - name: p
+          in: query
+          explode: false
+          style: spaceDelimited
+          schema:
+            type: array
+            minItems: 2
+            items:
+              type: integer
+        - name: pExploded
+          in: query
+          explode: true
+          style: spaceDelimited
+          schema:
+            type: array
+            minItems: 2
+            items:
+              type: integer
+      responses: *responses
+
+  /pipeDelimitedStyleParam:
+    get:
+      parameters:
+        - name: p
+          in: query
+          explode: false
+          style: pipeDelimited
+          schema:
+            type: array
+            minItems: 2
+            items:
+              type: integer
+        - name: pExploded
+          in: query
+          explode: true
+          style: pipeDelimited
+          schema:
+            type: array
+            minItems: 2
+            items:
+              type: integer
+      responses: *responses
+# TODO
+#  /deepObjectStyleParam:
+#    get:
+#      parameters:
+#        - name: p
+#          in: query
+#          style: deepObject
+#          explode: true
+#          schema:
+#            type: object
+#            example:
+#              key: x
+#              value: 42
+#      responses:
+#        *responses
+
+# TODO
+#  /allowReservedParam:
+#    get:
+#      parameters:
+#        - name: p
+#          in: query
+#          allowReserved: true
+#          schema:
+#            type: string
+#            example: ":/?#[]@!$&'()*+,;="
+#      responses: *responses

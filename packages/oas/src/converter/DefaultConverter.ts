@@ -94,10 +94,8 @@ export class DefaultConverter implements Converter {
     const rawUrl = `${baseUrl}${this.serializePath(spec, path, method)}${
       queryString.length
         ? `?${queryString
-            .map(
-              (x) =>
-                `${encodeURIComponent(x.name)}=${encodeURIComponent(x.value)}`
-            )
+            .map((p) => Object.values(p).map((x) => encodeURIComponent(x)))
+            .map(([name, value]: string[]) => `${name}=${value}`)
             .join('&')}`
         : ''
     }`;

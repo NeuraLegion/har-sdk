@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   version: 1.0.0
-  title: Query Parameters Test
+  title: Path Parameters Test
 servers:
   - url: http://petstore.swagger.io/v1
 paths:

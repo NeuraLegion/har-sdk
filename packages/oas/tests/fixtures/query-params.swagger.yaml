@@ -1,0 +1,96 @@
+swagger: '2.0'
+info:
+  title: Query Parameters Test
+  version: 1.0.0
+host: petstore.swagger.io
+basePath: /v1
+schemes:
+  - http
+paths:
+  /defaultArrayParam:
+    get:
+      parameters:
+        - name: p
+          in: query
+          type: array
+          minItems: 2
+          items:
+            type: string
+      responses: &responses
+        '200':
+          description: OK
+          examples:
+            application/json:
+              ok: true
+
+  /csvArrayParam:
+    get:
+      parameters:
+        - name: p
+          in: query
+          collectionFormat: csv
+          type: array
+          minItems: 2
+          items:
+            type: string
+      responses: *responses
+
+  /ssvArrayParam:
+    get:
+      parameters:
+        - name: p
+          in: query
+          collectionFormat: ssv
+          type: array
+          minItems: 2
+          items:
+            type: string
+      responses: *responses
+
+  /tsvArrayParam:
+    get:
+      parameters:
+        - name: p
+          in: query
+          collectionFormat: tsv
+          type: array
+          minItems: 2
+          items:
+            type: string
+      responses: *responses
+
+  /pipesArrayParam:
+    get:
+      parameters:
+        - name: p
+          in: query
+          collectionFormat: pipes
+          type: array
+          minItems: 2
+          items:
+            type: string
+      responses: *responses
+
+  /multiArrayParam:
+    get:
+      parameters:
+        - name: p
+          in: query
+          collectionFormat: multi
+          type: array
+          minItems: 2
+          items:
+            type: string
+      responses: *responses
+
+  /enumArrayParam:
+    get:
+      parameters:
+        - name: p
+          in: query
+          type: array
+          minItems: 2
+          items:
+            type: string
+            enum: [a, b]
+      responses: *responses

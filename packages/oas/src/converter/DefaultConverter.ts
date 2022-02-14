@@ -93,31 +93,27 @@ export class DefaultConverter implements Converter {
       this.getQueryStrings(spec, path, method, queryParamValues) || [];
     const rawUrl = `${baseUrl}${this.serializePath(spec, path, method)}${
       queryString.length
-        ? `?${queryString.map((x) => `${x.name}=${x.value}`).join('&')}`
+        ? `?${queryString
+            .map((p) => Object.values(p).map((x) => encodeURIComponent(x)))
+            .map(([name, value]: string[]) => `${name}=${value}`)
+            .join('&')}`
         : ''
     }`;
-    const jsonPointer = pointer.compile(['paths', path, method]);
-    const url = this.normalizeUrl(rawUrl, { jsonPointer });
+    const postData = this.getPayload(spec, path, method);
 
-    const har: Request = {
+    return {
       queryString,
-      url,
+      url: this.normalizeUrl(rawUrl, {
+        jsonPointer: pointer.compile(['paths', path, method])
+      }),
       method: method.toUpperCase(),
       headers: this.getHeadersArray(spec, path, method),
       httpVersion: 'HTTP/1.1',
       cookies: [],
       headersSize: 0,
-      bodySize: 0
+      bodySize: 0,
+      ...(postData ? { postData } : {})
     };
-
-    // get payload data, if available:
-    const postData = this.getPayload(spec, path, method);
-
-    if (postData) {
-      har.postData = postData;
-    }
-
-    return har;
   }
 
   private normalizeUrl(url: string, context?: { jsonPointer: string }) {
@@ -353,6 +349,7 @@ export class DefaultConverter implements Converter {
     const pathObj = spec.paths[path][method];
     const tokens = ['paths', path, method];
     const params = Array.isArray(pathObj.parameters) ? pathObj.parameters : [];
+    const oas3 = this.isOASV3(spec);
 
     for (const param of params) {
       if (typeof param.in === 'string' && param.in.toLowerCase() === 'query') {
@@ -370,11 +367,9 @@ export class DefaultConverter implements Converter {
         } else if (typeof param.default === 'undefined') {
           queryStrings.push(
             ...this.paramsSerialization(param.name, data, {
-              style:
-                param.style === 'undefined'
-                  ? param.collectionFormat
-                  : param.style,
-              explode: param.explode
+              oas3,
+              style: oas3 ? param.style : param.collectionFormat,
+              explode: oas3 ? param.explode : param.collectionFormat === 'multi'
             }).values
           );
         } else {
@@ -546,26 +541,32 @@ export class DefaultConverter implements Converter {
     });
   }
 
-  private paramsSerialization(name: string, value: any, options: any): any {
+  private paramsSerialization(
+    name: string,
+    value: any,
+    options: {
+      style: string;
+      oas3: boolean;
+      explode: boolean;
+    }
+  ): any {
     options = Object.assign({ style: 'form', explode: true }, options);
 
     const getDelimiter = () => {
-      if (options.explode) {
-        return '&';
-      }
-
       switch (options.style) {
         case 'spaceDelimited':
         case 'ssv':
           return ' ';
+        case 'tsv':
+          return '\t';
         case 'pipeDelimited':
         case 'pipes':
           return '|';
+        case 'csv':
         case 'form':
-        case 'multi':
           return ',';
         default:
-          return '&';
+          return options.oas3 ? '&' : ',';
       }
     };
 

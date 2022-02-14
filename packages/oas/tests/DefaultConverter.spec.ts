@@ -51,7 +51,7 @@ describe('DefaultConverter', () => {
         message: 'should correctly handle empty schemas (oas)'
       },
       {
-        // TODO support for deepObject style
+        // TODO support for `deepObject` style and `allowReserved` keyword
         input: 'query-params.oas.yaml',
         expected: 'query-params.oas.result.json',
         message: 'should correctly convert oas query parameters'

@@ -127,3 +127,15 @@ paths:
 #              value: 42
 #      responses:
 #        *responses
+
+# TODO
+#  /allowReservedParam:
+#    get:
+#      parameters:
+#        - name: p
+#          in: query
+#          allowReserved: true
+#          schema:
+#            type: string
+#            example: ":/?#[]@!$&'()*+,;="
+#      responses: *responses

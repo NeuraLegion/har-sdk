@@ -11,11 +11,9 @@ export const removeLeadingSlash = (path: string): string =>
   path.replace(/^\//, '');
 
 const normalizePathName = (pathname: string): string =>
-  decodeURI(
-    removeTrailingSlash(
-      pathname.replace(/((?!:).|^)\/{2,}/g, (_: string, p1: string) =>
-        /^(?!\/)/g.test(p1) ? `${p1}/` : '/'
-      )
+  removeTrailingSlash(
+    pathname.replace(/((?!:).|^)\/{2,}/g, (_: string, p1: string) =>
+      /^(?!\/)/g.test(p1) ? `${p1}/` : '/'
     )
   );
 

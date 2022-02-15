@@ -366,11 +366,10 @@ export class DefaultConverter implements Converter {
           });
         } else if (typeof param.default === 'undefined') {
           queryStrings.push(
-            ...this.paramsSerialization(param.name, data, {
-              oas3,
-              style: oas3 ? param.style : param.collectionFormat,
-              explode: oas3 ? param.explode : param.collectionFormat === 'multi'
-            }).values
+            ...this.createQueryStringEntries(
+              param.name,
+              this.serializeParamValue(param, data, oas3)
+            )
           );
         } else {
           queryStrings.push({
@@ -541,83 +540,52 @@ export class DefaultConverter implements Converter {
     });
   }
 
-  private paramsSerialization(
-    name: string,
-    value: any,
-    options: {
-      style: string;
-      oas3: boolean;
-      explode: boolean;
+  private getDelimiter(style: string, oas3: boolean): string {
+    switch (style) {
+      case 'spaceDelimited':
+      case 'ssv':
+        return ' ';
+      case 'tsv':
+        return '\t';
+      case 'pipeDelimited':
+      case 'pipes':
+        return '|';
+      case 'csv':
+      case 'form':
+        return ',';
+      default:
+        return oas3 ? '&' : ',';
     }
-  ): any {
-    options = Object.assign({ style: 'form', explode: true }, options);
-
-    const getDelimiter = () => {
-      switch (options.style) {
-        case 'spaceDelimited':
-        case 'ssv':
-          return ' ';
-        case 'tsv':
-          return '\t';
-        case 'pipeDelimited':
-        case 'pipes':
-          return '|';
-        case 'csv':
-        case 'form':
-          return ',';
-        default:
-          return options.oas3 ? '&' : ',';
-      }
-    };
-
-    const delimiter = getDelimiter();
-
-    const transposeValue = (val: any) => {
-      if (options.explode) {
-        return val;
-      }
-
-      if (Array.isArray(val)) {
-        return val.join(delimiter);
-      } else if (isObject(val)) {
-        return this.flattener.toFlattenArray(val).join(delimiter);
-      }
-
-      return val;
-    };
-
-    const ignoreValues = (val: any) =>
-      isObject(val) &&
-      ['spaceDelimited', 'pipeDelimited', 'pipes', 'ssv'].includes(
-        options.style
-      );
-
-    const transposed = transposeValue(value);
-
-    const arrayFormat =
-      options.explode && Array.isArray(transposed) ? 'repeat' : 'indices';
-
-    const object = isObject(transposed) ? transposed : { [name]: transposed };
-
-    const queryString = stringify(!ignoreValues(value) ? object : '', {
-      delimiter,
-      arrayFormat,
-      format: 'RFC3986',
-      encode: false,
-      addQueryPrefix: false
-    });
-
-    return {
-      queryString,
-      values: this.createQueryStringEntries(name, transposed)
-    };
   }
 
-  private createQueryStringEntries(
-    name: string,
-    value: any
-  ): Record<string, string>[] {
-    let values: Record<string, string>[];
+  private serializeParamValue(
+    param: OpenAPIV2.Parameter | OpenAPIV3.ParameterObject,
+    value: any,
+    oas3: boolean
+  ): any {
+    const style = oas3
+      ? param.style
+      : (param as OpenAPIV2.Parameter).collectionFormat;
+    const explode = oas3
+      ? param.explode
+      : (param as OpenAPIV2.Parameter).collectionFormat === 'multi';
+
+    if (explode) {
+      return value;
+    }
+
+    const delimiter = this.getDelimiter(style, oas3);
+    if (Array.isArray(value)) {
+      return value.join(delimiter);
+    } else if (isObject(value)) {
+      return this.flattener.toFlattenArray(value).join(delimiter);
+    }
+
+    return value;
+  }
+
+  private createQueryStringEntries(name: string, value: any): QueryString[] {
+    let values: QueryString[];
 
     if (isObject(value)) {
       const flatten = this.flattener.toFlattenObject(value, {
@@ -653,23 +621,61 @@ export class DefaultConverter implements Converter {
       (p) => typeof p.in === 'string' && p.in.toLowerCase() === 'path'
     );
 
+    const tokens = ['paths', path, method];
+    const sampledParams = pathParams.map((param) =>
+      this.sampleParam(param, {
+        spec,
+        tokens,
+        idx: params.indexOf(param)
+      })
+    );
+
+    return this.isOASV2(spec)
+      ? this.serializeOas2Path(
+          path,
+          pathParams as OpenAPIV2.Parameter[],
+          sampledParams
+        )
+      : this.serializeOas3Path(
+          path,
+          pathParams as OpenAPIV3.ParameterObject[],
+          sampledParams
+        );
+  }
+
+  private serializeOas2Path(
+    path: string,
+    pathParams: OpenAPIV2.Parameter[],
+    sampledParams: any[]
+  ): string {
+    return encodeURI(
+      pathParams.reduce(
+        (res, param, idx) =>
+          res.replace(
+            `{${param.name}}`,
+            this.serializeParamValue(param, sampledParams[idx], false)
+          ),
+        path
+      )
+    );
+  }
+
+  private serializeOas3Path(
+    path: string,
+    pathParams: OpenAPIV3.ParameterObject[],
+    sampledParams: any[]
+  ): string {
     const uriTemplatePath = pathParams.reduce(
       (res, param) =>
         res.replace(`{${param.name}}`, this.getParamUriTemplate(param)),
       path
     );
 
-    const tokens = ['paths', path, method];
-
     return template.parse(uriTemplatePath).expand(
       pathParams.reduce(
-        (res: Record<string, any>, param) => ({
+        (res: Record<string, any>, param, idx) => ({
           ...res,
-          [param.name]: this.sampleParam(param, {
-            spec,
-            tokens,
-            idx: params.indexOf(param)
-          })
+          [param.name]: sampledParams[idx]
         }),
         {}
       )

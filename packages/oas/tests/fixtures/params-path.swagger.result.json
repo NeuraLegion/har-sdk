@@ -1,0 +1,52 @@
+[
+  {
+    "bodySize": 0,
+    "cookies": [],
+    "headers": [],
+    "headersSize": 0,
+    "httpVersion": "HTTP/1.1",
+    "method": "GET",
+    "queryString": [],
+    "url": "http://petstore.swagger.io/v1/defaultArrayParam/lorem,lorem"
+  },
+  {
+    "bodySize": 0,
+    "cookies": [],
+    "headers": [],
+    "headersSize": 0,
+    "httpVersion": "HTTP/1.1",
+    "method": "GET",
+    "queryString": [],
+    "url": "http://petstore.swagger.io/v1/csvArrayParam/lorem,lorem"
+  },
+  {
+    "bodySize": 0,
+    "cookies": [],
+    "headers": [],
+    "headersSize": 0,
+    "httpVersion": "HTTP/1.1",
+    "method": "GET",
+    "queryString": [],
+    "url": "http://petstore.swagger.io/v1/ssvArrayParam/lorem%20lorem"
+  },
+  {
+    "bodySize": 0,
+    "cookies": [],
+    "headers": [],
+    "headersSize": 0,
+    "httpVersion": "HTTP/1.1",
+    "method": "GET",
+    "queryString": [],
+    "url": "http://petstore.swagger.io/v1/tsvArrayParam/lorem%09lorem"
+  },
+  {
+    "bodySize": 0,
+    "cookies": [],
+    "headers": [],
+    "headersSize": 0,
+    "httpVersion": "HTTP/1.1",
+    "method": "GET",
+    "queryString": [],
+    "url": "http://petstore.swagger.io/v1/pipesArrayParam/lorem%7Clorem"
+  }
+]

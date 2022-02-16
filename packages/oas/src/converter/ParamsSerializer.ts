@@ -6,15 +6,20 @@ export class ParamsSerializer {
 
   public serializeValue(
     param: OpenAPIV2.Parameter | OpenAPIV3.ParameterObject,
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
     value: any,
     oas3: boolean
   ): any {
-    const style = oas3
-      ? param.style
-      : (param as OpenAPIV2.Parameter).collectionFormat;
-    const explode = oas3
-      ? param.explode
-      : (param as OpenAPIV2.Parameter).collectionFormat === 'multi';
+    let style: string;
+    let explode: boolean;
+
+    if (!oas3 && 'collectionFormat' in param) {
+      style = param.collectionFormat;
+      explode = param.collectionFormat === 'multi';
+    } else {
+      style = param.style;
+      explode = param.explode;
+    }
 
     if (explode) {
       return value;

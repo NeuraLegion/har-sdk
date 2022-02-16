@@ -1,9 +1,9 @@
-import { isOASV2, isOASV3 } from '../../utils';
 import { Sampler } from '../Sampler';
 import { SubConverter } from './SubConverter';
 import { Header, OpenAPI, OpenAPIV2, OpenAPIV3 } from '@har-sdk/core';
 
 type OperationObject = OpenAPIV2.OperationObject | OpenAPIV3.OperationObject;
+type ParameterObject = OpenAPIV3.ParameterObject | OpenAPIV2.Parameter;
 
 type SecurityRequirementObject =
   | OpenAPIV2.SecurityRequirementObject
@@ -27,37 +27,47 @@ export class HeadersConverter implements SubConverter<Header[]> {
     const headers: Header[] = [];
     const pathObj = this.spec.paths[path][method];
 
-    if (Array.isArray(pathObj.consumes)) {
-      for (const value of pathObj.consumes) {
-        headers.push(this.createHeader('content-type', value));
-      }
-    } else if (pathObj.requestBody?.content) {
-      for (const value of Object.keys(pathObj.requestBody.content)) {
-        headers.push(this.createHeader('content-type', value));
-      }
-    }
+    headers.push(...this.createContentTypeHeaders(pathObj));
+    headers.push(...this.createAcceptHeaders(pathObj));
 
-    if (Array.isArray(pathObj.produces)) {
-      for (const value of pathObj.produces) {
-        headers.push(this.createHeader('accept', value));
-      }
-    }
-
-    headers.push(
-      ...this.createFromPathParams(pathObj, ['paths', path, method])
-    );
-    headers.push(...this.createFromSecurityRequirements(pathObj));
+    headers.push(...this.parsePathParams(pathObj, ['paths', path, method]));
+    headers.push(...this.parseSecurityRequirements(pathObj));
 
     return headers;
   }
 
-  private createFromPathParams(
-    pathObj: OpenAPIV2.OperationObject | OpenAPIV3.OperationObject,
+  private createContentTypeHeaders(pathObj: OperationObject): Header[] {
+    const values = [];
+
+    if ('consumes' in pathObj && Array.isArray(pathObj.consumes)) {
+      values.push(...pathObj.consumes);
+    } else if (
+      'requestBody' in pathObj &&
+      'content' in pathObj.requestBody &&
+      pathObj.requestBody?.content
+    ) {
+      values.push(...Object.keys(pathObj.requestBody.content));
+    }
+
+    return this.createHeaders('content-type', values);
+  }
+
+  private createAcceptHeaders(pathObj: OperationObject): Header[] {
+    return this.createHeaders(
+      'accept',
+      'produces' in pathObj && Array.isArray(pathObj.produces)
+        ? pathObj.produces
+        : []
+    );
+  }
+
+  private parsePathParams(
+    pathObj: OperationObject,
     tokens: string[]
   ): Header[] {
-    const params: (OpenAPIV3.ParameterObject | OpenAPIV2.Parameter)[] = (
+    const params: ParameterObject[] = (
       Array.isArray(pathObj.parameters) ? pathObj.parameters : []
-    ) as (OpenAPIV3.ParameterObject | OpenAPIV2.Parameter)[];
+    ) as ParameterObject[];
 
     return params
       .filter(
@@ -94,9 +104,9 @@ export class HeadersConverter implements SubConverter<Header[]> {
   private getSecuritySchemes():
     | Record<string, SecuritySchemeObject>
     | undefined {
-    if (isOASV2(this.spec) && this.spec.securityDefinitions) {
+    if ('securityDefinitions' in this.spec) {
       return this.spec.securityDefinitions;
-    } else if (isOASV3(this.spec) && this.spec.components) {
+    } else if ('components' in this.spec) {
       return this.spec.components.securitySchemes as Record<
         string,
         SecuritySchemeObject
@@ -104,7 +114,7 @@ export class HeadersConverter implements SubConverter<Header[]> {
     }
   }
 
-  private createFromSecurityRequirements(pathObj: OperationObject): Header[] {
+  private parseSecurityRequirements(pathObj: OperationObject): Header[] {
     const secRequirementObjects = this.getSecurityRequirementObjects(pathObj);
     if (!secRequirementObjects) {
       return [];
@@ -116,42 +126,38 @@ export class HeadersConverter implements SubConverter<Header[]> {
     }
 
     for (const obj of secRequirementObjects) {
-      const header = this.createFromSecurityRequirement(obj, securitySchemes);
+      const header = this.parseSecurityRequirement(obj, securitySchemes);
       if (header) {
         return [header];
       }
     }
   }
 
-  private createFromSecurityRequirement(
+  private parseSecurityRequirement(
     obj: SecurityRequirementObject,
     securitySchemes: Record<string, SecuritySchemeObject>
   ): Header | undefined {
-    const schemeName = Object.keys(obj)[0];
-    const securityScheme = securitySchemes[schemeName];
+    const securityScheme = securitySchemes[Object.keys(obj)[0]];
     const authType = securityScheme.type.toLowerCase();
-    switch (authType) {
-      case 'http':
-        switch (
-          (securityScheme as OpenAPIV3.HttpSecurityScheme).scheme?.toLowerCase()
-        ) {
-          case 'bearer':
-            return this.createBearerAuthHeader();
-          case 'basic':
-            return this.createBasicAuthHeader();
-        }
-        break;
-      case 'basic':
-        return this.createBasicAuthHeader();
-      case 'apikey':
-        if ((securityScheme as SecuritySchemeApiKey).in === 'header') {
-          return this.createApiKeyHeader(
-            securityScheme as SecuritySchemeApiKey
-          );
-        }
-        break;
-      case 'oauth2':
-        return this.createBearerAuthHeader();
+    const httpScheme =
+      'scheme' in securityScheme
+        ? securityScheme.scheme.toLowerCase()
+        : undefined;
+
+    if (authType === 'basic' || httpScheme === 'basic') {
+      return this.createBasicAuthHeader();
+    }
+
+    if (authType === 'oauth2' || httpScheme === 'bearer') {
+      return this.createBearerAuthHeader();
+    }
+
+    if (
+      authType === 'apikey' &&
+      'in' in securityScheme &&
+      securityScheme.in === 'header'
+    ) {
+      return this.createApiKeyHeader(securityScheme);
     }
   }
 
@@ -172,5 +178,9 @@ export class HeadersConverter implements SubConverter<Header[]> {
       name,
       value
     };
+  }
+
+  private createHeaders(name: string, values: string[]): Header[] {
+    return values.map((value) => this.createHeader(name, value));
   }
 }

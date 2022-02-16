@@ -25,17 +25,13 @@ export class BaseUrlParser {
       );
     }
 
-    let preferredUrls: string[] = urls.filter(
+    const preferredUrls: string[] = urls.filter(
       (x) => x.startsWith('https') || x.startsWith('wss')
     );
 
-    if (!preferredUrls.length) {
-      preferredUrls = urls;
-    }
-
     return this.sampler.sample({
       type: 'array',
-      examples: preferredUrls
+      examples: preferredUrls.length ? preferredUrls : urls
     });
   }
 

@@ -1,6 +1,7 @@
 import { isOASV2, isOASV3 } from '../utils';
 import { ConvertError } from '../errors';
 import { Sampler } from './Sampler';
+import { UriTemplator } from './UriTemplator';
 import {
   normalizeUrl,
   removeLeadingSlash,
@@ -10,9 +11,10 @@ import {
   OpenAPIV3
 } from '@har-sdk/core';
 import pointer from 'json-pointer';
-import template from 'url-template';
 
 export class BaseUrlParser {
+  private readonly uriTemplator = new UriTemplator();
+
   constructor(private readonly sampler: Sampler) {}
 
   public parse(spec: OpenAPI.Document): string {
@@ -101,11 +103,11 @@ export class BaseUrlParser {
         }),
         {}
       );
-      const templateUrl = template.parse(server.url);
-      const rawUrl = templateUrl.expand(params);
-      const jsonPointer = pointer.compile(['servers', idx.toString()]);
 
-      return this.normalizeUrl(rawUrl, { jsonPointer });
+      return this.normalizeUrl(
+        this.uriTemplator.substitute(server.url, params),
+        { jsonPointer: pointer.compile(['servers', idx.toString()]) }
+      );
     });
   }
 }

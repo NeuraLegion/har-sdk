@@ -1,16 +1,18 @@
 import { ParameterObject } from '../../types';
 import { isOASV2, getParameters, filterLocationParams } from '../../utils';
 import { Sampler } from '../Sampler';
-import { ParamsSerializer } from '../ParamsSerializer';
+import { Oas2ValueSerializer } from '../Oas2ValueSerializer';
+import { UriTemplator } from '../UriTemplator';
 import { SubConverter } from './SubConverter';
 import { OpenAPI, OpenAPIV2, OpenAPIV3 } from '@har-sdk/core';
-import template from 'url-template';
 
 export class PathConverter implements SubConverter<string> {
+  private uriTemplator = new UriTemplator();
+  private oas2ValueSerializer = new Oas2ValueSerializer();
+
   constructor(
     private readonly spec: OpenAPI.Document,
-    private readonly sampler: Sampler,
-    private readonly paramsSerializer: ParamsSerializer
+    private readonly sampler: Sampler
   ) {}
 
   public convert(path: string, method: string): string {
@@ -18,7 +20,7 @@ export class PathConverter implements SubConverter<string> {
     const pathParams = filterLocationParams(params, 'path');
 
     const tokens = ['paths', path, method];
-    const sampledParams = pathParams.map((param) =>
+    const sampledParamValues = pathParams.map((param) =>
       this.sampler.sampleParam(param, {
         tokens,
         spec: this.spec,
@@ -27,63 +29,59 @@ export class PathConverter implements SubConverter<string> {
     );
 
     return isOASV2(this.spec)
-      ? this.serializeOas2Path(
+      ? this.parseOas2Path(
           path,
           pathParams as OpenAPIV2.Parameter[],
-          sampledParams
+          sampledParamValues
         )
-      : this.serializeOas3Path(
+      : this.parseOas3Path(
           path,
           pathParams as OpenAPIV3.ParameterObject[],
-          sampledParams
+          sampledParamValues
         );
   }
 
-  private serializeOas2Path(
+  private parseOas2Path(
     path: string,
     pathParams: OpenAPIV2.Parameter[],
-    sampledParams: any[]
+    values: any[]
   ): string {
     return encodeURI(
       pathParams.reduce(
         (res, param, idx) =>
           res.replace(
             `{${param.name}}`,
-            this.paramsSerializer.serializeValue(
-              param,
-              sampledParams[idx],
-              false
-            )
+            this.oas2ValueSerializer.serialize(param, values[idx])
           ),
         path
       )
     );
   }
 
-  // TODO extract URI template logic
-  private serializeOas3Path(
-    path: string,
-    pathParams: OpenAPIV3.ParameterObject[],
-    sampledParams: any[]
+  private parseOas3Path(
+    input: string,
+    params: OpenAPIV3.ParameterObject[],
+    values: any[]
   ): string {
-    const uriTemplatePath = pathParams.reduce(
+    const pathTemplateStr = params.reduce(
       (res, param) =>
-        res.replace(`{${param.name}}`, this.getParamUriTemplate(param)),
-      path
+        res.replace(`{${param.name}}`, this.getOas3PathParamUriTemplate(param)),
+      input
     );
 
-    return template.parse(uriTemplatePath).expand(
-      pathParams.reduce(
-        (res: Record<string, any>, param, idx) => ({
+    return this.uriTemplator.substitute(
+      pathTemplateStr,
+      params.reduce(
+        (res, param, idx) => ({
           ...res,
-          [param.name]: sampledParams[idx]
+          [param.name]: values[idx]
         }),
         {}
       )
     );
   }
 
-  private getParamUriTemplate({
+  private getOas3PathParamUriTemplate({
     name,
     style,
     explode

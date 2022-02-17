@@ -1,6 +1,5 @@
 import { BaseUrlParser } from './BaseUrlParser';
 import { Converter } from './Converter';
-import { ParamsSerializer } from './ParamsSerializer';
 import { Sampler } from './Sampler';
 import {
   SubPart,
@@ -26,7 +25,6 @@ type PathItemObject = OpenAPIV2.PathItemObject | OpenAPIV3.PathItemObject;
 
 export class DefaultConverter implements Converter {
   private readonly sampler = new Sampler();
-  private readonly paramsSerializer = new ParamsSerializer();
   private readonly baseUrlConverter = new BaseUrlParser(this.sampler);
 
   private spec: OpenAPI.Document;
@@ -117,15 +115,11 @@ export class DefaultConverter implements Converter {
       case SubPart.HEADERS:
         return new HeadersConverter(spec, this.sampler);
       case SubPart.PATH:
-        return new PathConverter(spec, this.sampler, this.paramsSerializer);
+        return new PathConverter(spec, this.sampler);
       case SubPart.POST_DATA:
         return new PostDataConverter(spec, this.sampler);
       case SubPart.QUERY_STRING:
-        return new QueryStringConverter(
-          spec,
-          this.sampler,
-          this.paramsSerializer
-        );
+        return new QueryStringConverter(spec, this.sampler);
     }
   }
 

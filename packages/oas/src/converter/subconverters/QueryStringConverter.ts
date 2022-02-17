@@ -7,17 +7,19 @@ import {
   filterLocationParams
 } from '../../utils';
 import { Sampler } from '../Sampler';
-import { ParamsSerializer } from '../ParamsSerializer';
+import { Oas2ValueSerializer } from '../Oas2ValueSerializer';
+import { UriTemplator } from '../UriTemplator';
 import { SubConverter } from './SubConverter';
-import { OpenAPI, QueryString } from '@har-sdk/core';
+import { OpenAPI, OpenAPIV2, OpenAPIV3, QueryString } from '@har-sdk/core';
 
 export class QueryStringConverter implements SubConverter<QueryString[]> {
   private readonly flattener = new Flattener();
+  private readonly uriTemplator = new UriTemplator();
+  private readonly oas2ValueSerializer = new Oas2ValueSerializer();
 
   constructor(
     private readonly spec: OpenAPI.Document,
-    private readonly sampler: Sampler,
-    private readonly paramsSerializer: ParamsSerializer
+    private readonly sampler: Sampler
   ) {}
 
   public convert(path: string, method: string): QueryString[] {
@@ -32,14 +34,19 @@ export class QueryStringConverter implements SubConverter<QueryString[]> {
         idx: params.indexOf(param)
       });
 
-      return this.convertQueryParam(
-        param.name,
-        this.paramsSerializer.serializeValue(param, value, oas3)
-      );
+      return oas3
+        ? this.convertOas3QueryParam(param as OpenAPIV3.ParameterObject, value)
+        : this.convertOas2QueryParam(
+            param.name,
+            this.oas2ValueSerializer.serialize(
+              param as OpenAPIV2.Parameter,
+              value
+            )
+          );
     });
   }
 
-  private convertQueryParam(name: string, value: any): QueryString[] {
+  private convertOas2QueryParam(name: string, value: any): QueryString[] {
     let values: QueryString[];
 
     if (isObject(value)) {
@@ -62,5 +69,51 @@ export class QueryStringConverter implements SubConverter<QueryString[]> {
     }
 
     return values;
+  }
+
+  private convertOas3QueryParam(
+    param: OpenAPIV3.ParameterObject,
+    paramValue: any
+  ): QueryString[] {
+    const templateStr = this.getQueryParamUriTemplate(param);
+
+    let queryString = this.uriTemplator.substitute(templateStr, {
+      [param.name]: paramValue == null ? '' : paramValue
+    });
+
+    if (
+      !param.explode &&
+      ['spaceDelimited', 'pipeDelimited'].includes(param.style)
+    ) {
+      queryString = queryString.replace(/,/g, this.getCustomDelimiter(param));
+    }
+
+    return queryString
+      .substring(1)
+      .split('&')
+      .map((item) => item.split('='))
+      .map(([name, value]: string[]) => ({
+        name: decodeURIComponent(name),
+        value: decodeURIComponent(value)
+      }));
+  }
+
+  private getQueryParamUriTemplate({
+    name,
+    explode
+  }: OpenAPIV3.ParameterObject): string {
+    const suffix = explode ? '*' : '';
+
+    return `{?${name}${suffix}}`;
+  }
+
+  private getCustomDelimiter({
+    style
+  }: OpenAPIV3.ParameterObject): string | undefined {
+    return style === 'pipeDelimited'
+      ? '|'
+      : style === 'spaceDelimited'
+      ? ' '
+      : undefined;
   }
 }

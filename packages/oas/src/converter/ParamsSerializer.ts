@@ -1,31 +1,26 @@
+import { ParameterObject } from '../types';
 import { isObject, Flattener } from '../utils';
-import { OpenAPIV2, OpenAPIV3 } from '@har-sdk/core';
+
+interface SerializationOptions {
+  style: string;
+  explode: boolean;
+}
 
 export class ParamsSerializer {
   private readonly flattener = new Flattener();
 
   public serializeValue(
-    param: OpenAPIV2.Parameter | OpenAPIV3.ParameterObject,
+    param: ParameterObject,
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
     value: any,
     oas3: boolean
   ): any {
-    let style: string;
-    let explode: boolean;
-
-    if (!oas3 && 'collectionFormat' in param) {
-      style = param.collectionFormat;
-      explode = param.collectionFormat === 'multi';
-    } else {
-      style = param.style;
-      explode = param.explode;
-    }
-
-    if (explode) {
+    const options = this.parseSerializationOptions(param, oas3);
+    if (options.explode) {
       return value;
     }
 
-    const delimiter = this.getDelimiter(style, oas3);
+    const delimiter = this.getDelimiter(options.style, oas3);
     if (Array.isArray(value)) {
       return value.join(delimiter);
     } else if (isObject(value)) {
@@ -33,6 +28,22 @@ export class ParamsSerializer {
     }
 
     return value;
+  }
+
+  private parseSerializationOptions(
+    param: ParameterObject,
+    oas3: boolean
+  ): SerializationOptions {
+    if (!oas3 && 'collectionFormat' in param) {
+      return {
+        style: param.collectionFormat,
+        explode: param.collectionFormat === 'multi'
+      };
+    }
+
+    const { style, explode } = param;
+
+    return { style, explode };
   }
 
   private getDelimiter(style: string, oas3: boolean): string {

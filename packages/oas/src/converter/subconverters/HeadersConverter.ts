@@ -1,9 +1,8 @@
+import { OperationObject, ParameterObject } from '../../types';
+import { filterLocationParams, getParameters } from '../../utils';
 import { Sampler } from '../Sampler';
 import { SubConverter } from './SubConverter';
 import { Header, OpenAPI, OpenAPIV2, OpenAPIV3 } from '@har-sdk/core';
-
-type OperationObject = OpenAPIV2.OperationObject | OpenAPIV3.OperationObject;
-type ParameterObject = OpenAPIV3.ParameterObject | OpenAPIV2.Parameter;
 
 type SecurityRequirementObject =
   | OpenAPIV2.SecurityRequirementObject
@@ -30,7 +29,7 @@ export class HeadersConverter implements SubConverter<Header[]> {
     headers.push(...this.createContentTypeHeaders(pathObj));
     headers.push(...this.createAcceptHeaders(pathObj));
 
-    headers.push(...this.parsePathParams(pathObj, ['paths', path, method]));
+    headers.push(...this.parseFromParams(path, method));
     headers.push(...this.parseSecurityRequirements(pathObj));
 
     return headers;
@@ -61,29 +60,20 @@ export class HeadersConverter implements SubConverter<Header[]> {
     );
   }
 
-  private parsePathParams(
-    pathObj: OperationObject,
-    tokens: string[]
-  ): Header[] {
-    const params: ParameterObject[] = (
-      Array.isArray(pathObj.parameters) ? pathObj.parameters : []
-    ) as ParameterObject[];
+  private parseFromParams(path: string, method: string): Header[] {
+    const params: ParameterObject[] = getParameters(this.spec, path, method);
+    const tokens = ['paths', path, method];
 
-    return params
-      .filter(
-        (param) =>
-          typeof param.in === 'string' && param.in.toLowerCase() === 'header'
+    return filterLocationParams(params, 'header').map((param) => ({
+      name: param.name.toLowerCase(),
+      value: this.serializeHeaderValue(
+        this.sampler.sampleParam(param, {
+          spec: this.spec,
+          tokens,
+          idx: params.indexOf(param)
+        })
       )
-      .map((param) => ({
-        name: param.name.toLowerCase(),
-        value: this.serializeHeaderValue(
-          this.sampler.sampleParam(param, {
-            spec: this.spec,
-            tokens,
-            idx: params.indexOf(param)
-          })
-        )
-      }));
+    }));
   }
 
   private serializeHeaderValue(value: any): string {
@@ -126,7 +116,9 @@ export class HeadersConverter implements SubConverter<Header[]> {
     }
 
     for (const obj of secRequirementObjects) {
-      const header = this.parseSecurityRequirement(obj, securitySchemes);
+      const header = this.parseSecurityRequirement(
+        securitySchemes[Object.keys(obj)[0]]
+      );
       if (header) {
         return [header];
       }
@@ -134,10 +126,8 @@ export class HeadersConverter implements SubConverter<Header[]> {
   }
 
   private parseSecurityRequirement(
-    obj: SecurityRequirementObject,
-    securitySchemes: Record<string, SecuritySchemeObject>
+    securityScheme: SecuritySchemeObject
   ): Header | undefined {
-    const securityScheme = securitySchemes[Object.keys(obj)[0]];
     const authType = securityScheme.type.toLowerCase();
     const httpScheme =
       'scheme' in securityScheme

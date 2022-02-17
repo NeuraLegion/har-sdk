@@ -63,12 +63,6 @@ export class DefaultConverter implements Converter {
       method
     );
 
-    const rawUrl = `${this.baseUrl}${this.convertPart(
-      SubPart.PATH,
-      path,
-      method
-    )}${this.serializeQueryString(queryString)}`;
-
     const postData = this.convertPart<PostData>(
       SubPart.POST_DATA,
       path,
@@ -77,9 +71,7 @@ export class DefaultConverter implements Converter {
 
     return {
       queryString,
-      url: this.baseUrlConverter.normalizeUrl(rawUrl, {
-        jsonPointer: pointer.compile(['paths', path, method])
-      }),
+      url: this.buildUrl(path, method, queryString),
       method: method.toUpperCase(),
       headers: this.convertPart<Header[]>(SubPart.HEADERS, path, method),
       httpVersion: 'HTTP/1.1',
@@ -88,6 +80,22 @@ export class DefaultConverter implements Converter {
       bodySize: 0,
       ...(postData ? { postData } : {})
     };
+  }
+
+  private buildUrl(
+    path: string,
+    method: string,
+    queryString: QueryString[]
+  ): string {
+    const rawUrl = `${this.baseUrl}${this.convertPart(
+      SubPart.PATH,
+      path,
+      method
+    )}${this.serializeQueryString(queryString)}`;
+
+    return this.baseUrlConverter.normalizeUrl(rawUrl, {
+      jsonPointer: pointer.compile(['paths', path, method])
+    });
   }
 
   private serializeQueryString(items: QueryString[]): string {

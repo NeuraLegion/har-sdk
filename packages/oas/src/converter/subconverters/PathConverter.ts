@@ -1,4 +1,5 @@
-import { isOASV2 } from '../../utils';
+import { ParameterObject } from '../../types';
+import { isOASV2, getParameters, filterLocationParams } from '../../utils';
 import { Sampler } from '../Sampler';
 import { ParamsSerializer } from '../ParamsSerializer';
 import { SubConverter } from './SubConverter';
@@ -13,12 +14,8 @@ export class PathConverter implements SubConverter<string> {
   ) {}
 
   public convert(path: string, method: string): string {
-    const pathObj = this.spec.paths[path][method];
-    const params: (OpenAPIV2.Parameter | OpenAPIV3.ParameterObject)[] =
-      Array.isArray(pathObj.parameters) ? pathObj.parameters : [];
-    const pathParams = params.filter(
-      (p) => typeof p.in === 'string' && p.in.toLowerCase() === 'path'
-    );
+    const params: ParameterObject[] = getParameters(this.spec, path, method);
+    const pathParams = filterLocationParams(params, 'path');
 
     const tokens = ['paths', path, method];
     const sampledParams = pathParams.map((param) =>
@@ -90,7 +87,7 @@ export class PathConverter implements SubConverter<string> {
     name,
     style,
     explode
-  }: OpenAPIV2.Parameter | OpenAPIV3.ParameterObject): string {
+  }: ParameterObject): string {
     const suffix = explode ? '*' : '';
 
     let prefix;

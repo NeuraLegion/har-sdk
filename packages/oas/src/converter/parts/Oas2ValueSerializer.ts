@@ -1,4 +1,4 @@
-import { isObject, Flattener } from '../utils';
+import { isObject, Flattener } from '../../utils';
 import { OpenAPIV2 } from '@har-sdk/core';
 
 export class Oas2ValueSerializer {
@@ -24,6 +24,13 @@ export class Oas2ValueSerializer {
     }
 
     return value;
+  }
+
+  public toFlattenObject(
+    obj: Record<string, any>,
+    options?: Record<string, any>
+  ): Record<string, any> {
+    return this.flattener.toFlattenObject(obj, options);
   }
 
   private getDelimiter(style: string): string {

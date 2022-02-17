@@ -1,6 +1,6 @@
 import { Sampler } from '../Sampler';
-import { isOASV2 } from '../../utils';
-import { SubConverter } from './SubConverter';
+import { isOASV2 } from '../../../utils';
+import { SubConverter } from '../../SubConverter';
 import { OpenAPI, PostData } from '@har-sdk/core';
 import pointer from 'json-pointer';
 import { toXML } from 'jstoxml';

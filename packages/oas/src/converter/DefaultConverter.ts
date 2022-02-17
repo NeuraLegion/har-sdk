@@ -1,14 +1,18 @@
-import { BaseUrlParser } from './BaseUrlParser';
+import { isOASV3 } from '../utils';
 import { Converter } from './Converter';
-import { Sampler } from './Sampler';
 import {
-  SubPart,
-  SubConverter,
-  HeadersConverter,
-  PathConverter,
+  BaseUrlParser,
+  Oas2PathConverter,
+  Oas2QueryStringConverter,
+  Oas3PathConverter,
+  Oas3QueryStringConverter,
   PostDataConverter,
-  QueryStringConverter
-} from './subconverters';
+  Sampler,
+  Oas3HeadersConverter,
+  Oas2HeadersConverter
+} from './parts';
+import { SubPart } from './SubPart';
+import { SubConverter } from './SubConverter';
 import $RefParser, { JSONSchema } from '@apidevtools/json-schema-ref-parser';
 import {
   Header,
@@ -107,20 +111,42 @@ export class DefaultConverter implements Converter {
       : '';
   }
 
-  private createConverter(
+  private createSubConverter(
     type: SubPart,
     spec: OpenAPI.Document
   ): SubConverter<any> {
     switch (type) {
       case SubPart.HEADERS:
-        return new HeadersConverter(spec, this.sampler);
+        return this.createHeadersConverter(spec);
       case SubPart.PATH:
-        return new PathConverter(spec, this.sampler);
+        return this.createPathConverter(spec);
       case SubPart.POST_DATA:
         return new PostDataConverter(spec, this.sampler);
       case SubPart.QUERY_STRING:
-        return new QueryStringConverter(spec, this.sampler);
+        return this.createQueryStringConverter(spec);
     }
+  }
+
+  private createQueryStringConverter(
+    spec: OpenAPI.Document
+  ): SubConverter<QueryString[]> {
+    return isOASV3(spec)
+      ? new Oas3QueryStringConverter(spec, this.sampler)
+      : new Oas2QueryStringConverter(spec, this.sampler);
+  }
+
+  private createPathConverter(spec: OpenAPI.Document): SubConverter<string> {
+    return isOASV3(spec)
+      ? new Oas3PathConverter(spec, this.sampler)
+      : new Oas2PathConverter(spec, this.sampler);
+  }
+
+  private createHeadersConverter(
+    spec: OpenAPI.Document
+  ): SubConverter<Header[]> {
+    return isOASV3(spec)
+      ? new Oas3HeadersConverter(spec, this.sampler)
+      : new Oas2HeadersConverter(spec, this.sampler);
   }
 
   private convertPart<T>(type: SubPart, path: string, method: string): T {

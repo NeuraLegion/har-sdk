@@ -17,6 +17,7 @@ export class BaseUrlParser {
 
   public parse(spec: OpenAPI.Document): string {
     const urls: string[] = this.parseUrls(spec);
+    this.ensureUrlsValidness(spec, urls);
 
     const preferredUrls: string[] = urls.filter(
       (x) => x.startsWith('https') || x.startsWith('wss')
@@ -47,14 +48,16 @@ export class BaseUrlParser {
       urls.push(...this.parseHost(spec));
     }
 
+    return urls;
+  }
+
+  private ensureUrlsValidness(spec: OpenAPI.Document, urls: string[]): void {
     if (!Array.isArray(urls) || !urls.length) {
       throw new ConvertError(
         'Target must be specified',
         isOASV2(spec) ? '/host' : '/servers'
       );
     }
-
-    return urls;
   }
 
   private parseHost(spec: OpenAPIV2.Document): string[] {

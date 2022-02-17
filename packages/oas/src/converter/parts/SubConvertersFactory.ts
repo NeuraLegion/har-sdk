@@ -17,14 +17,10 @@ import {
 export class SubConvertersFactory {
   private subConverters = new Map<SubPart, SubConverter<unknown>>();
 
-  private readonly oas3: boolean;
-
   constructor(
     private readonly spec: OpenAPI.Document,
     private readonly sampler: Sampler
-  ) {
-    this.oas3 = isOASV3(this.spec);
-  }
+  ) {}
 
   public get(type: SubPart): SubConverter<unknown> {
     if (!this.subConverters.has(type)) {
@@ -48,26 +44,32 @@ export class SubConvertersFactory {
   }
 
   private createQueryStringConverter(): SubConverter<QueryString[]> {
-    return this.oas3
-      ? new Oas3QueryStringConverter(
-          this.spec as OpenAPIV3.Document,
-          this.sampler
-        )
-      : new Oas2QueryStringConverter(
-          this.spec as OpenAPIV2.Document,
-          this.sampler
-        );
+    return this.instantiate<Oas2QueryStringConverter, Oas3QueryStringConverter>(
+      Oas2QueryStringConverter,
+      Oas3QueryStringConverter
+    );
   }
 
   private createPathConverter(): SubConverter<string> {
-    return this.oas3
-      ? new Oas3PathConverter(this.spec as OpenAPIV3.Document, this.sampler)
-      : new Oas2PathConverter(this.spec as OpenAPIV2.Document, this.sampler);
+    return this.instantiate<Oas2PathConverter, Oas3PathConverter>(
+      Oas2PathConverter,
+      Oas3PathConverter
+    );
   }
 
   private createHeadersConverter(): SubConverter<Header[]> {
-    return this.oas3
-      ? new Oas3HeadersConverter(this.spec as OpenAPIV3.Document, this.sampler)
-      : new Oas2HeadersConverter(this.spec as OpenAPIV2.Document, this.sampler);
+    return this.instantiate<Oas2HeadersConverter, Oas3HeadersConverter>(
+      Oas2HeadersConverter,
+      Oas3HeadersConverter
+    );
+  }
+
+  private instantiate<U, V>(
+    oas2Ctor: new (spec: OpenAPIV2.Document, sampler: Sampler) => U,
+    oas3Ctor: new (spec: OpenAPIV3.Document, sampler: Sampler) => V
+  ) {
+    return isOASV3(this.spec)
+      ? new oas3Ctor(this.spec as OpenAPIV3.Document, this.sampler)
+      : new oas2Ctor(this.spec as OpenAPIV2.Document, this.sampler);
   }
 }

@@ -73,7 +73,9 @@ export abstract class HeadersConverter<T extends OpenAPI.Document>
   }
 
   protected createHeaders(name: string, values: string[]): Header[] {
-    return values.map((value) => this.createHeader(name, value));
+    return (Array.isArray(values) ? values : []).map((value) =>
+      this.createHeader(name, value)
+    );
   }
 
   protected parseSecurityScheme(

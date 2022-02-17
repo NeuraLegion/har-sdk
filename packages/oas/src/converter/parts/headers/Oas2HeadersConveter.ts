@@ -10,17 +10,11 @@ export class Oas2HeadersConverter extends HeadersConverter<OpenAPIV2.Document> {
   protected createContentTypeHeaders(
     pathObj: OpenAPIV2.OperationObject
   ): Header[] {
-    return this.createHeaders(
-      'content-type',
-      Array.isArray(pathObj.consumes) ? pathObj.consumes : []
-    );
+    return this.createHeaders('content-type', pathObj.consumes);
   }
 
   protected createAcceptHeaders(pathObj: OpenAPIV2.OperationObject): Header[] {
-    return this.createHeaders(
-      'accept',
-      Array.isArray(pathObj.produces) ? pathObj.produces : []
-    );
+    return this.createHeaders('accept', pathObj.produces);
   }
 
   protected getSecuritySchemes():

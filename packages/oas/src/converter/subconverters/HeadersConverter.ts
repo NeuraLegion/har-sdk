@@ -68,8 +68,8 @@ export class HeadersConverter implements SubConverter<Header[]> {
       name: param.name.toLowerCase(),
       value: this.serializeHeaderValue(
         this.sampler.sampleParam(param, {
-          spec: this.spec,
           tokens,
+          spec: this.spec,
           idx: params.indexOf(param)
         })
       )
@@ -105,8 +105,8 @@ export class HeadersConverter implements SubConverter<Header[]> {
   }
 
   private parseSecurityRequirements(pathObj: OperationObject): Header[] {
-    const secRequirementObjects = this.getSecurityRequirementObjects(pathObj);
-    if (!secRequirementObjects) {
+    const securityRequirements = this.getSecurityRequirementObjects(pathObj);
+    if (!securityRequirements) {
       return [];
     }
 
@@ -115,10 +115,13 @@ export class HeadersConverter implements SubConverter<Header[]> {
       return [];
     }
 
-    for (const obj of secRequirementObjects) {
-      const header = this.parseSecurityScheme(
-        securitySchemes[Object.keys(obj)[0]]
-      );
+    for (const obj of securityRequirements) {
+      const schemeName = this.sampler.sample({
+        type: 'array',
+        examples: Object.keys(obj)
+      });
+      const header = this.parseSecurityScheme(securitySchemes[schemeName]);
+
       if (header) {
         return [header];
       }
@@ -163,9 +166,9 @@ export class HeadersConverter implements SubConverter<Header[]> {
         return this.createBasicAuthHeader();
       case 'bearer':
         return this.createBearerAuthHeader();
+      default:
+        return this.parseApiKeyScheme(securityScheme);
     }
-
-    return this.parseApiKeyScheme(securityScheme);
   }
 
   private parseApiKeyScheme(

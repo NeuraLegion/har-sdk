@@ -1,6 +1,5 @@
 import { ParameterObject } from '../../types';
 import {
-  getParameterValue,
   isOASV3,
   isObject,
   Flattener,
@@ -27,13 +26,11 @@ export class QueryStringConverter implements SubConverter<QueryString[]> {
     const oas3 = isOASV3(this.spec);
 
     return filterLocationParams(params, 'query').flatMap((param) => {
-      const value =
-        getParameterValue(param) ??
-        this.sampler.sampleParam(param, {
-          tokens,
-          spec: this.spec,
-          idx: params.indexOf(param)
-        });
+      const value = this.sampler.sampleParam(param, {
+        tokens,
+        spec: this.spec,
+        idx: params.indexOf(param)
+      });
 
       return this.convertQueryParam(
         param.name,

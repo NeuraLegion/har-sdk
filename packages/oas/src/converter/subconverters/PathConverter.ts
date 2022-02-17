@@ -20,8 +20,8 @@ export class PathConverter implements SubConverter<string> {
     const tokens = ['paths', path, method];
     const sampledParams = pathParams.map((param) =>
       this.sampler.sampleParam(param, {
-        spec: this.spec,
         tokens,
+        spec: this.spec,
         idx: params.indexOf(param)
       })
     );

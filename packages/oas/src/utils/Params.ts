@@ -21,6 +21,3 @@ export const filterLocationParams = (
     (param) =>
       typeof param.in === 'string' && param.in.toLowerCase() === location
   );
-
-export const getParameterValue = (param: ParameterObject): any =>
-  'default' in param ? param.default : param.example;

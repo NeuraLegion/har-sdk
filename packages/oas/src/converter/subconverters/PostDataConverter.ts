@@ -31,8 +31,8 @@ export class PostDataConverter implements SubConverter<PostData | null> {
         'schema' in param
       ) {
         const data = this.sampler.sampleParam(param, {
-          spec: this.spec,
           tokens,
+          spec: this.spec,
           idx: pathObj.parameters.indexOf(param)
         });
 

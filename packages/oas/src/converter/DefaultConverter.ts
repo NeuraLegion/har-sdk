@@ -41,9 +41,10 @@ export class DefaultConverter implements Converter {
 
     this.baseUrl = this.baseUrlConverter.parse(this.spec);
     this.subConverters = new Map<SubPart, SubConverter<any>>(
-      Object.values(SubPart).reduce(
-        (type) => [type, this.createConverter(type, this.spec)]
-      )
+      Object.values(SubPart).map((type) => [
+        type,
+        this.createConverter(type, this.spec)
+      ])
     );
 
     return Object.entries(this.spec.paths).flatMap(

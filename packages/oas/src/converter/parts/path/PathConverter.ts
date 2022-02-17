@@ -25,8 +25,8 @@ export abstract class PathConverter<T extends ParameterObject>
     const tokens = ['paths', path, method];
     const sampledParamValues = pathParams.map((param) =>
       this.sampler.sampleParam(param, {
-        spec: this.spec,
         tokens,
+        spec: this.spec,
         idx: params.indexOf(param)
       })
     );

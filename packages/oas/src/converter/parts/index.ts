@@ -4,4 +4,4 @@ export * from './query';
 export * from './postdata';
 export { BaseUrlParser } from './BaseUrlParser';
 export { Sampler } from './Sampler';
-export { SubConvertersFactory } from './SubConvertersFactory';
+export { SubConvertersRegistry } from './SubConvertersRegistry';

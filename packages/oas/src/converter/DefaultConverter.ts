@@ -1,5 +1,5 @@
 import { Converter } from './Converter';
-import { BaseUrlParser, Sampler, SubConvertersFactory } from './parts';
+import { BaseUrlParser, Sampler, SubConvertersRegistry } from './parts';
 import { SubPart } from './SubPart';
 import $RefParser, { JSONSchema } from '@apidevtools/json-schema-ref-parser';
 import {
@@ -20,7 +20,7 @@ export class DefaultConverter implements Converter {
   private readonly baseUrlParser = new BaseUrlParser(this.sampler);
 
   private spec: OpenAPI.Document;
-  private subConvertersFactory: SubConvertersFactory;
+  private subConvertersRegistry: SubConvertersRegistry;
 
   public async convert(spec: OpenAPI.Document): Promise<Request[]> {
     this.spec = (await new $RefParser().dereference(
@@ -28,7 +28,7 @@ export class DefaultConverter implements Converter {
       { resolve: { file: false, http: false } }
     )) as OpenAPI.Document;
 
-    this.subConvertersFactory = new SubConvertersFactory(
+    this.subConvertersRegistry = new SubConvertersRegistry(
       this.spec,
       this.sampler
     );
@@ -96,7 +96,7 @@ export class DefaultConverter implements Converter {
   }
 
   private convertPart<T>(type: SubPart, path: string, method: string): T {
-    return this.subConvertersFactory
+    return this.subConvertersRegistry
       .get(type)
       .convert(path, method) as unknown as T;
   }

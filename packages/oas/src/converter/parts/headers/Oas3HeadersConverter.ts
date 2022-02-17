@@ -53,8 +53,8 @@ export class Oas3HeadersConverter extends HeadersConverter<OpenAPIV3.Document> {
         return this.createBasicAuthHeader();
       case 'bearer':
         return this.createBearerAuthHeader();
+      default:
+        return this.parseApiKeyScheme(securityScheme);
     }
-
-    return this.parseApiKeyScheme(securityScheme);
   }
 }

@@ -1,9 +1,5 @@
 import { ParameterObject } from '../../../types';
-import {
-  getParameterValue,
-  getParameters,
-  filterLocationParams
-} from '../../../utils';
+import { getParameters, filterLocationParams } from '../../../utils';
 import { Sampler } from '../Sampler';
 import { SubConverter } from '../../SubConverter';
 import { OpenAPI, QueryString } from '@har-sdk/core';
@@ -24,13 +20,11 @@ export abstract class QueryStringConverter<T extends ParameterObject>
     const params: ParameterObject[] = getParameters(this.spec, path, method);
 
     return filterLocationParams(params, 'query').flatMap((param) => {
-      const value =
-        getParameterValue(param) ??
-        this.sampler.sampleParam(param, {
-          spec: this.spec,
-          tokens,
-          idx: params.indexOf(param)
-        });
+      const value = this.sampler.sampleParam(param, {
+        tokens,
+        spec: this.spec,
+        idx: params.indexOf(param)
+      });
 
       return this.convertParam(param as T, value);
     });

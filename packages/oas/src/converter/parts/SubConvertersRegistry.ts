@@ -14,8 +14,8 @@ import {
   QueryString
 } from '@har-sdk/core';
 
-export class SubConvertersFactory {
-  private subConverters = new Map<SubPart, SubConverter<unknown>>();
+export class SubConvertersRegistry {
+  private readonly subConverters = new Map<SubPart, SubConverter<unknown>>();
 
   constructor(
     private readonly spec: OpenAPI.Document,

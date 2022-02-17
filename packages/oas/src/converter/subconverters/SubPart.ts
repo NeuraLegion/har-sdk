@@ -1,6 +1,6 @@
 export enum SubPart {
-  HEADERS = 'HEADERS',
-  PATH = 'PATH',
-  POST_DATA = 'POST_DATA',
-  QUERY_STRING = 'QUERY_STRING'
+  HEADERS = 'headers',
+  PATH = 'path',
+  POST_DATA = 'post_data',
+  QUERY_STRING = 'query_string'
 }

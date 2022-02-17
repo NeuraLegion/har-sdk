@@ -40,9 +40,10 @@ export class DefaultConverter implements Converter {
     )) as OpenAPI.Document;
 
     this.baseUrl = this.baseUrlConverter.parse(this.spec);
-    this.subConverters = Object.values(SubPart).reduce(
-      (res, type) => res.set(type, this.createConverter(type, this.spec)),
-      new Map<SubPart, SubConverter<any>>()
+    this.subConverters = new Map<SubPart, SubConverter<any>>(
+      Object.values(SubPart).reduce(
+        (type) => [type, this.createConverter(type, this.spec)]
+      )
     );
 
     return Object.entries(this.spec.paths).flatMap(

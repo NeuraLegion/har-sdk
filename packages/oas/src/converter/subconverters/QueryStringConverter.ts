@@ -30,8 +30,8 @@ export class QueryStringConverter implements SubConverter<QueryString[]> {
       const value =
         getParameterValue(param) ??
         this.sampler.sampleParam(param, {
-          spec: this.spec,
           tokens,
+          spec: this.spec,
           idx: params.indexOf(param)
         });
 

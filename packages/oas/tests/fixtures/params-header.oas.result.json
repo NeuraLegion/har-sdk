@@ -1,0 +1,37 @@
+[
+  {
+    "queryString": [],
+    "url": "https://petstore.swagger.io/v1/dummy1",
+    "method": "GET",
+    "headers": [
+      {
+        "name": "x-request-datetime",
+        "value": "2021-12-31T23:34:00Z"
+      },
+      {
+        "name": "x-request-array",
+        "value": "42,42"
+      },
+      {
+        "name": "x-request-array-exploded",
+        "value": "42,42"
+      },
+      {
+        "name": "x-request-object",
+        "value": "x,lorem,y,42"
+      },
+      {
+        "name": "x-request-object-exploded",
+        "value": "x=lorem,y=42"
+      },
+      {
+        "name": "x-request-object-exploded-default",
+        "value": "a=dummy,b=42"
+      }
+    ],
+    "httpVersion": "HTTP/1.1",
+    "cookies": [],
+    "headersSize": 0,
+    "bodySize": 0
+  }
+]

@@ -1,9 +1,12 @@
 import { isObject } from '../../../utils';
 import { Sampler } from '../Sampler';
+import { UriTemplator } from '../UriTemplator';
 import { HeadersConverter } from './HeadersConverter';
 import { Header, OpenAPIV3 } from '@har-sdk/core';
 
 export class Oas3HeadersConverter extends HeadersConverter<OpenAPIV3.Document> {
+  private readonly uriTemplator = new UriTemplator();
+
   constructor(spec: OpenAPIV3.Document, sampler: Sampler) {
     super(spec, sampler);
   }
@@ -24,6 +27,20 @@ export class Oas3HeadersConverter extends HeadersConverter<OpenAPIV3.Document> {
 
   protected createAcceptHeaders(_pathObj: OpenAPIV3.OperationObject): Header[] {
     return [];
+  }
+
+  protected convertHeaderParam(
+    param: OpenAPIV3.ParameterObject,
+    paramValue: unknown
+  ): Header {
+    return {
+      name: param.name,
+      value: decodeURIComponent(
+        this.uriTemplator.substitute(`{x${param.explode ? '*' : ''}}`, {
+          x: paramValue
+        })
+      )
+    };
   }
 
   protected getSecuritySchemes():

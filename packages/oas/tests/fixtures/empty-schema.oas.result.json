@@ -25,7 +25,7 @@
       },
       {
         "name": "api_key",
-        "value": "null"
+        "value": ""
       }
     ],
     "httpVersion": "HTTP/1.1",

@@ -23,7 +23,14 @@ export abstract class HeadersConverter<T extends OpenAPI.Document>
   protected abstract createContentTypeHeaders(
     pathObj: OperationObject
   ): Header[];
+
   protected abstract createAcceptHeaders(pathObj: OperationObject): Header[];
+
+  protected abstract convertHeaderParam(
+    param: ParameterObject,
+    paramValue: unknown
+  ): Header;
+
   protected abstract getSecuritySchemes():
     | Record<string, SecuritySchemeObject>
     | undefined;
@@ -95,23 +102,21 @@ export abstract class HeadersConverter<T extends OpenAPI.Document>
     const params: ParameterObject[] = getParameters(this.spec, path, method);
     const tokens = ['paths', path, method];
 
-    return filterLocationParams(params, 'header').map((param) =>
-      this.createHeader(
-        param.name,
-        this.serializeHeaderValue(
-          this.sampler.sampleParam(param, {
-            tokens,
-            spec: this.spec,
-            idx: params.indexOf(param)
-          })
-        )
-      )
-    );
-  }
+    return filterLocationParams(params, 'header').map((param) => {
+      const value = this.sampler.sampleParam(param, {
+        spec: this.spec,
+        tokens,
+        idx: params.indexOf(param)
+      });
 
-  private serializeHeaderValue(value: any): string {
-    // TODO proper serialization
-    return typeof value === 'object' ? JSON.stringify(value) : value;
+      return this.convertHeaderParam(
+        {
+          ...param,
+          name: param.name.toLowerCase()
+        },
+        value
+      );
+    });
   }
 
   private getSecurityRequirementObjects(

@@ -70,6 +70,11 @@ describe('DefaultConverter', () => {
         input: 'params-path.swagger.yaml',
         expected: 'params-path.swagger.result.json',
         message: 'should correctly convert swagger path parameters'
+      },
+      {
+        input: 'params-header.oas.yaml',
+        expected: 'params-header.oas.result.json',
+        message: 'should correctly convert oas headers parameters'
       }
     ].forEach(({ input: inputFile, expected: expectedFile, message }) => {
       it(message, async () => {

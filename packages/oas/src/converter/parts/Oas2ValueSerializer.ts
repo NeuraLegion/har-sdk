@@ -4,11 +4,7 @@ import { OpenAPIV2 } from '@har-sdk/core';
 export class Oas2ValueSerializer {
   private readonly flattener = new Flattener();
 
-  public serialize(
-    param: OpenAPIV2.Parameter,
-    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    value: any
-  ): any {
+  public serialize(param: OpenAPIV2.Parameter, value: unknown): any {
     const style = param.collectionFormat;
     const explode = param.collectionFormat === 'multi';
 

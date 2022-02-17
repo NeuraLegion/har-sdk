@@ -11,10 +11,9 @@ export class Oas2QueryStringConverter extends QueryStringConverter<OpenAPIV2.Par
     super(spec, sampler);
   }
 
-  protected convertParam(
+  protected convertQueryParam(
     param: OpenAPIV2.Parameter,
-    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    paramValue: any
+    paramValue: unknown
   ): QueryString[] {
     const { name } = param;
     const value = this.oas2ValueSerializer.serialize(

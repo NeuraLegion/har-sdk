@@ -12,8 +12,10 @@ export abstract class QueryStringConverter<T extends ParameterObject>
     private readonly sampler: Sampler
   ) {}
 
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  protected abstract convertParam(param: T, paramValue: any): QueryString[];
+  protected abstract convertQueryParam(
+    param: T,
+    paramValue: unknown
+  ): QueryString[];
 
   public convert(path: string, method: string): QueryString[] {
     const tokens = ['paths', path, method];
@@ -26,7 +28,7 @@ export abstract class QueryStringConverter<T extends ParameterObject>
         idx: params.indexOf(param)
       });
 
-      return this.convertParam(param as T, value);
+      return this.convertQueryParam(param as T, value);
     });
   }
 }

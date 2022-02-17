@@ -10,10 +10,9 @@ export class Oas3QueryStringConverter extends QueryStringConverter<OpenAPIV3.Par
     super(spec, sampler);
   }
 
-  protected convertParam(
+  protected convertQueryParam(
     param: OpenAPIV3.ParameterObject,
-    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    paramValue: any
+    paramValue: unknown
   ): QueryString[] {
     const templateStr = this.getQueryParamUriTemplate(param);
 

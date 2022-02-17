@@ -116,37 +116,62 @@ export class HeadersConverter implements SubConverter<Header[]> {
     }
 
     for (const obj of secRequirementObjects) {
-      const header = this.parseSecurityRequirement(
+      const header = this.parseSecurityScheme(
         securitySchemes[Object.keys(obj)[0]]
       );
       if (header) {
         return [header];
       }
     }
+
+    return [];
   }
 
-  private parseSecurityRequirement(
+  private parseSecurityScheme(
+    securityScheme: SecuritySchemeObject
+  ): Header | undefined {
+    return (
+      this.parseOas2SecurityScheme(securityScheme) ||
+      this.parseOas3SecurityScheme(securityScheme)
+    );
+  }
+
+  private parseOas2SecurityScheme(
     securityScheme: SecuritySchemeObject
   ): Header | undefined {
     const authType = securityScheme.type.toLowerCase();
+    switch (authType) {
+      case 'basic':
+        return this.createBasicAuthHeader();
+      case 'oauth2':
+        return this.createBearerAuthHeader();
+      case 'apiKey':
+        return this.parseApiKeyScheme(securityScheme);
+    }
+  }
+
+  private parseOas3SecurityScheme(
+    securityScheme: SecuritySchemeObject
+  ): Header | undefined {
     const httpScheme =
       'scheme' in securityScheme
         ? securityScheme.scheme.toLowerCase()
         : undefined;
 
-    if (authType === 'basic' || httpScheme === 'basic') {
-      return this.createBasicAuthHeader();
+    switch (httpScheme) {
+      case 'basic':
+        return this.createBasicAuthHeader();
+      case 'bearer':
+        return this.createBearerAuthHeader();
     }
 
-    if (authType === 'oauth2' || httpScheme === 'bearer') {
-      return this.createBearerAuthHeader();
-    }
+    return this.parseApiKeyScheme(securityScheme);
+  }
 
-    if (
-      authType === 'apikey' &&
-      'in' in securityScheme &&
-      securityScheme.in === 'header'
-    ) {
+  private parseApiKeyScheme(
+    securityScheme: SecuritySchemeObject
+  ): Header | undefined {
+    if ('in' in securityScheme && securityScheme.in === 'header') {
       return this.createApiKeyHeader(securityScheme);
     }
   }

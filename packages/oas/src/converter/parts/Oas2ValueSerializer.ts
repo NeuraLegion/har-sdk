@@ -4,7 +4,7 @@ import { OpenAPIV2 } from '@har-sdk/core';
 export class Oas2ValueSerializer {
   private readonly flattener = new Flattener();
 
-  public serialize(param: OpenAPIV2.Parameter, value: unknown): any {
+  public serialize(param: OpenAPIV2.Parameter, value: unknown): unknown {
     const style = param.collectionFormat;
     const explode = param.collectionFormat === 'multi';
 

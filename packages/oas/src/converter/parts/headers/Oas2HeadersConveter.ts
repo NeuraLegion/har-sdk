@@ -1,4 +1,3 @@
-import { isObject } from '../../../utils';
 import { Oas2ValueSerializer } from '../Oas2ValueSerializer';
 import { Sampler } from '../Sampler';
 import { HeadersConverter } from './HeadersConverter';
@@ -21,16 +20,13 @@ export class Oas2HeadersConverter extends HeadersConverter<OpenAPIV2.Document> {
     return this.createHeaders('accept', pathObj.produces);
   }
 
-  // TODO proper logic
   protected convertHeaderParam(
     param: OpenAPIV2.Parameter,
     paramValue: unknown
   ): Header {
-    const value = this.oas2ValueSerializer.serialize(param, paramValue);
-
     return {
       name: param.name,
-      value: isObject(value) ? JSON.stringify(value) : (value as string)
+      value: this.oas2ValueSerializer.serialize(param, paramValue) as string
     };
   }
 

@@ -20,7 +20,7 @@ export class Oas2PathConverter extends PathConverter<OpenAPIV2.Parameter> {
         (res, param, idx) =>
           res.replace(
             `{${param.name}}`,
-            this.oas2ValueSerializer.serialize(param, values[idx])
+            this.oas2ValueSerializer.serialize(param, values[idx]) as string
           ),
         path
       )

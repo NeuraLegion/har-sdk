@@ -1,0 +1,57 @@
+swagger: '2.0'
+info:
+  title: Header Parameters Test
+  version: 1.0.0
+host: petstore.swagger.io
+basePath: /v1
+schemes:
+  - http
+paths:
+  /headers:
+    get:
+      parameters:
+        - name: X-Array-Default
+          in: header
+          required: true
+          type: array
+          minItems: 2
+          items:
+            type: string
+        - name: X-Array-Csv
+          in: header
+          required: true
+          collectionFormat: csv
+          type: array
+          minItems: 2
+          items:
+            type: string
+        - name: X-Array-Ssv
+          in: header
+          required: true
+          collectionFormat: ssv
+          type: array
+          minItems: 2
+          items:
+            type: string
+        - name: X-Array-Tsv
+          in: header
+          required: true
+          collectionFormat: tsv
+          type: array
+          minItems: 2
+          items:
+            type: string
+        - name: X-Array-Pipes
+          in: header
+          required: true
+          collectionFormat: pipes
+          type: array
+          minItems: 2
+          items:
+            type: string
+      responses:
+        '200':
+          description: OK
+          examples:
+            application/json:
+              ok: true

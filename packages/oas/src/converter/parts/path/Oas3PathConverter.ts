@@ -1,7 +1,7 @@
 import { ParameterObject } from '../../../types';
 import { Sampler } from '../Sampler';
 import { UriTemplator } from '../UriTemplator';
-import { PathConverter } from './PathConverter';
+import { PathConverter, PathParam } from './PathConverter';
 import { OpenAPIV3 } from '@har-sdk/core';
 
 export class Oas3PathConverter extends PathConverter<OpenAPIV3.ParameterObject> {
@@ -12,22 +12,21 @@ export class Oas3PathConverter extends PathConverter<OpenAPIV3.ParameterObject> 
   }
 
   protected parsePath(
-    input: string,
-    params: OpenAPIV3.ParameterObject[],
-    values: any[]
+    path: string,
+    pathParams: PathParam<OpenAPIV3.ParameterObject>[]
   ): string {
-    const pathTemplateStr = params.reduce(
-      (res, param) =>
+    const pathTemplateStr = pathParams.reduce(
+      (res, { param }) =>
         res.replace(`{${param.name}}`, this.getOas3PathParamUriTemplate(param)),
-      input
+      path
     );
 
     return this.uriTemplator.substitute(
       pathTemplateStr,
-      params.reduce(
-        (res, param, idx) => ({
+      pathParams.reduce(
+        (res, pathParam) => ({
           ...res,
-          [param.name]: values[idx]
+          [pathParam.param.name]: pathParam.value
         }),
         {}
       )

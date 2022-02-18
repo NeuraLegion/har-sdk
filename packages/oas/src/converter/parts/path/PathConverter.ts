@@ -2,7 +2,14 @@ import { ParameterObject } from '../../../types';
 import { getParameters, filterLocationParams } from '../../../utils';
 import { Sampler } from '../Sampler';
 import { SubConverter } from '../../SubConverter';
+import jsonPointer from 'json-pointer';
 import { OpenAPI } from '@har-sdk/core';
+
+export interface PathParam<T> {
+  readonly param: T;
+  readonly value: unknown;
+  readonly jsonPointer: string;
+}
 
 export abstract class PathConverter<T extends ParameterObject>
   implements SubConverter<string>
@@ -12,25 +19,33 @@ export abstract class PathConverter<T extends ParameterObject>
     private readonly sampler: Sampler
   ) {}
 
-  protected abstract parsePath(
-    path: string,
-    pathParams: T[],
-    paramValues: any[]
-  ): string;
+  protected abstract parsePath(path: string, params: PathParam<T>[]): string;
 
   public convert(path: string, method: string): string {
     const params: ParameterObject[] = getParameters(this.spec, path, method);
     const pathParams = filterLocationParams(params, 'path');
 
     const tokens = ['paths', path, method];
-    const sampledParamValues = pathParams.map((param) =>
-      this.sampler.sampleParam(param, {
-        tokens,
-        spec: this.spec,
-        idx: params.indexOf(param)
+
+    return this.parsePath(
+      path,
+      pathParams.map((param) => {
+        const idx = params.indexOf(param);
+
+        return {
+          param: param as T,
+          jsonPointer: jsonPointer.compile([
+            ...tokens,
+            'parameters',
+            idx.toString(10)
+          ]),
+          value: this.sampler.sampleParam(param, {
+            tokens,
+            idx,
+            spec: this.spec
+          })
+        };
       })
     );
-
-    return this.parsePath(path, pathParams as T[], sampledParamValues);
   }
 }

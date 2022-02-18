@@ -131,8 +131,16 @@ describe('DefaultConverter', () => {
         expected: '/paths/~1store~1order~1{orderId}/put/parameters/2'
       },
       {
+        input: 'convert-error-on-header-multi.swagger.yaml',
+        expected: '/paths/~1headers~1{p}/get/parameters/1'
+      },
+      {
         input: 'convert-error-on-path.swagger.yaml',
         expected: '/paths/~1store~1order~1{orderId}/put/parameters/0'
+      },
+      {
+        input: 'convert-error-on-path-multi.swagger.yaml',
+        expected: '/paths/~1headers~1{p}/get/parameters/0'
       },
       {
         input: 'convert-error-on-query.swagger.yaml',

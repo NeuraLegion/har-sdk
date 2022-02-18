@@ -22,11 +22,16 @@ export class Oas2HeadersConverter extends HeadersConverter<OpenAPIV2.Document> {
 
   protected convertHeaderParam(
     param: OpenAPIV2.Parameter,
-    paramValue: unknown
+    paramValue: unknown,
+    jsonPointer: string
   ): Header {
     return {
       name: param.name,
-      value: this.oas2ValueSerializer.serialize(param, paramValue) as string
+      value: this.oas2ValueSerializer.serialize(
+        param,
+        paramValue,
+        jsonPointer
+      ) as string
     };
   }
 

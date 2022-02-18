@@ -3,6 +3,7 @@ import { filterLocationParams, getParameters } from '../../../utils';
 import { Sampler } from '../Sampler';
 import { SubConverter } from '../../SubConverter';
 import { Header, OpenAPI, OpenAPIV2, OpenAPIV3 } from '@har-sdk/core';
+import jsonPointer from 'json-pointer';
 
 type SecurityRequirementObject =
   | OpenAPIV2.SecurityRequirementObject
@@ -28,7 +29,8 @@ export abstract class HeadersConverter<T extends OpenAPI.Document>
 
   protected abstract convertHeaderParam(
     param: ParameterObject,
-    paramValue: unknown
+    paramValue: unknown,
+    paramJsonPointer: string
   ): Header;
 
   protected abstract getSecuritySchemes():
@@ -103,10 +105,11 @@ export abstract class HeadersConverter<T extends OpenAPI.Document>
     const tokens = ['paths', path, method];
 
     return filterLocationParams(params, 'header').map((param) => {
+      const idx = params.indexOf(param);
       const value = this.sampler.sampleParam(param, {
-        spec: this.spec,
         tokens,
-        idx: params.indexOf(param)
+        idx,
+        spec: this.spec
       });
 
       return this.convertHeaderParam(
@@ -114,7 +117,8 @@ export abstract class HeadersConverter<T extends OpenAPI.Document>
           ...param,
           name: param.name.toLowerCase()
         },
-        value
+        value,
+        jsonPointer.compile([...tokens, 'parameters', idx.toString(10)])
       );
     });
   }

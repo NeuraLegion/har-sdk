@@ -13,12 +13,14 @@ export class Oas2QueryStringConverter extends QueryStringConverter<OpenAPIV2.Par
 
   protected convertQueryParam(
     param: OpenAPIV2.Parameter,
-    paramValue: unknown
+    paramValue: unknown,
+    paramJsonPointer: string
   ): QueryString[] {
     const { name } = param;
     const value = this.oas2ValueSerializer.serialize(
       param as OpenAPIV2.Parameter,
-      paramValue
+      paramValue,
+      paramJsonPointer
     );
 
     let values: QueryString[];

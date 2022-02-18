@@ -1,11 +1,12 @@
 import { ParameterObject } from '../../../types';
 import { getParameters, filterLocationParams } from '../../../utils';
+import { LocationParam } from '../LocationParam';
 import { Sampler } from '../Sampler';
 import { SubConverter } from '../../SubConverter';
 import jsonPointer from 'json-pointer';
 import { OpenAPI, QueryString } from '@har-sdk/core';
 
-export abstract class QueryStringConverter<T extends ParameterObject>
+export abstract class QueryStringConverter
   implements SubConverter<QueryString[]>
 {
   protected constructor(
@@ -14,9 +15,7 @@ export abstract class QueryStringConverter<T extends ParameterObject>
   ) {}
 
   protected abstract convertQueryParam(
-    param: T,
-    paramValue: unknown,
-    paramJsonPointer: string
+    queryParam: LocationParam<ParameterObject>
   ): QueryString[];
 
   public convert(path: string, method: string): QueryString[] {
@@ -31,11 +30,15 @@ export abstract class QueryStringConverter<T extends ParameterObject>
         spec: this.spec
       });
 
-      return this.convertQueryParam(
-        param as T,
+      return this.convertQueryParam({
+        param,
         value,
-        jsonPointer.compile([...tokens, 'parameters', idx.toString(10)])
-      );
+        jsonPointer: jsonPointer.compile([
+          ...tokens,
+          'parameters',
+          idx.toString(10)
+        ])
+      });
     });
   }
 }

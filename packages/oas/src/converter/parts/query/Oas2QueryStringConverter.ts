@@ -1,10 +1,11 @@
 import { isObject } from '../../../utils';
+import { LocationParam } from '../LocationParam';
 import { Oas2ValueSerializer } from '../Oas2ValueSerializer';
 import { Sampler } from '../Sampler';
 import { QueryStringConverter } from './QueryStringConverter';
 import { OpenAPIV2, QueryString } from '@har-sdk/core';
 
-export class Oas2QueryStringConverter extends QueryStringConverter<OpenAPIV2.Parameter> {
+export class Oas2QueryStringConverter extends QueryStringConverter {
   private readonly oas2ValueSerializer = new Oas2ValueSerializer();
 
   constructor(spec: OpenAPIV2.Document, sampler: Sampler) {
@@ -12,16 +13,10 @@ export class Oas2QueryStringConverter extends QueryStringConverter<OpenAPIV2.Par
   }
 
   protected convertQueryParam(
-    param: OpenAPIV2.Parameter,
-    paramValue: unknown,
-    paramJsonPointer: string
+    queryParam: LocationParam<OpenAPIV2.Parameter>
   ): QueryString[] {
-    const { name } = param;
-    const value = this.oas2ValueSerializer.serialize(
-      param as OpenAPIV2.Parameter,
-      paramValue,
-      paramJsonPointer
-    );
+    const { name } = queryParam.param;
+    const value = this.oas2ValueSerializer.serialize(queryParam);
 
     let values: QueryString[];
 

@@ -1,5 +1,6 @@
 import { OperationObject, ParameterObject } from '../../../types';
 import { filterLocationParams, getParameters } from '../../../utils';
+import { LocationParam } from '../LocationParam';
 import { Sampler } from '../Sampler';
 import { SubConverter } from '../../SubConverter';
 import { Header, OpenAPI, OpenAPIV2, OpenAPIV3 } from '@har-sdk/core';
@@ -28,9 +29,7 @@ export abstract class HeadersConverter<T extends OpenAPI.Document>
   protected abstract createAcceptHeaders(pathObj: OperationObject): Header[];
 
   protected abstract convertHeaderParam(
-    param: ParameterObject,
-    paramValue: unknown,
-    paramJsonPointer: string
+    headerParam: LocationParam<ParameterObject>
   ): Header;
 
   protected abstract getSecuritySchemes():
@@ -112,14 +111,18 @@ export abstract class HeadersConverter<T extends OpenAPI.Document>
         spec: this.spec
       });
 
-      return this.convertHeaderParam(
-        {
+      return this.convertHeaderParam({
+        value,
+        param: {
           ...param,
           name: param.name.toLowerCase()
         },
-        value,
-        jsonPointer.compile([...tokens, 'parameters', idx.toString(10)])
-      );
+        jsonPointer: jsonPointer.compile([
+          ...tokens,
+          'parameters',
+          idx.toString(10)
+        ])
+      });
     });
   }
 

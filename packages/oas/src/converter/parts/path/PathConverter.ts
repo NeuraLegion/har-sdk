@@ -1,25 +1,21 @@
 import { ParameterObject } from '../../../types';
 import { getParameters, filterLocationParams } from '../../../utils';
+import { LocationParam } from '../LocationParam';
 import { Sampler } from '../Sampler';
 import { SubConverter } from '../../SubConverter';
 import jsonPointer from 'json-pointer';
 import { OpenAPI } from '@har-sdk/core';
 
-export interface PathParam<T> {
-  readonly param: T;
-  readonly value: unknown;
-  readonly jsonPointer: string;
-}
-
-export abstract class PathConverter<T extends ParameterObject>
-  implements SubConverter<string>
-{
+export abstract class PathConverter implements SubConverter<string> {
   protected constructor(
     private readonly spec: OpenAPI.Document,
     private readonly sampler: Sampler
   ) {}
 
-  protected abstract parsePath(path: string, params: PathParam<T>[]): string;
+  protected abstract parsePath(
+    path: string,
+    params: LocationParam<ParameterObject>[]
+  ): string;
 
   public convert(path: string, method: string): string {
     const params: ParameterObject[] = getParameters(this.spec, path, method);
@@ -33,7 +29,7 @@ export abstract class PathConverter<T extends ParameterObject>
         const idx = params.indexOf(param);
 
         return {
-          param: param as T,
+          param,
           jsonPointer: jsonPointer.compile([
             ...tokens,
             'parameters',

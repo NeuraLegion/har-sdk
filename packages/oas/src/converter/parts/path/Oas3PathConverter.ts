@@ -1,10 +1,11 @@
 import { ParameterObject } from '../../../types';
+import { LocationParam } from '../LocationParam';
 import { Sampler } from '../Sampler';
 import { UriTemplator } from '../UriTemplator';
-import { PathConverter, PathParam } from './PathConverter';
+import { PathConverter } from './PathConverter';
 import { OpenAPIV3 } from '@har-sdk/core';
 
-export class Oas3PathConverter extends PathConverter<OpenAPIV3.ParameterObject> {
+export class Oas3PathConverter extends PathConverter {
   private readonly uriTemplator = new UriTemplator();
 
   constructor(spec: OpenAPIV3.Document, sampler: Sampler) {
@@ -13,7 +14,7 @@ export class Oas3PathConverter extends PathConverter<OpenAPIV3.ParameterObject> 
 
   protected parsePath(
     path: string,
-    pathParams: PathParam<OpenAPIV3.ParameterObject>[]
+    pathParams: LocationParam<OpenAPIV3.ParameterObject>[]
   ): string {
     const pathTemplateStr = pathParams.reduce(
       (res, { param }) =>

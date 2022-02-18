@@ -1,19 +1,20 @@
+import { LocationParam } from '../LocationParam';
 import { Sampler } from '../Sampler';
 import { UriTemplator } from '../UriTemplator';
 import { QueryStringConverter } from './QueryStringConverter';
 import { OpenAPIV3, QueryString } from '@har-sdk/core';
 
-export class Oas3QueryStringConverter extends QueryStringConverter<OpenAPIV3.ParameterObject> {
+export class Oas3QueryStringConverter extends QueryStringConverter {
   private readonly uriTemplator = new UriTemplator();
 
   constructor(spec: OpenAPIV3.Document, sampler: Sampler) {
     super(spec, sampler);
   }
 
-  protected convertQueryParam(
-    param: OpenAPIV3.ParameterObject,
-    paramValue: unknown
-  ): QueryString[] {
+  protected convertQueryParam({
+    param,
+    value: paramValue
+  }: LocationParam<OpenAPIV3.ParameterObject>): QueryString[] {
     const templateStr = this.getQueryParamUriTemplate(param);
 
     let queryString = this.uriTemplator.substitute(templateStr, {

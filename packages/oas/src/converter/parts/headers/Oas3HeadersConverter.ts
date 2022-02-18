@@ -1,4 +1,5 @@
 import { isObject } from '../../../utils';
+import { LocationParam } from '../LocationParam';
 import { Sampler } from '../Sampler';
 import { UriTemplator } from '../UriTemplator';
 import { HeadersConverter } from './HeadersConverter';
@@ -29,15 +30,15 @@ export class Oas3HeadersConverter extends HeadersConverter<OpenAPIV3.Document> {
     return [];
   }
 
-  protected convertHeaderParam(
-    param: OpenAPIV3.ParameterObject,
-    paramValue: unknown
-  ): Header {
+  protected convertHeaderParam({
+    param,
+    value
+  }: LocationParam<OpenAPIV3.ParameterObject>): Header {
     return {
       name: param.name,
       value: decodeURIComponent(
         this.uriTemplator.substitute(`{x${param.explode ? '*' : ''}}`, {
-          x: paramValue
+          x: value
         })
       )
     };

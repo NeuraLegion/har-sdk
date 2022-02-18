@@ -1,3 +1,4 @@
+import { LocationParam } from '../LocationParam';
 import { Oas2ValueSerializer } from '../Oas2ValueSerializer';
 import { Sampler } from '../Sampler';
 import { HeadersConverter } from './HeadersConverter';
@@ -21,17 +22,11 @@ export class Oas2HeadersConverter extends HeadersConverter<OpenAPIV2.Document> {
   }
 
   protected convertHeaderParam(
-    param: OpenAPIV2.Parameter,
-    paramValue: unknown,
-    jsonPointer: string
+    headerParam: LocationParam<OpenAPIV2.Parameter>
   ): Header {
     return {
-      name: param.name,
-      value: this.oas2ValueSerializer.serialize(
-        param,
-        paramValue,
-        jsonPointer
-      ) as string
+      name: headerParam.param.name,
+      value: this.oas2ValueSerializer.serialize(headerParam) as string
     };
   }
 

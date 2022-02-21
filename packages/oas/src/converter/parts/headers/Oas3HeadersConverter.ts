@@ -12,7 +12,7 @@ export class Oas3HeadersConverter extends HeadersConverter<OpenAPIV3.Document> {
     pathObj: OpenAPIV3.OperationObject
   ): Header[] {
     const requestBody = pathObj.requestBody as OpenAPIV3.RequestBodyObject;
-    if (requestBody?.content != null && isObject(requestBody?.content)) {
+    if (requestBody?.content && isObject(requestBody?.content)) {
       return this.createHeaders(
         'content-type',
         Object.keys(requestBody.content)
@@ -50,9 +50,9 @@ export class Oas3HeadersConverter extends HeadersConverter<OpenAPIV3.Document> {
 
     switch (httpScheme) {
       case 'basic':
-        return this.createBasicAuthHeader();
+        return this.createAuthHeader('Basic');
       case 'bearer':
-        return this.createBearerAuthHeader();
+        return this.createAuthHeader('Bearer');
       default:
         return this.parseApiKeyScheme(securityScheme);
     }

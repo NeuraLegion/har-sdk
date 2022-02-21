@@ -4,7 +4,7 @@ import { PathConverter } from './PathConverter';
 import { OpenAPIV2 } from '@har-sdk/core';
 
 export class Oas2PathConverter extends PathConverter<OpenAPIV2.Parameter> {
-  private oas2ValueSerializer = new Oas2ValueSerializer();
+  private readonly oas2ValueSerializer = new Oas2ValueSerializer();
 
   constructor(spec: OpenAPIV2.Document, sampler: Sampler) {
     super(spec, sampler);

@@ -12,10 +12,6 @@ type SecuritySchemeObject =
   | OpenAPIV2.SecuritySchemeObject
   | OpenAPIV3.SecuritySchemeObject;
 
-type SecuritySchemeApiKey =
-  | OpenAPIV2.SecuritySchemeApiKey
-  | OpenAPIV3.ApiKeySecurityScheme;
-
 export abstract class HeadersConverter<T extends OpenAPI.Document>
   implements SubConverter<Header[]>
 {
@@ -49,26 +45,29 @@ export abstract class HeadersConverter<T extends OpenAPI.Document>
     securityScheme: SecuritySchemeObject
   ): Header | undefined {
     if ('in' in securityScheme && securityScheme.in === 'header') {
-      return this.createApiKeyHeader(securityScheme);
+      return this.createAuthHeader('API-Key', securityScheme.name);
     }
   }
 
-  protected createBearerAuthHeader(): Header {
-    return this.createHeader('authorization', 'Bearer REPLACE_BEARER_TOKEN');
-  }
+  protected createAuthHeader(
+    type: 'Basic' | 'Bearer' | 'API-Key',
+    header = 'authorization'
+  ): Header {
+    const token = this.sampler.sample({
+      type: 'string',
+      format: 'base64'
+    });
 
-  protected createBasicAuthHeader(): Header {
-    return this.createHeader('authorization', 'Basic REPLACE_BASIC_AUTH');
-  }
-
-  protected createApiKeyHeader(scheme: SecuritySchemeApiKey): Header {
-    return this.createHeader(scheme.name.toLowerCase(), 'REPLACE_KEY_VALUE');
+    return this.createHeader(
+      header,
+      `${type === 'API-Key' ? '' : `${type} `}${token}`
+    );
   }
 
   protected createHeader(name: string, value: string): Header {
     return {
-      name,
-      value
+      value,
+      name: name.toLowerCase()
     };
   }
 
@@ -84,9 +83,9 @@ export abstract class HeadersConverter<T extends OpenAPI.Document>
     const authType = securityScheme.type.toLowerCase();
     switch (authType) {
       case 'basic':
-        return this.createBasicAuthHeader();
+        return this.createAuthHeader('Basic');
       case 'oauth2':
-        return this.createBearerAuthHeader();
+        return this.createAuthHeader('Bearer');
       case 'apiKey':
         return this.parseApiKeyScheme(securityScheme);
     }
@@ -96,16 +95,18 @@ export abstract class HeadersConverter<T extends OpenAPI.Document>
     const params: ParameterObject[] = getParameters(this.spec, path, method);
     const tokens = ['paths', path, method];
 
-    return filterLocationParams(params, 'header').map((param) => ({
-      name: param.name.toLowerCase(),
-      value: this.serializeHeaderValue(
-        this.sampler.sampleParam(param, {
-          tokens,
-          spec: this.spec,
-          idx: params.indexOf(param)
-        })
+    return filterLocationParams(params, 'header').map((param) =>
+      this.createHeader(
+        param.name,
+        this.serializeHeaderValue(
+          this.sampler.sampleParam(param, {
+            tokens,
+            spec: this.spec,
+            idx: params.indexOf(param)
+          })
+        )
       )
-    }));
+    );
   }
 
   private serializeHeaderValue(value: any): string {

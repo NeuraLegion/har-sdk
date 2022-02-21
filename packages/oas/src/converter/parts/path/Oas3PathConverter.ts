@@ -5,7 +5,7 @@ import { PathConverter } from './PathConverter';
 import { OpenAPIV3 } from '@har-sdk/core';
 
 export class Oas3PathConverter extends PathConverter<OpenAPIV3.ParameterObject> {
-  private uriTemplator = new UriTemplator();
+  private readonly uriTemplator = new UriTemplator();
 
   constructor(spec: OpenAPIV3.Document, sampler: Sampler) {
     super(spec, sampler);

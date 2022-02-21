@@ -40,6 +40,8 @@ export class SubConvertersRegistry {
         return new PostDataConverter(this.spec, this.sampler);
       case SubPart.QUERY_STRING:
         return this.createQueryStringConverter();
+      default:
+        throw new TypeError(`${type} subconverter is not supported`);
     }
   }
 

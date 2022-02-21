@@ -14,6 +14,14 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/xml"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "authorization",
         "value": "Bearer ZHVtbXkgYmluYXJ5IHNhbXBsZQA="
       }

@@ -1,8 +1,10 @@
 import { OperationObject, ParameterObject } from '../../../types';
 import { filterLocationParams, getParameters } from '../../../utils';
+import { LocationParam } from '../LocationParam';
 import { Sampler } from '../Sampler';
 import { SubConverter } from '../../SubConverter';
 import { Header, OpenAPI, OpenAPIV2, OpenAPIV3 } from '@har-sdk/core';
+import jsonPointer from 'json-pointer';
 
 type SecurityRequirementObject =
   | OpenAPIV2.SecurityRequirementObject
@@ -23,7 +25,13 @@ export abstract class HeadersConverter<T extends OpenAPI.Document>
   protected abstract createContentTypeHeaders(
     pathObj: OperationObject
   ): Header[];
+
   protected abstract createAcceptHeaders(pathObj: OperationObject): Header[];
+
+  protected abstract convertHeaderParam(
+    headerParam: LocationParam<ParameterObject>
+  ): Header;
+
   protected abstract getSecuritySchemes():
     | Record<string, SecuritySchemeObject>
     | undefined;
@@ -95,23 +103,27 @@ export abstract class HeadersConverter<T extends OpenAPI.Document>
     const params: ParameterObject[] = getParameters(this.spec, path, method);
     const tokens = ['paths', path, method];
 
-    return filterLocationParams(params, 'header').map((param) =>
-      this.createHeader(
-        param.name,
-        this.serializeHeaderValue(
-          this.sampler.sampleParam(param, {
-            tokens,
-            spec: this.spec,
-            idx: params.indexOf(param)
-          })
-        )
-      )
-    );
-  }
+    return filterLocationParams(params, 'header').map((param) => {
+      const idx = params.indexOf(param);
+      const value = this.sampler.sampleParam(param, {
+        tokens,
+        idx,
+        spec: this.spec
+      });
 
-  private serializeHeaderValue(value: any): string {
-    // TODO proper serialization
-    return typeof value === 'object' ? JSON.stringify(value) : value;
+      return this.convertHeaderParam({
+        value,
+        param: {
+          ...param,
+          name: param.name.toLowerCase()
+        },
+        jsonPointer: jsonPointer.compile([
+          ...tokens,
+          'parameters',
+          idx.toString(10)
+        ])
+      });
+    });
   }
 
   private getSecurityRequirementObjects(

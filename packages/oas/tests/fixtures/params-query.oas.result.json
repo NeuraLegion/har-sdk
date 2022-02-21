@@ -8,7 +8,12 @@
     ],
     "url": "http://petstore.swagger.io/v1/formStyleParamArray?p=lorem%2Clorem",
     "method": "GET",
-    "headers": [],
+    "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      }
+    ],
     "httpVersion": "HTTP/1.1",
     "cookies": [],
     "headersSize": 0,
@@ -27,7 +32,12 @@
     ],
     "url": "http://petstore.swagger.io/v1/formStyleParamArrayExploded?p=lorem&p=lorem",
     "method": "GET",
-    "headers": [],
+    "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      }
+    ],
     "httpVersion": "HTTP/1.1",
     "cookies": [],
     "headersSize": 0,
@@ -42,7 +52,12 @@
     ],
     "url": "http://petstore.swagger.io/v1/formStyleParamObject?p=key%2Cx%2Cvalue%2C42",
     "method": "GET",
-    "headers": [],
+    "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      }
+    ],
     "httpVersion": "HTTP/1.1",
     "cookies": [],
     "headersSize": 0,
@@ -61,7 +76,12 @@
     ],
     "url": "http://petstore.swagger.io/v1/formStyleParamObjectExploded?key=x&value=42",
     "method": "GET",
-    "headers": [],
+    "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      }
+    ],
     "httpVersion": "HTTP/1.1",
     "cookies": [],
     "headersSize": 0,
@@ -84,7 +104,12 @@
     ],
     "url": "http://petstore.swagger.io/v1/spaceDelimitedStyleParam?p=42+42&pExploded=42&pExploded=42",
     "method": "GET",
-    "headers": [],
+    "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      }
+    ],
     "httpVersion": "HTTP/1.1",
     "cookies": [],
     "headersSize": 0,
@@ -107,7 +132,12 @@
     ],
     "url": "http://petstore.swagger.io/v1/pipeDelimitedStyleParam?p=42%7C42&pExploded=42&pExploded=42",
     "method": "GET",
-    "headers": [],
+    "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      }
+    ],
     "httpVersion": "HTTP/1.1",
     "cookies": [],
     "headersSize": 0,

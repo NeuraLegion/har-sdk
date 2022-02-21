@@ -1,10 +1,12 @@
 import { ParameterObject } from '../../../types';
 import { getParameters, filterLocationParams } from '../../../utils';
+import { LocationParam } from '../LocationParam';
 import { Sampler } from '../Sampler';
 import { SubConverter } from '../../SubConverter';
+import jsonPointer from 'json-pointer';
 import { OpenAPI, QueryString } from '@har-sdk/core';
 
-export abstract class QueryStringConverter<T extends ParameterObject>
+export abstract class QueryStringConverter
   implements SubConverter<QueryString[]>
 {
   protected constructor(
@@ -13,8 +15,7 @@ export abstract class QueryStringConverter<T extends ParameterObject>
   ) {}
 
   protected abstract convertQueryParam(
-    param: T,
-    paramValue: unknown
+    queryParam: LocationParam<ParameterObject>
   ): QueryString[];
 
   public convert(path: string, method: string): QueryString[] {
@@ -22,13 +23,22 @@ export abstract class QueryStringConverter<T extends ParameterObject>
     const params: ParameterObject[] = getParameters(this.spec, path, method);
 
     return filterLocationParams(params, 'query').flatMap((param) => {
+      const idx = params.indexOf(param);
       const value = this.sampler.sampleParam(param, {
         tokens,
-        spec: this.spec,
-        idx: params.indexOf(param)
+        idx,
+        spec: this.spec
       });
 
-      return this.convertQueryParam(param as T, value);
+      return this.convertQueryParam({
+        param,
+        value,
+        jsonPointer: jsonPointer.compile([
+          ...tokens,
+          'parameters',
+          idx.toString(10)
+        ])
+      });
     });
   }
 }

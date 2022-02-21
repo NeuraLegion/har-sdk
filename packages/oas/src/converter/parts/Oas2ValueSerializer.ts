@@ -1,12 +1,25 @@
+import { ConvertError } from '../../errors';
 import { isObject, Flattener } from '../../utils';
+import { LocationParam } from './LocationParam';
 import { OpenAPIV2 } from '@har-sdk/core';
 
 export class Oas2ValueSerializer {
   private readonly flattener = new Flattener();
 
-  public serialize(param: OpenAPIV2.Parameter, value: unknown): any {
+  public serialize({
+    param,
+    value,
+    jsonPointer
+  }: LocationParam<OpenAPIV2.Parameter>): unknown {
     const style = param.collectionFormat;
     const explode = param.collectionFormat === 'multi';
+
+    if (explode && param.in !== 'formData' && param.in !== 'query') {
+      throw new ConvertError(
+        'Collection format `multi` is allowed only for `formData` and `query` parameters',
+        jsonPointer
+      );
+    }
 
     if (explode) {
       return value;

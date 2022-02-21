@@ -1,0 +1,33 @@
+[
+  {
+    "bodySize": 0,
+    "cookies": [],
+    "headers": [
+      {
+        "name": "x-array-default",
+        "value": "lorem,lorem"
+      },
+      {
+        "name": "x-array-csv",
+        "value": "lorem,lorem"
+      },
+      {
+        "name": "x-array-ssv",
+        "value": "lorem lorem"
+      },
+      {
+        "name": "x-array-tsv",
+        "value": "lorem\tlorem"
+      },
+      {
+        "name": "x-array-pipes",
+        "value": "lorem|lorem"
+      }
+    ],
+    "headersSize": 0,
+    "httpVersion": "HTTP/1.1",
+    "method": "GET",
+    "queryString": [],
+    "url": "http://petstore.swagger.io/v1/headers"
+  }
+]

@@ -1,0 +1,65 @@
+openapi: 3.0.1
+info:
+  title: Header Parameters Test
+  version: 1.0.0
+servers:
+  - url: https://petstore.swagger.io/v1
+paths:
+  /dummy1:
+    get:
+      parameters:
+        - in: header
+          name: X-Request-DateTime
+          schema:
+            type: 'string'
+            format: 'date-time'
+        - in: header
+          name: X-Request-Array
+          schema:
+            type: 'array'
+            minItems: 2
+            items:
+              type: integer
+        - in: header
+          name: X-Request-Array-Exploded
+          explode: true
+          schema:
+            type: 'array'
+            minItems: 2
+            items:
+              type: integer
+        - in: header
+          name: X-Request-Object
+          schema:
+            type: object
+            properties:
+              x:
+                type: string
+              y:
+                type: number
+        - in: header
+          name: X-Request-Object-Exploded
+          explode: true
+          schema:
+            type: object
+            properties:
+              x:
+                type: string
+              y:
+                type: number
+        - in: header
+          name: X-Request-Object-Exploded-Default
+          explode: true
+          schema:
+            type: object
+            default:
+              a: dummy
+              b: 42
+
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              example:
+                ok: true

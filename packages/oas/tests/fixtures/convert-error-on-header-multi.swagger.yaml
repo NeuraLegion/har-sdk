@@ -1,0 +1,30 @@
+swagger: '2.0'
+info:
+  title: Header Parameters Test
+  version: 1.0.0
+host: petstore.swagger.io
+basePath: /v1
+schemes:
+  - http
+paths:
+  /headers/{p}:
+    get:
+      parameters:
+        - name: p
+          in: path
+          required: true
+          type: string
+        - name: X-Array-Multi
+          in: header
+          required: true
+          collectionFormat: multi
+          type: array
+          minItems: 2
+          items:
+            type: string
+      responses:
+        '200':
+          description: OK
+          examples:
+            application/json:
+              ok: true

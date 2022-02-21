@@ -1,9 +1,10 @@
+import { LocationParam } from '../LocationParam';
 import { Sampler } from '../Sampler';
 import { Oas2ValueSerializer } from '../Oas2ValueSerializer';
 import { PathConverter } from './PathConverter';
 import { OpenAPIV2 } from '@har-sdk/core';
 
-export class Oas2PathConverter extends PathConverter<OpenAPIV2.Parameter> {
+export class Oas2PathConverter extends PathConverter {
   private readonly oas2ValueSerializer = new Oas2ValueSerializer();
 
   constructor(spec: OpenAPIV2.Document, sampler: Sampler) {
@@ -12,15 +13,14 @@ export class Oas2PathConverter extends PathConverter<OpenAPIV2.Parameter> {
 
   protected parsePath(
     path: string,
-    pathParams: OpenAPIV2.Parameter[],
-    values: any[]
+    pathParams: LocationParam<OpenAPIV2.Parameter>[]
   ): string {
     return encodeURI(
       pathParams.reduce(
-        (res, param, idx) =>
+        (res, pathParam) =>
           res.replace(
-            `{${param.name}}`,
-            this.oas2ValueSerializer.serialize(param, values[idx])
+            `{${pathParam.param.name}}`,
+            this.oas2ValueSerializer.serialize(pathParam) as string
           ),
         path
       )

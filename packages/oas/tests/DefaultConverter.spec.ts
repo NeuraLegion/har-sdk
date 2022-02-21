@@ -70,6 +70,16 @@ describe('DefaultConverter', () => {
         input: 'params-path.swagger.yaml',
         expected: 'params-path.swagger.result.json',
         message: 'should correctly convert swagger path parameters'
+      },
+      {
+        input: 'params-header.oas.yaml',
+        expected: 'params-header.oas.result.json',
+        message: 'should correctly convert oas header parameters'
+      },
+      {
+        input: 'params-header.swagger.yaml',
+        expected: 'params-header.swagger.result.json',
+        message: 'should correctly convert swagger header parameters'
       }
     ].forEach(({ input: inputFile, expected: expectedFile, message }) => {
       it(message, async () => {
@@ -121,8 +131,16 @@ describe('DefaultConverter', () => {
         expected: '/paths/~1store~1order~1{orderId}/put/parameters/2'
       },
       {
+        input: 'convert-error-on-header-multi.swagger.yaml',
+        expected: '/paths/~1headers~1{p}/get/parameters/1'
+      },
+      {
         input: 'convert-error-on-path.swagger.yaml',
         expected: '/paths/~1store~1order~1{orderId}/put/parameters/0'
+      },
+      {
+        input: 'convert-error-on-path-multi.swagger.yaml',
+        expected: '/paths/~1headers~1{p}/get/parameters/0'
       },
       {
         input: 'convert-error-on-query.swagger.yaml',

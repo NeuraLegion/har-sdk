@@ -1,4 +1,4 @@
-import { ConvertError } from '../errors';
+import { ConvertError } from '../../errors';
 import { sample, Schema } from '@har-sdk/openapi-sampler';
 import pointer from 'json-pointer';
 import { OpenAPI } from '@har-sdk/core';

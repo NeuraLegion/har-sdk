@@ -10,7 +10,7 @@
       },
       {
         "name": "authorization",
-        "value": "Bearer REPLACE_BEARER_TOKEN"
+        "value": "Bearer ZHVtbXkgYmluYXJ5IHNhbXBsZQA="
       }
     ],
     "httpVersion": "HTTP/1.1",

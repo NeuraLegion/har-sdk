@@ -14,7 +14,7 @@
       },
       {
         "name": "authorization",
-        "value": "Bearer REPLACE_BEARER_TOKEN"
+        "value": "Bearer ZHVtbXkgYmluYXJ5IHNhbXBsZQA="
       }
     ],
     "httpVersion": "HTTP/1.1",
@@ -41,7 +41,7 @@
       },
       {
         "name": "authorization",
-        "value": "Bearer REPLACE_BEARER_TOKEN"
+        "value": "Bearer ZHVtbXkgYmluYXJ5IHNhbXBsZQA="
       }
     ],
     "httpVersion": "HTTP/1.1",
@@ -65,7 +65,7 @@
     "headers": [
       {
         "name": "authorization",
-        "value": "Bearer REPLACE_BEARER_TOKEN"
+        "value": "Bearer ZHVtbXkgYmluYXJ5IHNhbXBsZQA="
       }
     ],
     "httpVersion": "HTTP/1.1",
@@ -85,7 +85,7 @@
     "headers": [
       {
         "name": "authorization",
-        "value": "Bearer REPLACE_BEARER_TOKEN"
+        "value": "Bearer ZHVtbXkgYmluYXJ5IHNhbXBsZQA="
       }
     ],
     "httpVersion": "HTTP/1.1",
@@ -100,7 +100,7 @@
     "headers": [
       {
         "name": "api_key",
-        "value": "REPLACE_KEY_VALUE"
+        "value": "ZHVtbXkgYmluYXJ5IHNhbXBsZQA="
       }
     ],
     "httpVersion": "HTTP/1.1",
@@ -119,7 +119,7 @@
       },
       {
         "name": "authorization",
-        "value": "Bearer REPLACE_BEARER_TOKEN"
+        "value": "Bearer ZHVtbXkgYmluYXJ5IHNhbXBsZQA="
       }
     ],
     "httpVersion": "HTTP/1.1",
@@ -142,7 +142,7 @@
       },
       {
         "name": "authorization",
-        "value": "Bearer REPLACE_BEARER_TOKEN"
+        "value": "Bearer ZHVtbXkgYmluYXJ5IHNhbXBsZQA="
       }
     ],
     "httpVersion": "HTTP/1.1",
@@ -161,7 +161,7 @@
       },
       {
         "name": "authorization",
-        "value": "Bearer REPLACE_BEARER_TOKEN"
+        "value": "Bearer ZHVtbXkgYmluYXJ5IHNhbXBsZQA="
       }
     ],
     "httpVersion": "HTTP/1.1",
@@ -180,7 +180,7 @@
     "headers": [
       {
         "name": "api_key",
-        "value": "REPLACE_KEY_VALUE"
+        "value": "ZHVtbXkgYmluYXJ5IHNhbXBsZQA="
       }
     ],
     "httpVersion": "HTTP/1.1",

@@ -24,10 +24,10 @@ export class Oas2HeadersConverter extends HeadersConverter<OpenAPIV2.Document> {
   protected convertHeaderParam(
     headerParam: LocationParam<OpenAPIV2.Parameter>
   ): Header {
-    return {
-      name: headerParam.param.name,
-      value: this.oas2ValueSerializer.serialize(headerParam) as string
-    };
+    return this.createHeader(
+      headerParam.param.name,
+      this.oas2ValueSerializer.serialize(headerParam) as string
+    );
   }
 
   protected getSecuritySchemes():

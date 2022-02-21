@@ -50,14 +50,14 @@ export class Oas3HeadersConverter extends HeadersConverter<OpenAPIV3.Document> {
     param,
     value
   }: LocationParam<OpenAPIV3.ParameterObject>): Header {
-    return {
-      name: param.name,
-      value: decodeURIComponent(
+    return this.createHeader(
+      param.name,
+      decodeURIComponent(
         this.uriTemplator.substitute(`{x${param.explode ? '*' : ''}}`, {
           x: value
         })
       )
-    };
+    );
   }
 
   protected getSecuritySchemes():

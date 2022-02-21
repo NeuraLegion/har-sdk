@@ -1,5 +1,5 @@
 import { Converter } from './Converter';
-import { BaseUrlParser, Sampler, SubConvertersRegistry } from './parts';
+import { BaseUrlParser, SubConverterRegistry } from './parts';
 import { SubPart } from './SubPart';
 import $RefParser, { JSONSchema } from '@apidevtools/json-schema-ref-parser';
 import {
@@ -16,22 +16,18 @@ import pointer from 'json-pointer';
 type PathItemObject = OpenAPIV2.PathItemObject | OpenAPIV3.PathItemObject;
 
 export class DefaultConverter implements Converter {
-  private readonly sampler = new Sampler();
-  private readonly baseUrlParser = new BaseUrlParser(this.sampler);
-
   private spec: OpenAPI.Document;
-  private subConvertersRegistry: SubConvertersRegistry;
+
+  constructor(
+    private readonly baseUrlParser: BaseUrlParser,
+    private readonly subConverterRegistry: SubConverterRegistry
+  ) {}
 
   public async convert(spec: OpenAPI.Document): Promise<Request[]> {
     this.spec = (await new $RefParser().dereference(
       JSON.parse(JSON.stringify(spec)) as JSONSchema,
       { resolve: { file: false, http: false } }
     )) as OpenAPI.Document;
-
-    this.subConvertersRegistry = new SubConvertersRegistry(
-      this.spec,
-      this.sampler
-    );
 
     return Object.entries(this.spec.paths).flatMap(
       ([path, pathMethods]: [string, PathItemObject]) =>
@@ -96,8 +92,8 @@ export class DefaultConverter implements Converter {
   }
 
   private convertPart<T>(type: SubPart, path: string, method: string): T {
-    return this.subConvertersRegistry
-      .get(type)
+    return this.subConverterRegistry
+      .get(this.spec, type)
       .convert(path, method) as unknown as T;
   }
 }

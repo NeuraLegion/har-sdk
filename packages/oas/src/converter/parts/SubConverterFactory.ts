@@ -6,13 +6,7 @@ import { Oas2PathConverter, Oas3PathConverter } from './path';
 import { PostDataConverter } from './postdata';
 import { Oas2QueryStringConverter, Oas3QueryStringConverter } from './query';
 import { Sampler } from './Sampler';
-import {
-  Header,
-  OpenAPI,
-  OpenAPIV2,
-  OpenAPIV3,
-  QueryString
-} from '@har-sdk/core';
+import { OpenAPI, OpenAPIV2, OpenAPIV3 } from '@har-sdk/core';
 
 export class SubConverterFactory {
   constructor(private readonly sampler: Sampler) {}
@@ -23,50 +17,36 @@ export class SubConverterFactory {
   ): SubConverter<any> {
     switch (type) {
       case SubPart.HEADERS:
-        return this.createHeadersConverter(spec);
+        return this.instantiate(
+          spec,
+          Oas2HeadersConverter,
+          Oas3HeadersConverter
+        );
       case SubPart.PATH:
-        return this.createPathConverter(spec);
+        return this.instantiate(spec, Oas2PathConverter, Oas3PathConverter);
       case SubPart.POST_DATA:
         return new PostDataConverter(spec, this.sampler);
       case SubPart.QUERY_STRING:
-        return this.createQueryStringConverter(spec);
+        return this.instantiate(
+          spec,
+          Oas2QueryStringConverter,
+          Oas3QueryStringConverter
+        );
       default:
         throw new TypeError(`${type} subconverter is not supported`);
     }
   }
 
-  private createQueryStringConverter(
-    spec: OpenAPI.Document
-  ): SubConverter<QueryString[]> {
-    return this.instantiate<Oas2QueryStringConverter, Oas3QueryStringConverter>(
-      spec,
-      Oas2QueryStringConverter,
-      Oas3QueryStringConverter
-    );
-  }
-
-  private createPathConverter(spec: OpenAPI.Document): SubConverter<string> {
-    return this.instantiate<Oas2PathConverter, Oas3PathConverter>(
-      spec,
-      Oas2PathConverter,
-      Oas3PathConverter
-    );
-  }
-
-  private createHeadersConverter(
-    spec: OpenAPI.Document
-  ): SubConverter<Header[]> {
-    return this.instantiate<Oas2HeadersConverter, Oas3HeadersConverter>(
-      spec,
-      Oas2HeadersConverter,
-      Oas3HeadersConverter
-    );
-  }
-
-  private instantiate<U, V>(
+  private instantiate(
     spec: OpenAPI.Document,
-    oas2Ctor: new (spec: OpenAPIV2.Document, sampler: Sampler) => U,
-    oas3Ctor: new (spec: OpenAPIV3.Document, sampler: Sampler) => V
+    oas2Ctor: new (
+      spec: OpenAPIV2.Document,
+      sampler: Sampler
+    ) => SubConverter<unknown>,
+    oas3Ctor: new (
+      spec: OpenAPIV3.Document,
+      sampler: Sampler
+    ) => SubConverter<unknown>
   ) {
     return isOASV3(spec)
       ? new oas3Ctor(spec as OpenAPIV3.Document, this.sampler)

@@ -14,7 +14,7 @@ export class SubConverterFactory {
   public createSubConverter(
     spec: OpenAPI.Document,
     type: SubPart
-  ): SubConverter<any> {
+  ): SubConverter<unknown> {
     switch (type) {
       case SubPart.HEADERS:
         return this.instantiate(

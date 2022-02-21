@@ -3,7 +3,12 @@
     "queryString": [],
     "url": "http://petstore.swagger.io/v1/defaultStylePrimitiveParam/lorem",
     "method": "GET",
-    "headers": [],
+    "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      }
+    ],
     "httpVersion": "HTTP/1.1",
     "cookies": [],
     "headersSize": 0,
@@ -13,7 +18,12 @@
     "queryString": [],
     "url": "http://petstore.swagger.io/v1/simpleStylePrimitiveParam/lorem",
     "method": "GET",
-    "headers": [],
+    "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      }
+    ],
     "httpVersion": "HTTP/1.1",
     "cookies": [],
     "headersSize": 0,
@@ -23,7 +33,12 @@
     "queryString": [],
     "url": "http://petstore.swagger.io/v1/simpleStylePrimitiveParamExploded/lorem",
     "method": "GET",
-    "headers": [],
+    "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      }
+    ],
     "httpVersion": "HTTP/1.1",
     "cookies": [],
     "headersSize": 0,
@@ -33,7 +48,12 @@
     "queryString": [],
     "url": "http://petstore.swagger.io/v1/labelStylePrimitiveParam/.lorem",
     "method": "GET",
-    "headers": [],
+    "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      }
+    ],
     "httpVersion": "HTTP/1.1",
     "cookies": [],
     "headersSize": 0,
@@ -43,7 +63,12 @@
     "queryString": [],
     "url": "http://petstore.swagger.io/v1/labelStylePrimitiveParamExploded/.lorem",
     "method": "GET",
-    "headers": [],
+    "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      }
+    ],
     "httpVersion": "HTTP/1.1",
     "cookies": [],
     "headersSize": 0,
@@ -53,7 +78,12 @@
     "queryString": [],
     "url": "http://petstore.swagger.io/v1/matrixStylePrimitiveParam/;p=lorem",
     "method": "GET",
-    "headers": [],
+    "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      }
+    ],
     "httpVersion": "HTTP/1.1",
     "cookies": [],
     "headersSize": 0,
@@ -63,7 +93,12 @@
     "queryString": [],
     "url": "http://petstore.swagger.io/v1/matrixStylePrimitiveParamExploded/;p=lorem",
     "method": "GET",
-    "headers": [],
+    "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      }
+    ],
     "httpVersion": "HTTP/1.1",
     "cookies": [],
     "headersSize": 0,
@@ -74,7 +109,12 @@
     "queryString": [],
     "url": "http://petstore.swagger.io/v1/defaultStyleArrayParam/lorem,lorem",
     "method": "GET",
-    "headers": [],
+    "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      }
+    ],
     "httpVersion": "HTTP/1.1",
     "cookies": [],
     "headersSize": 0,
@@ -84,7 +124,12 @@
     "queryString": [],
     "url": "http://petstore.swagger.io/v1/simpleStyleArrayParam/lorem,lorem",
     "method": "GET",
-    "headers": [],
+    "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      }
+    ],
     "httpVersion": "HTTP/1.1",
     "cookies": [],
     "headersSize": 0,
@@ -94,7 +139,12 @@
     "queryString": [],
     "url": "http://petstore.swagger.io/v1/simpleStyleArrayParamExploded/lorem,lorem",
     "method": "GET",
-    "headers": [],
+    "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      }
+    ],
     "httpVersion": "HTTP/1.1",
     "cookies": [],
     "headersSize": 0,
@@ -104,7 +154,12 @@
     "queryString": [],
     "url": "http://petstore.swagger.io/v1/labelStyleArrayParam/.lorem,lorem",
     "method": "GET",
-    "headers": [],
+    "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      }
+    ],
     "httpVersion": "HTTP/1.1",
     "cookies": [],
     "headersSize": 0,
@@ -114,7 +169,12 @@
     "queryString": [],
     "url": "http://petstore.swagger.io/v1/labelStyleArrayParamExploded/.lorem.lorem",
     "method": "GET",
-    "headers": [],
+    "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      }
+    ],
     "httpVersion": "HTTP/1.1",
     "cookies": [],
     "headersSize": 0,
@@ -124,7 +184,12 @@
     "queryString": [],
     "url": "http://petstore.swagger.io/v1/matrixStyleArrayParam/;p=lorem,lorem",
     "method": "GET",
-    "headers": [],
+    "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      }
+    ],
     "httpVersion": "HTTP/1.1",
     "cookies": [],
     "headersSize": 0,
@@ -134,7 +199,12 @@
     "queryString": [],
     "url": "http://petstore.swagger.io/v1/matrixStyleArrayParamExploded/;p=lorem;p=lorem",
     "method": "GET",
-    "headers": [],
+    "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      }
+    ],
     "httpVersion": "HTTP/1.1",
     "cookies": [],
     "headersSize": 0,
@@ -145,7 +215,12 @@
     "queryString": [],
     "url": "http://petstore.swagger.io/v1/defaultStyleObjectParam/a,42,b,xyz",
     "method": "GET",
-    "headers": [],
+    "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      }
+    ],
     "httpVersion": "HTTP/1.1",
     "cookies": [],
     "headersSize": 0,
@@ -155,7 +230,12 @@
     "queryString": [],
     "url": "http://petstore.swagger.io/v1/simpleStyleObjectParam/a,42,b,xyz",
     "method": "GET",
-    "headers": [],
+    "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      }
+    ],
     "httpVersion": "HTTP/1.1",
     "cookies": [],
     "headersSize": 0,
@@ -165,7 +245,12 @@
     "queryString": [],
     "url": "http://petstore.swagger.io/v1/simpleStyleObjectParamExploded/a=42,b=xyz",
     "method": "GET",
-    "headers": [],
+    "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      }
+    ],
     "httpVersion": "HTTP/1.1",
     "cookies": [],
     "headersSize": 0,
@@ -175,7 +260,12 @@
     "queryString": [],
     "url": "http://petstore.swagger.io/v1/labelStyleObjectParam/.a,42,b,xyz",
     "method": "GET",
-    "headers": [],
+    "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      }
+    ],
     "httpVersion": "HTTP/1.1",
     "cookies": [],
     "headersSize": 0,
@@ -185,7 +275,12 @@
     "queryString": [],
     "url": "http://petstore.swagger.io/v1/labelStyleObjectParamExploded/.a=42.b=xyz",
     "method": "GET",
-    "headers": [],
+    "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      }
+    ],
     "httpVersion": "HTTP/1.1",
     "cookies": [],
     "headersSize": 0,
@@ -195,7 +290,12 @@
     "queryString": [],
     "url": "http://petstore.swagger.io/v1/matrixStyleObjectParam/;p=a,42,b,xyz",
     "method": "GET",
-    "headers": [],
+    "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      }
+    ],
     "httpVersion": "HTTP/1.1",
     "cookies": [],
     "headersSize": 0,
@@ -205,7 +305,12 @@
     "queryString": [],
     "url": "http://petstore.swagger.io/v1/matrixStyleObjectParamExploded/;a=42;b=xyz",
     "method": "GET",
-    "headers": [],
+    "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      }
+    ],
     "httpVersion": "HTTP/1.1",
     "cookies": [],
     "headersSize": 0,

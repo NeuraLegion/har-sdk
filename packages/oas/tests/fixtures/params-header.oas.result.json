@@ -5,6 +5,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-request-datetime",
         "value": "2021-12-31T23:34:00Z"
       },

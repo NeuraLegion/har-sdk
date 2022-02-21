@@ -3,7 +3,12 @@
     "queryString": [],
     "url": "https://petstore.swagger.io/pets",
     "method": "GET",
-    "headers": [],
+    "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      }
+    ],
     "httpVersion": "HTTP/1.1",
     "cookies": [],
     "headersSize": 0,

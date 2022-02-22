@@ -45,15 +45,14 @@
   ],
   "dependencies": {
     "@har-sdk/core": "*",
-    "ajv": "^8.6.3",
+    "ajv": "^8.10.0",
     "ajv-errors": "^3.0.0",
     "ajv-formats": "^2.1.1",
     "semver": "^7.3.5",
-    "tslib": "~2.2.0"
+    "tslib": "^2.3.1"
   },
   "devDependencies": {
-    "@types/js-yaml": "^4.0.4",
-    "@types/node": "^16.11.6",
+    "@types/js-yaml": "^4.0.5",
     "@types/semver": "^7.3.9",
     "js-yaml": "^4.1.0"
   }

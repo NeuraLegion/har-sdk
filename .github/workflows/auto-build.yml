@@ -36,7 +36,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-npm-
 
-      - run: npm ci -q --ignore-scripts && npm run bootstrap
+      - run: npm ci -q && npm run bootstrap
       - run: npm run format:changed
       - run: npm run lint:changed
       - run: npm run build:changed
@@ -61,7 +61,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-npm-
 
-      - run: npm ci -q --ignore-scripts && npm run bootstrap
+      - run: npm ci -q && npm run bootstrap
       - run: npm run build
       - run: npm run coverage:all
 
@@ -94,7 +94,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-npm-
 
-      - run: npm ci -q --ignore-scripts && npm run bootstrap
+      - run: npm ci -q && npm run bootstrap
       - run: npm run build
       - run: npm run semantic-release
         env:

@@ -22,7 +22,8 @@
     "noUnusedParameters": true,
     "forceConsistentCasingInFileNames": true,
     "suppressImplicitAnyIndexErrors": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "useUnknownInCatchVariables": false
   },
   "exclude": ["**/node_modules", "**/.*/", "**/dist"]
 }

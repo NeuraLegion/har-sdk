@@ -43,18 +43,18 @@
   ],
   "dependencies": {
     "content-type": "^1.0.4",
-    "qs": "^6.10.1",
+    "qs": "^6.10.3",
     "request": "^2.88.2",
     "request-promise": "^4.2.6",
     "set-cookie-parser": "^2.4.8",
-    "tslib": "~2.2.0"
+    "tslib": "^2.3.1"
   },
   "devDependencies": {
-    "@types/content-type": "^1.1.4",
-    "@types/har-format": "^1.2.7",
+    "@types/content-type": "^1.1.5",
+    "@types/har-format": "^1.2.8",
     "@types/qs": "^6.9.7",
-    "@types/request": "^2.48.6",
+    "@types/request": "^2.48.8",
     "@types/request-promise": "^4.1.48",
-    "@types/set-cookie-parser": "^2.4.1"
+    "@types/set-cookie-parser": "^2.4.2"
   }
 }

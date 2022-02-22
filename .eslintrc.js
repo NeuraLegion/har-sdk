@@ -12,18 +12,19 @@ module.exports = {
     'plugin:@typescript-eslint/recommended'
   ],
   settings: {
+    'import/extensions': ['.ts'],
     'import/parsers': {
       '@typescript-eslint/parser': ['.ts']
     },
     'import/resolver': {
       typescript: {
-        project: ['./packages/*/tsconfig.json']
+        project: './packages/*/tsconfig.json'
       }
     }
   },
   ignorePatterns: ['**/node_modules', '**/dist'],
   parserOptions: {
-    project: ['./packages/*/tsconfig.json'],
+    project: './packages/*/tsconfig.json',
     tsconfigRootDir: __dirname
   },
   plugins: ['@typescript-eslint', 'import'],

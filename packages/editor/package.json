@@ -44,9 +44,8 @@
     "coverage": "nyc npm t -- --reporter xunit --reporter-options output=.mocha/testspec.xunit.xml"
   },
   "devDependencies": {
-    "@types/js-yaml": "^4.0.3",
-    "@types/json-pointer": "^1.0.31",
-    "@types/node": "^16.9.0"
+    "@types/js-yaml": "^4.0.5",
+    "@types/json-pointer": "^1.0.31"
   },
   "dependencies": {
     "@apidevtools/json-schema-ref-parser": "^9.0.9",
@@ -54,7 +53,7 @@
     "@har-sdk/validator": "*",
     "@types/jsonpath": "^0.2.0",
     "js-yaml": "^4.1.0",
-    "json-pointer": "^0.6.1",
+    "json-pointer": "^0.6.2",
     "jsonpath": "^1.1.1",
     "tslib": "^2.3.1"
   }

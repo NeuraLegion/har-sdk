@@ -23,14 +23,6 @@ checks:
   return-statements:
     config:
       threshold: 4
-plugins:
-  eslint:
-    enabled: true
-    channel: 'eslint-7'
-    config:
-      config: ./.eslintrc.js
-      extensions:
-        - .ts
 exclude_patterns:
   - '**/dist/'
   - '**/node_modules/'

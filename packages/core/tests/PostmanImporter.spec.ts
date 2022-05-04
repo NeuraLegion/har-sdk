@@ -1,4 +1,3 @@
-import 'chai/register-should';
 import { ImporterType, PostmanImporter } from '../src';
 
 describe('PostmanImporter', () => {
@@ -6,7 +5,7 @@ describe('PostmanImporter', () => {
 
   describe('type', () => {
     it(`should be equal ${ImporterType.POSTMAN}`, () =>
-      importer.type.should.eq(ImporterType.POSTMAN));
+      expect(importer.type).toEqual(ImporterType.POSTMAN));
   });
 
   describe('isSupported', () => {
@@ -22,7 +21,7 @@ describe('PostmanImporter', () => {
       });
 
       // assert
-      result.should.be.true;
+      expect(result).toBe(true);
     });
 
     it('should support Postman collection v2.0.0', () => {
@@ -37,7 +36,7 @@ describe('PostmanImporter', () => {
       });
 
       // assert
-      result.should.be.true;
+      expect(result).toBe(true);
     });
 
     it('should refuse to support of an incompatible version', () => {
@@ -49,7 +48,7 @@ describe('PostmanImporter', () => {
       });
 
       // assert
-      result.should.be.false;
+      expect(result).toBe(false);
     });
 
     it('should refuse to support of an undefined version', () => {
@@ -61,7 +60,7 @@ describe('PostmanImporter', () => {
       });
 
       // assert
-      result.should.be.false;
+      expect(result).toBe(false);
     });
   });
 
@@ -73,9 +72,9 @@ describe('PostmanImporter', () => {
       );
 
       // assert
-      (typeof result).should.eq('undefined');
-      importer.getErrorDetails('json').should.be.not.null;
-      importer.getErrorDetails('yaml').should.be.not.null;
+      expect(typeof result).toEqual('undefined');
+      expect(importer.getErrorDetails('json')).not.toBeNull();
+      expect(importer.getErrorDetails('yaml')).not.toBeNull();
     });
 
     it('should return the spec with expected type', async () => {
@@ -85,7 +84,7 @@ describe('PostmanImporter', () => {
       );
 
       // assert
-      result.should.deep.eq({
+      expect(result).toEqual({
         type: ImporterType.POSTMAN,
         name: 'example.json',
         format: 'json',

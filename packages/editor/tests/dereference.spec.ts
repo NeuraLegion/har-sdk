@@ -1,5 +1,5 @@
 import $RefParser from '@apidevtools/json-schema-ref-parser';
-import 'chai/register-should';
+import { resolve } from 'path';
 
 describe('$RefParser', () => {
   let parser: $RefParser;
@@ -9,18 +9,22 @@ describe('$RefParser', () => {
   });
 
   it('should dereference all $refs in oas v2 document', async () => {
-    const inputFilePath = './tests/fixtures/oas2-sample1.yaml';
+    const inputFilePath = resolve(__dirname, './fixtures/oas2-sample1.yaml');
 
     const result = await parser.dereference(inputFilePath);
 
-    JSON.stringify(result).should.not.contain('$ref');
+    expect(JSON.stringify(result)).toEqual(
+      expect.not.arrayContaining(['$ref'])
+    );
   });
 
   it('should dereference all $refs in oas v3 document', async () => {
-    const inputFilePath = './tests/fixtures/oas3-sample1.yaml';
+    const inputFilePath = resolve(__dirname, './fixtures/oas3-sample1.yaml');
 
     const result = await parser.dereference(inputFilePath);
 
-    JSON.stringify(result).should.not.contain('$ref');
+    expect(JSON.stringify(result)).toEqual(
+      expect.not.arrayContaining(['$ref'])
+    );
   });
 });

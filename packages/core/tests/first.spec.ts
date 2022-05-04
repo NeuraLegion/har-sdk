@@ -1,10 +1,5 @@
-import 'chai/register-should';
 import { first } from '../src/utils';
-import { use } from 'chai';
-import chaiAsPromised from 'chai-as-promised';
 import { promisify } from 'util';
-
-use(chaiAsPromised);
 
 describe('first', () => {
   it('should be resolved with an undefined if all resolved promises does not pass the test.', async () => {
@@ -20,7 +15,7 @@ describe('first', () => {
     const result = await first(input, predicate);
 
     // assert
-    (typeof result).should.eq('undefined');
+    expect(typeof result).toEqual('undefined');
   });
 
   it('should be resolved with the result of first resolved promise that pass the test', async () => {
@@ -28,7 +23,7 @@ describe('first', () => {
     const input = [
       promisify(setTimeout)(0).then(() => 1),
       promisify(setTimeout)(500).then(() => 2),
-      promisify(setTimeout)(5000).then(() => 3)
+      promisify(setTimeout)(1000).then(() => 3)
     ];
     const predicate = (x: number) => x >= 2;
 
@@ -36,7 +31,7 @@ describe('first', () => {
     const result = await first(input, predicate);
 
     // assert
-    result.should.eq(2);
+    expect(result).toEqual(2);
   });
 
   it('should be resolved with an undefined if no promises', async () => {
@@ -47,7 +42,7 @@ describe('first', () => {
     const result = await first([], predicate);
 
     // assert
-    (typeof result).should.eq('undefined');
+    expect(typeof result).toEqual('undefined');
   });
 
   it('should be rejected with an error if at least one of the promises is rejected', async () => {
@@ -64,6 +59,9 @@ describe('first', () => {
     const result = first(input, predicate);
 
     // assert
-    return result.should.be.rejectedWith(Error, expected);
+    await expect(result).rejects.toThrowError(Error);
+    await expect(result).rejects.toMatchObject({
+      message: expected
+    });
   });
 });

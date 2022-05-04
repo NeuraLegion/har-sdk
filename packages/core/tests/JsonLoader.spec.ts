@@ -1,4 +1,3 @@
-import 'chai/register-should';
 import { JsonLoader } from '../src/loaders/JsonLoader';
 
 describe('JsonLoader', () => {
@@ -65,11 +64,11 @@ describe('JsonLoader', () => {
     }
   ].forEach(({ input, output }) =>
     it(`should throw specific error for invalid input \`${input}\``, () => {
-      (() => loader.load(input)).should.throw(SyntaxError);
+      expect(() => loader.load(input)).toThrowError(SyntaxError);
 
       const result = loader.getSyntaxErrorDetails();
 
-      result.should.deep.eq(output);
+      expect(result).toEqual(output);
     })
   );
 
@@ -79,6 +78,6 @@ describe('JsonLoader', () => {
     const result = loader.getSyntaxErrorDetails();
 
     // assert
-    (typeof result).should.eq('undefined');
+    expect(typeof result).toEqual('undefined');
   });
 });

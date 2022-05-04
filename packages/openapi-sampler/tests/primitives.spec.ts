@@ -1,5 +1,4 @@
 import { sample } from '../src';
-import 'chai/register-should';
 
 describe('Primitives', () => {
   it('should sample deterministic string', () => {
@@ -7,7 +6,7 @@ describe('Primitives', () => {
       type: 'string'
     };
     const result = sample(schema);
-    result.should.eq('lorem');
+    expect(result).toEqual('lorem');
   });
 
   it('should sample deterministic boolean', () => {
@@ -15,7 +14,7 @@ describe('Primitives', () => {
       type: 'boolean'
     };
     const result = sample(schema);
-    result.should.eq(true);
+    expect(result).toEqual(true);
   });
 
   it('should use default property', () => {
@@ -24,12 +23,12 @@ describe('Primitives', () => {
       default: 100
     };
     const result = sample(schema);
-    result.should.eq(100);
+    expect(result).toEqual(100);
   });
 
   it('should use null if type is not specified', () => {
     const schema = {};
     const result = sample(schema);
-    (!result).should.be.true;
+    expect(!result).toBe(true);
   });
 });

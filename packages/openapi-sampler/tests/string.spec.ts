@@ -1,5 +1,4 @@
 import { sample } from '../src';
-import 'chai/register-should';
 
 describe('StringSampler', () => {
   [
@@ -120,7 +119,7 @@ describe('StringSampler', () => {
     it(`should sample \`${format}\` format string${suffixStr}`, () => {
       const result = sample(input);
 
-      result.should.eq(expected);
+      expect(result).toEqual(expected);
     });
   });
 
@@ -177,7 +176,7 @@ describe('StringSampler', () => {
     )}`, () => {
       const result = () => sample(input);
 
-      result.should.throw(expected);
+      expect(result).toThrowError(expected);
     });
   });
 });

@@ -5,7 +5,6 @@ import {
   DefaultVariableParserFactory
 } from '../src/parser';
 import { Postman } from '@har-sdk/core';
-import 'chai/register-should';
 
 describe('DefaultVariableResolver', () => {
   const variableFactory = new DefaultVariableParserFactory(
@@ -52,7 +51,7 @@ describe('DefaultVariableResolver', () => {
       const result = resolver.resolve(request, scope);
 
       // assert
-      result.should.deep.eq({
+      expect(result).toEqual({
         header: [{ key: 'authorization', value: 'api-key token' }],
         url: {
           protocol: 'https',
@@ -90,7 +89,7 @@ describe('DefaultVariableResolver', () => {
       const result = resolver.resolve(request, scope);
 
       // assert
-      result.should.deep.eq({
+      expect(result).toEqual({
         url: {
           path: ['files', '1', 'metadata', 'size'],
           variable: [
@@ -116,7 +115,7 @@ describe('DefaultVariableResolver', () => {
       const result = resolver.resolve(request, scope);
 
       // assert
-      result.should.deep.eq({
+      expect(result).toEqual({
         url: 'https://example.com/files/1'
       });
     });
@@ -148,7 +147,7 @@ describe('DefaultVariableResolver', () => {
       const result = resolver.resolve(request, scope);
 
       // assert
-      result.should.deep.eq({
+      expect(result).toEqual({
         method: '{{method}}',
         url: {
           raw: 'https://example.com/{{resource}}/{{fileId}}',

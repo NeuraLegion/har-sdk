@@ -1,6 +1,5 @@
 import { ErrorCondenser } from '../src/validator/ErrorCondenser';
 import { ErrorObject } from 'ajv';
-import 'chai/register-should';
 
 describe('ErrorCondenser', () => {
   const error: ErrorObject = {
@@ -29,7 +28,7 @@ describe('ErrorCondenser', () => {
 
       const result = new ErrorCondenser(input).condense();
 
-      result.should.deep.eq(expected);
+      expect(result).toEqual(expected);
     });
 
     it('should pick most frequent error message', () => {
@@ -50,7 +49,7 @@ describe('ErrorCondenser', () => {
 
       const result = new ErrorCondenser(input).condense();
 
-      result.should.deep.eq(expected);
+      expect(result).toEqual(expected);
     });
 
     it('should preserve equally frequent error messages', () => {
@@ -72,7 +71,7 @@ describe('ErrorCondenser', () => {
 
       const result = new ErrorCondenser(input).condense();
 
-      result.should.deep.eq(expected);
+      expect(result).toEqual(expected);
     });
 
     it('should do nothing with errors with different paths', () => {
@@ -93,7 +92,7 @@ describe('ErrorCondenser', () => {
 
       const result = new ErrorCondenser(input).condense();
 
-      result.should.deep.eq(expected);
+      expect(result).toEqual(expected);
     });
 
     it('should filter out ancestor "if" branching errors', () => {
@@ -126,7 +125,7 @@ describe('ErrorCondenser', () => {
 
       const result = new ErrorCondenser(input).condense();
 
-      result.should.deep.eq(expected);
+      expect(result).toEqual(expected);
     });
 
     it('should filter out ancestor "anyOf" branching errors', () => {
@@ -153,7 +152,7 @@ describe('ErrorCondenser', () => {
 
       const result = new ErrorCondenser(input).condense();
 
-      result.should.deep.eq(expected);
+      expect(result).toEqual(expected);
     });
 
     it('should filter out self branching errors', () => {
@@ -184,7 +183,7 @@ describe('ErrorCondenser', () => {
 
       const result = new ErrorCondenser(input).condense();
 
-      result.should.deep.eq(expected);
+      expect(result).toEqual(expected);
     });
 
     it('should keep "if" error if it is single error', () => {
@@ -202,7 +201,7 @@ describe('ErrorCondenser', () => {
 
       const result = new ErrorCondenser(input).condense();
 
-      result.should.deep.eq(expected);
+      expect(result).toEqual(expected);
     });
   });
 });

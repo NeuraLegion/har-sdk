@@ -1,4 +1,3 @@
-import 'chai/register-should';
 import { HARImporter, ImporterType } from '../src';
 
 describe('HARImporter', () => {
@@ -6,7 +5,7 @@ describe('HARImporter', () => {
 
   describe('type', () => {
     it(`should be equal ${ImporterType.HAR}`, () =>
-      importer.type.should.eq(ImporterType.HAR));
+      expect(importer.type).toEqual(ImporterType.HAR));
   });
 
   describe('isSupported', () => {
@@ -17,7 +16,7 @@ describe('HARImporter', () => {
       });
 
       // assert
-      result.should.be.false;
+      expect(result).toBe(false);
     });
 
     it('should support HAR v1.2', () => {
@@ -27,7 +26,7 @@ describe('HARImporter', () => {
       });
 
       // assert
-      result.should.be.true;
+      expect(result).toBe(true);
     });
 
     it('should refuse to support of an undefined version ', () => {
@@ -35,7 +34,7 @@ describe('HARImporter', () => {
       const result = importer.isSupported({});
 
       // assert
-      result.should.be.false;
+      expect(result).toBe(false);
     });
 
     it('should refuse to support if entries are not defined', () => {
@@ -45,7 +44,7 @@ describe('HARImporter', () => {
       });
 
       // assert
-      result.should.be.false;
+      expect(result).toBe(false);
     });
   });
 
@@ -57,7 +56,7 @@ describe('HARImporter', () => {
       );
 
       // assert
-      (typeof result).should.eq('undefined');
+      expect(typeof result).toEqual('undefined');
     });
 
     it('should return the spec with expected type', async () => {
@@ -67,7 +66,7 @@ describe('HARImporter', () => {
       );
 
       // assert
-      result.should.deep.eq({
+      expect(result).toEqual({
         name: undefined,
         format: 'json',
         doc: { log: { version: '1.2', entries: [] } },

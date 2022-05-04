@@ -3,16 +3,11 @@ import petstoreSwagger from './fixtures/oas2.petstore.json';
 import spoonacularOas from './fixtures/oas3.spoonacular.json';
 import { OASValidator } from '../src';
 import { ErrorObject } from 'ajv';
-import chaiAsPromised from 'chai-as-promised';
-import { use } from 'chai';
 import yaml from 'js-yaml';
 import { OpenAPIV2, OpenAPIV3 } from '@har-sdk/core';
 import { resolve } from 'path';
 import { readFile } from 'fs';
 import { promisify } from 'util';
-import 'chai/register-should';
-
-use(chaiAsPromised);
 
 describe('OASValidator', () => {
   const validator = new OASValidator();
@@ -24,7 +19,7 @@ describe('OASValidator', () => {
 
       const result = await validator.verify(input);
 
-      result.should.be.empty;
+      expect(Object.keys(result)).toHaveLength(0);
     });
 
     it('should successfully validate valid oas v2 document (Petstore, json)', async () => {
@@ -33,20 +28,20 @@ describe('OASValidator', () => {
 
       const result = await validator.verify(input);
 
-      result.should.be.empty;
+      expect(Object.keys(result)).toHaveLength(0);
     });
 
     it('should successfully validate valid oas v3 document (Petstore, yaml)', async () => {
       const input: OpenAPIV3.Document = yaml.load(
         await promisify(readFile)(
-          resolve('./tests/fixtures/oas3.petstore.yaml'),
+          resolve(__dirname, './fixtures/oas3.petstore.yaml'),
           'utf8'
         )
       ) as OpenAPIV3.Document;
 
       const result = await validator.verify(input);
 
-      result.should.be.empty;
+      expect(Object.keys(result)).toHaveLength(0);
     });
 
     it('should successfully validate valid oas v3 document (spoonacular, json)', async () => {
@@ -54,7 +49,7 @@ describe('OASValidator', () => {
 
       const result = await validator.verify(input);
 
-      result.should.be.empty;
+      expect(Object.keys(result)).toHaveLength(0);
     });
 
     it('should throw exception if cannot determine version of document', async () => {
@@ -70,10 +65,10 @@ describe('OASValidator', () => {
 
       const result = validator.verify(input);
 
-      return result.should.be.rejectedWith(
-        Error,
-        'Unsupported or invalid specification version'
-      );
+      await expect(result).rejects.toThrowError(Error);
+      await expect(result).rejects.toMatchObject({
+        message: 'Unsupported or invalid specification version'
+      });
     });
 
     it('should throw exception in case of unsupported schema version', async () => {
@@ -89,10 +84,10 @@ describe('OASValidator', () => {
 
       const result = validator.verify(input);
 
-      return result.should.be.rejectedWith(
-        Error,
-        'Unsupported or invalid specification version'
-      );
+      await expect(result).rejects.toThrowError(Error);
+      await expect(result).rejects.toMatchObject({
+        message: 'Unsupported or invalid specification version'
+      });
     });
 
     it('should return error if oas v2 property `host` does not exist', async () => {
@@ -119,7 +114,7 @@ describe('OASValidator', () => {
 
       const result = await validator.verify(input);
 
-      result.should.deep.eq(expected);
+      expect(result).toEqual(expected);
     });
 
     it('should return error if oas v3 property `servers` does not exist', async () => {
@@ -146,7 +141,7 @@ describe('OASValidator', () => {
 
       const result = await validator.verify(input);
 
-      result.should.deep.eq(expected);
+      expect(result).toEqual(expected);
     });
 
     it('should return error if property `url` does not exist inside `servers`', async () => {
@@ -174,7 +169,7 @@ describe('OASValidator', () => {
 
       const result = await validator.verify(input);
 
-      result.should.deep.eq(expected);
+      expect(result).toEqual(expected);
     });
 
     it('should return error if `servers` does not contain at least one item', async () => {
@@ -202,7 +197,7 @@ describe('OASValidator', () => {
 
       const result = await validator.verify(input);
 
-      result.should.deep.eq(expected);
+      expect(result).toEqual(expected);
     });
 
     it('should return error if `servers[].url` is empty', async () => {
@@ -230,7 +225,7 @@ describe('OASValidator', () => {
 
       const result = await validator.verify(input);
 
-      result.should.deep.eq(expected);
+      expect(result).toEqual(expected);
     });
 
     it('should return error if `servers[].url` uses template syntax w/o declared variables', async () => {
@@ -258,7 +253,7 @@ describe('OASValidator', () => {
 
       const result = await validator.verify(input);
 
-      result.should.deep.eq(expected);
+      expect(result).toEqual(expected);
     });
 
     it('should successfully validate `servers[].url` with template syntax if `variables` presents', async () => {
@@ -279,7 +274,7 @@ describe('OASValidator', () => {
 
       const result = await validator.verify(input);
 
-      result.should.deep.eq([]);
+      expect(result).toEqual([]);
     });
   });
 });

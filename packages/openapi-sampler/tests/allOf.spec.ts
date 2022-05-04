@@ -1,5 +1,4 @@
 import { sample, Schema } from '../src';
-import 'chai/register-should';
 
 describe('AllOf', () => {
   it('should sample schema with allOf', () => {
@@ -30,7 +29,7 @@ describe('AllOf', () => {
       title: 'string',
       amount: 1
     };
-    result.should.deep.equal(expected);
+    expect(result).toEqual(expected);
   });
 
   it('should throw for schemas with allOf with different types', () => {
@@ -50,7 +49,7 @@ describe('AllOf', () => {
         }
       ]
     };
-    (() => sample(schema)).should.throw();
+    expect(() => sample(schema)).toThrowError();
   });
 
   it('deep array', () => {
@@ -87,7 +86,7 @@ describe('AllOf', () => {
     };
 
     const result = sample(schema);
-    result.arr.should.be.instanceOf(Array);
+    expect(result.arr).toBeInstanceOf(Array);
   });
 
   it('should return array of at least two numbers after allOf merge', () => {
@@ -107,8 +106,8 @@ describe('AllOf', () => {
     };
 
     const result = sample(schema);
-    result.should.be.instanceOf(Array);
-    result.length.should.equal(2);
+    expect(result).toBeInstanceOf(Array);
+    expect(result.length).toEqual(2);
   });
 
   it('should create an array of strings', () => {
@@ -135,8 +134,8 @@ describe('AllOf', () => {
     };
     const result = sample(schema);
 
-    result.length.should.equal(3);
-    result[0].should.be.a('string');
+    expect(result.length).toEqual(3);
+    expect(typeof result[0]).toBe('string');
   });
 
   it('should not be confused by subschema without type', () => {
@@ -149,7 +148,7 @@ describe('AllOf', () => {
       ]
     };
     const result = sample(schema);
-    result.should.be.a('string');
+    expect(typeof result).toBe('string');
   });
 
   it('should not throw for array allOf', () => {
@@ -165,7 +164,7 @@ describe('AllOf', () => {
       ]
     };
     const result = sample(schema);
-    result.should.be.an('array');
+    expect(Array.isArray(result)).toBe(true);
   });
 
   it('should sample schema with allOf even if some type is not specified', () => {
@@ -193,7 +192,7 @@ describe('AllOf', () => {
       title: 'string',
       amount: 1
     };
-    result.should.deep.equal(expected);
+    expect(result).toEqual(expected);
 
     schema = {
       type: 'object',
@@ -215,8 +214,8 @@ describe('AllOf', () => {
       ]
     } as unknown as Schema;
     result = sample(schema);
-    result.title.should.a('string');
-    result.amount.should.equal(1);
+    expect(typeof result.title).toBe('string');
+    expect(result.amount).toEqual(1);
   });
 
   it('should merge deep properties', () => {
@@ -254,7 +253,7 @@ describe('AllOf', () => {
 
     const result = sample(schema);
 
-    result.parent.child1.should.a('string');
-    result.parent.child2.should.a('number');
+    expect(typeof result.parent.child1).toBe('string');
+    expect(typeof result.parent.child2).toBe('number');
   });
 });

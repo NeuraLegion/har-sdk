@@ -1,5 +1,4 @@
 import { LexicalScope } from '../src/parser';
-import 'chai/register-should';
 
 describe('LexicalScope', () => {
   describe('combine', () => {
@@ -16,10 +15,9 @@ describe('LexicalScope', () => {
       const result = scope.combine(anotherScope);
 
       // assert
-      [...result].should.deep.ordered.members([
-        ...anotherVariables,
-        ...variables
-      ]);
+      expect([...result]).toEqual(
+        expect.arrayContaining([...anotherVariables, ...variables])
+      );
     });
 
     it('should do nothing if the target scope is from  different place', () => {
@@ -36,7 +34,7 @@ describe('LexicalScope', () => {
       const result = scope.combine(anotherScope);
 
       // assert
-      [...result].should.not.deep.ordered.members(anotherVariables);
+      expect([...result]).not.toEqual(anotherVariables);
     });
 
     it('should add variables to the existing scope', () => {
@@ -51,10 +49,9 @@ describe('LexicalScope', () => {
       const result = scope.combine(anotherVariables);
 
       // assert
-      [...result].should.deep.ordered.members([
-        ...anotherVariables,
-        ...variables
-      ]);
+      expect([...result]).toEqual(
+        expect.arrayContaining([...anotherVariables, ...variables])
+      );
     });
   });
 
@@ -71,11 +68,10 @@ describe('LexicalScope', () => {
       const result = scope.concat('/sub-path', anotherVariables);
 
       // assert
-      result.jsonPointer.should.eq('/path/sub-path');
-      [...result].should.deep.ordered.members([
-        ...anotherVariables,
-        ...variables
-      ]);
+      expect(result.jsonPointer).toEqual('/path/sub-path');
+      expect([...result]).toEqual(
+        expect.arrayContaining([...anotherVariables, ...variables])
+      );
     });
 
     it('should remove trailing slash from json-pointer', () => {
@@ -88,7 +84,7 @@ describe('LexicalScope', () => {
       const result = scope.concat('/sub-path/', []);
 
       // assert
-      result.jsonPointer.should.eq('/path/sub-path');
+      expect(result.jsonPointer).toEqual('/path/sub-path');
     });
   });
 
@@ -104,7 +100,7 @@ describe('LexicalScope', () => {
       const result = scope.find((x) => x.key === 'baseUrl');
 
       // assert
-      result.should.deep.eq({ key: 'baseUrl', value: 'https://test.com' });
+      expect(result).toEqual({ key: 'baseUrl', value: 'https://test.com' });
     });
 
     it('should return a undefined if predicate returns false for each variable', () => {
@@ -116,7 +112,7 @@ describe('LexicalScope', () => {
       const result = scope.find((x) => x.key === 'x');
 
       // assert
-      (typeof result).should.eq('undefined');
+      expect(typeof result).toEqual('undefined');
     });
 
     it('should throw a error if predicate is not defined', () => {
@@ -126,9 +122,9 @@ describe('LexicalScope', () => {
 
       // act
       () =>
-        scope
-          .find(null as (...args: unknown[]) => unknown)
-          .should.throw(TypeError);
+        expect(
+          scope.find(null as (...args: unknown[]) => unknown)
+        ).toThrowError(TypeError);
     });
   });
 });

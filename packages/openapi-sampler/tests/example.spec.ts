@@ -1,5 +1,4 @@
 import { sample } from '../src';
-import 'chai/register-should';
 
 describe('Example', () => {
   it('should use example', () => {
@@ -16,7 +15,7 @@ describe('Example', () => {
       example: obj
     };
     const result = sample(schema);
-    result.should.deep.equal(obj);
+    expect(result).toEqual(obj);
   });
 
   it('should use falsy example', () => {
@@ -25,7 +24,7 @@ describe('Example', () => {
       example: false
     };
     const result = sample(schema);
-    result.should.deep.equal(false);
+    expect(result).toEqual(false);
   });
 
   it('should use enum', () => {
@@ -35,6 +34,6 @@ describe('Example', () => {
       enum: enumList
     };
     const result = sample(schema);
-    result.should.be.eq(enumList[0]);
+    expect(result).toEqual(enumList[0]);
   });
 });

@@ -1,6 +1,5 @@
 import { ErrorHumanizer, OASValidator, PostmanValidator } from '../src';
 import { OpenAPIV2, Postman, OpenAPIV3 } from '@har-sdk/core';
-import 'chai/register-should';
 
 describe('ErrorHumanizer', () => {
   const oasValidator = new OASValidator();
@@ -80,7 +79,7 @@ describe('ErrorHumanizer', () => {
         .humanizeErrors(await oasValidator.verify(input))
         .map(({ originalError, ...rest }) => ({ ...rest }));
 
-      result.should.deep.eq([expected]);
+      expect(result).toEqual([expected]);
     });
 
     it('should parameterize original "errorMessage" if necessary', async () => {
@@ -123,7 +122,7 @@ describe('ErrorHumanizer', () => {
         .humanizeErrors(await oasValidator.verify(input))
         .map(({ originalError, ...rest }) => ({ ...rest }));
 
-      result.should.deep.eq([expected]);
+      expect(result).toEqual([expected]);
     });
 
     it('should humanize "required" error on root path', async () => {
@@ -151,7 +150,7 @@ describe('ErrorHumanizer', () => {
         .humanizeErrors(await oasValidator.verify(input))
         .map(({ originalError, ...rest }) => ({ ...rest }));
 
-      result.should.deep.eq([expected]);
+      expect(result).toEqual([expected]);
     });
 
     it('should humanize "enum" error message', async () => {
@@ -183,7 +182,7 @@ describe('ErrorHumanizer', () => {
         .humanizeErrors(await oasValidator.verify(input))
         .map(({ originalError, ...rest }) => ({ ...rest }));
 
-      result.should.deep.eq([expected]);
+      expect(result).toEqual([expected]);
     });
 
     it('should humanize "type" error message for multiple items case', async () => {
@@ -215,7 +214,7 @@ describe('ErrorHumanizer', () => {
         .humanizeErrors(await oasValidator.verify(input))
         .map(({ originalError, ...rest }) => ({ ...rest }));
 
-      result.should.deep.eq([expected]);
+      expect(result).toEqual([expected]);
     });
 
     it('should humanize "type" error message for two items case', async () => {
@@ -256,7 +255,7 @@ describe('ErrorHumanizer', () => {
         .humanizeErrors(await postmanValidator.verify(input))
         .map(({ originalError, ...rest }) => ({ ...rest }));
 
-      result.should.deep.eq([expected]);
+      expect(result).toEqual([expected]);
     });
 
     it('should humanize "maxLength" error message', async () => {
@@ -286,7 +285,7 @@ describe('ErrorHumanizer', () => {
         .humanizeErrors(await postmanValidator.verify(input))
         .map(({ originalError, ...rest }) => ({ ...rest }));
 
-      result.should.deep.eq([expected]);
+      expect(result).toEqual([expected]);
     });
 
     it('should humanize "minimum" error message', async () => {
@@ -316,7 +315,7 @@ describe('ErrorHumanizer', () => {
         .humanizeErrors(await postmanValidator.verify(input))
         .map(({ originalError, ...rest }) => ({ ...rest }));
 
-      result.should.deep.eq([expected]);
+      expect(result).toEqual([expected]);
     });
 
     it('should humanize "exclusiveMinimum" error message', async () => {
@@ -367,7 +366,7 @@ describe('ErrorHumanizer', () => {
         .humanizeErrors(await oasValidator.verify(input))
         .map(({ originalError, ...rest }) => ({ ...rest }));
 
-      result.should.deep.eq([expected]);
+      expect(result).toEqual([expected]);
     });
 
     it('should humanize "pattern" error message', async () => {
@@ -399,7 +398,7 @@ describe('ErrorHumanizer', () => {
         .humanizeErrors(await oasValidator.verify(input))
         .map(({ originalError, ...rest }) => ({ ...rest }));
 
-      result.should.deep.eq([expected]);
+      expect(result).toEqual([expected]);
     });
 
     it('should humanize string "format" error message', async () => {
@@ -431,7 +430,7 @@ describe('ErrorHumanizer', () => {
         .humanizeErrors(await oasValidator.verify(input))
         .map(({ originalError, ...rest }) => ({ ...rest }));
 
-      result.should.deep.eq([expected]);
+      expect(result).toEqual([expected]);
     });
 
     it('should humanize "additionalProperties" error message', async () => {
@@ -462,7 +461,7 @@ describe('ErrorHumanizer', () => {
         .humanizeErrors(await oasValidator.verify(input))
         .map(({ originalError, ...rest }) => ({ ...rest }));
 
-      result.should.deep.eq([expected]);
+      expect(result).toEqual([expected]);
     });
 
     it('should humanize "additionalProperties" error message with multiple properties', async () => {
@@ -496,7 +495,7 @@ describe('ErrorHumanizer', () => {
         .humanizeErrors(await oasValidator.verify(input))
         .map(({ originalError, ...rest }) => ({ ...rest }));
 
-      result.should.deep.eq([expected]);
+      expect(result).toEqual([expected]);
     });
 
     it('should humanize "uniqueItems" error message', async () => {
@@ -528,7 +527,7 @@ describe('ErrorHumanizer', () => {
         .humanizeErrors(await oasValidator.verify(input))
         .map(({ originalError, ...rest }) => ({ ...rest }));
 
-      result.should.deep.eq([expected]);
+      expect(result).toEqual([expected]);
     });
 
     it('should humanize "minItems" error message', async () => {
@@ -578,7 +577,7 @@ describe('ErrorHumanizer', () => {
         .humanizeErrors(await oasValidator.verify(input))
         .map(({ originalError, ...rest }) => ({ ...rest }));
 
-      result.should.deep.eq([expected]);
+      expect(result).toEqual([expected]);
     });
 
     it('should humanize "minProperties" error message', async () => {
@@ -616,7 +615,7 @@ describe('ErrorHumanizer', () => {
         .humanizeErrors(await oasValidator.verify(input))
         .map(({ originalError, ...rest }) => ({ ...rest }));
 
-      result.should.deep.eq([expected]);
+      expect(result).toEqual([expected]);
     });
 
     it('should humanize "const" error message', async () => {
@@ -667,7 +666,7 @@ describe('ErrorHumanizer', () => {
         .humanizeErrors(await oasValidator.verify(input))
         .map(({ originalError, ...rest }) => ({ ...rest }));
 
-      result.should.deep.eq([expected]);
+      expect(result).toEqual([expected]);
     });
 
     it('should properly humanize "anyOf" postman formdata case with invalid type', async () => {
@@ -714,7 +713,7 @@ describe('ErrorHumanizer', () => {
         .humanizeErrors(await postmanValidator.verify(input))
         .map(({ originalError, ...rest }) => ({ ...rest }));
 
-      result.should.deep.eq([expected]);
+      expect(result).toEqual([expected]);
     });
   });
 
@@ -763,6 +762,6 @@ describe('ErrorHumanizer', () => {
       .humanizeErrors(await postmanValidator.verify(input))
       .map(({ originalError, ...rest }) => ({ ...rest }));
 
-    result.should.deep.eq([expected]);
+    expect(result).toEqual([expected]);
   });
 });

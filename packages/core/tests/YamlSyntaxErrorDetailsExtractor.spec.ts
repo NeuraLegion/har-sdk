@@ -1,8 +1,8 @@
-import 'chai/register-should';
 import { SyntaxErrorDetails } from '../src/loaders';
 import { YamlSyntaxErrorDetailsExtractor } from '../src/loaders/errors';
 import { YAMLException } from 'js-yaml';
 import { readFileSync } from 'fs';
+import { resolve } from 'path';
 
 describe('YamlSyntaxErrorDetailsExtractor', () => {
   let extractor: YamlSyntaxErrorDetailsExtractor;
@@ -13,7 +13,10 @@ describe('YamlSyntaxErrorDetailsExtractor', () => {
 
   it(`should extract yaml error details`, () => {
     // arrange
-    const input = readFileSync('./tests/fixtures/broken-yaml.txt', 'utf-8');
+    const input = readFileSync(
+      resolve(__dirname, './fixtures/broken-yaml.txt'),
+      'utf-8'
+    );
     const inputError = new YAMLException(
       `YAMLException: bad indentation of a mapping entry (5:3)
 
@@ -41,6 +44,6 @@ describe('YamlSyntaxErrorDetailsExtractor', () => {
     const result = extractor.extract(inputError, input);
 
     // assert
-    result.should.deep.eq(expected);
+    expect(result).toEqual(expected);
   });
 });

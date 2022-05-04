@@ -1,5 +1,4 @@
 import { sample } from '../src';
-import 'chai/register-should';
 
 describe('Detection', () => {
   it('should detect autodetect types based on props', () => {
@@ -14,7 +13,7 @@ describe('Detection', () => {
       }
     };
     const result = sample(schema);
-    (result.a >= 10).should.equal(true);
-    result.b.should.be.a('string');
+    expect(result.a >= 10).toEqual(true);
+    expect(typeof result.b).toBe('string');
   });
 });

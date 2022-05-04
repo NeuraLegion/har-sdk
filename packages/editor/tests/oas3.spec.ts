@@ -7,19 +7,14 @@ import {
 } from '../src';
 import { load } from 'js-yaml';
 import jsonPath from 'jsonpath';
-import 'chai/register-should';
 import { OpenAPIV3 } from '@har-sdk/core';
 import { OASValidator } from '@har-sdk/validator';
-import chaiAsPromised from 'chai-as-promised';
-import { use } from 'chai';
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
 
-use(chaiAsPromised);
-
 describe('OasV3Editor', () => {
-  const sourcePath = './tests/fixtures/oas3-sample1.yaml';
-  const source = readFileSync(resolve(sourcePath), 'utf-8');
+  const sourcePath = './fixtures/oas3-sample1.yaml';
+  const source = readFileSync(resolve(__dirname, sourcePath), 'utf-8');
 
   describe('input validation', () => {
     it('should be validated with no errors', () => {
@@ -27,7 +22,7 @@ describe('OasV3Editor', () => {
 
       const result = new OASValidator().verify(input);
 
-      return result.should.eventually.deep.eq([]);
+      return expect(result).resolves.toEqual([]);
     });
   });
 
@@ -38,30 +33,30 @@ describe('OasV3Editor', () => {
       openApiParser = new OasV3Editor();
     });
 
-    it('should be exception on invalid syntax', () =>
-      openApiParser
-        .setup('{')
-        .should.be.rejectedWith(Error, 'Bad OpenAPI V3 specification'));
+    it('should be exception on invalid syntax', async () => {
+      const setupPromise = openApiParser.setup('{');
+      await expect(setupPromise).rejects.toThrowError(Error);
+      await expect(setupPromise).rejects.toMatchObject({
+        message: 'Bad OpenAPI V3 specification'
+      });
+    });
 
     it('should correctly parse yaml valid document', async () => {
       await openApiParser.setup(source);
       const expected = JSON.parse(
         readFileSync(
-          resolve('./tests/fixtures/oas3-sample1.result.json'),
+          resolve(__dirname, './fixtures/oas3-sample1.result.json'),
           'utf-8'
         )
       );
 
       const result = openApiParser.parse();
 
-      result.should.deep.eq(expected);
+      expect(result).toEqual(expected);
     });
 
     it('should be exception on call "parse" before "setup"', () =>
-      (() => openApiParser.parse()).should.throw(
-        Error,
-        'You have to call "setup" to initialize the document'
-      ));
+      expect(() => openApiParser.parse()).toThrowError(Error));
   });
 
   describe('Editor', () => {
@@ -76,18 +71,16 @@ describe('OasV3Editor', () => {
     });
 
     const shouldBeValidDoc = (doc: OpenAPIV3.Document) =>
-      new OASValidator().verify(doc).should.eventually.deep.eq([]);
+      expect(new OASValidator().verify(doc)).resolves.toEqual([]);
 
     describe('setParameterValue', () => {
       it('should be exception on call "setParameterValue" before "parse"', async () => {
         const nonInitializedEditor = new OasV3Editor();
         await nonInitializedEditor.setup(source);
 
-        (() =>
-          nonInitializedEditor.setParameterValue('/dummy', 42)).should.throw(
-          Error,
-          'You have to call "parse" to initialize the tree'
-        );
+        expect(() =>
+          nonInitializedEditor.setParameterValue('/dummy', 42)
+        ).toThrowError(Error);
       });
 
       it('should set servers value', () => {
@@ -107,8 +100,8 @@ describe('OasV3Editor', () => {
           newValue
         );
 
-        result.parameters.should.deep.equal(expected);
-        openApiEditor.doc.servers.should.deep.equal(newValue);
+        expect(result.parameters).toEqual(expected);
+        expect(openApiEditor.doc.servers).toEqual(newValue);
 
         return shouldBeValidDoc(openApiEditor.doc);
       });
@@ -123,23 +116,27 @@ describe('OasV3Editor', () => {
           inputTree,
           path
         )[0];
-        inputParam.value.should.equal(oldValue);
+        expect(inputParam.value).toEqual(oldValue);
 
         const result = openApiEditor.setParameterValue(
           inputParam.valueJsonPointer,
           expected
         );
 
-        jsonPath.query(result, path)[0].value.should.equal(expected);
-        (
-          openApiEditor.doc.components.parameters[
-            'status'
-          ] as OpenAPIV3.ParameterObject
-        ).example.should.equal(oldValue);
-        (
-          openApiEditor.doc.paths['/pet/findByStatus'].get
-            .parameters[0] as OpenAPIV3.ParameterObject
-        ).example.should.equal(expected);
+        expect(jsonPath.query(result, path)[0].value).toEqual(expected);
+        expect(
+          (
+            openApiEditor.doc.components.parameters[
+              'status'
+            ] as OpenAPIV3.ParameterObject
+          ).example
+        ).toEqual(oldValue);
+        expect(
+          (
+            openApiEditor.doc.paths['/pet/findByStatus'].get
+              .parameters[0] as OpenAPIV3.ParameterObject
+          ).example
+        ).toEqual(expected);
 
         return shouldBeValidDoc(openApiEditor.doc);
       });
@@ -153,18 +150,20 @@ describe('OasV3Editor', () => {
           inputTree,
           path
         )[0] as SpecTreeNodeParam;
-        inputParam.should.not.haveOwnProperty('value');
+        expect(inputParam).not.toHaveProperty('value');
 
         const result = openApiEditor.setParameterValue(
           inputParam.valueJsonPointer,
           expected
         );
 
-        jsonPath.query(result, path)[0].value.should.equal(expected);
-        (
-          openApiEditor.doc.paths['/pet/findByTags'].get
-            .parameters[0] as OpenAPIV3.ParameterObject
-        ).example.should.equal(expected);
+        expect(jsonPath.query(result, path)[0].value).toEqual(expected);
+        expect(
+          (
+            openApiEditor.doc.paths['/pet/findByTags'].get
+              .parameters[0] as OpenAPIV3.ParameterObject
+          ).example
+        ).toEqual(expected);
 
         return shouldBeValidDoc(openApiEditor.doc);
       });
@@ -178,18 +177,20 @@ describe('OasV3Editor', () => {
           inputTree,
           path
         )[0] as SpecTreeRequestBodyParam;
-        inputParam.should.not.haveOwnProperty('value');
+        expect(inputParam).not.toHaveProperty('value');
 
         const result = openApiEditor.setParameterValue(
           inputParam.valueJsonPointer,
           expected
         );
 
-        jsonPath.query(result, path)[0].value.should.equal(expected);
-        (
-          openApiEditor.doc.paths['/pet/{petId}'].patch
-            .requestBody as OpenAPIV3.RequestBodyObject
-        ).content[inputParam.bodyType].example.should.equal(expected);
+        expect(jsonPath.query(result, path)[0].value).toEqual(expected);
+        expect(
+          (
+            openApiEditor.doc.paths['/pet/{petId}'].patch
+              .requestBody as OpenAPIV3.RequestBodyObject
+          ).content[inputParam.bodyType].example
+        ).toEqual(expected);
 
         return shouldBeValidDoc(openApiEditor.doc);
       });
@@ -200,9 +201,8 @@ describe('OasV3Editor', () => {
         const nonInitializedEditor = new OasV3Editor();
         await nonInitializedEditor.setup(source);
 
-        (() => nonInitializedEditor.removeNode('/dummy')).should.throw(
-          Error,
-          'You have to call "parse" to initialize the tree'
+        expect(() => nonInitializedEditor.removeNode('/dummy')).toThrowError(
+          Error
         );
       });
 
@@ -212,9 +212,9 @@ describe('OasV3Editor', () => {
 
         const result = openApiEditor.removeNode(inputNode.jsonPointer);
 
-        jsonPath.query(result, path).should.be.empty;
-        openApiEditor.doc.paths.should.not.haveOwnProperty(path);
-        result.should.be.deep.equal(openApiEditor.parse());
+        expect(jsonPath.query(result, path)).toHaveLength(0);
+        expect(openApiEditor.doc.paths).not.toHaveProperty(path);
+        expect(result).toEqual(openApiEditor.parse());
 
         return shouldBeValidDoc(openApiEditor.doc);
       });
@@ -226,11 +226,11 @@ describe('OasV3Editor', () => {
 
         const result = openApiEditor.removeNode(inputNode.jsonPointer);
 
-        jsonPath.query(result, path).should.be.empty;
-        openApiEditor.doc.paths['/pet/{petId}'].should.not.haveOwnProperty(
+        expect(jsonPath.query(result, path)).toHaveLength(0);
+        expect(openApiEditor.doc.paths['/pet/{petId}']).not.toHaveProperty(
           'get'
         );
-        result.should.be.deep.equal(openApiEditor.parse());
+        expect(result).toEqual(openApiEditor.parse());
 
         return shouldBeValidDoc(openApiEditor.doc);
       });
@@ -240,8 +240,8 @@ describe('OasV3Editor', () => {
       it('should serialize yaml into yaml', () => {
         const result = openApiEditor.stringify();
 
-        result.should.be.a('string');
-        result.should.match(/^openapi:/);
+        expect(typeof result).toBe('string');
+        expect(result).toMatch(/^openapi:/);
       });
 
       it('should serialize json into json', async () => {
@@ -250,8 +250,8 @@ describe('OasV3Editor', () => {
         await openApiEditor.setup(jsonSource);
         const result = openApiEditor.stringify();
 
-        result.should.be.a('string');
-        result.should.equal(jsonSource);
+        expect(typeof result).toBe('string');
+        expect(result).toEqual(jsonSource);
       });
     });
   });

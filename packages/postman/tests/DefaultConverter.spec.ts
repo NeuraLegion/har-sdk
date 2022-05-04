@@ -1,16 +1,11 @@
-import 'chai/register-should';
 import { postman2har } from '../src';
 import collection from './fixtures/Salesforce APIs.postman_collection.json';
 import collectionWithoutVariables from './fixtures/no-such-variables.postman_collection.json';
 import { ConvertError } from '../src/parser';
 import { Postman, Request } from '@har-sdk/core';
-import chaiAsPromised from 'chai-as-promised';
-import { use } from 'chai';
 import { readFile } from 'fs';
 import { resolve } from 'path';
 import { promisify } from 'util';
-
-use(chaiAsPromised);
 
 describe('DefaultConverter', () => {
   describe('convert', () => {
@@ -24,7 +19,7 @@ describe('DefaultConverter', () => {
         item: []
       } as Postman.Document);
 
-      result.should.be.empty;
+      expect(Object.keys(result)).toHaveLength(0);
     });
 
     it('should convert Postman v2.1.0 collection to HAR', async () => {
@@ -37,18 +32,19 @@ describe('DefaultConverter', () => {
         }
       );
 
-      firstRequest.method.should.equal('POST');
-      firstRequest.url.should.equal(
+      expect(firstRequest.method).toEqual('POST');
+      expect(firstRequest.url).toEqual(
         'https://example.com/services/data/v53.0/async-queries'
       );
-      firstRequest.httpVersion.should.equal('HTTP/1.1');
+      expect(firstRequest.httpVersion).toEqual('HTTP/1.1');
     });
 
     it('should convert Postman v2.1.0 collection to HAR (dryRun)', async () => {
       const expected = JSON.parse(
         await promisify(readFile)(
           resolve(
-            './tests/fixtures/Salesforce APIs.postman_collection.result.json'
+            __dirname,
+            './fixtures/Salesforce APIs.postman_collection.result.json'
           ),
           'utf-8'
         )
@@ -64,7 +60,7 @@ describe('DefaultConverter', () => {
         }
       );
 
-      JSON.parse(JSON.stringify(result)).should.deep.eq(expected);
+      expect(JSON.parse(JSON.stringify(result))).toEqual(expected);
     });
 
     [
@@ -154,10 +150,10 @@ describe('DefaultConverter', () => {
             ) as unknown as Postman.Document,
             { environment: input }
           );
-
-          return result.should.be
-            .rejectedWith(ConvertError)
-            .and.eventually.have.property('jsonPointer', expected);
+          await expect(result).rejects.toBeInstanceOf(ConvertError);
+          await expect(result).rejects.toMatchObject({
+            jsonPointer: expected
+          });
         })
     );
   });

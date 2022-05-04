@@ -1,4 +1,3 @@
-import 'chai/register-should';
 import {
   normalizeUrl,
   removeLeadingSlash,
@@ -55,7 +54,7 @@ describe('url', () => {
         const result = normalizeUrl(input);
 
         // assert
-        result.should.eq(output);
+        expect(result).toEqual(output);
       })
     );
   });
@@ -116,7 +115,7 @@ describe('url', () => {
         const result = validateUrl(input);
 
         // assert
-        result.should.eq(true);
+        expect(result).toEqual(true);
       })
     );
 
@@ -144,7 +143,7 @@ describe('url', () => {
         const result = validateUrl(input);
 
         // assert
-        result.should.eq(false);
+        expect(result).toEqual(false);
       })
     );
   });
@@ -155,7 +154,7 @@ describe('url', () => {
       const result = removeLeadingSlash('/path/input');
 
       // assert
-      result.should.eq('path/input');
+      expect(result).toEqual('path/input');
     });
 
     it(`should remove only one leading slash`, () => {
@@ -163,7 +162,7 @@ describe('url', () => {
       const result = removeLeadingSlash('//path/input');
 
       // assert
-      result.should.eq('/path/input');
+      expect(result).toEqual('/path/input');
     });
   });
 
@@ -191,7 +190,7 @@ describe('url', () => {
 
       // assert
       Object.keys(expected).forEach((key) =>
-        result[key].should.eq(expected[key])
+        expect(result[key]).toEqual(expected[key])
       );
     });
 
@@ -201,7 +200,7 @@ describe('url', () => {
         'ttp://user:password@example.com:456/pets/cats?limit=10&offset=10#first';
 
       // act
-      (() => parseUrl(input)).should.throw(TypeError, 'Invalid URL');
+      expect(() => parseUrl(input)).toThrowError(TypeError);
     });
 
     it(`should raise an exception if hostname is empty string`, () => {
@@ -209,7 +208,7 @@ describe('url', () => {
       const input = 'kkk://';
 
       // act
-      (() => parseUrl(input)).should.throw(TypeError, 'Invalid URL');
+      expect(() => parseUrl(input)).toThrowError(TypeError);
     });
   });
 });

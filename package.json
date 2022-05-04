@@ -44,7 +44,7 @@
     "test": "lerna run test",
     "test:changed": "lerna run --since origin/master --include-dependents test",
     "coverage": "lerna run coverage",
-    "coverage:all": "nyc npm t",
+    "coverage:all": "lerna run coverage",
     "coverage:changed": "lerna run --since origin/master --include-dependents coverage",
     "format": "lerna run format",
     "format:changed": "lerna run --since origin/master format",

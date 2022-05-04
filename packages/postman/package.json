@@ -38,7 +38,7 @@
     "format": "prettier --ignore-path ../../.prettierignore --check .",
     "compile": "tsc -b tsconfig.build.json",
     "test": "cross-env NODE_ENV=test jest",
-    "coverage": "nyc npm t -- --reporter xunit --reporter-options output=.mocha/testspec.xunit.xml"
+    "coverage": "cross-env NODE_ENV=test jest --coverage"
   },
   "dependencies": {
     "@har-sdk/core": "*",

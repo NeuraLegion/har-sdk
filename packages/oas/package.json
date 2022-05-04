@@ -32,7 +32,7 @@
     "compile": "tsc -b tsconfig.build.json",
     "lint": "eslint --ignore-path ../../.eslintignore .",
     "format": "prettier --ignore-path ../../.prettierignore --check .",
-    "test": "cross-env NODE_ENV=test mocha tests/**/*.spec.ts",
+    "test": "cross-env NODE_ENV=test jest",
     "coverage": "nyc npm t -- --reporter xunit --reporter-options output=.mocha/testspec.xunit.xml"
   },
   "keywords": [

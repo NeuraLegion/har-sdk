@@ -2,7 +2,7 @@ module.exports = {
   displayName: 'core',
   globals: {
     'ts-jest': {
-      tsconfig: '<rootDir>/tsconfig.spec.json'
+      tsconfig: '<rootDir>/tsconfig.json'
     }
   },
   transform: {

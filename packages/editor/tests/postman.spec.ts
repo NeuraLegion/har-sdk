@@ -168,7 +168,7 @@ describe('PostmanEditor', () => {
 
         const result = postmanEditor.removeNode(inputNode.jsonPointer);
 
-        expect(jsonPath.query(result, path)).toMatchObject([]);
+        expect(jsonPath.query(result, path)).toEqual([]);
         expect(postmanEditor.stringify()).toEqual(
           expect.not.arrayContaining(['{{baseUrl}}/api/v1/statistics'])
         );
@@ -184,7 +184,7 @@ describe('PostmanEditor', () => {
 
         const result = postmanEditor.removeNode(inputNode.jsonPointer);
 
-        expect(jsonPath.query(result, path)).toMatchObject([]);
+        expect(jsonPath.query(result, path)).toEqual([]);
         expect(postmanEditor.stringify()).toEqual(
           expect.not.arrayContaining([
             '{{baseUrl}}/.well-known/change-password'
@@ -212,7 +212,7 @@ describe('PostmanEditor', () => {
 
         const result = postmanEditor.removeNode(inputNode1.jsonPointer);
 
-        expect(jsonPath.query(result, path1)).toMatchObject([]);
+        expect(jsonPath.query(result, path1)).toEqual([]);
         expect(jsonPath.query(result, path2)[0].jsonPointer).toEqual(
           '/item/0/item/3/item/0/item/1/item/0'
         );

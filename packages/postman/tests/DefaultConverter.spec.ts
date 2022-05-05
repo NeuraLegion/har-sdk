@@ -19,7 +19,7 @@ describe('DefaultConverter', () => {
         item: []
       } as Postman.Document);
 
-      expect(result).toMatchObject([]);
+      expect(result).toEqual([]);
     });
 
     it('should convert Postman v2.1.0 collection to HAR', async () => {

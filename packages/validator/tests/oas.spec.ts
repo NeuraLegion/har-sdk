@@ -19,7 +19,7 @@ describe('OASValidator', () => {
 
       const result = await validator.verify(input);
 
-      expect(result).toMatchObject([]);
+      expect(result).toEqual([]);
     });
 
     it('should successfully validate valid oas v2 document (Petstore, json)', async () => {
@@ -28,7 +28,7 @@ describe('OASValidator', () => {
 
       const result = await validator.verify(input);
 
-      expect(result).toMatchObject([]);
+      expect(result).toEqual([]);
     });
 
     it('should successfully validate valid oas v3 document (Petstore, yaml)', async () => {
@@ -41,7 +41,7 @@ describe('OASValidator', () => {
 
       const result = await validator.verify(input);
 
-      expect(result).toMatchObject([]);
+      expect(result).toEqual([]);
     });
 
     it('should successfully validate valid oas v3 document (spoonacular, json)', async () => {
@@ -49,7 +49,7 @@ describe('OASValidator', () => {
 
       const result = await validator.verify(input);
 
-      expect(result).toMatchObject([]);
+      expect(result).toEqual([]);
     });
 
     it('should throw exception if cannot determine version of document', async () => {

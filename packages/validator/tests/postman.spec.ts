@@ -13,7 +13,7 @@ describe('PostmanValidator', () => {
 
       const result = await validator.verify(input);
 
-      expect(result).toMatchObject([]);
+      expect(result).toEqual([]);
     });
 
     it('should throw exception if cannot determine version of document', async () => {

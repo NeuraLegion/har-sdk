@@ -230,7 +230,7 @@ describe('OasV2Editor', () => {
 
         const result = openApiEditor.removeNode(inputNode.jsonPointer);
 
-        expect(jsonPath.query(result, path)).toMatchObject([]);
+        expect(jsonPath.query(result, path)).toEqual([]);
         expect(openApiEditor.doc.paths).not.toHaveProperty(path);
         expect(result).toEqual(openApiEditor.parse());
 
@@ -244,7 +244,7 @@ describe('OasV2Editor', () => {
 
         const result = openApiEditor.removeNode(inputNode.jsonPointer);
 
-        expect(jsonPath.query(result, path)).toMatchObject([]);
+        expect(jsonPath.query(result, path)).toEqual([]);
         expect(openApiEditor.doc.paths['/pet/{petId}']).not.toHaveProperty(
           'get'
         );

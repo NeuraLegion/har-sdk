@@ -4,5 +4,5 @@
 tmp
 *-lock.json
 *.lock
-jest.preset.js
+jest.*.js
 **/jest.config.js

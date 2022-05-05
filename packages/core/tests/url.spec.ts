@@ -199,6 +199,7 @@ describe('url', () => {
 
       // act
       expect(() => parseUrl(input)).toThrowError('Invalid URL');
+      expect(() => parseUrl(input)).toThrowError(TypeError);
     });
 
     it(`should raise an exception if hostname is empty string`, () => {
@@ -207,6 +208,7 @@ describe('url', () => {
 
       // act
       expect(() => parseUrl(input)).toThrowError('Invalid URL');
+      expect(() => parseUrl(input)).toThrowError(TypeError);
     });
   });
 });

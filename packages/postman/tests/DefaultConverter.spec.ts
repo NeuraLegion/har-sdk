@@ -19,7 +19,7 @@ describe('DefaultConverter', () => {
         item: []
       } as Postman.Document);
 
-      expect(Object.keys(result)).toHaveLength(0);
+      expect(result).toMatchObject([]);
     });
 
     it('should convert Postman v2.1.0 collection to HAR', async () => {
@@ -150,7 +150,7 @@ describe('DefaultConverter', () => {
             ) as unknown as Postman.Document,
             { environment: input }
           );
-          await expect(result).rejects.toBeInstanceOf(ConvertError);
+          await expect(result).rejects.toThrow(ConvertError);
           await expect(result).rejects.toMatchObject({
             jsonPointer: expected
           });

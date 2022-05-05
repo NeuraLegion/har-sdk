@@ -34,10 +34,7 @@ describe('PostmanEditor', () => {
 
     it('should be exception on invalid syntax', async () => {
       const setupPromise = postmanTreeParser.setup('{');
-      await expect(setupPromise).rejects.toThrowError(Error);
-      await expect(setupPromise).rejects.toMatchObject({
-        message: 'Bad Postman collection'
-      });
+      await expect(setupPromise).rejects.toThrowError('Bad Postman collection');
     });
 
     it('should parse valid document', async () => {
@@ -52,7 +49,9 @@ describe('PostmanEditor', () => {
     });
 
     it('should be exception on call "parse" before "setup"', () =>
-      expect(() => postmanTreeParser.parse()).toThrowError(Error));
+      expect(() => postmanTreeParser.parse()).toThrowError(
+        'You have to call "setup" to initialize the document'
+      ));
 
     it('should not be npe on empty item node', async () => {
       await postmanTreeParser.setup(
@@ -99,7 +98,7 @@ describe('PostmanEditor', () => {
 
         expect(() =>
           nonInitializedEditor.setParameterValue('/dummy', 42)
-        ).toThrowError(Error);
+        ).toThrowError('You have to call "parse" to initialize the tree');
       });
 
       it('should set global variable value', () => {
@@ -159,7 +158,7 @@ describe('PostmanEditor', () => {
         await nonInitializedEditor.setup(source);
 
         expect(() => nonInitializedEditor.removeNode('/dummy')).toThrowError(
-          Error
+          'You have to call "parse" to initialize the tree'
         );
       });
 
@@ -169,7 +168,7 @@ describe('PostmanEditor', () => {
 
         const result = postmanEditor.removeNode(inputNode.jsonPointer);
 
-        expect(jsonPath.query(result, path)).toHaveLength(0);
+        expect(jsonPath.query(result, path)).toMatchObject([]);
         expect(postmanEditor.stringify()).toEqual(
           expect.not.arrayContaining(['{{baseUrl}}/api/v1/statistics'])
         );
@@ -185,7 +184,7 @@ describe('PostmanEditor', () => {
 
         const result = postmanEditor.removeNode(inputNode.jsonPointer);
 
-        expect(jsonPath.query(result, path)).toHaveLength(0);
+        expect(jsonPath.query(result, path)).toMatchObject([]);
         expect(postmanEditor.stringify()).toEqual(
           expect.not.arrayContaining([
             '{{baseUrl}}/.well-known/change-password'
@@ -213,7 +212,7 @@ describe('PostmanEditor', () => {
 
         const result = postmanEditor.removeNode(inputNode1.jsonPointer);
 
-        expect(jsonPath.query(result, path1)).toHaveLength(0);
+        expect(jsonPath.query(result, path1)).toMatchObject([]);
         expect(jsonPath.query(result, path2)[0].jsonPointer).toEqual(
           '/item/0/item/3/item/0/item/1/item/0'
         );

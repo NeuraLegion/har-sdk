@@ -35,10 +35,9 @@ describe('OasV2Editor', () => {
 
     it('should be exception on invalid syntax', async () => {
       const setupPromise = openApiParser.setup('{');
-      await expect(setupPromise).rejects.toThrowError(Error);
-      await expect(setupPromise).rejects.toMatchObject({
-        message: 'Bad Swagger/OpenAPI V2 specification'
-      });
+      await expect(setupPromise).rejects.toThrowError(
+        'Bad Swagger/OpenAPI V2 specification'
+      );
     });
 
     it('should correctly parse valid yaml document', async () => {
@@ -75,7 +74,9 @@ describe('OasV2Editor', () => {
     });
 
     it('should be exception on call "parse" before "setup"', () =>
-      expect(() => openApiParser.parse()).toThrowError(Error));
+      expect(() => openApiParser.parse()).toThrowError(
+        'You have to call "setup" to initialize the document'
+      ));
   });
 
   describe('Editor', () => {
@@ -99,7 +100,7 @@ describe('OasV2Editor', () => {
 
         expect(() =>
           nonInitializedEditor.setParameterValue('/dummy', 42)
-        ).toThrowError(Error);
+        ).toThrowError('You have to call "parse" to initialize the tree');
       });
 
       it('should set host value', () => {
@@ -219,7 +220,7 @@ describe('OasV2Editor', () => {
         await nonInitializedEditor.setup(source);
 
         expect(() => nonInitializedEditor.removeNode('/dummy')).toThrowError(
-          Error
+          'You have to call "parse" to initialize the tree'
         );
       });
 
@@ -229,7 +230,7 @@ describe('OasV2Editor', () => {
 
         const result = openApiEditor.removeNode(inputNode.jsonPointer);
 
-        expect(jsonPath.query(result, path)).toHaveLength(0);
+        expect(jsonPath.query(result, path)).toMatchObject([]);
         expect(openApiEditor.doc.paths).not.toHaveProperty(path);
         expect(result).toEqual(openApiEditor.parse());
 
@@ -243,7 +244,7 @@ describe('OasV2Editor', () => {
 
         const result = openApiEditor.removeNode(inputNode.jsonPointer);
 
-        expect(jsonPath.query(result, path)).toHaveLength(0);
+        expect(jsonPath.query(result, path)).toMatchObject([]);
         expect(openApiEditor.doc.paths['/pet/{petId}']).not.toHaveProperty(
           'get'
         );

@@ -72,7 +72,7 @@ describe('PostmanImporter', () => {
       );
 
       // assert
-      expect(typeof result).toEqual('undefined');
+      expect(result).toBeUndefined();
       expect(importer.getErrorDetails('json')).not.toBeNull();
       expect(importer.getErrorDetails('yaml')).not.toBeNull();
     });

@@ -78,6 +78,6 @@ describe('JsonLoader', () => {
     const result = loader.getSyntaxErrorDetails();
 
     // assert
-    expect(typeof result).toEqual('undefined');
+    expect(result).toBeUndefined();
   });
 });

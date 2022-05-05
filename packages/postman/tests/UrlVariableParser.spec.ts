@@ -58,7 +58,7 @@ describe('UrlVariableParser', () => {
 
     const result = () => parser.parse(':jobId', scope);
 
-    expect(result).toThrowError(Error);
+    expect(result).toThrowError('Undefined variable: `jobId`');
   });
 
   it('should throw exception if wrong value is assigned to variable (postmanlabs/openapi-to-postman#27)', () => {
@@ -69,6 +69,6 @@ describe('UrlVariableParser', () => {
 
     const result = () => parser.parse(':jobId', scope);
 
-    expect(result).toThrowError(Error);
+    expect(result).toThrowError('Unexpected value of `jobId` variable');
   });
 });

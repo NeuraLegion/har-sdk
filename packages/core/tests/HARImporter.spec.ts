@@ -56,7 +56,7 @@ describe('HARImporter', () => {
       );
 
       // assert
-      expect(typeof result).toEqual('undefined');
+      expect(result).toBeUndefined();
     });
 
     it('should return the spec with expected type', async () => {

@@ -165,7 +165,7 @@ describe('SpecImporter', () => {
       const result = await specImporter.import(input);
 
       // assert
-      expect(typeof result).toEqual('undefined');
+      expect(result).toBeUndefined();
     });
 
     it('should correctly parse valid yaml document with forced "yaml" format', async () => {
@@ -178,7 +178,7 @@ describe('SpecImporter', () => {
     it('should refuse to parse yaml with forced "json" format', async () => {
       const result = await specImporter.import(sourceYamlOasV2, 'json');
 
-      expect(typeof result).toEqual('undefined');
+      expect(result).toBeUndefined();
     });
 
     it('should correctly parse valid json document without forced format', async () => {

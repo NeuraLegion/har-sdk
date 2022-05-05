@@ -189,9 +189,7 @@ describe('url', () => {
       const result = parseUrl(input);
 
       // assert
-      Object.keys(expected).forEach((key) =>
-        expect(result[key]).toEqual(expected[key])
-      );
+      expect(result).toMatchObject(expected);
     });
 
     it(`should raise an exception while encountering opaque origin`, () => {
@@ -200,7 +198,7 @@ describe('url', () => {
         'ttp://user:password@example.com:456/pets/cats?limit=10&offset=10#first';
 
       // act
-      expect(() => parseUrl(input)).toThrowError(TypeError);
+      expect(() => parseUrl(input)).toThrowError('Invalid URL');
     });
 
     it(`should raise an exception if hostname is empty string`, () => {
@@ -208,7 +206,7 @@ describe('url', () => {
       const input = 'kkk://';
 
       // act
-      expect(() => parseUrl(input)).toThrowError(TypeError);
+      expect(() => parseUrl(input)).toThrowError('Invalid URL');
     });
   });
 });

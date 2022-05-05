@@ -24,24 +24,23 @@ describe('Capture HAR', () => {
     const har = await captureHar({ url });
 
     // assert
-    expect(har).toHaveProperty('log.entries[0].request.method', 'GET');
-    expect(har).toHaveProperty('log.entries[0].request.url', url);
-    expect(har).toHaveProperty(
-      'log.entries[0].request.headers[0].name',
-      'host'
-    );
-    expect(har).toHaveProperty(
-      'log.entries[0].request.headers[0].value',
-      `localhost:8000`
-    );
-
-    expect(har).toHaveProperty('log.entries[0].response.status', 200);
-    expect(har).toHaveProperty('log.entries[0].response.content.size', 4);
-    expect(har).toHaveProperty(
-      'log.entries[0].response.content.mimeType',
-      'text/plain'
-    );
-    expect(har).toHaveProperty('log.entries[0].response.content.text', 'body');
+    expect(har).toMatchObject({
+      log: {
+        entries: [
+          {
+            request: {
+              url,
+              method: 'GET',
+              headers: [{ name: 'host', value: 'localhost:8000' }]
+            },
+            response: {
+              status: 200,
+              content: { size: 4, mimeType: 'text/plain', text: 'body' }
+            }
+          }
+        ]
+      }
+    });
   });
 
   it('should parse set-cookie', async () => {
@@ -62,22 +61,27 @@ describe('Capture HAR', () => {
     const har = await captureHar(`http://localhost:8000/`);
 
     // assert
-    expect(har).toHaveProperty(
-      'log.entries[0].response.cookies[0].name',
-      `foo`
-    );
-    expect(har).toHaveProperty(
-      'log.entries[0].response.cookies[0].value',
-      `bar`
-    );
-    expect(har).toHaveProperty(
-      'log.entries[0].response.cookies[1].name',
-      `equation`
-    );
-    expect(har).toHaveProperty(
-      'log.entries[0].response.cookies[1].value',
-      `E=mc^2`
-    );
+
+    expect(har).toMatchObject({
+      log: {
+        entries: [
+          {
+            response: {
+              cookies: [
+                {
+                  name: 'foo',
+                  value: 'bar'
+                },
+                {
+                  name: 'equation',
+                  value: 'E=mc^2'
+                }
+              ]
+            }
+          }
+        ]
+      }
+    });
   });
 
   it('should accept a url directly', async () => {
@@ -93,10 +97,18 @@ describe('Capture HAR', () => {
     const har = await captureHar(`http://localhost:8000/`);
 
     // assert
-    expect(har).toHaveProperty(
-      'log.entries[0].request.url',
-      `http://localhost:8000/`
-    );
+
+    expect(har).toMatchObject({
+      log: {
+        entries: [
+          {
+            request: {
+              url: `http://localhost:8000/`
+            }
+          }
+        ]
+      }
+    });
   });
 
   it('should rewrite the host header when it is defined', async () => {
@@ -118,28 +130,37 @@ describe('Capture HAR', () => {
     });
 
     // assert
-    expect(har).toHaveProperty('log.entries[0].request.url', url);
-    expect(har).toHaveProperty(
-      'log.entries[0].response.redirectURL',
-      redirectUrl
-    );
-    expect(har).toHaveProperty('log.entries[1].request.url', redirectUrl);
-    expect(har).toHaveProperty(
-      'log.entries[0].request.headers[0].name',
-      'host'
-    );
-    expect(har).toHaveProperty(
-      'log.entries[0].request.headers[0].value',
-      `localhost:8000`
-    );
-    expect(har).toHaveProperty(
-      'log.entries[1].request.headers[0].name',
-      'host'
-    );
-    expect(har).toHaveProperty(
-      'log.entries[1].request.headers[0].value',
-      `localhost:3000`
-    );
+    expect(har).toMatchObject({
+      log: {
+        entries: [
+          {
+            request: {
+              url,
+              headers: [
+                {
+                  name: 'host',
+                  value: 'localhost:8000'
+                }
+              ]
+            },
+            response: {
+              redirectURL: redirectUrl
+            }
+          },
+          {
+            request: {
+              url: redirectUrl,
+              headers: [
+                {
+                  name: 'host',
+                  value: 'localhost:3000'
+                }
+              ]
+            }
+          }
+        ]
+      }
+    });
   });
 
   it('should resolve relative URLs', async () => {
@@ -159,8 +180,18 @@ describe('Capture HAR', () => {
     });
 
     // assert
-    expect(har).toHaveProperty('log.entries[0].response.status', 301);
-    expect(har).toHaveProperty('log.entries[0].response.redirectURL', url);
+    expect(har).toMatchObject({
+      log: {
+        entries: expect.arrayContaining([
+          expect.objectContaining({
+            response: expect.objectContaining({
+              status: 301,
+              redirectURL: url
+            })
+          })
+        ])
+      }
+    });
   });
 
   it('should ignore fragments in request URLs', async () => {
@@ -181,7 +212,17 @@ describe('Capture HAR', () => {
     });
 
     // assert
-    expect(har).toHaveProperty('log.entries[0].request.url', expected);
+    expect(har).toMatchObject({
+      log: {
+        entries: [
+          {
+            request: {
+              url: expected
+            }
+          }
+        ]
+      }
+    });
   });
 
   it('should parse querystring', async () => {
@@ -193,27 +234,31 @@ describe('Capture HAR', () => {
       .get(`/`)
       .query({ param1: 'bar', param2: 'foo' })
       .reply(200, 'body', { 'content-type': 'text/plain' });
-
+    // act
     const har = await captureHar({
       url: `http://localhost:8000?param1=bar&param2=foo`
     });
-
-    expect(har).toHaveProperty(
-      'log.entries[0].request.queryString[0].name',
-      'param1'
-    );
-    expect(har).toHaveProperty(
-      'log.entries[0].request.queryString[0].value',
-      'bar'
-    );
-    expect(har).toHaveProperty(
-      'log.entries[0].request.queryString[1].name',
-      'param2'
-    );
-    expect(har).toHaveProperty(
-      'log.entries[0].request.queryString[1].value',
-      'foo'
-    );
+    // assert
+    expect(har).toMatchObject({
+      log: {
+        entries: [
+          {
+            request: {
+              queryString: [
+                {
+                  name: 'param1',
+                  value: 'bar'
+                },
+                {
+                  name: 'param2',
+                  value: 'foo'
+                }
+              ]
+            }
+          }
+        ]
+      }
+    });
   });
 
   it('should handle ENOTFOUND (DNS level error)', async () => {
@@ -224,21 +269,30 @@ describe('Capture HAR', () => {
     const har = await captureHar({ url: 'http://x' });
 
     // assert
-    expect(har).toHaveProperty('log.entries[0].request.method', 'GET');
-    expect(har).toHaveProperty('log.entries[0].request.url', 'http://x/');
 
-    expect(har).toHaveProperty('log.entries[0].response.status', 0);
-    expect(har).toHaveProperty(
-      'log.entries[0].response._error.code',
-      expect.stringMatching(/EAI_AGAIN|ENOTFOUND/)
-    );
-    expect(har).toHaveProperty(
-      'log.entries[0].response._error.message',
-      expect.stringMatching(/getaddrinfo EAI_AGAIN x|getaddrinfo ENOTFOUND x/)
-    );
-    expect(har).toHaveProperty(
-      'log.entries[0].response.content.mimeType',
-      'x-unknown'
-    );
+    expect(har).toMatchObject({
+      log: {
+        entries: [
+          {
+            request: {
+              method: 'GET',
+              url: 'http://x/'
+            },
+            response: {
+              status: 0,
+              _error: {
+                code: expect.stringMatching(/EAI_AGAIN|ENOTFOUND/),
+                message: expect.stringMatching(
+                  /getaddrinfo EAI_AGAIN x|getaddrinfo ENOTFOUND x/
+                )
+              },
+              content: {
+                mimeType: 'x-unknown'
+              }
+            }
+          }
+        ]
+      }
+    });
   });
 });

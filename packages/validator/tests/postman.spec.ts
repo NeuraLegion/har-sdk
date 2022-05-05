@@ -13,7 +13,7 @@ describe('PostmanValidator', () => {
 
       const result = await validator.verify(input);
 
-      expect(Object.keys(result)).toHaveLength(0);
+      expect(result).toMatchObject([]);
     });
 
     it('should throw exception if cannot determine version of document', async () => {
@@ -27,10 +27,9 @@ describe('PostmanValidator', () => {
 
       const result = validator.verify(input);
 
-      await expect(result).rejects.toThrowError(Error);
-      await expect(result).rejects.toMatchObject({
-        message: 'Unsupported or invalid specification version'
-      });
+      await expect(result).rejects.toThrowError(
+        'Unsupported or invalid specification version'
+      );
     });
 
     it('should return list of errors if document is invalid', async () => {

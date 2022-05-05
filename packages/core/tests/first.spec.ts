@@ -15,7 +15,7 @@ describe('first', () => {
     const result = await first(input, predicate);
 
     // assert
-    expect(typeof result).toEqual('undefined');
+    expect(result).toBeUndefined();
   });
 
   it('should be resolved with the result of first resolved promise that pass the test', async () => {
@@ -42,7 +42,7 @@ describe('first', () => {
     const result = await first([], predicate);
 
     // assert
-    expect(typeof result).toEqual('undefined');
+    expect(result).toBeUndefined();
   });
 
   it('should be rejected with an error if at least one of the promises is rejected', async () => {
@@ -59,9 +59,6 @@ describe('first', () => {
     const result = first(input, predicate);
 
     // assert
-    await expect(result).rejects.toThrowError(Error);
-    await expect(result).rejects.toMatchObject({
-      message: expected
-    });
+    await expect(result).rejects.toThrowError(expected);
   });
 });

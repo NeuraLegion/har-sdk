@@ -20,7 +20,7 @@ describe('HarValidator', () => {
       const result = await validator.verify(input);
 
       // assert
-      expect(Object.keys(result)).toHaveLength(0);
+      expect(result).toMatchObject([]);
     });
 
     it('should successfully validate HAR if server IP is missed', async () => {
@@ -31,7 +31,7 @@ describe('HarValidator', () => {
       const result = await validator.verify(input);
 
       // assert
-      expect(Object.keys(result)).toHaveLength(0);
+      expect(result).toMatchObject([]);
     });
 
     it('should return error if server IP is not valid IP address', async () => {
@@ -160,7 +160,7 @@ describe('HarValidator', () => {
       const result = await validator.verify(input);
 
       // assert
-      expect(Object.keys(result)).toHaveLength(0);
+      expect(result).toMatchObject([]);
     });
 
     it('should return error if method accepts wrong value', async () => {

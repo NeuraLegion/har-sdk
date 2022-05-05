@@ -83,7 +83,7 @@ describe('EnvVariableParser', () => {
 
     const result = () => parser.parse('{{baseUrl}}', scope);
 
-    expect(result).toThrowError(Error);
+    expect(result).toThrowError('Undefined variable: `baseUrl`');
   });
 
   it('should throw exception on missing nested variable', () => {
@@ -94,6 +94,6 @@ describe('EnvVariableParser', () => {
 
     const result = () => parser.parse('{{baseUrl}}', scope);
 
-    expect(result).toThrowError(Error);
+    expect(result).toThrowError('Undefined variable: `hostname`');
   });
 });

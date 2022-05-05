@@ -112,7 +112,7 @@ describe('LexicalScope', () => {
       const result = scope.find((x) => x.key === 'x');
 
       // assert
-      expect(typeof result).toEqual('undefined');
+      expect(result).toBeUndefined();
     });
 
     it('should throw a error if predicate is not defined', () => {
@@ -121,10 +121,9 @@ describe('LexicalScope', () => {
       const scope = new LexicalScope('/', [variable]);
 
       // act
-      () =>
-        expect(
-          scope.find(null as (...args: unknown[]) => unknown)
-        ).toThrowError(TypeError);
+      expect(() =>
+        scope.find(null as (...args: unknown[]) => unknown)
+      ).toThrowError(TypeError);
     });
   });
 });

@@ -173,7 +173,7 @@ describe('DefaultConverter', () => {
 
         const result = oas2har(yaml.load(content) as OpenAPIV2.Document);
 
-        await expect(result).rejects.toBeInstanceOf(ConvertError);
+        await expect(result).rejects.toThrow(ConvertError);
         await expect(result).rejects.toMatchObject({
           jsonPointer: expected
         });

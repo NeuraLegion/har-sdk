@@ -21,10 +21,7 @@ describe('DocFormat in TreeParser', () => {
     it('should be exception on invalid json/yaml syntax', async () => {
       const source = '{';
       const setupPromise = openApiParser.setup(source);
-      await expect(setupPromise).rejects.toThrowError(Error);
-      await expect(setupPromise).rejects.toMatchObject({
-        message: errorMessage
-      });
+      await expect(setupPromise).rejects.toThrowError(errorMessage);
     });
 
     it('should correctly parse valid yaml document without forced format', async () => {
@@ -43,10 +40,7 @@ describe('DocFormat in TreeParser', () => {
 
     it('should refuse to parse yaml with forced "json" format', async () => {
       const setupPromise = openApiParser.setup(sourceYaml, 'json');
-      await expect(setupPromise).rejects.toThrowError(Error);
-      await expect(setupPromise).rejects.toMatchObject({
-        message: errorMessage
-      });
+      await expect(setupPromise).rejects.toThrowError(errorMessage);
     });
 
     it('should correctly parse valid json document without forced format', async () => {

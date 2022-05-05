@@ -19,7 +19,7 @@ describe('OASValidator', () => {
 
       const result = await validator.verify(input);
 
-      expect(Object.keys(result)).toHaveLength(0);
+      expect(result).toMatchObject([]);
     });
 
     it('should successfully validate valid oas v2 document (Petstore, json)', async () => {
@@ -28,7 +28,7 @@ describe('OASValidator', () => {
 
       const result = await validator.verify(input);
 
-      expect(Object.keys(result)).toHaveLength(0);
+      expect(result).toMatchObject([]);
     });
 
     it('should successfully validate valid oas v3 document (Petstore, yaml)', async () => {
@@ -41,7 +41,7 @@ describe('OASValidator', () => {
 
       const result = await validator.verify(input);
 
-      expect(Object.keys(result)).toHaveLength(0);
+      expect(result).toMatchObject([]);
     });
 
     it('should successfully validate valid oas v3 document (spoonacular, json)', async () => {
@@ -49,7 +49,7 @@ describe('OASValidator', () => {
 
       const result = await validator.verify(input);
 
-      expect(Object.keys(result)).toHaveLength(0);
+      expect(result).toMatchObject([]);
     });
 
     it('should throw exception if cannot determine version of document', async () => {
@@ -65,10 +65,9 @@ describe('OASValidator', () => {
 
       const result = validator.verify(input);
 
-      await expect(result).rejects.toThrowError(Error);
-      await expect(result).rejects.toMatchObject({
-        message: 'Unsupported or invalid specification version'
-      });
+      await expect(result).rejects.toThrowError(
+        'Unsupported or invalid specification version'
+      );
     });
 
     it('should throw exception in case of unsupported schema version', async () => {
@@ -84,10 +83,9 @@ describe('OASValidator', () => {
 
       const result = validator.verify(input);
 
-      await expect(result).rejects.toThrowError(Error);
-      await expect(result).rejects.toMatchObject({
-        message: 'Unsupported or invalid specification version'
-      });
+      await expect(result).rejects.toThrowError(
+        'Unsupported or invalid specification version'
+      );
     });
 
     it('should return error if oas v2 property `host` does not exist', async () => {

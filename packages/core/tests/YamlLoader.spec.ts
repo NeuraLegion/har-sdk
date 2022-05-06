@@ -20,9 +20,7 @@ describe('YamlLoader', () => {
 
     // assert
     expect(() => loader.load(input)).toThrowError(YAMLException);
-    expect(expectedExceptionMessage).toEqual(
-      expect.stringContaining(loader.getSyntaxErrorDetails().message)
-    );
+    expect(() => loader.load(input)).toThrowError(expectedExceptionMessage);
   });
 
   it(`should be no errors on valid yaml input`, () => {

@@ -1,5 +1,4 @@
 // eslint-disable-next-line max-classes-per-file
-import 'chai/register-should';
 import { BaseLoader } from '../src/loaders/BaseLoader';
 import { BaseSyntaxErrorDetailsExtractor } from '../src/loaders/errors/BaseSyntaxErrorDetailsExtractor';
 
@@ -57,7 +56,7 @@ describe('BaseLoader', () => {
     const result = loader.getSyntaxErrorDetails();
 
     // assert
-    result.should.deep.eq({
+    expect(result).toEqual({
       message: 'CustomError message'
     });
   });
@@ -75,7 +74,7 @@ describe('BaseLoader', () => {
     const result = loader.getSyntaxErrorDetails();
 
     // assert
-    result.should.deep.eq({
+    expect(result).toEqual({
       message: 'CustomError message'
     });
   });

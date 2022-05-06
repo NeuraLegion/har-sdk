@@ -1,13 +1,8 @@
-import 'chai/register-should';
 import { ImporterType, Spec, SpecImporter } from '../src';
 import { load } from 'js-yaml';
-import chaiAsPromised from 'chai-as-promised';
-import { use } from 'chai';
 import { promisify } from 'util';
 import { readFile, readFileSync } from 'fs';
 import { resolve } from 'path';
-
-use(chaiAsPromised);
 
 describe('SpecImporter', () => {
   let specImporter: SpecImporter;
@@ -18,12 +13,12 @@ describe('SpecImporter', () => {
 
   describe('import', () => {
     const sourceJsonOasV2 = readFileSync(
-      resolve('./tests/fixtures/oas-v2.json'),
+      resolve(__dirname, './fixtures/oas-v2.json'),
       'utf8'
     );
 
     const sourceYamlOasV2 = readFileSync(
-      resolve('./tests/fixtures/oas-v2.yaml'),
+      resolve(__dirname, './fixtures/oas-v2.yaml'),
       'utf8'
     );
 
@@ -42,7 +37,7 @@ describe('SpecImporter', () => {
       );
 
       // assert
-      result.should.deep.eq(expected);
+      expect(result).toEqual(expected);
     });
 
     it('should import OAS v2 (YAML)', async () => {
@@ -61,7 +56,7 @@ describe('SpecImporter', () => {
       );
 
       // assert
-      result.should.deep.eq(expected);
+      expect(result).toEqual(expected);
     });
 
     it('should import OAS v3 (JSON)', async () => {
@@ -79,13 +74,13 @@ describe('SpecImporter', () => {
       const result: Spec<ImporterType.OASV3> = await specImporter.import(input);
 
       // assert
-      result.should.deep.eq(expected);
+      expect(result).toEqual(expected);
     });
 
     it('should import OAS v3 (YAML)', async () => {
       // arrange
       const input = await promisify(readFile)(
-        resolve('./tests/fixtures/oas-v3.yaml'),
+        resolve(__dirname, './fixtures/oas-v3.yaml'),
         'utf8'
       );
       const doc = load(input, { json: true });
@@ -100,7 +95,7 @@ describe('SpecImporter', () => {
       const result: Spec<ImporterType.OASV3> = await specImporter.import(input);
 
       // assert
-      result.should.deep.eq(expected);
+      expect(result).toEqual(expected);
     });
 
     it('should import Postman collection v2.0.0', async () => {
@@ -120,7 +115,7 @@ describe('SpecImporter', () => {
       );
 
       // assert
-      result.should.deep.eq(expected);
+      expect(result).toEqual(expected);
     });
 
     it('should import Postman collection v2.1.0', async () => {
@@ -140,7 +135,7 @@ describe('SpecImporter', () => {
       );
 
       // assert
-      result.should.deep.eq(expected);
+      expect(result).toEqual(expected);
     });
 
     it('should import HAR', async () => {
@@ -158,7 +153,7 @@ describe('SpecImporter', () => {
       const result = await specImporter.import(input);
 
       // assert
-      result.should.deep.eq(expected);
+      expect(result).toEqual(expected);
     });
 
     it('should return an undefined if no importers found', async () => {
@@ -170,34 +165,34 @@ describe('SpecImporter', () => {
       const result = await specImporter.import(input);
 
       // assert
-      (typeof result).should.eq('undefined');
+      expect(result).toBeUndefined();
     });
 
     it('should correctly parse valid yaml document with forced "yaml" format', async () => {
       const result = await specImporter.import(sourceYamlOasV2, 'yaml');
 
-      result.format.should.eq('yaml');
-      result.doc.should.be.an('object');
+      expect(result.format).toEqual('yaml');
+      expect(result.doc).toBeInstanceOf(Object);
     });
 
     it('should refuse to parse yaml with forced "json" format', async () => {
       const result = await specImporter.import(sourceYamlOasV2, 'json');
 
-      (typeof result).should.eq('undefined');
+      expect(result).toBeUndefined();
     });
 
     it('should correctly parse valid json document without forced format', async () => {
       const result = await specImporter.import(sourceJsonOasV2);
 
-      result.format.should.eq('json');
-      result.doc.should.be.an('object');
+      expect(result.format).toEqual('json');
+      expect(result.doc).toBeInstanceOf(Object);
     });
 
     it('should correctly parse valid json document with forced "yaml" format', async () => {
       const result = await specImporter.import(sourceJsonOasV2, 'yaml');
 
-      result.format.should.eq('yaml');
-      result.doc.should.be.an('object');
+      expect(result.format).toEqual('yaml');
+      expect(result.doc).toBeInstanceOf(Object);
     });
   });
 });

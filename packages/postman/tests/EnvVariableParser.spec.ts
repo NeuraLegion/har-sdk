@@ -3,7 +3,6 @@ import {
   DefaultGenerators,
   LexicalScope
 } from '../src/parser';
-import 'chai/register-should';
 
 describe('EnvVariableParser', () => {
   const generators = new DefaultGenerators();
@@ -14,7 +13,7 @@ describe('EnvVariableParser', () => {
 
     const result = parser.parse('', scope);
 
-    result.should.equal('');
+    expect(result).toEqual('');
   });
 
   it('should return original string if value is null or undefined', () => {
@@ -23,7 +22,7 @@ describe('EnvVariableParser', () => {
 
     const result = parser.parse('{{baseUrl}}', scope);
 
-    result.should.equal('{{baseUrl}}');
+    expect(result).toEqual('{{baseUrl}}');
   });
 
   it('should substitute single variable', () => {
@@ -34,7 +33,7 @@ describe('EnvVariableParser', () => {
 
     const result = parser.parse('{{baseUrl}}/api/v1', scope);
 
-    result.should.equal('https://test.com/api/v1');
+    expect(result).toEqual('https://test.com/api/v1');
   });
 
   it('should substitute dynamic variable', () => {
@@ -45,7 +44,7 @@ describe('EnvVariableParser', () => {
 
     const result = parser.parse('{{baseUrl}}', scope);
 
-    result.should.match(/^https:\/\/test\.com\/\d{1,4}$/);
+    expect(result).toMatch(/^https:\/\/test\.com\/\d{1,4}$/);
   });
 
   it('should substitute nested variables', () => {
@@ -60,7 +59,7 @@ describe('EnvVariableParser', () => {
 
     const result = parser.parse('{{baseUrl}}', scope);
 
-    result.should.equal('https://test.com/api/v1');
+    expect(result).toEqual('https://test.com/api/v1');
   });
 
   it('should substitute nested dynamic variables', () => {
@@ -75,7 +74,7 @@ describe('EnvVariableParser', () => {
 
     const result = parser.parse('{{baseUrl}}', scope);
 
-    result.should.match(/https:\/\/test\.[A-Z]+\/api\/v1/);
+    expect(result).toMatch(/https:\/\/test\.[A-Z]+\/api\/v1/);
   });
 
   it('should throw exception if variable is not defined', () => {
@@ -84,7 +83,7 @@ describe('EnvVariableParser', () => {
 
     const result = () => parser.parse('{{baseUrl}}', scope);
 
-    result.should.throw(Error, 'Undefined variable: `baseUrl`');
+    expect(result).toThrowError('Undefined variable: `baseUrl`');
   });
 
   it('should throw exception on missing nested variable', () => {
@@ -95,6 +94,6 @@ describe('EnvVariableParser', () => {
 
     const result = () => parser.parse('{{baseUrl}}', scope);
 
-    result.should.throw(Error, 'Undefined variable: `hostname`');
+    expect(result).toThrowError('Undefined variable: `hostname`');
   });
 });

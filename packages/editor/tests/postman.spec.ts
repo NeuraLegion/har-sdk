@@ -6,19 +6,14 @@ import {
 } from '../src';
 import { Postman } from '@har-sdk/core';
 import jsonPath from 'jsonpath';
-import 'chai/register-should';
 import { PostmanValidator } from '@har-sdk/validator';
-import chaiAsPromised from 'chai-as-promised';
-import { use } from 'chai';
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
 
-use(chaiAsPromised);
-
 describe('PostmanEditor', () => {
-  const sourcePath = './tests/fixtures/postman-sample1.json';
-  const source = readFileSync(resolve(sourcePath), 'utf-8');
-  const expectedResultPath = './tests/fixtures/postman-sample1.result.json';
+  const sourcePath = './fixtures/postman-sample1.json';
+  const source = readFileSync(resolve(__dirname, sourcePath), 'utf-8');
+  const expectedResultPath = './fixtures/postman-sample1.result.json';
 
   describe('input validation', () => {
     it('should be validated with no errors', () => {
@@ -26,7 +21,7 @@ describe('PostmanEditor', () => {
 
       const result = new PostmanValidator().verify(input);
 
-      return result.should.eventually.deep.eq([]);
+      return expect(result).resolves.toEqual([]);
     });
   });
 
@@ -37,25 +32,24 @@ describe('PostmanEditor', () => {
       postmanTreeParser = new PostmanEditor();
     });
 
-    it('should be exception on invalid syntax', () =>
-      postmanTreeParser
-        .setup('{')
-        .should.be.rejectedWith(Error, 'Bad Postman collection'));
+    it('should be exception on invalid syntax', async () => {
+      const setupPromise = postmanTreeParser.setup('{');
+      await expect(setupPromise).rejects.toThrowError('Bad Postman collection');
+    });
 
     it('should parse valid document', async () => {
       await postmanTreeParser.setup(source);
       const expected = JSON.parse(
-        readFileSync(resolve(expectedResultPath), 'utf-8')
+        readFileSync(resolve(__dirname, expectedResultPath), 'utf-8')
       );
 
       const result = postmanTreeParser.parse();
 
-      result.should.deep.eq(expected);
+      expect(result).toEqual(expected);
     });
 
     it('should be exception on call "parse" before "setup"', () =>
-      (() => postmanTreeParser.parse()).should.throw(
-        Error,
+      expect(() => postmanTreeParser.parse()).toThrowError(
         'You have to call "setup" to initialize the document'
       ));
 
@@ -79,7 +73,7 @@ describe('PostmanEditor', () => {
 
       const result = postmanTreeParser.parse();
 
-      result.should.deep.eq(expected);
+      expect(result).toEqual(expected);
     });
   });
 
@@ -95,18 +89,16 @@ describe('PostmanEditor', () => {
     });
 
     const shouldBeValidDoc = (doc: Postman.Document) =>
-      new PostmanValidator().verify(doc).should.eventually.deep.eq([]);
+      expect(new PostmanValidator().verify(doc)).resolves.toEqual([]);
 
     describe('setParameterValue', () => {
       it('should be exception on call "removeNode" before "parse"', async () => {
         const nonInitializedEditor = new PostmanEditor();
         await nonInitializedEditor.setup(source);
 
-        (() =>
-          nonInitializedEditor.setParameterValue('/dummy', 42)).should.throw(
-          Error,
-          'You have to call "parse" to initialize the tree'
-        );
+        expect(() =>
+          nonInitializedEditor.setParameterValue('/dummy', 42)
+        ).toThrowError('You have to call "parse" to initialize the tree');
       });
 
       it('should set global variable value', () => {
@@ -126,8 +118,8 @@ describe('PostmanEditor', () => {
           newValue
         );
 
-        result.parameters.should.deep.equal(expected);
-        postmanEditor.doc.variable[0].value.should.equal(newValue);
+        expect(result.parameters).toEqual(expected);
+        expect(postmanEditor.doc.variable[0].value).toEqual(newValue);
 
         return shouldBeValidDoc(postmanEditor.doc);
       });
@@ -141,20 +133,20 @@ describe('PostmanEditor', () => {
           inputTree,
           path
         )[0];
-        inputParam.value.should.eq('<string>');
+        expect(inputParam.value).toEqual('<string>');
 
         const result = postmanEditor.setParameterValue(
           inputParam.valueJsonPointer,
           expected
         );
 
-        jsonPath.query(result, path)[0].value.should.equal(expected);
-        jsonPath
-          .query(
+        expect(jsonPath.query(result, path)[0].value).toEqual(expected);
+        expect(
+          jsonPath.query(
             postmanEditor.doc,
             '$..item[?(@.request.url.raw=="{{baseUrl}}/api/v1/subscriptions/:subscriptionId")].request.url.variable[?(@.key=="subscriptionId")]'
-          )[0]
-          .value.should.equal(expected);
+          )[0].value
+        ).toEqual(expected);
 
         return shouldBeValidDoc(postmanEditor.doc);
       });
@@ -165,8 +157,7 @@ describe('PostmanEditor', () => {
         const nonInitializedEditor = new PostmanEditor();
         await nonInitializedEditor.setup(source);
 
-        (() => nonInitializedEditor.removeNode('/dummy')).should.throw(
-          Error,
+        expect(() => nonInitializedEditor.removeNode('/dummy')).toThrowError(
           'You have to call "parse" to initialize the tree'
         );
       });
@@ -177,11 +168,11 @@ describe('PostmanEditor', () => {
 
         const result = postmanEditor.removeNode(inputNode.jsonPointer);
 
-        jsonPath.query(result, path).should.be.empty;
-        postmanEditor
-          .stringify()
-          .should.not.include('{{baseUrl}}/api/v1/statistics');
-        result.should.be.deep.equal(postmanEditor.parse());
+        expect(jsonPath.query(result, path)).toEqual([]);
+        expect(postmanEditor.stringify()).toEqual(
+          expect.not.arrayContaining(['{{baseUrl}}/api/v1/statistics'])
+        );
+        expect(result).toEqual(postmanEditor.parse());
 
         return shouldBeValidDoc(postmanEditor.doc);
       });
@@ -193,11 +184,13 @@ describe('PostmanEditor', () => {
 
         const result = postmanEditor.removeNode(inputNode.jsonPointer);
 
-        jsonPath.query(result, path).should.be.empty;
-        postmanEditor
-          .stringify()
-          .should.not.include('{{baseUrl}}/.well-known/change-password');
-        result.should.be.deep.equal(postmanEditor.parse());
+        expect(jsonPath.query(result, path)).toEqual([]);
+        expect(postmanEditor.stringify()).toEqual(
+          expect.not.arrayContaining([
+            '{{baseUrl}}/.well-known/change-password'
+          ])
+        );
+        expect(result).toEqual(postmanEditor.parse());
 
         return shouldBeValidDoc(postmanEditor.doc);
       });
@@ -206,23 +199,23 @@ describe('PostmanEditor', () => {
         const path1 =
           '$..children[?(@.path=="{{baseUrl}}/api/v1/me/feed/activities" && @.method=="DELETE")]';
         const inputNode1 = jsonPath.query(inputTree, path1)[0] as SpecTreeNode;
-        inputNode1.jsonPointer.should.be.equal(
+        expect(inputNode1.jsonPointer).toEqual(
           '/item/0/item/3/item/0/item/1/item/0'
         );
 
         const path2 =
           '$..children[?(@.path=="{{baseUrl}}/api/v1/me/feed/activities/:activityId" && @.method=="DELETE")]';
         const inputNode2 = jsonPath.query(inputTree, path2)[0] as SpecTreeNode;
-        inputNode2.jsonPointer.should.be.equal(
+        expect(inputNode2.jsonPointer).toEqual(
           '/item/0/item/3/item/0/item/1/item/1'
         );
 
         const result = postmanEditor.removeNode(inputNode1.jsonPointer);
 
-        jsonPath.query(result, path1).should.be.empty;
-        jsonPath
-          .query(result, path2)[0]
-          .jsonPointer.should.be.equal('/item/0/item/3/item/0/item/1/item/0');
+        expect(jsonPath.query(result, path1)).toEqual([]);
+        expect(jsonPath.query(result, path2)[0].jsonPointer).toEqual(
+          '/item/0/item/3/item/0/item/1/item/0'
+        );
       });
     });
 
@@ -232,9 +225,9 @@ describe('PostmanEditor', () => {
 
         const result = postmanEditor.stringify();
 
-        result.should.be.a('string');
-        result.should.match(/^{/);
-        JSON.parse(result).should.be.deep.equal(JSON.parse(source));
+        expect(typeof result).toBe('string');
+        expect(result).toMatch(/^{/);
+        expect(JSON.parse(result)).toEqual(JSON.parse(source));
       });
     });
   });

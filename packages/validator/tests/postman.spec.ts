@@ -1,12 +1,7 @@
 import nexploitPostman from './fixtures/postman.nexploit.json';
 import { PostmanValidator } from '../src';
 import { ErrorObject } from 'ajv';
-import { use } from 'chai';
-import chaiAsPromised from 'chai-as-promised';
 import { Postman } from '@har-sdk/core';
-import 'chai/register-should';
-
-use(chaiAsPromised);
 
 describe('PostmanValidator', () => {
   const validator = new PostmanValidator();
@@ -18,7 +13,7 @@ describe('PostmanValidator', () => {
 
       const result = await validator.verify(input);
 
-      result.should.be.empty;
+      expect(result).toEqual([]);
     });
 
     it('should throw exception if cannot determine version of document', async () => {
@@ -32,8 +27,7 @@ describe('PostmanValidator', () => {
 
       const result = validator.verify(input);
 
-      return result.should.be.rejectedWith(
-        Error,
+      await expect(result).rejects.toThrowError(
         'Unsupported or invalid specification version'
       );
     });
@@ -70,7 +64,7 @@ describe('PostmanValidator', () => {
 
       const result = await validator.verify(input);
 
-      result.should.deep.eq(expected);
+      expect(result).toEqual(expected);
     });
 
     it('should return list of errors if no items', async () => {
@@ -97,7 +91,7 @@ describe('PostmanValidator', () => {
 
       const result = await validator.verify(input);
 
-      result.should.deep.eq(expected);
+      expect(result).toEqual(expected);
     });
 
     it('should return a list of errors if no items in item-group', async () => {
@@ -129,7 +123,7 @@ describe('PostmanValidator', () => {
 
       const result = await validator.verify(input);
 
-      result.should.deep.eq(expected);
+      expect(result).toEqual(expected);
     });
   });
 });

@@ -1,5 +1,4 @@
 import { sample } from '../src';
-import 'chai/register-should';
 
 describe('NumberSampler', () => {
   [
@@ -213,7 +212,7 @@ describe('NumberSampler', () => {
     it(`should sample ${type} ${expected} ${suffixStr}`, () => {
       const result = sample(input);
 
-      result.should.eq(expected);
+      expect(result).toEqual(expected);
     });
   });
 
@@ -262,7 +261,7 @@ describe('NumberSampler', () => {
     )}`, () => {
       const result = () => sample(input);
 
-      result.should.throw(expected);
+      expect(result).toThrowError(expected);
     });
   });
 });

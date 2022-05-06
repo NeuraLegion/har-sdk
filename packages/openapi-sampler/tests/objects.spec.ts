@@ -1,6 +1,5 @@
 import { sample } from '../src';
 import { Schema } from '../src/traverse';
-import 'chai/register-should';
 
 describe('Objects', () => {
   it('should sample object without properties', () => {
@@ -8,7 +7,7 @@ describe('Objects', () => {
       type: 'object'
     };
     const result = sample(schema);
-    result.should.deep.equal({});
+    expect(result).toEqual({});
   });
 
   it('should sample object with property', () => {
@@ -21,7 +20,7 @@ describe('Objects', () => {
       }
     };
     const result = sample(schema);
-    result.title.should.be.a('string');
+    expect(typeof result.title).toBe('string');
   });
 
   it('should sample object with property with default value', () => {
@@ -35,7 +34,7 @@ describe('Objects', () => {
       }
     } as Schema;
     const result = sample(schema);
-    result.should.deep.equal({
+    expect(result).toEqual({
       title: 'Example'
     });
   });
@@ -55,7 +54,7 @@ describe('Objects', () => {
       }
     } as Schema;
     const result = sample(schema);
-    result.should.deep.equal({
+    expect(result).toEqual({
       title: 'Example',
       amount: 10
     });
@@ -74,8 +73,8 @@ describe('Objects', () => {
       }
     };
     const result = sample(schema);
-    result.test.should.be.a('string');
-    result.property1.should.be.a('number');
-    result.property2.should.be.a('number');
+    expect(typeof result.test).toBe('string');
+    expect(typeof result.property1).toBe('number');
+    expect(typeof result.property2).toBe('number');
   });
 });

@@ -28,3 +28,4 @@ exclude_patterns:
   - '**/node_modules/'
   - '**/*.spec.ts'
   - '**/tests/'
+  - '**/jest.config.js'

@@ -1,16 +1,15 @@
-import 'chai/register-should';
 import { captureHar } from '../src';
 import nock from 'nock';
 
 describe('Capture HAR', () => {
-  before(() => {
+  beforeAll(() => {
     nock.disableNetConnect();
     nock.enableNetConnect('127.0.0.1');
   });
 
   afterEach(() => nock.cleanAll());
 
-  after(() => nock.enableNetConnect());
+  afterAll(() => nock.enableNetConnect());
 
   it('should capture a simple GET requests', async () => {
     // arrange
@@ -25,27 +24,23 @@ describe('Capture HAR', () => {
     const har = await captureHar({ url });
 
     // assert
-    har.should.have.nested.property('log.entries[0].request.method', 'GET');
-    har.should.have.nested.property('log.entries[0].request.url', url);
-    har.should.have.nested.property(
-      'log.entries[0].request.headers[0].name',
-      'host'
-    );
-    har.should.have.nested.property(
-      'log.entries[0].request.headers[0].value',
-      `localhost:8000`
-    );
-
-    har.should.have.nested.property('log.entries[0].response.status', 200);
-    har.should.have.nested.property('log.entries[0].response.content.size', 4);
-    har.should.have.nested.property(
-      'log.entries[0].response.content.mimeType',
-      'text/plain'
-    );
-    har.should.have.nested.property(
-      'log.entries[0].response.content.text',
-      'body'
-    );
+    expect(har).toMatchObject({
+      log: {
+        entries: [
+          {
+            request: {
+              url,
+              method: 'GET',
+              headers: [{ name: 'host', value: 'localhost:8000' }]
+            },
+            response: {
+              status: 200,
+              content: { size: 4, mimeType: 'text/plain', text: 'body' }
+            }
+          }
+        ]
+      }
+    });
   });
 
   it('should parse set-cookie', async () => {
@@ -66,22 +61,27 @@ describe('Capture HAR', () => {
     const har = await captureHar(`http://localhost:8000/`);
 
     // assert
-    har.should.have.nested.property(
-      'log.entries[0].response.cookies[0].name',
-      `foo`
-    );
-    har.should.have.nested.property(
-      'log.entries[0].response.cookies[0].value',
-      `bar`
-    );
-    har.should.have.nested.property(
-      'log.entries[0].response.cookies[1].name',
-      `equation`
-    );
-    har.should.have.nested.property(
-      'log.entries[0].response.cookies[1].value',
-      `E=mc^2`
-    );
+
+    expect(har).toMatchObject({
+      log: {
+        entries: [
+          {
+            response: {
+              cookies: [
+                {
+                  name: 'foo',
+                  value: 'bar'
+                },
+                {
+                  name: 'equation',
+                  value: 'E=mc^2'
+                }
+              ]
+            }
+          }
+        ]
+      }
+    });
   });
 
   it('should accept a url directly', async () => {
@@ -97,10 +97,18 @@ describe('Capture HAR', () => {
     const har = await captureHar(`http://localhost:8000/`);
 
     // assert
-    har.should.have.nested.property(
-      'log.entries[0].request.url',
-      `http://localhost:8000/`
-    );
+
+    expect(har).toMatchObject({
+      log: {
+        entries: [
+          {
+            request: {
+              url: `http://localhost:8000/`
+            }
+          }
+        ]
+      }
+    });
   });
 
   it('should rewrite the host header when it is defined', async () => {
@@ -122,28 +130,37 @@ describe('Capture HAR', () => {
     });
 
     // assert
-    har.should.have.nested.property('log.entries[0].request.url', url);
-    har.should.have.nested.property(
-      'log.entries[0].response.redirectURL',
-      redirectUrl
-    );
-    har.should.have.nested.property('log.entries[1].request.url', redirectUrl);
-    har.should.have.nested.property(
-      'log.entries[0].request.headers[0].name',
-      'host'
-    );
-    har.should.have.nested.property(
-      'log.entries[0].request.headers[0].value',
-      `localhost:8000`
-    );
-    har.should.have.nested.property(
-      'log.entries[1].request.headers[0].name',
-      'host'
-    );
-    har.should.have.nested.property(
-      'log.entries[1].request.headers[0].value',
-      `localhost:3000`
-    );
+    expect(har).toMatchObject({
+      log: {
+        entries: [
+          {
+            request: {
+              url,
+              headers: [
+                {
+                  name: 'host',
+                  value: 'localhost:8000'
+                }
+              ]
+            },
+            response: {
+              redirectURL: redirectUrl
+            }
+          },
+          {
+            request: {
+              url: redirectUrl,
+              headers: [
+                {
+                  name: 'host',
+                  value: 'localhost:3000'
+                }
+              ]
+            }
+          }
+        ]
+      }
+    });
   });
 
   it('should resolve relative URLs', async () => {
@@ -163,8 +180,18 @@ describe('Capture HAR', () => {
     });
 
     // assert
-    har.should.have.nested.property('log.entries[0].response.status', 301);
-    har.should.have.nested.property('log.entries[0].response.redirectURL', url);
+    expect(har).toMatchObject({
+      log: {
+        entries: expect.arrayContaining([
+          expect.objectContaining({
+            response: expect.objectContaining({
+              status: 301,
+              redirectURL: url
+            })
+          })
+        ])
+      }
+    });
   });
 
   it('should ignore fragments in request URLs', async () => {
@@ -185,7 +212,17 @@ describe('Capture HAR', () => {
     });
 
     // assert
-    har.should.have.nested.property('log.entries[0].request.url', expected);
+    expect(har).toMatchObject({
+      log: {
+        entries: [
+          {
+            request: {
+              url: expected
+            }
+          }
+        ]
+      }
+    });
   });
 
   it('should parse querystring', async () => {
@@ -197,27 +234,31 @@ describe('Capture HAR', () => {
       .get(`/`)
       .query({ param1: 'bar', param2: 'foo' })
       .reply(200, 'body', { 'content-type': 'text/plain' });
-
+    // act
     const har = await captureHar({
       url: `http://localhost:8000?param1=bar&param2=foo`
     });
-
-    har.should.have.nested.property(
-      'log.entries[0].request.queryString[0].name',
-      'param1'
-    );
-    har.should.have.nested.property(
-      'log.entries[0].request.queryString[0].value',
-      'bar'
-    );
-    har.should.have.nested.property(
-      'log.entries[0].request.queryString[1].name',
-      'param2'
-    );
-    har.should.have.nested.property(
-      'log.entries[0].request.queryString[1].value',
-      'foo'
-    );
+    // assert
+    expect(har).toMatchObject({
+      log: {
+        entries: [
+          {
+            request: {
+              queryString: [
+                {
+                  name: 'param1',
+                  value: 'bar'
+                },
+                {
+                  name: 'param2',
+                  value: 'foo'
+                }
+              ]
+            }
+          }
+        ]
+      }
+    });
   });
 
   it('should handle ENOTFOUND (DNS level error)', async () => {
@@ -228,19 +269,30 @@ describe('Capture HAR', () => {
     const har = await captureHar({ url: 'http://x' });
 
     // assert
-    har.should.have.nested.property('log.entries[0].request.method', 'GET');
-    har.should.have.nested.property('log.entries[0].request.url', 'http://x/');
 
-    har.should.have.nested.property('log.entries[0].response.status', 0);
-    har.should.have.nested
-      .property('log.entries[0].response._error.code')
-      .oneOf(['EAI_AGAIN', 'ENOTFOUND']);
-    har.should.have.nested
-      .property('log.entries[0].response._error.message')
-      .oneOf(['getaddrinfo EAI_AGAIN x', 'getaddrinfo ENOTFOUND x']);
-    har.should.have.nested.property(
-      'log.entries[0].response.content.mimeType',
-      'x-unknown'
-    );
+    expect(har).toMatchObject({
+      log: {
+        entries: [
+          {
+            request: {
+              method: 'GET',
+              url: 'http://x/'
+            },
+            response: {
+              status: 0,
+              _error: {
+                code: expect.stringMatching(/EAI_AGAIN|ENOTFOUND/),
+                message: expect.stringMatching(
+                  /getaddrinfo EAI_AGAIN x|getaddrinfo ENOTFOUND x/
+                )
+              },
+              content: {
+                mimeType: 'x-unknown'
+              }
+            }
+          }
+        ]
+      }
+    });
   });
 });

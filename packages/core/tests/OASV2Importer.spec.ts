@@ -1,4 +1,3 @@
-import 'chai/register-should';
 import { ImporterType, OASV2Importer } from '../src';
 
 describe('OASV2Importer', () => {
@@ -6,7 +5,7 @@ describe('OASV2Importer', () => {
 
   describe('type', () => {
     it(`should be equal ${ImporterType.OASV2}`, () =>
-      importer.type.should.eq(ImporterType.OASV2));
+      expect(importer.type).toEqual(ImporterType.OASV2));
   });
 
   describe('isSupported', () => {
@@ -19,7 +18,7 @@ describe('OASV2Importer', () => {
       });
 
       // assert
-      result.should.be.true;
+      expect(result).toBe(true);
     });
 
     it('should refuse to support of an incompatible version', () => {
@@ -31,7 +30,7 @@ describe('OASV2Importer', () => {
       });
 
       // assert
-      result.should.be.false;
+      expect(result).toBe(false);
     });
 
     it('should refuse to support of an undefined version', () => {
@@ -43,7 +42,7 @@ describe('OASV2Importer', () => {
       });
 
       // assert
-      result.should.be.false;
+      expect(result).toBe(false);
     });
   });
 
@@ -55,9 +54,9 @@ describe('OASV2Importer', () => {
       );
 
       // assert
-      (typeof result).should.eq('undefined');
-      importer.getErrorDetails('json').should.be.not.null;
-      importer.getErrorDetails('yaml').should.be.not.null;
+      expect(result).toBeUndefined();
+      expect(importer.getErrorDetails('json')).not.toBeNull();
+      expect(importer.getErrorDetails('yaml')).not.toBeNull();
     });
 
     it('should return the spec with expected type', async () => {
@@ -67,7 +66,7 @@ describe('OASV2Importer', () => {
       );
 
       // assert
-      result.should.deep.eq({
+      expect(result).toEqual({
         type: ImporterType.OASV2,
         name: 'example v1.json',
         format: 'json',

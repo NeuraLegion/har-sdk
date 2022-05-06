@@ -1,4 +1,3 @@
-import 'chai/register-should';
 import validJson from './fixtures/har.valid.json';
 import missedCookieName from './fixtures/har.missed-cookie-name.json';
 import missedServerIP from './fixtures/har.missed-server-ip.json';
@@ -21,7 +20,7 @@ describe('HarValidator', () => {
       const result = await validator.verify(input);
 
       // assert
-      result.should.be.empty;
+      expect(result).toEqual([]);
     });
 
     it('should successfully validate HAR if server IP is missed', async () => {
@@ -32,7 +31,7 @@ describe('HarValidator', () => {
       const result = await validator.verify(input);
 
       // assert
-      result.should.be.empty;
+      expect(result).toEqual([]);
     });
 
     it('should return error if server IP is not valid IP address', async () => {
@@ -97,7 +96,7 @@ describe('HarValidator', () => {
       const result = await validator.verify(input);
 
       // assert
-      result.should.deep.eq(expected);
+      expect(result).toEqual(expected);
     });
 
     it('should return error if entries are empty', async () => {
@@ -128,7 +127,7 @@ describe('HarValidator', () => {
       const result = await validator.verify(input);
 
       // assert
-      result.should.deep.eq(expected);
+      expect(result).toEqual(expected);
     });
 
     it('should return error if cookie name is missed', async () => {
@@ -150,7 +149,7 @@ describe('HarValidator', () => {
       const result = await validator.verify(input);
 
       // assert
-      result.should.deep.eq(expected);
+      expect(result).toEqual(expected);
     });
 
     it('should successfully validate HAR from GitHub issue: #75', async () => {
@@ -161,7 +160,7 @@ describe('HarValidator', () => {
       const result = await validator.verify(input);
 
       // assert
-      result.should.be.empty;
+      expect(result).toEqual([]);
     });
 
     it('should return error if method accepts wrong value', async () => {
@@ -199,7 +198,7 @@ describe('HarValidator', () => {
       const result = await validator.verify(input);
 
       // assert
-      result.should.deep.eq(expected);
+      expect(result).toEqual(expected);
     });
   });
 });

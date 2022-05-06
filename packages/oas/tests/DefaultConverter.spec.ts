@@ -1,14 +1,9 @@
 import { ConvertError, oas2har } from '../src';
 import yaml, { load } from 'js-yaml';
 import { OpenAPIV2, Request } from '@har-sdk/core';
-import { use } from 'chai';
-import chaiAsPromised from 'chai-as-promised';
 import { resolve } from 'path';
 import { readFile, readFileSync } from 'fs';
 import { promisify } from 'util';
-import 'chai/register-should';
-
-use(chaiAsPromised);
 
 describe('DefaultConverter', () => {
   describe('convert', () => {
@@ -84,7 +79,7 @@ describe('DefaultConverter', () => {
     ].forEach(({ input: inputFile, expected: expectedFile, message }) => {
       it(message, async () => {
         const content = readFileSync(
-          resolve(`./tests/fixtures/${inputFile}`),
+          resolve(__dirname, `./fixtures/${inputFile}`),
           'utf-8'
         );
         const input = inputFile.endsWith('json')
@@ -92,12 +87,15 @@ describe('DefaultConverter', () => {
           : load(content);
 
         const expected = JSON.parse(
-          readFileSync(resolve(`./tests/fixtures/${expectedFile}`), 'utf-8')
+          readFileSync(
+            resolve(__dirname, `./fixtures/${expectedFile}`),
+            'utf-8'
+          )
         );
 
         const result: Request[] = await oas2har(input as any);
 
-        result.should.deep.eq(expected);
+        expect(result).toEqual(expected);
       });
     });
 
@@ -169,15 +167,16 @@ describe('DefaultConverter', () => {
         '$1 ($2)'
       )}`, async () => {
         const content: string = await promisify(readFile)(
-          resolve(`./tests/fixtures/${input}`),
+          resolve(__dirname, `./fixtures/${input}`),
           'utf8'
         );
 
         const result = oas2har(yaml.load(content) as OpenAPIV2.Document);
 
-        return result.should.be
-          .rejectedWith(ConvertError)
-          .and.eventually.have.property('jsonPointer', expected);
+        await expect(result).rejects.toThrow(ConvertError);
+        await expect(result).rejects.toMatchObject({
+          jsonPointer: expected
+        });
       })
     );
   });

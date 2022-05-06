@@ -1,4 +1,3 @@
-import 'chai/register-should';
 import { JsonSyntaxErrorDetailsExtractor } from '../src/loaders/errors';
 
 describe('JsonSyntaxErrorDetailsExtractor', () => {
@@ -21,7 +20,7 @@ describe('JsonSyntaxErrorDetailsExtractor', () => {
     const result = extractor.extract(inputError, inputSource);
 
     // assert
-    result.should.be.deep.eq({
+    expect(result).toEqual({
       message: 'error',
       offset: 15
     });
@@ -38,7 +37,7 @@ describe('JsonSyntaxErrorDetailsExtractor', () => {
     const result = extractor.extract(inputError, inputSource);
 
     // assert
-    result.should.be.deep.eq({
+    expect(result).toEqual({
       message: 'bad control character in string literal',
       offset: 18
     });
@@ -55,7 +54,7 @@ describe('JsonSyntaxErrorDetailsExtractor', () => {
     const result = extractor.extract(inputError, inputSource);
 
     // assert
-    result.should.be.deep.eq({
+    expect(result).toEqual({
       message: 'Unexpected token \\n in JSON',
       offset: 17
     });
@@ -74,7 +73,7 @@ describe('JsonSyntaxErrorDetailsExtractor', () => {
     const result = extractor.extract(inputError, inputSource);
 
     // assert
-    result.should.be.deep.eq({
+    expect(result).toEqual({
       message: 'custom',
       offset: 0
     });
@@ -93,7 +92,7 @@ describe('JsonSyntaxErrorDetailsExtractor', () => {
     const result = extractor.extract(inputError, inputSource);
 
     // assert
-    result.should.be.deep.eq({
+    expect(result).toEqual({
       message: 'custom',
       offset: inputSource.length
     });

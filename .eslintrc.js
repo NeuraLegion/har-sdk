@@ -176,11 +176,6 @@ module.exports = {
       {
         paths: [
           {
-            name: 'chai',
-            importNames: ['should'],
-            message: "Please `import 'chai/register-should'` instead"
-          },
-          {
             name: 'querystring',
             message: "Please `import 'qs'` instead"
           }

@@ -3,7 +3,6 @@ import {
   LexicalScope,
   UrlVariableParser
 } from '../src/parser';
-import 'chai/register-should';
 
 describe('UrlVariableParser', () => {
   const generators = new DefaultGenerators();
@@ -14,7 +13,7 @@ describe('UrlVariableParser', () => {
 
     const result = parser.parse('', scope);
 
-    result.should.equal('');
+    expect(result).toEqual('');
   });
 
   it('should return original string if it is not the path parameter', () => {
@@ -23,7 +22,7 @@ describe('UrlVariableParser', () => {
 
     const result = parser.parse('jobId', scope);
 
-    result.should.equal('jobId');
+    expect(result).toEqual('jobId');
   });
 
   it('should return value according to type if value is null or undefined', () => {
@@ -32,7 +31,7 @@ describe('UrlVariableParser', () => {
 
     const result = parser.parse(':jobId', scope);
 
-    result.should.match(/\d{1,4}/);
+    expect(result).toMatch(/\d{1,4}/);
   });
 
   it('should substitute single variable', () => {
@@ -41,7 +40,7 @@ describe('UrlVariableParser', () => {
 
     const result = parser.parse(':jobId', scope);
 
-    result.should.equal('1');
+    expect(result).toEqual('1');
   });
 
   it('should preserve nested env variable', () => {
@@ -50,7 +49,7 @@ describe('UrlVariableParser', () => {
 
     const result = parser.parse(':jobId', scope);
 
-    result.should.equal('{{_jobId}}');
+    expect(result).toEqual('{{_jobId}}');
   });
 
   it('should throw exception if variable is not defined', () => {
@@ -59,7 +58,7 @@ describe('UrlVariableParser', () => {
 
     const result = () => parser.parse(':jobId', scope);
 
-    result.should.throw(Error, 'Undefined variable: `jobId`');
+    expect(result).toThrowError('Undefined variable: `jobId`');
   });
 
   it('should throw exception if wrong value is assigned to variable (postmanlabs/openapi-to-postman#27)', () => {
@@ -70,6 +69,6 @@ describe('UrlVariableParser', () => {
 
     const result = () => parser.parse(':jobId', scope);
 
-    result.should.throw(Error, 'Unexpected value of `jobId` variable');
+    expect(result).toThrowError('Unexpected value of `jobId` variable');
   });
 });

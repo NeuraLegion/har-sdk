@@ -37,8 +37,8 @@
     "lint": "eslint --ignore-path ../../.eslintignore .",
     "format": "prettier --ignore-path ../../.prettierignore --check .",
     "compile": "tsc -b tsconfig.build.json",
-    "test": "cross-env NODE_ENV=test mocha tests/**/*.spec.ts",
-    "coverage": "nyc npm t -- --reporter xunit --reporter-options output=.mocha/testspec.xunit.xml"
+    "test": "cross-env NODE_ENV=test jest",
+    "coverage": "cross-env NODE_ENV=test jest --coverage"
   },
   "dependencies": {
     "@har-sdk/core": "*",

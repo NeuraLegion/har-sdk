@@ -1,5 +1,4 @@
 import { sample } from '../src';
-import 'chai/register-should';
 
 describe('oneOf and anyOf', () => {
   it('should support oneOf', () => {
@@ -14,7 +13,7 @@ describe('oneOf and anyOf', () => {
       ]
     };
     const result = sample(schema);
-    result.should.be.a('string');
+    expect(typeof result).toBe('string');
   });
 
   it('should support anyOf', () => {
@@ -29,7 +28,7 @@ describe('oneOf and anyOf', () => {
       ]
     };
     const result = sample(schema);
-    result.should.be.a('string');
+    expect(typeof result).toBe('string');
   });
 
   it('should prefer oneOf if anyOf and oneOf are on the same level ', () => {
@@ -46,6 +45,6 @@ describe('oneOf and anyOf', () => {
       ]
     };
     const result = sample(schema);
-    result.should.be.a('number');
+    expect(typeof result).toBe('number');
   });
 });

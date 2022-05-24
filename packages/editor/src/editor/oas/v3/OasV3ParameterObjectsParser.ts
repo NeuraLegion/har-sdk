@@ -13,7 +13,9 @@ export class OasV3ParameterObjectsParser extends BaseOasParameterObjectsParser<
     paramObj: OpenAPIV3.ParameterObject
   ): string | undefined {
     return (
-      paramObj.example ?? (paramObj.schema as OpenAPIV3.SchemaObject).default
+      paramObj.example ??
+      (paramObj.schema as OpenAPIV3.SchemaObject).example ??
+      (paramObj.schema as OpenAPIV3.SchemaObject).default
     );
   }
 

@@ -12,15 +12,23 @@ export class Sampler {
       tokens: string[];
     }
   ): any {
-    return this.sample('schema' in param ? param.schema : param, {
-      spec: context.spec,
-      jsonPointer: pointer.compile([
-        ...context.tokens,
-        'parameters',
-        context.idx.toString(),
-        ...('schema' in param ? ['schema'] : [])
-      ])
-    });
+    return this.sample(
+      'schema' in param
+        ? {
+            ...param.schema,
+            ...(param.example !== undefined ? { example: param.example } : {})
+          }
+        : param,
+      {
+        spec: context.spec,
+        jsonPointer: pointer.compile([
+          ...context.tokens,
+          'parameters',
+          context.idx.toString(),
+          ...('schema' in param ? ['schema'] : [])
+        ])
+      }
+    );
   }
 
   /**

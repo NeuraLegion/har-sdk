@@ -1,0 +1,173 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Path parameters default values",
+    "description": "Correct using of path parameter default values on sampling",
+    "version": "1.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [
+    {
+      "url": "https://brokencrystals.com"
+    }
+  ],
+  "components": {
+    "schemas": {
+      "ResponseDto": {
+        "type": "object",
+        "properties": {
+          "ok": {
+            "type": "boolean"
+          }
+        },
+        "required": ["ok"]
+      }
+    }
+  },
+  "paths": {
+    "/api/param.example/{email}": {
+      "get": {
+        "description": "Should use value from param.example",
+        "parameters": [
+          {
+            "name": "email",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "example": "param.example@a.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/schema.default/{email}": {
+      "get": {
+        "description": "Should use value from schema.default",
+        "parameters": [
+          {
+            "name": "email",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string",
+              "default": "schema.default@a.com"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/schema.example/{email}": {
+      "get": {
+        "description": "Should use value from schema.example",
+        "parameters": [
+          {
+            "name": "email",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string",
+              "example": "schema.example@a.com"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/param.example.precedence/{email}": {
+      "get": {
+        "description": "param.example should take precedence over schema.example and schema.default",
+        "parameters": [
+          {
+            "name": "email",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string",
+              "example": "schema.example@a.com",
+              "default": "schema.default@a.com"
+            },
+            "example": "param.example@a.com"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/schema.example.precedence/{email}": {
+      "get": {
+        "description": "schema.example should take precedence over schema.default",
+        "parameters": [
+          {
+            "name": "email",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string",
+              "example": "schema.example@a.com",
+              "default": "schema.default@a.com"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

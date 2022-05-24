@@ -54,6 +54,28 @@ describe('OasV3Editor', () => {
       expect(result).toEqual(expected);
     });
 
+    it('should parse parameter default values in proper precedence', async () => {
+      await openApiParser.setup(
+        readFileSync(
+          resolve(__dirname, './fixtures/oas3-param-values-precedence.json'),
+          'utf-8'
+        )
+      );
+      const expected = JSON.parse(
+        readFileSync(
+          resolve(
+            __dirname,
+            './fixtures/oas3-param-values-precedence.result.json'
+          ),
+          'utf-8'
+        )
+      );
+
+      const result = openApiParser.parse();
+
+      expect(result).toEqual(expected);
+    });
+
     it('should be exception on call "parse" before "setup"', () =>
       expect(() => openApiParser.parse()).toThrowError(
         'You have to call "setup" to initialize the document'

@@ -1,0 +1,52 @@
+[
+  {
+    "bodySize": 0,
+    "cookies": [],
+    "headers": [{ "name": "accept", "value": "application/json" }],
+    "headersSize": 0,
+    "httpVersion": "HTTP/1.1",
+    "method": "GET",
+    "queryString": [],
+    "url": "https://brokencrystals.com/api/param.example/param.example%40a.com"
+  },
+  {
+    "bodySize": 0,
+    "cookies": [],
+    "headers": [{ "name": "accept", "value": "application/json" }],
+    "headersSize": 0,
+    "httpVersion": "HTTP/1.1",
+    "method": "GET",
+    "queryString": [],
+    "url": "https://brokencrystals.com/api/schema.default/schema.default%40a.com"
+  },
+  {
+    "bodySize": 0,
+    "cookies": [],
+    "headers": [{ "name": "accept", "value": "application/json" }],
+    "headersSize": 0,
+    "httpVersion": "HTTP/1.1",
+    "method": "GET",
+    "queryString": [],
+    "url": "https://brokencrystals.com/api/schema.example/schema.example%40a.com"
+  },
+  {
+    "bodySize": 0,
+    "cookies": [],
+    "headers": [{ "name": "accept", "value": "application/json" }],
+    "headersSize": 0,
+    "httpVersion": "HTTP/1.1",
+    "method": "GET",
+    "queryString": [],
+    "url": "https://brokencrystals.com/api/param.example.precedence/param.example%40a.com"
+  },
+  {
+    "bodySize": 0,
+    "cookies": [],
+    "headers": [{ "name": "accept", "value": "application/json" }],
+    "headersSize": 0,
+    "httpVersion": "HTTP/1.1",
+    "method": "GET",
+    "queryString": [],
+    "url": "https://brokencrystals.com/api/schema.example.precedence/schema.example%40a.com"
+  }
+]

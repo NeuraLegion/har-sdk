@@ -1,0 +1,119 @@
+{
+  "parameters": [
+    {
+      "paramType": "variable",
+      "name": "servers",
+      "valueJsonPointer": "/servers",
+      "value": [
+        {
+          "url": "https://brokencrystals.com"
+        }
+      ]
+    }
+  ],
+  "jsonPointer": "/",
+  "path": "/",
+  "name": "Path parameters default values",
+  "children": [
+    {
+      "path": "/api/param.example/{email}",
+      "jsonPointer": "/paths/~1api~1param.example~1{email}",
+      "children": [
+        {
+          "path": "/api/param.example/{email}",
+          "method": "GET",
+          "jsonPointer": "/paths/~1api~1param.example~1{email}/get",
+          "parameters": [
+            {
+              "paramType": "location",
+              "name": "email",
+              "value": "param.example@a.com",
+              "valueJsonPointer": "/paths/~1api~1param.example~1{email}/get/parameters/0/example",
+              "location": "path"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/api/schema.default/{email}",
+      "jsonPointer": "/paths/~1api~1schema.default~1{email}",
+      "children": [
+        {
+          "path": "/api/schema.default/{email}",
+          "method": "GET",
+          "jsonPointer": "/paths/~1api~1schema.default~1{email}/get",
+          "parameters": [
+            {
+              "paramType": "location",
+              "name": "email",
+              "value": "schema.default@a.com",
+              "valueJsonPointer": "/paths/~1api~1schema.default~1{email}/get/parameters/0/example",
+              "location": "path"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/api/schema.example/{email}",
+      "jsonPointer": "/paths/~1api~1schema.example~1{email}",
+      "children": [
+        {
+          "path": "/api/schema.example/{email}",
+          "method": "GET",
+          "jsonPointer": "/paths/~1api~1schema.example~1{email}/get",
+          "parameters": [
+            {
+              "paramType": "location",
+              "name": "email",
+              "value": "schema.example@a.com",
+              "valueJsonPointer": "/paths/~1api~1schema.example~1{email}/get/parameters/0/example",
+              "location": "path"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/api/param.example.precedence/{email}",
+      "jsonPointer": "/paths/~1api~1param.example.precedence~1{email}",
+      "children": [
+        {
+          "path": "/api/param.example.precedence/{email}",
+          "method": "GET",
+          "jsonPointer": "/paths/~1api~1param.example.precedence~1{email}/get",
+          "parameters": [
+            {
+              "paramType": "location",
+              "name": "email",
+              "value": "param.example@a.com",
+              "valueJsonPointer": "/paths/~1api~1param.example.precedence~1{email}/get/parameters/0/example",
+              "location": "path"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/api/schema.example.precedence/{email}",
+      "jsonPointer": "/paths/~1api~1schema.example.precedence~1{email}",
+      "children": [
+        {
+          "path": "/api/schema.example.precedence/{email}",
+          "method": "GET",
+          "jsonPointer": "/paths/~1api~1schema.example.precedence~1{email}/get",
+          "parameters": [
+            {
+              "paramType": "location",
+              "name": "email",
+              "value": "schema.example@a.com",
+              "valueJsonPointer": "/paths/~1api~1schema.example.precedence~1{email}/get/parameters/0/example",
+              "location": "path"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

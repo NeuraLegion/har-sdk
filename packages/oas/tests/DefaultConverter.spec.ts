@@ -80,6 +80,11 @@ describe('DefaultConverter', () => {
         input: 'params-values-precedence.oas.json',
         expected: 'params-values-precedence.oas.result.json',
         message: 'should correctly use default values of path parameter'
+      },
+      {
+        input: 'params-body-default.swagger.json',
+        expected: 'params-body-default.swagger.result.json',
+        message: 'should correctly use default value for swagger body'
       }
     ].forEach(({ input: inputFile, expected: expectedFile, message }) => {
       it(message, async () => {

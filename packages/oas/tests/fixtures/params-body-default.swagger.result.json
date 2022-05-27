@@ -1,0 +1,33 @@
+[
+  {
+    "queryString": [],
+    "url": "https://petstore.swagger.com/v2/pet",
+    "method": "PUT",
+    "headers": [
+      {
+        "value": "application/json",
+        "name": "content-type"
+      },
+      {
+        "value": "application/xml",
+        "name": "content-type"
+      },
+      {
+        "value": "application/json",
+        "name": "accept"
+      },
+      {
+        "value": "application/xml",
+        "name": "accept"
+      }
+    ],
+    "httpVersion": "HTTP/1.1",
+    "cookies": [],
+    "headersSize": 0,
+    "bodySize": 0,
+    "postData": {
+      "mimeType": "application/json",
+      "text": "{ \"id\": \"someId\", \"name\": \"someName\" }"
+    }
+  }
+]

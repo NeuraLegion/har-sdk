@@ -266,7 +266,7 @@ describe('Capture HAR', () => {
     nock.enableNetConnect();
 
     // act
-    const har = await captureHar({ url: 'http://x' });
+    const har = await captureHar({ url: 'http://a.a' });
 
     // assert
 
@@ -276,14 +276,14 @@ describe('Capture HAR', () => {
           {
             request: {
               method: 'GET',
-              url: 'http://x/'
+              url: 'http://a.a/'
             },
             response: {
               status: 0,
               _error: {
                 code: expect.stringMatching(/EAI_AGAIN|ENOTFOUND/),
                 message: expect.stringMatching(
-                  /getaddrinfo EAI_AGAIN x|getaddrinfo ENOTFOUND x/
+                  /getaddrinfo EAI_AGAIN a.a|getaddrinfo ENOTFOUND a.a/
                 )
               },
               content: {

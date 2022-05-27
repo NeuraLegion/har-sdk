@@ -112,7 +112,7 @@ export class PostDataConverter implements SubConverter<PostData | null> {
   private encodeValue(value: any, contentType: string, encoding?: any): string {
     switch (contentType) {
       case 'application/json':
-        return JSON.stringify(value);
+        return typeof value === 'string' ? value : JSON.stringify(value);
 
       case 'application/x-www-form-urlencoded':
         return stringify(value, {

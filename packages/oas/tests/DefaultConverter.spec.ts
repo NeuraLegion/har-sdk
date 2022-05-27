@@ -85,6 +85,11 @@ describe('DefaultConverter', () => {
         input: 'params-body-default.swagger.json',
         expected: 'params-body-default.swagger.result.json',
         message: 'should correctly use default value for swagger body'
+      },
+      {
+        input: 'params-body-default.oas.yaml',
+        expected: 'params-body-default.oas.result.json',
+        message: 'should correctly use default value for oas body'
       }
     ].forEach(({ input: inputFile, expected: expectedFile, message }) => {
       it(message, async () => {

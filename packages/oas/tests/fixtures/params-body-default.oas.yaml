@@ -1,0 +1,27 @@
+openapi: 3.0.0
+info:
+  title: Body default value test
+  version: 1.0.0
+servers:
+  - url: https://brokencrystals.com
+paths:
+  /v1/entity:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                x:
+                  type: string
+            example:
+              id: 'someId'
+              name: 'someName'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              example:
+                ok: true

@@ -68,16 +68,24 @@ export class PostDataConverter implements SubConverter<PostData | null> {
     const sampleContent = content[contentType];
 
     if (sampleContent?.schema) {
-      const data = this.sampler.sample(sampleContent.schema, {
-        spec: this.spec,
-        jsonPointer: pointer.compile([
-          ...tokens,
-          'requestBody',
-          'content',
-          contentType,
-          'schema'
-        ])
-      });
+      const data = this.sampler.sample(
+        {
+          ...sampleContent.schema,
+          ...(sampleContent.example !== undefined
+            ? { example: sampleContent.example }
+            : {})
+        },
+        {
+          spec: this.spec,
+          jsonPointer: pointer.compile([
+            ...tokens,
+            'requestBody',
+            'content',
+            contentType,
+            'schema'
+          ])
+        }
+      );
 
       return this.encodePayload(data, contentType, sampleContent.encoding);
     }

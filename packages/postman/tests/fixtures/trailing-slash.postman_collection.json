@@ -1,0 +1,25 @@
+{
+  "info": {
+    "_postman_id": "ef94f8d6-3f56-4533-b9de-877ded64696f",
+    "name": "Swagger Petstore",
+    "description": "This is a sample server Petstore server.  You can find out more about     Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).      For this sample, you can use the api key `special-key` to test the authorization     filters.\n\nContact Support:\n Email: apiteam@swagger.io",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Profile",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://example.com/1/profile/",
+          "protocol": "https",
+          "host": ["example", "com"],
+          "path": ["1", "profile", ""]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": []
+}

@@ -21,7 +21,7 @@
         "value": ""
       }
     ],
-    "url": "https://petstore.swagger.io/store/order?dummy=",
+    "url": "https://petstore.swagger.io/store/order/?dummy=",
     "method": "PUT",
     "headers": [
       {

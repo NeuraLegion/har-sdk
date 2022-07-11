@@ -1,7 +1,7 @@
-import { postman2har } from '../src';
+import { ConvertError, postman2har } from '../src';
 import collection from './fixtures/Salesforce APIs.postman_collection.json';
 import collectionWithoutVariables from './fixtures/no-such-variables.postman_collection.json';
-import { ConvertError } from '../src/parser';
+import urlWithTrailingSlash from './fixtures/trailing-slash.postman_collection.json';
 import { Postman, Request } from '@har-sdk/core';
 import { readFile } from 'fs';
 import { resolve } from 'path';
@@ -20,6 +20,24 @@ describe('DefaultConverter', () => {
       } as Postman.Document);
 
       expect(result).toEqual([]);
+    });
+
+    it('should convert Postman collection preserving trailing slash if it is specified explicitly', async () => {
+      const expected = JSON.parse(
+        await promisify(readFile)(
+          resolve(
+            __dirname,
+            './fixtures/trailing-slash.postman_collection.result.json'
+          ),
+          'utf-8'
+        )
+      );
+
+      const result: Request[] = await postman2har(
+        urlWithTrailingSlash as Postman.Document
+      );
+
+      expect(result).toEqual(expected);
     });
 
     it('should convert Postman v2.1.0 collection to HAR', async () => {

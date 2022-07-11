@@ -31,7 +31,7 @@
   },
   {
     "queryString": [],
-    "url": "http://petstore.swagger.io/v1/simpleStylePrimitiveParamExploded/lorem",
+    "url": "http://petstore.swagger.io/v1/simpleStylePrimitiveParamExploded/lorem/",
     "method": "GET",
     "headers": [
       {
@@ -104,7 +104,6 @@
     "headersSize": 0,
     "bodySize": 0
   },
-
   {
     "queryString": [],
     "url": "http://petstore.swagger.io/v1/defaultStyleArrayParam/lorem,lorem",
@@ -137,7 +136,7 @@
   },
   {
     "queryString": [],
-    "url": "http://petstore.swagger.io/v1/simpleStyleArrayParamExploded/lorem,lorem",
+    "url": "http://petstore.swagger.io/v1/simpleStyleArrayParamExploded/lorem,lorem/",
     "method": "GET",
     "headers": [
       {
@@ -210,7 +209,6 @@
     "headersSize": 0,
     "bodySize": 0
   },
-
   {
     "queryString": [],
     "url": "http://petstore.swagger.io/v1/defaultStyleObjectParam/a,42,b,xyz",
@@ -243,7 +241,7 @@
   },
   {
     "queryString": [],
-    "url": "http://petstore.swagger.io/v1/simpleStyleObjectParamExploded/a=42,b=xyz",
+    "url": "http://petstore.swagger.io/v1/simpleStyleObjectParamExploded/a=42,b=xyz/",
     "method": "GET",
     "headers": [
       {

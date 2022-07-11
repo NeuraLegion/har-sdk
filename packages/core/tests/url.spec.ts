@@ -13,12 +13,16 @@ describe('url', () => {
       { input: '//example.com', output: 'https://example.com' },
       { input: 'example.com/path', output: 'https://example.com/path' },
       {
+        input: 'https://example.com/path/1/',
+        output: 'https://example.com/path/1/'
+      },
+      {
         input: 'http://////example.com',
         output: 'http://example.com'
       },
       {
         input: 'http://example.com/pets/?offset=10&limit=10',
-        output: 'http://example.com/pets?limit=10&offset=10'
+        output: 'http://example.com/pets/?limit=10&offset=10'
       },
       {
         input: 'HTTP://example.com',
@@ -46,7 +50,7 @@ describe('url', () => {
       },
       {
         input: 'HTTP://example.COM////foo////dummy/../bar/?',
-        output: 'http://example.com/foo/bar'
+        output: 'http://example.com/foo/bar/'
       }
     ].forEach(({ input, output }) =>
       it(`should return ${output} for ${input}`, () => {

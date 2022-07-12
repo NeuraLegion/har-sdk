@@ -1,0 +1,12 @@
+[
+  {
+    "bodySize": -1,
+    "cookies": [],
+    "headers": [],
+    "headersSize": -1,
+    "httpVersion": "HTTP/1.1",
+    "method": "GET",
+    "queryString": [],
+    "url": "https://example.com/1/profile/"
+  }
+]

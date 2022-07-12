@@ -1081,7 +1081,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/composite",
+    "url": "https://example.com/services/data/v53.0/composite/",
     "method": "POST",
     "headers": [
       {
@@ -1138,7 +1138,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/composite/tree",
+    "url": "https://example.com/services/data/v53.0/composite/tree/",
     "method": "POST",
     "headers": [
       {
@@ -1176,7 +1176,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/composite/sobjects?fields=&ids=",
+    "url": "https://example.com/services/data/v53.0/composite/sobjects/?fields=&ids=",
     "method": "GET",
     "headers": [
       {
@@ -1204,7 +1204,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/composite/sobjects",
+    "url": "https://example.com/services/data/v53.0/composite/sobjects/",
     "method": "PATCH",
     "headers": [
       {
@@ -1223,7 +1223,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/composite/sobjects?allOrNone=&ids=",
+    "url": "https://example.com/services/data/v53.0/composite/sobjects/?allOrNone=&ids=",
     "method": "DELETE",
     "headers": [
       {
@@ -1405,7 +1405,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/connect/files",
+    "url": "https://example.com/services/data/v53.0/connect/files/",
     "method": "GET",
     "headers": [],
     "queryString": [],
@@ -1425,7 +1425,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/connect/files",
+    "url": "https://example.com/services/data/v53.0/connect/files/",
     "method": "DELETE",
     "headers": [],
     "queryString": [],
@@ -1554,7 +1554,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/chatter/feed-elements",
+    "url": "https://example.com/services/data/v53.0/chatter/feed-elements/",
     "method": "DELETE",
     "headers": [],
     "queryString": [],
@@ -1579,7 +1579,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/chatter/comments",
+    "url": "https://example.com/services/data/v53.0/chatter/comments/",
     "method": "PATCH",
     "headers": [
       {
@@ -1598,7 +1598,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/chatter/comments",
+    "url": "https://example.com/services/data/v53.0/chatter/comments/",
     "method": "DELETE",
     "headers": [],
     "queryString": [],
@@ -1720,7 +1720,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/chatter/group-membership-requests?responseMessage=Welcome+to+the+group%21&status=Accepted",
+    "url": "https://example.com/services/data/v53.0/chatter/group-membership-requests/?responseMessage=Welcome+to+the+group%21&status=Accepted",
     "method": "PATCH",
     "headers": [],
     "queryString": [
@@ -1763,7 +1763,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/chatter/subscriptions",
+    "url": "https://example.com/services/data/v53.0/chatter/subscriptions/",
     "method": "DELETE",
     "headers": [],
     "queryString": [],
@@ -2270,7 +2270,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/sobjects",
+    "url": "https://example.com/services/data/v53.0/sobjects/",
     "method": "GET",
     "headers": [
       {
@@ -2285,7 +2285,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/sobjects",
+    "url": "https://example.com/services/data/v53.0/sobjects/",
     "method": "GET",
     "headers": [
       {
@@ -2300,7 +2300,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/sobjects",
+    "url": "https://example.com/services/data/v53.0/sobjects/",
     "method": "POST",
     "headers": [
       {
@@ -2334,7 +2334,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/sobjects/deleted?end=&start=",
+    "url": "https://example.com/services/data/v53.0/sobjects/deleted/?end=&start=",
     "method": "GET",
     "headers": [
       {
@@ -2358,7 +2358,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/sobjects/updated?end=&start=",
+    "url": "https://example.com/services/data/v53.0/sobjects/updated/?end=&start=",
     "method": "GET",
     "headers": [
       {
@@ -2382,7 +2382,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/sobjects/describe/namedLayouts",
+    "url": "https://example.com/services/data/v53.0/sobjects/describe/namedLayouts/",
     "method": "GET",
     "headers": [
       {
@@ -2397,7 +2397,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/sobjects",
+    "url": "https://example.com/services/data/v53.0/sobjects/",
     "method": "GET",
     "headers": [
       {
@@ -2412,7 +2412,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/sobjects",
+    "url": "https://example.com/services/data/v53.0/sobjects/",
     "method": "PATCH",
     "headers": [
       {
@@ -2431,7 +2431,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/sobjects",
+    "url": "https://example.com/services/data/v53.0/sobjects/",
     "method": "DELETE",
     "headers": [
       {
@@ -2446,7 +2446,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/sobjects",
+    "url": "https://example.com/services/data/v53.0/sobjects/",
     "method": "GET",
     "headers": [
       {
@@ -2461,7 +2461,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/sobjects",
+    "url": "https://example.com/services/data/v53.0/sobjects/",
     "method": "GET",
     "headers": [
       {
@@ -2476,7 +2476,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/sobjects/describe/approvalLayouts",
+    "url": "https://example.com/services/data/v53.0/sobjects/describe/approvalLayouts/",
     "method": "GET",
     "headers": [
       {
@@ -2506,7 +2506,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/sobjects/Global/describe/layouts",
+    "url": "https://example.com/services/data/v53.0/sobjects/Global/describe/layouts/",
     "method": "GET",
     "headers": [
       {
@@ -2521,7 +2521,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/sobjects/describe/layouts",
+    "url": "https://example.com/services/data/v53.0/sobjects/describe/layouts/",
     "method": "GET",
     "headers": [
       {
@@ -2536,7 +2536,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/sobjects/describe/layouts",
+    "url": "https://example.com/services/data/v53.0/sobjects/describe/layouts/",
     "method": "GET",
     "headers": [
       {
@@ -2566,7 +2566,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/sobjects/quickActions",
+    "url": "https://example.com/services/data/v53.0/sobjects/quickActions/",
     "method": "GET",
     "headers": [
       {
@@ -2581,7 +2581,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/sobjects/richTextImageFields",
+    "url": "https://example.com/services/data/v53.0/sobjects/richTextImageFields/",
     "method": "GET",
     "headers": [
       {
@@ -2596,7 +2596,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/sobjects",
+    "url": "https://example.com/services/data/v53.0/sobjects/",
     "method": "GET",
     "headers": [
       {
@@ -2779,7 +2779,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/sobjects/listviews?limit=&offset=",
+    "url": "https://example.com/services/data/v53.0/sobjects/listviews/?limit=&offset=",
     "method": "GET",
     "headers": [
       {
@@ -2862,7 +2862,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/query?q=SELECT+FIELDS%28ALL%29+from+EventLogFile+ORDER+BY+LastModifiedDate+DESC+LIMIT+200",
+    "url": "https://example.com/services/data/v53.0/query/?q=SELECT+FIELDS%28ALL%29+from+EventLogFile+ORDER+BY+LastModifiedDate+DESC+LIMIT+200",
     "method": "GET",
     "headers": [
       {
@@ -2980,7 +2980,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/search/layout?q=",
+    "url": "https://example.com/services/data/v53.0/search/layout/?q=",
     "method": "GET",
     "headers": [
       {
@@ -3164,7 +3164,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/parameterizedSearch?q=",
+    "url": "https://example.com/services/data/v53.0/parameterizedSearch/?q=",
     "method": "GET",
     "headers": [
       {
@@ -3232,7 +3232,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/event/eventSchema?payloadFormat=",
+    "url": "https://example.com/services/data/v53.0/event/eventSchema/?payloadFormat=",
     "method": "GET",
     "headers": [
       {
@@ -3301,7 +3301,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/support/embeddedservice/configuration",
+    "url": "https://example.com/services/data/v53.0/support/embeddedservice/configuration/",
     "method": "GET",
     "headers": [
       {
@@ -3340,7 +3340,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/support/dataCategoryGroups/dataCategories?sObjectName=",
+    "url": "https://example.com/services/data/v53.0/support/dataCategoryGroups/dataCategories/?sObjectName=",
     "method": "GET",
     "headers": [
       {
@@ -3408,7 +3408,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/support/knowledgeArticles?channel=&isUrlName=&updateViewStat=",
+    "url": "https://example.com/services/data/v53.0/support/knowledgeArticles/?channel=&isUrlName=&updateViewStat=",
     "method": "GET",
     "headers": [
       {
@@ -3470,7 +3470,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0",
+    "url": "https://example.com/services/data/v53.0/",
     "method": "GET",
     "headers": [
       {
@@ -3499,7 +3499,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/appMenu",
+    "url": "https://example.com/services/data/v53.0/appMenu/",
     "method": "GET",
     "headers": [
       {
@@ -3569,7 +3569,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/query?q=SELECT+FIELDS%28All%29+FROM+EventLogFile+LIMIT+200",
+    "url": "https://example.com/services/data/v53.0/query/?q=SELECT+FIELDS%28All%29+FROM+EventLogFile+LIMIT+200",
     "method": "GET",
     "headers": [
       {
@@ -3589,7 +3589,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/queryAll?explain=&q=SELECT+name+from+Account",
+    "url": "https://example.com/services/data/v53.0/queryAll/?explain=&q=SELECT+name+from+Account",
     "method": "GET",
     "headers": [
       {
@@ -3671,7 +3671,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/tooling/query?q=SELECT+Id%2C+SandboxName%2C+LicenseType%2C+AutoActivate+FROM+SandboxInfo",
+    "url": "https://example.com/services/data/v53.0/tooling/query/?q=SELECT+Id%2C+SandboxName%2C+LicenseType%2C+AutoActivate+FROM+SandboxInfo",
     "method": "GET",
     "headers": [
       {
@@ -3714,7 +3714,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/tooling/sobjects/SandboxInfo",
+    "url": "https://example.com/services/data/v53.0/tooling/sobjects/SandboxInfo/",
     "method": "GET",
     "headers": [],
     "queryString": [],
@@ -3724,7 +3724,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/tooling/sobjects/SandboxInfo",
+    "url": "https://example.com/services/data/v53.0/tooling/sobjects/SandboxInfo/",
     "method": "PATCH",
     "headers": [
       {
@@ -3743,7 +3743,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/tooling/sobjects/SandboxInfo",
+    "url": "https://example.com/services/data/v53.0/tooling/sobjects/SandboxInfo/",
     "method": "DELETE",
     "headers": [],
     "queryString": [],
@@ -3773,7 +3773,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/tooling/executeAnonymous?anonymousBody=System.Debug%28%27awesome%27%29%3B",
+    "url": "https://example.com/services/data/v53.0/tooling/executeAnonymous/?anonymousBody=System.Debug%28%27awesome%27%29%3B",
     "method": "GET",
     "headers": [
       {
@@ -3797,7 +3797,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/tooling/query?q=",
+    "url": "https://example.com/services/data/v53.0/tooling/query/?q=",
     "method": "GET",
     "headers": [
       {
@@ -3883,7 +3883,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/tooling/sobjects",
+    "url": "https://example.com/services/data/v53.0/tooling/sobjects/",
     "method": "GET",
     "headers": [],
     "queryString": [],
@@ -3893,7 +3893,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/tooling/sobjects",
+    "url": "https://example.com/services/data/v53.0/tooling/sobjects/",
     "method": "GET",
     "headers": [],
     "queryString": [],
@@ -3913,7 +3913,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/tooling/sobjects",
+    "url": "https://example.com/services/data/v53.0/tooling/sobjects/",
     "method": "POST",
     "headers": [
       {
@@ -3932,7 +3932,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/tooling/sobjects",
+    "url": "https://example.com/services/data/v53.0/tooling/sobjects/",
     "method": "GET",
     "headers": [],
     "queryString": [],
@@ -3942,7 +3942,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/ui-api/record-ui?childRelationships=&formFactor=&layoutTypes=&modes=&optionalFields=&pageSize=&updateMru=",
+    "url": "https://example.com/services/data/v53.0/ui-api/record-ui/?childRelationships=&formFactor=&layoutTypes=&modes=&optionalFields=&pageSize=&updateMru=",
     "method": "GET",
     "headers": [],
     "queryString": [
@@ -3981,7 +3981,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/ui-api/layout?formFactor=&layoutTypes=&modes=&recordTypeId=",
+    "url": "https://example.com/services/data/v53.0/ui-api/layout/?formFactor=&layoutTypes=&modes=&recordTypeId=",
     "method": "GET",
     "headers": [],
     "queryString": [
@@ -4018,7 +4018,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/ui-api/object-info",
+    "url": "https://example.com/services/data/v53.0/ui-api/object-info/",
     "method": "GET",
     "headers": [],
     "queryString": [],
@@ -4038,7 +4038,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/ui-api/object-info/picklist-values",
+    "url": "https://example.com/services/data/v53.0/ui-api/object-info/picklist-values/",
     "method": "GET",
     "headers": [],
     "queryString": [],
@@ -4048,7 +4048,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/ui-api/records/child-relationships?fields=&optionalFields=&page=&pageSize=&pageToken=",
+    "url": "https://example.com/services/data/v53.0/ui-api/records/child-relationships/?fields=&optionalFields=&page=&pageSize=&pageToken=",
     "method": "GET",
     "headers": [],
     "queryString": [
@@ -4079,7 +4079,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/ui-api/records?childRelationships=&fields=&layoutTypes=&modes=&optionalFields=&pageSize=&updateMru=",
+    "url": "https://example.com/services/data/v53.0/ui-api/records/?childRelationships=&fields=&layoutTypes=&modes=&optionalFields=&pageSize=&updateMru=",
     "method": "GET",
     "headers": [],
     "queryString": [
@@ -4118,7 +4118,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/ui-api/records/batch?childRelationships=&fields=&layoutTypes=&modes=&optionalFields=&pageSize=&updateMru=",
+    "url": "https://example.com/services/data/v53.0/ui-api/records/batch/?childRelationships=&fields=&layoutTypes=&modes=&optionalFields=&pageSize=&updateMru=",
     "method": "GET",
     "headers": [],
     "queryString": [
@@ -4176,7 +4176,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/ui-api/record-defaults/clone?formFactor=&optionalFields=&recordTypeId=",
+    "url": "https://example.com/services/data/v53.0/ui-api/record-defaults/clone/?formFactor=&optionalFields=&recordTypeId=",
     "method": "GET",
     "headers": [],
     "queryString": [
@@ -4203,7 +4203,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/ui-api/record-defaults/create?formFactor=&optionalFields=&recordTypeId=",
+    "url": "https://example.com/services/data/v53.0/ui-api/record-defaults/create/?formFactor=&optionalFields=&recordTypeId=",
     "method": "GET",
     "headers": [],
     "queryString": [
@@ -4230,7 +4230,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/ui-api/records",
+    "url": "https://example.com/services/data/v53.0/ui-api/records/",
     "method": "PATCH",
     "headers": [
       {
@@ -4249,7 +4249,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/ui-api/records",
+    "url": "https://example.com/services/data/v53.0/ui-api/records/",
     "method": "DELETE",
     "headers": [],
     "queryString": [],
@@ -4263,7 +4263,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/ui-api/lookups?dependentFieldBindings=&page=&pageSize=&q=&searchType=",
+    "url": "https://example.com/services/data/v53.0/ui-api/lookups/?dependentFieldBindings=&page=&pageSize=&q=&searchType=",
     "method": "GET",
     "headers": [],
     "queryString": [
@@ -4298,7 +4298,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/ui-api/lookups?dependentFieldBindings=&page=&pageSize=&q=&searchType=",
+    "url": "https://example.com/services/data/v53.0/ui-api/lookups/?dependentFieldBindings=&page=&pageSize=&q=&searchType=",
     "method": "GET",
     "headers": [],
     "queryString": [
@@ -4347,7 +4347,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/ui-api/actions/record",
+    "url": "https://example.com/services/data/v53.0/ui-api/actions/record/",
     "method": "GET",
     "headers": [],
     "queryString": [],
@@ -4375,7 +4375,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/ui-api/actions/record/related-list",
+    "url": "https://example.com/services/data/v53.0/ui-api/actions/record/related-list/",
     "method": "GET",
     "headers": [],
     "queryString": [],
@@ -4389,7 +4389,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/ui-api/actions/record/related-list-record",
+    "url": "https://example.com/services/data/v53.0/ui-api/actions/record/related-list-record/",
     "method": "GET",
     "headers": [],
     "queryString": [],
@@ -4403,7 +4403,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/ui-api/actions/list-view",
+    "url": "https://example.com/services/data/v53.0/ui-api/actions/list-view/",
     "method": "GET",
     "headers": [],
     "queryString": [],
@@ -4417,7 +4417,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/ui-api/actions/list-view-record",
+    "url": "https://example.com/services/data/v53.0/ui-api/actions/list-view-record/",
     "method": "GET",
     "headers": [],
     "queryString": [],
@@ -4431,7 +4431,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/ui-api/actions/list-view-chart",
+    "url": "https://example.com/services/data/v53.0/ui-api/actions/list-view-chart/",
     "method": "GET",
     "headers": [],
     "queryString": [],
@@ -4445,7 +4445,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/ui-api/actions/flexipage",
+    "url": "https://example.com/services/data/v53.0/ui-api/actions/flexipage/",
     "method": "GET",
     "headers": [],
     "queryString": [],
@@ -4459,7 +4459,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/ui-api/actions/lookup",
+    "url": "https://example.com/services/data/v53.0/ui-api/actions/lookup/",
     "method": "GET",
     "headers": [],
     "queryString": [],
@@ -4473,7 +4473,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/ui-api/actions/mru-list",
+    "url": "https://example.com/services/data/v53.0/ui-api/actions/mru-list/",
     "method": "GET",
     "headers": [],
     "queryString": [],
@@ -4487,7 +4487,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/ui-api/actions/photo",
+    "url": "https://example.com/services/data/v53.0/ui-api/actions/photo/",
     "method": "GET",
     "headers": [],
     "queryString": [],
@@ -4520,7 +4520,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/ui-api/favorites",
+    "url": "https://example.com/services/data/v53.0/ui-api/favorites/",
     "method": "GET",
     "headers": [],
     "queryString": [],
@@ -4548,7 +4548,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/ui-api/favorites",
+    "url": "https://example.com/services/data/v53.0/ui-api/favorites/",
     "method": "PATCH",
     "headers": [],
     "queryString": [],
@@ -4576,7 +4576,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/ui-api/favorites",
+    "url": "https://example.com/services/data/v53.0/ui-api/favorites/",
     "method": "DELETE",
     "headers": [],
     "queryString": [],
@@ -4590,7 +4590,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/ui-api/favorites",
+    "url": "https://example.com/services/data/v53.0/ui-api/favorites/",
     "method": "PATCH",
     "headers": [],
     "queryString": [],
@@ -4604,7 +4604,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/ui-api/list-ui",
+    "url": "https://example.com/services/data/v53.0/ui-api/list-ui/",
     "method": "GET",
     "headers": [],
     "queryString": [],
@@ -4618,7 +4618,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/ui-api/list-records",
+    "url": "https://example.com/services/data/v53.0/ui-api/list-records/",
     "method": "GET",
     "headers": [],
     "queryString": [],
@@ -4632,7 +4632,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/ui-api/list-records",
+    "url": "https://example.com/services/data/v53.0/ui-api/list-records/",
     "method": "GET",
     "headers": [],
     "queryString": [],
@@ -4646,7 +4646,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/ui-api/list-info",
+    "url": "https://example.com/services/data/v53.0/ui-api/list-info/",
     "method": "GET",
     "headers": [],
     "queryString": [],
@@ -4660,7 +4660,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/ui-api/list-info",
+    "url": "https://example.com/services/data/v53.0/ui-api/list-info/",
     "method": "GET",
     "headers": [],
     "queryString": [],
@@ -4674,7 +4674,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/ui-api/list-ui",
+    "url": "https://example.com/services/data/v53.0/ui-api/list-ui/",
     "method": "GET",
     "headers": [],
     "queryString": [],
@@ -4688,7 +4688,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/ui-api/list-info",
+    "url": "https://example.com/services/data/v53.0/ui-api/list-info/",
     "method": "GET",
     "headers": [],
     "queryString": [],
@@ -4702,7 +4702,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/ui-api/mru-list-records",
+    "url": "https://example.com/services/data/v53.0/ui-api/mru-list-records/",
     "method": "GET",
     "headers": [],
     "queryString": [],
@@ -4716,7 +4716,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/ui-api/mru-list-info",
+    "url": "https://example.com/services/data/v53.0/ui-api/mru-list-info/",
     "method": "GET",
     "headers": [],
     "queryString": [],
@@ -4730,21 +4730,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/ui-api/mru-list-ui",
-    "method": "GET",
-    "headers": [],
-    "queryString": [],
-    "cookies": [],
-    "postData": {
-      "mimeType": "application/json",
-      "text": ""
-    },
-    "headersSize": -1,
-    "bodySize": -1,
-    "httpVersion": "HTTP/1.1"
-  },
-  {
-    "url": "https://example.com/services/data/v53.0/ui-api/apps",
+    "url": "https://example.com/services/data/v53.0/ui-api/mru-list-ui/",
     "method": "GET",
     "headers": [],
     "queryString": [],
@@ -4772,7 +4758,21 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/ui-api/apps",
+    "url": "https://example.com/services/data/v53.0/ui-api/apps/",
+    "method": "GET",
+    "headers": [],
+    "queryString": [],
+    "cookies": [],
+    "postData": {
+      "mimeType": "application/json",
+      "text": ""
+    },
+    "headersSize": -1,
+    "bodySize": -1,
+    "httpVersion": "HTTP/1.1"
+  },
+  {
+    "url": "https://example.com/services/data/v53.0/ui-api/apps/",
     "method": "PATCH",
     "headers": [],
     "queryString": [],
@@ -4876,7 +4876,7 @@
     "httpVersion": "HTTP/1.1"
   },
   {
-    "url": "https://example.com/services/data/v53.0/smartdatadiscovery/predictionDefinitions",
+    "url": "https://example.com/services/data/v53.0/smartdatadiscovery/predictionDefinitions/",
     "method": "GET",
     "headers": [],
     "queryString": [],

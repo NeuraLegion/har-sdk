@@ -1,7 +1,7 @@
 import { sample, Specification } from '../src';
 
 describe('traverse', () => {
-  it('should not follow circular references in schema objects', () => {
+  it('should not follow circular references in schema objects by default', () => {
     const schema: {
       type: string;
       properties: Record<string, unknown>;
@@ -26,6 +26,62 @@ describe('traverse', () => {
     const result = sample(schema);
     expect(result).toEqual(expected);
   });
+
+  it.each([
+    {
+      input: 0,
+      expected: {
+        foo: 'bar',
+        baz: {}
+      }
+    },
+    {
+      input: 3,
+      expected: {
+        baz: {
+          baz: {
+            baz: {
+              baz: {},
+              foo: 'bar'
+            },
+            foo: 'bar'
+          },
+          foo: 'bar'
+        },
+        foo: 'bar'
+      }
+    },
+    {
+      input: 1,
+      expected: {
+        foo: 'bar',
+        baz: {
+          foo: 'bar',
+          baz: {}
+        }
+      }
+    }
+  ])(
+    'should follow circular references up to $input times into the depth',
+    ({ input, expected }) => {
+      const schema: {
+        type: string;
+        properties: Record<string, unknown>;
+      } = {
+        type: 'object',
+        properties: {
+          foo: {
+            type: 'string',
+            default: 'bar'
+          }
+        }
+      };
+      schema.properties.baz = schema;
+
+      const result = sample(schema, { maxSampleDepth: input });
+      expect(result).toEqual(expected);
+    }
+  );
 
   it('should not follow circular references when more that one circular reference present', () => {
     const schema: {

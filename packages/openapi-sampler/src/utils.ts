@@ -23,3 +23,7 @@ export const mergeDeep = (
   );
 
 export const firstArrayElement = <T>(x: T[]): T | undefined => x[0];
+
+export const getReplacementForCircular = (type: string) => ({
+  value: type === 'object' ? {} : type === 'array' ? [] : undefined
+});

@@ -58,6 +58,8 @@ import { sample } from '@har-sdk/openapi-sampler';
     Don't include `writeOnly` object properties
   - **quiet** - `boolean`
     Don't log console warning messages
+  - **maxSampleDepth** - `number`
+    Specifies the maximum safe depth of the sampling stack.
 - **spec** - whole specification where the schema is taken from. Required only when schema may contain `$ref`. **spec** must not contain any external references
 
 ## Example

@@ -1,0 +1,45 @@
+[
+  {
+    "bodySize": 0,
+    "cookies": [],
+    "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      }
+    ],
+    "headersSize": 0,
+    "httpVersion": "HTTP/1.1",
+    "method": "GET",
+    "queryString": [],
+    "url": "https://petstore.swagger.io/pets"
+  },
+  {
+    "bodySize": 0,
+    "cookies": [],
+    "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "api_key",
+        "value": ""
+      }
+    ],
+    "headersSize": 0,
+    "httpVersion": "HTTP/1.1",
+    "method": "PUT",
+    "postData": {
+      "mimeType": "application/json",
+      "text": "{\"id\":42,\"name\":\"lorem\",\"subCategories\":[{\"id\":42,\"name\":\"lorem\",\"subCategories\":[]}]}"
+    },
+    "queryString": [
+      {
+        "name": "dummy",
+        "value": ""
+      }
+    ],
+    "url": "https://petstore.swagger.io/store/order/?dummy="
+  }
+]

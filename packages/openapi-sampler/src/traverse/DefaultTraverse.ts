@@ -1,6 +1,10 @@
 import { Options, Sample, Schema, Specification, Traverse } from './Traverse';
-import { mergeDeep, firstArrayElement } from '../utils';
-import { Sampler, OpenAPISchema } from '../samplers';
+import {
+  firstArrayElement,
+  getReplacementForCircular,
+  mergeDeep
+} from '../utils';
+import { OpenAPISchema, Sampler } from '../samplers';
 import JsonPointer from 'json-pointer';
 import { OpenAPIV2, OpenAPIV3 } from '@har-sdk/core';
 
@@ -32,6 +36,7 @@ const schemaKeywordTypes = {
 
 export class DefaultTraverse implements Traverse {
   private refCache: Record<string, boolean> = {};
+  private schemasStack: Schema[] = [];
 
   private _samplers: Map<string, Sampler>;
 
@@ -45,6 +50,7 @@ export class DefaultTraverse implements Traverse {
 
   public clearCache(): void {
     this.refCache = {};
+    this.schemasStack = [];
   }
 
   // eslint-disable-next-line complexity
@@ -57,11 +63,21 @@ export class DefaultTraverse implements Traverse {
       throw Error('Samplers are not set!');
     }
 
+    if (this.checkIfCircleRef(schema, options)) {
+      return this.getReplacementForCircular(
+        schema as OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject
+      );
+    }
+
+    this.pushSchemaStack(schema);
+
     if (this.isRefExists(schema)) {
       return this.inferRef(spec, schema, options);
     }
 
     if (this.isExampleExists(schema)) {
+      this.popSchemaStack();
+
       return {
         value: schema.example,
         readOnly: schema.readOnly,
@@ -71,6 +87,8 @@ export class DefaultTraverse implements Traverse {
     }
 
     if (schema.allOf) {
+      this.popSchemaStack();
+
       return this.allOfSample(
         { ...schema, allOf: undefined } as
           | OpenAPIV3.ReferenceObject
@@ -96,10 +114,14 @@ export class DefaultTraverse implements Traverse {
         );
       }
 
+      this.popSchemaStack();
+
       return this.traverse(firstArrayElement(schema.oneOf), options, spec);
     }
 
     if (schema.anyOf && schema.anyOf.length) {
+      this.popSchemaStack();
+
       return this.traverse(firstArrayElement(schema.anyOf), options, spec);
     }
 
@@ -130,6 +152,8 @@ export class DefaultTraverse implements Traverse {
       }
     }
 
+    this.popSchemaStack();
+
     return {
       type,
       value: example,
@@ -138,6 +162,17 @@ export class DefaultTraverse implements Traverse {
       writeOnly: (schema as OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject)
         .writeOnly
     };
+  }
+
+  private pushSchemaStack(schema: Schema) {
+    this.schemasStack.push(schema);
+  }
+
+  private checkIfCircleRef(schema: Schema, options: Options): boolean {
+    return (
+      this.schemasStack.includes(schema) &&
+      this.schemasStack.length > options.maxSampleDepth
+    );
   }
 
   private inferRef(
@@ -166,19 +201,24 @@ export class DefaultTraverse implements Traverse {
       result = this.traverse(referenced, options, spec);
       this.refCache[ref] = false;
     } else {
-      const referencedType = this.inferType(referenced);
-
-      result = {
-        value:
-          referencedType === 'object'
-            ? {}
-            : referencedType === 'array'
-            ? []
-            : undefined
-      };
+      result = this.getReplacementForCircular(referenced);
     }
 
+    this.popSchemaStack();
+
     return result;
+  }
+
+  private getReplacementForCircular(
+    referenced: OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject
+  ): { value: unknown } {
+    const referencedType = this.inferType(referenced);
+
+    return getReplacementForCircular(referencedType);
+  }
+
+  private popSchemaStack(): void {
+    this.schemasStack.pop();
   }
 
   private inferType(

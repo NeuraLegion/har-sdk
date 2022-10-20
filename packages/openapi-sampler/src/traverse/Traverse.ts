@@ -5,6 +5,7 @@ export interface Options {
   skipWriteOnly?: boolean;
   skipNonRequired?: boolean;
   quiet?: boolean;
+  maxSampleDepth?: number;
 }
 
 export interface Sample {

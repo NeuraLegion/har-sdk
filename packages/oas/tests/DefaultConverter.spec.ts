@@ -90,6 +90,11 @@ describe('DefaultConverter', () => {
         input: 'params-body-default.oas.yaml',
         expected: 'params-body-default.oas.result.json',
         message: 'should correctly use default value for oas body'
+      },
+      {
+        input: 'circular-refs.swagger.yaml',
+        expected: 'circular-refs.swagger.result.json',
+        message: 'should correctly handle circular references'
       }
     ].forEach(({ input: inputFile, expected: expectedFile, message }) => {
       it(message, async () => {

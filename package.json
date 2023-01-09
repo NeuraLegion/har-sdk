@@ -6,9 +6,6 @@
     "type": "git",
     "url": "git+https://github.com/NeuraLegion/har-sdk.git"
   },
-  "workspaces": [
-    "packages/*"
-  ],
   "author": {
     "name": "Artem Derevnjuk",
     "email": "artem.derevnjuk@neuralegion.com"

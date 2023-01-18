@@ -87,6 +87,11 @@ describe('DefaultConverter', () => {
         message: 'should correctly use default value for swagger body'
       },
       {
+        input: 'params-security.oas.yaml',
+        expected: 'params-security.oas.result.json',
+        message: 'should correctly convert security parameter'
+      },
+      {
         input: 'params-body-default.oas.yaml',
         expected: 'params-body-default.oas.result.json',
         message: 'should correctly use default value for oas body'

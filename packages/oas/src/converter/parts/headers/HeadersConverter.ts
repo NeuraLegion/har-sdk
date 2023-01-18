@@ -152,7 +152,9 @@ export abstract class HeadersConverter<T extends OpenAPI.Document>
         type: 'array',
         examples: Object.keys(obj)
       });
-      const header = this.parseSecurityScheme(securitySchemes[schemeName]);
+      const header =
+        securitySchemes[schemeName] &&
+        this.parseSecurityScheme(securitySchemes[schemeName]);
 
       if (header) {
         return [header];

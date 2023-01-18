@@ -147,6 +147,13 @@ export abstract class HeadersConverter<T extends OpenAPI.Document>
       return [];
     }
 
+    return this.getAuthHeaders(securityRequirements, securitySchemes);
+  }
+
+  private getAuthHeaders(
+    securityRequirements: SecurityRequirementObject[],
+    securitySchemes: Record<string, SecuritySchemeObject>
+  ): Header[] {
     for (const obj of securityRequirements) {
       const schemeName = this.sampler.sample({
         type: 'array',

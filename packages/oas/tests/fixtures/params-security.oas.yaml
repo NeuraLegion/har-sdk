@@ -5,37 +5,6 @@ info:
 servers:
   - url: https://petstore.swagger.io
 paths:
-  /pets/security-empty:
-    get:
-      security:
-        - {}
-      responses:
-        200:
-          description: Security []
-          content:
-            application/json:
-              schema: {}
-  /pets/security-basic:
-    get:
-      security:
-        - Basic: []
-      responses:
-        200:
-          description: Security Basic []
-          content:
-            application/json:
-              schema: {}
-  /pets/security-basic-and-empty:
-    get:
-      security:
-        - Basic: []
-        - {}
-      responses:
-        200:
-          description: Security Basic [] and empty
-          content:
-            application/json:
-              schema: {}
   /pets/security-empty-and-bearer:
     get:
       security:
@@ -43,7 +12,7 @@ paths:
         - Bearer: []
       responses:
         200:
-          description: Security Basic [] and empty
+          description: Security Bearer [] or empty
           content:
             application/json:
               schema: {}
@@ -62,6 +31,41 @@ paths:
       responses:
         200:
           description: Security is not provided
+          content:
+            application/json:
+              schema: {}
+  /pets/security-basic-bearer-empty:
+    get:
+      security:
+        - Basic: []
+        - Bearer: []
+        - {}
+      responses:
+        200:
+          description: Security Basic [], Bearer[] and empty
+          content:
+            application/json:
+              schema: {}
+  /pets/security-basic-and-bearer:
+    get:
+      security:
+        - Basic: []
+          Bearer: []
+      responses:
+        200:
+          description: Security Basic [] and Bearer[]
+          content:
+            application/json:
+              schema: {}
+  /pets/security-bearer-and-basic:
+    get:
+      security:
+        - Basic: []
+          Bearer: []
+        - {}
+      responses:
+        200:
+          description: Security Bearer[] and Basic[]
           content:
             application/json:
               schema: {}

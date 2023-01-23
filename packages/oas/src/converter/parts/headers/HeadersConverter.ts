@@ -147,27 +147,57 @@ export abstract class HeadersConverter<T extends OpenAPI.Document>
       return [];
     }
 
-    return this.getAuthHeaders(securityRequirements, securitySchemes);
+    return this.createAuthHeaders(securityRequirements, securitySchemes);
   }
 
-  private getAuthHeaders(
+  private createAuthHeaders(
     securityRequirements: SecurityRequirementObject[],
     securitySchemes: Record<string, SecuritySchemeObject>
   ): Header[] {
     for (const obj of securityRequirements) {
-      const schemeName = this.sampler.sample({
-        type: 'array',
-        examples: Object.keys(obj)
-      });
-      const header =
-        securitySchemes[schemeName] &&
-        this.parseSecurityScheme(securitySchemes[schemeName]);
-
-      if (header) {
-        return [header];
+      const headers = this.parseSecurityRequirement(obj, securitySchemes);
+      if (headers.length) {
+        return headers;
       }
     }
 
     return [];
+  }
+
+  private parseSecurityRequirement(
+    securityRequirement: SecurityRequirementObject,
+    securitySchemes: Record<string, SecuritySchemeObject>
+  ): Header[] {
+    const headers: Header[] = [];
+
+    Object.keys(securityRequirement).forEach((securityIndex) => {
+      const schemeName = this.sampler.sample({
+        type: 'array',
+        examples: [securityIndex]
+      });
+
+      const header = securitySchemes[schemeName]
+        ? this.parseSecurityScheme(securitySchemes[schemeName])
+        : undefined;
+
+      headers.push(header);
+    });
+    // eslint-disable-next-line no-console
+    console.log(headers);
+
+    return this.combineAuthHeaders(headers);
+  }
+
+  private combineAuthHeaders(headers: Header[]): Header[] {
+    if (headers.length > 1) {
+      return [
+        this.createHeader(
+          'authorization',
+          headers.map((header) => header.value).join(', ')
+        )
+      ];
+    }
+
+    return headers;
   }
 }

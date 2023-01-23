@@ -6,59 +6,6 @@
       {
         "name": "accept",
         "value": "application/json"
-      }
-    ],
-    "headersSize": 0,
-    "httpVersion": "HTTP/1.1",
-    "method": "GET",
-    "queryString": [],
-    "url": "https://petstore.swagger.io/pets/security-empty"
-  },
-  {
-    "bodySize": 0,
-    "cookies": [],
-    "headers": [
-      {
-        "name": "accept",
-        "value": "application/json"
-      },
-      {
-        "name": "authorization",
-        "value": "Basic ZHVtbXkgYmluYXJ5IHNhbXBsZQA="
-      }
-    ],
-    "headersSize": 0,
-    "httpVersion": "HTTP/1.1",
-    "method": "GET",
-    "queryString": [],
-    "url": "https://petstore.swagger.io/pets/security-basic"
-  },
-  {
-    "bodySize": 0,
-    "cookies": [],
-    "headers": [
-      {
-        "name": "accept",
-        "value": "application/json"
-      },
-      {
-        "name": "authorization",
-        "value": "Basic ZHVtbXkgYmluYXJ5IHNhbXBsZQA="
-      }
-    ],
-    "headersSize": 0,
-    "httpVersion": "HTTP/1.1",
-    "method": "GET",
-    "queryString": [],
-    "url": "https://petstore.swagger.io/pets/security-basic-and-empty"
-  },
-  {
-    "bodySize": 0,
-    "cookies": [],
-    "headers": [
-      {
-        "name": "accept",
-        "value": "application/json"
       },
       {
         "name": "authorization",
@@ -100,5 +47,62 @@
     "method": "GET",
     "queryString": [],
     "url": "https://petstore.swagger.io/pets/security-is-not-exists"
+  },
+  {
+    "bodySize": 0,
+    "cookies": [],
+    "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
+        "name": "authorization",
+        "value": "Basic ZHVtbXkgYmluYXJ5IHNhbXBsZQA="
+      }
+    ],
+    "headersSize": 0,
+    "httpVersion": "HTTP/1.1",
+    "method": "GET",
+    "queryString": [],
+    "url": "https://petstore.swagger.io/pets/security-basic-bearer-empty"
+  },
+  {
+    "bodySize": 0,
+    "cookies": [],
+    "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
+        "name": "authorization",
+        "value": "Basic ZHVtbXkgYmluYXJ5IHNhbXBsZQA=, Bearer ZHVtbXkgYmluYXJ5IHNhbXBsZQA="
+      }
+    ],
+    "headersSize": 0,
+    "httpVersion": "HTTP/1.1",
+    "method": "GET",
+    "queryString": [],
+    "url": "https://petstore.swagger.io/pets/security-basic-and-bearer"
+  },
+  {
+    "bodySize": 0,
+    "cookies": [],
+    "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
+        "name": "authorization",
+        "value": "Basic ZHVtbXkgYmluYXJ5IHNhbXBsZQA=, Bearer ZHVtbXkgYmluYXJ5IHNhbXBsZQA="
+      }
+    ],
+    "headersSize": 0,
+    "httpVersion": "HTTP/1.1",
+    "method": "GET",
+    "queryString": [],
+    "url": "https://petstore.swagger.io/pets/security-bearer-and-basic"
   }
 ]

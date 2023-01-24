@@ -94,7 +94,7 @@ export abstract class HeadersConverter<T extends OpenAPI.Document>
         return this.createAuthHeader('Basic');
       case 'oauth2':
         return this.createAuthHeader('Bearer');
-      case 'apiKey':
+      case 'apikey':
         return this.parseApiKeyScheme(securityScheme);
     }
   }

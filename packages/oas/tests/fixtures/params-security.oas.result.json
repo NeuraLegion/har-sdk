@@ -112,5 +112,66 @@
     "method": "GET",
     "queryString": [],
     "url": "https://petstore.swagger.io/pets/security-bearer-and-basic"
+  },
+  {
+    "bodySize": 0,
+    "cookies": [],
+    "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
+        "name": "x-api-key",
+        "value": "ZHVtbXkgYmluYXJ5IHNhbXBsZQA="
+      },
+      {
+        "name": "authorization",
+        "value": "Bearer ZHVtbXkgYmluYXJ5IHNhbXBsZQA="
+      }
+    ],
+    "headersSize": 0,
+    "httpVersion": "HTTP/1.1",
+    "method": "GET",
+    "queryString": [],
+    "url": "https://petstore.swagger.io/pets/security-apikey-and-bearer"
+  },
+  {
+    "bodySize": 0,
+    "cookies": [],
+    "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
+        "name": "x-api-key",
+        "value": "ZHVtbXkgYmluYXJ5IHNhbXBsZQA="
+      }
+    ],
+    "headersSize": 0,
+    "httpVersion": "HTTP/1.1",
+    "method": "GET",
+    "queryString": [],
+    "url": "https://petstore.swagger.io/pets/security-apikey-or-bearer"
+  },
+  {
+    "bodySize": 0,
+    "cookies": [],
+    "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
+        "name": "x-api-key",
+        "value": "ZHVtbXkgYmluYXJ5IHNhbXBsZQA="
+      }
+    ],
+    "headersSize": 0,
+    "httpVersion": "HTTP/1.1",
+    "method": "GET",
+    "queryString": [],
+    "url": "https://petstore.swagger.io/pets/security-apikey"
   }
 ]

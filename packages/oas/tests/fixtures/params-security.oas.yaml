@@ -65,7 +65,39 @@ paths:
         - {}
       responses:
         200:
-          description: Security Bearer[] and Basic[]
+          description: Security Bearer [] and Basic []
+          content:
+            application/json:
+              schema: {}
+  /pets/security-apikey-and-bearer:
+    get:
+      security:
+        - apiKey: []
+          Bearer: []
+      responses:
+        200:
+          description: Security apiKey [] and Bearer []
+          content:
+            application/json:
+              schema: {}
+  /pets/security-apikey-or-bearer:
+    get:
+      security:
+        - apiKey: []
+        - Bearer: []
+      responses:
+        200:
+          description: Security apiKey [] or Bearer []
+          content:
+            application/json:
+              schema: {}
+  /pets/security-apikey:
+    get:
+      security:
+        - apiKey: []
+      responses:
+        200:
+          description: Security ApiKey []
           content:
             application/json:
               schema: {}
@@ -77,3 +109,7 @@ components:
     Bearer:
       type: http
       scheme: bearer
+    apiKey:
+      type: apiKey
+      in: header
+      name: X-API-KEY

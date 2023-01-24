@@ -170,32 +170,12 @@ export abstract class HeadersConverter<T extends OpenAPI.Document>
   ): Header[] {
     const headers: Header[] = [];
 
-    Object.keys(securityRequirement).forEach((securityIndex) => {
-      const schemeName = this.sampler.sample({
-        type: 'array',
-        examples: [securityIndex]
-      });
-
+    for (const [schemeName] of Object.entries(securityRequirement)) {
       const header = securitySchemes[schemeName]
         ? this.parseSecurityScheme(securitySchemes[schemeName])
         : undefined;
 
       headers.push(header);
-    });
-    // eslint-disable-next-line no-console
-    console.log(headers);
-
-    return this.combineAuthHeaders(headers);
-  }
-
-  private combineAuthHeaders(headers: Header[]): Header[] {
-    if (headers.length > 1) {
-      return [
-        this.createHeader(
-          'authorization',
-          headers.map((header) => header.value).join(', ')
-        )
-      ];
     }
 
     return headers;

@@ -77,7 +77,11 @@
       },
       {
         "name": "authorization",
-        "value": "Basic ZHVtbXkgYmluYXJ5IHNhbXBsZQA=, Bearer ZHVtbXkgYmluYXJ5IHNhbXBsZQA="
+        "value": "Basic ZHVtbXkgYmluYXJ5IHNhbXBsZQA="
+      },
+      {
+        "name": "authorization",
+        "value": "Bearer ZHVtbXkgYmluYXJ5IHNhbXBsZQA="
       }
     ],
     "headersSize": 0,
@@ -96,7 +100,11 @@
       },
       {
         "name": "authorization",
-        "value": "Basic ZHVtbXkgYmluYXJ5IHNhbXBsZQA=, Bearer ZHVtbXkgYmluYXJ5IHNhbXBsZQA="
+        "value": "Basic ZHVtbXkgYmluYXJ5IHNhbXBsZQA="
+      },
+      {
+        "name": "authorization",
+        "value": "Bearer ZHVtbXkgYmluYXJ5IHNhbXBsZQA="
       }
     ],
     "headersSize": 0,

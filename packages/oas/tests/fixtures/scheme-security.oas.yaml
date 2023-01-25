@@ -12,7 +12,7 @@ paths:
         - Bearer: []
       responses:
         200:
-          description: Security Bearer [] or empty
+          description: Requires empty or Bearer security schemas
           content:
             application/json:
               schema: {}
@@ -42,7 +42,7 @@ paths:
         - {}
       responses:
         200:
-          description: Security Basic [], Bearer[] and empty
+          description: Requires Basic or Bearer or empty security schemas
           content:
             application/json:
               schema: {}
@@ -53,11 +53,11 @@ paths:
           Bearer: []
       responses:
         200:
-          description: Security Basic [] and Bearer[]
+          description: Requires both Basic and Bearer security schemas simultaneously
           content:
             application/json:
               schema: {}
-  /pets/security-bearer-and-basic:
+  /pets/security-bearer-and-basic-or-empty:
     get:
       security:
         - Basic: []
@@ -65,7 +65,7 @@ paths:
         - {}
       responses:
         200:
-          description: Security Bearer [] and Basic []
+          description: Requires both Basic and Bearer security schemas simultaneously or only empty
           content:
             application/json:
               schema: {}
@@ -76,7 +76,7 @@ paths:
           Bearer: []
       responses:
         200:
-          description: Security apiKey [] and Bearer []
+          description: Requires both apiKey and Bearer security schemas simultaneously
           content:
             application/json:
               schema: {}
@@ -87,7 +87,7 @@ paths:
         - Bearer: []
       responses:
         200:
-          description: Security apiKey [] or Bearer []
+          description: Requires apiKey or Bearer security schemas
           content:
             application/json:
               schema: {}
@@ -97,7 +97,7 @@ paths:
         - apiKey: []
       responses:
         200:
-          description: Security ApiKey []
+          description: Requires apiKey security schema
           content:
             application/json:
               schema: {}
@@ -109,6 +109,7 @@ components:
     Bearer:
       type: http
       scheme: bearer
+      bearerFormat: JWT
     apiKey:
       type: apiKey
       in: header

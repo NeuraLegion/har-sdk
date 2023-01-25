@@ -20,7 +20,7 @@ paths:
   /pets/security-basic:
     get:
       security:
-        - Basic: {}
+        - Basic: []
       responses:
         200:
           description: Requires Basic security schema
@@ -30,8 +30,8 @@ paths:
   /pets/security-basic-and-bearer:
     get:
       security:
-        - Basic: {}
-          Bearer: {}
+        - Basic: []
+          Bearer: []
       responses:
         200:
           description: Requires Basic and Bearer security schema simultaneously
@@ -41,8 +41,8 @@ paths:
   /pets/security-basic-or-bearer:
     get:
       security:
-        - Basic: {}
-        - Bearer: {}
+        - Basic: []
+        - Bearer: []
       responses:
         200:
           description: Requires Basic or Bearer security schema

@@ -22,7 +22,7 @@ paths:
         - Key-Query: []
       responses:
         200:
-          description: Security schema key-query is not exists in securitySchemes
+          description: Reference to non-existing security schema
           content:
             application/json:
               schema: {}

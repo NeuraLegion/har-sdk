@@ -170,12 +170,14 @@ export abstract class HeadersConverter<T extends OpenAPI.Document>
   ): Header[] {
     const headers: Header[] = [];
 
-    for (const [schemeName] of Object.entries(securityRequirement)) {
+    for (const schemeName of Object.keys(securityRequirement)) {
       const header = securitySchemes[schemeName]
         ? this.parseSecurityScheme(securitySchemes[schemeName])
         : undefined;
 
-      headers.push(header);
+      if (headers) {
+        headers.push(header);
+      }
     }
 
     return headers;

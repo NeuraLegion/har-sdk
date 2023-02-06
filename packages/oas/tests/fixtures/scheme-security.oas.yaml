@@ -5,7 +5,7 @@ info:
 servers:
   - url: https://petstore.swagger.io
 paths:
-  /pets/security-empty-and-bearer:
+  /pets/security-empty-or-bearer:
     get:
       security:
         - {}

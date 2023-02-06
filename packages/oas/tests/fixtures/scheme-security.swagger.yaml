@@ -1,0 +1,71 @@
+swagger: '2.0'
+info:
+  title: Swagger Petstore
+  version: 1.0.0
+host: petstore.swagger.io
+basePath: /v1
+schemes:
+  - http
+paths:
+  /pets/security-is-not-exists:
+    get:
+      responses:
+        '200':
+          description: Security is not provided
+          examples:
+            application/json:
+              ok: true
+  /pets/security-basic-and-bearer:
+    get:
+      security:
+        - Basic: []
+          Bearer: []
+      responses:
+        '200':
+          description: Requires both Basic and Bearer security schemas simultaneously
+          examples:
+            application/json:
+              ok: true
+  /pets/security-apikey-and-bearer:
+    get:
+      security:
+        - ApiKeyAuth: []
+          Bearer: []
+      responses:
+        '200':
+          description: Requires both apiKey and Bearer security schemas simultaneously
+          examples:
+            application/json:
+              ok: true
+  /pets/security-apikey-or-bearer:
+    get:
+      security:
+        - ApiKeyAuth: []
+        - Bearer: []
+      responses:
+        '200':
+          description: Requires apiKey or Bearer security schemas
+          examples:
+            application/json:
+              ok: true
+  /pets/security-apikey:
+    get:
+      security:
+        - ApiKeyAuth: []
+      responses:
+        '200':
+          description: Requires apiKey security schema
+          examples:
+            application/json:
+              ok: true
+securityDefinitions:
+  Basic:
+    type: basic
+  Bearer:
+    type: apiKey
+    name: Authorization
+    in: header
+  ApiKeyAuth:
+    type: apiKey
+    in: header
+    name: X-API-Key

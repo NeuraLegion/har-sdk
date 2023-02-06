@@ -1,0 +1,80 @@
+[
+  {
+    "queryString": [],
+    "url": "http://petstore.swagger.io/v1/pets/security-is-not-exists",
+    "method": "GET",
+    "headers": [],
+    "httpVersion": "HTTP/1.1",
+    "cookies": [],
+    "headersSize": 0,
+    "bodySize": 0
+  },
+  {
+    "bodySize": 0,
+    "cookies": [],
+    "headers": [
+      {
+        "name": "authorization",
+        "value": "Basic ZHVtbXkgYmluYXJ5IHNhbXBsZQA="
+      },
+      {
+        "name": "authorization",
+        "value": "ZHVtbXkgYmluYXJ5IHNhbXBsZQA="
+      }
+    ],
+    "headersSize": 0,
+    "httpVersion": "HTTP/1.1",
+    "method": "GET",
+    "queryString": [],
+    "url": "http://petstore.swagger.io/v1/pets/security-basic-and-bearer"
+  },
+  {
+    "bodySize": 0,
+    "cookies": [],
+    "headers": [
+      {
+        "name": "x-api-key",
+        "value": "ZHVtbXkgYmluYXJ5IHNhbXBsZQA="
+      },
+      {
+        "name": "authorization",
+        "value": "ZHVtbXkgYmluYXJ5IHNhbXBsZQA="
+      }
+    ],
+    "headersSize": 0,
+    "httpVersion": "HTTP/1.1",
+    "method": "GET",
+    "queryString": [],
+    "url": "http://petstore.swagger.io/v1/pets/security-apikey-and-bearer"
+  },
+  {
+    "bodySize": 0,
+    "cookies": [],
+    "headers": [
+      {
+        "name": "x-api-key",
+        "value": "ZHVtbXkgYmluYXJ5IHNhbXBsZQA="
+      }
+    ],
+    "headersSize": 0,
+    "httpVersion": "HTTP/1.1",
+    "method": "GET",
+    "queryString": [],
+    "url": "http://petstore.swagger.io/v1/pets/security-apikey-or-bearer"
+  },
+  {
+    "bodySize": 0,
+    "cookies": [],
+    "headers": [
+      {
+        "name": "x-api-key",
+        "value": "ZHVtbXkgYmluYXJ5IHNhbXBsZQA="
+      }
+    ],
+    "headersSize": 0,
+    "httpVersion": "HTTP/1.1",
+    "method": "GET",
+    "queryString": [],
+    "url": "http://petstore.swagger.io/v1/pets/security-apikey"
+  }
+]

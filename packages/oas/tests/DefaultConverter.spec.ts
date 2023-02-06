@@ -92,6 +92,11 @@ describe('DefaultConverter', () => {
         message: 'should correctly convert security schemas'
       },
       {
+        input: 'scheme-security.swagger.yaml',
+        expected: 'scheme-security.swagger.result.json',
+        message: 'should correctly convert security schemas'
+      },
+      {
         input: 'scheme-security-override.oas.yaml',
         expected: 'scheme-security-override.oas.result.json',
         message: 'should correctly override security schemas'

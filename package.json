@@ -6,6 +6,13 @@
     "type": "git",
     "url": "git+https://github.com/NeuraLegion/har-sdk.git"
   },
+  "engines": {
+    "node": ">=16.x",
+    "npm": ">=8.x"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
   "author": {
     "name": "Artem Derevnjuk",
     "email": "artem.derevnjuk@neuralegion.com"
@@ -31,7 +38,6 @@
     "lerna": "lerna",
     "cross-env": "cross-env",
     "husky": "husky",
-    "bootstrap": "lerna bootstrap --ci",
     "semantic-release": "multi-semantic-release",
     "build": "lerna run build",
     "build:changed": "lerna run --since origin/master --include-dependencies --include-dependents build",
@@ -54,7 +60,7 @@
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-typescript": "^8.3.0",
     "@types/jest": "^27.5.0",
-    "@types/node": "^14.18.12",
+    "@types/node": "^18.13.0",
     "@typescript-eslint/eslint-plugin": "^5.12.1",
     "@typescript-eslint/parser": "^5.12.1",
     "copyfiles": "^2.4.1",

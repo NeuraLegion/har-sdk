@@ -1,0 +1,116 @@
+openapi: 3.0.1
+info:
+  title: Swagger Petstore
+  version: 1.0.0
+servers:
+  - url: https://petstore.swagger.io
+paths:
+  /pets/security-empty-or-bearer:
+    get:
+      security:
+        - {}
+        - Bearer: []
+      responses:
+        200:
+          description: Requires empty or Bearer security schemas
+          content:
+            application/json:
+              schema: {}
+  /pets/security-schema-is-not-exists:
+    get:
+      security:
+        - Key-Query: []
+      responses:
+        200:
+          description: Reference to non-existing security schema
+          content:
+            application/json:
+              schema: {}
+  /pets/security-is-not-exists:
+    get:
+      responses:
+        200:
+          description: Security is not provided
+          content:
+            application/json:
+              schema: {}
+  /pets/security-basic-bearer-empty:
+    get:
+      security:
+        - Basic: []
+        - Bearer: []
+        - {}
+      responses:
+        200:
+          description: Requires Basic or Bearer or empty security schemas
+          content:
+            application/json:
+              schema: {}
+  /pets/security-basic-and-bearer:
+    get:
+      security:
+        - Basic: []
+          Bearer: []
+      responses:
+        200:
+          description: Requires both Basic and Bearer security schemas simultaneously
+          content:
+            application/json:
+              schema: {}
+  /pets/security-bearer-and-basic-or-empty:
+    get:
+      security:
+        - Basic: []
+          Bearer: []
+        - {}
+      responses:
+        200:
+          description: Requires both Basic and Bearer security schemas simultaneously or only empty
+          content:
+            application/json:
+              schema: {}
+  /pets/security-apikey-and-bearer:
+    get:
+      security:
+        - apiKey: []
+          Bearer: []
+      responses:
+        200:
+          description: Requires both apiKey and Bearer security schemas simultaneously
+          content:
+            application/json:
+              schema: {}
+  /pets/security-apikey-or-bearer:
+    get:
+      security:
+        - apiKey: []
+        - Bearer: []
+      responses:
+        200:
+          description: Requires apiKey or Bearer security schemas
+          content:
+            application/json:
+              schema: {}
+  /pets/security-apikey:
+    get:
+      security:
+        - apiKey: []
+      responses:
+        200:
+          description: Requires apiKey security schema
+          content:
+            application/json:
+              schema: {}
+components:
+  securitySchemes:
+    Basic:
+      type: http
+      scheme: basic
+    Bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    apiKey:
+      type: apiKey
+      in: header
+      name: X-API-KEY

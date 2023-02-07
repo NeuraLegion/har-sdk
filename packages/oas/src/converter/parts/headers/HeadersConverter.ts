@@ -94,7 +94,7 @@ export abstract class HeadersConverter<T extends OpenAPI.Document>
         return this.createAuthHeader('Basic');
       case 'oauth2':
         return this.createAuthHeader('Bearer');
-      case 'apiKey':
+      case 'apikey':
         return this.parseApiKeyScheme(securityScheme);
     }
   }
@@ -147,18 +147,39 @@ export abstract class HeadersConverter<T extends OpenAPI.Document>
       return [];
     }
 
-    for (const obj of securityRequirements) {
-      const schemeName = this.sampler.sample({
-        type: 'array',
-        examples: Object.keys(obj)
-      });
-      const header = this.parseSecurityScheme(securitySchemes[schemeName]);
+    return this.createAuthHeaders(securityRequirements, securitySchemes);
+  }
 
-      if (header) {
-        return [header];
+  private createAuthHeaders(
+    securityRequirements: SecurityRequirementObject[],
+    securitySchemes: Record<string, SecuritySchemeObject>
+  ): Header[] {
+    for (const obj of securityRequirements) {
+      const headers = this.parseSecurityRequirement(obj, securitySchemes);
+      if (headers.length) {
+        return headers;
       }
     }
 
     return [];
+  }
+
+  private parseSecurityRequirement(
+    securityRequirement: SecurityRequirementObject,
+    securitySchemes: Record<string, SecuritySchemeObject>
+  ): Header[] {
+    const headers: Header[] = [];
+
+    for (const schemeName of Object.keys(securityRequirement)) {
+      const header = securitySchemes[schemeName]
+        ? this.parseSecurityScheme(securitySchemes[schemeName])
+        : undefined;
+
+      if (headers) {
+        headers.push(header);
+      }
+    }
+
+    return headers;
   }
 }

@@ -175,7 +175,7 @@ export abstract class HeadersConverter<T extends OpenAPI.Document>
         ? this.parseSecurityScheme(securitySchemes[schemeName])
         : undefined;
 
-      if (headers) {
+      if (header) {
         headers.push(header);
       }
     }

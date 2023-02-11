@@ -130,7 +130,7 @@ describe('DefaultConverter', () => {
 
         const result: Request[] = await oas2har(input as any);
 
-        expect(result).toEqual(expected);
+        expect(result).toStrictEqual(expected);
       });
     });
 

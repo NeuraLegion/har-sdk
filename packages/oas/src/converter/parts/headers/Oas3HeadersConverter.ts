@@ -63,7 +63,7 @@ export class Oas3HeadersConverter extends HeadersConverter<OpenAPIV3.Document> {
   protected getSecuritySchemes():
     | Record<string, OpenAPIV3.SecuritySchemeObject>
     | undefined {
-    return this.spec.components.securitySchemes as Record<
+    return this.spec.components?.securitySchemes as Record<
       string,
       OpenAPIV3.SecuritySchemeObject
     >;

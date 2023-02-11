@@ -102,6 +102,17 @@ describe('DefaultConverter', () => {
         message: 'should correctly override security schemas'
       },
       {
+        input: 'missing-security.oas.yaml',
+        expected: 'missing-security.oas.result.json',
+        message: 'should correctly proceed with missing oas security schemes'
+      },
+      {
+        input: 'missing-security.swagger.yaml',
+        expected: 'missing-security.swagger.result.json',
+        message:
+          'should correctly proceed with missing swagger security definitions'
+      },
+      {
         input: 'params-body-default.oas.yaml',
         expected: 'params-body-default.oas.result.json',
         message: 'should correctly use default value for oas body'

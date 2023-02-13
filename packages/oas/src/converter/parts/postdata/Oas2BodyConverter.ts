@@ -67,23 +67,26 @@ export class Oas2BodyConverter extends BodyConverter {
     const data = Object.fromEntries(
       formDataParams.map((param) => [
         param.name,
-        this.sampler.sampleParam(
-          {
-            ...param,
-            ...('in' in param && 'type' in param && param.type === 'file'
-              ? { type: 'string' }
-              : {})
-          },
-          {
-            ...sampleOptions,
-            idx: params.indexOf(param),
-            spec: this.spec
-          }
-        )
+        this.sampler.sampleParam(this.convertUnsupportedParamToString(param), {
+          ...sampleOptions,
+          idx: params.indexOf(param),
+          spec: this.spec
+        })
       ])
     );
 
     return this.encodePayload(data, contentType);
+  }
+
+  private convertUnsupportedParamToString(
+    param: OpenAPIV2.ParameterObject
+  ): OpenAPIV2.ParameterObject {
+    return {
+      ...param,
+      ...('in' in param && 'type' in param && param.type === 'file'
+        ? { type: 'string' }
+        : {})
+    };
   }
 
   private convertBody(

@@ -67,11 +67,7 @@ export class Oas2BodyConverter extends BodyConverter {
     const data = Object.fromEntries(
       formDataParams.map((param) => [
         param.name,
-        this.sampler.sampleParam(this.convertUnsupportedParamToString(param), {
-          ...sampleOptions,
-          idx: params.indexOf(param),
-          spec: this.spec
-        })
+        this.sampleParam(param, { ...sampleOptions, params })
       ])
     );
 
@@ -103,15 +99,24 @@ export class Oas2BodyConverter extends BodyConverter {
 
     for (const param of bodyParams) {
       if ('schema' in param) {
-        const idx = params.indexOf(param);
-        const value = this.sampler.sampleParam(param, {
-          ...sampleOptions,
-          idx,
-          spec: this.spec
-        });
+        const value = this.sampleParam(param, { ...sampleOptions, params });
 
         return this.encodePayload(value, contentType);
       }
     }
+  }
+
+  private sampleParam(
+    param: OpenAPIV2.ParameterObject,
+    sampleOptions: { tokens: string[]; params: OpenAPIV2.ParameterObject[] }
+  ): unknown {
+    return this.sampler.sampleParam(
+      this.convertUnsupportedParamToString(param),
+      {
+        ...sampleOptions,
+        idx: sampleOptions.params.indexOf(param),
+        spec: this.spec
+      }
+    );
   }
 }

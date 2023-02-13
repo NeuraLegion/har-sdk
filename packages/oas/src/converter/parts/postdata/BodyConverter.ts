@@ -1,102 +1,34 @@
 import { Sampler } from '../Sampler';
-import { isOASV2 } from '../../../utils';
 import { SubConverter } from '../../SubConverter';
-import { OpenAPI, PostData } from '@har-sdk/core';
-import pointer from 'json-pointer';
-import { toXML } from 'jstoxml';
+import { OpenAPI, OpenAPIV3, PostData } from '@har-sdk/core';
+import { toXML, XmlElement } from 'jstoxml';
 import { stringify } from 'qs';
 
-export class PostDataConverter implements SubConverter<PostData | null> {
-  private readonly JPG_IMAGE = '/9j/2w==';
-  private readonly PNG_IMAGE = 'iVBORw0KGgo=';
+export abstract class BodyConverter implements SubConverter<PostData | null> {
+  private readonly JPG_IMAGE = '/9j/7g=='; // 0xff, 0xd8, 0xff, 0xee
+  private readonly PNG_IMAGE = 'iVBORw0KGgo='; // 0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0A, 0x1a, 0x0a
+  private readonly ICO_IMAGE = 'AAABAA=='; // 0x00, 0x00, 0x01, 0x00
+  private readonly GIF_IMAGE = 'R0lGODdh'; // 0x47, 0x49, 0x46, 0x38, 0x37, 0x61
   private readonly BOUNDARY = '956888039105887155673143';
   private readonly BASE64_PATTERN =
     /^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$/;
 
-  constructor(
-    private readonly spec: OpenAPI.Document,
-    private readonly sampler: Sampler
+  protected constructor(
+    protected readonly spec: OpenAPI.Document,
+    protected readonly sampler: Sampler
   ) {}
 
-  // eslint-disable-next-line complexity
-  public convert(path: string, method: string): PostData | null {
-    const pathObj = this.spec.paths[path][method];
-    const tokens = ['paths', path, method];
-    const params = Array.isArray(pathObj.parameters) ? pathObj.parameters : [];
+  public abstract convert(path: string, method: string): PostData | null;
 
-    for (const param of params) {
-      if (
-        typeof param.in === 'string' &&
-        param.in.toLowerCase() === 'body' &&
-        'schema' in param
-      ) {
-        const data = this.sampler.sampleParam(param, {
-          tokens,
-          spec: this.spec,
-          idx: pathObj.parameters.indexOf(param)
-        });
+  protected abstract getContentType(
+    path: string,
+    method: string
+  ): string | undefined;
 
-        let consumes;
-
-        // eslint-disable-next-line max-depth
-        if (pathObj.consumes?.length) {
-          consumes = pathObj.consumes;
-        } else if (isOASV2(this.spec) && this.spec.consumes?.length) {
-          consumes = this.spec.consumes;
-        }
-
-        const paramContentType = this.sampler.sample({
-          type: 'array',
-          examples: consumes || ['application/json']
-        });
-
-        return this.encodePayload(data, paramContentType);
-      }
-    }
-
-    const content = pathObj.requestBody?.content ?? {};
-    const keys = Object.keys(content);
-
-    if (!keys.length) {
-      return null;
-    }
-
-    const contentType = this.sampler.sample({
-      type: 'array',
-      examples: keys
-    });
-    const sampleContent = content[contentType];
-
-    if (sampleContent?.schema) {
-      const data = this.sampler.sample(
-        {
-          ...sampleContent.schema,
-          ...(sampleContent.example !== undefined
-            ? { example: sampleContent.example }
-            : {})
-        },
-        {
-          spec: this.spec,
-          jsonPointer: pointer.compile([
-            ...tokens,
-            'requestBody',
-            'content',
-            contentType,
-            'schema'
-          ])
-        }
-      );
-
-      return this.encodePayload(data, contentType, sampleContent.encoding);
-    }
-
-    return null;
-  }
-
-  private encodePayload(
-    data: any,
+  protected encodePayload(
+    data: unknown,
     contentType: string,
-    encoding?: any
+    encoding?: OpenAPIV3.EncodingObject
   ): { mimeType: string; text: string } {
     let encodedData = data;
 
@@ -112,13 +44,21 @@ export class PostDataConverter implements SubConverter<PostData | null> {
       mimeType: contentType.includes('multipart')
         ? `${contentType}; boundary=${this.BOUNDARY}`
         : contentType,
-      text: this.encodeValue(encodedData, contentType, encoding)
+      text: this.encodeValue(encodedData, contentType)
     };
   }
 
   // eslint-disable-next-line complexity
-  private encodeValue(value: any, contentType: string, encoding?: any): string {
-    switch (contentType) {
+  private encodeValue(
+    value: unknown,
+    contentType: string,
+    encoding?: string
+  ): string {
+    const [mime]: string[] = contentType
+      .split(',')
+      .map((x) => x.trim().replace(/;.+?$/, ''));
+
+    switch (mime) {
       case 'application/json':
         return typeof value === 'string' ? value : JSON.stringify(value);
 
@@ -135,7 +75,7 @@ export class PostDataConverter implements SubConverter<PostData | null> {
           indent: '  '
         };
 
-        return toXML(value, xmlOptions);
+        return toXML(value as XmlElement, xmlOptions);
 
       case 'multipart/form-data':
       case 'multipart/mixin':
@@ -145,11 +85,8 @@ export class PostDataConverter implements SubConverter<PostData | null> {
         // eslint-disable-next-line no-case-declarations
         let rawData = Object.keys(value || {})
           .reduce((params: string[], key: string) => {
-            const multipartContentType = this.getMultipartContentType(
-              value[key],
-              key,
-              encoding
-            );
+            const multipartContentType =
+              encoding ?? this.inferMultipartContentType(value[key]);
 
             let param = `--${this.BOUNDARY}${EOL}`;
 
@@ -178,7 +115,7 @@ export class PostDataConverter implements SubConverter<PostData | null> {
             params.push(param);
 
             return params;
-          }, [] as string[])
+          }, [])
           .join(EOL);
 
         rawData += EOL;
@@ -186,28 +123,30 @@ export class PostDataConverter implements SubConverter<PostData | null> {
 
         return rawData;
 
+      case 'image/x-icon':
+      case 'image/ico':
+      case 'image/vnd.microsoft.icon':
+        return this.ICO_IMAGE;
+
       case 'image/jpg':
       case 'image/jpeg':
         return this.JPG_IMAGE;
+
+      case 'image/gif':
+        return this.GIF_IMAGE;
 
       case 'image/png':
       case 'image/*':
         return this.PNG_IMAGE;
 
       default:
-        return typeof value === 'object' ? JSON.stringify(value) : value;
+        return typeof value === 'object'
+          ? JSON.stringify(value)
+          : value?.toString();
     }
   }
 
-  private getMultipartContentType(
-    value: any,
-    paramKey: string,
-    encoding: any
-  ): string {
-    if (encoding && encoding[paramKey] && encoding[paramKey].contentType) {
-      return encoding[paramKey].contentType;
-    }
-
+  private inferMultipartContentType(value: unknown): string {
     switch (typeof value) {
       case 'object':
         return 'application/json';
@@ -223,17 +162,24 @@ export class PostDataConverter implements SubConverter<PostData | null> {
     }
   }
 
-  private encodeProperties(keys: string[], data: any, encoding: any): string {
-    // eslint-disable-next-line @typescript-eslint/no-shadow
-    const encodedSample = keys.reduce((encodedSample, encodingKey) => {
+  private encodeProperties(
+    keys: string[],
+    data: unknown,
+    encoding?: OpenAPIV3.EncodingObject
+  ): unknown {
+    const sample = keys.reduce((encodedSample, encodingKey) => {
+      const { contentType }: OpenAPIV3.EncodingObject =
+        encoding?.[encodingKey] ?? {};
+
       encodedSample[encodingKey] = this.encodeValue(
         data[encodingKey],
-        encoding[encodingKey].contentType
+        contentType,
+        encodingKey
       );
 
       return encodedSample;
     }, {});
 
-    return Object.assign({}, data, encodedSample);
+    return Object.assign({}, data, sample);
   }
 }

@@ -60,90 +60,71 @@ export abstract class BodyConverter implements SubConverter<PostData | null> {
 
     switch (mime) {
       case 'application/json':
-        return typeof value === 'string' ? value : JSON.stringify(value);
-
+        return this.encodeJson(value);
       case 'application/x-www-form-urlencoded':
-        return stringify(value, {
-          format: 'RFC3986',
-          encode: false
-        });
-
+        return this.encodeFormUrlencoded(value);
       case 'application/xml':
-        // eslint-disable-next-line no-case-declarations
-        const xmlOptions = {
-          header: true,
-          indent: '  '
-        };
-
-        return toXML(value as XmlElement, xmlOptions);
-
+        return this.encodeXml(value);
       case 'multipart/form-data':
       case 'multipart/mixin':
-        // eslint-disable-next-line no-case-declarations
-        const EOL = '\r\n';
-
-        // eslint-disable-next-line no-case-declarations
-        let rawData = Object.keys(value || {})
-          .reduce((params: string[], key: string) => {
-            const multipartContentType =
-              encoding ?? this.inferMultipartContentType(value[key]);
-
-            let param = `--${this.BOUNDARY}${EOL}`;
-
-            switch (multipartContentType) {
-              case 'text/plain':
-                param += `Content-Disposition: form-data; name="${key}"${
-                  EOL + EOL
-                }`;
-                break;
-              case 'application/json':
-                param += `Content-Disposition: form-data; name="${key}"${EOL}`;
-                param += `Content-Type: ${multipartContentType}${EOL + EOL}`;
-                break;
-              default: {
-                param += `Content-Disposition: form-data; name="${key}"; filename="${key}"${EOL}`;
-                param += `Content-Type: ${multipartContentType}${EOL}`;
-                param += `Content-Transfer-Encoding: base64${EOL + EOL}`;
-              }
-            }
-
-            param +=
-              typeof value[key] === 'object'
-                ? JSON.stringify(value[key])
-                : value[key];
-
-            params.push(param);
-
-            return params;
-          }, [])
-          .join(EOL);
-
-        rawData += EOL;
-        rawData += `--${this.BOUNDARY}--`;
-
-        return rawData;
-
+        return this.encodeMultipartFormData(value, encoding);
       case 'image/x-icon':
       case 'image/ico':
       case 'image/vnd.microsoft.icon':
         return this.ICO_IMAGE;
-
       case 'image/jpg':
       case 'image/jpeg':
         return this.JPG_IMAGE;
-
       case 'image/gif':
         return this.GIF_IMAGE;
-
       case 'image/png':
       case 'image/*':
         return this.PNG_IMAGE;
-
       default:
-        return typeof value === 'object'
-          ? JSON.stringify(value)
-          : value?.toString();
+        return this.encodeOther(value);
     }
+  }
+
+  private encodeMultipartFormData(value: unknown, encoding?: string) {
+    const EOL = '\r\n';
+
+    const parts = Object.keys(value || {}).reduce(
+      (params: string[], key: string) => {
+        const multipartContentType =
+          encoding ?? this.inferMultipartContentType(value[key]);
+
+        let param = `--${this.BOUNDARY}${EOL}`;
+
+        switch (multipartContentType) {
+          case 'text/plain':
+            param += `Content-Disposition: form-data; name="${key}"${
+              EOL + EOL
+            }`;
+            break;
+          case 'application/json':
+            param += `Content-Disposition: form-data; name="${key}"${EOL}`;
+            param += `Content-Type: ${multipartContentType}${EOL + EOL}`;
+            break;
+          default: {
+            param += `Content-Disposition: form-data; name="${key}"; filename="${key}"${EOL}`;
+            param += `Content-Type: ${multipartContentType}${EOL}`;
+            param += `Content-Transfer-Encoding: base64${EOL + EOL}`;
+          }
+        }
+
+        param +=
+          typeof value[key] === 'object'
+            ? JSON.stringify(value[key])
+            : value[key];
+
+        params.push(param);
+
+        return params;
+      },
+      []
+    );
+
+    return `${parts.join(EOL)}${EOL}--${this.BOUNDARY}--`;
   }
 
   private inferMultipartContentType(value: unknown): string {
@@ -181,5 +162,31 @@ export abstract class BodyConverter implements SubConverter<PostData | null> {
     }, {});
 
     return Object.assign({}, data, sample);
+  }
+
+  private encodeJson(value: unknown): string {
+    return typeof value === 'string' ? value : JSON.stringify(value);
+  }
+
+  private encodeFormUrlencoded(value: unknown): string {
+    return stringify(value, {
+      format: 'RFC3986',
+      encode: false
+    });
+  }
+
+  private encodeXml(value: unknown): string {
+    const xmlOptions = {
+      header: true,
+      indent: '  '
+    };
+
+    return toXML(value as XmlElement, xmlOptions);
+  }
+
+  private encodeOther(value: unknown): string {
+    return typeof value === 'object'
+      ? JSON.stringify(value)
+      : value?.toString();
   }
 }

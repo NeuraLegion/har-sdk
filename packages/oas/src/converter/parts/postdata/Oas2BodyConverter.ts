@@ -3,7 +3,7 @@ import { Sampler } from '../Sampler';
 import { filterLocationParams, getParameters, isOASV2 } from '../../../utils';
 import { OpenAPIV2, PostData } from '@har-sdk/core';
 
-export class Oas2BodyConverter extends BodyConverter {
+export class Oas2BodyConverter extends BodyConverter<OpenAPIV2.Document> {
   constructor(spec: OpenAPIV2.Document, sampler: Sampler) {
     super(spec, sampler);
   }

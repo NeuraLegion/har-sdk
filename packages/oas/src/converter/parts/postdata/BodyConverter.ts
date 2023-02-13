@@ -4,7 +4,9 @@ import { OpenAPI, OpenAPIV3, PostData } from '@har-sdk/core';
 import { toXML, XmlElement } from 'jstoxml';
 import { stringify } from 'qs';
 
-export abstract class BodyConverter implements SubConverter<PostData | null> {
+export abstract class BodyConverter<T extends OpenAPI.Document>
+  implements SubConverter<PostData | null>
+{
   private readonly JPG_IMAGE = '/9j/7g=='; // 0xff, 0xd8, 0xff, 0xee
   private readonly PNG_IMAGE = 'iVBORw0KGgo='; // 0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0A, 0x1a, 0x0a
   private readonly ICO_IMAGE = 'AAABAA=='; // 0x00, 0x00, 0x01, 0x00
@@ -14,7 +16,7 @@ export abstract class BodyConverter implements SubConverter<PostData | null> {
     /^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$/;
 
   protected constructor(
-    protected readonly spec: OpenAPI.Document,
+    protected readonly spec: T,
     protected readonly sampler: Sampler
   ) {}
 

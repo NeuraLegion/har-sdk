@@ -3,7 +3,7 @@ import { Sampler } from '../Sampler';
 import { OpenAPIV3, PostData } from '@har-sdk/core';
 import pointer from 'json-pointer';
 
-export class Oas3RequestBodyConverter extends BodyConverter {
+export class Oas3RequestBodyConverter extends BodyConverter<OpenAPIV3.Document> {
   constructor(spec: OpenAPIV3.Document, sampler: Sampler) {
     super(spec, sampler);
   }
@@ -22,24 +22,10 @@ export class Oas3RequestBodyConverter extends BodyConverter {
     const sampleContent = content[contentType];
 
     if (sampleContent?.schema) {
-      const data = this.sampler.sample(
-        {
-          ...sampleContent.schema,
-          ...(sampleContent.example !== undefined
-            ? { example: sampleContent.example }
-            : {})
-        },
-        {
-          spec: this.spec,
-          jsonPointer: pointer.compile([
-            ...tokens,
-            'requestBody',
-            'content',
-            contentType,
-            'schema'
-          ])
-        }
-      );
+      const data = this.sampleRequestBody(sampleContent, {
+        tokens,
+        contentType
+      });
 
       return this.encodePayload(data, contentType, sampleContent.encoding);
     }
@@ -56,5 +42,35 @@ export class Oas3RequestBodyConverter extends BodyConverter {
       type: 'array',
       examples: keys
     });
+  }
+
+  private sampleRequestBody(
+    sampleContent: OpenAPIV3.MediaTypeObject,
+    {
+      contentType,
+      tokens
+    }: {
+      tokens: string[];
+      contentType: string;
+    }
+  ): unknown {
+    return this.sampler.sample(
+      {
+        ...sampleContent.schema,
+        ...(sampleContent.example !== undefined
+          ? { example: sampleContent.example }
+          : {})
+      },
+      {
+        spec: this.spec,
+        jsonPointer: pointer.compile([
+          ...tokens,
+          'requestBody',
+          'content',
+          contentType,
+          'schema'
+        ])
+      }
+    );
   }
 }

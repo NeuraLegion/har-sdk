@@ -85,46 +85,37 @@ export abstract class BodyConverter implements SubConverter<PostData | null> {
     }
   }
 
-  private encodeMultipartFormData(value: unknown, encoding?: string) {
+  private encodeMultipartFormData(value: unknown, encoding?: string): string {
     const EOL = '\r\n';
 
-    const parts = Object.keys(value || {}).reduce(
-      (params: string[], key: string) => {
-        const multipartContentType =
-          encoding ?? this.inferMultipartContentType(value[key]);
+    return Object.entries(value || {})
+      .map(([key, val]: [string, unknown]) => {
+        const contentType = encoding ?? this.inferMultipartContentType(val);
+        const filenameRequired = this.filenameRequired(contentType);
+        const content = this.encodeOther(val);
 
-        let param = `--${this.BOUNDARY}${EOL}`;
+        const headers = [
+          `Content-Disposition: form-data; name="${key}"${
+            filenameRequired ? `; filename="${key}"` : ''
+          }`,
+          ...(contentType !== 'text/plain'
+            ? [`Content-Type: ${contentType}`]
+            : []),
+          ...(this.BASE64_PATTERN.test(content) &&
+          contentType === 'application/octet-stream'
+            ? [`Content-Transfer-Encoding: base64`]
+            : [])
+        ];
+        const body = `${headers.join(EOL)}${EOL}${EOL}${content}`;
 
-        switch (multipartContentType) {
-          case 'text/plain':
-            param += `Content-Disposition: form-data; name="${key}"${
-              EOL + EOL
-            }`;
-            break;
-          case 'application/json':
-            param += `Content-Disposition: form-data; name="${key}"${EOL}`;
-            param += `Content-Type: ${multipartContentType}${EOL + EOL}`;
-            break;
-          default: {
-            param += `Content-Disposition: form-data; name="${key}"; filename="${key}"${EOL}`;
-            param += `Content-Type: ${multipartContentType}${EOL}`;
-            param += `Content-Transfer-Encoding: base64${EOL + EOL}`;
-          }
-        }
+        return `--${this.BOUNDARY}${EOL}${body}`;
+      })
+      .join(EOL)
+      .concat(`${EOL}--${this.BOUNDARY}--`);
+  }
 
-        param +=
-          typeof value[key] === 'object'
-            ? JSON.stringify(value[key])
-            : value[key];
-
-        params.push(param);
-
-        return params;
-      },
-      []
-    );
-
-    return `${parts.join(EOL)}${EOL}--${this.BOUNDARY}--`;
+  private filenameRequired(contentType: string) {
+    return !['application/json', 'text/plain'].includes(contentType);
   }
 
   private inferMultipartContentType(value: unknown): string {
@@ -137,6 +128,9 @@ export abstract class BodyConverter implements SubConverter<PostData | null> {
           : 'text/plain';
       case 'number':
       case 'boolean':
+      case 'bigint':
+      case 'symbol':
+      case 'undefined':
         return 'text/plain';
       default:
         return 'application/octet-stream';

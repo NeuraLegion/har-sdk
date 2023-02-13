@@ -1,0 +1,17 @@
+openapi: 3.0.1
+info:
+  title: Future is Bright
+  version: 1.0.0
+servers:
+  - url: https://brightsec.com
+paths:
+  /missing-securitySchemes:
+    get:
+      security:
+        - Non-Existing: []
+      responses:
+        200:
+          description: Reference to security schema on missing securitySchemes
+          content:
+            application/json:
+              schema: {}

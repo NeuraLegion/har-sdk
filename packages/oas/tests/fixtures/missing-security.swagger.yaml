@@ -1,0 +1,19 @@
+swagger: '2.0'
+info:
+  title: Future is Bright
+  version: 1.0.0
+host: brightsec.com
+basePath: /
+schemes:
+  - https
+paths:
+  /missing-securityDefinitions:
+    get:
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Reference to security schema on missing securityDefinitions
+          schema: {}
+      security:
+        - Non-Existing: []

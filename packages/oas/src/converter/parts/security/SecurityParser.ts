@@ -1,5 +1,11 @@
 import { Sampler } from '../Sampler';
-import { Header, OpenAPI, OpenAPIV2, OpenAPIV3 } from '@har-sdk/core';
+import {
+  Header,
+  OpenAPI,
+  OpenAPIV2,
+  OpenAPIV3,
+  QueryString
+} from '@har-sdk/core';
 
 type SecurityRequirementObject =
   | OpenAPIV2.SecurityRequirementObject
@@ -9,10 +15,15 @@ type SecuritySchemeObject =
   | OpenAPIV2.SecuritySchemeObject
   | OpenAPIV3.SecuritySchemeObject;
 
-export type SecurityClaim = {
-  type: 'header';
-  value: Header;
-};
+export type SecurityClaim =
+  | {
+      type: 'query';
+      value: QueryString;
+    }
+  | {
+      type: 'header';
+      value: Header;
+    };
 
 export abstract class SecurityParser<T extends OpenAPI.Document> {
   protected constructor(
@@ -25,7 +36,11 @@ export abstract class SecurityParser<T extends OpenAPI.Document> {
     | undefined;
 
   public parseHeaderSecurityRequirements(pathObj: OpenAPI.Operation): Header[] {
-    return this.parseSecurityRequirements(pathObj).map(({ value }) => value);
+    return this.parseSecurityRequirementsByLocation(pathObj, 'header');
+  }
+
+  public parseQuerySecurityRequirements(pathObj: OpenAPI.Operation): Header[] {
+    return this.parseSecurityRequirementsByLocation(pathObj, 'query');
   }
 
   protected parseApiKeyScheme(
@@ -35,12 +50,16 @@ export abstract class SecurityParser<T extends OpenAPI.Document> {
       switch (securityScheme.in) {
         case 'header':
           return this.createHeaderClaim('API-Key', securityScheme.name);
-        default:
-          throw new Error(
-            `The ${securityScheme.in} location of the API key is not supported yet.`
-          );
+        case 'query':
+          return this.createQueryClaim(securityScheme.name);
       }
     }
+  }
+
+  protected createQueryClaim(name = 'token'): SecurityClaim {
+    const token = this.sampleSecurityClaimValue();
+
+    return this.createClaim(name, token, 'query');
   }
 
   protected createHeaderClaim(
@@ -65,6 +84,25 @@ export abstract class SecurityParser<T extends OpenAPI.Document> {
       case 'apikey':
         return this.parseApiKeyScheme(securityScheme);
     }
+  }
+
+  private parseSecurityRequirementsByLocation(
+    pathObj: OpenAPI.Operation,
+    location: 'query'
+  ): QueryString[];
+
+  private parseSecurityRequirementsByLocation(
+    pathObj: OpenAPI.Operation,
+    location: 'header'
+  ): Header[];
+
+  private parseSecurityRequirementsByLocation(
+    pathObj: OpenAPI.Operation,
+    location: 'header' | 'query'
+  ): Header[] | QueryString[] {
+    return this.parseSecurityRequirements(pathObj)
+      .filter((x) => x.type === location)
+      .map(({ value }) => value);
   }
 
   private parseSecurityRequirements(
@@ -93,7 +131,7 @@ export abstract class SecurityParser<T extends OpenAPI.Document> {
   private createClaim(
     name: string,
     value: string,
-    type: 'header'
+    type: 'header' | 'query'
   ): SecurityClaim {
     return {
       type,

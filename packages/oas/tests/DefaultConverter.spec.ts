@@ -219,7 +219,7 @@ describe('DefaultConverter', () => {
         expected: '/paths/~1store~1order~1{orderId}/put/parameters/1/schema'
       }
     ].forEach(({ input, expected }) =>
-      it.skip(`should throw an convert error on ${input.replace(
+      it(`should throw an convert error on ${input.replace(
         /^convert-error-on-(.+)\.(.+)\.yaml$/,
         '$1 ($2)'
       )}`, async () => {

@@ -3,9 +3,20 @@ import { LocationParam } from '../LocationParam';
 import { Sampler } from '../Sampler';
 import { UriTemplator } from '../UriTemplator';
 import { HeadersConverter } from './HeadersConverter';
+import { Oas3SecurityParser, SecurityParser } from '../security';
 import { Header, OpenAPIV3 } from '@har-sdk/core';
 
 export class Oas3HeadersConverter extends HeadersConverter<OpenAPIV3.Document> {
+  private _security?: Oas3SecurityParser;
+
+  protected get security(): SecurityParser<OpenAPIV3.Document> {
+    if (!this._security) {
+      this._security = new Oas3SecurityParser(this.spec, this.sampler);
+    }
+
+    return this._security;
+  }
+
   private readonly uriTemplator = new UriTemplator();
 
   constructor(spec: OpenAPIV3.Document, sampler: Sampler) {
@@ -58,37 +69,5 @@ export class Oas3HeadersConverter extends HeadersConverter<OpenAPIV3.Document> {
         })
       )
     );
-  }
-
-  protected getSecuritySchemes():
-    | Record<string, OpenAPIV3.SecuritySchemeObject>
-    | undefined {
-    return this.spec.components?.securitySchemes as Record<
-      string,
-      OpenAPIV3.SecuritySchemeObject
-    >;
-  }
-
-  protected parseSecurityScheme(
-    securityScheme: OpenAPIV3.SecuritySchemeObject
-  ): Header | undefined {
-    const header = super.parseSecurityScheme(securityScheme);
-    if (header) {
-      return header;
-    }
-
-    const httpScheme =
-      'scheme' in securityScheme
-        ? securityScheme.scheme.toLowerCase()
-        : undefined;
-
-    switch (httpScheme) {
-      case 'basic':
-        return this.createAuthHeader('Basic');
-      case 'bearer':
-        return this.createAuthHeader('Bearer');
-      default:
-        return this.parseApiKeyScheme(securityScheme);
-    }
   }
 }

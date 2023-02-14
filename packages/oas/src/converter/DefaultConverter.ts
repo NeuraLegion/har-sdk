@@ -85,7 +85,7 @@ export class DefaultConverter implements Converter {
   private serializeQueryString(items: QueryString[]): string {
     return items.length
       ? `?${items
-          .map((p) => Object.values(p).map((x) => encodeURIComponent(x)))
+          .map((p) => [p.name, p.value].map(encodeURIComponent))
           .map(([name, value]: string[]) => `${name}=${value}`)
           .join('&')}`
       : '';

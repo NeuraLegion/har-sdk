@@ -3,14 +3,14 @@ import { filterLocationParams, getParameters } from '../../../utils';
 import { LocationParam } from '../LocationParam';
 import { Sampler } from '../Sampler';
 import { SubConverter } from '../../SubConverter';
-import { SecurityParser } from '../security';
+import { SecurityRequirementsParser } from '../security';
 import { Header, OpenAPI } from '@har-sdk/core';
 import jsonPointer from 'json-pointer';
 
 export abstract class HeadersConverter<T extends OpenAPI.Document>
   implements SubConverter<Header[]>
 {
-  protected abstract get security(): SecurityParser<T>;
+  protected abstract get security(): SecurityRequirementsParser<T>;
 
   protected constructor(
     protected readonly spec: T,
@@ -35,7 +35,7 @@ export abstract class HeadersConverter<T extends OpenAPI.Document>
     headers.push(...this.createAcceptHeaders(pathObj));
 
     headers.push(...this.parseFromParams(path, method));
-    headers.push(...this.security.parseHeaderSecurityRequirements(pathObj));
+    headers.push(...this.security.parseSecurityRequirements(pathObj, 'header'));
 
     return headers;
   }

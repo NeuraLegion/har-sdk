@@ -3,15 +3,21 @@ import { LocationParam } from '../LocationParam';
 import { Sampler } from '../Sampler';
 import { UriTemplator } from '../UriTemplator';
 import { HeadersConverter } from './HeadersConverter';
-import { Oas3SecurityParser, SecurityParser } from '../security';
+import {
+  Oas3SecurityRequirementsParser,
+  SecurityRequirementsParser
+} from '../security';
 import { Header, OpenAPIV3 } from '@har-sdk/core';
 
 export class Oas3HeadersConverter extends HeadersConverter<OpenAPIV3.Document> {
-  private _security?: Oas3SecurityParser;
+  private _security?: Oas3SecurityRequirementsParser;
 
-  protected get security(): SecurityParser<OpenAPIV3.Document> {
+  protected get security(): SecurityRequirementsParser<OpenAPIV3.Document> {
     if (!this._security) {
-      this._security = new Oas3SecurityParser(this.spec, this.sampler);
+      this._security = new Oas3SecurityRequirementsParser(
+        this.spec,
+        this.sampler
+      );
     }
 
     return this._security;

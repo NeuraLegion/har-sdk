@@ -1,8 +1,8 @@
-import { SecurityParser } from './SecurityParser';
+import { SecurityRequirementsParser } from './SecurityRequirementsParser';
 import { Sampler } from '../Sampler';
 import { OpenAPIV2 } from '@har-sdk/core';
 
-export class Oas2SecurityParser extends SecurityParser<OpenAPIV2.Document> {
+export class Oas2SecurityRequirementsParser extends SecurityRequirementsParser<OpenAPIV2.Document> {
   constructor(spec: OpenAPIV2.Document, sampler: Sampler) {
     super(spec, sampler);
   }

@@ -1,5 +1,6 @@
 import { Sampler } from '../Sampler';
 import {
+  Cookie,
   Header,
   OpenAPI,
   OpenAPIV2,
@@ -15,17 +16,7 @@ type SecuritySchemeObject =
   | OpenAPIV2.SecuritySchemeObject
   | OpenAPIV3.SecuritySchemeObject;
 
-export type SecurityClaim =
-  | {
-      type: 'query';
-      value: QueryString;
-    }
-  | {
-      type: 'header';
-      value: Header;
-    };
-
-export abstract class SecurityParser<T extends OpenAPI.Document> {
+export abstract class SecurityRequirementsParser<T extends OpenAPI.Document> {
   protected constructor(
     protected readonly spec: T,
     protected readonly sampler: Sampler
@@ -35,85 +26,24 @@ export abstract class SecurityParser<T extends OpenAPI.Document> {
     | Record<string, SecuritySchemeObject>
     | undefined;
 
-  public parseHeaderSecurityRequirements(pathObj: OpenAPI.Operation): Header[] {
-    return this.parseSecurityRequirementsByLocation(pathObj, 'header');
-  }
-
-  public parseQuerySecurityRequirements(pathObj: OpenAPI.Operation): Header[] {
-    return this.parseSecurityRequirementsByLocation(pathObj, 'query');
-  }
-
-  protected parseApiKeyScheme(
-    securityScheme: SecuritySchemeObject
-  ): SecurityClaim | undefined {
-    if ('in' in securityScheme) {
-      switch (securityScheme.in) {
-        case 'header':
-          return this.createHeaderClaim('API-Key', securityScheme.name);
-        case 'query':
-          return this.createQueryClaim(securityScheme.name);
-      }
-    }
-  }
-
-  protected createQueryClaim(name = 'token'): SecurityClaim {
-    const token = this.sampleSecurityClaimValue();
-
-    return this.createClaim(name, token, 'query');
-  }
-
-  protected createHeaderClaim(
-    type: 'Basic' | 'Bearer' | 'API-Key',
-    name = 'authorization'
-  ): SecurityClaim {
-    const token = this.sampleSecurityClaimValue();
-    const prefix = type === 'API-Key' ? '' : `${type} `;
-
-    return this.createClaim(name.toLowerCase(), `${prefix}${token}`, 'header');
-  }
-
-  protected parseSecurityScheme(
-    securityScheme: SecuritySchemeObject
-  ): SecurityClaim | undefined {
-    const authType = securityScheme.type.toLowerCase();
-    switch (authType) {
-      case 'basic':
-        return this.createHeaderClaim('Basic');
-      case 'oauth2':
-        return this.createHeaderClaim('Bearer');
-      case 'apikey':
-        return this.parseApiKeyScheme(securityScheme);
-    }
-  }
-
-  private parseSecurityRequirementsByLocation(
-    pathObj: OpenAPI.Operation,
-    location: 'query'
-  ): QueryString[];
-
-  private parseSecurityRequirementsByLocation(
+  public parseSecurityRequirements(
     pathObj: OpenAPI.Operation,
     location: 'header'
   ): Header[];
-
-  private parseSecurityRequirementsByLocation(
+  public parseSecurityRequirements(
+    pathObj: OpenAPI.Operation,
+    location: 'query'
+  ): QueryString[];
+  public parseSecurityRequirements(
     pathObj: OpenAPI.Operation,
     location: 'header' | 'query'
-  ): Header[] | QueryString[] {
-    return this.parseSecurityRequirements(pathObj)
-      .filter((x) => x.type === location)
-      .map(({ value }) => value);
-  }
-
-  private parseSecurityRequirements(
-    pathObj: OpenAPI.Operation
-  ): SecurityClaim[] {
+  ): (Header | QueryString | Cookie)[] {
     const securityRequirements = this.getSecurityRequirementObjects(pathObj);
     if (!securityRequirements) {
       return [];
     }
 
-    const securitySchemes = this.getSecuritySchemes();
+    const securitySchemes = this.selectSecuritySchemas(location);
     if (!securitySchemes) {
       return [];
     }
@@ -121,25 +51,81 @@ export abstract class SecurityParser<T extends OpenAPI.Document> {
     return this.createClaims(securityRequirements, securitySchemes);
   }
 
-  private sampleSecurityClaimValue(): string {
+  protected parseApiKeyScheme(
+    securityScheme: SecuritySchemeObject
+  ): Header | QueryString | undefined {
+    if ('in' in securityScheme) {
+      switch (securityScheme.in) {
+        case 'header':
+          return this.createHeader('API-Key', securityScheme.name);
+        case 'query':
+          return this.createQueryString(securityScheme.name);
+      }
+    }
+  }
+
+  protected createQueryString(name = 'token'): QueryString {
+    const value = this.sampleSecurityCredentials();
+
+    return {
+      name,
+      value
+    };
+  }
+
+  protected createHeader(
+    type: 'Basic' | 'Bearer' | 'API-Key',
+    name = 'authorization'
+  ): Header {
+    const token = this.sampleSecurityCredentials();
+    const prefix = type === 'API-Key' ? '' : `${type} `;
+
+    return {
+      name: name.toLowerCase(),
+      value: `${prefix}${token}`
+    };
+  }
+
+  protected parseSecurityScheme(
+    securityScheme: SecuritySchemeObject
+  ): (Header | QueryString) | undefined {
+    const authType = securityScheme.type.toLowerCase();
+    switch (authType) {
+      case 'basic':
+        return this.createHeader('Basic');
+      case 'oauth2':
+        return this.createHeader('Bearer');
+      case 'apikey':
+        return this.parseApiKeyScheme(securityScheme);
+    }
+  }
+
+  private selectSecuritySchemas(
+    location: 'header' | 'query' | 'cookie'
+  ): Record<string, SecuritySchemeObject> | undefined {
+    const securitySchemes = this.getSecuritySchemes();
+    if (!securitySchemes) {
+      return;
+    }
+
+    const selectedSchemes = Object.entries(securitySchemes).filter(
+      ([_, value]: [string, SecuritySchemeObject]) =>
+        (value.type === 'apiKey' && value.in === location) ||
+        (value.type !== 'apiKey' && location === 'header')
+    );
+
+    if (!selectedSchemes.length) {
+      return;
+    }
+
+    return Object.fromEntries(selectedSchemes);
+  }
+
+  private sampleSecurityCredentials(): string {
     return this.sampler.sample({
       type: 'string',
       format: 'base64'
     });
-  }
-
-  private createClaim(
-    name: string,
-    value: string,
-    type: 'header' | 'query'
-  ): SecurityClaim {
-    return {
-      type,
-      value: {
-        name,
-        value
-      }
-    };
   }
 
   private getSecurityRequirementObjects(
@@ -155,7 +141,7 @@ export abstract class SecurityParser<T extends OpenAPI.Document> {
   private createClaims(
     securityRequirements: SecurityRequirementObject[],
     securitySchemes: Record<string, SecuritySchemeObject>
-  ): SecurityClaim[] {
+  ): (Header | QueryString)[] {
     for (const obj of securityRequirements) {
       const claims = this.parseSecurityRequirement(obj, securitySchemes);
       if (claims.length) {
@@ -169,8 +155,8 @@ export abstract class SecurityParser<T extends OpenAPI.Document> {
   private parseSecurityRequirement(
     securityRequirement: SecurityRequirementObject,
     securitySchemes: Record<string, SecuritySchemeObject>
-  ): SecurityClaim[] {
-    const claims: SecurityClaim[] = [];
+  ): (Header | QueryString)[] {
+    const claims: (Header | QueryString)[] = [];
 
     for (const schemeName of Object.keys(securityRequirement)) {
       const claim = securitySchemes[schemeName]

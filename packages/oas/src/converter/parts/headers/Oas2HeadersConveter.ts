@@ -2,17 +2,23 @@ import { LocationParam } from '../LocationParam';
 import { Oas2ValueSerializer } from '../Oas2ValueSerializer';
 import { Sampler } from '../Sampler';
 import { HeadersConverter } from './HeadersConverter';
-import { Oas2SecurityParser, SecurityParser } from '../security';
+import {
+  Oas2SecurityRequirementsParser,
+  SecurityRequirementsParser
+} from '../security';
 import { Header, OpenAPIV2 } from '@har-sdk/core';
 
 export class Oas2HeadersConverter extends HeadersConverter<OpenAPIV2.Document> {
-  private _security?: Oas2SecurityParser;
+  private _security?: Oas2SecurityRequirementsParser;
 
   private readonly oas2ValueSerializer = new Oas2ValueSerializer();
 
-  protected get security(): SecurityParser<OpenAPIV2.Document> {
+  protected get security(): SecurityRequirementsParser<OpenAPIV2.Document> {
     if (!this._security) {
-      this._security = new Oas2SecurityParser(this.spec, this.sampler);
+      this._security = new Oas2SecurityRequirementsParser(
+        this.spec,
+        this.sampler
+      );
     }
 
     return this._security;

@@ -2,15 +2,21 @@ import { LocationParam } from '../LocationParam';
 import { Sampler } from '../Sampler';
 import { UriTemplator } from '../UriTemplator';
 import { QueryStringConverter } from './QueryStringConverter';
-import { Oas3SecurityParser, SecurityParser } from '../security';
+import {
+  Oas3SecurityRequirementsParser,
+  SecurityRequirementsParser
+} from '../security';
 import { OpenAPIV3, QueryString } from '@har-sdk/core';
 
 export class Oas3QueryStringConverter extends QueryStringConverter<OpenAPIV3.Document> {
-  private _security?: SecurityParser<OpenAPIV3.Document>;
+  private _security?: SecurityRequirementsParser<OpenAPIV3.Document>;
 
-  protected get security(): SecurityParser<OpenAPIV3.Document> {
+  protected get security(): SecurityRequirementsParser<OpenAPIV3.Document> {
     if (!this._security) {
-      this._security = new Oas3SecurityParser(this.spec, this.sampler);
+      this._security = new Oas3SecurityRequirementsParser(
+        this.spec,
+        this.sampler
+      );
     }
 
     return this._security;

@@ -1,8 +1,8 @@
-import { SecurityClaim, SecurityParser } from './SecurityParser';
+import { SecurityRequirementsParser } from './SecurityRequirementsParser';
 import { Sampler } from '../Sampler';
-import { OpenAPIV3 } from '@har-sdk/core';
+import { Header, OpenAPIV3, QueryString } from '@har-sdk/core';
 
-export class Oas3SecurityParser extends SecurityParser<OpenAPIV3.Document> {
+export class Oas3SecurityRequirementsParser extends SecurityRequirementsParser<OpenAPIV3.Document> {
   constructor(spec: OpenAPIV3.Document, sampler: Sampler) {
     super(spec, sampler);
   }
@@ -18,7 +18,7 @@ export class Oas3SecurityParser extends SecurityParser<OpenAPIV3.Document> {
 
   protected override parseSecurityScheme(
     securityScheme: OpenAPIV3.SecuritySchemeObject
-  ): SecurityClaim | undefined {
+  ): Header | QueryString | undefined {
     const header = super.parseSecurityScheme(securityScheme);
 
     if (header) {
@@ -32,9 +32,9 @@ export class Oas3SecurityParser extends SecurityParser<OpenAPIV3.Document> {
 
     switch (httpScheme) {
       case 'basic':
-        return this.createHeaderClaim('Basic');
+        return this.createHeader('Basic');
       case 'bearer':
-        return this.createHeaderClaim('Bearer');
+        return this.createHeader('Bearer');
       default:
         return this.parseApiKeyScheme(securityScheme);
     }

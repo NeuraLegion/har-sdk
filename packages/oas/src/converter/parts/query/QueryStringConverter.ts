@@ -3,14 +3,14 @@ import { getParameters, filterLocationParams } from '../../../utils';
 import { LocationParam } from '../LocationParam';
 import { Sampler } from '../Sampler';
 import { SubConverter } from '../../SubConverter';
-import { SecurityParser } from '../security';
+import { SecurityRequirementsParser } from '../security';
 import jsonPointer from 'json-pointer';
 import { OpenAPI, QueryString } from '@har-sdk/core';
 
 export abstract class QueryStringConverter<T extends OpenAPI.Document>
   implements SubConverter<QueryString[]>
 {
-  protected abstract get security(): SecurityParser<T>;
+  protected abstract get security(): SecurityRequirementsParser<T>;
 
   protected constructor(
     protected readonly spec: T,
@@ -45,6 +45,6 @@ export abstract class QueryStringConverter<T extends OpenAPI.Document>
           ])
         });
       })
-      .concat(this.security.parseQuerySecurityRequirements(pathObj));
+      .concat(this.security.parseSecurityRequirements(pathObj, 'query'));
   }
 }

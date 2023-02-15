@@ -1,3 +1,3 @@
-export * from './SecurityParser';
-export * from './Oas2SecurityParser';
-export * from './Oas3SecurityParser';
+export * from './SecurityRequirementsParser';
+export * from './Oas2SecurityRequirementsParser';
+export * from './Oas3SecurityRequirementsParser';

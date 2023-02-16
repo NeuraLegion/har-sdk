@@ -14,8 +14,8 @@ export abstract class HeadersConverter<T extends OpenAPI.Document>
   implements SubConverter<Header[]>
 {
   protected constructor(
-    protected readonly spec: T,
-    protected readonly sampler: Sampler
+    private readonly spec: T,
+    private readonly sampler: Sampler
   ) {}
 
   protected abstract createContentTypeHeaders(

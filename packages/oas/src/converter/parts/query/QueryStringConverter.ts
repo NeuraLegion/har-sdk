@@ -10,8 +10,8 @@ export abstract class QueryStringConverter<T extends OpenAPI.Document>
   implements SubConverter<QueryString[]>
 {
   protected constructor(
-    protected readonly spec: T,
-    protected readonly sampler: Sampler
+    private readonly spec: T,
+    private readonly sampler: Sampler
   ) {}
 
   protected abstract convertQueryParam(

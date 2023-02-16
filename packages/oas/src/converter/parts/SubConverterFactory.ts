@@ -5,7 +5,7 @@ import { Oas2HeadersConverter, Oas3HeadersConverter } from './headers';
 import { Oas2PathConverter, Oas3PathConverter } from './path';
 import { Oas2BodyConverter, Oas3RequestBodyConverter } from './postdata';
 import { Oas2QueryStringConverter, Oas3QueryStringConverter } from './query';
-import { Sampler } from './Sampler';
+import { Sampler } from '../Sampler';
 import { OpenAPI, OpenAPIV2, OpenAPIV3 } from '@har-sdk/core';
 
 export class SubConverterFactory {

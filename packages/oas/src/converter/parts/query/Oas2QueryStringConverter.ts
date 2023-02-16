@@ -1,12 +1,8 @@
 import { isObject } from '../../../utils';
 import { LocationParam } from '../LocationParam';
 import { Oas2ValueSerializer } from '../Oas2ValueSerializer';
-import { Sampler } from '../Sampler';
+import { Sampler } from '../../Sampler';
 import { QueryStringConverter } from './QueryStringConverter';
-import {
-  Oas2SecurityRequirementsParser,
-  SecurityRequirementsParser
-} from '../security';
 import { OpenAPIV2, QueryString } from '@har-sdk/core';
 
 export class Oas2QueryStringConverter extends QueryStringConverter<OpenAPIV2.Document> {
@@ -14,10 +10,6 @@ export class Oas2QueryStringConverter extends QueryStringConverter<OpenAPIV2.Doc
 
   constructor(spec: OpenAPIV2.Document, sampler: Sampler) {
     super(spec, sampler);
-  }
-
-  protected createSecurityRequirementsParser(): SecurityRequirementsParser<OpenAPIV2.Document> {
-    return new Oas2SecurityRequirementsParser(this.spec, this.sampler);
   }
 
   protected convertQueryParam(

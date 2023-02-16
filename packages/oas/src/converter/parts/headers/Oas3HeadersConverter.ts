@@ -1,12 +1,8 @@
 import { isObject } from '../../../utils';
 import { LocationParam } from '../LocationParam';
-import { Sampler } from '../Sampler';
+import { Sampler } from '../../Sampler';
 import { UriTemplator } from '../UriTemplator';
 import { HeadersConverter } from './HeadersConverter';
-import {
-  Oas3SecurityRequirementsParser,
-  SecurityRequirementsParser
-} from '../security';
 import { Header, OpenAPIV3 } from '@har-sdk/core';
 
 export class Oas3HeadersConverter extends HeadersConverter<OpenAPIV3.Document> {
@@ -14,10 +10,6 @@ export class Oas3HeadersConverter extends HeadersConverter<OpenAPIV3.Document> {
 
   constructor(spec: OpenAPIV3.Document, sampler: Sampler) {
     super(spec, sampler);
-  }
-
-  protected createSecurityRequirementsParser(): SecurityRequirementsParser<OpenAPIV3.Document> {
-    return new Oas3SecurityRequirementsParser(this.spec, this.sampler);
   }
 
   protected createContentTypeHeaders(

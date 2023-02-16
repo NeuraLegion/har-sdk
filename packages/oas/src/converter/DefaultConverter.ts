@@ -1,26 +1,30 @@
-import { Converter } from './Converter';
+import type { Converter } from './Converter';
 import { BaseUrlParser, SubConverterRegistry } from './parts';
 import { SubPart } from './SubPart';
-import $RefParser, { JSONSchema } from '@apidevtools/json-schema-ref-parser';
 import {
+  SecurityRequirementsFactory,
+  SecurityRequirementsParser
+} from './security';
+import type { PathItemObject } from '../types';
+import { getOperation } from '../utils';
+import $RefParser, { JSONSchema } from '@apidevtools/json-schema-ref-parser';
+import type {
   Header,
   OpenAPI,
-  OpenAPIV2,
-  OpenAPIV3,
   PostData,
   QueryString,
   Request
 } from '@har-sdk/core';
 import pointer from 'json-pointer';
 
-type PathItemObject = OpenAPIV2.PathItemObject | OpenAPIV3.PathItemObject;
-
 export class DefaultConverter implements Converter {
   private spec: OpenAPI.Document;
+  private securityRequirements?: SecurityRequirementsParser<OpenAPI.Document>;
 
   constructor(
     private readonly baseUrlParser: BaseUrlParser,
-    private readonly subConverterRegistry: SubConverterRegistry
+    private readonly subConverterRegistry: SubConverterRegistry,
+    private readonly securityRequirementsFactory: SecurityRequirementsFactory
   ) {}
 
   public async convert(spec: OpenAPI.Document): Promise<Request[]> {
@@ -28,6 +32,10 @@ export class DefaultConverter implements Converter {
       JSON.parse(JSON.stringify(spec)) as JSONSchema,
       { resolve: { file: false, http: false } }
     )) as OpenAPI.Document;
+
+    this.securityRequirements = this.securityRequirementsFactory.create(
+      this.spec
+    );
 
     return Object.entries(this.spec.paths).flatMap(
       ([path, pathMethods]: [string, PathItemObject]) =>
@@ -53,9 +61,8 @@ export class DefaultConverter implements Converter {
       method
     );
 
-    return {
+    const request: Omit<Request, 'url'> = {
       queryString,
-      url: this.buildUrl(path, method, queryString),
       method: method.toUpperCase(),
       headers: this.convertPart<Header[]>(SubPart.HEADERS, path, method),
       httpVersion: 'HTTP/1.1',
@@ -64,6 +71,23 @@ export class DefaultConverter implements Converter {
       bodySize: 0,
       ...(postData ? { postData } : {})
     };
+
+    this.authorizeRequest(path, method, request);
+
+    return {
+      ...request,
+      url: this.buildUrl(path, method, queryString)
+    };
+  }
+
+  private authorizeRequest(
+    path: string,
+    method: string,
+    request: Omit<Request, 'url'>
+  ): void {
+    const operation = getOperation(this.spec, path, method);
+    const claims = this.securityRequirements?.parse(operation) ?? [];
+    claims.forEach((x) => x.authorizeRequest(request));
   }
 
   private buildUrl(

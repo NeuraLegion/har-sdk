@@ -1,7 +1,7 @@
 import { ParameterObject } from '../../../types';
 import { getParameters, filterLocationParams } from '../../../utils';
 import { LocationParam } from '../LocationParam';
-import { Sampler } from '../Sampler';
+import { Sampler } from '../../Sampler';
 import { SubConverter } from '../../SubConverter';
 import jsonPointer from 'json-pointer';
 import { OpenAPI } from '@har-sdk/core';

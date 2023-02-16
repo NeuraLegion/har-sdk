@@ -1,11 +1,7 @@
 import { LocationParam } from '../LocationParam';
-import { Sampler } from '../Sampler';
+import { Sampler } from '../../Sampler';
 import { UriTemplator } from '../UriTemplator';
 import { QueryStringConverter } from './QueryStringConverter';
-import {
-  Oas3SecurityRequirementsParser,
-  SecurityRequirementsParser
-} from '../security';
 import { OpenAPIV3, QueryString } from '@har-sdk/core';
 
 export class Oas3QueryStringConverter extends QueryStringConverter<OpenAPIV3.Document> {
@@ -13,10 +9,6 @@ export class Oas3QueryStringConverter extends QueryStringConverter<OpenAPIV3.Doc
 
   constructor(spec: OpenAPIV3.Document, sampler: Sampler) {
     super(spec, sampler);
-  }
-
-  protected createSecurityRequirementsParser(): SecurityRequirementsParser<OpenAPIV3.Document> {
-    return new Oas3SecurityRequirementsParser(this.spec, this.sampler);
   }
 
   protected convertQueryParam({

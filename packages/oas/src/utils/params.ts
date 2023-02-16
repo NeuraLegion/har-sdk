@@ -1,12 +1,13 @@
-import { OperationObject, ParameterObject } from '../types';
-import { OpenAPI } from '@har-sdk/core';
+import type { ParameterObject } from '../types';
+import { getOperation } from './operation';
+import type { OpenAPI } from '@har-sdk/core';
 
 export const getParameters = (
   spec: OpenAPI.Document,
   path: string,
   method: string
 ): ParameterObject[] => {
-  const pathObj: OperationObject = spec.paths[path][method];
+  const pathObj = getOperation(spec, path, method);
 
   return Array.isArray(pathObj.parameters)
     ? (pathObj.parameters as ParameterObject[])

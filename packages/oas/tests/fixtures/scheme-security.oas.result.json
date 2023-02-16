@@ -193,5 +193,29 @@
       }
     ],
     "url": "https://petstore.swagger.io/pets/api-key-in-query?token=ZHVtbXkgYmluYXJ5IHNhbXBsZQA%3D"
+  },
+  {
+    "bodySize": 0,
+    "cookies": [
+      {
+        "name": "auth_cookie",
+        "value": "ZHVtbXkgYmluYXJ5IHNhbXBsZQA="
+      }
+    ],
+    "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
+        "name": "cookie",
+        "value": "auth_cookie=ZHVtbXkgYmluYXJ5IHNhbXBsZQA="
+      }
+    ],
+    "headersSize": 0,
+    "httpVersion": "HTTP/1.1",
+    "method": "GET",
+    "queryString": [],
+    "url": "https://petstore.swagger.io/pets/api-key-in-cookie"
   }
 ]

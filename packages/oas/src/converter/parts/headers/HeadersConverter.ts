@@ -10,12 +10,22 @@ import jsonPointer from 'json-pointer';
 export abstract class HeadersConverter<T extends OpenAPI.Document>
   implements SubConverter<Header[]>
 {
-  protected abstract get security(): SecurityRequirementsParser<T>;
+  private _security: SecurityRequirementsParser<T>;
+
+  private get security(): SecurityRequirementsParser<T> {
+    if (!this._security) {
+      this._security = this.createSecurityRequirementsParser();
+    }
+
+    return this._security;
+  }
 
   protected constructor(
     protected readonly spec: T,
     protected readonly sampler: Sampler
   ) {}
+
+  protected abstract createSecurityRequirementsParser(): SecurityRequirementsParser<T>;
 
   protected abstract createContentTypeHeaders(
     pathObj: OperationObject

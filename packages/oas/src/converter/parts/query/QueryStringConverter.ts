@@ -10,12 +10,22 @@ import { OpenAPI, QueryString } from '@har-sdk/core';
 export abstract class QueryStringConverter<T extends OpenAPI.Document>
   implements SubConverter<QueryString[]>
 {
-  protected abstract get security(): SecurityRequirementsParser<T>;
+  private _security: SecurityRequirementsParser<T>;
+
+  private get security(): SecurityRequirementsParser<T> {
+    if (!this._security) {
+      this._security = this.createSecurityRequirementsParser();
+    }
+
+    return this._security;
+  }
 
   protected constructor(
     protected readonly spec: T,
     protected readonly sampler: Sampler
   ) {}
+
+  protected abstract createSecurityRequirementsParser(): SecurityRequirementsParser<T>;
 
   protected abstract convertQueryParam(
     queryParam: LocationParam<ParameterObject>

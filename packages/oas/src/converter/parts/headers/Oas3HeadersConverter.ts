@@ -10,23 +10,14 @@ import {
 import { Header, OpenAPIV3 } from '@har-sdk/core';
 
 export class Oas3HeadersConverter extends HeadersConverter<OpenAPIV3.Document> {
-  private _security?: Oas3SecurityRequirementsParser;
-
-  protected get security(): SecurityRequirementsParser<OpenAPIV3.Document> {
-    if (!this._security) {
-      this._security = new Oas3SecurityRequirementsParser(
-        this.spec,
-        this.sampler
-      );
-    }
-
-    return this._security;
-  }
-
   private readonly uriTemplator = new UriTemplator();
 
   constructor(spec: OpenAPIV3.Document, sampler: Sampler) {
     super(spec, sampler);
+  }
+
+  protected createSecurityRequirementsParser(): SecurityRequirementsParser<OpenAPIV3.Document> {
+    return new Oas3SecurityRequirementsParser(this.spec, this.sampler);
   }
 
   protected createContentTypeHeaders(

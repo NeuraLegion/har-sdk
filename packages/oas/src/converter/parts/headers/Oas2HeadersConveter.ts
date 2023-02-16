@@ -9,23 +9,14 @@ import {
 import { Header, OpenAPIV2 } from '@har-sdk/core';
 
 export class Oas2HeadersConverter extends HeadersConverter<OpenAPIV2.Document> {
-  private _security?: Oas2SecurityRequirementsParser;
-
   private readonly oas2ValueSerializer = new Oas2ValueSerializer();
-
-  protected get security(): SecurityRequirementsParser<OpenAPIV2.Document> {
-    if (!this._security) {
-      this._security = new Oas2SecurityRequirementsParser(
-        this.spec,
-        this.sampler
-      );
-    }
-
-    return this._security;
-  }
 
   constructor(spec: OpenAPIV2.Document, sampler: Sampler) {
     super(spec, sampler);
+  }
+
+  protected createSecurityRequirementsParser(): SecurityRequirementsParser<OpenAPIV2.Document> {
+    return new Oas2SecurityRequirementsParser(this.spec, this.sampler);
   }
 
   protected createContentTypeHeaders(

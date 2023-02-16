@@ -9,23 +9,14 @@ import {
 import { OpenAPIV3, QueryString } from '@har-sdk/core';
 
 export class Oas3QueryStringConverter extends QueryStringConverter<OpenAPIV3.Document> {
-  private _security?: SecurityRequirementsParser<OpenAPIV3.Document>;
-
-  protected get security(): SecurityRequirementsParser<OpenAPIV3.Document> {
-    if (!this._security) {
-      this._security = new Oas3SecurityRequirementsParser(
-        this.spec,
-        this.sampler
-      );
-    }
-
-    return this._security;
-  }
-
   private readonly uriTemplator = new UriTemplator();
 
   constructor(spec: OpenAPIV3.Document, sampler: Sampler) {
     super(spec, sampler);
+  }
+
+  protected createSecurityRequirementsParser(): SecurityRequirementsParser<OpenAPIV3.Document> {
+    return new Oas3SecurityRequirementsParser(this.spec, this.sampler);
   }
 
   protected convertQueryParam({

@@ -7,7 +7,12 @@ export type InjectionLocation = keyof Pick<
   'headers' | 'queryString' | 'cookies'
 >;
 
-export abstract class SecurityScheme<T extends SecuritySchemeObject, R> {
+export abstract class SecurityScheme<
+  T extends SecuritySchemeObject,
+  R extends Header | QueryString | Cookie
+> {
+  abstract get location(): InjectionLocation;
+
   protected constructor(
     protected readonly schema: T,
     private readonly sampler: Sampler
@@ -15,9 +20,9 @@ export abstract class SecurityScheme<T extends SecuritySchemeObject, R> {
 
   public abstract createCredentials(): R;
 
-  public abstract authorizeRequest(
-    request: Pick<Request, InjectionLocation>
-  ): void;
+  public authorizeRequest(request: Pick<Request, InjectionLocation>): void {
+    request[this.location]?.push(this.createCredentials());
+  }
 
   protected createCookieHeader(cookie: Cookie): Header {
     return this.createKeyValuePair('cookie', `${cookie.name}=${cookie.value}`);
@@ -43,17 +48,16 @@ export abstract class SecurityScheme<T extends SecuritySchemeObject, R> {
     return this.createKeyValuePairWithSampledValue(name);
   }
 
-  private createKeyValuePairWithSampledValue(name: string): {
-    name: string;
-    value: string;
-  } {
+  private createKeyValuePairWithSampledValue(
+    name: string
+  ): Header | QueryString | Cookie {
     return this.createKeyValuePair(name, this.sampleCredentials());
   }
 
   private createKeyValuePair(
     name: string,
     value: string
-  ): { name: string; value: string } {
+  ): Header | QueryString | Cookie {
     return {
       name,
       value

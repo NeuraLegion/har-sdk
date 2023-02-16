@@ -1,17 +1,17 @@
 import { InjectionLocation, SecurityScheme } from './SecuritySchema';
 import type { Sampler } from '../../Sampler';
-import type { Header, OpenAPIV3, Request } from '@har-sdk/core';
+import type { Header, OpenAPIV3 } from '@har-sdk/core';
 
 export class HttpSecurityScheme extends SecurityScheme<
   OpenAPIV3.HttpSecurityScheme,
   Header
 > {
-  constructor(schema: OpenAPIV3.HttpSecurityScheme, sampler: Sampler) {
-    super(schema, sampler);
+  get location(): InjectionLocation {
+    return 'headers';
   }
 
-  public authorizeRequest(request: Pick<Request, InjectionLocation>): void {
-    request.headers.push(this.createCredentials());
+  constructor(schema: OpenAPIV3.HttpSecurityScheme, sampler: Sampler) {
+    super(schema, sampler);
   }
 
   public createCredentials(): Header {

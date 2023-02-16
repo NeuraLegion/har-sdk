@@ -18,6 +18,6 @@ export class BearerSecurityScheme extends SecurityScheme<
   }
 
   public createCredentials(): Header {
-    return this.createHeader('authorization', 'Bearer');
+    return this.createAuthorizationHeader('authorization', 'Bearer');
   }
 }

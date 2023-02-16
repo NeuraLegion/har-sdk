@@ -18,6 +18,6 @@ export class ApiKeyHeaderSecurityScheme extends SecurityScheme<
   }
 
   public createCredentials(): Header {
-    return this.createHeader(this.schema.name ?? 'authorization');
+    return this.createAuthorizationHeader(this.schema.name);
   }
 }

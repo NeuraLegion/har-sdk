@@ -15,6 +15,6 @@ export class BasicSecurityScheme extends SecurityScheme<
   }
 
   public createCredentials(): Header {
-    return this.createHeader('authorization', 'Basic');
+    return this.createAuthorizationHeader('authorization', 'Basic');
   }
 }

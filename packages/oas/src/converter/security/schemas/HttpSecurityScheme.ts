@@ -18,6 +18,6 @@ export class HttpSecurityScheme extends SecurityScheme<
     const { scheme } = this.schema;
     const prefix = scheme.charAt(0).toUpperCase() + scheme.slice(1);
 
-    return this.createHeader('authorization', prefix);
+    return this.createAuthorizationHeader('authorization', prefix);
   }
 }

@@ -45,7 +45,7 @@ export abstract class HeadersConverter<T extends OpenAPI.Document>
     headers.push(...this.createAcceptHeaders(pathObj));
 
     headers.push(...this.parseFromParams(path, method));
-    headers.push(...this.security.parseSecurityRequirements(pathObj, 'header'));
+    headers.push(...this.security.parse(pathObj, 'header'));
 
     return headers;
   }

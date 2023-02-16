@@ -55,6 +55,6 @@ export abstract class QueryStringConverter<T extends OpenAPI.Document>
           ])
         });
       })
-      .concat(this.security.parseSecurityRequirements(pathObj, 'query'));
+      .concat(this.security.parse(pathObj, 'query'));
   }
 }

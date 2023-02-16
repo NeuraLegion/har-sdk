@@ -26,15 +26,9 @@ export abstract class SecurityRequirementsParser<T extends OpenAPI.Document> {
     | Record<string, SecuritySchemeObject>
     | undefined;
 
-  public parseSecurityRequirements(
-    pathObj: OpenAPI.Operation,
-    location: 'header'
-  ): Header[];
-  public parseSecurityRequirements(
-    pathObj: OpenAPI.Operation,
-    location: 'query'
-  ): QueryString[];
-  public parseSecurityRequirements(
+  public parse(pathObj: OpenAPI.Operation, location: 'header'): Header[];
+  public parse(pathObj: OpenAPI.Operation, location: 'query'): QueryString[];
+  public parse(
     pathObj: OpenAPI.Operation,
     location: 'header' | 'query'
   ): (Header | QueryString | Cookie)[] {

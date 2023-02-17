@@ -121,6 +121,17 @@ describe('DefaultConverter', () => {
         input: 'circular-refs.swagger.yaml',
         expected: 'circular-refs.swagger.result.json',
         message: 'should correctly handle circular references'
+      },
+      {
+        input: 'params-form-data.swagger.yaml',
+        expected: 'params-form-data.swagger.result.json',
+        message: 'should correctly convert swagger file parameters'
+      },
+      {
+        input: 'params-encoding.oas.yaml',
+        expected: 'params-encoding.oas.result.json',
+        message:
+          'should correctly convert oas file with multipart and encoding parameters'
       }
     ].forEach(({ input: inputFile, expected: expectedFile, message }) => {
       it(message, async () => {

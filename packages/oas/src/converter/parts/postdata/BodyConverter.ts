@@ -1,7 +1,6 @@
 import { Sampler } from '../../Sampler';
 import { SubConverter } from '../../SubConverter';
 import { OpenAPI, OpenAPIV3, PostData } from '@har-sdk/core';
-import { toXML, XmlElement } from 'jstoxml';
 import { stringify } from 'qs';
 
 export abstract class BodyConverter<T extends OpenAPI.Document>
@@ -65,8 +64,6 @@ export abstract class BodyConverter<T extends OpenAPI.Document>
         return this.encodeJson(value);
       case 'application/x-www-form-urlencoded':
         return this.encodeFormUrlencoded(value);
-      case 'application/xml':
-        return this.encodeXml(value);
       case 'multipart/form-data':
       case 'multipart/mixed':
         return this.encodeMultipartFormData(value, encoding);
@@ -169,15 +166,6 @@ export abstract class BodyConverter<T extends OpenAPI.Document>
       format: 'RFC3986',
       encode: false
     });
-  }
-
-  private encodeXml(value: unknown): string {
-    const xmlOptions = {
-      header: true,
-      indent: '  '
-    };
-
-    return toXML(value as XmlElement, xmlOptions);
   }
 
   private encodeOther(value: unknown): string {

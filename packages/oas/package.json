@@ -47,7 +47,6 @@
     "@har-sdk/core": "*",
     "@har-sdk/openapi-sampler": "*",
     "json-pointer": "^0.6.2",
-    "jstoxml": "^2.2.9",
     "qs": "^6.10.3",
     "tslib": "^2.3.1",
     "url-template": "^2.0.8"
@@ -55,7 +54,6 @@
   "devDependencies": {
     "@types/js-yaml": "^4.0.5",
     "@types/json-pointer": "^1.0.31",
-    "@types/jstoxml": "^2.0.2",
     "@types/qs": "^6.9.7",
     "@types/url-template": "^2.0.28",
     "js-yaml": "^4.1.0"

@@ -4,10 +4,12 @@ import {
   NullSampler,
   NumberSampler,
   ObjectSampler,
+  OpenAPISchema,
   Sampler,
   StringSampler
 } from './samplers';
 import { DefaultTraverse, Options, Schema, Specification } from './traverse';
+import { XmlSerializer } from './serializers';
 
 export const SAMPLER_MAP: Map<string, Sampler> = new Map();
 
@@ -32,10 +34,16 @@ export const sample = (
   SAMPLER_MAP.set('object', new ObjectSampler(traverse));
   SAMPLER_MAP.set('string', new StringSampler());
 
+  const xml = new XmlSerializer();
+
   traverse.samplers = SAMPLER_MAP;
   traverse.clearCache();
 
-  return traverse.traverse(schema, opts, spec)?.value;
+  const { value } = traverse.traverse(schema, opts, spec) ?? {};
+
+  return typeof value === 'object' && options?.serializeToXml
+    ? xml.serialize(value, schema as OpenAPISchema)
+    : value;
 };
 
 export { Schema, Options, Specification } from './traverse';

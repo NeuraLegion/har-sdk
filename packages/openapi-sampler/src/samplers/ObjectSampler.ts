@@ -27,7 +27,7 @@ export class ObjectSampler implements Sampler {
       Object.keys(schema.properties).forEach((propertyName) => {
         // skip before traverse that could be costly
         if (
-          options.skipNonRequired &&
+          options?.skipNonRequired &&
           // eslint-disable-next-line no-prototype-builtins
           !requiredKeyDict.hasOwnProperty(propertyName)
         ) {
@@ -39,11 +39,11 @@ export class ObjectSampler implements Sampler {
           options,
           spec
         );
-        if (options.skipReadOnly && sample.readOnly) {
+        if (options?.skipReadOnly && sample.readOnly) {
           return;
         }
 
-        if (options.skipWriteOnly && sample.writeOnly) {
+        if (options?.skipWriteOnly && sample.writeOnly) {
           return;
         }
         res[propertyName] = sample.value;

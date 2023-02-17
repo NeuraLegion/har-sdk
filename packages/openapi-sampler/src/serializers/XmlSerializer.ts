@@ -1,6 +1,7 @@
 import { Serializer } from './Serializer';
 import { OpenAPISchema } from '../samplers';
 import { toXML, XmlElement } from 'jstoxml';
+import { OpenAPIV3 } from '@har-sdk/core';
 
 export class XmlSerializer implements Serializer {
   public serialize(data: unknown, schema: OpenAPISchema): string {
@@ -12,71 +13,108 @@ export class XmlSerializer implements Serializer {
     });
   }
 
-  // eslint-disable-next-line complexity
-  public convertToXmlElement(data: unknown, schema: OpenAPISchema): any {
-    const { type, properties, xml } = schema;
+  public convertToXmlElement(
+    data: unknown,
+    schema: OpenAPISchema
+  ): XmlElement | XmlElement[] {
+    const { type, properties, xml = { name: 'root' } } = schema;
+    const { prefix, wrapped, name } = xml;
 
-    let element: XmlElement;
+    const elementName = this.getName(name, prefix);
+    const element = this.createElement(elementName);
 
-    if (xml) {
-      const { name, namespace, prefix, attribute } = xml;
-
-      if (attribute) {
-        return this.createAttribute(name, data);
-      }
-
-      const elementName = this.getElementName(prefix, name);
-      element = this.createElement(elementName, namespace, prefix);
-    }
-
-    if (type === 'object' && properties) {
-      const elements = Object.entries(properties).reduce(
-        (acc: XmlElement[], [key, subSchema]: [string, OpenAPISchema]) => {
-          const value = data ? data[key] : undefined;
-          subSchema.xml = {
-            ...subSchema?.xml,
-            name: subSchema?.xml?.name ?? key
-          };
-          const property = this.convertToXmlElement(value, subSchema);
-          if (subSchema.xml?.attribute) {
-            (element._attrs = [].concat(element._attrs)).push(property);
-          } else {
-            acc.push(property);
-          }
-
-          return acc;
-        },
-        []
+    if (type === 'object') {
+      const { attributes, children } = this.convertObjectToXmlElement(
+        properties as Record<string, OpenAPIV3.SchemaObject>,
+        xml,
+        data
       );
 
-      element._content = elements;
+      element._attrs = attributes;
+      element._content = children;
+
+      return element;
+    } else if (type === 'array' && Array.isArray(data)) {
+      const children = this.convertArrayToXmlElement(
+        schema as OpenAPIV3.ArraySchemaObject,
+        xml,
+        data
+      );
+
+      if (!wrapped) {
+        return children;
+      } else {
+        element._content = children;
+
+        return element;
+      }
+    } else {
+      element._content = data;
 
       return element;
     }
+  }
 
-    if (type === 'array' && Array.isArray(data)) {
-      const { items } = schema;
-      const { name, wrapped, namespace, prefix } = xml || {};
+  private convertObjectToXmlElement(
+    properties: Record<string, OpenAPIV3.SchemaObject>,
+    xml: OpenAPIV3.XMLObject,
+    data: unknown
+  ): { children: XmlElement[]; attributes: Record<string, unknown>[] } {
+    const attributes: Record<string, unknown>[] = [];
+    const children: XmlElement[] = [];
 
-      // @ts-expect-error wrong inferred type
-      (items.xml ??= {}).name = items.xml.name ?? xml.name;
+    if (xml.namespace) {
+      attributes.push(this.createNamespaceAttribute(xml.namespace, xml.prefix));
+    }
 
-      const array = data.map((item) => this.convertToXmlElement(item, items));
+    Object.entries(properties).forEach(
+      ([key, subSchema]: [string, OpenAPISchema]) => {
+        const value = data ? data[key] : undefined;
+        const subXml = {
+          ...subSchema?.xml,
+          name: subSchema?.xml?.name ?? key
+        };
 
-      if (wrapped) {
-        const elementName = prefix ? `${prefix}:${name}` : name || 'items';
+        if (subXml.attribute) {
+          attributes.push(
+            this.createAttribute(
+              this.getName(subXml.name, subXml.prefix),
+              value
+            )
+          );
+        } else {
+          const property = this.convertToXmlElement(value, {
+            ...subSchema,
+            xml: subXml
+          });
 
-        return this.createElement(elementName, namespace, prefix, array);
-      } else {
-        return array;
+          children.push(...[].concat(property));
+        }
       }
-    }
+    );
 
-    if (element) {
-      element._content = data;
-    }
+    return { attributes, children };
+  }
 
-    return element ?? data;
+  private convertArrayToXmlElement(
+    schema: OpenAPIV3.ArraySchemaObject,
+    xml: OpenAPIV3.XMLObject,
+    data: unknown[]
+  ): XmlElement | XmlElement[] {
+    const { items } = schema;
+    const itemsXml = 'xml' in items ? items.xml : {};
+    const subXml = {
+      ...itemsXml,
+      name: itemsXml.name ?? xml.name
+    };
+
+    return data.map(
+      (item) =>
+        this.convertToXmlElement(item, {
+          ...items,
+          xml: subXml
+        }) as XmlElement
+    );
   }
 
   private createAttribute(
@@ -86,26 +124,32 @@ export class XmlSerializer implements Serializer {
     return { [name]: value };
   }
 
+  private createNamespaceAttribute(
+    namespace: string,
+    prefix?: string
+  ): Record<string, unknown> {
+    const attributeName = this.getNamespace(prefix);
+
+    return this.createAttribute(attributeName, namespace);
+  }
+
   private createElement(
     name: string,
-    namespace?: string,
-    prefix?: string,
-    children?: XmlElement[] | XmlElement | unknown
+    attributes: Record<string, unknown>[] = [],
+    children: XmlElement[] | XmlElement | unknown = []
   ): XmlElement {
     return {
       _name: name,
-      _attrs: namespace
-        ? [{ [this.getNamespaceAttribute(prefix)]: namespace }]
-        : [],
+      _attrs: attributes,
       _content: children
     };
   }
 
-  private getNamespaceAttribute(prefix: string) {
-    return `xmlns:${prefix}`;
+  private getNamespace(prefix?: string) {
+    return `xmlns${prefix ? `:${prefix}` : ''}`;
   }
 
-  private getElementName(prefix: string, name: string): string {
+  private getName(name: string, prefix?: string): string {
     return prefix ? `${prefix}:${name}` : name;
   }
 }

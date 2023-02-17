@@ -68,7 +68,7 @@ export abstract class BodyConverter<T extends OpenAPI.Document>
       case 'application/xml':
         return this.encodeXml(value);
       case 'multipart/form-data':
-      case 'multipart/mixin':
+      case 'multipart/mixed':
         return this.encodeMultipartFormData(value, encoding);
       case 'image/x-icon':
       case 'image/ico':

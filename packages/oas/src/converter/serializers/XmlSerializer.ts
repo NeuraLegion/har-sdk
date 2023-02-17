@@ -1,9 +1,12 @@
 import { Serializer } from './Serializer';
 import { toXML, XmlElement } from 'jstoxml';
-import { OpenAPIV3 } from '@har-sdk/core';
+import { OpenAPIV2, OpenAPIV3 } from '@har-sdk/core';
 
 export class XmlSerializer implements Serializer {
-  public serialize(data: unknown, schema: OpenAPIV3.SchemaObject): string {
+  public serialize(
+    data: unknown,
+    schema: OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject
+  ): string {
     const xmlElements = this.convertToXmlElement(data, schema);
 
     return toXML(xmlElements, {
@@ -14,7 +17,7 @@ export class XmlSerializer implements Serializer {
 
   private convertToXmlElement(
     data: unknown,
-    schema: OpenAPIV3.SchemaObject
+    schema: OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject
   ): XmlElement | XmlElement[] {
     const { type, properties, xml = { name: 'root' } } = schema ?? {};
     const { prefix, wrapped, name } = xml;
@@ -30,7 +33,10 @@ export class XmlSerializer implements Serializer {
 
     if (type === 'object') {
       const { attributes, children } = this.convertObjectToXmlElement(
-        properties as Record<string, OpenAPIV3.SchemaObject>,
+        properties as Record<
+          string,
+          OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject
+        >,
         data
       );
 
@@ -40,7 +46,7 @@ export class XmlSerializer implements Serializer {
       return element;
     } else if (type === 'array' && Array.isArray(data)) {
       const children = this.convertArrayToXmlElement(
-        schema as OpenAPIV3.ArraySchemaObject,
+        schema as OpenAPIV3.ArraySchemaObject | OpenAPIV2.ItemsObject,
         xml,
         data
       );
@@ -60,14 +66,17 @@ export class XmlSerializer implements Serializer {
   }
 
   private convertObjectToXmlElement(
-    properties: Record<string, OpenAPIV3.SchemaObject>,
+    properties: Record<string, OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject>,
     data: unknown
   ): { children: XmlElement[]; attributes: Record<string, unknown>[] } {
     const attributes: Record<string, unknown>[] = [];
     const children: XmlElement[] = [];
 
     Object.entries(properties).forEach(
-      ([key, subSchema]: [string, OpenAPIV3.SchemaObject]) => {
+      ([key, subSchema]: [
+        string,
+        OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject
+      ]) => {
         const value = data ? data[key] : undefined;
         const subXml = {
           ...subSchema?.xml,
@@ -96,8 +105,8 @@ export class XmlSerializer implements Serializer {
   }
 
   private convertArrayToXmlElement(
-    schema: OpenAPIV3.ArraySchemaObject,
-    xml: OpenAPIV3.XMLObject,
+    schema: OpenAPIV3.ArraySchemaObject | OpenAPIV2.ItemsObject,
+    xml: OpenAPIV3.XMLObject | OpenAPIV2.XMLObject,
     data: unknown[]
   ): XmlElement | XmlElement[] {
     const { items } = schema;

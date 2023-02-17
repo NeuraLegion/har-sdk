@@ -6,7 +6,6 @@ export interface Options {
   skipNonRequired?: boolean;
   quiet?: boolean;
   maxSampleDepth?: number;
-  serializeToXml?: boolean;
 }
 
 export interface Sample {

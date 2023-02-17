@@ -40,15 +40,10 @@ export class Sampler {
     context?: {
       spec?: OpenAPI.Document;
       jsonPointer?: string;
-      xml?: boolean;
     }
   ): any | undefined {
     try {
-      return sample(
-        schema,
-        { skipReadOnly: true, quiet: true, serializeToXml: context?.xml },
-        context?.spec
-      );
+      return sample(schema, { skipReadOnly: true, quiet: true }, context?.spec);
     } catch (e) {
       throw new ConvertError(e.message, context?.jsonPointer);
     }

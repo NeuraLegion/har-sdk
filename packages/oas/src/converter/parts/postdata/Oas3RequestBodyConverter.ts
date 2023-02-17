@@ -62,9 +62,6 @@ export class Oas3RequestBodyConverter extends BodyConverter<OpenAPIV3.Document> 
           : {})
       },
       {
-        xml: ['text/xml', 'application/xml', 'application/atom+xml'].includes(
-          contentType
-        ),
         spec: this.spec,
         jsonPointer: pointer.compile([
           ...tokens,

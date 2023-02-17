@@ -1,5 +1,5 @@
 import { BodyConverter } from './BodyConverter';
-import { Sampler } from '../Sampler';
+import { Sampler } from '../../Sampler';
 import { filterLocationParams, getParameters, isOASV2 } from '../../../utils';
 import { OpenAPIV2, PostData } from '@har-sdk/core';
 

@@ -26,7 +26,7 @@ export class Oas3RequestBodyConverter extends BodyConverter<OpenAPIV3.Document> 
     }
 
     return this.sampleAndEncodeRequestBody({
-      mediaTypeObject,
+      media: mediaTypeObject,
       tokens,
       contentType
     });
@@ -44,24 +44,29 @@ export class Oas3RequestBodyConverter extends BodyConverter<OpenAPIV3.Document> 
   }
 
   private sampleAndEncodeRequestBody({
-    mediaTypeObject,
+    media,
     tokens,
     contentType
   }: {
-    mediaTypeObject: OpenAPIV3.MediaTypeObject;
+    media: OpenAPIV3.MediaTypeObject;
     tokens: string[];
     contentType: string;
   }): PostData {
-    let data = this.sampleRequestBody(mediaTypeObject, {
+    let value = this.sampleRequestBody(media, {
       tokens,
       contentType
     });
 
-    if (this.shouldApplyEncoding(contentType) && mediaTypeObject.encoding) {
-      data = this.encodeProperties(data, mediaTypeObject);
+    if (this.shouldApplyEncoding(contentType) && media.encoding) {
+      value = this.encodeProperties(value, media);
     }
 
-    return this.encodePayload(data, contentType, mediaTypeObject.schema);
+    return this.encodePayload({
+      value,
+      contentType,
+      schema: media.schema,
+      fields: media.encoding
+    });
   }
 
   private shouldApplyEncoding(contentType: string): boolean {
@@ -79,11 +84,13 @@ export class Oas3RequestBodyConverter extends BodyConverter<OpenAPIV3.Document> 
       Object.entries(mediaType.encoding ?? {}).map(
         ([property, encoding]: [string, OpenAPIV3.EncodingObject]) => [
           property,
-          this.encodeValue(
-            data[property],
-            encoding.contentType,
-            (mediaType.schema as OpenAPIV3.SchemaObject).properties[property]
-          )
+          this.encodeValue({
+            value: data[property],
+            contentType: encoding.contentType,
+            schema: (mediaType.schema as OpenAPIV3.SchemaObject).properties[
+              property
+            ]
+          })
         ]
       )
     );

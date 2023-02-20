@@ -28,25 +28,42 @@ export abstract class BodyConverter<T extends OpenAPI.Document>
     method: string
   ): string | undefined;
 
-  protected encodePayload(
-    data: unknown,
-    contentType: string,
-    schema?: OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject
-  ): PostData {
+  protected encodePayload({
+    value,
+    contentType,
+    schema,
+    fields
+  }: {
+    value: unknown;
+    contentType: string;
+    fields?: Record<string, OpenAPIV3.EncodingObject>;
+    schema?: OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject;
+  }): PostData {
     return {
       mimeType: contentType.includes('multipart')
         ? `${contentType}; boundary=${this.BOUNDARY}`
         : contentType,
-      text: this.encodeValue(data, contentType, schema)
+      text: this.encodeValue({
+        value,
+        contentType,
+        schema,
+        fields
+      })
     };
   }
 
   // eslint-disable-next-line complexity
-  protected encodeValue(
-    value: unknown,
-    contentType: string,
-    schema?: OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject
-  ): string {
+  protected encodeValue({
+    value,
+    contentType,
+    schema,
+    fields
+  }: {
+    value: unknown;
+    contentType: string;
+    fields?: Record<string, OpenAPIV3.EncodingObject>;
+    schema?: OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject;
+  }): string {
     const [mime]: string[] = contentType
       .split(',')
       .map((x) => x.trim().replace(/;.+?$/, ''));
@@ -62,7 +79,7 @@ export abstract class BodyConverter<T extends OpenAPI.Document>
         return this.encodeXml(value, schema);
       case 'multipart/form-data':
       case 'multipart/mixed':
-        return this.encodeMultipartFormData(value);
+        return this.encodeMultipartFormData(value, fields);
       case 'image/x-icon':
       case 'image/ico':
       case 'image/vnd.microsoft.icon':
@@ -80,13 +97,18 @@ export abstract class BodyConverter<T extends OpenAPI.Document>
     }
   }
 
-  private encodeMultipartFormData(value: unknown): string {
+  // TODO: move the logic that receives the content type from the encoding object
+  //  to the {@link Oas3RequestBodyConverter} class.
+  private encodeMultipartFormData(
+    value: unknown,
+    fields?: Record<string, OpenAPIV3.EncodingObject>
+  ): string {
     const EOL = '\r\n';
 
     return Object.entries(value || {})
       .map(([key, val]: [string, unknown]) => {
-        // FIXME: use the MIME type specified in the encoding object if present.
-        const contentType = this.inferMultipartContentType(val);
+        const contentType =
+          fields?.[key]?.contentType ?? this.inferMultipartContentType(val);
         const filenameRequired = this.filenameRequired(contentType);
         const content = this.encodeOther(val);
 
@@ -111,7 +133,7 @@ export abstract class BodyConverter<T extends OpenAPI.Document>
   }
 
   private filenameRequired(contentType: string): boolean {
-    return !['application/json', 'text/plain'].includes(contentType);
+    return 'application/octet-stream' === contentType;
   }
 
   private inferMultipartContentType(value: unknown): string {

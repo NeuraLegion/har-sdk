@@ -64,14 +64,14 @@ export class Oas2BodyConverter extends BodyConverter<OpenAPIV2.Document> {
       return null;
     }
 
-    const data = Object.fromEntries(
+    const value = Object.fromEntries(
       formDataParams.map((param) => [
         param.name,
         this.sampleParam(param, { ...sampleOptions, params })
       ])
     );
 
-    return this.encodePayload(data, contentType);
+    return this.encodePayload({ value, contentType });
   }
 
   private convertUnsupportedParamToString(
@@ -101,7 +101,7 @@ export class Oas2BodyConverter extends BodyConverter<OpenAPIV2.Document> {
       if ('schema' in param) {
         const value = this.sampleParam(param, { ...sampleOptions, params });
 
-        return this.encodePayload(value, contentType, param.schema);
+        return this.encodePayload({ value, contentType, schema: param.schema });
       }
     }
   }

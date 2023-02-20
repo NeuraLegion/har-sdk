@@ -22,7 +22,6 @@ export class XmlSerializer implements Serializer {
     schema: SchemaObject
   ): XmlObject | XmlObject[] {
     const { xml } = schema;
-    // FIXME: instead of using the name root, it would be more appropriate to specify a schema name.
     const element = new XmlObject(xml ?? {}, 'root');
 
     if (schema.type === 'object') {

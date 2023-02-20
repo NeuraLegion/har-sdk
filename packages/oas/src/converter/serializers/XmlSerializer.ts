@@ -1,163 +1,102 @@
 import { Serializer } from './Serializer';
-import { toXML, XmlElement } from 'jstoxml';
+import { XmlObject } from './XmlObject';
+import { toXML } from 'jstoxml';
 import { OpenAPIV2, OpenAPIV3 } from '@har-sdk/core';
 
-export class XmlSerializer implements Serializer {
-  public serialize(
-    data: unknown,
-    schema: OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject
-  ): string {
-    const xmlElements = this.convertToXmlElement(data, schema);
+type SchemaObject = OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject;
+type ArraySchemaObject = OpenAPIV3.ArraySchemaObject | OpenAPIV2.ItemsObject;
 
-    return toXML(xmlElements, {
+export class XmlSerializer implements Serializer {
+  public serialize(data: unknown, schema: SchemaObject): string {
+    const obj = this.convertToElement(data, schema);
+    const elements = [].concat(obj).map((x) => x.build());
+
+    return toXML(elements, {
       header: true,
       indent: '\t'
     });
   }
 
-  private convertToXmlElement(
+  private convertToElement(
     data: unknown,
-    schema: OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject
-  ): XmlElement | XmlElement[] {
-    const { type, properties, xml = { name: 'root' } } = schema ?? {};
-    const { prefix, wrapped, name } = xml;
+    schema: SchemaObject
+  ): XmlObject | XmlObject[] {
+    const { xml } = schema;
+    const element = new XmlObject(xml ?? {}, 'root');
 
-    const elementName = this.getName(name, prefix);
-    const element = this.createElement(elementName);
-
-    if (xml.namespace) {
-      element._attrs = [
-        this.createNamespaceAttribute(xml.namespace, xml.prefix)
-      ].concat(element._attrs);
-    }
-
-    if (type === 'object') {
-      const { attributes, children } = this.convertObjectToXmlElement(
-        properties as Record<
-          string,
-          OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject
-        >,
-        data
+    if (schema.type === 'object') {
+      this.convertPropertiesToElements(data, schema, element);
+    } else if (schema.type === 'array' && Array.isArray(data)) {
+      const children = this.convertArrayToElements(
+        data,
+        schema as ArraySchemaObject,
+        element
       );
 
-      element._attrs = attributes.concat(element._attrs);
-      element._content = children;
-
-      return element;
-    } else if (type === 'array' && Array.isArray(data)) {
-      const children = this.convertArrayToXmlElement(
-        schema as OpenAPIV3.ArraySchemaObject | OpenAPIV2.ItemsObject,
-        xml,
-        data
-      );
-
-      if (!wrapped) {
-        return children;
+      if (element.wrapping) {
+        element.addContent(...children);
       } else {
-        element._content = children;
-
-        return element;
+        return children;
       }
     } else {
-      element._content = data;
+      element.addContent(data);
+    }
 
-      return element;
+    return element;
+  }
+
+  private convertPropertiesToElements(
+    data: unknown,
+    schema: SchemaObject,
+    element: XmlObject
+  ): void {
+    Object.entries(schema.properties).forEach(
+      ([key, subSchema]: [string, SchemaObject]) => {
+        const value = data ? data[key] : undefined;
+        const propertySchema = {
+          ...subSchema,
+          xml: this.getXmlOptions(subSchema, key)
+        };
+
+        this.convertPropertyToElement(value, propertySchema, element);
+      }
+    );
+  }
+
+  private convertPropertyToElement(
+    value: unknown,
+    schema: SchemaObject,
+    element: XmlObject
+  ): void {
+    const { xml } = schema;
+    const { attribute, name, prefix } = xml ?? {};
+
+    if (attribute) {
+      element.addAttribute({ value, prefix, name });
+    } else {
+      const childElement = this.convertToElement(value, schema);
+      element.addContent(...[].concat(childElement));
     }
   }
 
-  private convertObjectToXmlElement(
-    properties: Record<string, OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject>,
-    data: unknown
-  ): { children: XmlElement[]; attributes: Record<string, unknown>[] } {
-    const attributes: Record<string, unknown>[] = [];
-    const children: XmlElement[] = [];
-
-    Object.entries(properties).forEach(
-      ([key, subSchema]: [
-        string,
-        OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject
-      ]) => {
-        const value = data ? data[key] : undefined;
-        const subXml = {
-          ...subSchema?.xml,
-          name: subSchema?.xml?.name ?? key
-        };
-
-        if (subXml.attribute) {
-          attributes.push(
-            this.createAttribute(
-              this.getName(subXml.name, subXml.prefix),
-              value
-            )
-          );
-        } else {
-          const property = this.convertToXmlElement(value, {
-            ...subSchema,
-            xml: subXml
-          });
-
-          children.push(...[].concat(property));
-        }
-      }
-    );
-
-    return { attributes, children };
-  }
-
-  private convertArrayToXmlElement(
-    schema: OpenAPIV3.ArraySchemaObject | OpenAPIV2.ItemsObject,
-    xml: OpenAPIV3.XMLObject | OpenAPIV2.XMLObject,
-    data: unknown[]
-  ): XmlElement | XmlElement[] {
+  private convertArrayToElements(
+    data: unknown[],
+    schema: ArraySchemaObject,
+    element: XmlObject
+  ): XmlObject[] {
     const { items } = schema;
-    const itemsXml = 'xml' in items ? items.xml : {};
-    const subXml = {
-      ...itemsXml,
-      name: itemsXml.name ?? xml.name
+    const itemSchema: SchemaObject = {
+      ...items,
+      xml: this.getXmlOptions(schema.items, element.name)
     };
 
-    return data.map(
-      (item) =>
-        this.convertToXmlElement(item, {
-          ...items,
-          xml: subXml
-        }) as XmlElement
-    );
+    return data.flatMap((item) => this.convertToElement(item, itemSchema));
   }
 
-  private createAttribute(
-    name: string,
-    value: unknown
-  ): Record<string, unknown> {
-    return { [name]: value };
-  }
-
-  private createNamespaceAttribute(
-    namespace: string,
-    prefix?: string
-  ): Record<string, unknown> {
-    const attributeName = this.getNamespace(prefix);
-
-    return this.createAttribute(attributeName, namespace);
-  }
-
-  private createElement(
-    name: string,
-    attributes: Record<string, unknown>[] = [],
-    children: XmlElement[] | XmlElement | unknown = []
-  ): XmlElement {
+  private getXmlOptions({ xml = {} }: SchemaObject, newName?: string) {
     return {
-      _name: name,
-      _attrs: attributes,
-      _content: children
+      ...xml,
+      name: xml.name ?? newName
     };
-  }
-
-  private getNamespace(prefix?: string) {
-    return `xmlns${prefix ? `:${prefix}` : ''}`;
-  }
-
-  private getName(name: string, prefix?: string): string {
-    return prefix ? `${prefix}:${name}` : name;
   }
 }

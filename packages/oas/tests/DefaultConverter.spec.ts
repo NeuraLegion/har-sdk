@@ -136,7 +136,12 @@ describe('DefaultConverter', () => {
       {
         input: 'xml-models.oas.yaml',
         expected: 'xml-models.oas.result.json',
-        message: 'should properly serialize models to XML '
+        message: 'should properly serialize models to XML (oas)'
+      },
+      {
+        input: 'xml-models.swagger.yaml',
+        expected: 'xml-models.swagger.result.json',
+        message: 'should properly serialize models to XML (swagger)'
       }
     ].forEach(({ input: inputFile, expected: expectedFile, message }) => {
       it(message, async () => {

@@ -108,6 +108,7 @@ export class Oas3RequestBodyConverter extends BodyConverter<OpenAPIV3.Document> 
     sampleContent: OpenAPIV3.MediaTypeObject,
     contentType: string
   ): OpenAPIV3.SchemaObject {
+    // FIXME: it is not correct to use the content type like a key for examples
     const reusableExample = sampleContent.examples?.[contentType] as
       | OpenAPIV3.ExampleObject
       | OpenAPIV3.SchemaObject

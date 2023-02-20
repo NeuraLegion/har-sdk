@@ -92,7 +92,7 @@ export class Oas3RequestBodyConverter extends BodyConverter<OpenAPIV3.Document> 
   }
 
   private sampleRequestBody(
-    sampleContent: OpenAPIV3.MediaTypeObject,
+    media: OpenAPIV3.MediaTypeObject,
     {
       contentType,
       tokens
@@ -101,8 +101,17 @@ export class Oas3RequestBodyConverter extends BodyConverter<OpenAPIV3.Document> 
       contentType: string;
     }
   ): unknown {
+    const example = this.getExample(media);
+
     return this.sampler.sample(
-      this.getSchemaForSampling(sampleContent, contentType),
+      {
+        ...media.schema,
+        ...(example !== undefined
+          ? {
+              example
+            }
+          : {})
+      },
       {
         spec: this.spec,
         jsonPointer: pointer.compile([
@@ -116,30 +125,17 @@ export class Oas3RequestBodyConverter extends BodyConverter<OpenAPIV3.Document> 
     );
   }
 
-  private getSchemaForSampling(
-    sampleContent: OpenAPIV3.MediaTypeObject,
-    contentType: string
-  ): OpenAPIV3.SchemaObject {
-    // FIXME: it is not correct to use the content type like a key for examples
-    const reusableExample = sampleContent.examples?.[contentType] as
-      | OpenAPIV3.ExampleObject
-      | OpenAPIV3.SchemaObject
-      | undefined;
+  private getExample(schema: OpenAPIV3.MediaTypeObject): unknown | undefined {
+    const examples = (schema.examples ?? {}) as Record<
+      string,
+      OpenAPIV3.ExampleObject
+    >;
+    const exampleKey = this.sampler.sample({
+      type: 'array',
+      examples: Object.keys(examples)
+    });
+    const example = examples[exampleKey]?.value;
 
-    return {
-      ...sampleContent.schema,
-      ...(sampleContent.example !== undefined
-        ? { example: sampleContent.example }
-        : {}),
-      // TODO: add support for the externalValue
-      ...(reusableExample !== undefined
-        ? {
-            example:
-              'value' in reusableExample
-                ? reusableExample.value
-                : reusableExample
-          }
-        : {})
-    };
+    return example !== undefined ? example : schema.example;
   }
 }

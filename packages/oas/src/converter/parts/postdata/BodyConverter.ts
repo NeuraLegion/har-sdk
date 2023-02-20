@@ -7,6 +7,7 @@ import { stringify } from 'qs';
 export abstract class BodyConverter<T extends OpenAPI.Document>
   implements SubConverter<PostData | null>
 {
+  private readonly xmlSerializer = new XmlSerializer();
   private readonly JPG_IMAGE = '/9j/7g=='; // 0xff, 0xd8, 0xff, 0xee
   private readonly PNG_IMAGE = 'iVBORw0KGgo='; // 0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0A, 0x1a, 0x0a
   private readonly ICO_IMAGE = 'AAABAA=='; // 0x00, 0x00, 0x01, 0x00
@@ -58,7 +59,7 @@ export abstract class BodyConverter<T extends OpenAPI.Document>
       case 'application/xml':
       case 'text/xml':
       case 'application/atom+xml':
-        return this.encodeXml(value);
+        return this.encodeXml(value, schema);
       case 'multipart/form-data':
       case 'multipart/mixed':
         return this.encodeMultipartFormData(value);
@@ -143,9 +144,11 @@ export abstract class BodyConverter<T extends OpenAPI.Document>
     });
   }
 
-  // TODO: implement the method using {@link XmlSerializer}
-  private encodeXml(_: unknown): string {
-    return `<?xml version="1.0" encoding="UTF-8"?>`;
+  private encodeXml(
+    data: unknown,
+    schema: OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject
+  ): string {
+    return this.xmlSerializer.serialize(data, schema);
   }
 
   private encodeOther(value: unknown): string {

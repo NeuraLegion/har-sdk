@@ -1,4 +1,4 @@
-import { Serializer } from './Serializer';
+import type { Serializer } from './Serializer';
 import { XmlObject } from './XmlObject';
 import { toXML } from 'jstoxml';
 import type { OpenAPIV2, OpenAPIV3 } from '@har-sdk/core';
@@ -26,42 +26,34 @@ export class XmlSerializer implements Serializer {
     const element = new XmlObject(xml ?? {}, 'root');
 
     if (schema.type === 'object') {
-      this.convertPropertiesToElements(data, schema, element);
+      return this.convertPropertiesToElements(data, schema, element);
     } else if (schema.type === 'array' && Array.isArray(data)) {
-      const children = this.convertArrayToElements(
+      return this.convertArrayToElements(
         data,
         schema as ArraySchemaObject,
         element
       );
-
-      if (element.wrapping) {
-        element.addContent(...children);
-      } else {
-        return children;
-      }
     } else {
-      element.addContent(data);
+      return element.addContent(data);
     }
-
-    return element;
   }
 
   private convertPropertiesToElements(
     data: unknown,
     schema: SchemaObject,
     element: XmlObject
-  ): void {
-    Object.entries(schema.properties).forEach(
-      ([key, subSchema]: [string, SchemaObject]) => {
-        const value = data ? data[key] : undefined;
-        const propertySchema = {
-          ...subSchema,
-          xml: this.getXmlOptions(subSchema, key)
-        };
+  ): XmlObject {
+    for (const [key, subSchema] of Object.entries(schema.properties)) {
+      const value = data ? data[key] : undefined;
+      const propertySchema: SchemaObject = {
+        ...subSchema,
+        xml: this.getXmlOptions(subSchema, key)
+      };
 
-        this.convertPropertyToElement(value, propertySchema, element);
-      }
-    );
+      this.convertPropertyToElement(value, propertySchema, element);
+    }
+
+    return element;
   }
 
   private convertPropertyToElement(
@@ -84,14 +76,17 @@ export class XmlSerializer implements Serializer {
     data: unknown[],
     schema: ArraySchemaObject,
     element: XmlObject
-  ): XmlObject[] {
+  ): XmlObject | XmlObject[] {
     const { items } = schema;
     const itemSchema: SchemaObject = {
       ...items,
       xml: this.getXmlOptions(schema.items, element.name)
     };
+    const elements = data.flatMap((item) =>
+      this.convertToElement(item, itemSchema)
+    );
 
-    return data.flatMap((item) => this.convertToElement(item, itemSchema));
+    return element.wrapping ? element.addContent(...elements) : elements;
   }
 
   private getXmlOptions({ xml = {} }: SchemaObject, newName?: string) {

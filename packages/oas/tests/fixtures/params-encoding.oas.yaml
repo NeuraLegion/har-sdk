@@ -23,6 +23,8 @@ paths:
                 historyMetadata:
                   type: object
                   properties: {}
+                  xml:
+                    name: history-metadata
                 profileImage: {}
             encoding:
               historyMetadata:

@@ -58,7 +58,7 @@ export class Oas2BodyConverter extends BodyConverter<OpenAPIV2.Document> {
       tokens: string[];
       contentType?: string;
     }
-  ): { mimeType: string; text: string } {
+  ): PostData {
     const formDataParams = filterLocationParams(params, 'formdata');
     if (!formDataParams.length) {
       return null;
@@ -94,14 +94,14 @@ export class Oas2BodyConverter extends BodyConverter<OpenAPIV2.Document> {
       tokens: string[];
       contentType?: string;
     }
-  ): { mimeType: string; text: string } {
+  ): PostData {
     const bodyParams = filterLocationParams(params, 'body');
 
     for (const param of bodyParams) {
       if ('schema' in param) {
         const value = this.sampleParam(param, { ...sampleOptions, params });
 
-        return this.encodePayload(value, contentType);
+        return this.encodePayload(value, contentType, param.schema);
       }
     }
   }

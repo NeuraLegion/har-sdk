@@ -1,6 +1,7 @@
 import { Sampler } from '../../Sampler';
 import { SubConverter } from '../../SubConverter';
-import { OpenAPI, OpenAPIV3, PostData } from '@har-sdk/core';
+import { XmlSerializer } from '../../serializers';
+import { OpenAPI, OpenAPIV2, OpenAPIV3, PostData } from '@har-sdk/core';
 import { stringify } from 'qs';
 
 export abstract class BodyConverter<T extends OpenAPI.Document>
@@ -29,31 +30,21 @@ export abstract class BodyConverter<T extends OpenAPI.Document>
   protected encodePayload(
     data: unknown,
     contentType: string,
-    encoding?: OpenAPIV3.EncodingObject
-  ): { mimeType: string; text: string } {
-    let encodedData = data;
-
-    if (encoding) {
-      encodedData = this.encodeProperties(
-        Object.keys(encoding),
-        data,
-        encoding
-      );
-    }
-
+    schema?: OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject
+  ): PostData {
     return {
       mimeType: contentType.includes('multipart')
         ? `${contentType}; boundary=${this.BOUNDARY}`
         : contentType,
-      text: this.encodeValue(encodedData, contentType)
+      text: this.encodeValue(data, contentType, schema)
     };
   }
 
   // eslint-disable-next-line complexity
-  private encodeValue(
+  protected encodeValue(
     value: unknown,
     contentType: string,
-    encoding?: string
+    schema?: OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject
   ): string {
     const [mime]: string[] = contentType
       .split(',')
@@ -70,7 +61,7 @@ export abstract class BodyConverter<T extends OpenAPI.Document>
         return this.encodeXml(value);
       case 'multipart/form-data':
       case 'multipart/mixed':
-        return this.encodeMultipartFormData(value, encoding);
+        return this.encodeMultipartFormData(value);
       case 'image/x-icon':
       case 'image/ico':
       case 'image/vnd.microsoft.icon':
@@ -88,12 +79,13 @@ export abstract class BodyConverter<T extends OpenAPI.Document>
     }
   }
 
-  private encodeMultipartFormData(value: unknown, encoding?: string): string {
+  private encodeMultipartFormData(value: unknown): string {
     const EOL = '\r\n';
 
     return Object.entries(value || {})
       .map(([key, val]: [string, unknown]) => {
-        const contentType = encoding ?? this.inferMultipartContentType(val);
+        // FIXME: use the MIME type specified in the encoding object if present.
+        const contentType = this.inferMultipartContentType(val);
         const filenameRequired = this.filenameRequired(contentType);
         const content = this.encodeOther(val);
 
@@ -138,27 +130,6 @@ export abstract class BodyConverter<T extends OpenAPI.Document>
       default:
         return 'application/octet-stream';
     }
-  }
-
-  private encodeProperties(
-    keys: string[],
-    data: unknown,
-    encoding?: OpenAPIV3.EncodingObject
-  ): unknown {
-    const sample = keys.reduce((encodedSample, encodingKey) => {
-      const { contentType }: OpenAPIV3.EncodingObject =
-        encoding?.[encodingKey] ?? {};
-
-      encodedSample[encodingKey] = this.encodeValue(
-        data[encodingKey],
-        contentType,
-        encodingKey
-      );
-
-      return encodedSample;
-    }, {});
-
-    return Object.assign({}, data, sample);
   }
 
   private encodeJson(value: unknown): string {

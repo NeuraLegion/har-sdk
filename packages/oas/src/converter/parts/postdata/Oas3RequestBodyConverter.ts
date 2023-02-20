@@ -19,15 +19,22 @@ export class Oas3RequestBodyConverter extends BodyConverter<OpenAPIV3.Document> 
     }
 
     const content = pathObj.requestBody?.content ?? {};
-    const sampleContent = content[contentType];
+    const mediaTypeObject = content[contentType] as OpenAPIV3.MediaTypeObject;
 
-    if (sampleContent?.schema) {
-      const data = this.sampleRequestBody(sampleContent, {
+    if (mediaTypeObject?.schema) {
+      const data = this.sampleRequestBody(mediaTypeObject, {
         tokens,
         contentType
       });
+      const encodedData = mediaTypeObject.encoding
+        ? this.encodeProperties(data, mediaTypeObject)
+        : data;
 
-      return this.encodePayload(data, contentType, sampleContent.encoding);
+      return this.encodePayload(
+        encodedData,
+        contentType,
+        mediaTypeObject.schema
+      );
     }
 
     return null;
@@ -42,6 +49,26 @@ export class Oas3RequestBodyConverter extends BodyConverter<OpenAPIV3.Document> 
       type: 'array',
       examples: keys
     });
+  }
+
+  private encodeProperties(
+    data: unknown,
+    mediaType: OpenAPIV3.MediaTypeObject
+  ): unknown {
+    const encoded = Object.fromEntries(
+      Object.entries(mediaType.encoding ?? {}).map(
+        ([property, encoding]: [string, OpenAPIV3.EncodingObject]) => [
+          property,
+          this.encodeValue(
+            data[property],
+            encoding.contentType,
+            (mediaType.schema as OpenAPIV3.SchemaObject).properties[property]
+          )
+        ]
+      )
+    );
+
+    return Object.assign({}, data, encoded);
   }
 
   private sampleRequestBody(

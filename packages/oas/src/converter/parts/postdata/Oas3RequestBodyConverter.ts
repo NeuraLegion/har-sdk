@@ -21,24 +21,15 @@ export class Oas3RequestBodyConverter extends BodyConverter<OpenAPIV3.Document> 
     const content = pathObj.requestBody?.content ?? {};
     const mediaTypeObject = content[contentType] as OpenAPIV3.MediaTypeObject;
 
-    if (mediaTypeObject?.schema) {
-      const data = this.sampleRequestBody(mediaTypeObject, {
-        tokens,
-        contentType
-      });
-      const encodedData =
-        this.shouldApplyEncoding(contentType) && mediaTypeObject.encoding
-          ? this.encodeProperties(data, mediaTypeObject)
-          : data;
-
-      return this.encodePayload(
-        encodedData,
-        contentType,
-        mediaTypeObject.schema
-      );
+    if (!mediaTypeObject?.schema) {
+      return null;
     }
 
-    return null;
+    return this.sampleAndEncodeRequestBody({
+      mediaTypeObject,
+      tokens,
+      contentType
+    });
   }
 
   protected getContentType(path: string, method: string): string | undefined {
@@ -50,6 +41,27 @@ export class Oas3RequestBodyConverter extends BodyConverter<OpenAPIV3.Document> 
       type: 'array',
       examples: keys
     });
+  }
+
+  private sampleAndEncodeRequestBody({
+    mediaTypeObject,
+    tokens,
+    contentType
+  }: {
+    mediaTypeObject: OpenAPIV3.MediaTypeObject;
+    tokens: string[];
+    contentType: string;
+  }): PostData {
+    let data = this.sampleRequestBody(mediaTypeObject, {
+      tokens,
+      contentType
+    });
+
+    if (this.shouldApplyEncoding(contentType) && mediaTypeObject.encoding) {
+      data = this.encodeProperties(data, mediaTypeObject);
+    }
+
+    return this.encodePayload(data, contentType, mediaTypeObject.schema);
   }
 
   private shouldApplyEncoding(contentType: string): boolean {

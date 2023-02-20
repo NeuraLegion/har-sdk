@@ -55,12 +55,7 @@ export class Oas3RequestBodyConverter extends BodyConverter<OpenAPIV3.Document> 
     }
   ): unknown {
     return this.sampler.sample(
-      {
-        ...sampleContent.schema,
-        ...(sampleContent.example !== undefined
-          ? { example: sampleContent.example }
-          : {})
-      },
+      this.getSchemaForSampling(sampleContent, contentType),
       {
         spec: this.spec,
         jsonPointer: pointer.compile([
@@ -72,5 +67,31 @@ export class Oas3RequestBodyConverter extends BodyConverter<OpenAPIV3.Document> 
         ])
       }
     );
+  }
+
+  private getSchemaForSampling(
+    sampleContent: OpenAPIV3.MediaTypeObject,
+    contentType: string
+  ): OpenAPIV3.SchemaObject {
+    const reusableExample = sampleContent.examples?.[contentType] as
+      | OpenAPIV3.ExampleObject
+      | OpenAPIV3.SchemaObject
+      | undefined;
+
+    return {
+      ...sampleContent.schema,
+      ...(sampleContent.example !== undefined
+        ? { example: sampleContent.example }
+        : {}),
+      // TODO: add support for the externalValue
+      ...(reusableExample !== undefined
+        ? {
+            example:
+              'value' in reusableExample
+                ? reusableExample.value
+                : reusableExample
+          }
+        : {})
+    };
   }
 }

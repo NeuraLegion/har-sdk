@@ -137,6 +137,7 @@ export abstract class BodyConverter<T extends OpenAPI.Document>
     return typeof value === 'string' ? value : JSON.stringify(value);
   }
 
+  // TODO: we should take into account the the Encoding Object's style property (OAS3)
   private encodeFormUrlencoded(value: unknown): string {
     return stringify(value, {
       format: 'RFC3986',

@@ -26,9 +26,10 @@ export class Oas3RequestBodyConverter extends BodyConverter<OpenAPIV3.Document> 
         tokens,
         contentType
       });
-      const encodedData = mediaTypeObject.encoding
-        ? this.encodeProperties(data, mediaTypeObject)
-        : data;
+      const encodedData =
+        this.shouldApplyEncoding(contentType) && mediaTypeObject.encoding
+          ? this.encodeProperties(data, mediaTypeObject)
+          : data;
 
       return this.encodePayload(
         encodedData,
@@ -49,6 +50,13 @@ export class Oas3RequestBodyConverter extends BodyConverter<OpenAPIV3.Document> 
       type: 'array',
       examples: keys
     });
+  }
+
+  private shouldApplyEncoding(contentType: string): boolean {
+    return (
+      contentType.startsWith('multipart/') ||
+      contentType === 'application/x-www-form-urlencoded'
+    );
   }
 
   private encodeProperties(

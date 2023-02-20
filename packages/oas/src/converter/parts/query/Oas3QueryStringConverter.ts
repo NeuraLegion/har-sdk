@@ -1,10 +1,10 @@
 import { LocationParam } from '../LocationParam';
-import { Sampler } from '../Sampler';
+import { Sampler } from '../../Sampler';
 import { UriTemplator } from '../UriTemplator';
 import { QueryStringConverter } from './QueryStringConverter';
 import { OpenAPIV3, QueryString } from '@har-sdk/core';
 
-export class Oas3QueryStringConverter extends QueryStringConverter {
+export class Oas3QueryStringConverter extends QueryStringConverter<OpenAPIV3.Document> {
   private readonly uriTemplator = new UriTemplator();
 
   constructor(spec: OpenAPIV3.Document, sampler: Sampler) {

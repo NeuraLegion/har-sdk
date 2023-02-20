@@ -1,6 +1,6 @@
 import { LocationParam } from '../LocationParam';
 import { Oas2ValueSerializer } from '../Oas2ValueSerializer';
-import { Sampler } from '../Sampler';
+import { Sampler } from '../../Sampler';
 import { HeadersConverter } from './HeadersConverter';
 import { Header, OpenAPIV2 } from '@har-sdk/core';
 
@@ -28,11 +28,5 @@ export class Oas2HeadersConverter extends HeadersConverter<OpenAPIV2.Document> {
       headerParam.param.name,
       this.oas2ValueSerializer.serialize(headerParam) as string
     );
-  }
-
-  protected getSecuritySchemes():
-    | Record<string, OpenAPIV2.SecuritySchemeObject>
-    | undefined {
-    return this.spec.securityDefinitions;
   }
 }

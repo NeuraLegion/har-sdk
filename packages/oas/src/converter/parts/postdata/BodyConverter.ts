@@ -1,4 +1,4 @@
-import { Sampler } from '../Sampler';
+import { Sampler } from '../../Sampler';
 import { SubConverter } from '../../SubConverter';
 import { OpenAPI, OpenAPIV3, PostData } from '@har-sdk/core';
 import { toXML, XmlElement } from 'jstoxml';

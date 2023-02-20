@@ -2,7 +2,8 @@ import { OpenAPI, OpenAPIV2, OpenAPIV3 } from '@har-sdk/core';
 
 export * from './Flattener';
 export * from './isObject';
-export * from './Params';
+export * from './params';
+export * from './operation';
 
 export const isOASV2 = (doc: OpenAPI.Document): doc is OpenAPIV2.Document =>
   'swagger' in doc;

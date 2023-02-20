@@ -1,16 +1,16 @@
 import { ParameterObject } from '../../../types';
-import { getParameters, filterLocationParams } from '../../../utils';
+import { filterLocationParams, getParameters } from '../../../utils';
 import { LocationParam } from '../LocationParam';
-import { Sampler } from '../Sampler';
+import { Sampler } from '../../Sampler';
 import { SubConverter } from '../../SubConverter';
 import jsonPointer from 'json-pointer';
 import { OpenAPI, QueryString } from '@har-sdk/core';
 
-export abstract class QueryStringConverter
+export abstract class QueryStringConverter<T extends OpenAPI.Document>
   implements SubConverter<QueryString[]>
 {
   protected constructor(
-    private readonly spec: OpenAPI.Document,
+    private readonly spec: T,
     private readonly sampler: Sampler
   ) {}
 

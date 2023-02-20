@@ -1,6 +1,6 @@
 import { isOASV2, isOASV3 } from '../../utils';
 import { ConvertError } from '../../errors';
-import { Sampler } from './Sampler';
+import { Sampler } from '../Sampler';
 import { UriTemplator } from './UriTemplator';
 import {
   normalizeUrl,

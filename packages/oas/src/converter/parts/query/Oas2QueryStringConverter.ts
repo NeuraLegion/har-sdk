@@ -1,11 +1,11 @@
 import { isObject } from '../../../utils';
 import { LocationParam } from '../LocationParam';
 import { Oas2ValueSerializer } from '../Oas2ValueSerializer';
-import { Sampler } from '../Sampler';
+import { Sampler } from '../../Sampler';
 import { QueryStringConverter } from './QueryStringConverter';
 import { OpenAPIV2, QueryString } from '@har-sdk/core';
 
-export class Oas2QueryStringConverter extends QueryStringConverter {
+export class Oas2QueryStringConverter extends QueryStringConverter<OpenAPIV2.Document> {
   private readonly oas2ValueSerializer = new Oas2ValueSerializer();
 
   constructor(spec: OpenAPIV2.Document, sampler: Sampler) {

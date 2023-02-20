@@ -101,6 +101,26 @@ paths:
           content:
             application/json:
               schema: {}
+  /pets/api-key-in-query:
+    get:
+      security:
+        - queryAPIKey: []
+      responses:
+        200:
+          description: Requires API key in query parameters
+          content:
+            application/json:
+              schema: {}
+  /pets/api-key-in-cookie:
+    get:
+      security:
+        - cookieAPIKey: []
+      responses:
+        200:
+          description: Requires API key in cookie parameters
+          content:
+            application/json:
+              schema: {}
 components:
   securitySchemes:
     Basic:
@@ -114,3 +134,11 @@ components:
       type: apiKey
       in: header
       name: X-API-KEY
+    queryAPIKey:
+      type: apiKey
+      in: query
+      name: token
+    cookieAPIKey:
+      type: apiKey
+      in: cookie
+      name: auth_cookie

@@ -1,5 +1,5 @@
 import { BodyConverter } from './BodyConverter';
-import { Sampler } from '../Sampler';
+import { Sampler } from '../../Sampler';
 import { OpenAPIV3, PostData } from '@har-sdk/core';
 import pointer from 'json-pointer';
 

@@ -1,6 +1,6 @@
 import { ParameterObject } from '../../../types';
 import { LocationParam } from '../LocationParam';
-import { Sampler } from '../Sampler';
+import { Sampler } from '../../Sampler';
 import { UriTemplator } from '../UriTemplator';
 import { PathConverter } from './PathConverter';
 import { OpenAPIV3 } from '@har-sdk/core';

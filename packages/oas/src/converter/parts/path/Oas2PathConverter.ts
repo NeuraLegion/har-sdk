@@ -1,5 +1,5 @@
 import { LocationParam } from '../LocationParam';
-import { Sampler } from '../Sampler';
+import { Sampler } from '../../Sampler';
 import { Oas2ValueSerializer } from '../Oas2ValueSerializer';
 import { PathConverter } from './PathConverter';
 import { OpenAPIV2 } from '@har-sdk/core';

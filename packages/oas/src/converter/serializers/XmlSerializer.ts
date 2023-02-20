@@ -1,7 +1,7 @@
 import { Serializer } from './Serializer';
 import { XmlObject } from './XmlObject';
 import { toXML } from 'jstoxml';
-import { OpenAPIV2, OpenAPIV3 } from '@har-sdk/core';
+import type { OpenAPIV2, OpenAPIV3 } from '@har-sdk/core';
 
 type SchemaObject = OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject;
 type ArraySchemaObject = OpenAPIV3.ArraySchemaObject | OpenAPIV2.ItemsObject;

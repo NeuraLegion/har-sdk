@@ -1,5 +1,5 @@
-import { XmlElement } from 'jstoxml';
-import { OpenAPIV2, OpenAPIV3 } from '@har-sdk/core';
+import type { XmlElement } from 'jstoxml';
+import type { OpenAPIV2, OpenAPIV3 } from '@har-sdk/core';
 
 export interface AttributeOptions {
   name: string;

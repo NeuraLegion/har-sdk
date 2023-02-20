@@ -1,7 +1,7 @@
-import { Sampler } from '../../Sampler';
-import { SubConverter } from '../../SubConverter';
+import type { Sampler } from '../../Sampler';
+import type { SubConverter } from '../../SubConverter';
 import { XmlSerializer } from '../../serializers';
-import { OpenAPI, OpenAPIV2, OpenAPIV3, PostData } from '@har-sdk/core';
+import type { OpenAPI, OpenAPIV2, OpenAPIV3, PostData } from '@har-sdk/core';
 import { stringify } from 'qs';
 
 export abstract class BodyConverter<T extends OpenAPI.Document>

@@ -1,2 +1,2 @@
-export * from './Serializer';
-export * from './XmlSerializer';
+export type { Serializer } from './Serializer';
+export { XmlSerializer } from './XmlSerializer';

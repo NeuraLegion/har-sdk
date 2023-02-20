@@ -1,6 +1,6 @@
 import { BodyConverter } from './BodyConverter';
-import { Sampler } from '../../Sampler';
-import { OpenAPIV3, PostData } from '@har-sdk/core';
+import type { Sampler } from '../../Sampler';
+import type { OpenAPIV3, PostData } from '@har-sdk/core';
 import pointer from 'json-pointer';
 
 export class Oas3RequestBodyConverter extends BodyConverter<OpenAPIV3.Document> {

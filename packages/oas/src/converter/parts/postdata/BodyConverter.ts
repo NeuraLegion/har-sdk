@@ -110,7 +110,7 @@ export abstract class BodyConverter<T extends OpenAPI.Document>
       .concat(`${EOL}--${this.BOUNDARY}--`);
   }
 
-  private filenameRequired(contentType: string) {
+  private filenameRequired(contentType: string): boolean {
     return !['application/json', 'text/plain'].includes(contentType);
   }
 

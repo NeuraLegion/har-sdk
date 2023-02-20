@@ -4,6 +4,13 @@ import { XmlSerializer } from '../../serializers';
 import type { OpenAPI, OpenAPIV2, OpenAPIV3, PostData } from '@har-sdk/core';
 import { stringify } from 'qs';
 
+export interface EncodingData {
+  value: unknown;
+  contentType: string;
+  fields?: Record<string, OpenAPIV3.EncodingObject>;
+  schema?: OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject;
+}
+
 export abstract class BodyConverter<T extends OpenAPI.Document>
   implements SubConverter<PostData | null>
 {
@@ -28,26 +35,14 @@ export abstract class BodyConverter<T extends OpenAPI.Document>
     method: string
   ): string | undefined;
 
-  protected encodePayload({
-    value,
-    contentType,
-    schema,
-    fields
-  }: {
-    value: unknown;
-    contentType: string;
-    fields?: Record<string, OpenAPIV3.EncodingObject>;
-    schema?: OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject;
-  }): PostData {
+  protected encodePayload({ contentType, ...options }: EncodingData): PostData {
     return {
       mimeType: contentType.includes('multipart')
         ? `${contentType}; boundary=${this.BOUNDARY}`
         : contentType,
       text: this.encodeValue({
-        value,
         contentType,
-        schema,
-        fields
+        ...options
       })
     };
   }
@@ -58,12 +53,7 @@ export abstract class BodyConverter<T extends OpenAPI.Document>
     contentType,
     schema,
     fields
-  }: {
-    value: unknown;
-    contentType: string;
-    fields?: Record<string, OpenAPIV3.EncodingObject>;
-    schema?: OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject;
-  }): string {
+  }: EncodingData): string {
     const [mime]: string[] = contentType
       .split(',')
       .map((x) => x.trim().replace(/;.+?$/, ''));

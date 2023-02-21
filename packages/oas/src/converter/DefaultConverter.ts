@@ -6,7 +6,7 @@ import {
   SecurityRequirementsParser
 } from './security';
 import type { PathItemObject } from '../types';
-import { getOperation } from '../utils';
+import { getOperation, isOASV2 } from '../utils';
 import $RefParser, { JSONSchema } from '@apidevtools/json-schema-ref-parser';
 import type {
   Header,
@@ -20,6 +20,7 @@ import pointer from 'json-pointer';
 export class DefaultConverter implements Converter {
   private spec: OpenAPI.Document;
   private securityRequirements?: SecurityRequirementsParser<OpenAPI.Document>;
+  private readonly refParser = new $RefParser();
 
   constructor(
     private readonly baseUrlParser: BaseUrlParser,
@@ -28,10 +29,7 @@ export class DefaultConverter implements Converter {
   ) {}
 
   public async convert(spec: OpenAPI.Document): Promise<Request[]> {
-    this.spec = (await new $RefParser().dereference(
-      JSON.parse(JSON.stringify(spec)) as JSONSchema,
-      { resolve: { file: false, http: false } }
-    )) as OpenAPI.Document;
+    this.spec = await this.normalizeSpec(spec);
 
     this.securityRequirements = this.securityRequirementsFactory.create(
       this.spec
@@ -46,6 +44,27 @@ export class DefaultConverter implements Converter {
           )
           .map((method) => this.createHarEntry(path, method))
     );
+  }
+
+  private async normalizeSpec(
+    spec: OpenAPI.Document
+  ): Promise<OpenAPI.Document> {
+    const copy: OpenAPI.Document = JSON.parse(JSON.stringify(spec));
+    const schemas = isOASV2(copy) ? copy.definitions : copy.components?.schemas;
+    // ADHOC: requires the schema name be identical to the model name rather than using the 'root' name.
+    // For details please refer to the documentation at https://swagger.io/docs/specification/data-models/representing-xml/
+    for (const [name, schema] of Object.entries(schemas ?? {})) {
+      if ('$ref' in schema) {
+        continue;
+      }
+
+      schema.xml ??= {};
+      schema.xml.name ??= name;
+    }
+
+    return (await this.refParser.dereference(copy as JSONSchema, {
+      resolve: { file: false, http: false }
+    })) as OpenAPI.Document;
   }
 
   private createHarEntry(path: string, method: string): Request {

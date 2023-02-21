@@ -1,6 +1,6 @@
 import { BodyConverter } from './BodyConverter';
-import { Sampler } from '../../Sampler';
-import { OpenAPIV3, PostData } from '@har-sdk/core';
+import type { Sampler } from '../../Sampler';
+import type { OpenAPIV3, PostData } from '@har-sdk/core';
 import pointer from 'json-pointer';
 
 export class Oas3RequestBodyConverter extends BodyConverter<OpenAPIV3.Document> {
@@ -19,18 +19,17 @@ export class Oas3RequestBodyConverter extends BodyConverter<OpenAPIV3.Document> 
     }
 
     const content = pathObj.requestBody?.content ?? {};
-    const sampleContent = content[contentType];
+    const mediaTypeObject = content[contentType] as OpenAPIV3.MediaTypeObject;
 
-    if (sampleContent?.schema) {
-      const data = this.sampleRequestBody(sampleContent, {
-        tokens,
-        contentType
-      });
-
-      return this.encodePayload(data, contentType, sampleContent.encoding);
+    if (!mediaTypeObject?.schema) {
+      return null;
     }
 
-    return null;
+    return this.sampleAndEncodeRequestBody({
+      media: mediaTypeObject,
+      tokens,
+      contentType
+    });
   }
 
   protected getContentType(path: string, method: string): string | undefined {
@@ -44,8 +43,63 @@ export class Oas3RequestBodyConverter extends BodyConverter<OpenAPIV3.Document> 
     });
   }
 
+  private sampleAndEncodeRequestBody({
+    media,
+    tokens,
+    contentType
+  }: {
+    media: OpenAPIV3.MediaTypeObject;
+    tokens: string[];
+    contentType: string;
+  }): PostData {
+    let value = this.sampleRequestBody(media, {
+      tokens,
+      contentType
+    });
+
+    if (this.shouldApplyEncoding(contentType) && media.encoding) {
+      value = this.encodeProperties(value, media);
+    }
+
+    return this.encodePayload({
+      value,
+      contentType,
+      schema: media.schema,
+      fields: media.encoding
+    });
+  }
+
+  private shouldApplyEncoding(contentType: string): boolean {
+    return (
+      contentType.startsWith('multipart/') ||
+      contentType === 'application/x-www-form-urlencoded'
+    );
+  }
+
+  private encodeProperties(
+    data: unknown,
+    mediaType: OpenAPIV3.MediaTypeObject
+  ): unknown {
+    const encoded = Object.fromEntries(
+      Object.entries(mediaType.encoding ?? {}).map(
+        ([property, encoding]: [string, OpenAPIV3.EncodingObject]) => [
+          property,
+          this.encodeValue({
+            value: data[property],
+            contentType: encoding.contentType,
+            schema: (mediaType.schema as OpenAPIV3.SchemaObject).properties[
+              property
+            ]
+          })
+        ]
+      )
+    );
+
+    return Object.assign({}, data, encoded);
+  }
+
   private sampleRequestBody(
-    sampleContent: OpenAPIV3.MediaTypeObject,
+    media: OpenAPIV3.MediaTypeObject,
     {
       contentType,
       tokens
@@ -54,11 +108,15 @@ export class Oas3RequestBodyConverter extends BodyConverter<OpenAPIV3.Document> 
       contentType: string;
     }
   ): unknown {
+    const example = this.getExample(media);
+
     return this.sampler.sample(
       {
-        ...sampleContent.schema,
-        ...(sampleContent.example !== undefined
-          ? { example: sampleContent.example }
+        ...media.schema,
+        ...(example !== undefined
+          ? {
+              example
+            }
           : {})
       },
       {
@@ -72,5 +130,19 @@ export class Oas3RequestBodyConverter extends BodyConverter<OpenAPIV3.Document> 
         ])
       }
     );
+  }
+
+  private getExample(schema: OpenAPIV3.MediaTypeObject): unknown | undefined {
+    const examples = (schema.examples ?? {}) as Record<
+      string,
+      OpenAPIV3.ExampleObject
+    >;
+    const exampleKey = this.sampler.sample({
+      type: 'array',
+      examples: Object.keys(examples)
+    });
+    const example = examples[exampleKey]?.value;
+
+    return example !== undefined ? example : schema.example;
   }
 }

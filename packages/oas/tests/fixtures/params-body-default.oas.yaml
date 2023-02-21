@@ -17,9 +17,9 @@ paths:
               type: Cat
               status: pending
       responses:
-        default:
+        200:
           content: {}
-
+          description: successful operation
   /v2/entity:
     put:
       requestBody:
@@ -40,8 +40,9 @@ paths:
                   status: sold
         required: true
       responses:
-        default:
+        200:
           content: {}
+          description: successful operation
 components:
   schemas:
     Pet:

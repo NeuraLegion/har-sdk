@@ -4,18 +4,31 @@ import RandExp from 'randexp';
 export class StringSampler implements Sampler {
   private readonly stringFormats = {
     'email': () => 'jon.snow@targaryen.com',
+    'idn-email': () => 'джон.сноу@таргариен.укр',
     'password': (min: number, max: number) =>
       this.adjustLength('p@$$w0rd', min, max),
     'date-time': () => '2021-12-31T23:34:00Z',
     'date': () => '2021-12-31',
+    'time': () => '23:34:00Z',
+    'duration': () => 'P3D',
     'ipv4': () => '208.67.222.222',
     'ipv6': () => '0000:0000:0000:0000:0000:ffff:d043:dcdc',
     'hostname': () => 'brokencrystals.com',
+    'idn-hostname': () => 'сломанные-кристаллы.бел',
+    'iri': () =>
+      'https://be.wikipedia.org/wiki/%D0%9A%D1%80%D1%8B%D1%88%D1%82%D0%B0%D0%BB%D1%96',
+    'iri-reference': () =>
+      '/wiki/%D0%9A%D1%80%D1%8B%D1%88%D1%82%D0%B0%D0%BB%D1%96',
     'uri': () => 'https://github.com/NeuraLegion/brokencrystals',
+    'uri-reference': () => '../brokencrystals',
+    'uri-template': () => 'https://brokencrystals.com/api/file/{provider}',
     'byte': () => 'ZHVtbXkgYmluYXJ5IHNhbXBsZQA=',
     'binary': () => '\\x01\\x02\\x03\\x04\\x05',
     'base64': () => 'ZHVtbXkgYmluYXJ5IHNhbXBsZQA=',
     'uuid': () => 'fbdf5a53-161e-4460-98ad-0e39408d8689',
+    'json-pointer': () => '/json/pointer',
+    'relative-json-pointer': () => '1/relative/json/pointer',
+    'regex': () => '/regex/',
     'pattern': (
       _min: number,
       _max: number,

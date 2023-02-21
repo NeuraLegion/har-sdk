@@ -12,6 +12,13 @@ describe('StringSampler', () => {
     {
       input: {
         type: 'string',
+        format: 'idn-email'
+      },
+      expected: 'джон.сноу@таргариен.укр'
+    },
+    {
+      input: {
+        type: 'string',
         format: 'pattern',
         pattern: '\\d{1,3}'
       },
@@ -57,6 +64,20 @@ describe('StringSampler', () => {
     {
       input: {
         type: 'string',
+        format: 'time'
+      },
+      expected: '23:34:00Z'
+    },
+    {
+      input: {
+        type: 'string',
+        format: 'duration'
+      },
+      expected: 'P3D'
+    },
+    {
+      input: {
+        type: 'string',
         format: 'ipv4',
         maxLength: 100
       },
@@ -81,9 +102,66 @@ describe('StringSampler', () => {
     {
       input: {
         type: 'string',
+        format: 'idn-hostname'
+      },
+      expected: 'сломанные-кристаллы.бел'
+    },
+    {
+      input: {
+        type: 'string',
         format: 'uri'
       },
       expected: 'https://github.com/NeuraLegion/brokencrystals'
+    },
+    {
+      input: {
+        type: 'string',
+        format: 'uri-reference'
+      },
+      expected: '../brokencrystals'
+    },
+    {
+      input: {
+        type: 'string',
+        format: 'uri-template'
+      },
+      expected: 'https://brokencrystals.com/api/file/{provider}'
+    },
+    {
+      input: {
+        type: 'string',
+        format: 'iri'
+      },
+      expected:
+        'https://be.wikipedia.org/wiki/%D0%9A%D1%80%D1%8B%D1%88%D1%82%D0%B0%D0%BB%D1%96'
+    },
+    {
+      input: {
+        type: 'string',
+        format: 'iri-reference'
+      },
+      expected: '/wiki/%D0%9A%D1%80%D1%8B%D1%88%D1%82%D0%B0%D0%BB%D1%96'
+    },
+    {
+      input: {
+        type: 'string',
+        format: 'json-pointer'
+      },
+      expected: '/json/pointer'
+    },
+    {
+      input: {
+        type: 'string',
+        format: 'relative-json-pointer'
+      },
+      expected: '1/relative/json/pointer'
+    },
+    {
+      input: {
+        type: 'string',
+        format: 'regex'
+      },
+      expected: '/regex/'
     },
     {
       input: {

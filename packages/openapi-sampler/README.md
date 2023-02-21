@@ -107,7 +107,7 @@ sample(
   },
   { skipNonRequired: true }
 );
-// { b: 'string' }
+// { b: 'lorem' }
 ```
 
 By default, all properties, including those marked as read or write-only, are included in the generated sample. However, if you want to exclude `readOnly` or `writeOnly` properties, you can use the `skipReadOnly` or `skipWriteOnly` options, respectively, as shown below:
@@ -123,7 +123,7 @@ sample(
   },
   { skipReadOnly: true }
 );
-// { a: 'string' }
+// { a: 'lorem' }
 ```
 
 Note, the library recursively generates the entire sample object tree up to a maximum depth of 2 level to prevent infinite recursion. If you want to increase or decrease this maximum depth, you can use the `maxSampleDepth` option as follows:

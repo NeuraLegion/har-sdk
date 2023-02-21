@@ -1,0 +1,21 @@
+[
+  {
+    "bodySize": 0,
+    "cookies": [],
+    "headers": [
+      {
+        "name": "content-type",
+        "value": "application/xml"
+      }
+    ],
+    "headersSize": 0,
+    "httpVersion": "HTTP/1.1",
+    "method": "POST",
+    "postData": {
+      "mimeType": "application/xml",
+      "text": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<User id=\"42\">\n\t<type:role xmlns:type=\"http://example.com/schema/type\">lorem</type:role>\n\t<organizations>\n\t\t<id>fbdf5a53-161e-4460-98ad-0e39408d8689</id>\n\t</organizations>\n\t<ProfilePhoto>\n\t\t<url>https://github.com/NeuraLegion/brokencrystals</url>\n\t\t<title>lorem</title>\n\t</ProfilePhoto>\n\t<scopes>files:read</scopes>\n\t<scopes>files:write</scopes>\n</User>"
+    },
+    "queryString": [],
+    "url": "https://userstore.swagger.io/v1/user"
+  }
+]

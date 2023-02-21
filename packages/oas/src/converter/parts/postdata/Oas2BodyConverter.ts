@@ -1,7 +1,7 @@
 import { BodyConverter } from './BodyConverter';
-import { Sampler } from '../../Sampler';
+import type { Sampler } from '../../Sampler';
 import { filterLocationParams, getParameters, isOASV2 } from '../../../utils';
-import { OpenAPIV2, PostData } from '@har-sdk/core';
+import type { OpenAPIV2, PostData } from '@har-sdk/core';
 
 export class Oas2BodyConverter extends BodyConverter<OpenAPIV2.Document> {
   constructor(spec: OpenAPIV2.Document, sampler: Sampler) {
@@ -58,20 +58,20 @@ export class Oas2BodyConverter extends BodyConverter<OpenAPIV2.Document> {
       tokens: string[];
       contentType?: string;
     }
-  ): { mimeType: string; text: string } {
+  ): PostData {
     const formDataParams = filterLocationParams(params, 'formdata');
     if (!formDataParams.length) {
       return null;
     }
 
-    const data = Object.fromEntries(
+    const value = Object.fromEntries(
       formDataParams.map((param) => [
         param.name,
         this.sampleParam(param, { ...sampleOptions, params })
       ])
     );
 
-    return this.encodePayload(data, contentType);
+    return this.encodePayload({ value, contentType });
   }
 
   private convertUnsupportedParamToString(
@@ -94,14 +94,14 @@ export class Oas2BodyConverter extends BodyConverter<OpenAPIV2.Document> {
       tokens: string[];
       contentType?: string;
     }
-  ): { mimeType: string; text: string } {
+  ): PostData {
     const bodyParams = filterLocationParams(params, 'body');
 
     for (const param of bodyParams) {
       if ('schema' in param) {
         const value = this.sampleParam(param, { ...sampleOptions, params });
 
-        return this.encodePayload(value, contentType);
+        return this.encodePayload({ value, contentType, schema: param.schema });
       }
     }
   }

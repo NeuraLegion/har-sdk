@@ -1,12 +1,20 @@
-import { Sampler } from '../../Sampler';
-import { SubConverter } from '../../SubConverter';
-import { OpenAPI, OpenAPIV3, PostData } from '@har-sdk/core';
-import { toXML, XmlElement } from 'jstoxml';
+import type { Sampler } from '../../Sampler';
+import type { SubConverter } from '../../SubConverter';
+import { XmlSerializer } from '../../serializers';
+import type { OpenAPI, OpenAPIV2, OpenAPIV3, PostData } from '@har-sdk/core';
 import { stringify } from 'qs';
+
+export interface EncodingData {
+  value: unknown;
+  contentType: string;
+  fields?: Record<string, OpenAPIV3.EncodingObject>;
+  schema?: OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject;
+}
 
 export abstract class BodyConverter<T extends OpenAPI.Document>
   implements SubConverter<PostData | null>
 {
+  private readonly xmlSerializer = new XmlSerializer();
   private readonly JPG_IMAGE = '/9j/7g=='; // 0xff, 0xd8, 0xff, 0xee
   private readonly PNG_IMAGE = 'iVBORw0KGgo='; // 0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0A, 0x1a, 0x0a
   private readonly ICO_IMAGE = 'AAABAA=='; // 0x00, 0x00, 0x01, 0x00
@@ -27,35 +35,25 @@ export abstract class BodyConverter<T extends OpenAPI.Document>
     method: string
   ): string | undefined;
 
-  protected encodePayload(
-    data: unknown,
-    contentType: string,
-    encoding?: OpenAPIV3.EncodingObject
-  ): { mimeType: string; text: string } {
-    let encodedData = data;
-
-    if (encoding) {
-      encodedData = this.encodeProperties(
-        Object.keys(encoding),
-        data,
-        encoding
-      );
-    }
-
+  protected encodePayload({ contentType, ...options }: EncodingData): PostData {
     return {
       mimeType: contentType.includes('multipart')
         ? `${contentType}; boundary=${this.BOUNDARY}`
         : contentType,
-      text: this.encodeValue(encodedData, contentType)
+      text: this.encodeValue({
+        contentType,
+        ...options
+      })
     };
   }
 
   // eslint-disable-next-line complexity
-  private encodeValue(
-    value: unknown,
-    contentType: string,
-    encoding?: string
-  ): string {
+  protected encodeValue({
+    value,
+    contentType,
+    schema,
+    fields
+  }: EncodingData): string {
     const [mime]: string[] = contentType
       .split(',')
       .map((x) => x.trim().replace(/;.+?$/, ''));
@@ -66,10 +64,12 @@ export abstract class BodyConverter<T extends OpenAPI.Document>
       case 'application/x-www-form-urlencoded':
         return this.encodeFormUrlencoded(value);
       case 'application/xml':
-        return this.encodeXml(value);
+      case 'text/xml':
+      case 'application/atom+xml':
+        return this.encodeXml(value, schema);
       case 'multipart/form-data':
       case 'multipart/mixed':
-        return this.encodeMultipartFormData(value, encoding);
+        return this.encodeMultipartFormData(value, fields);
       case 'image/x-icon':
       case 'image/ico':
       case 'image/vnd.microsoft.icon':
@@ -87,12 +87,18 @@ export abstract class BodyConverter<T extends OpenAPI.Document>
     }
   }
 
-  private encodeMultipartFormData(value: unknown, encoding?: string): string {
+  // TODO: move the logic that receives the content type from the encoding object
+  //  to the {@link Oas3RequestBodyConverter} class.
+  private encodeMultipartFormData(
+    value: unknown,
+    fields?: Record<string, OpenAPIV3.EncodingObject>
+  ): string {
     const EOL = '\r\n';
 
     return Object.entries(value || {})
       .map(([key, val]: [string, unknown]) => {
-        const contentType = encoding ?? this.inferMultipartContentType(val);
+        const contentType =
+          fields?.[key]?.contentType ?? this.inferMultipartContentType(val);
         const filenameRequired = this.filenameRequired(contentType);
         const content = this.encodeOther(val);
 
@@ -116,8 +122,8 @@ export abstract class BodyConverter<T extends OpenAPI.Document>
       .concat(`${EOL}--${this.BOUNDARY}--`);
   }
 
-  private filenameRequired(contentType: string) {
-    return !['application/json', 'text/plain'].includes(contentType);
+  private filenameRequired(contentType: string): boolean {
+    return 'application/octet-stream' === contentType;
   }
 
   private inferMultipartContentType(value: unknown): string {
@@ -139,31 +145,11 @@ export abstract class BodyConverter<T extends OpenAPI.Document>
     }
   }
 
-  private encodeProperties(
-    keys: string[],
-    data: unknown,
-    encoding?: OpenAPIV3.EncodingObject
-  ): unknown {
-    const sample = keys.reduce((encodedSample, encodingKey) => {
-      const { contentType }: OpenAPIV3.EncodingObject =
-        encoding?.[encodingKey] ?? {};
-
-      encodedSample[encodingKey] = this.encodeValue(
-        data[encodingKey],
-        contentType,
-        encodingKey
-      );
-
-      return encodedSample;
-    }, {});
-
-    return Object.assign({}, data, sample);
-  }
-
   private encodeJson(value: unknown): string {
     return typeof value === 'string' ? value : JSON.stringify(value);
   }
 
+  // TODO: we should take into account the the Encoding Object's style property (OAS3)
   private encodeFormUrlencoded(value: unknown): string {
     return stringify(value, {
       format: 'RFC3986',
@@ -171,13 +157,11 @@ export abstract class BodyConverter<T extends OpenAPI.Document>
     });
   }
 
-  private encodeXml(value: unknown): string {
-    const xmlOptions = {
-      header: true,
-      indent: '  '
-    };
-
-    return toXML(value as XmlElement, xmlOptions);
+  private encodeXml(
+    data: unknown,
+    schema: OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject
+  ): string {
+    return this.xmlSerializer.serialize(data, schema);
   }
 
   private encodeOther(value: unknown): string {

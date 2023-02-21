@@ -132,6 +132,16 @@ describe('DefaultConverter', () => {
         expected: 'params-encoding.oas.result.json',
         message:
           'should correctly convert oas file with multipart and encoding parameters'
+      },
+      {
+        input: 'xml-models.oas.yaml',
+        expected: 'xml-models.oas.result.json',
+        message: 'should properly serialize models to XML (oas)'
+      },
+      {
+        input: 'xml-models.swagger.yaml',
+        expected: 'xml-models.swagger.result.json',
+        message: 'should properly serialize models to XML (swagger)'
       }
     ].forEach(({ input: inputFile, expected: expectedFile, message }) => {
       it(message, async () => {

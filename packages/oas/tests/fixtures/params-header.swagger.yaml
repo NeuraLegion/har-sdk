@@ -10,6 +10,9 @@ paths:
   /headers:
     get:
       parameters:
+        - name: X-Numeric
+          in: header
+          type: integer
         - name: X-Array-Default
           in: header
           required: true

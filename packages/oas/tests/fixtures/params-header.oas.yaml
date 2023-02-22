@@ -8,6 +8,10 @@ paths:
   /dummy1:
     get:
       parameters:
+        - name: X-Numeric
+          in: header
+          schema:
+            type: integer
         - in: header
           name: X-Request-DateTime
           schema:

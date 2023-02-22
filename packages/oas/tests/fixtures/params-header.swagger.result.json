@@ -4,6 +4,10 @@
     "cookies": [],
     "headers": [
       {
+        "name": "x-numeric",
+        "value": "42"
+      },
+      {
         "name": "x-array-default",
         "value": "lorem,lorem"
       },

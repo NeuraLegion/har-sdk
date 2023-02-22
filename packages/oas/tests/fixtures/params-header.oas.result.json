@@ -9,6 +9,10 @@
         "value": "application/json"
       },
       {
+        "name": "x-numeric",
+        "value": "42"
+      },
+      {
         "name": "x-request-datetime",
         "value": "2021-12-31T23:34:00Z"
       },

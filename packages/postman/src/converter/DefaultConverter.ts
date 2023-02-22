@@ -432,10 +432,14 @@ export class DefaultConverter implements Converter {
       addQueryPrefix: true
     });
 
-    u.username = url.auth?.user || u.username;
-    u.password = url.auth?.password || u.password;
+    this.applyBasicAuth(u, url.auth);
 
     return u.toString();
+  }
+
+  private applyBasicAuth(u: URL, auth?: Postman.Url['auth']): void {
+    u.username = auth?.user || u.username;
+    u.password = auth?.password || u.password;
   }
 
   private buildHost(host: string | string[], scope: LexicalScope): string {

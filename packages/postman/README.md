@@ -24,20 +24,20 @@ $ npm i --save @har-sdk/postman
 
 ## Usage
 
-To covert your collection, use the `postman2har` function as follows:
+To convert your collection, use the `postman2har` function as follows:
 
 ```js
 import collection from './postman-collection.json' assert { type: 'json' };
 import { postman2har } from '@har-sdk/postman';
 
-const requests = postman2har(collection);
+const requests = await postman2har(collection);
 console.log(requests);
 ```
 
 If you want to pass additional data to resolve environment variables, you can do so by passing an options object as the second parameter:
 
 ```js
-const requests = postman2har(collection, {
+const requests = await postman2har(collection, {
   environment: { baseUrl: 'https://example.com' }
 });
 console.log(requests);

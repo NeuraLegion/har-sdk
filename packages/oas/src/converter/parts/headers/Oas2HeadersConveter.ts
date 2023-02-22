@@ -26,7 +26,7 @@ export class Oas2HeadersConverter extends HeadersConverter<OpenAPIV2.Document> {
   ): Header {
     return this.createHeader(
       headerParam.param.name,
-      this.oas2ValueSerializer.serialize(headerParam) as string
+      `${this.oas2ValueSerializer.serialize(headerParam)}`
     );
   }
 }

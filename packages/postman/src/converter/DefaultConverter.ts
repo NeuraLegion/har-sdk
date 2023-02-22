@@ -405,8 +405,12 @@ export class DefaultConverter implements Converter {
   private buildUrlString(url: Postman.Url, scope: LexicalScope): string {
     const { host, protocol } = url;
 
+    const u = parseUrl(normalizeUrl(this.buildHost(host, scope)));
     const p = protocol ? protocol.replace(/:?$/, ':') : '';
-    const u = parseUrl(normalizeUrl(`${p}//${this.buildHost(host, scope)}`));
+
+    if (p) {
+      u.protocol = p;
+    }
 
     if (url.port) {
       u.port = url.port;
@@ -419,7 +423,7 @@ export class DefaultConverter implements Converter {
     const pathname = this.buildPathname(url);
 
     if (pathname) {
-      u.pathname = pathname;
+      u.pathname = [u.pathname, pathname].join('/');
     }
 
     u.search = stringify(this.prepareQueries(url) ?? {}, {
@@ -428,8 +432,8 @@ export class DefaultConverter implements Converter {
       addQueryPrefix: true
     });
 
-    u.username = url.auth?.user ?? '';
-    u.password = url.auth?.password ?? '';
+    u.username = url.auth?.user || u.username;
+    u.password = url.auth?.password || u.password;
 
     return u.toString();
   }
@@ -442,13 +446,7 @@ export class DefaultConverter implements Converter {
       );
     }
 
-    host = Array.isArray(host) ? host.join('.') : host;
-
-    try {
-      return parseUrl(host).host;
-    } catch {
-      return host;
-    }
+    return Array.isArray(host) ? host.join('.') : host;
   }
 
   private buildPathname(url: Postman.Url): string {

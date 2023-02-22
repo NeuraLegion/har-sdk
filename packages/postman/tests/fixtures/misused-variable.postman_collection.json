@@ -5,9 +5,16 @@
   },
   "item": [
     {
-      "name": "status/{codes}",
+      "name": "{{baseUrl}} is declared as the host",
       "item": [
         {
+          "variable": [
+            {
+              "key": "baseUrl",
+              "value": "http://httpbin.org/status",
+              "type": "string"
+            }
+          ],
           "request": {
             "method": "GET",
             "header": [],
@@ -22,16 +29,72 @@
                 }
               ]
             }
-          },
-          "response": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "{{baseUrl}} is declared as the host, but does not contain any resource reference",
+      "item": [
+        {
+          "variable": [
+            {
+              "key": "baseUrl",
+              "value": "https://httpbin.org",
+              "type": "string"
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/status/:codes",
+              "host": ["{{baseUrl}}"],
+              "path": ["status", ":codes"],
+              "variable": [
+                {
+                  "key": "codes",
+                  "value": "200"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "both {{protocol}} and {{host}} are declared as expected",
+      "item": [
+        {
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{protocol}}://{{host}}/status/:codes",
+              "protocol": "{{protocol}}",
+              "host": ["{{host}}"],
+              "path": ["status", ":codes"],
+              "variable": [
+                {
+                  "key": "codes",
+                  "value": "200"
+                }
+              ]
+            }
+          }
         }
       ]
     }
   ],
   "variable": [
     {
-      "key": "baseUrl",
-      "value": "https://httpbin.org/status",
+      "key": "host",
+      "value": "httpbin.org",
+      "type": "string"
+    },
+    {
+      "key": "protocol",
+      "value": "https",
       "type": "string"
     }
   ]

@@ -7,6 +7,26 @@
     "httpVersion": "HTTP/1.1",
     "method": "GET",
     "queryString": [],
+    "url": "http://httpbin.org/status/200"
+  },
+  {
+    "bodySize": -1,
+    "cookies": [],
+    "headers": [],
+    "headersSize": -1,
+    "httpVersion": "HTTP/1.1",
+    "method": "PUT",
+    "queryString": [],
+    "url": "https://httpbin.org/status/200"
+  },
+  {
+    "bodySize": -1,
+    "cookies": [],
+    "headers": [],
+    "headersSize": -1,
+    "httpVersion": "HTTP/1.1",
+    "method": "DELETE",
+    "queryString": [],
     "url": "https://httpbin.org/status/200"
   }
 ]

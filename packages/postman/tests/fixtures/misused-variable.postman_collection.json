@@ -1,0 +1,38 @@
+{
+  "info": {
+    "name": "httpbin.org",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "status/{codes}",
+      "item": [
+        {
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/:codes",
+              "host": ["{{baseUrl}}"],
+              "path": [":codes"],
+              "variable": [
+                {
+                  "key": "codes",
+                  "value": "200"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://httpbin.org/status",
+      "type": "string"
+    }
+  ]
+}

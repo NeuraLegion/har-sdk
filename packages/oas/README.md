@@ -41,7 +41,19 @@ import { readFile } from 'node:fs/promises';
 import yaml from 'js-yaml';
 
 const content = yaml.load(await readFile('./swagger.yaml', 'utf-8'));
-const requests = await oas2har(load(content));
+const requests = await oas2har(content);
+console.log(requests);
+```
+
+If you have your specification hosted remotely, you can use a library like [axios](https://github.com/axios/axios) to fetch it and then convert it to a HAR. Here's an example:
+
+```js
+import axios from 'axios';
+import { oas2har } from '@har-sdk/oas';
+
+const url = 'https://example.com/swagger.json';
+const response = await axios.get(url);
+const requests = await oas2har(response.data);
 console.log(requests);
 ```
 

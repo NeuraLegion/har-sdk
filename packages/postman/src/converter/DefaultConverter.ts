@@ -423,7 +423,7 @@ export class DefaultConverter implements Converter {
     const pathname = this.buildPathname(url);
 
     if (pathname) {
-      u.pathname = [u.pathname, pathname].join('/');
+      u.pathname = this.joinPathSegments(u.pathname, pathname);
     }
 
     u.search = stringify(this.prepareQueries(url) ?? {}, {
@@ -451,12 +451,16 @@ export class DefaultConverter implements Converter {
 
   private buildPathname(url: Postman.Url): string {
     return Array.isArray(url.path)
-      ? url.path
-          .map((x: string | Postman.Variable) =>
+      ? this.joinPathSegments(
+          ...url.path.map((x: string | Postman.Variable) =>
             typeof x === 'string' ? x : x.value ?? ''
           )
-          .join('/')
+        )
       : url.path;
+  }
+
+  private joinPathSegments(...segments: string[]): string {
+    return segments.join('/');
   }
 
   private prepareQueries(

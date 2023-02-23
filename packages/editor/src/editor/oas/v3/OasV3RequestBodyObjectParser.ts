@@ -35,78 +35,73 @@ export class OasV3RequestBodyObjectParser implements ParametersParser {
 
   private parseRequestBodyContentEntry(
     pointer: string,
-    mediaType: string,
+    bodyType: string,
     mediaTypeObject: OpenAPIV3.MediaTypeObject
   ): SpecTreeRequestBodyParam {
-    const mediaTypePointer = this.getMediaTypePointer(pointer, mediaType);
-    const schema = this.dereferenceIfNecessary(
-      this.getBodySchemaPointer(mediaTypePointer),
-      mediaTypeObject.schema
-    );
-    const value = this.getBodyValue(mediaTypePointer, mediaTypeObject, schema);
+    const mediaTypePointer = `${pointer}${jsonPointer.compile([
+      'content',
+      bodyType
+    ])}`;
+    const value = this.getBodyExampleValue(mediaTypePointer, mediaTypeObject);
+    const valueJsonPointer = `${mediaTypePointer}${
+      value != null ? this.getBodyValueJsonPointer(mediaTypeObject) : '/example'
+    }`;
 
     return {
-      paramType: 'requestBody',
-      bodyType: mediaType,
       ...(value != null ? { value } : {}),
-      valueJsonPointer: `${mediaTypePointer}${
-        value != null
-          ? this.getBodyValueJsonPointer(mediaTypeObject)
-          : '/example'
-      }`
+      bodyType,
+      valueJsonPointer,
+      paramType: 'requestBody'
     };
   }
 
-  private getBodySchemaPointer(mediaTypePointer: string): string {
-    return `${mediaTypePointer}/schema`;
-  }
-
-  private getMediaTypePointer(
-    requestPointer: string,
-    mediaType: string
-  ): string {
-    return `${requestPointer}${jsonPointer.compile(['content', mediaType])}`;
-  }
-
-  private getExampleObjectPointer(
+  private getBodyExampleValue(
     mediaTypePointer: string,
-    exampleName: string
-  ): string {
-    return `${mediaTypePointer}${jsonPointer.compile([
-      'examples',
-      exampleName
-    ])}`;
+    mediaTypeObject: OpenAPIV3.MediaTypeObject
+  ): unknown {
+    const { example, examples = {} } = mediaTypeObject;
+    const exampleName = this.getExampleName(mediaTypeObject);
+    const exampleObject = exampleName
+      ? this.dereferenceIfNecessary(
+          `${mediaTypePointer}${jsonPointer.compile([
+            'examples',
+            exampleName
+          ])}`,
+          examples[exampleName]
+        )
+      : undefined;
+
+    return (
+      exampleObject?.value ??
+      example ??
+      this.getSchemaExampleValue(mediaTypePointer, mediaTypeObject.schema)
+    );
   }
 
   private getBodyValueJsonPointer(
     mediaTypeObject: OpenAPIV3.MediaTypeObject
   ): string {
     const exampleName = this.getExampleName(mediaTypeObject);
-    const segments = exampleName
-      ? ['examples', exampleName, 'value']
-      : mediaTypeObject.example != null
-      ? ['example']
-      : ['schema', 'example'];
+
+    let segments: string[];
+
+    if (exampleName) {
+      segments = ['examples', exampleName, 'value'];
+    } else if (mediaTypeObject.example != null) {
+      segments = ['example'];
+    } else {
+      segments = ['schema', 'example'];
+    }
 
     return jsonPointer.compile(segments);
   }
 
-  private getBodyValue(
+  private getSchemaExampleValue(
     mediaTypePointer: string,
-    mediaTypeObject: OpenAPIV3.MediaTypeObject,
-    schema: OpenAPIV3.SchemaObject
+    schema: OpenAPIV3.ReferenceObject | OpenAPIV3.SchemaObject
   ): unknown {
-    const exampleName = this.getExampleName(mediaTypeObject);
-    const { examples, example } = mediaTypeObject;
-
-    const exampleObject = exampleName
-      ? this.dereferenceIfNecessary(
-          this.getExampleObjectPointer(mediaTypePointer, exampleName),
-          (examples ?? {})[exampleName]
-        )
-      : undefined;
-
-    return exampleObject?.value ?? example ?? schema.example;
+    return this.dereferenceIfNecessary(`${mediaTypePointer}/schema`, schema)
+      .example;
   }
 
   private getExampleName(

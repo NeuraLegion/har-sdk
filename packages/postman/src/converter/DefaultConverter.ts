@@ -85,7 +85,7 @@ export class DefaultConverter implements Converter {
 
       if (!request.method) {
         throw new ConvertError(
-          'Request must have method field',
+          'Request must have `method` field',
           scope.jsonPointer
         );
       }
@@ -437,7 +437,7 @@ export class DefaultConverter implements Converter {
   private buildHost(host: string | string[], scope: LexicalScope): string {
     if (!host || !host.length) {
       throw new ConvertError(
-        'The host for the URL is mandatory',
+        'URL must have `host` field',
         `${scope.jsonPointer}/host`
       );
     }

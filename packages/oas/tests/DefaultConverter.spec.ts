@@ -142,6 +142,16 @@ describe('DefaultConverter', () => {
         input: 'xml-models.swagger.yaml',
         expected: 'xml-models.swagger.result.json',
         message: 'should properly serialize models to XML (swagger)'
+      },
+      {
+        input: 'binary-body.swagger.yaml',
+        expected: 'binary-body.swagger.result.json',
+        message: 'should properly serialize binary types (swagger)'
+      },
+      {
+        input: 'binary-body.oas.yaml',
+        expected: 'binary-body.oas.result.json',
+        message: 'should properly serialize binary types (oas)'
       }
     ].forEach(({ input: inputFile, expected: expectedFile, message }) => {
       it(message, async () => {

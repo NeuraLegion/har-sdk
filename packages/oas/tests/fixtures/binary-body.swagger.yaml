@@ -1,0 +1,77 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: Binary Data API
+host: 'petstore.swagger.io'
+schemes:
+  - https
+paths:
+  /binary:
+    post:
+      summary: Upload plain binary data
+      consumes:
+        - application/octet-stream
+      parameters:
+        - in: body
+          name: file
+          required: true
+          schema:
+            type: string
+            format: binary
+      responses:
+        '200':
+          description: OK
+  /byte:
+    post:
+      summary: Upload byte data
+      consumes:
+        - application/octet-stream
+      parameters:
+        - in: body
+          name: file
+          required: true
+          schema:
+            type: string
+            format: byte
+      responses:
+        '200':
+          description: OK
+  /base64:
+    post:
+      summary: Upload base64 data
+      consumes:
+        - application/octet-stream
+      parameters:
+        - in: body
+          name: file
+          required: true
+          schema:
+            type: string
+            format: base64
+      responses:
+        '200':
+          description: OK
+  /multipart:
+    post:
+      summary: Upload multipart/form-data with binary data
+      consumes:
+        - multipart/form-data
+      parameters:
+        - in: formData
+          name: base64
+          type: file
+          required: true
+          x-format: base64
+        - in: formData
+          name: binary
+          type: file
+          required: true
+          x-format: binary
+        - in: formData
+          name: byte
+          type: file
+          required: true
+          x-format: byte
+      responses:
+        '200':
+          description: OK

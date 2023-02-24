@@ -1,0 +1,78 @@
+[
+  {
+    "bodySize": 0,
+    "cookies": [],
+    "headers": [
+      {
+        "name": "content-type",
+        "value": "application/octet-stream"
+      }
+    ],
+    "headersSize": 0,
+    "httpVersion": "HTTP/1.1",
+    "method": "POST",
+    "postData": {
+      "mimeType": "application/octet-stream",
+      "text": "\u0001\u0002\u0003\u0004\u0005"
+    },
+    "queryString": [],
+    "url": "https://petstore.swagger.io/binary"
+  },
+  {
+    "bodySize": 0,
+    "cookies": [],
+    "headers": [
+      {
+        "name": "content-type",
+        "value": "application/octet-stream"
+      }
+    ],
+    "headersSize": 0,
+    "httpVersion": "HTTP/1.1",
+    "method": "POST",
+    "postData": {
+      "mimeType": "application/octet-stream",
+      "text": "ZHVtbXkgYmluYXJ5IHNhbXBsZQA="
+    },
+    "queryString": [],
+    "url": "https://petstore.swagger.io/byte"
+  },
+  {
+    "bodySize": 0,
+    "cookies": [],
+    "headers": [
+      {
+        "name": "content-type",
+        "value": "application/octet-stream"
+      }
+    ],
+    "headersSize": 0,
+    "httpVersion": "HTTP/1.1",
+    "method": "POST",
+    "postData": {
+      "mimeType": "application/octet-stream",
+      "text": "ZHVtbXkgYmluYXJ5IHNhbXBsZQA="
+    },
+    "queryString": [],
+    "url": "https://petstore.swagger.io/base64"
+  },
+  {
+    "bodySize": 0,
+    "cookies": [],
+    "headers": [
+      {
+        "name": "content-type",
+        "value": "multipart/form-data"
+      }
+    ],
+    "headersSize": 0,
+    "httpVersion": "HTTP/1.1",
+    "method": "POST",
+    "postData": {
+      "mimeType": "multipart/form-data; boundary=956888039105887155673143",
+      "text": "--956888039105887155673143\r\nContent-Disposition: form-data; name=\"base64\"\r\n\r\nlorem\r\n--956888039105887155673143\r\nContent-Disposition: form-data; name=\"binary\"\r\n\r\nlorem\r\n--956888039105887155673143\r\nContent-Disposition: form-data; name=\"byte\"\r\n\r\nlorem\r\n--956888039105887155673143--"
+    },
+    "queryString": [],
+    "url": "https://petstore.swagger.io/multipart"
+  }
+]

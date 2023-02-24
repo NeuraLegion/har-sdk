@@ -119,7 +119,9 @@ export abstract class BodyConverter<T extends OpenAPI.Document>
           this.inferContentType(val, propertySchema);
 
         const filenameRequired = this.filenameRequired(contentType);
-        const base64Encoded = this.BASE64_FORMATS.includes(schema?.format);
+        const base64Encoded = this.BASE64_FORMATS.includes(
+          propertySchema?.format
+        );
 
         const headers = [
           `Content-Disposition: form-data; name="${key}"${
@@ -128,7 +130,7 @@ export abstract class BodyConverter<T extends OpenAPI.Document>
           ...(contentType !== 'text/plain'
             ? [`Content-Type: ${contentType}`]
             : []),
-          ...(base64Encoded ? [`Content-Transfer-Encoding: base64`] : [])
+          ...(base64Encoded ? ['Content-Transfer-Encoding: base64'] : [])
         ];
         const body = this.encodeOther(val);
 

@@ -1,7 +1,7 @@
 import type { Sampler } from '../../Sampler';
 import type { SubConverter } from '../../SubConverter';
 import { XmlSerializer } from '../../serializers';
-import { base64 } from '../../../utils';
+import { Base64 } from '../../../utils';
 import type { OpenAPI, OpenAPIV2, OpenAPIV3, PostData } from '@har-sdk/core';
 import { stringify } from 'qs';
 
@@ -98,7 +98,7 @@ export abstract class BodyConverter<T extends OpenAPI.Document>
     const encoded = this.encodeOther(value);
 
     return this.BASE64_FORMATS.includes(schema?.format)
-      ? base64(encoded)
+      ? Base64.encode(encoded)
       : encoded;
   }
 

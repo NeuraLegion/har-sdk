@@ -45,7 +45,7 @@ describe('StringSampler', () => {
         type: 'string',
         format: 'binary'
       },
-      expected: '\\x01\\x02\\x03\\x04\\x05'
+      expected: '\x01\x02\x03\x04\x05'
     },
     {
       input: {

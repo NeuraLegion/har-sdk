@@ -23,7 +23,7 @@ export class StringSampler implements Sampler {
     'uri-reference': () => '../brokencrystals',
     'uri-template': () => 'https://brokencrystals.com/api/file/{provider}',
     'byte': () => 'ZHVtbXkgYmluYXJ5IHNhbXBsZQA=',
-    'binary': () => '\\x01\\x02\\x03\\x04\\x05',
+    'binary': () => '\x01\x02\x03\x04\x05',
     'base64': () => 'ZHVtbXkgYmluYXJ5IHNhbXBsZQA=',
     'uuid': () => 'fbdf5a53-161e-4460-98ad-0e39408d8689',
     'json-pointer': () => '/json/pointer',

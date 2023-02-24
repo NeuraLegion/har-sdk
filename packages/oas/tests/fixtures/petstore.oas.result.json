@@ -198,7 +198,7 @@
     "bodySize": 0,
     "postData": {
       "mimeType": "multipart/form-data; boundary=956888039105887155673143",
-      "text": "--956888039105887155673143\r\nContent-Disposition: form-data; name=\"additionalMetadata\"\r\n\r\nlorem\r\n--956888039105887155673143\r\nContent-Disposition: form-data; name=\"file\"\r\n\r\n\\x01\\x02\\x03\\x04\\x05\r\n--956888039105887155673143--"
+      "text": "--956888039105887155673143\r\nContent-Disposition: form-data; name=\"additionalMetadata\"\r\n\r\nlorem\r\n--956888039105887155673143\r\nContent-Disposition: form-data; name=\"file\"\r\n\r\n\u0001\u0002\u0003\u0004\u0005\r\n--956888039105887155673143--"
     }
   },
   {

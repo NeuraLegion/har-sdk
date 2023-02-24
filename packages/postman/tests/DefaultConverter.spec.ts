@@ -1,7 +1,4 @@
 import { ConvertError, postman2har } from '../src';
-import collection from './fixtures/Salesforce APIs.postman_collection.json';
-import collectionWithoutVariables from './fixtures/no-such-variables.postman_collection.json';
-import urlWithTrailingSlash from './fixtures/trailing-slash.postman_collection.json';
 import { Postman, Request } from '@har-sdk/core';
 import { readFile } from 'fs';
 import { resolve } from 'path';
@@ -22,27 +19,39 @@ describe('DefaultConverter', () => {
       expect(result).toEqual([]);
     });
 
-    it('should convert Postman collection preserving trailing slash if it is specified explicitly', async () => {
-      const expected = JSON.parse(
-        await promisify(readFile)(
-          resolve(
-            __dirname,
-            './fixtures/trailing-slash.postman_collection.result.json'
-          ),
-          'utf-8'
-        )
-      );
+    it.each([
+      {
+        inputPath: './fixtures/trailing-slash.postman_collection.json',
+        expectedPath:
+          './fixtures/trailing-slash.postman_collection.result.json',
+        label: 'preserving the trailing slash when it is specified explicitly'
+      },
+      {
+        inputPath: './fixtures/misused-variable.postman_collection.json',
+        expectedPath:
+          './fixtures/misused-variable.postman_collection.result.json',
+        label: 'when the variable is misused in the URL'
+      }
+    ])(
+      'should convert Postman collection $label',
+      async ({ inputPath, expectedPath }) => {
+        const expected = JSON.parse(
+          await promisify(readFile)(resolve(__dirname, expectedPath), 'utf-8')
+        );
 
-      const result: Request[] = await postman2har(
-        urlWithTrailingSlash as Postman.Document
-      );
+        const result: Request[] = await postman2har(
+          (await import(inputPath)) as Postman.Document
+        );
 
-      expect(result).toEqual(expected);
-    });
+        expect(result).toEqual(expected);
+      }
+    );
 
     it('should convert Postman v2.1.0 collection to HAR', async () => {
       const [firstRequest]: Request[] = await postman2har(
-        collection as unknown as Postman.Document,
+        (await import(
+          './fixtures/salesforce-apis.postman_collection.json'
+        )) as Postman.Document,
         {
           environment: {
             _endpoint: 'example.com'
@@ -57,19 +66,21 @@ describe('DefaultConverter', () => {
       expect(firstRequest.httpVersion).toEqual('HTTP/1.1');
     });
 
-    it('should convert Postman v2.1.0 collection to HAR (dryRun)', async () => {
+    it('should convert Postman collection when the dry-run mode is enabled', async () => {
       const expected = JSON.parse(
         await promisify(readFile)(
           resolve(
             __dirname,
-            './fixtures/Salesforce APIs.postman_collection.result.json'
+            './fixtures/salesforce-apis.postman_collection.result.json'
           ),
           'utf-8'
         )
       );
 
       const result: Request[] = await postman2har(
-        collection as unknown as Postman.Document,
+        (await import(
+          './fixtures/salesforce-apis.postman_collection.json'
+        )) as Postman.Document,
         {
           environment: {
             _endpoint: 'example.com'
@@ -78,7 +89,7 @@ describe('DefaultConverter', () => {
         }
       );
 
-      expect(JSON.parse(JSON.stringify(result))).toEqual(expected);
+      expect(result).toEqual(expected);
     });
 
     [
@@ -164,7 +175,11 @@ describe('DefaultConverter', () => {
         it(`should throw an error while resolving variables in ${expected}`, async () => {
           const result = postman2har(
             JSON.parse(
-              JSON.stringify(collectionWithoutVariables)
+              JSON.stringify(
+                await import(
+                  './fixtures/no-such-variables.postman_collection.json'
+                )
+              )
             ) as unknown as Postman.Document,
             { environment: input }
           );

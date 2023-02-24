@@ -85,7 +85,7 @@ export class DefaultConverter implements Converter {
 
       if (!request.method) {
         throw new ConvertError(
-          'Request must have method field',
+          'Request must have `method` field',
           scope.jsonPointer
         );
       }
@@ -405,8 +405,12 @@ export class DefaultConverter implements Converter {
   private buildUrlString(url: Postman.Url, scope: LexicalScope): string {
     const { host, protocol } = url;
 
+    const u = parseUrl(normalizeUrl(this.buildHost(host, scope)));
     const p = protocol ? protocol.replace(/:?$/, ':') : '';
-    const u = parseUrl(normalizeUrl(`${p}//${this.buildHost(host, scope)}`));
+
+    if (p) {
+      u.protocol = p;
+    }
 
     if (url.port) {
       u.port = url.port;
@@ -419,7 +423,7 @@ export class DefaultConverter implements Converter {
     const pathname = this.buildPathname(url);
 
     if (pathname) {
-      u.pathname = pathname;
+      u.pathname = this.joinPathSegments(u.pathname, pathname);
     }
 
     u.search = stringify(this.prepareQueries(url) ?? {}, {
@@ -428,37 +432,39 @@ export class DefaultConverter implements Converter {
       addQueryPrefix: true
     });
 
-    u.username = url.auth?.user ?? '';
-    u.password = url.auth?.password ?? '';
+    this.applyBasicAuth(u, url.auth);
 
     return u.toString();
+  }
+
+  private applyBasicAuth(u: URL, auth?: Postman.Url['auth']): void {
+    u.username = auth?.user || u.username;
+    u.password = auth?.password || u.password;
   }
 
   private buildHost(host: string | string[], scope: LexicalScope): string {
     if (!host || !host.length) {
       throw new ConvertError(
-        'The host for the URL is mandatory',
+        'URL must have `host` field',
         `${scope.jsonPointer}/host`
       );
     }
 
-    host = Array.isArray(host) ? host.join('.') : host;
-
-    try {
-      return parseUrl(host).host;
-    } catch {
-      return host;
-    }
+    return Array.isArray(host) ? host.join('.') : host;
   }
 
   private buildPathname(url: Postman.Url): string {
     return Array.isArray(url.path)
-      ? url.path
-          .map((x: string | Postman.Variable) =>
+      ? this.joinPathSegments(
+          ...url.path.map((x: string | Postman.Variable) =>
             typeof x === 'string' ? x : x.value ?? ''
           )
-          .join('/')
+        )
       : url.path;
+  }
+
+  private joinPathSegments(...segments: string[]): string {
+    return segments.join('/');
   }
 
   private prepareQueries(

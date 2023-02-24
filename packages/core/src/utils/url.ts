@@ -1,9 +1,3 @@
-const URL =
-  typeof (global as any).window !== 'undefined'
-    ? (global as any).window.URL
-    : // eslint-disable-next-line @typescript-eslint/no-var-requires
-      require('url').URL;
-
 export const removeTrailingSlash = (path: string): string =>
   path.replace(/\/$/, '');
 
@@ -28,7 +22,7 @@ const prependProtocolIfNecessary = (url: string): string => {
   return url;
 };
 
-export const parseUrl = (value: string): typeof URL => {
+export const parseUrl = (value: string): URL => {
   const url = new URL(value);
 
   if (!validateUrl(url)) {
@@ -38,7 +32,7 @@ export const parseUrl = (value: string): typeof URL => {
   return url;
 };
 
-export const validateUrl = (value: string | typeof URL): boolean => {
+export const validateUrl = (value: string | URL): boolean => {
   let url;
 
   try {

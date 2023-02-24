@@ -60,7 +60,7 @@ export class DefaultTraverse implements Traverse {
     spec?: Specification
   ): Sample {
     if (!this.samplers || this.samplers.size === 0) {
-      throw Error('Samplers are not set!');
+      throw Error('Samplers must be set');
     }
 
     if (this.checkIfCircleRef(schema, options)) {

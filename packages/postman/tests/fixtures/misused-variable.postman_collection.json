@@ -1,0 +1,101 @@
+{
+  "info": {
+    "name": "httpbin.org",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "{{baseUrl}} is declared as the host",
+      "item": [
+        {
+          "variable": [
+            {
+              "key": "baseUrl",
+              "value": "http://httpbin.org/status",
+              "type": "string"
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/:codes",
+              "host": ["{{baseUrl}}"],
+              "path": [":codes"],
+              "variable": [
+                {
+                  "key": "codes",
+                  "value": "200"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "{{baseUrl}} is declared as the host, but does not contain any resource reference",
+      "item": [
+        {
+          "variable": [
+            {
+              "key": "baseUrl",
+              "value": "https://httpbin.org",
+              "type": "string"
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/status/:codes",
+              "host": ["{{baseUrl}}"],
+              "path": ["status", ":codes"],
+              "variable": [
+                {
+                  "key": "codes",
+                  "value": "200"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "both {{protocol}} and {{host}} are declared as expected",
+      "item": [
+        {
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{protocol}}://{{host}}/status/:codes",
+              "protocol": "{{protocol}}",
+              "host": ["{{host}}"],
+              "path": ["status", ":codes"],
+              "variable": [
+                {
+                  "key": "codes",
+                  "value": "200"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "host",
+      "value": "httpbin.org",
+      "type": "string"
+    },
+    {
+      "key": "protocol",
+      "value": "https",
+      "type": "string"
+    }
+  ]
+}

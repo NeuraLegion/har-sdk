@@ -10,7 +10,7 @@ paths:
       summary: Upload plain binary data
       requestBody:
         content:
-          application/octet-stream:
+          image/jpeg:
             schema:
               type: string
               format: binary
@@ -23,7 +23,7 @@ paths:
       summary: Upload byte data
       requestBody:
         content:
-          application/octet-stream:
+          image/png:
             schema:
               type: string
               format: byte
@@ -36,7 +36,7 @@ paths:
       summary: Upload base64 data
       requestBody:
         content:
-          application/octet-stream:
+          image/ico:
             schema:
               type: string
               format: base64
@@ -68,11 +68,11 @@ paths:
                 - byte
             encoding:
               base64:
-                contentType: application/octet-stream
+                contentType: image/vnd.microsoft.icon
               binary:
-                contentType: application/octet-stream
+                contentType: image/gif
               byte:
-                contentType: application/octet-stream
+                contentType: image/*
         required: true
       responses:
         '200':

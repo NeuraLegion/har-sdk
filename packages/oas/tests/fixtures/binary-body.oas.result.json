@@ -5,15 +5,15 @@
     "headers": [
       {
         "name": "content-type",
-        "value": "application/octet-stream"
+        "value": "image/jpeg"
       }
     ],
     "headersSize": 0,
     "httpVersion": "HTTP/1.1",
     "method": "POST",
     "postData": {
-      "mimeType": "application/octet-stream",
-      "text": "\u0001\u0002\u0003\u0004\u0005"
+      "mimeType": "image/jpeg",
+      "text": "\u00ff\u00d8\u00ff\u00e0"
     },
     "queryString": [],
     "url": "https://petstore.swagger.io/binary"
@@ -24,15 +24,15 @@
     "headers": [
       {
         "name": "content-type",
-        "value": "application/octet-stream"
+        "value": "image/png"
       }
     ],
     "headersSize": 0,
     "httpVersion": "HTTP/1.1",
     "method": "POST",
     "postData": {
-      "mimeType": "application/octet-stream",
-      "text": "ZHVtbXkgYmluYXJ5IHNhbXBsZQA="
+      "mimeType": "image/png",
+      "text": "JUMyJTg5UE5HJTBEJTBBJTFBJTBB"
     },
     "queryString": [],
     "url": "https://petstore.swagger.io/byte"
@@ -43,15 +43,15 @@
     "headers": [
       {
         "name": "content-type",
-        "value": "application/octet-stream"
+        "value": "image/ico"
       }
     ],
     "headersSize": 0,
     "httpVersion": "HTTP/1.1",
     "method": "POST",
     "postData": {
-      "mimeType": "application/octet-stream",
-      "text": "ZHVtbXkgYmluYXJ5IHNhbXBsZQA="
+      "mimeType": "image/ico",
+      "text": "JTAwJTAwJTAxJTAw"
     },
     "queryString": [],
     "url": "https://petstore.swagger.io/base64"
@@ -70,7 +70,7 @@
     "method": "POST",
     "postData": {
       "mimeType": "multipart/form-data; boundary=956888039105887155673143",
-      "text": "--956888039105887155673143\r\nContent-Disposition: form-data; name=\"base64\"; filename=\"base64\"\r\nContent-Type: application/octet-stream\r\nContent-Transfer-Encoding: base64\r\n\r\nZHVtbXkgYmluYXJ5IHNhbXBsZQA=\r\n--956888039105887155673143\r\nContent-Disposition: form-data; name=\"binary\"; filename=\"binary\"\r\nContent-Type: application/octet-stream\r\n\r\n\u0001\u0002\u0003\u0004\u0005\r\n--956888039105887155673143\r\nContent-Disposition: form-data; name=\"byte\"; filename=\"byte\"\r\nContent-Type: application/octet-stream\r\nContent-Transfer-Encoding: base64\r\n\r\nZHVtbXkgYmluYXJ5IHNhbXBsZQA=\r\n--956888039105887155673143--"
+      "text": "--956888039105887155673143\r\nContent-Disposition: form-data; name=\"base64\"\r\nContent-Type: image/vnd.microsoft.icon\r\nContent-Transfer-Encoding: base64\r\n\r\nJTAwJTAwJTAxJTAw\r\n--956888039105887155673143\r\nContent-Disposition: form-data; name=\"binary\"\r\nContent-Type: image/gif\r\n\r\nGIF87a\r\n--956888039105887155673143\r\nContent-Disposition: form-data; name=\"byte\"\r\nContent-Type: image/*\r\nContent-Transfer-Encoding: base64\r\n\r\nJUMyJTg5UE5HJTBEJTBBJTFBJTBB\r\n--956888039105887155673143--"
     },
     "queryString": [],
     "url": "https://petstore.swagger.io/multipart"

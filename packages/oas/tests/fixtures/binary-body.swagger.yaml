@@ -10,7 +10,7 @@ paths:
     post:
       summary: Upload plain binary data
       consumes:
-        - application/octet-stream
+        - image/jpeg
       parameters:
         - in: body
           name: file
@@ -25,7 +25,7 @@ paths:
     post:
       summary: Upload byte data
       consumes:
-        - application/octet-stream
+        - image/png
       parameters:
         - in: body
           name: file
@@ -40,7 +40,7 @@ paths:
     post:
       summary: Upload base64 data
       consumes:
-        - application/octet-stream
+        - image/ico
       parameters:
         - in: body
           name: file

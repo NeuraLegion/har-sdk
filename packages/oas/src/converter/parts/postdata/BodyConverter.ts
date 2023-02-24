@@ -113,17 +113,13 @@ export abstract class BodyConverter<T extends OpenAPI.Document>
 
     return Object.entries(value || {})
       .map(([key, val]: [string, unknown]) => {
-        const propertySchema: OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject =
-          schema?.type === 'object'
-            ? schema.properties[key]
-            : schema?.type === 'array'
-            ? schema.items
-            : undefined;
+        const propertySchema = this.getPropertySchema(key, schema);
         const contentType =
           fields?.[key]?.contentType ??
           this.inferContentType(val, propertySchema);
+
         const filenameRequired = this.filenameRequired(contentType);
-        const content = this.encodeOther(val);
+        const base64Encoded = this.BASE64_FORMATS.includes(schema?.format);
 
         const headers = [
           `Content-Disposition: form-data; name="${key}"${
@@ -132,16 +128,31 @@ export abstract class BodyConverter<T extends OpenAPI.Document>
           ...(contentType !== 'text/plain'
             ? [`Content-Type: ${contentType}`]
             : []),
-          ...(this.BASE64_FORMATS.includes(propertySchema?.format)
-            ? [`Content-Transfer-Encoding: base64`]
-            : [])
+          ...(base64Encoded ? [`Content-Transfer-Encoding: base64`] : [])
         ];
-        const body = `${headers.join(EOL)}${EOL}${EOL}${content}`;
+        const body = this.encodeOther(val);
 
-        return `--${this.BOUNDARY}${EOL}${body}`;
+        return `--${this.BOUNDARY}${EOL}${headers.join(
+          EOL
+        )}${EOL}${EOL}${body}`;
       })
       .join(EOL)
       .concat(`${EOL}--${this.BOUNDARY}--`);
+  }
+
+  private getPropertySchema(
+    key: string,
+    schema?: OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject
+  ): OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject | undefined {
+    if (schema?.type === 'object') {
+      return schema.properties?.[key];
+    }
+
+    if (schema?.type === 'array') {
+      return schema.items;
+    }
+
+    return undefined;
   }
 
   private filenameRequired(contentType: string): boolean {

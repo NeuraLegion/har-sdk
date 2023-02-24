@@ -1,0 +1,73 @@
+{
+  "children": [
+    {
+      "children": [
+        {
+          "jsonPointer": "/paths/~1api~1users/post",
+          "method": "POST",
+          "parameters": [
+            {
+              "bodyType": "application/x-www-form-urlencoded",
+              "paramType": "requestBody",
+              "value": {
+                "email": "bob@example.com",
+                "password": "Qwerty1"
+              },
+              "valueJsonPointer": "/paths/~1api~1users/post/requestBody/content/application~1x-www-form-urlencoded/examples/example-1/value"
+            }
+          ],
+          "path": "/api/users"
+        },
+        {
+          "jsonPointer": "/paths/~1api~1users/put",
+          "method": "PUT",
+          "parameters": [
+            {
+              "bodyType": "application/x-www-form-urlencoded",
+              "paramType": "requestBody",
+              "value": {
+                "email": "bob@example.com",
+                "password": "Qwerty1"
+              },
+              "valueJsonPointer": "/paths/~1api~1users/put/requestBody/content/application~1x-www-form-urlencoded/example"
+            }
+          ],
+          "path": "/api/users"
+        },
+        {
+          "jsonPointer": "/paths/~1api~1users/patch",
+          "method": "PATCH",
+          "parameters": [
+            {
+              "bodyType": "application/x-www-form-urlencoded",
+              "paramType": "requestBody",
+              "value": {
+                "email": "bob@example.com",
+                "password": "Qwerty1"
+              },
+              "valueJsonPointer": "/paths/~1api~1users/patch/requestBody/content/application~1x-www-form-urlencoded/schema/example"
+            }
+          ],
+          "path": "/api/users"
+        }
+      ],
+      "jsonPointer": "/paths/~1api~1users",
+      "path": "/api/users"
+    }
+  ],
+  "jsonPointer": "/",
+  "name": "Support both `example` and `examples` in the request bodies",
+  "parameters": [
+    {
+      "name": "servers",
+      "paramType": "variable",
+      "value": [
+        {
+          "url": "https://brokencrystals.com"
+        }
+      ],
+      "valueJsonPointer": "/servers"
+    }
+  ],
+  "path": "/"
+}

@@ -32,7 +32,7 @@
     "method": "POST",
     "postData": {
       "mimeType": "image/png",
-      "text": "wolQTkcNChoK"
+      "text": "iVBORw0KGgo="
     },
     "queryString": [],
     "url": "https://petstore.swagger.io/byte"
@@ -70,7 +70,7 @@
     "method": "POST",
     "postData": {
       "mimeType": "multipart/form-data; boundary=956888039105887155673143",
-      "text": "--956888039105887155673143\r\nContent-Disposition: form-data; name=\"base64\"\r\nContent-Type: image/vnd.microsoft.icon\r\nContent-Transfer-Encoding: base64\r\n\r\nAAABAA==\r\n--956888039105887155673143\r\nContent-Disposition: form-data; name=\"binary\"\r\nContent-Type: image/gif\r\n\r\nGIF87a\r\n--956888039105887155673143\r\nContent-Disposition: form-data; name=\"byte\"\r\nContent-Type: image/*\r\nContent-Transfer-Encoding: base64\r\n\r\nwolQTkcNChoK\r\n--956888039105887155673143--"
+      "text": "--956888039105887155673143\r\nContent-Disposition: form-data; name=\"base64\"\r\nContent-Type: image/vnd.microsoft.icon\r\nContent-Transfer-Encoding: base64\r\n\r\nAAABAA==\r\n--956888039105887155673143\r\nContent-Disposition: form-data; name=\"binary\"\r\nContent-Type: image/gif\r\n\r\nGIF87a\r\n--956888039105887155673143\r\nContent-Disposition: form-data; name=\"byte\"\r\nContent-Type: image/*\r\nContent-Transfer-Encoding: base64\r\n\r\niVBORw0KGgo=\r\n--956888039105887155673143--"
     },
     "queryString": [],
     "url": "https://petstore.swagger.io/multipart"

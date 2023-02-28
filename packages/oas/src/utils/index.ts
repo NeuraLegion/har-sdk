@@ -1,6 +1,5 @@
 import { OpenAPI, OpenAPIV2, OpenAPIV3 } from '@har-sdk/core';
 
-export * from './base64';
 export * from './Flattener';
 export * from './isObject';
 export * from './operation';

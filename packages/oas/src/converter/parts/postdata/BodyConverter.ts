@@ -15,13 +15,16 @@ export abstract class BodyConverter<T extends OpenAPI.Document>
   implements SubConverter<PostData | null>
 {
   private readonly xmlSerializer = new XmlSerializer();
-  private readonly JPG_IMAGE = '/9j/7g=='; // 0xff, 0xd8, 0xff, 0xee
-  private readonly PNG_IMAGE = 'iVBORw0KGgo='; // 0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0A, 0x1a, 0x0a
-  private readonly ICO_IMAGE = 'AAABAA=='; // 0x00, 0x00, 0x01, 0x00
-  private readonly GIF_IMAGE = 'R0lGODdh'; // 0x47, 0x49, 0x46, 0x38, 0x37, 0x61
+  private readonly JPG_IMAGE = '\xff\xd8\xff\xe0';
+  private readonly PNG_IMAGE = '\x89\x50\x4e\x47\x0d\x0A\x1a\x0a';
+  private readonly ICO_IMAGE = '\x00\x00\x01\x00';
+  private readonly GIF_IMAGE = '\x47\x49\x46\x38\x37\x61';
   private readonly BOUNDARY = '956888039105887155673143';
-  private readonly BASE64_PATTERN =
-    /^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$/;
+  private readonly BASE64_FORMATS: readonly string[] = ['byte', 'base64'];
+  private readonly BINARY_FORMATS: readonly string[] = [
+    'binary',
+    ...this.BASE64_FORMATS
+  ];
 
   protected constructor(
     protected readonly spec: T,
@@ -69,69 +72,100 @@ export abstract class BodyConverter<T extends OpenAPI.Document>
         return this.encodeXml(value, schema);
       case 'multipart/form-data':
       case 'multipart/mixed':
-        return this.encodeMultipartFormData(value, fields);
+        return this.encodeMultipartFormData(value, fields, schema);
       case 'image/x-icon':
       case 'image/ico':
       case 'image/vnd.microsoft.icon':
-        return this.ICO_IMAGE;
+        return this.encodeBinary(this.ICO_IMAGE, schema);
       case 'image/jpg':
       case 'image/jpeg':
-        return this.JPG_IMAGE;
+        return this.encodeBinary(this.JPG_IMAGE, schema);
       case 'image/gif':
-        return this.GIF_IMAGE;
+        return this.encodeBinary(this.GIF_IMAGE, schema);
       case 'image/png':
       case 'image/*':
-        return this.PNG_IMAGE;
+        return this.encodeBinary(this.PNG_IMAGE, schema);
       default:
         return this.encodeOther(value);
     }
+  }
+
+  private encodeBinary(
+    value: unknown,
+    schema?: OpenAPIV2.SchemaObject | OpenAPIV3.SchemaObject
+  ): string {
+    const encoded = this.encodeOther(value);
+
+    return this.BASE64_FORMATS.includes(schema?.format)
+      ? btoa(encoded)
+      : encoded;
   }
 
   // TODO: move the logic that receives the content type from the encoding object
   //  to the {@link Oas3RequestBodyConverter} class.
   private encodeMultipartFormData(
     value: unknown,
-    fields?: Record<string, OpenAPIV3.EncodingObject>
+    fields?: Record<string, OpenAPIV3.EncodingObject>,
+    schema?: OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject
   ): string {
     const EOL = '\r\n';
 
     return Object.entries(value || {})
       .map(([key, val]: [string, unknown]) => {
+        const propertySchema = this.getPropertySchema(key, schema);
         const contentType =
-          fields?.[key]?.contentType ?? this.inferMultipartContentType(val);
-        const filenameRequired = this.filenameRequired(contentType);
-        const content = this.encodeOther(val);
+          fields?.[key]?.contentType ??
+          this.inferContentType(val, propertySchema);
 
         const headers = [
           `Content-Disposition: form-data; name="${key}"${
-            filenameRequired ? `; filename="${key}"` : ''
+            this.filenameRequired(contentType) ? `; filename="${key}"` : ''
           }`,
           ...(contentType !== 'text/plain'
             ? [`Content-Type: ${contentType}`]
             : []),
-          ...(this.BASE64_PATTERN.test(content) &&
-          contentType === 'application/octet-stream'
-            ? [`Content-Transfer-Encoding: base64`]
+          ...(this.BASE64_FORMATS.includes(propertySchema?.format)
+            ? ['Content-Transfer-Encoding: base64']
             : [])
         ];
-        const body = `${headers.join(EOL)}${EOL}${EOL}${content}`;
+        const body = this.encodeOther(val);
 
-        return `--${this.BOUNDARY}${EOL}${body}`;
+        return `--${this.BOUNDARY}${EOL}${headers.join(
+          EOL
+        )}${EOL}${EOL}${body}`;
       })
       .join(EOL)
       .concat(`${EOL}--${this.BOUNDARY}--`);
+  }
+
+  private getPropertySchema(
+    key: string,
+    schema?: OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject
+  ): OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject | undefined {
+    if (schema?.type === 'object') {
+      return schema.properties?.[key];
+    }
+
+    if (schema?.type === 'array') {
+      return schema.items;
+    }
+
+    return undefined;
   }
 
   private filenameRequired(contentType: string): boolean {
     return 'application/octet-stream' === contentType;
   }
 
-  private inferMultipartContentType(value: unknown): string {
+  private inferContentType(
+    value: unknown,
+    schema?: OpenAPIV2.SchemaObject | OpenAPIV3.SchemaObject
+  ): string {
     switch (typeof value) {
       case 'object':
         return 'application/json';
       case 'string':
-        return this.BASE64_PATTERN.test(value)
+        return this.BINARY_FORMATS.includes(schema?.format)
           ? 'application/octet-stream'
           : 'text/plain';
       case 'number':

@@ -1,0 +1,79 @@
+openapi: 3.0.0
+info:
+  title: Binary Data API
+  version: 1.0.0
+servers:
+  - url: https://petstore.swagger.io
+paths:
+  /binary:
+    post:
+      summary: Upload plain binary data
+      requestBody:
+        content:
+          image/jpeg:
+            schema:
+              type: string
+              format: binary
+        required: true
+      responses:
+        '200':
+          description: OK
+  /byte:
+    post:
+      summary: Upload byte data
+      requestBody:
+        content:
+          image/png:
+            schema:
+              type: string
+              format: byte
+        required: true
+      responses:
+        '200':
+          description: OK
+  /base64:
+    post:
+      summary: Upload base64 data
+      requestBody:
+        content:
+          image/ico:
+            schema:
+              type: string
+              format: base64
+        required: true
+      responses:
+        '200':
+          description: OK
+  /multipart:
+    post:
+      summary: Upload multipart/form-data with binary data
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                base64:
+                  type: string
+                  format: base64
+                binary:
+                  type: string
+                  format: binary
+                byte:
+                  type: string
+                  format: byte
+              required:
+                - base64
+                - binary
+                - byte
+            encoding:
+              base64:
+                contentType: image/vnd.microsoft.icon
+              binary:
+                contentType: image/gif
+              byte:
+                contentType: image/*
+        required: true
+      responses:
+        '200':
+          description: OK

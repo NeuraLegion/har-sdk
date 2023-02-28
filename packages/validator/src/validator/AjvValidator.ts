@@ -4,18 +4,17 @@ import Ajv, {
   AnySchema,
   AsyncSchema,
   ValidateFunction,
-  ErrorObject
+  ErrorObject,
+  Options
 } from 'ajv';
 import addFormats from 'ajv-formats';
 import ajvErrors from 'ajv-errors';
 
-export abstract class BaseValidator<T extends Document>
-  implements Validator<T>
-{
+export abstract class AjvValidator<T extends Document> implements Validator<T> {
   private readonly ajv: Ajv;
 
   protected constructor(schemas: AnySchema[]) {
-    this.ajv = new Ajv({
+    this.ajv = this.createAjv({
       allErrors: true,
       strict: false
     });
@@ -28,10 +27,10 @@ export abstract class BaseValidator<T extends Document>
     this.ajv.addSchema(schemas);
   }
 
-  protected abstract getSchemaId(document: T): string;
+  protected abstract getSchemaKeyRef(document?: T): string;
 
   public async verify(document: T): Promise<ErrorObject[]> {
-    const schemaId = this.getSchemaId(document);
+    const schemaId = this.getSchemaKeyRef(document);
     const validateFn: ValidateFunction = schemaId
       ? this.ajv.getSchema(schemaId)
       : null;
@@ -51,6 +50,10 @@ export abstract class BaseValidator<T extends Document>
 
       return new ErrorCondenser(err.errors as ErrorObject[]).condense();
     }
+  }
+
+  protected createAjv(options: Options): Ajv {
+    return new Ajv(options);
   }
 
   private verifySchema(schema: AnySchema): void {

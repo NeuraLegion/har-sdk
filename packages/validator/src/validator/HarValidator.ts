@@ -1,8 +1,8 @@
-import { BaseValidator } from './BaseValidator';
+import { AjvValidator } from './AjvValidator';
 import schema from '../schemas/har/v1.2.json';
 import { Har } from '@har-sdk/core';
 
-export class HarValidator extends BaseValidator<Har> {
+export class HarValidator extends AjvValidator<Har> {
   private readonly SCHEMA_ID =
     'https://github.com/ahmadnassri/har-spec/blob/master/versions/1.2.md/';
 
@@ -10,7 +10,7 @@ export class HarValidator extends BaseValidator<Har> {
     super([schema]);
   }
 
-  protected getSchemaId(_: Har): string {
+  protected getSchemaKeyRef(): string {
     return this.SCHEMA_ID;
   }
 }

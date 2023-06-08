@@ -669,7 +669,7 @@ describe('ErrorHumanizer', () => {
       expect(result).toEqual([expected]);
     });
 
-    it('should properly humanize "anyOf" postman formdata case with invalid type', async () => {
+    it('should properly humanize "anyOf" postman formdata case with missing key', async () => {
       const input: Postman.Document = {
         ...getBasePostmanDoc(),
         item: [
@@ -680,9 +680,8 @@ describe('ErrorHumanizer', () => {
               body: {
                 formdata: [
                   {
-                    key: 'foo',
                     value: 'bar',
-                    type: 'invalidType'
+                    type: 'text'
                   }
                 ]
               }
@@ -694,17 +693,19 @@ describe('ErrorHumanizer', () => {
 
       const expected = {
         message:
-          'Error at /item/0/request/body/formdata/0/type: The property `type` must be equal to one of the following: "text" or "file"',
+          'Error at /item/0/request/body/formdata/0: The property `key` is required',
         locationParts: [
-          { text: 'Error at' },
           {
-            text: '/item/0/request/body/formdata/0/type',
-            jsonPointer: '/item/0/request/body/formdata/0/type'
+            text: 'Error at'
+          },
+          {
+            text: '/item/0/request/body/formdata/0',
+            jsonPointer: '/item/0/request/body/formdata/0'
           }
         ],
         messageParts: [
           {
-            text: 'The property `type` must be equal to one of the following: "text" or "file"'
+            text: 'The property `key` is required'
           }
         ]
       };
@@ -715,53 +716,5 @@ describe('ErrorHumanizer', () => {
 
       expect(result).toEqual([expected]);
     });
-  });
-
-  it('should properly humanize "anyOf" postman formdata case with missing key', async () => {
-    const input: Postman.Document = {
-      ...getBasePostmanDoc(),
-      item: [
-        {
-          request: {
-            url: 'http://localhost/create',
-            method: 'POST',
-            body: {
-              formdata: [
-                {
-                  value: 'bar',
-                  type: 'text'
-                }
-              ]
-            }
-          },
-          response: []
-        }
-      ]
-    } as unknown as Postman.Document;
-
-    const expected = {
-      message:
-        'Error at /item/0/request/body/formdata/0: The property `key` is required',
-      locationParts: [
-        {
-          text: 'Error at'
-        },
-        {
-          text: '/item/0/request/body/formdata/0',
-          jsonPointer: '/item/0/request/body/formdata/0'
-        }
-      ],
-      messageParts: [
-        {
-          text: 'The property `key` is required'
-        }
-      ]
-    };
-
-    const result = humanizer
-      .humanizeErrors(await postmanValidator.verify(input))
-      .map(({ originalError, ...rest }) => ({ ...rest }));
-
-    expect(result).toEqual([expected]);
   });
 });

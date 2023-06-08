@@ -573,7 +573,7 @@
                     "required": ["type", "key"],
                     "properties": {
                       "type": {
-                        "enum": ["text", "file"]
+                        "type": "string"
                       }
                     },
                     "anyOf": [
@@ -592,7 +592,9 @@
                           },
                           "type": {
                             "type": "string",
-                            "const": "text"
+                            "not": {
+                              "const": "file"
+                            }
                           },
                           "contentType": {
                             "type": "string",

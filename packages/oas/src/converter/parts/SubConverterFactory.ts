@@ -6,6 +6,7 @@ import { Oas2PathConverter, Oas3PathConverter } from './path';
 import { Oas2BodyConverter, Oas3RequestBodyConverter } from './postdata';
 import { Oas2QueryStringConverter, Oas3QueryStringConverter } from './query';
 import { Sampler } from '../Sampler';
+import { Oas2CookiesConverter, Oas3CookiesConverter } from './cookies';
 import { OpenAPI, OpenAPIV2, OpenAPIV3 } from '@har-sdk/core';
 
 export class SubConverterFactory {
@@ -36,9 +37,26 @@ export class SubConverterFactory {
           Oas2QueryStringConverter,
           Oas3QueryStringConverter
         );
+      case SubPart.COOKIES:
+        return this.instantiate(
+          spec,
+          Oas2CookiesConverter,
+          Oas3CookiesConverter
+        );
       default:
-        throw new TypeError(`${type} subconverter is not supported`);
+        this.throwIfParamIsNoSupported(type, spec);
     }
+  }
+
+  private throwIfParamIsNoSupported(
+    type: never,
+    spec: OpenAPI.Document
+  ): never {
+    throw new TypeError(
+      `${type} parameters is not supported for OpenAPI ${
+        isOASV3(spec) ? '3' : '2'
+      }`
+    );
   }
 
   private instantiate(

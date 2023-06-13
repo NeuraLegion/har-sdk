@@ -1,0 +1,38 @@
+[
+  {
+    "bodySize": 0,
+    "cookies": [
+      {
+        "name": "foo",
+        "value": "bar"
+      },
+      {
+        "name": "baz",
+        "value": "items,1"
+      },
+      {
+        "name": "quz",
+        "value": "id,42,name,lorem"
+      }
+    ],
+    "headers": [
+      {
+        "name": "cookie",
+        "value": "foo=bar"
+      },
+      {
+        "name": "cookie",
+        "value": "baz=items,1"
+      },
+      {
+        "name": "cookie",
+        "value": "quz=id,42,name,lorem"
+      }
+    ],
+    "headersSize": 0,
+    "httpVersion": "HTTP/1.1",
+    "method": "GET",
+    "queryString": [],
+    "url": "https://httpbin.org/cookies"
+  }
+]

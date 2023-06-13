@@ -152,6 +152,11 @@ describe('DefaultConverter', () => {
         input: 'binary-body.oas.yaml',
         expected: 'binary-body.oas.result.json',
         message: 'should properly serialize binary types (oas)'
+      },
+      {
+        input: 'cookies.oas.yaml',
+        expected: 'cookies.oas.result.json',
+        message: 'should properly serialize cookies (oas)'
       }
     ].forEach(({ input: inputFile, expected: expectedFile, message }) => {
       it(message, async () => {

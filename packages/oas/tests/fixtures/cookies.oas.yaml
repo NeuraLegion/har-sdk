@@ -1,0 +1,60 @@
+---
+openapi: '3.0.0'
+info:
+  version: '1.0'
+  title: 'Cookies'
+servers:
+  - url: '{scheme}://httpbin.org'
+    variables:
+      scheme:
+        enum:
+          - 'https'
+          - 'http'
+        default: 'https'
+tags:
+  - name: 'cookies'
+paths:
+  /cookies:
+    get:
+      security: []
+      tags:
+        - 'cookies'
+      summary: 'cookies'
+      parameters:
+        - in: 'cookie'
+          name: 'foo'
+          schema:
+            type: 'string'
+            default: 'bar'
+        - in: 'cookie'
+          name: 'baz'
+          style: form
+          explode: false
+          schema:
+            $ref: '#/components/schemas/Array'
+        - in: 'cookie'
+          name: 'quz'
+          style: form
+          explode: true
+          schema:
+            $ref: '#/components/schemas/Object'
+      responses:
+        200:
+          description: 'OK'
+components:
+  schemas:
+    Object:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+    Array:
+      type: object
+      properties:
+        type: array
+        items:
+          type: string
+          enum: [1, 2, 3]

@@ -31,9 +31,9 @@ export class StringSampler implements Sampler {
     'regex': () => '/regex/',
     'pattern': (
       _min: number,
-      _max: number,
+      max: number,
       { pattern }: { pattern: string | RegExp }
-    ) => this.patternSample(pattern),
+    ) => this.patternSample(pattern, max),
     'default': (min: number, max: number) =>
       this.adjustLength('lorem', min, max)
   };
@@ -47,8 +47,10 @@ export class StringSampler implements Sampler {
     return this.checkLength(sampler(min || 0, max, schema), format, min, max);
   }
 
-  private patternSample(pattern: string | RegExp): string {
+  private patternSample(pattern: string | RegExp, max?: number): string {
     const randExp = new RandExp(pattern);
+
+    randExp.max = max ?? randExp.max;
     randExp.randInt = (a, b) => Math.floor((a + b) / 2);
 
     return randExp.gen();

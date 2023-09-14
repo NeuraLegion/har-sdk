@@ -27,6 +27,33 @@ describe('StringSampler', () => {
     {
       input: {
         type: 'string',
+        format: 'pattern',
+        pattern: '^[a-z\\u05D0-\\u05EAA-Z0-9-/\\\\.\\u05F4,\'":&#;+()\\s]*$',
+        maxLength: 50
+      },
+      expected: 'MMMMMMMMMMMMMMMMMMMMMMMMM'
+    },
+    {
+      input: {
+        type: 'string',
+        format: 'pattern',
+        pattern: '^[A-Z0-9]*$',
+        maxLength: 10
+      },
+      expected: 'RRRRR'
+    },
+    {
+      input: {
+        type: 'string',
+        format: 'pattern',
+        pattern: '^[A-Z0-9]*$',
+        maxLength: 0
+      },
+      expected: ''
+    },
+    {
+      input: {
+        type: 'string',
         format: 'password',
         minLength: 25
       },

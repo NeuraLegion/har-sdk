@@ -41,6 +41,16 @@ describe('DefaultConverter', () => {
         message: 'should correctly handle empty schemas (swagger)'
       },
       {
+        input: 'missing-consumes.swagger.yaml',
+        expected: 'missing-consumes.swagger.result.json',
+        message: 'should correctly handle missing consumes (swagger)'
+      },
+      {
+        input: 'override-consumes.swagger.yaml',
+        expected: 'override-consumes.swagger.result.json',
+        message: 'should correctly handle override consumes to empty (swagger)'
+      },
+      {
         input: 'empty-schema.oas.yaml',
         expected: 'empty-schema.oas.result.json',
         message: 'should correctly handle empty schemas (oas)'

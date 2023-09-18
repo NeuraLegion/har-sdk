@@ -4,6 +4,10 @@
     "cookies": [],
     "headers": [
       {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
         "name": "x-numeric",
         "value": "42"
       },

@@ -1,18 +1,27 @@
 [
   {
-    "queryString": [],
-    "url": "http://petstore.swagger.io/v1/pets/security-is-not-exists",
-    "method": "GET",
-    "headers": [],
-    "httpVersion": "HTTP/1.1",
+    "bodySize": 0,
     "cookies": [],
+    "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      }
+    ],
     "headersSize": 0,
-    "bodySize": 0
+    "httpVersion": "HTTP/1.1",
+    "method": "GET",
+    "queryString": [],
+    "url": "http://petstore.swagger.io/v1/pets/security-is-not-exists"
   },
   {
     "bodySize": 0,
     "cookies": [],
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
       {
         "name": "authorization",
         "value": "Basic ZHVtbXkgYmluYXJ5IHNhbXBsZQA="
@@ -33,6 +42,10 @@
     "cookies": [],
     "headers": [
       {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
         "name": "x-api-key",
         "value": "ZHVtbXkgYmluYXJ5IHNhbXBsZQA="
       },
@@ -52,6 +65,10 @@
     "cookies": [],
     "headers": [
       {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
         "name": "x-api-key",
         "value": "ZHVtbXkgYmluYXJ5IHNhbXBsZQA="
       }
@@ -66,6 +83,10 @@
     "bodySize": 0,
     "cookies": [],
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
       {
         "name": "x-api-key",
         "value": "ZHVtbXkgYmluYXJ5IHNhbXBsZQA="

@@ -2,23 +2,34 @@ import { LocationParam } from '../LocationParam';
 import { Oas2ValueSerializer } from '../Oas2ValueSerializer';
 import { Sampler } from '../../Sampler';
 import { HeadersConverter } from './HeadersConverter';
+import { Oas2MediaTypesResolver } from '../Oas2MediaTypesResolver';
 import { Header, OpenAPIV2 } from '@har-sdk/core';
 
 export class Oas2HeadersConverter extends HeadersConverter<OpenAPIV2.Document> {
   private readonly oas2ValueSerializer = new Oas2ValueSerializer();
+  private readonly oas2MediaTypeResolver!: Oas2MediaTypesResolver;
 
   constructor(spec: OpenAPIV2.Document, sampler: Sampler) {
     super(spec, sampler);
+    this.oas2MediaTypeResolver = new Oas2MediaTypesResolver(spec);
   }
 
   protected createContentTypeHeaders(
-    pathObj: OpenAPIV2.OperationObject
+    operation: OpenAPIV2.OperationObject
   ): Header[] {
-    return this.createHeaders('content-type', pathObj.consumes);
+    return this.createHeaders(
+      'content-type',
+      this.oas2MediaTypeResolver.resolveToConsume(operation)
+    );
   }
 
-  protected createAcceptHeaders(pathObj: OpenAPIV2.OperationObject): Header[] {
-    return this.createHeaders('accept', pathObj.produces);
+  protected createAcceptHeaders(
+    operation: OpenAPIV2.OperationObject
+  ): Header[] {
+    return this.createHeaders(
+      'accept',
+      this.oas2MediaTypeResolver.resolveToProduce(operation)
+    );
   }
 
   protected convertHeaderParam(

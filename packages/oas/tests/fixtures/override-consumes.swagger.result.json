@@ -6,16 +6,16 @@
       {
         "name": "content-type",
         "value": "application/json"
-      },
-      {
-        "name": "accept",
-        "value": "application/json"
       }
     ],
     "headersSize": 0,
     "httpVersion": "HTTP/1.1",
-    "method": "GET",
+    "method": "POST",
+    "postData": {
+      "mimeType": "application/json",
+      "text": "{\"id\":42}"
+    },
     "queryString": [],
-    "url": "https://brightsec.com/missing-securityDefinitions"
+    "url": "https://petstore.swagger.io/v2/dummy1"
   }
 ]

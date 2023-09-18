@@ -1,11 +1,15 @@
 import { BodyConverter } from './BodyConverter';
 import type { Sampler } from '../../Sampler';
-import { filterLocationParams, getParameters, isOASV2 } from '../../../utils';
+import { filterLocationParams, getParameters } from '../../../utils';
+import { Oas2MediaTypesResolver } from '../Oas2MediaTypesResolver';
 import type { OpenAPIV2, PostData } from '@har-sdk/core';
 
 export class Oas2BodyConverter extends BodyConverter<OpenAPIV2.Document> {
+  private readonly oas2MediaTypeResolver!: Oas2MediaTypesResolver;
+
   constructor(spec: OpenAPIV2.Document, sampler: Sampler) {
     super(spec, sampler);
+    this.oas2MediaTypeResolver = new Oas2MediaTypesResolver(spec);
   }
 
   public convert(path: string, method: string): PostData | null {
@@ -35,17 +39,9 @@ export class Oas2BodyConverter extends BodyConverter<OpenAPIV2.Document> {
   protected getContentType(path: string, method: string): string | undefined {
     const operation = this.spec.paths[path][method];
 
-    let consumes: OpenAPIV2.MimeTypes;
-
-    if (operation.consumes?.length) {
-      consumes = operation.consumes;
-    } else if (isOASV2(this.spec) && this.spec.consumes?.length) {
-      consumes = this.spec.consumes;
-    }
-
     return this.sampler.sample({
       type: 'array',
-      examples: consumes
+      examples: this.oas2MediaTypeResolver.resolveToConsume(operation)
     });
   }
 

@@ -2,7 +2,12 @@
   {
     "bodySize": 0,
     "cookies": [],
-    "headers": [],
+    "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      }
+    ],
     "headersSize": 0,
     "httpVersion": "HTTP/1.1",
     "method": "GET",
@@ -12,7 +17,12 @@
   {
     "bodySize": 0,
     "cookies": [],
-    "headers": [],
+    "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      }
+    ],
     "headersSize": 0,
     "httpVersion": "HTTP/1.1",
     "method": "GET",
@@ -22,7 +32,12 @@
   {
     "bodySize": 0,
     "cookies": [],
-    "headers": [],
+    "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      }
+    ],
     "headersSize": 0,
     "httpVersion": "HTTP/1.1",
     "method": "GET",
@@ -32,7 +47,12 @@
   {
     "bodySize": 0,
     "cookies": [],
-    "headers": [],
+    "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      }
+    ],
     "headersSize": 0,
     "httpVersion": "HTTP/1.1",
     "method": "GET",
@@ -42,7 +62,12 @@
   {
     "bodySize": 0,
     "cookies": [],
-    "headers": [],
+    "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      }
+    ],
     "headersSize": 0,
     "httpVersion": "HTTP/1.1",
     "method": "GET",

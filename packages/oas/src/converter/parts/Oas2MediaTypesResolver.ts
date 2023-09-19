@@ -1,30 +1,26 @@
 import { isOASV2 } from '../../utils';
-
 import { OpenAPIV2 } from '@har-sdk/core';
 
 export class Oas2MediaTypesResolver {
-  private readonly DEFAULT_MEDIA_TYPE = 'application/json';
+  private readonly DEFAULT_CONSUME_MEDIA_TYPE: OpenAPIV2.MimeTypes = [
+    'application/json'
+  ];
+  private readonly DEFAULT_PRODUCE_MEDIA_TYPE: OpenAPIV2.MimeTypes = ['*/*'];
 
   constructor(private readonly spec: OpenAPIV2.Document) {}
 
   public resolveToConsume(operation: OpenAPIV2.OperationObject) {
-    let mediaTypes = this.resolve(operation, 'consumes');
-    if (!mediaTypes?.length) {
-      mediaTypes = [this.DEFAULT_MEDIA_TYPE];
-    }
-
-    return mediaTypes;
+    return this.resolve(operation, 'consumes', this.DEFAULT_CONSUME_MEDIA_TYPE);
   }
 
   public resolveToProduce(operation: OpenAPIV2.OperationObject) {
-    const mediaTypes = this.resolve(operation, 'produces');
-
-    return mediaTypes?.length ? mediaTypes : undefined;
+    return this.resolve(operation, 'produces', this.DEFAULT_PRODUCE_MEDIA_TYPE);
   }
 
   private resolve(
     operation: OpenAPIV2.OperationObject,
-    node: 'consumes' | 'produces'
+    node: 'consumes' | 'produces',
+    defaultMediaTypes: OpenAPIV2.MimeTypes
   ): OpenAPIV2.MimeTypes {
     let mediaTypes: OpenAPIV2.MimeTypes;
 
@@ -34,6 +30,10 @@ export class Oas2MediaTypesResolver {
       mediaTypes = this.spec[node];
     }
 
-    return mediaTypes?.map((mediaType) => mediaType?.trim()).filter(Boolean);
+    mediaTypes = mediaTypes
+      ?.map((mediaType) => mediaType?.trim())
+      .filter(Boolean);
+
+    return mediaTypes?.length ? mediaTypes : defaultMediaTypes;
   }
 }

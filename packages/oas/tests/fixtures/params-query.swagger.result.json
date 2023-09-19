@@ -4,8 +4,8 @@
     "cookies": [],
     "headers": [
       {
-        "name": "content-type",
-        "value": "application/json"
+        "name": "accept",
+        "value": "*/*"
       }
     ],
     "headersSize": 0,
@@ -24,8 +24,8 @@
     "cookies": [],
     "headers": [
       {
-        "name": "content-type",
-        "value": "application/json"
+        "name": "accept",
+        "value": "*/*"
       }
     ],
     "headersSize": 0,
@@ -44,8 +44,8 @@
     "cookies": [],
     "headers": [
       {
-        "name": "content-type",
-        "value": "application/json"
+        "name": "accept",
+        "value": "*/*"
       }
     ],
     "headersSize": 0,
@@ -64,8 +64,8 @@
     "cookies": [],
     "headers": [
       {
-        "name": "content-type",
-        "value": "application/json"
+        "name": "accept",
+        "value": "*/*"
       }
     ],
     "headersSize": 0,
@@ -84,8 +84,8 @@
     "cookies": [],
     "headers": [
       {
-        "name": "content-type",
-        "value": "application/json"
+        "name": "accept",
+        "value": "*/*"
       }
     ],
     "headersSize": 0,
@@ -104,8 +104,8 @@
     "cookies": [],
     "headers": [
       {
-        "name": "content-type",
-        "value": "application/json"
+        "name": "accept",
+        "value": "*/*"
       }
     ],
     "headersSize": 0,
@@ -128,8 +128,8 @@
     "cookies": [],
     "headers": [
       {
-        "name": "content-type",
-        "value": "application/json"
+        "name": "accept",
+        "value": "*/*"
       }
     ],
     "headersSize": 0,

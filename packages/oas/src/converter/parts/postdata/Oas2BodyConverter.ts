@@ -5,7 +5,7 @@ import { Oas2MediaTypesResolver } from '../Oas2MediaTypesResolver';
 import type { OpenAPIV2, PostData } from '@har-sdk/core';
 
 export class Oas2BodyConverter extends BodyConverter<OpenAPIV2.Document> {
-  private readonly oas2MediaTypeResolver!: Oas2MediaTypesResolver;
+  private readonly oas2MediaTypeResolver: Oas2MediaTypesResolver;
 
   constructor(spec: OpenAPIV2.Document, sampler: Sampler) {
     super(spec, sampler);

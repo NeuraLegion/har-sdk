@@ -6,6 +6,10 @@
       {
         "name": "content-type",
         "value": "image/jpeg"
+      },
+      {
+        "name": "accept",
+        "value": "*/*"
       }
     ],
     "headersSize": 0,
@@ -25,6 +29,10 @@
       {
         "name": "content-type",
         "value": "image/png"
+      },
+      {
+        "name": "accept",
+        "value": "*/*"
       }
     ],
     "headersSize": 0,
@@ -44,6 +52,10 @@
       {
         "name": "content-type",
         "value": "image/ico"
+      },
+      {
+        "name": "accept",
+        "value": "*/*"
       }
     ],
     "headersSize": 0,
@@ -63,6 +75,10 @@
       {
         "name": "content-type",
         "value": "multipart/form-data"
+      },
+      {
+        "name": "accept",
+        "value": "*/*"
       }
     ],
     "headersSize": 0,

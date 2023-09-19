@@ -4,8 +4,8 @@
     "cookies": [],
     "headers": [
       {
-        "name": "content-type",
-        "value": "application/json"
+        "name": "accept",
+        "value": "*/*"
       },
       {
         "name": "x-numeric",

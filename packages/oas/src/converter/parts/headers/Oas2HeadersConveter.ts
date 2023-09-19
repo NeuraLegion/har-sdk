@@ -7,7 +7,7 @@ import { Header, OpenAPIV2 } from '@har-sdk/core';
 
 export class Oas2HeadersConverter extends HeadersConverter<OpenAPIV2.Document> {
   private readonly oas2ValueSerializer = new Oas2ValueSerializer();
-  private readonly oas2MediaTypeResolver!: Oas2MediaTypesResolver;
+  private readonly oas2MediaTypeResolver: Oas2MediaTypesResolver;
 
   constructor(spec: OpenAPIV2.Document, sampler: Sampler) {
     super(spec, sampler);

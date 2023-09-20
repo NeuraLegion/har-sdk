@@ -1,116 +1,105 @@
 [
   {
-    "bodySize": 0,
-    "cookies": [],
-    "headers": [
-      {
-        "name": "accept",
-        "value": "*/*"
-      }
-    ],
-    "headersSize": 0,
-    "httpVersion": "HTTP/1.1",
-    "method": "GET",
     "queryString": [
       {
         "name": "p",
         "value": "lorem,lorem"
       }
     ],
-    "url": "http://petstore.swagger.io/v1/defaultArrayParam?p=lorem%2Clorem"
-  },
-  {
-    "bodySize": 0,
-    "cookies": [],
+    "url": "http://petstore.swagger.io/v1/defaultArrayParam?p=lorem%2Clorem",
+    "method": "GET",
     "headers": [
       {
         "name": "accept",
         "value": "*/*"
       }
     ],
-    "headersSize": 0,
     "httpVersion": "HTTP/1.1",
-    "method": "GET",
+    "cookies": [],
+    "headersSize": 0,
+    "bodySize": 0
+  },
+  {
     "queryString": [
       {
         "name": "p",
         "value": "lorem,lorem"
       }
     ],
-    "url": "http://petstore.swagger.io/v1/csvArrayParam?p=lorem%2Clorem"
-  },
-  {
-    "bodySize": 0,
-    "cookies": [],
+    "url": "http://petstore.swagger.io/v1/csvArrayParam?p=lorem%2Clorem",
+    "method": "GET",
     "headers": [
       {
         "name": "accept",
         "value": "*/*"
       }
     ],
-    "headersSize": 0,
     "httpVersion": "HTTP/1.1",
-    "method": "GET",
+    "cookies": [],
+    "headersSize": 0,
+    "bodySize": 0
+  },
+  {
     "queryString": [
       {
         "name": "p",
         "value": "lorem lorem"
       }
     ],
-    "url": "http://petstore.swagger.io/v1/ssvArrayParam?p=lorem+lorem"
-  },
-  {
-    "bodySize": 0,
-    "cookies": [],
+    "url": "http://petstore.swagger.io/v1/ssvArrayParam?p=lorem+lorem",
+    "method": "GET",
     "headers": [
       {
         "name": "accept",
         "value": "*/*"
       }
     ],
-    "headersSize": 0,
     "httpVersion": "HTTP/1.1",
-    "method": "GET",
+    "cookies": [],
+    "headersSize": 0,
+    "bodySize": 0
+  },
+  {
     "queryString": [
       {
         "name": "p",
         "value": "lorem\tlorem"
       }
     ],
-    "url": "http://petstore.swagger.io/v1/tsvArrayParam?p=lorem%09lorem"
-  },
-  {
-    "bodySize": 0,
-    "cookies": [],
+    "url": "http://petstore.swagger.io/v1/tsvArrayParam?p=lorem%09lorem",
+    "method": "GET",
     "headers": [
       {
         "name": "accept",
         "value": "*/*"
       }
     ],
-    "headersSize": 0,
     "httpVersion": "HTTP/1.1",
-    "method": "GET",
+    "cookies": [],
+    "headersSize": 0,
+    "bodySize": 0
+  },
+  {
     "queryString": [
       {
         "name": "p",
         "value": "lorem|lorem"
       }
     ],
-    "url": "http://petstore.swagger.io/v1/pipesArrayParam?p=lorem%7Clorem"
-  },
-  {
-    "bodySize": 0,
-    "cookies": [],
+    "url": "http://petstore.swagger.io/v1/pipesArrayParam?p=lorem%7Clorem",
+    "method": "GET",
     "headers": [
       {
         "name": "accept",
         "value": "*/*"
       }
     ],
-    "headersSize": 0,
     "httpVersion": "HTTP/1.1",
-    "method": "GET",
+    "cookies": [],
+    "headersSize": 0,
+    "bodySize": 0
+  },
+  {
     "queryString": [
       {
         "name": "p",
@@ -121,26 +110,37 @@
         "value": "lorem"
       }
     ],
-    "url": "http://petstore.swagger.io/v1/multiArrayParam?p=lorem&p=lorem"
-  },
-  {
-    "bodySize": 0,
-    "cookies": [],
+    "url": "http://petstore.swagger.io/v1/multiArrayParam?p=lorem&p=lorem",
+    "method": "GET",
     "headers": [
       {
         "name": "accept",
         "value": "*/*"
       }
     ],
-    "headersSize": 0,
     "httpVersion": "HTTP/1.1",
-    "method": "GET",
+    "cookies": [],
+    "headersSize": 0,
+    "bodySize": 0
+  },
+  {
     "queryString": [
       {
         "name": "p",
         "value": "a,a"
       }
     ],
-    "url": "http://petstore.swagger.io/v1/enumArrayParam?p=a%2Ca"
+    "url": "http://petstore.swagger.io/v1/enumArrayParam?p=a%2Ca",
+    "method": "GET",
+    "headers": [
+      {
+        "name": "accept",
+        "value": "*/*"
+      }
+    ],
+    "httpVersion": "HTTP/1.1",
+    "cookies": [],
+    "headersSize": 0,
+    "bodySize": 0
   }
 ]

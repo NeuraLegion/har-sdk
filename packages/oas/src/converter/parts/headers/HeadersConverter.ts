@@ -14,6 +14,7 @@ export abstract class HeadersConverter<T extends OpenAPI.Document>
   implements SubConverter<Header[]>
 {
   private readonly CONTENT_TYPE_METHODS = ['post', 'put', 'patch', 'delete'];
+  private readonly CONTENT_TYPE_HEADER = 'content-type';
 
   protected constructor(
     private readonly spec: T,
@@ -21,10 +22,14 @@ export abstract class HeadersConverter<T extends OpenAPI.Document>
   ) {}
 
   protected abstract createContentTypeHeaders(
-    pathObj: OperationObject
+    pathObj: OperationObject,
+    header?: Header
   ): Header[];
 
-  protected abstract createAcceptHeaders(pathObj: OperationObject): Header[];
+  protected abstract createAcceptHeaders(
+    pathObj: OperationObject,
+    header?: Header
+  ): Header[];
 
   protected abstract convertHeaderParam(
     headerParam: LocationParam<ParameterObject>
@@ -34,7 +39,12 @@ export abstract class HeadersConverter<T extends OpenAPI.Document>
     const headers: Header[] = [];
     const pathObj = getOperation(this.spec, path, method);
 
-    if (this.CONTENT_TYPE_METHODS.includes(method.toLowerCase())) {
+    if (
+      this.CONTENT_TYPE_METHODS.includes(method.toLowerCase()) &&
+      !headers.find(
+        (header) => header.name.toLowerCase() === this.CONTENT_TYPE_HEADER
+      )
+    ) {
       headers.push(...this.createContentTypeHeaders(pathObj));
     }
 

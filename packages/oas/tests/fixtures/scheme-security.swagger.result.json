@@ -1,18 +1,18 @@
 [
   {
-    "bodySize": 0,
-    "cookies": [],
+    "queryString": [],
+    "url": "http://petstore.swagger.io/v1/pets/security-is-not-exists",
+    "method": "GET",
     "headers": [
       {
         "name": "accept",
         "value": "*/*"
       }
     ],
-    "headersSize": 0,
     "httpVersion": "HTTP/1.1",
-    "method": "GET",
-    "queryString": [],
-    "url": "http://petstore.swagger.io/v1/pets/security-is-not-exists"
+    "cookies": [],
+    "headersSize": 0,
+    "bodySize": 0
   },
   {
     "bodySize": 0,

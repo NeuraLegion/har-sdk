@@ -3,10 +3,10 @@ import {
   SpecTreeRequestBodyParam,
   SpecTreeNodeParam
 } from '../../../models';
+import { isOASV2 } from '../../../utils';
 import { BaseOasParameterObjectsParser } from '../BaseOasParameterObjectsParser';
 import jsonPointer from 'json-pointer';
 import { OpenAPIV2 } from '@har-sdk/core';
-import { isOASV2 } from '@har-sdk/types';
 
 export class OasV2ParameterObjectsParser extends BaseOasParameterObjectsParser<
   OpenAPIV2.Document,

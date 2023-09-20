@@ -3,7 +3,6 @@ import {
   SpecTreeRequestBodyParam,
   SpecTreeNodeParam
 } from '../../../models';
-import { isOASV2 } from '../../../utils';
 import { BaseOasParameterObjectsParser } from '../BaseOasParameterObjectsParser';
 import jsonPointer from 'json-pointer';
 import { OpenAPIV2 } from '@har-sdk/core';
@@ -102,7 +101,7 @@ export class OasV2ParameterObjectsParser extends BaseOasParameterObjectsParser<
 
     if (operation.consumes?.length) {
       mediaTypes = operation.consumes;
-    } else if (isOASV2(this.doc) && this.doc.consumes?.length) {
+    } else if (this.doc.consumes?.length) {
       mediaTypes = this.doc.consumes;
     }
 

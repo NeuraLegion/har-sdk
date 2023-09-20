@@ -73,6 +73,25 @@ describe('OasV2Editor', () => {
       expect(result).toEqual(expected);
     });
 
+    it('should retrieve default parameter value', async () => {
+      const sourceYaml = readFileSync(
+        resolve(__dirname, './fixtures/oas2-default-param-value.yaml'),
+        'utf-8'
+      );
+      await openApiParser.setup(sourceYaml);
+
+      const expected = JSON.parse(
+        readFileSync(
+          resolve(__dirname, './fixtures/oas2-default-param-value.result.json'),
+          'utf-8'
+        )
+      );
+
+      const result = openApiParser.parse();
+
+      expect(result).toEqual(expected);
+    });
+
     it('should be exception on call "parse" before "setup"', () =>
       expect(() => openApiParser.parse()).toThrowError(
         'You have to call "setup" to initialize the document'

@@ -70,7 +70,7 @@ export class OasV2ParameterObjectsParser extends BaseOasParameterObjectsParser<
     parameter: OpenAPIV2.Parameter
   ): SpecTreeRequestBodyParam[] {
     const operationObject: OpenAPIV2.OperationObject = jsonPointer.get(
-      this.doc,
+      this.dereferencedDoc,
       jsonPointer.compile(jsonPointer.parse(pointer).slice(0, -2))
     );
     const mimeTypes = operationObject.consumes || ['application/json'];

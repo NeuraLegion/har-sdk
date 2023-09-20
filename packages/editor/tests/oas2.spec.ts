@@ -92,6 +92,33 @@ describe('OasV2Editor', () => {
       expect(result).toEqual(expected);
     });
 
+    it.each([
+      {
+        testCase: 'operation and root consumes nodes are missing',
+        input: 'oas2-missing-consumes.yaml',
+        expected: 'oas2-missing-consumes.result.json'
+      },
+      {
+        testCase: 'operation consumes overrides root consumes node',
+        input: 'oas2-override-consumes.yaml',
+        expected: 'oas2-override-consumes.result.json'
+      }
+    ])('should pick media type when $testCase', async ({ input, expected }) => {
+      const sourceYaml = readFileSync(
+        resolve(__dirname, `./fixtures/${input}`),
+        'utf-8'
+      );
+      await openApiParser.setup(sourceYaml);
+
+      const expectedJson = JSON.parse(
+        readFileSync(resolve(__dirname, `./fixtures/${expected}`), 'utf-8')
+      );
+
+      const result = openApiParser.parse();
+
+      expect(result).toEqual(expectedJson);
+    });
+
     it('should be exception on call "parse" before "setup"', () =>
       expect(() => openApiParser.parse()).toThrowError(
         'You have to call "setup" to initialize the document'

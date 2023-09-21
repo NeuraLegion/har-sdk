@@ -1,0 +1,59 @@
+{
+  "children": [
+    {
+      "children": [
+        {
+          "jsonPointer": "/paths/~1pet/post",
+          "method": "POST",
+          "parameters": [
+            {
+              "bodyType": "application/x-www-form-urlencoded",
+              "paramType": "requestBody",
+              "value": {
+                "name": "Jack"
+              },
+              "valueJsonPointer": "/paths/~1pet/post/parameters/0/schema/default"
+            },
+            {
+              "bodyType": "multipart/form-data",
+              "paramType": "requestBody",
+              "value": {
+                "name": "Jack"
+              },
+              "valueJsonPointer": "/paths/~1pet/post/parameters/0/schema/default"
+            }
+          ],
+          "path": "/pet"
+        },
+        {
+          "jsonPointer": "/paths/~1pet/put",
+          "method": "PUT",
+          "parameters": [
+            {
+              "bodyType": "application/json",
+              "paramType": "requestBody",
+              "value": {
+                "name": "Jack"
+              },
+              "valueJsonPointer": "/paths/~1pet/put/parameters/0/schema/default"
+            }
+          ],
+          "path": "/pet"
+        }
+      ],
+      "jsonPointer": "/paths/~1pet",
+      "path": "/pet"
+    }
+  ],
+  "jsonPointer": "/",
+  "name": "Swagger Petstore",
+  "parameters": [
+    {
+      "name": "host",
+      "paramType": "variable",
+      "value": "petstore.swagger.io",
+      "valueJsonPointer": "/host"
+    }
+  ],
+  "path": "/"
+}

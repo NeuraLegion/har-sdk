@@ -11,6 +11,10 @@ export class OasV2ParameterObjectsParser extends BaseOasParameterObjectsParser<
   OpenAPIV2.Document,
   OpenAPIV2.ReferenceObject | OpenAPIV2.Parameter
 > {
+  private readonly DEFAULT_CONSUME_MEDIA_TYPE: OpenAPIV2.MimeTypes = [
+    'application/json'
+  ];
+
   constructor(doc: OpenAPIV2.Document, dereferencedDoc: OpenAPIV2.Document) {
     super(doc, dereferencedDoc);
   }
@@ -73,14 +77,38 @@ export class OasV2ParameterObjectsParser extends BaseOasParameterObjectsParser<
       this.dereferencedDoc,
       jsonPointer.compile(jsonPointer.parse(pointer).slice(0, -2))
     );
-    const mimeTypes = operationObject.consumes || ['application/json'];
+
+    if ('$ref' in parameter.schema) {
+      parameter = jsonPointer.get(this.dereferencedDoc, pointer);
+    }
+
     const value = parameter.schema?.default;
 
-    return mimeTypes.map((mimeType) => ({
-      paramType: 'requestBody',
-      bodyType: mimeType,
-      ...(value != null ? { value } : {}),
-      valueJsonPointer: this.getValueJsonPointer(`${pointer}/schema`)
-    }));
+    return this.resolveOperationConsumeMediaTypes(operationObject).map(
+      (mediaType) => ({
+        paramType: 'requestBody',
+        bodyType: mediaType,
+        ...(value != null ? { value } : {}),
+        valueJsonPointer: this.getValueJsonPointer(`${pointer}/schema`)
+      })
+    );
+  }
+
+  private resolveOperationConsumeMediaTypes(
+    operation: OpenAPIV2.OperationObject
+  ): OpenAPIV2.MimeTypes {
+    let mediaTypes: OpenAPIV2.MimeTypes;
+
+    if (operation.consumes?.length) {
+      mediaTypes = operation.consumes;
+    } else if (this.doc.consumes?.length) {
+      mediaTypes = this.doc.consumes;
+    }
+
+    mediaTypes = mediaTypes
+      ?.map((mediaType) => mediaType?.trim())
+      .filter(Boolean);
+
+    return mediaTypes?.length ? mediaTypes : this.DEFAULT_CONSUME_MEDIA_TYPE;
   }
 }

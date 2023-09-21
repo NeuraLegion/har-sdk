@@ -41,6 +41,29 @@ describe('DefaultConverter', () => {
         message: 'should correctly handle empty schemas (swagger)'
       },
       {
+        input: 'consumes-produces-missing.swagger.yaml',
+        expected: 'consumes-produces-missing.swagger.result.json',
+        message: 'should correctly handle missing consumes/produces (swagger)'
+      },
+      {
+        input: 'consumes-produces-override.swagger.yaml',
+        expected: 'consumes-produces-override.swagger.result.json',
+        message:
+          'should correctly handle override consumes/produces to empty (swagger)'
+      },
+      {
+        input: 'consumes-produces-root.swagger.yaml',
+        expected: 'consumes-produces-root.swagger.result.json',
+        message:
+          'should correctly handle root level only consumes/produces (swagger)'
+      },
+      {
+        input: 'consumes-produces-operation.swagger.yaml',
+        expected: 'consumes-produces-operation.swagger.result.json',
+        message:
+          'should correctly handle operation level only consumes/produces (swagger)'
+      },
+      {
         input: 'empty-schema.oas.yaml',
         expected: 'empty-schema.oas.result.json',
         message: 'should correctly handle empty schemas (oas)'

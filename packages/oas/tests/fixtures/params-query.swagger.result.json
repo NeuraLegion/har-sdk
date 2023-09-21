@@ -8,7 +8,12 @@
     ],
     "url": "http://petstore.swagger.io/v1/defaultArrayParam?p=lorem%2Clorem",
     "method": "GET",
-    "headers": [],
+    "headers": [
+      {
+        "name": "accept",
+        "value": "*/*"
+      }
+    ],
     "httpVersion": "HTTP/1.1",
     "cookies": [],
     "headersSize": 0,
@@ -23,7 +28,12 @@
     ],
     "url": "http://petstore.swagger.io/v1/csvArrayParam?p=lorem%2Clorem",
     "method": "GET",
-    "headers": [],
+    "headers": [
+      {
+        "name": "accept",
+        "value": "*/*"
+      }
+    ],
     "httpVersion": "HTTP/1.1",
     "cookies": [],
     "headersSize": 0,
@@ -38,7 +48,12 @@
     ],
     "url": "http://petstore.swagger.io/v1/ssvArrayParam?p=lorem+lorem",
     "method": "GET",
-    "headers": [],
+    "headers": [
+      {
+        "name": "accept",
+        "value": "*/*"
+      }
+    ],
     "httpVersion": "HTTP/1.1",
     "cookies": [],
     "headersSize": 0,
@@ -53,7 +68,12 @@
     ],
     "url": "http://petstore.swagger.io/v1/tsvArrayParam?p=lorem%09lorem",
     "method": "GET",
-    "headers": [],
+    "headers": [
+      {
+        "name": "accept",
+        "value": "*/*"
+      }
+    ],
     "httpVersion": "HTTP/1.1",
     "cookies": [],
     "headersSize": 0,
@@ -68,7 +88,12 @@
     ],
     "url": "http://petstore.swagger.io/v1/pipesArrayParam?p=lorem%7Clorem",
     "method": "GET",
-    "headers": [],
+    "headers": [
+      {
+        "name": "accept",
+        "value": "*/*"
+      }
+    ],
     "httpVersion": "HTTP/1.1",
     "cookies": [],
     "headersSize": 0,
@@ -87,7 +112,12 @@
     ],
     "url": "http://petstore.swagger.io/v1/multiArrayParam?p=lorem&p=lorem",
     "method": "GET",
-    "headers": [],
+    "headers": [
+      {
+        "name": "accept",
+        "value": "*/*"
+      }
+    ],
     "httpVersion": "HTTP/1.1",
     "cookies": [],
     "headersSize": 0,
@@ -102,7 +132,12 @@
     ],
     "url": "http://petstore.swagger.io/v1/enumArrayParam?p=a%2Ca",
     "method": "GET",
-    "headers": [],
+    "headers": [
+      {
+        "name": "accept",
+        "value": "*/*"
+      }
+    ],
     "httpVersion": "HTTP/1.1",
     "cookies": [],
     "headersSize": 0,

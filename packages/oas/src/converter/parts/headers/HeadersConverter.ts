@@ -13,6 +13,9 @@ import jsonPointer from 'json-pointer';
 export abstract class HeadersConverter<T extends OpenAPI.Document>
   implements SubConverter<Header[]>
 {
+  private readonly CONTENT_TYPE_METHODS = ['post', 'put', 'patch', 'delete'];
+  private readonly CONTENT_TYPE_HEADER = 'content-type';
+
   protected constructor(
     private readonly spec: T,
     private readonly sampler: Sampler
@@ -32,7 +35,15 @@ export abstract class HeadersConverter<T extends OpenAPI.Document>
     const headers: Header[] = [];
     const pathObj = getOperation(this.spec, path, method);
 
-    headers.push(...this.createContentTypeHeaders(pathObj));
+    if (
+      this.CONTENT_TYPE_METHODS.includes(method.toLowerCase()) &&
+      !headers.some(
+        (header) => header.name.toLowerCase() === this.CONTENT_TYPE_HEADER
+      )
+    ) {
+      headers.push(...this.createContentTypeHeaders(pathObj));
+    }
+
     headers.push(...this.createAcceptHeaders(pathObj));
 
     headers.push(...this.parseFromParams(path, method));

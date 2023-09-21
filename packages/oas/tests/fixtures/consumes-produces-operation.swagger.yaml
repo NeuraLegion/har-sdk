@@ -1,0 +1,30 @@
+swagger: '2.0'
+info:
+  title: Swagger Petstore
+  version: 1.0.0
+host: petstore.swagger.io
+basePath: /v2
+schemes:
+  - https
+paths:
+  '/dummy1':
+    post:
+      consumes:
+        - application/xml
+      produces:
+        - application/xml
+      parameters:
+        - in: body
+          name: body
+          schema:
+            $ref: '#/definitions/requestBody'
+      responses:
+        200:
+          description: successful operation
+          schema: {}
+definitions:
+  requestBody:
+    type: object
+    properties:
+      id:
+        type: integer

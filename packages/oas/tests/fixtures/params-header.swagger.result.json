@@ -4,6 +4,10 @@
     "cookies": [],
     "headers": [
       {
+        "name": "accept",
+        "value": "*/*"
+      },
+      {
         "name": "x-numeric",
         "value": "42"
       },

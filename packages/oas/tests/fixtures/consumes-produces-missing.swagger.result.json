@@ -1,0 +1,25 @@
+[
+  {
+    "queryString": [],
+    "url": "https://brokencrystals.com/api/v1/dummy1",
+    "method": "POST",
+    "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "*/*"
+      }
+    ],
+    "httpVersion": "HTTP/1.1",
+    "cookies": [],
+    "headersSize": 0,
+    "bodySize": 0,
+    "postData": {
+      "mimeType": "application/json",
+      "text": "{\"id\":42}"
+    }
+  }
+]

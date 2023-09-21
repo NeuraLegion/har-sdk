@@ -1,0 +1,25 @@
+[
+  {
+    "bodySize": 0,
+    "cookies": [],
+    "headers": [
+      {
+        "name": "content-type",
+        "value": "application/xml"
+      },
+      {
+        "name": "accept",
+        "value": "application/xml"
+      }
+    ],
+    "headersSize": 0,
+    "httpVersion": "HTTP/1.1",
+    "method": "POST",
+    "postData": {
+      "mimeType": "application/xml",
+      "text": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<requestBody>\n\t<id>42</id>\n</requestBody>"
+    },
+    "queryString": [],
+    "url": "https://petstore.swagger.io/v2/dummy1"
+  }
+]

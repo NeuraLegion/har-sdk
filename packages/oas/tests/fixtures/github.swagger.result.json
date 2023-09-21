@@ -5,6 +5,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -40,6 +44,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -74,6 +82,10 @@
     "url": "https://api.github.com/feeds",
     "method": "GET",
     "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -115,6 +127,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -149,6 +165,14 @@
     "url": "https://api.github.com/gists",
     "method": "POST",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -194,6 +218,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -234,6 +262,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -268,6 +300,14 @@
     "url": "https://api.github.com/gists/42",
     "method": "DELETE",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -304,6 +344,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -338,6 +382,14 @@
     "url": "https://api.github.com/gists/42",
     "method": "PATCH",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -378,6 +430,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -412,6 +468,14 @@
     "url": "https://api.github.com/gists/42/comments",
     "method": "POST",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -452,6 +516,14 @@
     "method": "DELETE",
     "headers": [
       {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -487,6 +559,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -521,6 +597,14 @@
     "url": "https://api.github.com/gists/42/comments/42",
     "method": "PATCH",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -561,6 +645,14 @@
     "method": "POST",
     "headers": [
       {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -596,6 +688,14 @@
     "method": "DELETE",
     "headers": [
       {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -630,6 +730,10 @@
     "url": "https://api.github.com/gists/42/star",
     "method": "GET",
     "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -666,6 +770,14 @@
     "method": "PUT",
     "headers": [
       {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -701,6 +813,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -735,6 +851,10 @@
     "url": "https://api.github.com/gitignore/templates/lorem",
     "method": "GET",
     "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -796,6 +916,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -830,6 +954,10 @@
     "url": "https://api.github.com/legacy/issues/search/lorem/lorem/open/lorem",
     "method": "GET",
     "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -883,6 +1011,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -917,6 +1049,10 @@
     "url": "https://api.github.com/legacy/user/email/lorem",
     "method": "GET",
     "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -966,6 +1102,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -1001,8 +1141,12 @@
     "method": "POST",
     "headers": [
       {
-        "value": "text/html",
-        "name": "accept"
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "text/html"
       },
       {
         "name": "x-github-media-type",
@@ -1044,12 +1188,12 @@
     "method": "POST",
     "headers": [
       {
-        "value": "text/plain",
-        "name": "content-type"
+        "name": "content-type",
+        "value": "text/plain"
       },
       {
-        "value": "text/html",
-        "name": "accept"
+        "name": "accept",
+        "value": "text/html"
       },
       {
         "name": "x-github-media-type",
@@ -1087,6 +1231,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -1121,6 +1269,10 @@
     "url": "https://api.github.com/networks/lorem/lorem/events",
     "method": "GET",
     "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -1170,6 +1322,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -1204,6 +1360,14 @@
     "url": "https://api.github.com/notifications",
     "method": "PUT",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -1244,6 +1408,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -1278,6 +1446,14 @@
     "url": "https://api.github.com/notifications/threads/42",
     "method": "PATCH",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -1314,6 +1490,14 @@
     "method": "DELETE",
     "headers": [
       {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -1349,6 +1533,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -1383,6 +1571,14 @@
     "url": "https://api.github.com/notifications/threads/42/subscription",
     "method": "PUT",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -1423,6 +1619,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -1457,6 +1657,14 @@
     "url": "https://api.github.com/orgs/lorem",
     "method": "PATCH",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -1496,6 +1704,10 @@
     "url": "https://api.github.com/orgs/lorem/events",
     "method": "GET",
     "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -1557,6 +1769,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -1591,6 +1807,10 @@
     "url": "https://api.github.com/orgs/lorem/members",
     "method": "GET",
     "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -1627,6 +1847,14 @@
     "method": "DELETE",
     "headers": [
       {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -1661,6 +1889,10 @@
     "url": "https://api.github.com/orgs/lorem/members/lorem",
     "method": "GET",
     "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -1697,6 +1929,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -1731,6 +1967,14 @@
     "url": "https://api.github.com/orgs/lorem/public_members/lorem",
     "method": "DELETE",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -1767,6 +2011,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -1801,6 +2049,14 @@
     "url": "https://api.github.com/orgs/lorem/public_members/lorem",
     "method": "PUT",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -1842,6 +2098,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -1876,6 +2136,14 @@
     "url": "https://api.github.com/orgs/lorem/repos",
     "method": "POST",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -1916,6 +2184,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -1950,6 +2222,14 @@
     "url": "https://api.github.com/orgs/lorem/teams",
     "method": "POST",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -1990,6 +2270,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -2024,6 +2308,14 @@
     "url": "https://api.github.com/repos/lorem/lorem",
     "method": "DELETE",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -2060,6 +2352,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -2094,6 +2390,14 @@
     "url": "https://api.github.com/repos/lorem/lorem",
     "method": "PATCH",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -2134,6 +2438,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -2168,6 +2476,10 @@
     "url": "https://api.github.com/repos/lorem/lorem/assignees/lorem",
     "method": "GET",
     "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -2204,6 +2516,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -2238,6 +2554,10 @@
     "url": "https://api.github.com/repos/lorem/lorem/branches/lorem",
     "method": "GET",
     "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -2274,6 +2594,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -2309,6 +2633,14 @@
     "method": "DELETE",
     "headers": [
       {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -2343,6 +2675,10 @@
     "url": "https://api.github.com/repos/lorem/lorem/collaborators/lorem",
     "method": "GET",
     "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -2379,6 +2715,14 @@
     "method": "PUT",
     "headers": [
       {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -2413,6 +2757,10 @@
     "url": "https://api.github.com/repos/lorem/lorem/comments",
     "method": "GET",
     "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -2449,6 +2797,14 @@
     "method": "DELETE",
     "headers": [
       {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -2484,6 +2840,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -2518,6 +2878,14 @@
     "url": "https://api.github.com/repos/lorem/lorem/comments/42",
     "method": "PATCH",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -2579,6 +2947,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -2613,6 +2985,10 @@
     "url": "https://api.github.com/repos/lorem/lorem/commits/lorem/status",
     "method": "GET",
     "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -2649,6 +3025,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -2684,6 +3064,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -2718,6 +3102,14 @@
     "url": "https://api.github.com/repos/lorem/lorem/commits/lorem/comments",
     "method": "POST",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -2758,6 +3150,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -2792,6 +3188,14 @@
     "url": "https://api.github.com/repos/lorem/lorem/contents/lorem",
     "method": "DELETE",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -2841,6 +3245,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -2875,6 +3283,14 @@
     "url": "https://api.github.com/repos/lorem/lorem/contents/lorem",
     "method": "PUT",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -2920,6 +3336,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -2955,6 +3375,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -2989,6 +3413,14 @@
     "url": "https://api.github.com/repos/lorem/lorem/deployments",
     "method": "POST",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -3029,6 +3461,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -3063,6 +3499,14 @@
     "url": "https://api.github.com/repos/lorem/lorem/deployments/42/statuses",
     "method": "POST",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -3103,6 +3547,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -3138,6 +3586,14 @@
     "method": "DELETE",
     "headers": [
       {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -3173,6 +3629,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -3207,6 +3667,10 @@
     "url": "https://api.github.com/repos/lorem/lorem/events",
     "method": "GET",
     "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -3248,6 +3712,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -3282,6 +3750,14 @@
     "url": "https://api.github.com/repos/lorem/lorem/forks",
     "method": "POST",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -3322,6 +3798,14 @@
     "method": "POST",
     "headers": [
       {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -3361,6 +3845,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -3395,6 +3883,14 @@
     "url": "https://api.github.com/repos/lorem/lorem/git/commits",
     "method": "POST",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -3435,6 +3931,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -3470,6 +3970,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -3504,6 +4008,14 @@
     "url": "https://api.github.com/repos/lorem/lorem/git/refs",
     "method": "POST",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -3544,6 +4056,14 @@
     "method": "DELETE",
     "headers": [
       {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -3579,6 +4099,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -3613,6 +4137,14 @@
     "url": "https://api.github.com/repos/lorem/lorem/git/refs/lorem",
     "method": "PATCH",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -3653,6 +4185,14 @@
     "method": "POST",
     "headers": [
       {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -3692,6 +4232,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -3726,6 +4270,14 @@
     "url": "https://api.github.com/repos/lorem/lorem/git/trees",
     "method": "POST",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -3771,6 +4323,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -3806,6 +4362,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -3840,6 +4400,14 @@
     "url": "https://api.github.com/repos/lorem/lorem/hooks",
     "method": "POST",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -3880,6 +4448,14 @@
     "method": "DELETE",
     "headers": [
       {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -3915,6 +4491,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -3949,6 +4529,14 @@
     "url": "https://api.github.com/repos/lorem/lorem/hooks/42",
     "method": "PATCH",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -3988,6 +4576,14 @@
     "url": "https://api.github.com/repos/lorem/lorem/hooks/42/tests",
     "method": "POST",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -4049,6 +4645,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -4083,6 +4683,14 @@
     "url": "https://api.github.com/repos/lorem/lorem/issues",
     "method": "POST",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -4136,6 +4744,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -4170,6 +4782,14 @@
     "url": "https://api.github.com/repos/lorem/lorem/issues/comments/42",
     "method": "DELETE",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -4206,6 +4826,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -4240,6 +4864,14 @@
     "url": "https://api.github.com/repos/lorem/lorem/issues/comments/42",
     "method": "PATCH",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -4280,6 +4912,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -4315,6 +4951,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -4350,6 +4990,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -4384,6 +5028,14 @@
     "url": "https://api.github.com/repos/lorem/lorem/issues/42",
     "method": "PATCH",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -4424,6 +5076,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -4458,6 +5114,14 @@
     "url": "https://api.github.com/repos/lorem/lorem/issues/42/comments",
     "method": "POST",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -4498,6 +5162,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -4532,6 +5200,14 @@
     "url": "https://api.github.com/repos/lorem/lorem/issues/42/labels",
     "method": "DELETE",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -4568,6 +5244,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -4602,6 +5282,14 @@
     "url": "https://api.github.com/repos/lorem/lorem/issues/42/labels",
     "method": "POST",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -4642,6 +5330,14 @@
     "method": "PUT",
     "headers": [
       {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -4681,6 +5377,14 @@
     "method": "DELETE",
     "headers": [
       {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -4716,6 +5420,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -4750,6 +5458,14 @@
     "url": "https://api.github.com/repos/lorem/lorem/keys",
     "method": "POST",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -4790,6 +5506,14 @@
     "method": "DELETE",
     "headers": [
       {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -4825,6 +5549,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -4860,6 +5588,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -4894,6 +5626,14 @@
     "url": "https://api.github.com/repos/lorem/lorem/labels",
     "method": "POST",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -4934,6 +5674,14 @@
     "method": "DELETE",
     "headers": [
       {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -4969,6 +5717,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -5003,6 +5755,14 @@
     "url": "https://api.github.com/repos/lorem/lorem/labels/lorem",
     "method": "PATCH",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -5043,6 +5803,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -5077,6 +5841,14 @@
     "url": "https://api.github.com/repos/lorem/lorem/merges",
     "method": "POST",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -5130,6 +5902,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -5164,6 +5940,14 @@
     "url": "https://api.github.com/repos/lorem/lorem/milestones",
     "method": "POST",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -5204,6 +5988,14 @@
     "method": "DELETE",
     "headers": [
       {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -5239,6 +6031,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -5273,6 +6069,14 @@
     "url": "https://api.github.com/repos/lorem/lorem/milestones/42",
     "method": "PATCH",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -5312,6 +6116,10 @@
     "url": "https://api.github.com/repos/lorem/lorem/milestones/42/labels",
     "method": "GET",
     "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -5361,6 +6169,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -5395,6 +6207,14 @@
     "url": "https://api.github.com/repos/lorem/lorem/notifications",
     "method": "PUT",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -5448,6 +6268,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -5482,6 +6306,14 @@
     "url": "https://api.github.com/repos/lorem/lorem/pulls",
     "method": "POST",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -5535,6 +6367,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -5569,6 +6405,14 @@
     "url": "https://api.github.com/repos/lorem/lorem/pulls/comments/42",
     "method": "DELETE",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -5605,6 +6449,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -5639,6 +6487,14 @@
     "url": "https://api.github.com/repos/lorem/lorem/pulls/comments/42",
     "method": "PATCH",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -5679,6 +6535,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -5713,6 +6573,14 @@
     "url": "https://api.github.com/repos/lorem/lorem/pulls/42",
     "method": "PATCH",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -5753,6 +6621,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -5787,6 +6659,14 @@
     "url": "https://api.github.com/repos/lorem/lorem/pulls/42/comments",
     "method": "POST",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -5827,6 +6707,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -5862,6 +6746,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -5897,6 +6785,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -5931,6 +6823,14 @@
     "url": "https://api.github.com/repos/lorem/lorem/pulls/42/merge",
     "method": "PUT",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -5976,6 +6876,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -6011,6 +6915,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -6045,6 +6953,14 @@
     "url": "https://api.github.com/repos/lorem/lorem/releases",
     "method": "POST",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -6085,6 +7001,14 @@
     "method": "DELETE",
     "headers": [
       {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -6120,6 +7044,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -6154,6 +7082,14 @@
     "url": "https://api.github.com/repos/lorem/lorem/releases/assets/lorem",
     "method": "PATCH",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -6194,6 +7130,14 @@
     "method": "DELETE",
     "headers": [
       {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -6229,6 +7173,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -6263,6 +7211,14 @@
     "url": "https://api.github.com/repos/lorem/lorem/releases/lorem",
     "method": "PATCH",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -6303,6 +7259,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -6337,6 +7297,10 @@
     "url": "https://api.github.com/repos/lorem/lorem/stargazers",
     "method": "GET",
     "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -6373,6 +7337,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -6407,6 +7375,10 @@
     "url": "https://api.github.com/repos/lorem/lorem/stats/commit_activity",
     "method": "GET",
     "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -6443,6 +7415,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -6477,6 +7453,10 @@
     "url": "https://api.github.com/repos/lorem/lorem/stats/participation",
     "method": "GET",
     "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -6513,6 +7493,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -6548,6 +7532,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -6582,6 +7570,14 @@
     "url": "https://api.github.com/repos/lorem/lorem/statuses/lorem",
     "method": "POST",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -6622,6 +7618,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -6656,6 +7656,14 @@
     "url": "https://api.github.com/repos/lorem/lorem/subscription",
     "method": "DELETE",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -6692,6 +7700,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -6726,6 +7738,14 @@
     "url": "https://api.github.com/repos/lorem/lorem/subscription",
     "method": "PUT",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -6766,6 +7786,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -6800,6 +7824,10 @@
     "url": "https://api.github.com/repos/lorem/lorem/teams",
     "method": "GET",
     "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -6836,6 +7864,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -6870,6 +7902,10 @@
     "url": "https://api.github.com/repos/lorem/lorem/tarball/lorem",
     "method": "GET",
     "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -6910,6 +7946,10 @@
     "url": "https://api.github.com/repositories?since=lorem",
     "method": "GET",
     "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -6959,6 +7999,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -7006,6 +8050,10 @@
     "url": "https://api.github.com/search/issues?order=desc&q=lorem&sort=updated",
     "method": "GET",
     "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -7055,6 +8103,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -7103,6 +8155,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -7137,6 +8193,14 @@
     "url": "https://api.github.com/teams/42",
     "method": "DELETE",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -7173,6 +8237,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -7207,6 +8275,14 @@
     "url": "https://api.github.com/teams/42",
     "method": "PATCH",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -7247,6 +8323,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -7281,6 +8361,14 @@
     "url": "https://api.github.com/teams/42/members/lorem",
     "method": "DELETE",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -7317,6 +8405,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -7351,6 +8443,14 @@
     "url": "https://api.github.com/teams/42/members/lorem",
     "method": "PUT",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -7387,6 +8487,14 @@
     "method": "DELETE",
     "headers": [
       {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -7422,6 +8530,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -7456,6 +8568,14 @@
     "url": "https://api.github.com/teams/42/memberships/lorem",
     "method": "PUT",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -7492,6 +8612,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -7526,6 +8650,14 @@
     "url": "https://api.github.com/teams/42/repos/lorem/lorem",
     "method": "PUT",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -7562,6 +8694,14 @@
     "method": "DELETE",
     "headers": [
       {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -7597,6 +8737,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -7632,6 +8776,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -7666,6 +8814,14 @@
     "url": "https://api.github.com/user",
     "method": "PATCH",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -7706,6 +8862,14 @@
     "method": "DELETE",
     "headers": [
       {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -7745,8 +8909,8 @@
     "method": "GET",
     "headers": [
       {
-        "value": "application/vnd.github.v3",
-        "name": "accept"
+        "name": "accept",
+        "value": "application/vnd.github.v3"
       },
       {
         "name": "x-github-media-type",
@@ -7783,6 +8947,14 @@
     "url": "https://api.github.com/user/emails",
     "method": "POST",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -7823,6 +8995,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -7857,6 +9033,10 @@
     "url": "https://api.github.com/user/following",
     "method": "GET",
     "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -7893,6 +9073,14 @@
     "method": "DELETE",
     "headers": [
       {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -7928,6 +9116,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -7962,6 +9154,14 @@
     "url": "https://api.github.com/user/following/lorem",
     "method": "PUT",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -8023,6 +9223,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -8058,6 +9262,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -8092,6 +9300,14 @@
     "url": "https://api.github.com/user/keys",
     "method": "POST",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -8132,6 +9348,14 @@
     "method": "DELETE",
     "headers": [
       {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -8167,6 +9391,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -8201,6 +9429,10 @@
     "url": "https://api.github.com/user/orgs",
     "method": "GET",
     "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -8242,6 +9474,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -8276,6 +9512,14 @@
     "url": "https://api.github.com/user/repos",
     "method": "POST",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -8325,6 +9569,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -8359,6 +9607,14 @@
     "url": "https://api.github.com/user/starred/lorem/lorem",
     "method": "DELETE",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -8395,6 +9651,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -8429,6 +9689,14 @@
     "url": "https://api.github.com/user/starred/lorem/lorem",
     "method": "PUT",
     "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -8465,6 +9733,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -8500,6 +9772,14 @@
     "method": "DELETE",
     "headers": [
       {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -8534,6 +9814,10 @@
     "url": "https://api.github.com/user/subscriptions/lorem/lorem",
     "method": "GET",
     "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -8570,6 +9854,14 @@
     "method": "PUT",
     "headers": [
       {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -8604,6 +9896,10 @@
     "url": "https://api.github.com/user/teams",
     "method": "GET",
     "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -8645,6 +9941,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -8679,6 +9979,10 @@
     "url": "https://api.github.com/users/lorem",
     "method": "GET",
     "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -8715,6 +10019,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -8749,6 +10057,10 @@
     "url": "https://api.github.com/users/lorem/events/orgs/lorem",
     "method": "GET",
     "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -8785,6 +10097,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -8819,6 +10135,10 @@
     "url": "https://api.github.com/users/lorem/following/lorem",
     "method": "GET",
     "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -8860,6 +10180,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -8894,6 +10218,10 @@
     "url": "https://api.github.com/users/lorem/keys",
     "method": "GET",
     "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -8930,6 +10258,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -8965,6 +10297,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -8999,6 +10335,10 @@
     "url": "https://api.github.com/users/lorem/received_events/public",
     "method": "GET",
     "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"
@@ -9040,6 +10380,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -9075,6 +10419,10 @@
     "method": "GET",
     "headers": [
       {
+        "name": "accept",
+        "value": "application/json"
+      },
+      {
         "name": "x-github-media-type",
         "value": "lorem"
       },
@@ -9109,6 +10457,10 @@
     "url": "https://api.github.com/users/lorem/subscriptions",
     "method": "GET",
     "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      },
       {
         "name": "x-github-media-type",
         "value": "lorem"

@@ -1,4 +1,3 @@
-import { isOASV2 } from '../../utils';
 import { OpenAPIV2 } from '@har-sdk/core';
 
 export class Oas2MediaTypesResolver {
@@ -26,7 +25,7 @@ export class Oas2MediaTypesResolver {
 
     if (operation[node]?.length) {
       mediaTypes = operation[node];
-    } else if (isOASV2(this.spec) && this.spec[node]?.length) {
+    } else if (this.spec[node]?.length) {
       mediaTypes = this.spec[node];
     }
 

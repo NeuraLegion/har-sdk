@@ -6,13 +6,13 @@ host: petstore.swagger.io
 basePath: /v2
 schemes:
   - https
-consumes:
-  - application/xml
 paths:
   '/dummy1':
     post:
       consumes:
-        -
+        - application/xml
+      produces:
+        - application/xml
       parameters:
         - in: body
           name: body

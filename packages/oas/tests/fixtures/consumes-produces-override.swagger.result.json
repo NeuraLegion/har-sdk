@@ -1,0 +1,48 @@
+[
+  {
+    "bodySize": 0,
+    "cookies": [],
+    "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "*/*"
+      }
+    ],
+    "headersSize": 0,
+    "httpVersion": "HTTP/1.1",
+    "method": "POST",
+    "postData": {
+      "mimeType": "application/json",
+      "text": "{\"id\":42}"
+    },
+    "queryString": [],
+    "url": "https://petstore.swagger.io/v2/dummy1"
+  },
+  {
+    "bodySize": 0,
+    "cookies": [],
+    "headers": [
+      {
+        "name": "content-type",
+        "value": "multipart/form-data"
+      },
+      {
+        "name": "accept",
+        "value": "application/vnd.api+json"
+      }
+    ],
+    "headersSize": 0,
+    "httpVersion": "HTTP/1.1",
+    "method": "PUT",
+    "postData": {
+      "mimeType": "multipart/form-data; boundary=956888039105887155673143",
+      "text": "--956888039105887155673143\r\nContent-Disposition: form-data; name=\"id\"\r\n\r\n42\r\n--956888039105887155673143--"
+    },
+    "queryString": [],
+    "url": "https://petstore.swagger.io/v2/dummy1"
+  }
+]

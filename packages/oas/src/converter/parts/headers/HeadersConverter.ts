@@ -22,14 +22,10 @@ export abstract class HeadersConverter<T extends OpenAPI.Document>
   ) {}
 
   protected abstract createContentTypeHeaders(
-    pathObj: OperationObject,
-    header?: Header
+    pathObj: OperationObject
   ): Header[];
 
-  protected abstract createAcceptHeaders(
-    pathObj: OperationObject,
-    header?: Header
-  ): Header[];
+  protected abstract createAcceptHeaders(pathObj: OperationObject): Header[];
 
   protected abstract convertHeaderParam(
     headerParam: LocationParam<ParameterObject>
@@ -41,7 +37,7 @@ export abstract class HeadersConverter<T extends OpenAPI.Document>
 
     if (
       this.CONTENT_TYPE_METHODS.includes(method.toLowerCase()) &&
-      !headers.find(
+      !headers.some(
         (header) => header.name.toLowerCase() === this.CONTENT_TYPE_HEADER
       )
     ) {

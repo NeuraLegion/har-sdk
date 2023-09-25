@@ -30,10 +30,10 @@ export class StringSampler implements Sampler {
     'relative-json-pointer': () => '1/relative/json/pointer',
     'regex': () => '/regex/',
     'pattern': (
-      _min: number,
+      min: number,
       max: number,
       { pattern }: { pattern: string | RegExp }
-    ) => this.patternSample(pattern, max),
+    ) => this.patternSample(pattern, min, max),
     'default': (min: number, max: number) =>
       this.adjustLength('lorem', min, max)
   };
@@ -47,11 +47,23 @@ export class StringSampler implements Sampler {
     return this.checkLength(sampler(min || 0, max, schema), format, min, max);
   }
 
-  private patternSample(pattern: string | RegExp, max?: number): string {
+  private patternSample(
+    pattern: string | RegExp,
+    min?: number,
+    max?: number
+  ): string {
     const randExp = new RandExp(pattern);
+    randExp.randInt = (a, b) => Math.floor((a + b) / 2);
+
+    if (min) {
+      randExp.max = 2 * min;
+
+      const result = randExp.gen();
+
+      return max && result.length > max ? result.substring(0, max) : result;
+    }
 
     randExp.max = max ?? randExp.max;
-    randExp.randInt = (a, b) => Math.floor((a + b) / 2);
 
     return randExp.gen();
   }

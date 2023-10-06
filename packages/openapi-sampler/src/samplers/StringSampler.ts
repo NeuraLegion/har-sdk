@@ -53,17 +53,30 @@ export class StringSampler implements Sampler {
     max?: number
   ): string {
     const randExp = new RandExp(pattern);
-    randExp.randInt = (a, b) => Math.floor((a + b) / 2);
 
     if (min) {
-      randExp.max = 2 * min;
+      // ADHOC: make a probe for regex using min quantifier value
+      // e.g. ^[a]+[b]+$ expect 'ab', ^[a-z]*$ expect ''
+
+      randExp.max = 0;
+      randExp.randInt = (a, _) => a;
 
       const result = randExp.gen();
 
-      return max && result.length > max ? result.substring(0, max) : result;
+      if (result.length >= min) {
+        return result;
+      }
+
+      // ADHOC: fallback for failed min quantifier probe with doubled min length
+
+      randExp.max = 2 * min;
+      randExp.randInt = (a, b) => Math.floor((a + b) / 2);
+
+      return this.adjustMaxLength(randExp.gen(), max);
     }
 
     randExp.max = max ?? randExp.max;
+    randExp.randInt = (a, b) => Math.floor((a + b) / 2);
 
     return randExp.gen();
   }
@@ -106,5 +119,9 @@ export class StringSampler implements Sampler {
           0,
           Math.min(Math.max(sample.length, minLength), maxLength)
         );
+  }
+
+  private adjustMaxLength(sample: string, max?: number): string {
+    return max && sample.length >= max ? sample.substring(0, max) : sample;
   }
 }

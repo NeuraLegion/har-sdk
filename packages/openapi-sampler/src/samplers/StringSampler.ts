@@ -30,10 +30,10 @@ export class StringSampler implements Sampler {
     'relative-json-pointer': () => '1/relative/json/pointer',
     'regex': () => '/regex/',
     'pattern': (
-      _min: number,
+      min: number,
       max: number,
       { pattern }: { pattern: string | RegExp }
-    ) => this.patternSample(pattern, max),
+    ) => this.patternSample(pattern, min, max),
     'default': (min: number, max: number) =>
       this.adjustLength('lorem', min, max)
   };
@@ -47,8 +47,33 @@ export class StringSampler implements Sampler {
     return this.checkLength(sampler(min || 0, max, schema), format, min, max);
   }
 
-  private patternSample(pattern: string | RegExp, max?: number): string {
+  private patternSample(
+    pattern: string | RegExp,
+    min?: number,
+    max?: number
+  ): string {
     const randExp = new RandExp(pattern);
+
+    if (min) {
+      // ADHOC: make a probe for regex using min quantifier value
+      // e.g. ^[a]+[b]+$ expect 'ab', ^[a-z]*$ expect ''
+
+      randExp.max = 0;
+      randExp.randInt = (a, _) => a;
+
+      const result = randExp.gen();
+
+      if (result.length >= min) {
+        return result;
+      }
+
+      // ADHOC: fallback for failed min quantifier probe with doubled min length
+
+      randExp.max = 2 * min;
+      randExp.randInt = (a, b) => Math.floor((a + b) / 2);
+
+      return this.adjustMaxLength(randExp.gen(), max);
+    }
 
     randExp.max = max ?? randExp.max;
     randExp.randInt = (a, b) => Math.floor((a + b) / 2);
@@ -94,5 +119,9 @@ export class StringSampler implements Sampler {
           0,
           Math.min(Math.max(sample.length, minLength), maxLength)
         );
+  }
+
+  private adjustMaxLength(sample: string, max?: number): string {
+    return max && sample.length >= max ? sample.substring(0, max) : sample;
   }
 }

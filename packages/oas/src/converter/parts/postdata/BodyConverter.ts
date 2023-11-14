@@ -59,7 +59,12 @@ export abstract class BodyConverter<T extends OpenAPI.Document>
   }: EncodingData): string {
     const [mime]: string[] = contentType
       .split(',')
-      .map((x) => x.trim().replace(/;.+?$/, ''));
+      .map((x) => {
+        const [part]: string[] = x.trim().split(';');
+
+        return part;
+      })
+      .filter(Boolean) as string[];
 
     switch (mime) {
       case 'application/json':

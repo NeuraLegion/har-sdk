@@ -16,11 +16,13 @@ export const sample = (
   options?: Options,
   spec?: Specification
 ): any | undefined => {
-  const opts = Object.assign(
-    {},
-    { skipReadOnly: false, maxSampleDepth: 1 },
-    options
-  );
+  const { skipReadOnly, maxSampleDepth } = options ?? {};
+
+  const opts = {
+    ...options,
+    maxSampleDepth: maxSampleDepth ?? 1,
+    skipReadOnly: skipReadOnly ?? false
+  };
 
   const traverse = new DefaultTraverse();
 

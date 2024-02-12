@@ -1,11 +1,32 @@
 import { ConvertError, oas2har } from '../src';
-import yaml, { load } from 'js-yaml';
+import { load } from 'js-yaml';
 import { OpenAPIV2, Request } from '@har-sdk/core';
 import { resolve } from 'path';
-import { readFile, readFileSync } from 'fs';
+import { readFile } from 'fs';
 import { promisify } from 'util';
 
 describe('DefaultConverter', () => {
+  const readFileAsync = promisify(readFile);
+
+  const loadFile = async (fileName: string) => {
+    const filePath = resolve(__dirname, fileName);
+
+    const content = await readFileAsync(filePath, 'utf-8');
+
+    return content.endsWith('.json') ? JSON.parse(content) : load(content);
+  };
+
+  const createFixture = async ({
+    inputFile,
+    expectedFile
+  }: {
+    inputFile: string;
+    expectedFile: string;
+  }) => ({
+    inputDoc: await loadFile(inputFile),
+    expectedDoc: await loadFile(expectedFile)
+  });
+
   describe('convert', () => {
     [
       {
@@ -183,24 +204,14 @@ describe('DefaultConverter', () => {
       }
     ].forEach(({ input: inputFile, expected: expectedFile, message }) => {
       it(message, async () => {
-        const content = readFileSync(
-          resolve(__dirname, `./fixtures/${inputFile}`),
-          'utf-8'
-        );
-        const input = inputFile.endsWith('json')
-          ? JSON.parse(content)
-          : load(content);
+        const { inputDoc, expectedDoc } = await createFixture({
+          inputFile: `./fixtures/${inputFile}`,
+          expectedFile: `./fixtures/${expectedFile}`
+        });
 
-        const expected = JSON.parse(
-          readFileSync(
-            resolve(__dirname, `./fixtures/${expectedFile}`),
-            'utf-8'
-          )
-        );
+        const result: Request[] = await oas2har(inputDoc as any);
 
-        const result: Request[] = await oas2har(input as any);
-
-        expect(result).toStrictEqual(expected);
+        expect(result).toStrictEqual(expectedDoc);
       });
     });
 
@@ -271,18 +282,107 @@ describe('DefaultConverter', () => {
         /^convert-error-on-(.+)\.(.+)\.yaml$/,
         '$1 ($2)'
       )}`, async () => {
-        const content: string = await promisify(readFile)(
-          resolve(__dirname, `./fixtures/${input}`),
-          'utf8'
-        );
+        const inputDoc = await loadFile(`./fixtures/${input}`);
 
-        const result = oas2har(yaml.load(content) as OpenAPIV2.Document);
+        const result = oas2har(inputDoc as OpenAPIV2.Document);
 
         await expect(result).rejects.toThrow(ConvertError);
         await expect(result).rejects.toMatchObject({
           jsonPointer: expected
         });
       })
+    );
+
+    it('should ignore x-example when includeVendorExamples is true (oas)', async () => {
+      // arrange
+      const { inputDoc, expectedDoc } = await createFixture({
+        inputFile: `./fixtures/params.x-example.oas.yaml`,
+        expectedFile: `./fixtures/params.x-example.oas.result.json`
+      });
+
+      // act
+      const result: Request[] = await oas2har(inputDoc as any, {
+        includeVendorExamples: true
+      });
+
+      // assert
+      expect(result).toStrictEqual(expectedDoc);
+    });
+
+    it.each(['path', 'query', 'header', 'form-data'])(
+      'should ignore %s parameter x-example when includeVendorExamples is false (swagger)',
+      async (input) => {
+        // arrange
+        const { inputDoc, expectedDoc } = await createFixture({
+          inputFile: `./fixtures/params.x-example.${input}.swagger.yaml`,
+          expectedFile: `./fixtures/params.x-example.${input}.swagger.include-examples-is-false.json`
+        });
+
+        // act
+        const result: Request[] = await oas2har(inputDoc as any, {
+          includeVendorExamples: false
+        });
+
+        // assert
+        expect(result).toStrictEqual(expectedDoc);
+      }
+    );
+
+    it.each(['path', 'query', 'header', 'form-data'])(
+      'should prefer %s parameter x-example over default when includeVendorExamples is true (swagger)',
+      async (input) => {
+        // arrange
+        const { inputDoc, expectedDoc } = await createFixture({
+          inputFile: `./fixtures/params.x-example.${input}.swagger.yaml`,
+          expectedFile: `./fixtures/params.x-example.${input}.swagger.include-examples-is-true.json`
+        });
+
+        // act
+        const result: Request[] = await oas2har(inputDoc as any, {
+          includeVendorExamples: true
+        });
+
+        // assert
+        expect(result).toStrictEqual(expectedDoc);
+      }
+    );
+
+    it.each(['schemathesis', 'redocly', 'api-connect-or-smartbear'])(
+      'should use %s body parameter x-example when includeVendorExamples is true (swagger)',
+      async (input) => {
+        // arrange
+        const { inputDoc, expectedDoc } = await createFixture({
+          inputFile: `./fixtures/params.x-example.body.${input}.swagger.yaml`,
+          expectedFile: `./fixtures/params.x-example.body.swagger.include-examples-is-true.json`
+        });
+
+        // act
+        const result: Request[] = await oas2har(inputDoc as any, {
+          includeVendorExamples: true
+        });
+
+        // assert
+        expect(result).toStrictEqual(expectedDoc);
+      }
+    );
+
+    it.each(['schemathesis', 'redocly', 'api-connect-or-smartbear'])(
+      'should not use %s body parameter x-example when includeVendorExamples is false (swagger)',
+      async (input) => {
+        // arrange
+        const { inputDoc, expectedDoc } = await createFixture({
+          inputFile: `./fixtures/params.x-example.body.${input}.swagger.yaml`,
+          expectedFile: `./fixtures/params.x-example.body.swagger.include-examples-is-false.json`
+        });
+
+        // act
+        const result: Request[] = await oas2har(inputDoc as any, {
+          includeVendorExamples: false
+        });
+
+        // assert
+        expect(result).toStrictEqual(expectedDoc);
+      }
     );
   });
 });

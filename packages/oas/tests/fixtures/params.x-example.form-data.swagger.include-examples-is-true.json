@@ -1,0 +1,25 @@
+[
+  {
+    "queryString": [],
+    "cookies": [],
+    "method": "POST",
+    "headers": [
+      {
+        "value": "application/x-www-form-urlencoded",
+        "name": "content-type"
+      },
+      {
+        "value": "application/json",
+        "name": "accept"
+      }
+    ],
+    "httpVersion": "HTTP/1.1",
+    "headersSize": 0,
+    "bodySize": 0,
+    "postData": {
+      "mimeType": "application/x-www-form-urlencoded",
+      "text": "name=x_example_name"
+    },
+    "url": "https://example.com/sample"
+  }
+]

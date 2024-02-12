@@ -4,6 +4,7 @@ import {
   getReplacementForCircular,
   mergeDeep
 } from '../utils';
+import { VendorExtensions } from '../VendorExtensions';
 import { OpenAPISchema, Sampler } from '../samplers';
 import JsonPointer from 'json-pointer';
 import { OpenAPIV2, OpenAPIV3 } from '@har-sdk/core';
@@ -127,8 +128,13 @@ export class DefaultTraverse implements Traverse {
 
     let example: any;
     let type: string;
+    const vendorExample = options.includeVendorExamples
+      ? this.findVendorExample(schema)
+      : undefined;
 
-    if (this.isDefaultExists(schema)) {
+    if (vendorExample) {
+      example = vendorExample;
+    } else if (this.isDefaultExists(schema)) {
       example = schema.default;
     } else if ((schema as any).const !== undefined) {
       example = (schema as any).const;
@@ -333,5 +339,76 @@ export class DefaultTraverse implements Traverse {
       (schema as OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject).default !==
       undefined
     );
+  }
+
+  private findVendorExample(schema: Schema) {
+    const example =
+      schema[VendorExtensions.X_EXAMPLE] ?? schema[VendorExtensions.X_EXAMPLES];
+
+    const schemaKeys = this.findSchemaKeys(schema);
+
+    if (
+      !example ||
+      typeof example !== 'object' ||
+      0 === schemaKeys.keys.length
+    ) {
+      return example;
+    }
+
+    return this.matchVendorExampleKeys(example, schemaKeys);
+  }
+
+  private findSchemaKeys(
+    schema: Schema,
+    depth: number = 0
+  ): { depth: number; keys: string[] } {
+    if ('items' in schema) {
+      return this.findSchemaKeys(schema.items, 1 + depth);
+    }
+
+    return {
+      depth,
+      keys: 'properties' in schema ? Object.keys(schema.properties) : []
+    };
+  }
+
+  private matchVendorExampleKeys(
+    example: unknown,
+    schemaKeys: { depth: number; keys: string[] },
+    possibleExamples: unknown[] = []
+  ): unknown {
+    if (!example || typeof example !== 'object') {
+      return undefined;
+    }
+
+    if (schemaKeys.depth > 0 && Array.isArray(example)) {
+      return this.matchVendorExampleKeys(
+        [...example, undefined].shift(),
+        {
+          ...schemaKeys,
+          depth: schemaKeys.depth - 1
+        },
+        [...possibleExamples, example]
+      );
+    }
+
+    const objectKeys = Object.keys(example);
+
+    if (objectKeys.every((key) => schemaKeys.keys.includes(key))) {
+      if (possibleExamples.length > 0) {
+        return possibleExamples.shift();
+      }
+
+      return example;
+    }
+
+    for (const key of objectKeys) {
+      const value = this.matchVendorExampleKeys(example[key], schemaKeys);
+      if (value) {
+        return value;
+      }
+    }
+
+    return undefined;
   }
 }

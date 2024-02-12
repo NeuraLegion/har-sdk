@@ -1,9 +1,11 @@
 import { ConvertError } from '../errors';
-import { sample, Schema } from '@har-sdk/openapi-sampler';
+import { VendorExtensions } from './VendorExtensions';
+import { Options, sample, Schema } from '@har-sdk/openapi-sampler';
 import pointer from 'json-pointer';
 import type { OpenAPI } from '@har-sdk/core';
 
 export class Sampler {
+  constructor(private readonly options: Options) {}
   public sampleParam(
     param: OpenAPI.Parameter,
     context: {
@@ -16,6 +18,18 @@ export class Sampler {
       'schema' in param
         ? {
             ...param.schema,
+            ...(param[VendorExtensions.X_EXAMPLE] !== undefined
+              ? {
+                  [VendorExtensions.X_EXAMPLE]:
+                    param[VendorExtensions.X_EXAMPLE]
+                }
+              : {}),
+            ...(param[VendorExtensions.X_EXAMPLES] !== undefined
+              ? {
+                  [VendorExtensions.X_EXAMPLES]:
+                    param[VendorExtensions.X_EXAMPLES]
+                }
+              : {}),
             ...(param.example !== undefined ? { example: param.example } : {})
           }
         : param,
@@ -43,7 +57,11 @@ export class Sampler {
     }
   ): any | undefined {
     try {
-      return sample(schema, { skipReadOnly: true, quiet: true }, context?.spec);
+      return sample(
+        schema,
+        { ...this.options, skipReadOnly: true, quiet: true },
+        context?.spec
+      );
     } catch (e) {
       throw new ConvertError(e.message, context?.jsonPointer);
     }

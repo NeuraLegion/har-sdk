@@ -4,6 +4,7 @@ export interface Options {
   skipReadOnly?: boolean;
   skipWriteOnly?: boolean;
   skipNonRequired?: boolean;
+  includeVendorExamples?: boolean;
   quiet?: boolean;
   maxSampleDepth?: number;
 }

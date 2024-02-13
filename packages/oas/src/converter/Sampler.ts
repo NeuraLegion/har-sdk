@@ -2,7 +2,7 @@ import { ConvertError } from '../errors';
 import { VendorExtensions } from './VendorExtensions';
 import { Options, sample, Schema } from '@har-sdk/openapi-sampler';
 import pointer from 'json-pointer';
-import type { OpenAPI } from '@har-sdk/core';
+import type { OpenAPI, OpenAPIV2, OpenAPIV3 } from '@har-sdk/core';
 
 export class Sampler {
   constructor(private readonly options: Options) {}
@@ -14,15 +14,18 @@ export class Sampler {
       tokens: string[];
     }
   ): any {
-    return this.sample(this.createSchema(param), {
-      spec: context.spec,
-      jsonPointer: pointer.compile([
-        ...context.tokens,
-        'parameters',
-        context.idx.toString(),
-        ...('schema' in param ? ['schema'] : [])
-      ])
-    });
+    return this.sample(
+      'schema' in param ? this.createSchema(param) : (param as Schema),
+      {
+        spec: context.spec,
+        jsonPointer: pointer.compile([
+          ...context.tokens,
+          'parameters',
+          context.idx.toString(),
+          ...('schema' in param ? ['schema'] : [])
+        ])
+      }
+    );
   }
 
   /**
@@ -47,23 +50,22 @@ export class Sampler {
     }
   }
 
-  private createSchema(param: OpenAPI.Parameter): Schema {
-    return 'schema' in param
-      ? {
-          ...param.schema,
-          ...(param[VendorExtensions.X_EXAMPLE] !== undefined
-            ? {
-                [VendorExtensions.X_EXAMPLE]: param[VendorExtensions.X_EXAMPLE]
-              }
-            : {}),
-          ...(param[VendorExtensions.X_EXAMPLES] !== undefined
-            ? {
-                [VendorExtensions.X_EXAMPLES]:
-                  param[VendorExtensions.X_EXAMPLES]
-              }
-            : {}),
-          ...(param.example !== undefined ? { example: param.example } : {})
-        }
-      : param;
+  private createSchema(
+    param: OpenAPIV2.InBodyParameterObject | OpenAPIV3.ParameterObject
+  ): Schema {
+    return {
+      ...param.schema,
+      ...(param[VendorExtensions.X_EXAMPLE] !== undefined
+        ? {
+            [VendorExtensions.X_EXAMPLE]: param[VendorExtensions.X_EXAMPLE]
+          }
+        : {}),
+      ...(param[VendorExtensions.X_EXAMPLES] !== undefined
+        ? {
+            [VendorExtensions.X_EXAMPLES]: param[VendorExtensions.X_EXAMPLES]
+          }
+        : {}),
+      ...(param.example !== undefined ? { example: param.example } : {})
+    };
   }
 }

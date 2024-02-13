@@ -1,10 +1,10 @@
 import { Options, Sample, Schema, Specification, Traverse } from './Traverse';
+import { VendorExamples } from './VendorExamples';
 import {
   firstArrayElement,
   getReplacementForCircular,
   mergeDeep
 } from '../utils';
-import { VendorExtensions } from '../VendorExtensions';
 import { OpenAPISchema, Sampler } from '../samplers';
 import JsonPointer from 'json-pointer';
 import { OpenAPIV2, OpenAPIV3 } from '@har-sdk/core';
@@ -48,6 +48,10 @@ export class DefaultTraverse implements Traverse {
   set samplers(samplers: Map<string, Sampler>) {
     this._samplers = samplers;
   }
+
+  constructor(
+    private readonly vendorExamples: VendorExamples = new VendorExamples()
+  ) {}
 
   public clearCache(): void {
     this.refCache = {};
@@ -129,7 +133,7 @@ export class DefaultTraverse implements Traverse {
     let example: any;
     let type: string;
     const vendorExample = options.includeVendorExamples
-      ? this.findVendorExample(schema)
+      ? this.vendorExamples.find(schema)
       : undefined;
 
     if (vendorExample) {
@@ -339,102 +343,5 @@ export class DefaultTraverse implements Traverse {
       (schema as OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject).default !==
       undefined
     );
-  }
-
-  private findVendorExample(schema: Schema) {
-    const example =
-      schema[VendorExtensions.X_EXAMPLE] ?? schema[VendorExtensions.X_EXAMPLES];
-
-    const matchingSchema = this.getMatchingSchema(schema);
-    const isPrimitiveType = 0 === matchingSchema.keys.length;
-
-    if (!example || typeof example !== 'object' || isPrimitiveType) {
-      return example;
-    }
-
-    return this.matchVendorExample(example, matchingSchema);
-  }
-
-  private getMatchingSchema(
-    schema: Schema,
-    depth: number = 0
-  ): { depth: number; keys: string[] } {
-    if ('items' in schema) {
-      return this.getMatchingSchema(schema.items, 1 + depth);
-    }
-
-    return {
-      depth,
-      keys:
-        'properties' in schema && schema.properties
-          ? Object.keys(schema.properties)
-          : []
-    };
-  }
-
-  private matchVendorExample(
-    example: unknown,
-    matchingSchema: { depth: number; keys: string[] },
-    possibleExample: unknown[] = []
-  ): unknown {
-    if (!example || typeof example !== 'object') {
-      return undefined;
-    }
-
-    if (matchingSchema.depth > 0 && Array.isArray(example)) {
-      return this.matchArrayVendorExample(
-        example,
-        matchingSchema,
-        possibleExample
-      );
-    }
-
-    return this.matchObjectVendorExample(
-      example,
-      matchingSchema,
-      possibleExample
-    );
-  }
-
-  private matchArrayVendorExample(
-    example: unknown,
-    matchingSchema: { depth: number; keys: string[] },
-    possibleExample: unknown[]
-  ): unknown {
-    if (matchingSchema.depth > 0 && Array.isArray(example)) {
-      possibleExample.push(example);
-
-      return this.matchArrayVendorExample(
-        [...example, undefined].shift(),
-        {
-          ...matchingSchema,
-          depth: matchingSchema.depth - 1
-        },
-        possibleExample
-      );
-    }
-
-    return !!example && Array.isArray(example)
-      ? undefined
-      : this.matchObjectVendorExample(example, matchingSchema, possibleExample);
-  }
-
-  private matchObjectVendorExample(
-    example: unknown,
-    matchingSchema: { depth: number; keys: string[] },
-    possibleExample: unknown[]
-  ): unknown {
-    const objectKeys = Object.keys(example ?? {});
-
-    if (objectKeys.every((key) => matchingSchema.keys.includes(key))) {
-      return possibleExample.length > 0 ? possibleExample.shift() : example;
-    }
-
-    for (const key of objectKeys) {
-      const value = this.matchVendorExample(example[key], matchingSchema);
-      if (value) {
-        return value;
-      }
-    }
   }
 }

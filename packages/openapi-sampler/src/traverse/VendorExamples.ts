@@ -9,7 +9,7 @@ export class VendorExamples {
     const matchingSchema = this.getMatchingSchema(schema);
     const isPrimitiveType = 0 === matchingSchema.keys.length;
 
-    if (!example || typeof example !== 'object' || isPrimitiveType) {
+    if (isPrimitiveType) {
       return example;
     }
 

@@ -14,35 +14,15 @@ export class Sampler {
       tokens: string[];
     }
   ): any {
-    return this.sample(
-      'schema' in param
-        ? {
-            ...param.schema,
-            ...(param[VendorExtensions.X_EXAMPLE] !== undefined
-              ? {
-                  [VendorExtensions.X_EXAMPLE]:
-                    param[VendorExtensions.X_EXAMPLE]
-                }
-              : {}),
-            ...(param[VendorExtensions.X_EXAMPLES] !== undefined
-              ? {
-                  [VendorExtensions.X_EXAMPLES]:
-                    param[VendorExtensions.X_EXAMPLES]
-                }
-              : {}),
-            ...(param.example !== undefined ? { example: param.example } : {})
-          }
-        : param,
-      {
-        spec: context.spec,
-        jsonPointer: pointer.compile([
-          ...context.tokens,
-          'parameters',
-          context.idx.toString(),
-          ...('schema' in param ? ['schema'] : [])
-        ])
-      }
-    );
+    return this.sample(this.createSchema(param), {
+      spec: context.spec,
+      jsonPointer: pointer.compile([
+        ...context.tokens,
+        'parameters',
+        context.idx.toString(),
+        ...('schema' in param ? ['schema'] : [])
+      ])
+    });
   }
 
   /**
@@ -65,5 +45,25 @@ export class Sampler {
     } catch (e) {
       throw new ConvertError(e.message, context?.jsonPointer);
     }
+  }
+
+  private createSchema(param: OpenAPI.Parameter): Schema {
+    return 'schema' in param
+      ? {
+          ...param.schema,
+          ...(param[VendorExtensions.X_EXAMPLE] !== undefined
+            ? {
+                [VendorExtensions.X_EXAMPLE]: param[VendorExtensions.X_EXAMPLE]
+              }
+            : {}),
+          ...(param[VendorExtensions.X_EXAMPLES] !== undefined
+            ? {
+                [VendorExtensions.X_EXAMPLES]:
+                  param[VendorExtensions.X_EXAMPLES]
+              }
+            : {}),
+          ...(param.example !== undefined ? { example: param.example } : {})
+        }
+      : param;
   }
 }

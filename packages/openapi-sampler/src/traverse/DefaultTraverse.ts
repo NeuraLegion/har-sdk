@@ -345,70 +345,96 @@ export class DefaultTraverse implements Traverse {
     const example =
       schema[VendorExtensions.X_EXAMPLE] ?? schema[VendorExtensions.X_EXAMPLES];
 
-    const schemaKeys = this.findSchemaKeys(schema);
+    const matchingSchema = this.getMatchingSchema(schema);
+    const isPrimitiveType = 0 === matchingSchema.keys.length;
 
-    if (
-      !example ||
-      typeof example !== 'object' ||
-      0 === schemaKeys.keys.length
-    ) {
+    if (!example || typeof example !== 'object' || isPrimitiveType) {
       return example;
     }
 
-    return this.matchVendorExampleKeys(example, schemaKeys);
+    return this.matchVendorExample(example, matchingSchema);
   }
 
-  private findSchemaKeys(
+  private getMatchingSchema(
     schema: Schema,
     depth: number = 0
   ): { depth: number; keys: string[] } {
     if ('items' in schema) {
-      return this.findSchemaKeys(schema.items, 1 + depth);
+      return this.getMatchingSchema(schema.items, 1 + depth);
     }
 
     return {
       depth,
-      keys: 'properties' in schema ? Object.keys(schema.properties) : []
+      keys:
+        'properties' in schema && schema.properties
+          ? Object.keys(schema.properties)
+          : []
     };
   }
 
-  private matchVendorExampleKeys(
+  private matchVendorExample(
     example: unknown,
-    schemaKeys: { depth: number; keys: string[] },
-    possibleExamples: unknown[] = []
+    matchingSchema: { depth: number; keys: string[] },
+    possibleExample: unknown[] = []
   ): unknown {
     if (!example || typeof example !== 'object') {
       return undefined;
     }
 
-    if (schemaKeys.depth > 0 && Array.isArray(example)) {
-      return this.matchVendorExampleKeys(
-        [...example, undefined].shift(),
-        {
-          ...schemaKeys,
-          depth: schemaKeys.depth - 1
-        },
-        [...possibleExamples, example]
+    if (matchingSchema.depth > 0 && Array.isArray(example)) {
+      return this.matchArrayVendorExample(
+        example,
+        matchingSchema,
+        possibleExample
       );
     }
 
-    const objectKeys = Object.keys(example);
+    return this.matchObjectVendorExample(
+      example,
+      matchingSchema,
+      possibleExample
+    );
+  }
 
-    if (objectKeys.every((key) => schemaKeys.keys.includes(key))) {
-      if (possibleExamples.length > 0) {
-        return possibleExamples.shift();
-      }
+  private matchArrayVendorExample(
+    example: unknown,
+    matchingSchema: { depth: number; keys: string[] },
+    possibleExample: unknown[]
+  ): unknown {
+    if (matchingSchema.depth > 0 && Array.isArray(example)) {
+      possibleExample.push(example);
 
-      return example;
+      return this.matchArrayVendorExample(
+        [...example, undefined].shift(),
+        {
+          ...matchingSchema,
+          depth: matchingSchema.depth - 1
+        },
+        possibleExample
+      );
+    }
+
+    return !!example && Array.isArray(example)
+      ? undefined
+      : this.matchObjectVendorExample(example, matchingSchema, possibleExample);
+  }
+
+  private matchObjectVendorExample(
+    example: unknown,
+    matchingSchema: { depth: number; keys: string[] },
+    possibleExample: unknown[]
+  ): unknown {
+    const objectKeys = Object.keys(example ?? {});
+
+    if (objectKeys.every((key) => matchingSchema.keys.includes(key))) {
+      return possibleExample.length > 0 ? possibleExample.shift() : example;
     }
 
     for (const key of objectKeys) {
-      const value = this.matchVendorExampleKeys(example[key], schemaKeys);
+      const value = this.matchVendorExample(example[key], matchingSchema);
       if (value) {
         return value;
       }
     }
-
-    return undefined;
   }
 }

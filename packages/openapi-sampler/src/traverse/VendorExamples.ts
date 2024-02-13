@@ -72,7 +72,6 @@ export class VendorExamples {
       : this.traverseObject(example, matchingSchema, possibleExample);
   }
 
-  // eslint-disable-next-line complexity
   private traverseObject(
     example: unknown,
     matchingSchema: { depth: number; keys: string[] },
@@ -84,11 +83,9 @@ export class VendorExamples {
       return possibleExample.length > 0 ? possibleExample.shift() : example;
     }
 
-    for (const key of objectKeys) {
-      const value = this.traverse(example[key], matchingSchema);
-      if (value) {
-        return value;
-      }
-    }
+    return objectKeys
+      .map((key) => this.traverse(example[key], matchingSchema))
+      .filter((obj) => !!obj)
+      .shift();
   }
 }

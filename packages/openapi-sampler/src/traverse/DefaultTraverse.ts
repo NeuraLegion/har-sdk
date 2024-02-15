@@ -1,5 +1,5 @@
 import { Options, Sample, Schema, Specification, Traverse } from './Traverse';
-import { VendorExamples } from './VendorExamples';
+import { VendorExampleExtractor } from './VendorExampleExtractor';
 import {
   firstArrayElement,
   getReplacementForCircular,
@@ -50,7 +50,7 @@ export class DefaultTraverse implements Traverse {
   }
 
   constructor(
-    private readonly vendorExamples: VendorExamples = new VendorExamples()
+    private readonly vendorExampleExtractor: VendorExampleExtractor = new VendorExampleExtractor()
   ) {}
 
   public clearCache(): void {
@@ -88,6 +88,23 @@ export class DefaultTraverse implements Traverse {
         readOnly: schema.readOnly,
         writeOnly: schema.writeOnly,
         type: schema.type
+      };
+    }
+
+    const vendorExample = options.includeVendorExamples
+      ? this.vendorExampleExtractor.extract(schema)
+      : undefined;
+
+    if (vendorExample) {
+      this.popSchemaStack();
+
+      const { readOnly, writeOnly } = schema as OpenAPIV2.SchemaObject;
+
+      return {
+        readOnly,
+        writeOnly,
+        type: schema.type,
+        value: vendorExample
       };
     }
 
@@ -132,13 +149,8 @@ export class DefaultTraverse implements Traverse {
 
     let example: any;
     let type: string;
-    const vendorExample = options.includeVendorExamples
-      ? this.vendorExamples.find(schema)
-      : undefined;
 
-    if (vendorExample) {
-      example = vendorExample;
-    } else if (this.isDefaultExists(schema)) {
+    if (this.isDefaultExists(schema)) {
       example = schema.default;
     } else if ((schema as any).const !== undefined) {
       example = (schema as any).const;

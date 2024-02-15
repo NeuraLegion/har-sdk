@@ -40,4 +40,4 @@ export const sample = (
   return traverse.traverse(schema, opts, spec)?.value;
 };
 
-export { Schema, Options, Specification } from './traverse';
+export { Schema, Options, Specification, VendorExtensions } from './traverse';

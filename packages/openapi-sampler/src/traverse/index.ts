@@ -1,3 +1,3 @@
 export * from './Traverse';
 export * from './DefaultTraverse';
-export * from './VendorExamples';
+export * from './VendorExtensions';

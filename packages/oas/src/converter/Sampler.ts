@@ -1,6 +1,11 @@
 import { ConvertError } from '../errors';
 import { isOASV2 } from '../utils';
-import { Options, sample, Schema, VendorExtensions } from '@har-sdk/openapi-sampler';
+import {
+  Options,
+  sample,
+  Schema,
+  VendorExtensions
+} from '@har-sdk/openapi-sampler';
 import pointer from 'json-pointer';
 import type { OpenAPI } from '@har-sdk/core';
 

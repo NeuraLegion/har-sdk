@@ -1,4 +1,5 @@
 import { Schema } from './traverse';
+import { OpenAPISchema } from './samplers';
 import { OpenAPIV2, OpenAPIV3 } from '@har-sdk/core';
 
 const isObject = <T extends Record<string, unknown>>(obj: T): obj is T =>
@@ -31,14 +32,10 @@ export const getReplacementForCircular = (type: string) => ({
   value: type === 'object' ? {} : type === 'array' ? [] : undefined
 });
 
-export const hasExample = (
-  schema: Schema
-): schema is OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject =>
+export const hasExample = (schema: Schema): schema is OpenAPISchema =>
   (schema as any).example !== undefined;
 
-export const hasDefault = (
-  schema: Schema
-): schema is OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject =>
+export const hasDefault = (schema: Schema): schema is OpenAPISchema =>
   (schema as any).default !== undefined;
 
 export const isArraySchema = (

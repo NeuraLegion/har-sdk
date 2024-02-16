@@ -1,6 +1,6 @@
 import { VendorExampleExtractor } from './VendorExampleExtractor';
 import { Options, Schema } from './Traverse';
-import { firstArrayElement, isDefaultExists, isExampleExists } from '../utils';
+import { firstArrayElement, hasDefault, hasExample } from '../utils';
 
 export class SchemaExampleExtractor {
   constructor(
@@ -19,7 +19,7 @@ export class SchemaExampleExtractor {
   }
   public extractFromProperties(schema: Schema): unknown {
     let value;
-    if (isDefaultExists(schema)) {
+    if (hasDefault(schema)) {
       value = schema.default;
     } else if ((schema as any).const !== undefined) {
       value = (schema as any).const;
@@ -31,7 +31,7 @@ export class SchemaExampleExtractor {
   }
 
   private extractFromSchemaExamples(schema: Schema): unknown {
-    if (isExampleExists(schema)) {
+    if (hasExample(schema)) {
       return schema.example;
     } else if (
       (schema as any).examples !== undefined &&

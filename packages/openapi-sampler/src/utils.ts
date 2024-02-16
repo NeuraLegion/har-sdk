@@ -31,22 +31,22 @@ export const getReplacementForCircular = (type: string) => ({
   value: type === 'object' ? {} : type === 'array' ? [] : undefined
 });
 
-export const isExampleExists = (
+export const hasExample = (
   schema: Schema
 ): schema is OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject =>
   (schema as any).example !== undefined;
 
-export const isDefaultExists = (
+export const hasDefault = (
   schema: Schema
 ): schema is OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject =>
   (schema as any).default !== undefined;
 
-export const isItemsExists = (
+export const isArraySchema = (
   schema: Schema
 ): schema is OpenAPIV3.ArraySchemaObject | OpenAPIV2.SchemaObject =>
   (schema as any).items !== undefined;
 
-export const isRefExists = (
+export const isReference = (
   schema: Schema
 ): schema is OpenAPIV3.ReferenceObject | OpenAPIV2.ReferenceObject =>
   (schema as any).$ref !== undefined;

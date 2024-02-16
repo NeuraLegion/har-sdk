@@ -1,6 +1,6 @@
 import { Options, Sample, Specification, Traverse } from '../traverse';
 import { Sampler, OpenAPISchema } from './Sampler';
-import { isItemsExists } from '../utils';
+import { isArraySchema } from '../utils';
 
 export class ArraySampler implements Sampler {
   constructor(private readonly traverse: Traverse) {}
@@ -12,21 +12,21 @@ export class ArraySampler implements Sampler {
   ): any[] {
     let arrayLength = schema.minItems || 1;
 
-    if (isItemsExists(schema) && Array.isArray(schema.items)) {
+    if (isArraySchema(schema) && Array.isArray(schema.items)) {
       arrayLength = Math.max(arrayLength, schema.items.length);
     }
 
     const itemSchemaGetter = (itemNumber: number) => {
-      if (isItemsExists(schema) && Array.isArray(schema.items)) {
+      if (isArraySchema(schema) && Array.isArray(schema.items)) {
         return schema.items[itemNumber] || {};
       }
 
-      return isItemsExists(schema) ? schema.items : {};
+      return isArraySchema(schema) ? schema.items : {};
     };
 
     const res: Sample[] = [];
 
-    if (!isItemsExists(schema)) {
+    if (!isArraySchema(schema)) {
       return res;
     }
 

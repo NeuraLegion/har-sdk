@@ -3,7 +3,7 @@ import { SchemaExampleExtractor } from './SchemaExampleExtractor';
 import {
   firstArrayElement,
   getReplacementForCircular,
-  isRefExists,
+  isReference,
   mergeDeep
 } from '../utils';
 import { OpenAPISchema, Sampler } from '../samplers';
@@ -77,7 +77,7 @@ export class DefaultTraverse implements Traverse {
 
     this.pushSchemaStack(schema);
 
-    if (isRefExists(schema)) {
+    if (isReference(schema)) {
       return this.inferRef(spec, schema, options);
     }
 

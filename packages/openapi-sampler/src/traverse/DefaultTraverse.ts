@@ -179,7 +179,7 @@ export class DefaultTraverse implements Traverse {
 
     if (this.isExampleExists(schema)) {
       example = schema.example;
-    } else if ((schema as any).examples && (schema as any).examples.length) {
+    } else if (this.isExamplesExists(schema)) {
       example = firstArrayElement((schema as any).examples);
     } else {
       example = includeVendorExamples
@@ -360,6 +360,13 @@ export class DefaultTraverse implements Traverse {
     return (
       (schema as OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject).example !==
       undefined
+    );
+  }
+
+  private isExamplesExists(schema: Schema): schema is { examples: unknown[] } {
+    return (
+      (schema as any).examples !== undefined &&
+      (schema as any).examples.length > 0
     );
   }
 

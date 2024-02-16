@@ -67,16 +67,20 @@ export class Sampler {
       return {
         ...schema,
         ...(example !== undefined ? { example } : {}),
-        ...[VendorExtensions.X_EXAMPLE, VendorExtensions.X_EXAMPLES].reduce(
-          (acc, prop) => ({
-            ...acc,
-            ...(rest[prop] !== undefined ? { [prop]: rest[prop] } : {})
-          }),
-          {}
-        )
+        ...this.extractVendorExamples(rest)
       };
     }
 
     return param as Schema;
+  }
+
+  private extractVendorExamples(param: OpenAPI.Parameter) {
+    return [VendorExtensions.X_EXAMPLE, VendorExtensions.X_EXAMPLES].reduce(
+      (acc, prop) => ({
+        ...acc,
+        ...(param[prop] !== undefined ? { [prop]: param[prop] } : {})
+      }),
+      {}
+    );
   }
 }

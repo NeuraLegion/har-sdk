@@ -1,7 +1,6 @@
 import { VendorExampleExtractor } from './VendorExampleExtractor';
 import { Options, Schema } from './Traverse';
-import { firstArrayElement } from '../utils';
-import { OpenAPIV2, OpenAPIV3 } from '@har-sdk/core';
+import { firstArrayElement, isDefaultExists, isExampleExists } from '../utils';
 
 export class SchemaExampleExtractor {
   constructor(
@@ -20,7 +19,7 @@ export class SchemaExampleExtractor {
   }
   public extractFromProperties(schema: Schema): unknown {
     let value;
-    if (this.isDefaultExists(schema)) {
+    if (isDefaultExists(schema)) {
       value = schema.default;
     } else if ((schema as any).const !== undefined) {
       value = (schema as any).const;
@@ -32,7 +31,7 @@ export class SchemaExampleExtractor {
   }
 
   private extractFromSchemaExamples(schema: Schema): unknown {
-    if (this.isExampleExists(schema)) {
+    if (isExampleExists(schema)) {
       return schema.example;
     } else if (
       (schema as any).examples !== undefined &&
@@ -49,23 +48,5 @@ export class SchemaExampleExtractor {
     return includeVendorExamples
       ? this.vendorExampleExtractor.extract(schema)
       : undefined;
-  }
-
-  private isExampleExists(
-    schema: Schema
-  ): schema is OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject {
-    return (
-      (schema as OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject).example !==
-      undefined
-    );
-  }
-
-  private isDefaultExists(
-    schema: Schema
-  ): schema is OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject {
-    return (
-      (schema as OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject).default !==
-      undefined
-    );
   }
 }

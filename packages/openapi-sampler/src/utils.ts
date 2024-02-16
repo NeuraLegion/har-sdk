@@ -1,3 +1,6 @@
+import { Schema } from './traverse';
+import { OpenAPIV2, OpenAPIV3 } from '@har-sdk/core';
+
 const isObject = <T extends Record<string, unknown>>(obj: T): obj is T =>
   obj && typeof obj === 'object';
 
@@ -27,3 +30,21 @@ export const firstArrayElement = <T>(x: T[]): T | undefined => x[0];
 export const getReplacementForCircular = (type: string) => ({
   value: type === 'object' ? {} : type === 'array' ? [] : undefined
 });
+
+export const isExampleExists = (
+  schema: Schema
+): schema is OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject =>
+  (schema as OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject).example !==
+  undefined;
+
+export const isDefaultExists = (
+  schema: Schema
+): schema is OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject =>
+  (schema as OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject).default !==
+  undefined;
+
+export const isItemsExists = (
+  schema: Schema
+): schema is OpenAPIV3.ArraySchemaObject | OpenAPIV2.SchemaObject =>
+  (schema as OpenAPIV3.ArraySchemaObject | OpenAPIV2.SchemaObject).items !==
+  undefined;

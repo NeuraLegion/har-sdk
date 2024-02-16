@@ -1,5 +1,5 @@
 import { Options, Sample, Schema, Specification, Traverse } from './Traverse';
-import { VendorExampleExtractor } from './VendorExampleExtractor';
+import { SchemaExampleExtractor } from './SchemaExampleExtractor';
 import {
   firstArrayElement,
   getReplacementForCircular,
@@ -50,7 +50,7 @@ export class DefaultTraverse implements Traverse {
   }
 
   constructor(
-    private readonly vendorExampleExtractor: VendorExampleExtractor = new VendorExampleExtractor()
+    private readonly sampleValueExtractor: SchemaExampleExtractor = new SchemaExampleExtractor()
   ) {}
 
   public clearCache(): void {
@@ -94,7 +94,7 @@ export class DefaultTraverse implements Traverse {
   ): Sample | undefined {
     const type = (schema as any).type as string;
 
-    let value = this.extractSampleValueFromSchema(schema);
+    let value = this.sampleValueExtractor.extractFromProperties(schema);
 
     value =
       value === undefined
@@ -111,19 +111,6 @@ export class DefaultTraverse implements Traverse {
       writeOnly,
       value
     };
-  }
-
-  private extractSampleValueFromSchema(schema: Schema): unknown {
-    let value;
-    if (this.isDefaultExists(schema)) {
-      value = schema.default;
-    } else if ((schema as any).const !== undefined) {
-      value = (schema as any).const;
-    } else if ((schema as any).enum && (schema as any).enum.length) {
-      value = firstArrayElement((schema as any).enum);
-    }
-
-    return value;
   }
 
   private createSampleValueFromInferredType(
@@ -218,14 +205,12 @@ export class DefaultTraverse implements Traverse {
     schema: Schema,
     options: Options
   ): Sample | undefined {
-    let example = this.extractSampleValueFromExamples(schema);
+    const value = this.sampleValueExtractor.extractFromExamples(
+      schema,
+      options
+    );
 
-    example =
-      example === undefined
-        ? this.extractSampleValueFromVendorExamples(schema, options)
-        : example;
-
-    if (example !== undefined) {
+    if (value !== undefined) {
       const { type, readOnly, writeOnly } = schema as OpenAPISchema;
 
       this.popSchemaStack();
@@ -234,29 +219,9 @@ export class DefaultTraverse implements Traverse {
         type,
         readOnly,
         writeOnly,
-        value: example
+        value
       };
     }
-  }
-
-  private extractSampleValueFromExamples(schema: Schema): unknown {
-    if (this.isExampleExists(schema)) {
-      return schema.example;
-    } else if (
-      (schema as any).examples !== undefined &&
-      (schema as any).examples.length > 0
-    ) {
-      return firstArrayElement((schema as any).examples);
-    }
-  }
-
-  private extractSampleValueFromVendorExamples(
-    schema: Schema,
-    { includeVendorExamples }: Options
-  ): unknown {
-    return includeVendorExamples
-      ? this.vendorExampleExtractor.extract(schema)
-      : undefined;
   }
 
   private pushSchemaStack(schema: Schema) {
@@ -408,24 +373,6 @@ export class DefaultTraverse implements Traverse {
   ): schema is OpenAPIV3.ReferenceObject | OpenAPIV2.ReferenceObject {
     return (
       (schema as OpenAPIV3.ReferenceObject | OpenAPIV2.ReferenceObject).$ref !==
-      undefined
-    );
-  }
-
-  private isExampleExists(
-    schema: Schema
-  ): schema is OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject {
-    return (
-      (schema as OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject).example !==
-      undefined
-    );
-  }
-
-  private isDefaultExists(
-    schema: Schema
-  ): schema is OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject {
-    return (
-      (schema as OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject).default !==
       undefined
     );
   }

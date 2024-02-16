@@ -2,6 +2,14 @@ import { Schema } from './traverse';
 import { OpenAPISchema } from './samplers';
 import { OpenAPIV2, OpenAPIV3 } from '@har-sdk/core';
 
+export type OpenAPIArraySchemaObject =
+  | OpenAPIV3.ArraySchemaObject
+  | OpenAPIV2.SchemaObject;
+
+export type OpenAPIReferenceObject =
+  | OpenAPIV3.ReferenceObject
+  | OpenAPIV2.ReferenceObject;
+
 const isObject = <T extends Record<string, unknown>>(obj: T): obj is T =>
   obj && typeof obj === 'object';
 
@@ -38,12 +46,8 @@ export const hasExample = (schema: Schema): schema is OpenAPISchema =>
 export const hasDefault = (schema: Schema): schema is OpenAPISchema =>
   (schema as any).default !== undefined;
 
-export const isArraySchema = (
-  schema: Schema
-): schema is OpenAPIV3.ArraySchemaObject | OpenAPIV2.SchemaObject =>
+export const hasItems = (schema: Schema): schema is OpenAPIArraySchemaObject =>
   (schema as any).items !== undefined;
 
-export const isReference = (
-  schema: Schema
-): schema is OpenAPIV3.ReferenceObject | OpenAPIV2.ReferenceObject =>
+export const isReference = (schema: Schema): schema is OpenAPIReferenceObject =>
   (schema as any).$ref !== undefined;

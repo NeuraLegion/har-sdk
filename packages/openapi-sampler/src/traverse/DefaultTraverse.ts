@@ -7,7 +7,7 @@ import {
 } from '../utils';
 import { OpenAPISchema, Sampler } from '../samplers';
 import JsonPointer from 'json-pointer';
-import { OpenAPIV2, OpenAPIV3 } from '@har-sdk/core';
+import { IJsonSchema, OpenAPIV2, OpenAPIV3 } from '@har-sdk/core';
 
 const schemaKeywordTypes = {
   multipleOf: 'number',
@@ -80,49 +80,20 @@ export class DefaultTraverse implements Traverse {
       return this.inferRef(spec, schema, options);
     }
 
-    if (this.isExampleExists(schema)) {
+    let example = this.getExample(schema, options);
+
+    if (example) {
       this.popSchemaStack();
 
-      return {
-        value: schema.example,
-        readOnly: schema.readOnly,
-        writeOnly: schema.writeOnly,
-        type: schema.type
-      };
-    }
-
-    const vendorExample = options.includeVendorExamples
-      ? this.vendorExampleExtractor.extract(schema)
-      : undefined;
-
-    if (vendorExample) {
-      this.popSchemaStack();
-
-      const { readOnly, writeOnly } = schema as OpenAPIV2.SchemaObject;
-
-      return {
-        readOnly,
-        writeOnly,
-        type: schema.type,
-        value: vendorExample
-      };
+      return example;
     }
 
     if (schema.allOf) {
       this.popSchemaStack();
 
       return this.allOfSample(
-        { ...schema, allOf: undefined } as
-          | OpenAPIV3.ReferenceObject
-          | OpenAPIV2.ReferenceObject
-          | OpenAPIV3.SchemaObject
-          | OpenAPIV2.SchemaObject,
-        schema.allOf as (
-          | OpenAPIV3.ReferenceObject
-          | OpenAPIV2.ReferenceObject
-          | OpenAPIV3.SchemaObject
-          | OpenAPIV2.SchemaObject
-        )[],
+        { ...schema, allOf: undefined } as Exclude<Schema, IJsonSchema>,
+        schema.allOf as Exclude<Schema, IJsonSchema>[],
         options,
         spec
       );
@@ -138,16 +109,23 @@ export class DefaultTraverse implements Traverse {
 
       this.popSchemaStack();
 
-      return this.traverse(firstArrayElement(schema.oneOf), options, spec);
+      return this.traverse(
+        firstArrayElement(schema.oneOf as Exclude<Schema, IJsonSchema>),
+        options,
+        spec
+      );
     }
 
     if (schema.anyOf && schema.anyOf.length) {
       this.popSchemaStack();
 
-      return this.traverse(firstArrayElement(schema.anyOf), options, spec);
+      return this.traverse(
+        firstArrayElement(schema.anyOf as Exclude<Schema, IJsonSchema>),
+        options,
+        spec
+      );
     }
 
-    let example: any;
     let type: string;
 
     if (this.isDefaultExists(schema)) {
@@ -355,5 +333,36 @@ export class DefaultTraverse implements Traverse {
       (schema as OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject).default !==
       undefined
     );
+  }
+
+  private getExample(
+    schema: Schema,
+    { includeVendorExamples }: Options
+  ): Sample | undefined {
+    if (this.isExampleExists(schema)) {
+      const { type, readOnly, writeOnly, example } = schema;
+
+      return {
+        type,
+        readOnly,
+        writeOnly,
+        value: example
+      };
+    }
+
+    const vendorExample = includeVendorExamples
+      ? this.vendorExampleExtractor.extract(schema)
+      : undefined;
+
+    if (vendorExample) {
+      const { type, readOnly, writeOnly } = schema as OpenAPIV2.SchemaObject;
+
+      return {
+        type,
+        readOnly,
+        writeOnly,
+        value: vendorExample
+      };
+    }
   }
 }

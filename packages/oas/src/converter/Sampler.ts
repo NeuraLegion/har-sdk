@@ -61,22 +61,22 @@ export class Sampler {
   }
 
   private createParamSchema(param: OpenAPI.Parameter): Schema {
-    return 'schema' in param
-      ? {
-          ...param.schema,
-          ...(param[VendorExtensions.X_EXAMPLE] !== undefined
-            ? {
-                [VendorExtensions.X_EXAMPLE]: param[VendorExtensions.X_EXAMPLE]
-              }
-            : {}),
-          ...(param[VendorExtensions.X_EXAMPLES] !== undefined
-            ? {
-                [VendorExtensions.X_EXAMPLES]:
-                  param[VendorExtensions.X_EXAMPLES]
-              }
-            : {}),
-          ...(param.example !== undefined ? { example: param.example } : {})
-        }
-      : (param as Schema);
+    if ('schema' in param) {
+      const { schema, example, ...rest } = param;
+
+      return {
+        ...schema,
+        ...(example !== undefined ? { example } : {}),
+        ...[VendorExtensions.X_EXAMPLE, VendorExtensions.X_EXAMPLES].reduce(
+          (acc, prop) => ({
+            ...acc,
+            ...(rest[prop] !== undefined ? { [prop]: rest[prop] } : {})
+          }),
+          {}
+        )
+      };
+    }
+
+    return param as Schema;
   }
 }

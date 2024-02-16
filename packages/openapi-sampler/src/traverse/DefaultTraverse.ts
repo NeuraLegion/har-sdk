@@ -80,14 +80,57 @@ export class DefaultTraverse implements Traverse {
       return this.inferRef(spec, schema, options);
     }
 
-    let example = this.getExample(schema, options);
+    return (
+      this.findSchemaExample(schema, options, spec) ??
+      this.tryTraverseSubSchema(schema, options, spec) ??
+      this.createSchemaExample(schema, options, spec)
+    );
+  }
 
-    if (example) {
-      this.popSchemaStack();
+  private createSchemaExample(
+    schema: Schema,
+    options?: Options,
+    spec?: Specification
+  ): Sample | undefined {
+    let example: Sample | undefined;
+    let type: string;
 
-      return example;
+    if (this.isDefaultExists(schema)) {
+      example = schema.default;
+    } else if ((schema as any).const !== undefined) {
+      example = (schema as any).const;
+    } else if ((schema as any).enum && (schema as any).enum.length) {
+      example = firstArrayElement((schema as any).enum);
+    } else {
+      type = (schema as any).type as string;
+
+      if (!type) {
+        type = this.inferType(schema as OpenAPISchema);
+      }
+
+      const sampler = this.samplers.get(type || 'null');
+
+      if (sampler) {
+        example = sampler.sample(schema as OpenAPISchema, spec, options);
+      }
     }
 
+    this.popSchemaStack();
+
+    const { readOnly, writeOnly } = schema as OpenAPISchema;
+
+    return {
+      type,
+      readOnly,
+      writeOnly,
+      value: example
+    };
+  }
+  private tryTraverseSubSchema(
+    schema: IJsonSchema,
+    options?: Options,
+    spec?: Specification
+  ): Sample | undefined {
     if (schema.allOf) {
       this.popSchemaStack();
 
@@ -125,43 +168,37 @@ export class DefaultTraverse implements Traverse {
         spec
       );
     }
+  }
 
-    let type: string;
+  private findSchemaExample(
+    schema: Schema,
+    { includeVendorExamples }: Options,
+    _: Specification
+  ): Sample | undefined {
+    let example;
 
-    if (this.isDefaultExists(schema)) {
-      example = schema.default;
-    } else if ((schema as any).const !== undefined) {
-      example = (schema as any).const;
-    } else if (schema.enum && schema.enum.length) {
-      example = firstArrayElement(schema.enum);
+    if (this.isExampleExists(schema)) {
+      example = schema.example;
     } else if ((schema as any).examples && (schema as any).examples.length) {
       example = firstArrayElement((schema as any).examples);
     } else {
-      type = schema.type as string;
-
-      if (!type) {
-        type = this.inferType(
-          schema as OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject
-        );
-      }
-
-      const sampler = this.samplers.get(type || 'null');
-
-      if (sampler) {
-        example = sampler.sample(schema as OpenAPISchema, spec, options);
-      }
+      example = includeVendorExamples
+        ? this.vendorExampleExtractor.extract(schema)
+        : undefined;
     }
 
-    this.popSchemaStack();
+    if (example !== undefined) {
+      const { type, readOnly, writeOnly } = schema as OpenAPISchema;
 
-    return {
-      type,
-      value: example,
-      readOnly: (schema as OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject)
-        .readOnly,
-      writeOnly: (schema as OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject)
-        .writeOnly
-    };
+      this.popSchemaStack();
+
+      return {
+        type,
+        readOnly,
+        writeOnly,
+        value: example
+      };
+    }
   }
 
   private pushSchemaStack(schema: Schema) {
@@ -333,36 +370,5 @@ export class DefaultTraverse implements Traverse {
       (schema as OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject).default !==
       undefined
     );
-  }
-
-  private getExample(
-    schema: Schema,
-    { includeVendorExamples }: Options
-  ): Sample | undefined {
-    if (this.isExampleExists(schema)) {
-      const { type, readOnly, writeOnly, example } = schema;
-
-      return {
-        type,
-        readOnly,
-        writeOnly,
-        value: example
-      };
-    }
-
-    const vendorExample = includeVendorExamples
-      ? this.vendorExampleExtractor.extract(schema)
-      : undefined;
-
-    if (vendorExample) {
-      const { type, readOnly, writeOnly } = schema as OpenAPIV2.SchemaObject;
-
-      return {
-        type,
-        readOnly,
-        writeOnly,
-        value: vendorExample
-      };
-    }
   }
 }

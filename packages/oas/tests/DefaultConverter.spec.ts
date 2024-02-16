@@ -296,8 +296,8 @@ describe('DefaultConverter', () => {
     it('should ignore x-example when includeVendorExamples is true (oas)', async () => {
       // arrange
       const { inputDoc, expectedDoc } = await createFixture({
-        inputFile: `./fixtures/params.x-example.oas.yaml`,
-        expectedFile: `./fixtures/params.x-example.oas.result.json`
+        inputFile: `./fixtures/x-example.oas.yaml`,
+        expectedFile: `./fixtures/x-example.oas.result.json`
       });
 
       // act
@@ -310,12 +310,12 @@ describe('DefaultConverter', () => {
     });
 
     it.each(['path', 'query', 'header', 'form-data'])(
-      'should ignore %s parameter x-example when includeVendorExamples is false (swagger)',
+      'should ignore %s parameter vendor example when vendor examples inclusion disabled (swagger)',
       async (input) => {
         // arrange
         const { inputDoc, expectedDoc } = await createFixture({
-          inputFile: `./fixtures/params.x-example.${input}.swagger.yaml`,
-          expectedFile: `./fixtures/params.x-example.${input}.swagger.include-examples-is-false.json`
+          inputFile: `./fixtures/x-example.${input}.disabled.swagger.yaml`,
+          expectedFile: `./fixtures/x-example.${input}.disabled.swagger.result.json`
         });
 
         // act
@@ -329,12 +329,12 @@ describe('DefaultConverter', () => {
     );
 
     it.each(['path', 'query', 'header', 'form-data'])(
-      'should prefer %s parameter x-example over default when includeVendorExamples is true (swagger)',
+      'should use %s parameter vendor example when vendor examples inclusion enabled (swagger)',
       async (input) => {
         // arrange
         const { inputDoc, expectedDoc } = await createFixture({
-          inputFile: `./fixtures/params.x-example.${input}.swagger.yaml`,
-          expectedFile: `./fixtures/params.x-example.${input}.swagger.include-examples-is-true.json`
+          inputFile: `./fixtures/x-example.${input}.enabled.swagger.yaml`,
+          expectedFile: `./fixtures/x-example.${input}.enabled.swagger.result.json`
         });
 
         // act
@@ -347,37 +347,37 @@ describe('DefaultConverter', () => {
       }
     );
 
-    it.each(['schemathesis', 'redocly', 'api-connect-or-smartbear'])(
-      'should use %s body parameter x-example when includeVendorExamples is true (swagger)',
+    it.each(['schemathesis', 'redocly', 'api-connect', 'smartbear'])(
+      'should ignore body parameter vendor example when vendor examples inclusion disabled (swagger, %s)',
       async (input) => {
         // arrange
         const { inputDoc, expectedDoc } = await createFixture({
-          inputFile: `./fixtures/params.x-example.body.${input}.swagger.yaml`,
-          expectedFile: `./fixtures/params.x-example.body.swagger.include-examples-is-true.json`
-        });
-
-        // act
-        const result: Request[] = await oas2har(inputDoc as any, {
-          includeVendorExamples: true
-        });
-
-        // assert
-        expect(result).toStrictEqual(expectedDoc);
-      }
-    );
-
-    it.each(['schemathesis', 'redocly', 'api-connect-or-smartbear'])(
-      'should not use %s body parameter x-example when includeVendorExamples is false (swagger)',
-      async (input) => {
-        // arrange
-        const { inputDoc, expectedDoc } = await createFixture({
-          inputFile: `./fixtures/params.x-example.body.${input}.swagger.yaml`,
-          expectedFile: `./fixtures/params.x-example.body.swagger.include-examples-is-false.json`
+          inputFile: `./fixtures/x-example.body.disabled.${input}.swagger.yaml`,
+          expectedFile: `./fixtures/x-example.body.disabled.${input}.swagger.result.json`
         });
 
         // act
         const result: Request[] = await oas2har(inputDoc as any, {
           includeVendorExamples: false
+        });
+
+        // assert
+        expect(result).toStrictEqual(expectedDoc);
+      }
+    );
+
+    it.each(['schemathesis', 'redocly', 'api-connect', 'smartbear'])(
+      'should use body parameter vendor example when vendor examples inclusion enabled (swagger, %s)',
+      async (input) => {
+        // arrange
+        const { inputDoc, expectedDoc } = await createFixture({
+          inputFile: `./fixtures/x-example.body.enabled.${input}.swagger.yaml`,
+          expectedFile: `./fixtures/x-example.body.enabled.${input}.swagger.result.json`
+        });
+
+        // act
+        const result: Request[] = await oas2har(inputDoc as any, {
+          includeVendorExamples: true
         });
 
         // assert

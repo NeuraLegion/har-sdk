@@ -81,7 +81,7 @@ export class DefaultTraverse implements Traverse {
     }
 
     return (
-      this.findSchemaExample(schema, options, spec) ??
+      this.findSchemaExample(schema, options) ??
       this.tryTraverseSubSchema(schema, options, spec) ??
       this.createSchemaExample(schema, options, spec)
     );
@@ -92,28 +92,14 @@ export class DefaultTraverse implements Traverse {
     options?: Options,
     spec?: Specification
   ): Sample | undefined {
-    let example: Sample | undefined;
-    let type: string;
+    const type = (schema as any).type as string;
 
-    if (this.isDefaultExists(schema)) {
-      example = schema.default;
-    } else if ((schema as any).const !== undefined) {
-      example = (schema as any).const;
-    } else if ((schema as any).enum && (schema as any).enum.length) {
-      example = firstArrayElement((schema as any).enum);
-    } else {
-      type = (schema as any).type as string;
+    let value = this.extractSampleValueFromSchema(schema);
 
-      if (!type) {
-        type = this.inferType(schema as OpenAPISchema);
-      }
-
-      const sampler = this.samplers.get(type || 'null');
-
-      if (sampler) {
-        example = sampler.sample(schema as OpenAPISchema, spec, options);
-      }
-    }
+    value =
+      value === undefined
+        ? this.createSampleValueFromInferredType(schema, options, spec)
+        : value;
 
     this.popSchemaStack();
 
@@ -123,10 +109,56 @@ export class DefaultTraverse implements Traverse {
       type,
       readOnly,
       writeOnly,
-      value: example
+      value
     };
   }
+
+  private extractSampleValueFromSchema(schema: Schema): unknown {
+    let value;
+    if (this.isDefaultExists(schema)) {
+      value = schema.default;
+    } else if ((schema as any).const !== undefined) {
+      value = (schema as any).const;
+    } else if ((schema as any).enum && (schema as any).enum.length) {
+      value = firstArrayElement((schema as any).enum);
+    }
+
+    return value;
+  }
+
+  private createSampleValueFromInferredType(
+    schema: Schema,
+    options?: Options,
+    spec?: Specification
+  ): unknown {
+    let type = (schema as any).type as string;
+
+    if (!type) {
+      type = this.inferType(schema as OpenAPISchema);
+    }
+
+    const sampler = this.samplers.get(type || 'null');
+
+    let value;
+    if (sampler) {
+      value = sampler.sample(schema as OpenAPISchema, spec, options);
+    }
+
+    return value;
+  }
+
   private tryTraverseSubSchema(
+    schema: IJsonSchema,
+    options?: Options,
+    spec?: Specification
+  ): Sample | undefined {
+    return (
+      this.tryTraverseAllOf(schema, options, spec) ??
+      this.tryTraverseOneOf(schema, options, spec) ??
+      this.tryTraverseAnyOf(schema, options, spec)
+    );
+  }
+  private tryTraverseAllOf(
     schema: IJsonSchema,
     options?: Options,
     spec?: Specification
@@ -141,7 +173,13 @@ export class DefaultTraverse implements Traverse {
         spec
       );
     }
+  }
 
+  private tryTraverseOneOf(
+    schema: IJsonSchema,
+    options?: Options,
+    spec?: Specification
+  ): Sample | undefined {
     if (schema.oneOf && schema.oneOf.length) {
       if (schema.anyOf && !options.quiet) {
         // eslint-disable-next-line no-console
@@ -158,7 +196,13 @@ export class DefaultTraverse implements Traverse {
         spec
       );
     }
+  }
 
+  private tryTraverseAnyOf(
+    schema: IJsonSchema,
+    options?: Options,
+    spec?: Specification
+  ): Sample | undefined {
     if (schema.anyOf && schema.anyOf.length) {
       this.popSchemaStack();
 
@@ -172,20 +216,14 @@ export class DefaultTraverse implements Traverse {
 
   private findSchemaExample(
     schema: Schema,
-    { includeVendorExamples }: Options,
-    _: Specification
+    options: Options
   ): Sample | undefined {
-    let example;
+    let example = this.extractSampleValueFromExamples(schema);
 
-    if (this.isExampleExists(schema)) {
-      example = schema.example;
-    } else if (this.isExamplesExists(schema)) {
-      example = firstArrayElement((schema as any).examples);
-    } else {
-      example = includeVendorExamples
-        ? this.vendorExampleExtractor.extract(schema)
-        : undefined;
-    }
+    example =
+      example === undefined
+        ? this.extractSampleValueFromVendorExamples(schema, options)
+        : example;
 
     if (example !== undefined) {
       const { type, readOnly, writeOnly } = schema as OpenAPISchema;
@@ -199,6 +237,26 @@ export class DefaultTraverse implements Traverse {
         value: example
       };
     }
+  }
+
+  private extractSampleValueFromExamples(schema: Schema): unknown {
+    if (this.isExampleExists(schema)) {
+      return schema.example;
+    } else if (
+      (schema as any).examples !== undefined &&
+      (schema as any).examples.length > 0
+    ) {
+      return firstArrayElement((schema as any).examples);
+    }
+  }
+
+  private extractSampleValueFromVendorExamples(
+    schema: Schema,
+    { includeVendorExamples }: Options
+  ): unknown {
+    return includeVendorExamples
+      ? this.vendorExampleExtractor.extract(schema)
+      : undefined;
   }
 
   private pushSchemaStack(schema: Schema) {
@@ -360,13 +418,6 @@ export class DefaultTraverse implements Traverse {
     return (
       (schema as OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject).example !==
       undefined
-    );
-  }
-
-  private isExamplesExists(schema: Schema): schema is { examples: unknown[] } {
-    return (
-      (schema as any).examples !== undefined &&
-      (schema as any).examples.length > 0
     );
   }
 

@@ -3,6 +3,7 @@ import { SchemaExampleExtractor } from './SchemaExampleExtractor';
 import {
   firstArrayElement,
   getReplacementForCircular,
+  isRefExists,
   mergeDeep
 } from '../utils';
 import { OpenAPISchema, Sampler } from '../samplers';
@@ -76,7 +77,7 @@ export class DefaultTraverse implements Traverse {
 
     this.pushSchemaStack(schema);
 
-    if (this.isRefExists(schema)) {
+    if (isRefExists(schema)) {
       return this.inferRef(spec, schema, options);
     }
 
@@ -366,14 +367,5 @@ export class DefaultTraverse implements Traverse {
     }
 
     return res;
-  }
-
-  private isRefExists(
-    schema: Schema
-  ): schema is OpenAPIV3.ReferenceObject | OpenAPIV2.ReferenceObject {
-    return (
-      (schema as OpenAPIV3.ReferenceObject | OpenAPIV2.ReferenceObject).$ref !==
-      undefined
-    );
   }
 }

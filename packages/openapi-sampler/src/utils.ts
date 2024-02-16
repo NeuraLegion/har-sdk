@@ -34,17 +34,19 @@ export const getReplacementForCircular = (type: string) => ({
 export const isExampleExists = (
   schema: Schema
 ): schema is OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject =>
-  (schema as OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject).example !==
-  undefined;
+  (schema as any).example !== undefined;
 
 export const isDefaultExists = (
   schema: Schema
 ): schema is OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject =>
-  (schema as OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject).default !==
-  undefined;
+  (schema as any).default !== undefined;
 
 export const isItemsExists = (
   schema: Schema
 ): schema is OpenAPIV3.ArraySchemaObject | OpenAPIV2.SchemaObject =>
-  (schema as OpenAPIV3.ArraySchemaObject | OpenAPIV2.SchemaObject).items !==
-  undefined;
+  (schema as any).items !== undefined;
+
+export const isRefExists = (
+  schema: Schema
+): schema is OpenAPIV3.ReferenceObject | OpenAPIV2.ReferenceObject =>
+  (schema as any).$ref !== undefined;

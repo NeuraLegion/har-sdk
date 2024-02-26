@@ -1,5 +1,4 @@
-import { VendorExtensions } from '../src/traverse/VendorExtensions';
-import { sample } from '../src';
+import { VendorExtensions, sample } from '../src';
 
 describe('Example', () => {
   it('should use example', () => {

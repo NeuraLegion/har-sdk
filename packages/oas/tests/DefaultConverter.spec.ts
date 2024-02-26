@@ -180,6 +180,11 @@ describe('DefaultConverter', () => {
         input: 'cookies.oas.yaml',
         expected: 'cookies.oas.result.json',
         message: 'should properly serialize cookies (oas)'
+      },
+      {
+        input: 'params-body-form-url-encoded.oas.yaml',
+        expected: 'params-body-form-url-encoded.oas.result.json',
+        message: 'should properly serialize form-url-encoded body (oas)'
       }
     ].forEach(({ input: inputFile, expected: expectedFile, message }) => {
       it(message, async () => {

@@ -1,0 +1,199 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: API
+servers:
+  - url: https://example.com/api/v1
+paths:
+  /primitives-array:
+    post:
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PrimitivesArray'
+      responses:
+        '200':
+          description: ''
+  /primitive-boolean:
+    post:
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: boolean
+      responses:
+        '200':
+          description: ''
+  /primitive-number:
+    post:
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: number
+      responses:
+        '200':
+          description: ''
+  /primitive-string:
+    post:
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: string
+      responses:
+        '200':
+          description: ''
+  /plain-object-default:
+    post:
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PlainObject'
+      responses:
+        '200':
+          description: ''
+  /plain-object-allow-reserved-characters:
+    post:
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PlainObject'
+            encoding:
+              'bio$':
+                allowReserved: true
+      responses:
+        '200':
+          description: ''
+  /nested-array-default:
+    post:
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NestedPrimitivesArray'
+      responses:
+        '200':
+          description: ''
+  /nested-array-default-explode:
+    post:
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NestedPrimitivesArray'
+            encoding:
+              bookIds:
+                explode: true
+      responses:
+        '200':
+          description: ''
+  /nested-array-pipe-delimited:
+    post:
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NestedPrimitivesArray'
+            encoding:
+              bookIds:
+                style: pipeDelimited
+      responses:
+        '200':
+          description: ''
+  /nested-array-space-delimited:
+    post:
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NestedPrimitivesArray'
+            encoding:
+              bookIds:
+                style: spaceDelimited
+      responses:
+        '200':
+          description: ''
+  /nested-object-default:
+    post:
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NestedObject'
+      responses:
+        '200':
+          description: ''
+  /nested-object-deep-object:
+    post:
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NestedObject'
+            encoding:
+              bar:
+                style: deepObject
+                explode: true
+      responses:
+        '200':
+          description: ''
+  /nested-object-content-type:
+    post:
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NestedObject'
+            encoding:
+              bar:
+                contentType: application/xml
+      responses:
+        '200':
+          description: ''
+components:
+  schemas:
+    PlainObject:
+      type: object
+      properties:
+        name:
+          type: string
+        'bio$':
+          type: string
+      example:
+        name: a_name?
+        'bio$': a_bio$
+    PrimitivesArray:
+      type: array
+      items:
+        type: number
+      example:
+        - 1
+        - 2
+    NestedPrimitivesArray:
+      type: object
+      properties:
+        bookIds:
+          schema:
+            $ref: '#/components/schemas/PrimitivesArray'
+      example:
+        bookIds:
+          - 1
+          - 2
+    NestedObject:
+      type: object
+      properties:
+        foo:
+          type: string
+        bar:
+          type: object
+          properties:
+            baz:
+              type: boolean
+      example:
+        foo: foo
+        bar:
+          baz: true

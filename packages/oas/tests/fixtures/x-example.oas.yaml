@@ -1,0 +1,89 @@
+openapi: 3.0.1
+info:
+  title: Sample API
+  version: 1.0.0
+servers:
+  - url: https://example.com/
+paths:
+  /sample/{id}:
+    put:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            default: 0
+          x-example: 123
+        - name: filter
+          in: query
+          schema:
+            type: string
+            default: default_filter
+          x-example: x_example_filter
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            default: Bearer default_jwt_token
+          x-example: Bearer x_example_jwt_token
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  x-example: x_example_name
+                  default: default_name
+      responses:
+        '201':
+          description: ''
+          content: {}
+  /sample:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  default: default_name
+                age:
+                  type: integer
+              x-example:
+                name: x_example_name
+                age: 30
+        required: true
+      responses:
+        '201':
+          description: ''
+          content: {}
+      x-codegen-request-body-name: payload
+    patch:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  default: default_name
+                age:
+                  type: integer
+              example:
+                name: example_name
+                age: 20
+              x-example:
+                name: x_example_name
+                age: 30
+        required: true
+      responses:
+        '201':
+          description: ''
+          content: {}

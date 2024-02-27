@@ -1,9 +1,17 @@
 import { ConvertError } from '../errors';
-import { sample, Schema } from '@har-sdk/openapi-sampler';
+import { isOASV2 } from '../utils';
+import {
+  Options,
+  sample,
+  Schema,
+  VendorExtensions
+} from '@har-sdk/openapi-sampler';
 import pointer from 'json-pointer';
 import type { OpenAPI } from '@har-sdk/core';
 
 export class Sampler {
+  constructor(private readonly options: Options) {}
+
   public sampleParam(
     param: OpenAPI.Parameter,
     context: {
@@ -12,23 +20,15 @@ export class Sampler {
       tokens: string[];
     }
   ): any {
-    return this.sample(
-      'schema' in param
-        ? {
-            ...param.schema,
-            ...(param.example !== undefined ? { example: param.example } : {})
-          }
-        : param,
-      {
-        spec: context.spec,
-        jsonPointer: pointer.compile([
-          ...context.tokens,
-          'parameters',
-          context.idx.toString(),
-          ...('schema' in param ? ['schema'] : [])
-        ])
-      }
-    );
+    return this.sample(this.createParamSchema(param), {
+      spec: context.spec,
+      jsonPointer: pointer.compile([
+        ...context.tokens,
+        'parameters',
+        context.idx.toString(),
+        ...('schema' in param ? ['schema'] : [])
+      ])
+    });
   }
 
   /**
@@ -43,9 +43,44 @@ export class Sampler {
     }
   ): any | undefined {
     try {
-      return sample(schema, { skipReadOnly: true, quiet: true }, context?.spec);
+      const { includeVendorExamples } = this.options;
+      const options = {
+        ...this.options,
+        skipReadOnly: true,
+        quiet: true,
+        includeVendorExamples:
+          context?.spec && isOASV2(context?.spec)
+            ? includeVendorExamples
+            : false
+      };
+
+      return sample(schema, options, context?.spec);
     } catch (e) {
       throw new ConvertError(e.message, context?.jsonPointer);
     }
+  }
+
+  private createParamSchema(param: OpenAPI.Parameter): Schema {
+    if ('schema' in param) {
+      const { schema, example, ...rest } = param;
+
+      return {
+        ...schema,
+        ...(example !== undefined ? { example } : {}),
+        ...this.extractVendorExamples(rest)
+      };
+    }
+
+    return param as Schema;
+  }
+
+  private extractVendorExamples(param: OpenAPI.Parameter) {
+    return [VendorExtensions.X_EXAMPLE, VendorExtensions.X_EXAMPLES].reduce(
+      (acc, prop) => ({
+        ...acc,
+        ...(param[prop] !== undefined ? { [prop]: param[prop] } : {})
+      }),
+      {}
+    );
   }
 }

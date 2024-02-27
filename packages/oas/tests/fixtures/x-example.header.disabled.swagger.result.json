@@ -1,0 +1,21 @@
+[
+  {
+    "queryString": [],
+    "cookies": [],
+    "method": "GET",
+    "headers": [
+      {
+        "value": "application/json",
+        "name": "accept"
+      },
+      {
+        "value": "Bearer default_jwt_token",
+        "name": "authorization"
+      }
+    ],
+    "httpVersion": "HTTP/1.1",
+    "headersSize": 0,
+    "bodySize": 0,
+    "url": "https://example.com/sample"
+  }
+]

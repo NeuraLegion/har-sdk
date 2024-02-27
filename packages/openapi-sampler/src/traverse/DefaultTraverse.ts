@@ -1,12 +1,14 @@
 import { Options, Sample, Schema, Specification, Traverse } from './Traverse';
+import { SchemaExampleExtractor } from './SchemaExampleExtractor';
 import {
   firstArrayElement,
   getReplacementForCircular,
+  isReference,
   mergeDeep
 } from '../utils';
 import { OpenAPISchema, Sampler } from '../samplers';
 import JsonPointer from 'json-pointer';
-import { OpenAPIV2, OpenAPIV3 } from '@har-sdk/core';
+import { IJsonSchema, OpenAPIV2, OpenAPIV3 } from '@har-sdk/core';
 
 const schemaKeywordTypes = {
   multipleOf: 'number',
@@ -48,6 +50,10 @@ export class DefaultTraverse implements Traverse {
     this._samplers = samplers;
   }
 
+  constructor(
+    private readonly sampleValueExtractor: SchemaExampleExtractor = new SchemaExampleExtractor()
+  ) {}
+
   public clearCache(): void {
     this.refCache = {};
     this.schemasStack = [];
@@ -71,41 +77,97 @@ export class DefaultTraverse implements Traverse {
 
     this.pushSchemaStack(schema);
 
-    if (this.isRefExists(schema)) {
+    if (isReference(schema)) {
       return this.inferRef(spec, schema, options);
     }
 
-    if (this.isExampleExists(schema)) {
-      this.popSchemaStack();
+    return (
+      this.findSchemaExample(schema, options) ??
+      this.tryTraverseSubSchema(schema, options, spec) ??
+      this.createSchemaExample(schema, options, spec)
+    );
+  }
 
-      return {
-        value: schema.example,
-        readOnly: schema.readOnly,
-        writeOnly: schema.writeOnly,
-        type: schema.type
-      };
+  private createSchemaExample(
+    schema: Schema,
+    options?: Options,
+    spec?: Specification
+  ): Sample | undefined {
+    const type = (schema as any).type as string;
+
+    let value = this.sampleValueExtractor.extractFromProperties(schema);
+
+    value =
+      value === undefined
+        ? this.createSampleValueFromInferredType(schema, options, spec)
+        : value;
+
+    this.popSchemaStack();
+
+    const { readOnly, writeOnly } = schema as OpenAPISchema;
+
+    return {
+      type,
+      readOnly,
+      writeOnly,
+      value
+    };
+  }
+
+  private createSampleValueFromInferredType(
+    schema: Schema,
+    options?: Options,
+    spec?: Specification
+  ): unknown {
+    let type = (schema as any).type as string;
+
+    if (!type) {
+      type = this.inferType(schema as OpenAPISchema);
     }
 
+    const sampler = this.samplers.get(type || 'null');
+
+    let value;
+    if (sampler) {
+      value = sampler.sample(schema as OpenAPISchema, spec, options);
+    }
+
+    return value;
+  }
+
+  private tryTraverseSubSchema(
+    schema: IJsonSchema,
+    options?: Options,
+    spec?: Specification
+  ): Sample | undefined {
+    return (
+      this.tryTraverseAllOf(schema, options, spec) ??
+      this.tryTraverseOneOf(schema, options, spec) ??
+      this.tryTraverseAnyOf(schema, options, spec)
+    );
+  }
+  private tryTraverseAllOf(
+    schema: IJsonSchema,
+    options?: Options,
+    spec?: Specification
+  ): Sample | undefined {
     if (schema.allOf) {
       this.popSchemaStack();
 
       return this.allOfSample(
-        { ...schema, allOf: undefined } as
-          | OpenAPIV3.ReferenceObject
-          | OpenAPIV2.ReferenceObject
-          | OpenAPIV3.SchemaObject
-          | OpenAPIV2.SchemaObject,
-        schema.allOf as (
-          | OpenAPIV3.ReferenceObject
-          | OpenAPIV2.ReferenceObject
-          | OpenAPIV3.SchemaObject
-          | OpenAPIV2.SchemaObject
-        )[],
+        { ...schema, allOf: undefined } as Exclude<Schema, IJsonSchema>,
+        schema.allOf as Exclude<Schema, IJsonSchema>[],
         options,
         spec
       );
     }
+  }
 
+  private tryTraverseOneOf(
+    schema: IJsonSchema,
+    options?: Options,
+    spec?: Specification
+  ): Sample | undefined {
     if (schema.oneOf && schema.oneOf.length) {
       if (schema.anyOf && !options.quiet) {
         // eslint-disable-next-line no-console
@@ -116,52 +178,51 @@ export class DefaultTraverse implements Traverse {
 
       this.popSchemaStack();
 
-      return this.traverse(firstArrayElement(schema.oneOf), options, spec);
+      return this.traverse(
+        firstArrayElement(schema.oneOf as Exclude<Schema, IJsonSchema>),
+        options,
+        spec
+      );
     }
+  }
 
+  private tryTraverseAnyOf(
+    schema: IJsonSchema,
+    options?: Options,
+    spec?: Specification
+  ): Sample | undefined {
     if (schema.anyOf && schema.anyOf.length) {
       this.popSchemaStack();
 
-      return this.traverse(firstArrayElement(schema.anyOf), options, spec);
+      return this.traverse(
+        firstArrayElement(schema.anyOf as Exclude<Schema, IJsonSchema>),
+        options,
+        spec
+      );
     }
+  }
 
-    let example: any;
-    let type: string;
+  private findSchemaExample(
+    schema: Schema,
+    options: Options
+  ): Sample | undefined {
+    const value = this.sampleValueExtractor.extractFromExamples(
+      schema,
+      options
+    );
 
-    if (this.isDefaultExists(schema)) {
-      example = schema.default;
-    } else if ((schema as any).const !== undefined) {
-      example = (schema as any).const;
-    } else if (schema.enum && schema.enum.length) {
-      example = firstArrayElement(schema.enum);
-    } else if ((schema as any).examples && (schema as any).examples.length) {
-      example = firstArrayElement((schema as any).examples);
-    } else {
-      type = schema.type as string;
+    if (value !== undefined) {
+      const { type, readOnly, writeOnly } = schema as OpenAPISchema;
 
-      if (!type) {
-        type = this.inferType(
-          schema as OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject
-        );
-      }
+      this.popSchemaStack();
 
-      const sampler = this.samplers.get(type || 'null');
-
-      if (sampler) {
-        example = sampler.sample(schema as OpenAPISchema, spec, options);
-      }
+      return {
+        type,
+        readOnly,
+        writeOnly,
+        value
+      };
     }
-
-    this.popSchemaStack();
-
-    return {
-      type,
-      value: example,
-      readOnly: (schema as OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject)
-        .readOnly,
-      writeOnly: (schema as OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject)
-        .writeOnly
-    };
   }
 
   private pushSchemaStack(schema: Schema) {
@@ -306,32 +367,5 @@ export class DefaultTraverse implements Traverse {
     }
 
     return res;
-  }
-
-  private isRefExists(
-    schema: Schema
-  ): schema is OpenAPIV3.ReferenceObject | OpenAPIV2.ReferenceObject {
-    return (
-      (schema as OpenAPIV3.ReferenceObject | OpenAPIV2.ReferenceObject).$ref !==
-      undefined
-    );
-  }
-
-  private isExampleExists(
-    schema: Schema
-  ): schema is OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject {
-    return (
-      (schema as OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject).example !==
-      undefined
-    );
-  }
-
-  private isDefaultExists(
-    schema: Schema
-  ): schema is OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject {
-    return (
-      (schema as OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject).default !==
-      undefined
-    );
   }
 }

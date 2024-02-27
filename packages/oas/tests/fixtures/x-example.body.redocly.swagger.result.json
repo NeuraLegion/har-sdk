@@ -1,0 +1,48 @@
+[
+  {
+    "queryString": [],
+    "cookies": [],
+    "method": "POST",
+    "headers": [
+      {
+        "value": "application/json",
+        "name": "content-type"
+      },
+      {
+        "value": "application/json",
+        "name": "accept"
+      }
+    ],
+    "httpVersion": "HTTP/1.1",
+    "headersSize": 0,
+    "bodySize": 0,
+    "postData": {
+      "mimeType": "application/json",
+      "text": "[{\"name\":\"x_example_name\",\"age\":30}]"
+    },
+    "url": "https://example.com/sample"
+  },
+  {
+    "queryString": [],
+    "cookies": [],
+    "method": "PUT",
+    "headers": [
+      {
+        "value": "application/json",
+        "name": "content-type"
+      },
+      {
+        "value": "application/json",
+        "name": "accept"
+      }
+    ],
+    "httpVersion": "HTTP/1.1",
+    "headersSize": 0,
+    "bodySize": 0,
+    "postData": {
+      "mimeType": "application/json",
+      "text": "{\"name\":\"x_example_name\",\"age\":30}"
+    },
+    "url": "https://example.com/sample/123"
+  }
+]

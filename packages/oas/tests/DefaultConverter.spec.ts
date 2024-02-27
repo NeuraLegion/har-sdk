@@ -314,7 +314,7 @@ describe('DefaultConverter', () => {
       async (input) => {
         // arrange
         const { inputDoc, expectedDoc } = await createFixture({
-          inputFile: `./fixtures/x-example.${input}.disabled.swagger.yaml`,
+          inputFile: `./fixtures/x-example.${input}.swagger.yaml`,
           expectedFile: `./fixtures/x-example.${input}.disabled.swagger.result.json`
         });
 
@@ -333,8 +333,8 @@ describe('DefaultConverter', () => {
       async (input) => {
         // arrange
         const { inputDoc, expectedDoc } = await createFixture({
-          inputFile: `./fixtures/x-example.${input}.enabled.swagger.yaml`,
-          expectedFile: `./fixtures/x-example.${input}.enabled.swagger.result.json`
+          inputFile: `./fixtures/x-example.${input}.swagger.yaml`,
+          expectedFile: `./fixtures/x-example.${input}.swagger.result.json`
         });
 
         // act
@@ -352,8 +352,8 @@ describe('DefaultConverter', () => {
       async (input) => {
         // arrange
         const { inputDoc, expectedDoc } = await createFixture({
-          inputFile: `./fixtures/x-example.body.disabled.${input}.swagger.yaml`,
-          expectedFile: `./fixtures/x-example.body.disabled.${input}.swagger.result.json`
+          inputFile: `./fixtures/x-example.body.${input}.swagger.yaml`,
+          expectedFile: `./fixtures/x-example.body.disabled.swagger.result.json`
         });
 
         // act
@@ -371,8 +371,8 @@ describe('DefaultConverter', () => {
       async (input) => {
         // arrange
         const { inputDoc, expectedDoc } = await createFixture({
-          inputFile: `./fixtures/x-example.body.enabled.${input}.swagger.yaml`,
-          expectedFile: `./fixtures/x-example.body.enabled.${input}.swagger.result.json`
+          inputFile: `./fixtures/x-example.body.${input}.swagger.yaml`,
+          expectedFile: `./fixtures/x-example.body.${input}.swagger.result.json`
         });
 
         // act

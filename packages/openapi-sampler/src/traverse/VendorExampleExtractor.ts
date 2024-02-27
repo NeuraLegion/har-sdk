@@ -11,10 +11,10 @@ export class VendorExampleExtractor {
     return [
       schema[VendorExtensions.X_EXAMPLE],
       schema[VendorExtensions.X_EXAMPLES]
-    ]
-      .map((example) => this.findExampleByShape(example, schema))
-      .filter((example) => !!example)
-      .shift();
+    ].reduce(
+      (acc, example) => (acc ? acc : this.findExampleByShape(example, schema)),
+      undefined
+    );
   }
 
   private findExampleByShape(example: unknown, schema: Schema) {

@@ -3,6 +3,8 @@ import type { Sampler } from '../../Sampler';
 import { filterLocationParams, getParameters } from '../../../utils';
 import { Oas2MediaTypesResolver } from '../Oas2MediaTypesResolver';
 import type { OpenAPIV2, PostData } from '@har-sdk/core';
+import { OpenAPIV3 } from '@har-sdk/core';
+import { stringify } from 'qs';
 
 export class Oas2BodyConverter extends BodyConverter<OpenAPIV2.Document> {
   private readonly oas2MediaTypeResolver: Oas2MediaTypesResolver;
@@ -42,6 +44,17 @@ export class Oas2BodyConverter extends BodyConverter<OpenAPIV2.Document> {
     return this.sampler.sample({
       type: 'array',
       examples: this.oas2MediaTypeResolver.resolveToConsume(operation)
+    });
+  }
+
+  protected encodeFormUrlencoded(
+    value: unknown,
+    _fields?: Record<string, OpenAPIV3.EncodingObject>,
+    _schema?: OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject
+  ): string {
+    return stringify(value, {
+      format: 'RFC3986',
+      encode: false
     });
   }
 

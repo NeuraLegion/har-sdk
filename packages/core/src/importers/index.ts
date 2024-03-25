@@ -1,3 +1,4 @@
+export * from './GraphQLImporter';
 export * from './HARImporter';
 export * from './Importer';
 export * from './ImporterErrorProvider';

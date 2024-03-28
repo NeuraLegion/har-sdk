@@ -1,5 +1,6 @@
 import { BaseImporter } from './BaseImporter';
 import { ImporterType } from './ImporterType';
+import { GraphQLNormalizer } from './GraphQLNormalizer';
 import { isArrayOfStrings } from '../utils';
 import { type DocFormat, type Spec } from './Spec';
 import { GraphQL, introspectionFromSchema } from '../types';
@@ -12,7 +13,7 @@ export class GraphQLImporter extends BaseImporter<ImporterType.GRAPHQL> {
     return ImporterType.GRAPHQL;
   }
 
-  constructor() {
+  constructor(private readonly normalizer = new GraphQLNormalizer()) {
     super();
   }
 
@@ -26,7 +27,7 @@ export class GraphQLImporter extends BaseImporter<ImporterType.GRAPHQL> {
       return spec
         ? {
             ...spec,
-            doc: await this.tryConvertSDL(spec.doc)
+            doc: await this.normalize(spec.doc)
           }
         : spec;
     } catch {
@@ -55,21 +56,27 @@ export class GraphQLImporter extends BaseImporter<ImporterType.GRAPHQL> {
     return `${url.hostname}-${checkSum}`.toLowerCase();
   }
 
+  private async normalize(doc: GraphQL.Document) {
+    doc = await this.tryConvertSDL(doc);
+
+    return this.normalizer.normalize(doc);
+  }
+
   private async tryConvertSDL(
-    obj: GraphQL.Document
+    doc: GraphQL.Document
   ): Promise<GraphQL.Document> {
-    if (this.isGraphQLSDLEnvelope(obj)) {
-      const schema = await loadSchema(obj.data, {
+    if (this.isGraphQLSDLEnvelope(doc)) {
+      const schema = await loadSchema(doc.data, {
         loaders: []
       });
 
-      return {
-        ...obj,
+      doc = {
+        ...doc,
         data: introspectionFromSchema(schema)
       };
     }
 
-    return obj;
+    return doc;
   }
 
   private isGraphQLSDLEnvelope(

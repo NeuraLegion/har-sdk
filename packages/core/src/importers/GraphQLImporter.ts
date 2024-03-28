@@ -56,7 +56,7 @@ export class GraphQLImporter extends BaseImporter<ImporterType.GRAPHQL> {
     return `${url.hostname}-${checkSum}`.toLowerCase();
   }
 
-  private async normalize(doc: GraphQL.Document){
+  private async normalize(doc: GraphQL.Document) {
     doc = await this.tryConvertSDL(doc);
 
     return this.normalizer.normalize(doc);

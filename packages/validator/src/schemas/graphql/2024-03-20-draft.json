@@ -1,0 +1,511 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/GraphQL.Document",
+  "$async": true,
+  "$id": "https://github.com/graphql/graphql-spec/blob/main/spec/GraphQL.md",
+  "definitions": {
+    "GraphQL.Document": {
+      "$ref": "#/definitions/GraphQL.GraphQLEnvelope<IntrospectionQuery>"
+    },
+    "GraphQL.GraphQLEnvelope<IntrospectionQuery>": {
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/IntrospectionQuery",
+          "description": "The introspection response content of the GraphQL endpoint."
+        },
+        "url": {
+          "description": "The URL of the GraphQL endpoint.",
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https?://"
+        }
+      },
+      "required": ["url", "data"],
+      "type": "object"
+    },
+    "IntrospectionDirective": {
+      "properties": {
+        "args": {
+          "items": {
+            "$ref": "#/definitions/IntrospectionInputValue"
+          },
+          "type": "array"
+        },
+        "description": {
+          "type": ["null", "string"]
+        },
+        "isRepeatable": {
+          "type": "boolean"
+        },
+        "locations": {
+          "items": {
+            "description": "The set of allowed directive location values.",
+            "enum": [
+              "QUERY",
+              "MUTATION",
+              "SUBSCRIPTION",
+              "FIELD",
+              "FRAGMENT_DEFINITION",
+              "FRAGMENT_SPREAD",
+              "INLINE_FRAGMENT",
+              "VARIABLE_DEFINITION",
+              "SCHEMA",
+              "SCALAR",
+              "OBJECT",
+              "FIELD_DEFINITION",
+              "ARGUMENT_DEFINITION",
+              "INTERFACE",
+              "UNION",
+              "ENUM",
+              "ENUM_VALUE",
+              "INPUT_OBJECT",
+              "INPUT_FIELD_DEFINITION"
+            ],
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": ["name", "locations", "args"],
+      "type": "object"
+    },
+    "IntrospectionEnumType": {
+      "properties": {
+        "description": {
+          "type": ["null", "string"]
+        },
+        "enumValues": {
+          "items": {
+            "$ref": "#/definitions/IntrospectionEnumValue"
+          },
+          "type": "array"
+        },
+        "kind": {
+          "const": "ENUM",
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": ["kind", "name", "enumValues"],
+      "type": "object"
+    },
+    "IntrospectionEnumValue": {
+      "properties": {
+        "deprecationReason": {
+          "type": ["null", "string"]
+        },
+        "description": {
+          "type": ["null", "string"]
+        },
+        "isDeprecated": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": ["name", "isDeprecated"],
+      "type": "object"
+    },
+    "IntrospectionField": {
+      "properties": {
+        "args": {
+          "items": {
+            "$ref": "#/definitions/IntrospectionInputValue"
+          },
+          "type": "array"
+        },
+        "deprecationReason": {
+          "type": ["null", "string"]
+        },
+        "description": {
+          "type": ["null", "string"]
+        },
+        "isDeprecated": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/definitions/IntrospectionOutputTypeRef"
+        }
+      },
+      "required": ["name", "args", "type", "isDeprecated"],
+      "type": "object"
+    },
+    "IntrospectionInputObjectType": {
+      "properties": {
+        "description": {
+          "type": ["null", "string"]
+        },
+        "inputFields": {
+          "items": {
+            "$ref": "#/definitions/IntrospectionInputValue"
+          },
+          "type": "array"
+        },
+        "kind": {
+          "const": "INPUT_OBJECT",
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": ["kind", "name", "inputFields"],
+      "type": "object"
+    },
+    "IntrospectionInputTypeRef": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/IntrospectionNamedTypeRef<IntrospectionInputType>"
+        },
+        {
+          "$ref": "#/definitions/IntrospectionListTypeRef<IntrospectionInputTypeRef>"
+        },
+        {
+          "$ref": "#/definitions/IntrospectionNonNullTypeRef<(IntrospectionNamedTypeRef<IntrospectionInputType>|IntrospectionListTypeRef<IntrospectionInputTypeRef>)>"
+        }
+      ]
+    },
+    "IntrospectionInputValue": {
+      "properties": {
+        "defaultValue": {
+          "type": ["null", "string"]
+        },
+        "deprecationReason": {
+          "type": ["null", "string"]
+        },
+        "description": {
+          "type": ["null", "string"]
+        },
+        "isDeprecated": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/definitions/IntrospectionInputTypeRef"
+        }
+      },
+      "required": ["name", "type"],
+      "type": "object"
+    },
+    "IntrospectionInterfaceType": {
+      "properties": {
+        "description": {
+          "type": ["null", "string"]
+        },
+        "fields": {
+          "items": {
+            "$ref": "#/definitions/IntrospectionField"
+          },
+          "type": "array"
+        },
+        "interfaces": {
+          "items": {
+            "$ref": "#/definitions/IntrospectionNamedTypeRef<IntrospectionInterfaceType>"
+          },
+          "type": "array"
+        },
+        "kind": {
+          "const": "INTERFACE",
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "possibleTypes": {
+          "items": {
+            "$ref": "#/definitions/IntrospectionNamedTypeRef<IntrospectionObjectType>"
+          },
+          "type": "array"
+        }
+      },
+      "required": ["kind", "name", "fields", "interfaces", "possibleTypes"],
+      "type": "object"
+    },
+    "IntrospectionListTypeRef<IntrospectionInputTypeRef>": {
+      "properties": {
+        "kind": {
+          "const": "LIST",
+          "type": "string"
+        },
+        "ofType": {
+          "$ref": "#/definitions/IntrospectionInputTypeRef"
+        }
+      },
+      "required": ["kind", "ofType"],
+      "type": "object"
+    },
+    "IntrospectionListTypeRef<IntrospectionOutputTypeRef>": {
+      "properties": {
+        "kind": {
+          "const": "LIST",
+          "type": "string"
+        },
+        "ofType": {
+          "$ref": "#/definitions/IntrospectionOutputTypeRef"
+        }
+      },
+      "required": ["kind", "ofType"],
+      "type": "object"
+    },
+    "IntrospectionNamedTypeRef<IntrospectionInputType>": {
+      "properties": {
+        "kind": {
+          "enum": ["SCALAR", "ENUM", "INPUT_OBJECT"],
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": ["kind", "name"],
+      "type": "object"
+    },
+    "IntrospectionNamedTypeRef<IntrospectionInterfaceType>": {
+      "properties": {
+        "kind": {
+          "const": "INTERFACE",
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": ["kind", "name"],
+      "type": "object"
+    },
+    "IntrospectionNamedTypeRef<IntrospectionObjectType>": {
+      "properties": {
+        "kind": {
+          "const": "OBJECT",
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": ["kind", "name"],
+      "type": "object"
+    },
+    "IntrospectionNamedTypeRef<IntrospectionOutputType>": {
+      "properties": {
+        "kind": {
+          "enum": ["SCALAR", "INTERFACE", "UNION", "ENUM", "OBJECT"],
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": ["kind", "name"],
+      "type": "object"
+    },
+    "IntrospectionNonNullTypeRef<(IntrospectionNamedTypeRef<IntrospectionInputType>|IntrospectionListTypeRef<IntrospectionInputTypeRef>)>": {
+      "properties": {
+        "kind": {
+          "const": "NON_NULL",
+          "type": "string"
+        },
+        "ofType": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/IntrospectionNamedTypeRef<IntrospectionInputType>"
+            },
+            {
+              "$ref": "#/definitions/IntrospectionListTypeRef<IntrospectionInputTypeRef>"
+            }
+          ]
+        }
+      },
+      "required": ["kind", "ofType"],
+      "type": "object"
+    },
+    "IntrospectionNonNullTypeRef<(IntrospectionNamedTypeRef<IntrospectionOutputType>|IntrospectionListTypeRef<IntrospectionOutputTypeRef>)>": {
+      "properties": {
+        "kind": {
+          "const": "NON_NULL",
+          "type": "string"
+        },
+        "ofType": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/IntrospectionNamedTypeRef<IntrospectionOutputType>"
+            },
+            {
+              "$ref": "#/definitions/IntrospectionListTypeRef<IntrospectionOutputTypeRef>"
+            }
+          ]
+        }
+      },
+      "required": ["kind", "ofType"],
+      "type": "object"
+    },
+    "IntrospectionObjectType": {
+      "properties": {
+        "description": {
+          "type": ["null", "string"]
+        },
+        "fields": {
+          "items": {
+            "$ref": "#/definitions/IntrospectionField"
+          },
+          "type": "array"
+        },
+        "interfaces": {
+          "items": {
+            "$ref": "#/definitions/IntrospectionNamedTypeRef<IntrospectionInterfaceType>"
+          },
+          "type": "array"
+        },
+        "kind": {
+          "const": "OBJECT",
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": ["kind", "name", "fields", "interfaces"],
+      "type": "object"
+    },
+    "IntrospectionOutputTypeRef": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/IntrospectionNamedTypeRef<IntrospectionOutputType>"
+        },
+        {
+          "$ref": "#/definitions/IntrospectionListTypeRef<IntrospectionOutputTypeRef>"
+        },
+        {
+          "$ref": "#/definitions/IntrospectionNonNullTypeRef<(IntrospectionNamedTypeRef<IntrospectionOutputType>|IntrospectionListTypeRef<IntrospectionOutputTypeRef>)>"
+        }
+      ]
+    },
+    "IntrospectionQuery": {
+      "properties": {
+        "__schema": {
+          "$ref": "#/definitions/IntrospectionSchema"
+        }
+      },
+      "required": ["__schema"],
+      "type": "object"
+    },
+    "IntrospectionScalarType": {
+      "properties": {
+        "description": {
+          "type": ["null", "string"]
+        },
+        "kind": {
+          "const": "SCALAR",
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "specifiedByURL": {
+          "type": ["null", "string"]
+        }
+      },
+      "required": ["kind", "name"],
+      "type": "object"
+    },
+    "IntrospectionSchema": {
+      "properties": {
+        "description": {
+          "type": ["null", "string"]
+        },
+        "directives": {
+          "items": {
+            "$ref": "#/definitions/IntrospectionDirective"
+          },
+          "type": "array"
+        },
+        "mutationType": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/definitions/IntrospectionNamedTypeRef<IntrospectionObjectType>"
+            }
+          ]
+        },
+        "queryType": {
+          "$ref": "#/definitions/IntrospectionNamedTypeRef<IntrospectionObjectType>"
+        },
+        "subscriptionType": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/definitions/IntrospectionNamedTypeRef<IntrospectionObjectType>"
+            }
+          ]
+        },
+        "types": {
+          "items": {
+            "$ref": "#/definitions/IntrospectionType"
+          },
+          "type": "array"
+        }
+      },
+      "required": ["queryType", "types", "directives"],
+      "type": "object"
+    },
+    "IntrospectionType": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/IntrospectionScalarType"
+        },
+        {
+          "$ref": "#/definitions/IntrospectionObjectType"
+        },
+        {
+          "$ref": "#/definitions/IntrospectionInterfaceType"
+        },
+        {
+          "$ref": "#/definitions/IntrospectionUnionType"
+        },
+        {
+          "$ref": "#/definitions/IntrospectionEnumType"
+        },
+        {
+          "$ref": "#/definitions/IntrospectionInputObjectType"
+        }
+      ]
+    },
+    "IntrospectionUnionType": {
+      "properties": {
+        "description": {
+          "type": ["null", "string"]
+        },
+        "kind": {
+          "const": "UNION",
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "possibleTypes": {
+          "items": {
+            "$ref": "#/definitions/IntrospectionNamedTypeRef<IntrospectionObjectType>"
+          },
+          "type": "array"
+        }
+      },
+      "required": ["kind", "name", "possibleTypes"],
+      "type": "object"
+    }
+  }
+}

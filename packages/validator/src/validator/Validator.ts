@@ -1,7 +1,11 @@
-import { Har, OpenAPI, Postman } from '@har-sdk/core';
+import { GraphQL, Har, OpenAPI, Postman } from '@har-sdk/core';
 import { ErrorObject } from 'ajv';
 
-export type Document = OpenAPI.Document | Postman.Document | Har;
+export type Document =
+  | OpenAPI.Document
+  | Postman.Document
+  | GraphQL.Document
+  | Har;
 
 export interface Validator<T extends Document> {
   verify(document: T): Promise<ErrorObject[]>;

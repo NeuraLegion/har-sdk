@@ -1,0 +1,43 @@
+interface Identifiable {
+  id: ID!
+}
+
+type Foo implements Identifiable {
+  id: ID!
+  fooField: String!
+}
+
+type Bar implements Identifiable {
+  id: ID!
+  barField: Int!
+}
+
+type Baz {
+  id: ID!
+  bazField: Float!
+}
+
+type Qux {
+  id: ID!
+  quxField: Boolean!
+}
+
+input QuxInput {
+  quxField: Boolean!
+}
+
+union FooQux = Foo | Qux
+
+type Query {
+  getFoo(id: ID!): Foo
+  getBar(id: ID!): Bar
+  getBaz(id: ID!): Baz
+  getFooOrQux(id: ID!): FooQux
+}
+
+type Mutation {
+  createFoo(fooField: String!): Foo
+  updateBar(id: ID!, barField: Int!): Bar
+  deleteBaz(id: ID!): Baz
+  createQux(qux: QuxInput!): Qux
+}

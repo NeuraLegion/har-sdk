@@ -36,17 +36,16 @@ describe('GraphQLImporter', () => {
 
     it('should import introspection envelope', async () => {
       // arrange
-      const input =
-        await promisify(readFile)(
-          resolve(__dirname, './fixtures/graphql.json'),
-          'utf8'
-        );
+      const input = await promisify(readFile)(
+        resolve(__dirname, './fixtures/graphql.json'),
+        'utf8'
+      );
 
       const expected = JSON.parse(
-          await promisify(readFile)(
-              resolve(__dirname, './fixtures/graphql.result.json'),
-              'utf8'
-          )
+        await promisify(readFile)(
+          resolve(__dirname, './fixtures/graphql.result.json'),
+          'utf8'
+        )
       );
 
       // act

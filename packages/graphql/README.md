@@ -22,6 +22,53 @@ To install the library, run the following command:
 $ npm i --save @har-sdk/graphql
 ```
 
+# Usage
+
+To convert your introspection, use the `graphql2har` function as follows:
+
+```js
+import introspection from './graphql-introspection.json' assert { type: 'json' };
+import { graphql2har } from '@har-sdk/graphql';
+
+const requests = await graphql2har({
+  ...introspection,
+  url: 'https://example.com/graphql'
+});
+
+console.log(requests);
+```
+
+If you want to skip some kind of operation layouts or limit the result HAR requests quantity, you can do this by passing an options object as the second parameter:
+
+```js
+import introspection from './graphql-introspection.json' assert { type: 'json' };
+import { graphql2har } from '@har-sdk/graphql';
+
+const requests = await graphql2har(
+  {
+    ...introspection,
+    url: 'https://example.com/graphql'
+  },
+  {
+    skipFileUploads: true,
+    limit: 10
+  }
+);
+
+console.log(requests);
+```
+
+Here is a table describing the options for the `graphql2har` function:
+
+| Option                      | Description                                                                                                                                                                                                                                                                                |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `skipInPlaceValues`         | If set to `true`, the function will not produce requests for operations having data provided as argument default values.                                                                                                                                                                   |
+| `skipExternalizedVariables` | If set to `true`, the function will skip requests for operations having data injected as variables, the actual data values passed in `variables` node of operation payload.                                                                                                                |
+| `skipFileUploads`           | If set to `true`, the function will not create `multipart/form-data` requests according to [GraphQL multipart request specification](https://github.com/jaydenseric/graphql-multipart-request-spec).                                                                                       |
+| `includeSimilarOperations`  | If set to `true`, the function will skip deduplocation of the equal operations which may occur when the operation has no argumnents.                                                                                                                                                       |
+| `operationCostThreshold`    | This property can be used to manage the statement complexity via the threshold for the operation cost. Cost is claculation is primitive - each input argument or output selection field costs 1. When the overall operation complexity reaches the threshold the operation sampling stops. |
+| `limit`                     | This property can be used to limit the number of HAR requests.                                                                                                                                                                                                                             |
+
 ## License
 
 Copyright © 2024 [Bright Security](https://brightsec.com/).

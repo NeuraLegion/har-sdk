@@ -1,0 +1,65 @@
+[
+  {
+    "query": "query { pastes(public: true,limit: 42,filter: \"lorem\") { id title content public userAgent ipAddr } }"
+  },
+  {
+    "query": "query { paste(id: 42,title: \"lorem\") { id title content public userAgent ipAddr ownerId } }"
+  },
+  {
+    "query": "query { systemUpdate }"
+  },
+  {
+    "query": "query { systemDiagnostics(username: \"lorem\",password: \"lorem\",cmd: \"lorem\") }"
+  },
+  {
+    "query": "query { systemDebug(arg: \"lorem\") }"
+  },
+  {
+    "query": "query { systemHealth }"
+  },
+  {
+    "query": "query { users(id: 42) { id username(capitalize: true) password } }"
+  },
+  {
+    "query": "query { readAndBurn(id: 42) { id title content public userAgent ipAddr ownerId burn } }"
+  },
+  {
+    "query": "query { search(keyword: \"lorem\") { ... on PasteObject { __typename id title content public userAgent ipAddr ownerId } } }"
+  },
+  {
+    "query": "query { search(keyword: \"lorem\") { ... on PasteObject { __typename id title } ... on UserObject { __typename id username(capitalize: true) password } } }"
+  },
+  {
+    "query": "query { audits { id gqloperation gqlquery timestamp } }"
+  },
+  {
+    "query": "query { deleteAllPastes }"
+  },
+  {
+    "query": "query { me(token: \"lorem\") { id username(capitalize: true) password } }"
+  },
+  {
+    "query": "mutations { createPaste(burn: false,content: \"lorem\",public: true,title: \"lorem\") { paste { id title content public userAgent } } }"
+  },
+  {
+    "query": "mutations { editPaste(content: \"lorem\",id: 42,title: \"lorem\") { paste { id title content public userAgent ipAddr } } }"
+  },
+  {
+    "query": "mutations { deletePaste(id: 42) { result } }"
+  },
+  {
+    "query": "mutations { uploadPaste(content: \"lorem\",filename: \"lorem\") { content filename result } }"
+  },
+  {
+    "query": "mutations { importPaste(host: \"lorem\",path: \"lorem\",port: 42,scheme: \"lorem\") { result } }"
+  },
+  {
+    "query": "mutations { createUser(userData: {username: \"lorem\", email: \"lorem\", password: \"lorem\"}) { user { id username(capitalize: true) password } } }"
+  },
+  {
+    "query": "mutations { login(password: \"lorem\",username: \"lorem\") { accessToken refreshToken } }"
+  },
+  {
+    "query": "subscription { paste(id: 42,title: \"lorem\") { id title content public userAgent ipAddr ownerId } }"
+  }
+]

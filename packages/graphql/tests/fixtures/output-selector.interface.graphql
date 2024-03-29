@@ -1,0 +1,4 @@
+type Query {
+  heroes(episode: Episode = JEDI): [Character!]!
+  droid(id: ID!): Droid
+}

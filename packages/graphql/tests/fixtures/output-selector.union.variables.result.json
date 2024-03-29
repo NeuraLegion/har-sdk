@@ -1,0 +1,23 @@
+[
+  {
+    "operationName": "Characters",
+    "query": "query Characters($unit: LengthUnit, $unit1: LengthUnit, $unit2: LengthUnit) { characters { ... on Human { __typename id name friends { id name appearsIn ... on Human { __typename starships { id name length(unit: $unit) } totalCredits } ... on Droid { __typename primaryFunction } } appearsIn starships { id name length(unit: $unit1) } totalCredits } ... on Droid { __typename id name friends { id name appearsIn ... on Human { __typename starships { id name length(unit: $unit2) } totalCredits } ... on Droid { __typename primaryFunction } } appearsIn primaryFunction } } }",
+    "variables": {
+      "unit": "METER",
+      "unit1": "METER",
+      "unit2": "METER"
+    }
+  },
+  {
+    "operationName": "Fulltext",
+    "query": "query Fulltext($q: String, $unit: LengthUnit, $unit1: LengthUnit, $unit2: LengthUnit, $unit3: LengthUnit, $unit4: LengthUnit) { fulltext(q: $q) { ... on Starship { __typename id name length(unit: $unit) } ... on Fleet { __typename id name units { id name length(unit: $unit1) } } ... on Human { __typename id name friends { id name appearsIn ... on Human { __typename starships { id name length(unit: $unit2) } totalCredits } ... on Droid { __typename primaryFunction } } appearsIn starships { id name length(unit: $unit3) } totalCredits } ... on Droid { __typename id name friends { id name appearsIn ... on Human { __typename starships { id name length(unit: $unit4) } totalCredits } ... on Droid { __typename primaryFunction } } appearsIn primaryFunction } } }",
+    "variables": {
+      "q": "lorem",
+      "unit": "METER",
+      "unit1": "METER",
+      "unit2": "METER",
+      "unit3": "METER",
+      "unit4": "METER"
+    }
+  }
+]

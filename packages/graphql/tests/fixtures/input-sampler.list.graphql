@@ -1,0 +1,12 @@
+type Query {
+  listNoDefaultValueArg(ids: [ID!]!): [Starship!]!
+  listEmptyDefaultValueArg(arg: [String] = []): Int!
+  listNonEmptyDefaultValueArg(arg: [String] = ["foo"]): Int!
+  listInListNoDefaultValueArg(ids: [[Int!]!]!): Int!
+  listInListNonEmptyDefaultValueArg(arg: [[String]] = [["foo"]]): Int!
+  listInListEmptyValueDefaultArg(arg: [[String]] = [[]]): Int!
+}
+
+type Mutation {
+  bulkCreateStarships(starships: [StarshipInput!]!): [Starship!]!
+}

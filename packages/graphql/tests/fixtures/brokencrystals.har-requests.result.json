@@ -1,0 +1,173 @@
+[
+  {
+    "url": "https://brokencrystals.com/graphql",
+    "method": "POST",
+    "httpVersion": "HTTP/1.1",
+    "cookies": [],
+    "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      }
+    ],
+    "queryString": [],
+    "headersSize": -1,
+    "bodySize": -1,
+    "postData": {
+      "mimeType": "application/json",
+      "text": "{\"query\":\"mutation { createTestimonial(testimonialRequest: {name: \\\"lorem\\\", title: \\\"lorem\\\", message: \\\"lorem\\\"}) { name title message } }\"}"
+    }
+  },
+  {
+    "url": "https://brokencrystals.com/graphql",
+    "method": "POST",
+    "httpVersion": "HTTP/1.1",
+    "cookies": [],
+    "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      }
+    ],
+    "queryString": [],
+    "headersSize": -1,
+    "bodySize": -1,
+    "postData": {
+      "mimeType": "application/json",
+      "text": "{\"operationName\":\"CreateTestimonial\",\"query\":\"mutation CreateTestimonial($testimonialRequest: CreateTestimonialRequest!) { createTestimonial(testimonialRequest: $testimonialRequest) { name title message } }\",\"variables\":{\"testimonialRequest\":{\"name\":\"lorem\",\"title\":\"lorem\",\"message\":\"lorem\"}}}"
+    }
+  },
+  {
+    "url": "https://brokencrystals.com/graphql",
+    "method": "POST",
+    "httpVersion": "HTTP/1.1",
+    "cookies": [],
+    "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      }
+    ],
+    "queryString": [],
+    "headersSize": -1,
+    "bodySize": -1,
+    "postData": {
+      "mimeType": "application/json",
+      "text": "{\"query\":\"mutation { viewProduct(productName: \\\"lorem\\\") }\"}"
+    }
+  },
+  {
+    "url": "https://brokencrystals.com/graphql",
+    "method": "POST",
+    "httpVersion": "HTTP/1.1",
+    "cookies": [],
+    "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      }
+    ],
+    "queryString": [],
+    "headersSize": -1,
+    "bodySize": -1,
+    "postData": {
+      "mimeType": "application/json",
+      "text": "{\"operationName\":\"ViewProduct\",\"query\":\"mutation ViewProduct($productName: String!) { viewProduct(productName: $productName) }\",\"variables\":{\"productName\":\"lorem\"}}"
+    }
+  },
+  {
+    "url": "https://brokencrystals.com/graphql",
+    "method": "POST",
+    "httpVersion": "HTTP/1.1",
+    "cookies": [],
+    "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      }
+    ],
+    "queryString": [],
+    "headersSize": -1,
+    "bodySize": -1,
+    "postData": {
+      "mimeType": "application/json",
+      "text": "{\"query\":\"query { allTestimonials { name title message } }\"}"
+    }
+  },
+  {
+    "url": "https://brokencrystals.com/graphql",
+    "method": "POST",
+    "httpVersion": "HTTP/1.1",
+    "cookies": [],
+    "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      }
+    ],
+    "queryString": [],
+    "headersSize": -1,
+    "bodySize": -1,
+    "postData": {
+      "mimeType": "application/json",
+      "text": "{\"query\":\"query { testimonialsCount(query: \\\"lorem\\\") }\"}"
+    }
+  },
+  {
+    "url": "https://brokencrystals.com/graphql",
+    "method": "POST",
+    "httpVersion": "HTTP/1.1",
+    "cookies": [],
+    "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      }
+    ],
+    "queryString": [],
+    "headersSize": -1,
+    "bodySize": -1,
+    "postData": {
+      "mimeType": "application/json",
+      "text": "{\"operationName\":\"TestimonialsCount\",\"query\":\"query TestimonialsCount($query: String!) { testimonialsCount(query: $query) }\",\"variables\":{\"query\":\"lorem\"}}"
+    }
+  },
+  {
+    "url": "https://brokencrystals.com/graphql",
+    "method": "POST",
+    "httpVersion": "HTTP/1.1",
+    "cookies": [],
+    "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      }
+    ],
+    "queryString": [],
+    "headersSize": -1,
+    "bodySize": -1,
+    "postData": {
+      "mimeType": "application/json",
+      "text": "{\"query\":\"query { allProducts { name category photoUrl description viewsCount } }\"}"
+    }
+  },
+  {
+    "url": "https://brokencrystals.com/graphql",
+    "method": "POST",
+    "httpVersion": "HTTP/1.1",
+    "cookies": [],
+    "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      }
+    ],
+    "queryString": [],
+    "headersSize": -1,
+    "bodySize": -1,
+    "postData": {
+      "mimeType": "application/json",
+      "text": "{\"query\":\"query { latestProducts { name category photoUrl description viewsCount } }\"}"
+    }
+  }
+]

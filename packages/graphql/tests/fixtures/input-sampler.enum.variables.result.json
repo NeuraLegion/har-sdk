@@ -1,0 +1,23 @@
+[
+  {
+    "operationName": "CountHeroesDefaultValueArg",
+    "query": "query CountHeroesDefaultValueArg($episode: Episode) { countHeroesDefaultValueArg(episode: $episode) }",
+    "variables": {
+      "episode": "JEDI"
+    }
+  },
+  {
+    "operationName": "CountHeroesDefaultNullArg",
+    "query": "query CountHeroesDefaultNullArg($episode: Episode) { countHeroesDefaultNullArg(episode: $episode) }",
+    "variables": {
+      "episode": null
+    }
+  },
+  {
+    "operationName": "CountHeroesSampledArg",
+    "query": "query CountHeroesSampledArg($episode: Episode) { countHeroesSampledArg(episode: $episode) }",
+    "variables": {
+      "episode": "NEWHOPE"
+    }
+  }
+]

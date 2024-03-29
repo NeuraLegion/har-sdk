@@ -1,0 +1,53 @@
+input CreateTestimonialRequest {
+  name: String!
+  title: String!
+  message: String!
+}
+
+type Mutation {
+  """
+  Creates testimonial
+  """
+  createTestimonial(testimonialRequest: CreateTestimonialRequest!): Testimonial!
+
+  """
+  Updates the product's 'viewsCount' according to product name provided in the header 'x-product-name' and returns the query result.
+  """
+  viewProduct(productName: String!): Boolean!
+}
+
+type Product {
+  name: String!
+  category: String!
+  photoUrl: String!
+  description: String!
+  viewsCount: Int!
+}
+
+type Query {
+  """
+  Returns all testimonials
+  """
+  allTestimonials: [Testimonial!]!
+
+  """
+  Returns count of all testimonials based on provided sql query
+  """
+  testimonialsCount(query: String!): Int!
+
+  """
+  Returns all products
+  """
+  allProducts: [Product!]!
+
+  """
+  Returns 3 latest products
+  """
+  latestProducts: [Product!]!
+}
+
+type Testimonial {
+  name: String!
+  title: String!
+  message: String!
+}

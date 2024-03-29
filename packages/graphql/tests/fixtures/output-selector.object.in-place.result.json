@@ -1,0 +1,14 @@
+[
+  {
+    "query": "query { ship(id: \"f323fed3-ae3e-41df-abe2-540859417876\") { id name length(unit: METER) } }"
+  },
+  {
+    "query": "query { ships { id name length(unit: METER) } }"
+  },
+  {
+    "query": "query { fleet(id: \"f323fed3-ae3e-41df-abe2-540859417876\") { id name units { id name length(unit: METER) } } }"
+  },
+  {
+    "query": "query { fleets { id name units { id name length(unit: METER) } } }"
+  }
+]

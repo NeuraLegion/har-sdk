@@ -1,0 +1,100 @@
+[
+  {
+    "url": "https://example.com/graphql",
+    "method": "POST",
+    "httpVersion": "HTTP/1.1",
+    "cookies": [],
+    "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      }
+    ],
+    "queryString": [],
+    "headersSize": -1,
+    "bodySize": -1,
+    "postData": {
+      "mimeType": "application/json",
+      "text": "{\"query\":\"query { uploads { id name url } }\"}"
+    }
+  },
+  {
+    "url": "https://example.com/graphql",
+    "method": "POST",
+    "httpVersion": "HTTP/1.1",
+    "cookies": [],
+    "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      }
+    ],
+    "queryString": [],
+    "headersSize": -1,
+    "bodySize": -1,
+    "postData": {
+      "mimeType": "application/json",
+      "text": "{\"query\":\"query { galleries { id name description images { id name description } } }\"}"
+    }
+  },
+  {
+    "url": "https://example.com/graphql",
+    "postData": {
+      "mimeType": "multipart/form-data; boundary=956888039105887155673143",
+      "text": "--956888039105887155673143\r\nContent-Disposition: form-data; name=\"operations\"\r\n\r\n{\"operationName\":\"SingleUpload\",\"query\":\"mutation SingleUpload($file: Upload!) { singleUpload(file: $file) { id name url } }\",\"variables\":{\"file\":null}}\r\n--956888039105887155673143\r\nContent-Disposition: form-data; name=\"map\"\r\n\r\n{\"0\":[\"variables.file\"]}\r\n--956888039105887155673143\r\nContent-Disposition: form-data; name=\"0\"; filename=\"blob.bin\"\r\nContent-Type: application/octet-stream\r\n\r\n\u0001\u0002\u0003\u0004\u0005\r\n--956888039105887155673143--\r\n",
+      "_base64EncodedText": "LS05NTY4ODgwMzkxMDU4ODcxNTU2NzMxNDMNCkNvbnRlbnQtRGlzcG9zaXRpb246IGZvcm0tZGF0YTsgbmFtZT0ib3BlcmF0aW9ucyINCg0KeyJvcGVyYXRpb25OYW1lIjoiU2luZ2xlVXBsb2FkIiwicXVlcnkiOiJtdXRhdGlvbiBTaW5nbGVVcGxvYWQoJGZpbGU6IFVwbG9hZCEpIHsgc2luZ2xlVXBsb2FkKGZpbGU6ICRmaWxlKSB7IGlkIG5hbWUgdXJsIH0gfSIsInZhcmlhYmxlcyI6eyJmaWxlIjpudWxsfX0NCi0tOTU2ODg4MDM5MTA1ODg3MTU1NjczMTQzDQpDb250ZW50LURpc3Bvc2l0aW9uOiBmb3JtLWRhdGE7IG5hbWU9Im1hcCINCg0KeyIwIjpbInZhcmlhYmxlcy5maWxlIl19DQotLTk1Njg4ODAzOTEwNTg4NzE1NTY3MzE0Mw0KQ29udGVudC1EaXNwb3NpdGlvbjogZm9ybS1kYXRhOyBuYW1lPSIwIjsgZmlsZW5hbWU9ImJsb2IuYmluIg0KQ29udGVudC1UeXBlOiBhcHBsaWNhdGlvbi9vY3RldC1zdHJlYW0NCg0KAQIDBAUNCi0tOTU2ODg4MDM5MTA1ODg3MTU1NjczMTQzLS0NCg=="
+    },
+    "method": "POST",
+    "httpVersion": "HTTP/1.1",
+    "cookies": [],
+    "headers": [
+      {
+        "name": "content-type",
+        "value": "multipart/form-data; boundary=956888039105887155673143"
+      }
+    ],
+    "queryString": [],
+    "headersSize": -1,
+    "bodySize": -1
+  },
+  {
+    "url": "https://example.com/graphql",
+    "postData": {
+      "mimeType": "multipart/form-data; boundary=956888039105887155673143",
+      "text": "--956888039105887155673143\r\nContent-Disposition: form-data; name=\"operations\"\r\n\r\n{\"operationName\":\"MultipleUpload\",\"query\":\"mutation MultipleUpload($files: [Upload!]!) { multipleUpload(files: $files) { id name url } }\",\"variables\":{\"files\":[null]}}\r\n--956888039105887155673143\r\nContent-Disposition: form-data; name=\"map\"\r\n\r\n{\"0\":[\"variables.files.0\"]}\r\n--956888039105887155673143\r\nContent-Disposition: form-data; name=\"0\"; filename=\"blob.bin\"\r\nContent-Type: application/octet-stream\r\n\r\n\u0001\u0002\u0003\u0004\u0005\r\n--956888039105887155673143--\r\n",
+      "_base64EncodedText": "LS05NTY4ODgwMzkxMDU4ODcxNTU2NzMxNDMNCkNvbnRlbnQtRGlzcG9zaXRpb246IGZvcm0tZGF0YTsgbmFtZT0ib3BlcmF0aW9ucyINCg0KeyJvcGVyYXRpb25OYW1lIjoiTXVsdGlwbGVVcGxvYWQiLCJxdWVyeSI6Im11dGF0aW9uIE11bHRpcGxlVXBsb2FkKCRmaWxlczogW1VwbG9hZCFdISkgeyBtdWx0aXBsZVVwbG9hZChmaWxlczogJGZpbGVzKSB7IGlkIG5hbWUgdXJsIH0gfSIsInZhcmlhYmxlcyI6eyJmaWxlcyI6W251bGxdfX0NCi0tOTU2ODg4MDM5MTA1ODg3MTU1NjczMTQzDQpDb250ZW50LURpc3Bvc2l0aW9uOiBmb3JtLWRhdGE7IG5hbWU9Im1hcCINCg0KeyIwIjpbInZhcmlhYmxlcy5maWxlcy4wIl19DQotLTk1Njg4ODAzOTEwNTg4NzE1NTY3MzE0Mw0KQ29udGVudC1EaXNwb3NpdGlvbjogZm9ybS1kYXRhOyBuYW1lPSIwIjsgZmlsZW5hbWU9ImJsb2IuYmluIg0KQ29udGVudC1UeXBlOiBhcHBsaWNhdGlvbi9vY3RldC1zdHJlYW0NCg0KAQIDBAUNCi0tOTU2ODg4MDM5MTA1ODg3MTU1NjczMTQzLS0NCg=="
+    },
+    "method": "POST",
+    "httpVersion": "HTTP/1.1",
+    "cookies": [],
+    "headers": [
+      {
+        "name": "content-type",
+        "value": "multipart/form-data; boundary=956888039105887155673143"
+      }
+    ],
+    "queryString": [],
+    "headersSize": -1,
+    "bodySize": -1
+  },
+  {
+    "url": "https://example.com/graphql",
+    "postData": {
+      "mimeType": "multipart/form-data; boundary=956888039105887155673143",
+      "text": "--956888039105887155673143\r\nContent-Disposition: form-data; name=\"operations\"\r\n\r\n{\"operationName\":\"CreateGallery\",\"query\":\"mutation CreateGallery($gallery: GalleryInput!) { createGallery(gallery: $gallery) { id name description images { id name description } } }\",\"variables\":{\"gallery\":{\"name\":\"lorem\",\"description\":\"lorem\",\"images\":[{\"name\":\"lorem\",\"description\":\"lorem\",\"image\":null}]}}}\r\n--956888039105887155673143\r\nContent-Disposition: form-data; name=\"map\"\r\n\r\n{\"0\":[\"variables.gallery.images.0.image\"]}\r\n--956888039105887155673143\r\nContent-Disposition: form-data; name=\"0\"; filename=\"image.png\"\r\nContent-Type: image/png\r\n\r\nPNG\r\n\u001a\n\r\n--956888039105887155673143--\r\n",
+      "_base64EncodedText": "LS05NTY4ODgwMzkxMDU4ODcxNTU2NzMxNDMNCkNvbnRlbnQtRGlzcG9zaXRpb246IGZvcm0tZGF0YTsgbmFtZT0ib3BlcmF0aW9ucyINCg0KeyJvcGVyYXRpb25OYW1lIjoiQ3JlYXRlR2FsbGVyeSIsInF1ZXJ5IjoibXV0YXRpb24gQ3JlYXRlR2FsbGVyeSgkZ2FsbGVyeTogR2FsbGVyeUlucHV0ISkgeyBjcmVhdGVHYWxsZXJ5KGdhbGxlcnk6ICRnYWxsZXJ5KSB7IGlkIG5hbWUgZGVzY3JpcHRpb24gaW1hZ2VzIHsgaWQgbmFtZSBkZXNjcmlwdGlvbiB9IH0gfSIsInZhcmlhYmxlcyI6eyJnYWxsZXJ5Ijp7Im5hbWUiOiJsb3JlbSIsImRlc2NyaXB0aW9uIjoibG9yZW0iLCJpbWFnZXMiOlt7Im5hbWUiOiJsb3JlbSIsImRlc2NyaXB0aW9uIjoibG9yZW0iLCJpbWFnZSI6bnVsbH1dfX19DQotLTk1Njg4ODAzOTEwNTg4NzE1NTY3MzE0Mw0KQ29udGVudC1EaXNwb3NpdGlvbjogZm9ybS1kYXRhOyBuYW1lPSJtYXAiDQoNCnsiMCI6WyJ2YXJpYWJsZXMuZ2FsbGVyeS5pbWFnZXMuMC5pbWFnZSJdfQ0KLS05NTY4ODgwMzkxMDU4ODcxNTU2NzMxNDMNCkNvbnRlbnQtRGlzcG9zaXRpb246IGZvcm0tZGF0YTsgbmFtZT0iMCI7IGZpbGVuYW1lPSJpbWFnZS5wbmciDQpDb250ZW50LVR5cGU6IGltYWdlL3BuZw0KDQrCiVBORw0KGgoNCi0tOTU2ODg4MDM5MTA1ODg3MTU1NjczMTQzLS0NCg=="
+    },
+    "method": "POST",
+    "httpVersion": "HTTP/1.1",
+    "cookies": [],
+    "headers": [
+      {
+        "name": "content-type",
+        "value": "multipart/form-data; boundary=956888039105887155673143"
+      }
+    ],
+    "queryString": [],
+    "headersSize": -1,
+    "bodySize": -1
+  }
+]

@@ -1,0 +1,23 @@
+[
+  {
+    "query": "query { listNoDefaultValueArg(ids: [\"f323fed3-ae3e-41df-abe2-540859417876\"]) { id name length(unit: METER) } }"
+  },
+  {
+    "query": "query { listEmptyDefaultValueArg(arg: []) }"
+  },
+  {
+    "query": "query { listNonEmptyDefaultValueArg(arg: [\"foo\"]) }"
+  },
+  {
+    "query": "query { listInListNoDefaultValueArg(ids: [[42]]) }"
+  },
+  {
+    "query": "query { listInListNonEmptyDefaultValueArg(arg: [[\"foo\"]]) }"
+  },
+  {
+    "query": "query { listInListEmptyValueDefaultArg(arg: [[]]) }"
+  },
+  {
+    "query": "mutation { bulkCreateStarships(starships: [{name: \"lorem\", length: 123.45, units: METER}]) { id name length(unit: METER) } }"
+  }
+]

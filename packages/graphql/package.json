@@ -37,12 +37,15 @@
     "lint": "eslint --ignore-path ../../.eslintignore .",
     "format": "prettier --ignore-path ../../.prettierignore --check .",
     "compile": "tsc -b tsconfig.build.json",
-    "test": "cross-env NODE_ENV=test jest --passWithNoTests",
+    "test": "cross-env NODE_ENV=test jest",
     "coverage": "cross-env NODE_ENV=test jest --coverage"
   },
   "dependencies": {
     "@har-sdk/core": "*",
     "tslib": "^2.3.1"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@graphql-tools/graphql-file-loader": "^8.0.1",
+    "@graphql-tools/load": "^8.0.2"
+  }
 }

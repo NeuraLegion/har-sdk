@@ -1,0 +1,18 @@
+[
+  {
+    "operationName": "Heroes",
+    "query": "query Heroes($episode: Episode, $unit: LengthUnit) { heroes(episode: $episode) { id name appearsIn ... on Human { __typename starships { id name length(unit: $unit) } totalCredits } ... on Droid { __typename primaryFunction } } }",
+    "variables": {
+      "episode": "JEDI",
+      "unit": "METER"
+    }
+  },
+  {
+    "operationName": "Droid",
+    "query": "query Droid($id: ID!, $unit: LengthUnit) { droid(id: $id) { id name friends { id name appearsIn ... on Human { __typename starships { id name length(unit: $unit) } totalCredits } ... on Droid { __typename primaryFunction } } appearsIn primaryFunction } }",
+    "variables": {
+      "id": "f323fed3-ae3e-41df-abe2-540859417876",
+      "unit": "METER"
+    }
+  }
+]

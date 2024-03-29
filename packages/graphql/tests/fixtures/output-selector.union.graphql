@@ -1,0 +1,7 @@
+type Query {
+  characters: [Characters]
+  fulltext(q: String): [SearchResult]
+}
+
+union Characters = Human | Droid
+union SearchResult = Human | Droid | Starship | Fleet

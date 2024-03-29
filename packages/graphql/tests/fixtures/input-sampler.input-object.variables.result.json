@@ -1,0 +1,71 @@
+[
+  {
+    "operationName": "QueryByExample",
+    "query": "query QueryByExample($starship: StarshipInput!, $unit: LengthUnit) { queryByExample(starship: $starship) { id name length(unit: $unit) } }",
+    "variables": {
+      "starship": {
+        "name": "lorem",
+        "length": 123.45,
+        "units": "METER"
+      },
+      "unit": "METER"
+    }
+  },
+  {
+    "operationName": "ListNonEmptyObjectDefaultValueArg",
+    "query": "query ListNonEmptyObjectDefaultValueArg($arg: [AnObject]) { listNonEmptyObjectDefaultValueArg(arg: $arg) }",
+    "variables": {
+      "arg": [
+        {
+          "name": "foo"
+        }
+      ]
+    }
+  },
+  {
+    "operationName": "ListEmptyObjectDefaultValueArg",
+    "query": "query ListEmptyObjectDefaultValueArg($arg: [AnObject]) { listEmptyObjectDefaultValueArg(arg: $arg) }",
+    "variables": {
+      "arg": [{}]
+    }
+  },
+  {
+    "operationName": "CreateStarship",
+    "query": "mutation CreateStarship($starship: StarshipInput!, $unit: LengthUnit) { createStarship(starship: $starship) { id name length(unit: $unit) } }",
+    "variables": {
+      "starship": {
+        "name": "lorem",
+        "length": 123.45,
+        "units": "METER"
+      },
+      "unit": "METER"
+    }
+  },
+  {
+    "operationName": "UpdateStarship",
+    "query": "mutation UpdateStarship($id: ID!, $starship: StarshipInput!, $unit: LengthUnit) { updateStarship(id: $id,starship: $starship) { id name length(unit: $unit) } }",
+    "variables": {
+      "id": "f323fed3-ae3e-41df-abe2-540859417876",
+      "starship": {
+        "name": "lorem",
+        "length": 123.45,
+        "units": "METER"
+      },
+      "unit": "METER"
+    }
+  },
+  {
+    "operationName": "BulkCreateStarships",
+    "query": "mutation BulkCreateStarships($starship: [StarshipInput!]!, $unit: LengthUnit) { bulkCreateStarships(starship: $starship) { id name length(unit: $unit) } }",
+    "variables": {
+      "starship": [
+        {
+          "name": "lorem",
+          "length": 123.45,
+          "units": "METER"
+        }
+      ],
+      "unit": "METER"
+    }
+  }
+]

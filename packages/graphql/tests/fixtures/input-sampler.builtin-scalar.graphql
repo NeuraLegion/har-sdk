@@ -1,0 +1,22 @@
+type Query {
+  stringDefaultValueArg(arg: String = "str"): Int!
+  stringDefaultValueEmptyArg(arg: String = ""): Int!
+  stringDefaultNullArg(arg: String = null): Int!
+  stringSampledArg(arg: String): Int!
+
+  idDefaultValueArg(arg: ID = "c2e6ad85-94b3-48e1-85b7-eeff57272c05"): Int!
+  idDefaultNullArg(arg: ID = null): Int!
+  idSampledArg(arg: ID): Int!
+
+  intDefaultValueArg(arg: Int = 3): Int!
+  intDefaultNullArg(arg: Int = null): Int!
+  intSampledArg(arg: Int): Int!
+
+  floatDefaultValueArg(arg: Float = 2.0): Int!
+  floatDefaultNullArg(arg: Float = null): Int!
+  floatSampledArg(arg: Float): Int!
+
+  booleanDefaultValueArg(arg: Boolean = false): Int!
+  booleanDefaultNullArg(arg: Boolean = null): Int!
+  booleanSampledArg(arg: Boolean): Int!
+}

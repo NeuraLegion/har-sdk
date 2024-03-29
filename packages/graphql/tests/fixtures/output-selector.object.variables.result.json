@@ -1,0 +1,32 @@
+[
+  {
+    "operationName": "Ship",
+    "query": "query Ship($id: ID, $unit: LengthUnit) { ship(id: $id) { id name length(unit: $unit) } }",
+    "variables": {
+      "id": "f323fed3-ae3e-41df-abe2-540859417876",
+      "unit": "METER"
+    }
+  },
+  {
+    "operationName": "Ships",
+    "query": "query Ships($unit: LengthUnit) { ships { id name length(unit: $unit) } }",
+    "variables": {
+      "unit": "METER"
+    }
+  },
+  {
+    "operationName": "Fleet",
+    "query": "query Fleet($id: ID, $unit: LengthUnit) { fleet(id: $id) { id name units { id name length(unit: $unit) } } }",
+    "variables": {
+      "id": "f323fed3-ae3e-41df-abe2-540859417876",
+      "unit": "METER"
+    }
+  },
+  {
+    "operationName": "Fleets",
+    "query": "query Fleets($unit: LengthUnit) { fleets { id name units { id name length(unit: $unit) } } }",
+    "variables": {
+      "unit": "METER"
+    }
+  }
+]

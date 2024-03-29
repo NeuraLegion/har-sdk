@@ -1,0 +1,8 @@
+[
+  {
+    "query": "query { characters { ... on Human { __typename id name friends { id name appearsIn ... on Human { __typename starships { id name length(unit: METER) } totalCredits } ... on Droid { __typename primaryFunction } } appearsIn starships { id name length(unit: METER) } totalCredits } ... on Droid { __typename id name friends { id name appearsIn ... on Human { __typename starships { id name length(unit: METER) } totalCredits } ... on Droid { __typename primaryFunction } } appearsIn primaryFunction } } }"
+  },
+  {
+    "query": "query { fulltext(q: \"lorem\") { ... on Starship { __typename id name length(unit: METER) } ... on Fleet { __typename id name units { id name length(unit: METER) } } ... on Human { __typename id name friends { id name appearsIn ... on Human { __typename starships { id name length(unit: METER) } totalCredits } ... on Droid { __typename primaryFunction } } appearsIn starships { id name length(unit: METER) } totalCredits } ... on Droid { __typename id name friends { id name appearsIn ... on Human { __typename starships { id name length(unit: METER) } totalCredits } ... on Droid { __typename primaryFunction } } appearsIn primaryFunction } } }"
+  }
+]

@@ -1,0 +1,50 @@
+[
+  {
+    "query": "query { stringDefaultValueArg(arg: \"str\") }"
+  },
+  {
+    "query": "query { stringDefaultValueEmptyArg(arg: \"\") }"
+  },
+  {
+    "query": "query { stringDefaultNullArg(arg: null) }"
+  },
+  {
+    "query": "query { stringSampledArg(arg: \"lorem\") }"
+  },
+  {
+    "query": "query { idDefaultValueArg(arg: \"c2e6ad85-94b3-48e1-85b7-eeff57272c05\") }"
+  },
+  {
+    "query": "query { idDefaultNullArg(arg: null) }"
+  },
+  {
+    "query": "query { idSampledArg(arg: \"f323fed3-ae3e-41df-abe2-540859417876\") }"
+  },
+  {
+    "query": "query { intDefaultValueArg(arg: 3) }"
+  },
+  {
+    "query": "query { intDefaultNullArg(arg: null) }"
+  },
+  {
+    "query": "query { intSampledArg(arg: 42) }"
+  },
+  {
+    "query": "query { floatDefaultValueArg(arg: 2) }"
+  },
+  {
+    "query": "query { floatDefaultNullArg(arg: null) }"
+  },
+  {
+    "query": "query { floatSampledArg(arg: 123.45) }"
+  },
+  {
+    "query": "query { booleanDefaultValueArg(arg: false) }"
+  },
+  {
+    "query": "query { booleanDefaultNullArg(arg: null) }"
+  },
+  {
+    "query": "query { booleanSampledArg(arg: true) }"
+  }
+]

@@ -1,0 +1,11 @@
+[
+  {
+    "query": "query { countHeroesDefaultValueArg(episode: JEDI) }"
+  },
+  {
+    "query": "query { countHeroesDefaultNullArg(episode: null) }"
+  },
+  {
+    "query": "query { countHeroesSampledArg(episode: NEWHOPE) }"
+  }
+]

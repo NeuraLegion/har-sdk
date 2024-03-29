@@ -1,0 +1,8 @@
+[
+  {
+    "query": "query { heroes(episode: JEDI) { id name appearsIn ... on Human { __typename starships { id name length(unit: METER) } totalCredits } ... on Droid { __typename primaryFunction } } }"
+  },
+  {
+    "query": "query { droid(id: \"f323fed3-ae3e-41df-abe2-540859417876\") { id name friends { id name appearsIn ... on Human { __typename starships { id name length(unit: METER) } totalCredits } ... on Droid { __typename primaryFunction } } appearsIn primaryFunction } }"
+  }
+]

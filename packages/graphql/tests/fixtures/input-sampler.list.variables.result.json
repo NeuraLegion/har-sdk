@@ -1,0 +1,59 @@
+[
+  {
+    "operationName": "ListNoDefaultValueArg",
+    "query": "query ListNoDefaultValueArg($ids: [ID!]!, $unit: LengthUnit) { listNoDefaultValueArg(ids: $ids) { id name length(unit: $unit) } }",
+    "variables": {
+      "ids": ["f323fed3-ae3e-41df-abe2-540859417876"],
+      "unit": "METER"
+    }
+  },
+  {
+    "operationName": "ListEmptyDefaultValueArg",
+    "query": "query ListEmptyDefaultValueArg($arg: [String]) { listEmptyDefaultValueArg(arg: $arg) }",
+    "variables": {
+      "arg": []
+    }
+  },
+  {
+    "operationName": "ListNonEmptyDefaultValueArg",
+    "query": "query ListNonEmptyDefaultValueArg($arg: [String]) { listNonEmptyDefaultValueArg(arg: $arg) }",
+    "variables": {
+      "arg": ["foo"]
+    }
+  },
+  {
+    "operationName": "ListInListNoDefaultValueArg",
+    "query": "query ListInListNoDefaultValueArg($ids: [[Int!]!]!) { listInListNoDefaultValueArg(ids: $ids) }",
+    "variables": {
+      "ids": [[42]]
+    }
+  },
+  {
+    "operationName": "ListInListNonEmptyDefaultValueArg",
+    "query": "query ListInListNonEmptyDefaultValueArg($arg: [[String]]) { listInListNonEmptyDefaultValueArg(arg: $arg) }",
+    "variables": {
+      "arg": [["foo"]]
+    }
+  },
+  {
+    "operationName": "ListInListEmptyValueDefaultArg",
+    "query": "query ListInListEmptyValueDefaultArg($arg: [[String]]) { listInListEmptyValueDefaultArg(arg: $arg) }",
+    "variables": {
+      "arg": [[]]
+    }
+  },
+  {
+    "operationName": "BulkCreateStarships",
+    "query": "mutation BulkCreateStarships($starships: [StarshipInput!]!, $unit: LengthUnit) { bulkCreateStarships(starships: $starships) { id name length(unit: $unit) } }",
+    "variables": {
+      "starships": [
+        {
+          "name": "lorem",
+          "length": 123.45,
+          "units": "METER"
+        }
+      ],
+      "unit": "METER"
+    }
+  }
+]

@@ -1,0 +1,44 @@
+[
+  {
+    "operationName": "Continent",
+    "query": "query Continent($code: ID!) { continent(code: $code) { code countries { awsRegion capital code currencies currency emoji } name } }",
+    "variables": {
+      "code": "f323fed3-ae3e-41df-abe2-540859417876"
+    }
+  },
+  {
+    "operationName": "Continents",
+    "query": "query Continents($filter: ContinentFilterInput) { continents(filter: $filter) { code countries { awsRegion capital code currencies currency emoji } name } }",
+    "variables": {
+      "filter": {}
+    }
+  },
+  {
+    "operationName": "Countries",
+    "query": "query Countries($filter: CountryFilterInput) { countries(filter: $filter) { awsRegion capital code currencies currency emoji emojiU } }",
+    "variables": {
+      "filter": {}
+    }
+  },
+  {
+    "operationName": "Country",
+    "query": "query Country($code: ID!) { country(code: $code) { awsRegion capital code currencies currency emoji emojiU } }",
+    "variables": {
+      "code": "f323fed3-ae3e-41df-abe2-540859417876"
+    }
+  },
+  {
+    "operationName": "Language",
+    "query": "query Language($code: ID!) { language(code: $code) { code name native rtl } }",
+    "variables": {
+      "code": "f323fed3-ae3e-41df-abe2-540859417876"
+    }
+  },
+  {
+    "operationName": "Languages",
+    "query": "query Languages($filter: LanguageFilterInput) { languages(filter: $filter) { code name native rtl } }",
+    "variables": {
+      "filter": {}
+    }
+  }
+]

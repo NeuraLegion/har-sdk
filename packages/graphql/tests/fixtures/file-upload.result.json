@@ -1,0 +1,57 @@
+[
+  {
+    "files": [
+      {
+        "content": "\u0001\u0002\u0003\u0004\u0005",
+        "contentType": "application/octet-stream",
+        "fileName": "blob.bin",
+        "pointer": "variables.file"
+      }
+    ],
+    "operationName": "SingleUpload",
+    "query": "mutation SingleUpload($file: Upload!) { singleUpload(file: $file) { id name url } }",
+    "variables": {
+      "file": null
+    }
+  },
+  {
+    "files": [
+      {
+        "content": "\u0001\u0002\u0003\u0004\u0005",
+        "contentType": "application/octet-stream",
+        "fileName": "blob.bin",
+        "pointer": "variables.files.0"
+      }
+    ],
+    "operationName": "MultipleUpload",
+    "query": "mutation MultipleUpload($files: [Upload!]!) { multipleUpload(files: $files) { id name url } }",
+    "variables": {
+      "files": [null]
+    }
+  },
+  {
+    "files": [
+      {
+        "content": "PNG\r\n\u001a\n",
+        "contentType": "image/png",
+        "fileName": "image.png",
+        "pointer": "variables.gallery.images.0.image"
+      }
+    ],
+    "operationName": "CreateGallery",
+    "query": "mutation CreateGallery($gallery: GalleryInput!) { createGallery(gallery: $gallery) { id name description images { id name description } } }",
+    "variables": {
+      "gallery": {
+        "description": "lorem",
+        "images": [
+          {
+            "description": "lorem",
+            "image": null,
+            "name": "lorem"
+          }
+        ],
+        "name": "lorem"
+      }
+    }
+  }
+]

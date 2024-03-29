@@ -1,0 +1,45 @@
+scalar Upload
+
+type Query {
+  uploads: [File!]!
+  galleries: [Gallery!]!
+}
+
+type File {
+  id: ID!
+  name: String!
+  url: String!
+}
+
+input ImageInput {
+  name: String!
+  description: String!
+  image: Upload!
+}
+
+input GalleryInput {
+  name: String!
+  description: String!
+  images: [ImageInput!]!
+}
+
+type Image {
+  id: ID!
+  name: String!
+  description: String!
+}
+
+type Gallery {
+  id: ID!
+  name: String!
+  description: String!
+  images: [Image!]!
+}
+
+type Mutation {
+  singleUpload(file: Upload!): File!
+
+  multipleUpload(files: [Upload!]!): [File!]!
+
+  createGallery(gallery: GalleryInput!): Gallery!
+}

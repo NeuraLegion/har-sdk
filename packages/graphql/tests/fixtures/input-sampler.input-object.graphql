@@ -1,0 +1,15 @@
+type Query {
+  queryByExample(starship: StarshipInput!): [Starship!]!
+  listNonEmptyObjectDefaultValueArg(arg: [AnObject] = [{ name: "foo" }]): Int!
+  listEmptyObjectDefaultValueArg(arg: [AnObject] = [{}]): Int!
+}
+
+input AnObject {
+  name: String
+}
+
+type Mutation {
+  createStarship(starship: StarshipInput!): Starship!
+  updateStarship(id: ID!, starship: StarshipInput!): Starship!
+  bulkCreateStarships(starship: [StarshipInput!]!): [Starship!]!
+}

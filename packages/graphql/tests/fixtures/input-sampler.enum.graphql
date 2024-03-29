@@ -1,0 +1,5 @@
+type Query {
+  countHeroesDefaultValueArg(episode: Episode = JEDI): Int!
+  countHeroesDefaultNullArg(episode: Episode = null): Int!
+  countHeroesSampledArg(episode: Episode): Int!
+}

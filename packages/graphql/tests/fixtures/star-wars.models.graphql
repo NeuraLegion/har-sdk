@@ -1,0 +1,52 @@
+enum Episode {
+  NEWHOPE
+  EMPIRE
+  JEDI
+}
+
+enum LengthUnit {
+  METER
+  FEET
+}
+
+input StarshipInput {
+  name: String!
+  length: Float!
+  units: LengthUnit!
+}
+
+type Starship {
+  id: ID!
+  name: String!
+  length(unit: LengthUnit = METER): Float
+}
+
+type Fleet {
+  id: ID!
+  name: String!
+  units: [Starship!]!
+}
+
+interface Character {
+  id: ID!
+  name: String!
+  friends: [Character]
+  appearsIn: [Episode]!
+}
+
+type Human implements Character {
+  id: ID!
+  name: String!
+  friends: [Character]
+  appearsIn: [Episode]!
+  starships: [Starship]
+  totalCredits: Int
+}
+
+type Droid implements Character {
+  id: ID!
+  name: String!
+  friends: [Character]
+  appearsIn: [Episode]!
+  primaryFunction: String
+}

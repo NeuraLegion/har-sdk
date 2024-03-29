@@ -1,0 +1,20 @@
+[
+  {
+    "query": "query { continent(code: \"f323fed3-ae3e-41df-abe2-540859417876\") { code countries { awsRegion capital code currencies currency emoji } name } }"
+  },
+  {
+    "query": "query { continents(filter: {}) { code countries { awsRegion capital code currencies currency emoji } name } }"
+  },
+  {
+    "query": "query { countries(filter: {}) { awsRegion capital code currencies currency emoji emojiU } }"
+  },
+  {
+    "query": "query { country(code: \"f323fed3-ae3e-41df-abe2-540859417876\") { awsRegion capital code currencies currency emoji emojiU } }"
+  },
+  {
+    "query": "query { language(code: \"f323fed3-ae3e-41df-abe2-540859417876\") { code name native rtl } }"
+  },
+  {
+    "query": "query { languages(filter: {}) { code name native rtl } }"
+  }
+]

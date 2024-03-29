@@ -1,0 +1,20 @@
+[
+  {
+    "query": "query { queryByExample(starship: {name: \"lorem\", length: 123.45, units: METER}) { id name length(unit: METER) } }"
+  },
+  {
+    "query": "query { listNonEmptyObjectDefaultValueArg(arg: [{name: \"foo\"}]) }"
+  },
+  {
+    "query": "query { listEmptyObjectDefaultValueArg(arg: [{}]) }"
+  },
+  {
+    "query": "mutation { createStarship(starship: {name: \"lorem\", length: 123.45, units: METER}) { id name length(unit: METER) } }"
+  },
+  {
+    "query": "mutation { updateStarship(id: \"f323fed3-ae3e-41df-abe2-540859417876\",starship: {name: \"lorem\", length: 123.45, units: METER}) { id name length(unit: METER) } }"
+  },
+  {
+    "query": "mutation { bulkCreateStarships(starship: [{name: \"lorem\", length: 123.45, units: METER}]) { id name length(unit: METER) } }"
+  }
+]

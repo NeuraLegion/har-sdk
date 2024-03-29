@@ -1,0 +1,6 @@
+type Query {
+  ship(id: ID): Starship!
+  ships: [Starship!]!
+  fleet(id: ID): Fleet!
+  fleets: [Fleet!]!
+}

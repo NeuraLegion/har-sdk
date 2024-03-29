@@ -1,0 +1,114 @@
+[
+  {
+    "operationName": "StringDefaultValueArg",
+    "query": "query StringDefaultValueArg($arg: String) { stringDefaultValueArg(arg: $arg) }",
+    "variables": {
+      "arg": "str"
+    }
+  },
+  {
+    "operationName": "StringDefaultValueEmptyArg",
+    "query": "query StringDefaultValueEmptyArg($arg: String) { stringDefaultValueEmptyArg(arg: $arg) }",
+    "variables": {
+      "arg": ""
+    }
+  },
+  {
+    "operationName": "StringDefaultNullArg",
+    "query": "query StringDefaultNullArg($arg: String) { stringDefaultNullArg(arg: $arg) }",
+    "variables": {
+      "arg": null
+    }
+  },
+  {
+    "operationName": "StringSampledArg",
+    "query": "query StringSampledArg($arg: String) { stringSampledArg(arg: $arg) }",
+    "variables": {
+      "arg": "lorem"
+    }
+  },
+  {
+    "operationName": "IdDefaultValueArg",
+    "query": "query IdDefaultValueArg($arg: ID) { idDefaultValueArg(arg: $arg) }",
+    "variables": {
+      "arg": "c2e6ad85-94b3-48e1-85b7-eeff57272c05"
+    }
+  },
+  {
+    "operationName": "IdDefaultNullArg",
+    "query": "query IdDefaultNullArg($arg: ID) { idDefaultNullArg(arg: $arg) }",
+    "variables": {
+      "arg": null
+    }
+  },
+  {
+    "operationName": "IdSampledArg",
+    "query": "query IdSampledArg($arg: ID) { idSampledArg(arg: $arg) }",
+    "variables": {
+      "arg": "f323fed3-ae3e-41df-abe2-540859417876"
+    }
+  },
+  {
+    "operationName": "IntDefaultValueArg",
+    "query": "query IntDefaultValueArg($arg: Int) { intDefaultValueArg(arg: $arg) }",
+    "variables": {
+      "arg": 3
+    }
+  },
+  {
+    "operationName": "IntDefaultNullArg",
+    "query": "query IntDefaultNullArg($arg: Int) { intDefaultNullArg(arg: $arg) }",
+    "variables": {
+      "arg": null
+    }
+  },
+  {
+    "operationName": "IntSampledArg",
+    "query": "query IntSampledArg($arg: Int) { intSampledArg(arg: $arg) }",
+    "variables": {
+      "arg": 42
+    }
+  },
+  {
+    "operationName": "FloatDefaultValueArg",
+    "query": "query FloatDefaultValueArg($arg: Float) { floatDefaultValueArg(arg: $arg) }",
+    "variables": {
+      "arg": 2
+    }
+  },
+  {
+    "operationName": "FloatDefaultNullArg",
+    "query": "query FloatDefaultNullArg($arg: Float) { floatDefaultNullArg(arg: $arg) }",
+    "variables": {
+      "arg": null
+    }
+  },
+  {
+    "operationName": "FloatSampledArg",
+    "query": "query FloatSampledArg($arg: Float) { floatSampledArg(arg: $arg) }",
+    "variables": {
+      "arg": 123.45
+    }
+  },
+  {
+    "operationName": "BooleanDefaultValueArg",
+    "query": "query BooleanDefaultValueArg($arg: Boolean) { booleanDefaultValueArg(arg: $arg) }",
+    "variables": {
+      "arg": false
+    }
+  },
+  {
+    "operationName": "BooleanDefaultNullArg",
+    "query": "query BooleanDefaultNullArg($arg: Boolean) { booleanDefaultNullArg(arg: $arg) }",
+    "variables": {
+      "arg": null
+    }
+  },
+  {
+    "operationName": "BooleanSampledArg",
+    "query": "query BooleanSampledArg($arg: Boolean) { booleanSampledArg(arg: $arg) }",
+    "variables": {
+      "arg": true
+    }
+  }
+]

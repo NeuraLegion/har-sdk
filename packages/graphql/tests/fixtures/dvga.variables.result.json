@@ -1,0 +1,161 @@
+[
+  {
+    "operationName": "Pastes",
+    "query": "query Pastes($public: Boolean, $limit: Int, $filter: String) { pastes(public: $public,limit: $limit,filter: $filter) { id title content public userAgent ipAddr } }",
+    "variables": {
+      "public": true,
+      "limit": 42,
+      "filter": "lorem"
+    }
+  },
+  {
+    "operationName": "Paste",
+    "query": "query Paste($id: Int, $title: String) { paste(id: $id,title: $title) { id title content public userAgent ipAddr ownerId } }",
+    "variables": {
+      "id": 42,
+      "title": "lorem"
+    }
+  },
+  {
+    "operationName": "SystemUpdate",
+    "query": "query SystemUpdate { systemUpdate }"
+  },
+  {
+    "operationName": "SystemDiagnostics",
+    "query": "query SystemDiagnostics($username: String, $password: String, $cmd: String) { systemDiagnostics(username: $username,password: $password,cmd: $cmd) }",
+    "variables": {
+      "username": "lorem",
+      "password": "lorem",
+      "cmd": "lorem"
+    }
+  },
+  {
+    "operationName": "SystemDebug",
+    "query": "query SystemDebug($arg: String) { systemDebug(arg: $arg) }",
+    "variables": {
+      "arg": "lorem"
+    }
+  },
+  {
+    "operationName": "SystemHealth",
+    "query": "query SystemHealth { systemHealth }"
+  },
+  {
+    "operationName": "Users",
+    "query": "query Users($id: Int, $capitalize: Boolean) { users(id: $id) { id username(capitalize: $capitalize) password } }",
+    "variables": {
+      "id": 42,
+      "capitalize": true
+    }
+  },
+  {
+    "operationName": "ReadAndBurn",
+    "query": "query ReadAndBurn($id: Int) { readAndBurn(id: $id) { id title content public userAgent ipAddr ownerId burn } }",
+    "variables": {
+      "id": 42
+    }
+  },
+  {
+    "operationName": "Search",
+    "query": "query Search($keyword: String) { search(keyword: $keyword) { ... on PasteObject { __typename id title content public userAgent ipAddr ownerId } } }",
+    "variables": {
+      "keyword": "lorem"
+    }
+  },
+  {
+    "operationName": "Search",
+    "query": "query Search($keyword: String, $capitalize: Boolean) { search(keyword: $keyword) { ... on PasteObject { __typename id title } ... on UserObject { __typename id username(capitalize: $capitalize) password } } }",
+    "variables": {
+      "keyword": "lorem",
+      "capitalize": true
+    }
+  },
+  {
+    "operationName": "Audits",
+    "query": "query Audits { audits { id gqloperation gqlquery timestamp } }"
+  },
+  {
+    "operationName": "DeleteAllPastes",
+    "query": "query DeleteAllPastes { deleteAllPastes }"
+  },
+  {
+    "operationName": "Me",
+    "query": "query Me($token: String, $capitalize: Boolean) { me(token: $token) { id username(capitalize: $capitalize) password } }",
+    "variables": {
+      "token": "lorem",
+      "capitalize": true
+    }
+  },
+  {
+    "operationName": "CreatePaste",
+    "query": "mutations CreatePaste($burn: Boolean, $content: String, $public: Boolean, $title: String) { createPaste(burn: $burn,content: $content,public: $public,title: $title) { paste { id title content public userAgent } } }",
+    "variables": {
+      "burn": false,
+      "content": "lorem",
+      "public": true,
+      "title": "lorem"
+    }
+  },
+  {
+    "operationName": "EditPaste",
+    "query": "mutations EditPaste($content: String, $id: Int, $title: String) { editPaste(content: $content,id: $id,title: $title) { paste { id title content public userAgent ipAddr } } }",
+    "variables": {
+      "content": "lorem",
+      "id": 42,
+      "title": "lorem"
+    }
+  },
+  {
+    "operationName": "DeletePaste",
+    "query": "mutations DeletePaste($id: Int) { deletePaste(id: $id) { result } }",
+    "variables": {
+      "id": 42
+    }
+  },
+  {
+    "operationName": "UploadPaste",
+    "query": "mutations UploadPaste($content: String!, $filename: String!) { uploadPaste(content: $content,filename: $filename) { content filename result } }",
+    "variables": {
+      "content": "lorem",
+      "filename": "lorem"
+    }
+  },
+  {
+    "operationName": "ImportPaste",
+    "query": "mutations ImportPaste($host: String!, $path: String!, $port: Int, $scheme: String!) { importPaste(host: $host,path: $path,port: $port,scheme: $scheme) { result } }",
+    "variables": {
+      "host": "lorem",
+      "path": "lorem",
+      "port": 42,
+      "scheme": "lorem"
+    }
+  },
+  {
+    "operationName": "CreateUser",
+    "query": "mutations CreateUser($userData: UserInput!, $capitalize: Boolean) { createUser(userData: $userData) { user { id username(capitalize: $capitalize) password } } }",
+    "variables": {
+      "userData": {
+        "username": "lorem",
+        "email": "lorem",
+        "password": "lorem"
+      },
+      "capitalize": true
+    }
+  },
+  {
+    "operationName": "Login",
+    "query": "mutations Login($password: String, $username: String) { login(password: $password,username: $username) { accessToken refreshToken } }",
+    "variables": {
+      "password": "lorem",
+      "username": "lorem"
+    }
+  },
+  {
+    "operationName": "Paste",
+    "query": "subscription Paste($id: Int, $title: String) { paste(id: $id,title: $title) { id title content public userAgent ipAddr ownerId } }",
+    "variables": {
+      "id": 42,
+      "title": "lorem"
+    }
+  }
+]

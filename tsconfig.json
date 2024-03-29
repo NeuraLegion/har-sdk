@@ -17,6 +17,7 @@
     { "path": "packages/oas" },
     { "path": "packages/openapi-sampler" },
     { "path": "packages/postman" },
+    { "path": "packages/graphql" },
     { "path": "packages/validator" },
     { "path": "packages/types" },
     { "path": "packages/editor" },

@@ -384,5 +384,19 @@ describe('DefaultConverter', () => {
         expect(result).toStrictEqual(expectedDoc);
       }
     );
+
+    it('should ignore properties other than http method', async () => {
+      // arrange
+      const { inputDoc, expectedDoc } = await createFixture({
+        inputFile: `./fixtures/path-item.ignore-non-http-method-properties.oas.yaml`,
+        expectedFile: `./fixtures/path-item.ignore-non-http-method-properties.oas.result.json`
+      });
+
+      // act
+      const result: Request[] = await oas2har(inputDoc as any);
+
+      // assert
+      expect(result).toStrictEqual(expectedDoc);
+    });
   });
 });

@@ -1,0 +1,59 @@
+openapi: 3.0.1
+info:
+  title: OWASP crAPI API
+  version: 1-oas3
+externalDocs:
+  description: Completely Ridiculous API (crAPI)
+  url: https://github.com/OWASP/crAPI
+servers:
+  - url: http://localhost:8888
+paths:
+  /identity/api/auth/signup:
+    post:
+      operationId: signup
+      summary: Sign up
+      description: Used to create an account
+      tags:
+        - Identity / Auth
+      security: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - name
+                - number
+                - password
+              properties:
+                email:
+                  type: string
+                  example: Cristobal.Weissnat@example.com
+                name:
+                  type: string
+                  example: Cristobal.Weissnat
+                number:
+                  type: string
+                  example: '6915656974'
+                password:
+                  type: string
+                  example: 5hmb0gvyC__hVQg
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CRAPIResponse'
+          description: ''
+    parameters: []
+components:
+  schemas:
+    CRAPIResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        status:
+          type: integer
+          format: int32

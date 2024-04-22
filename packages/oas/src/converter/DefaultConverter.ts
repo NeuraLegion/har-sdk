@@ -19,6 +19,17 @@ import type {
 import pointer from 'json-pointer';
 
 export class DefaultConverter implements Converter {
+  private readonly ALLOWED_METHODS: readonly string[] = [
+    'GET',
+    'PUT',
+    'POST',
+    'DELETE',
+    'OPTIONS',
+    'HEAD',
+    'PATCH',
+    'TRACE'
+  ];
+
   private spec: OpenAPI.Document;
   private securityRequirements?: SecurityRequirementsParser<OpenAPI.Document>;
   private readonly refParser = new $RefParser();
@@ -39,9 +50,8 @@ export class DefaultConverter implements Converter {
     return Object.entries(this.spec.paths).flatMap(
       ([path, pathMethods]: [string, PathItemObject]) =>
         Object.keys(pathMethods)
-          .filter(
-            (method: string) =>
-              !method.toLowerCase().startsWith('x-swagger-router-controller')
+          .filter((method: string) =>
+            this.ALLOWED_METHODS.includes(method.toUpperCase())
           )
           .map((method) => this.createHarEntry(path, method))
     );

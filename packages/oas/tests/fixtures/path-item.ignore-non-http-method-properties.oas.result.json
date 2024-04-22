@@ -1,0 +1,25 @@
+[
+  {
+    "bodySize": 0,
+    "cookies": [],
+    "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
+      }
+    ],
+    "headersSize": 0,
+    "httpVersion": "HTTP/1.1",
+    "method": "POST",
+    "postData": {
+      "mimeType": "application/json",
+      "text": "{\"email\":\"Cristobal.Weissnat@example.com\",\"name\":\"Cristobal.Weissnat\",\"number\":\"6915656974\",\"password\":\"5hmb0gvyC__hVQg\"}"
+    },
+    "queryString": [],
+    "url": "http://localhost:8888/identity/api/auth/signup"
+  }
+]

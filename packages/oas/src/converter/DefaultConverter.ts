@@ -50,9 +50,8 @@ export class DefaultConverter implements Converter {
     return Object.entries(this.spec.paths).flatMap(
       ([path, pathMethods]: [string, PathItemObject]) =>
         Object.keys(pathMethods)
-          .filter(
-            (method: string) =>
-                this.ALLOWED_METHODS.includes(method.toUpperCase())
+          .filter((method: string) =>
+            this.ALLOWED_METHODS.includes(method.toUpperCase())
           )
           .map((method) => this.createHarEntry(path, method))
     );

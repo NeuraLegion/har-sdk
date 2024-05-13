@@ -1,9 +1,12 @@
 import { BodyConverter } from './BodyConverter';
 import type { Sampler } from '../../Sampler';
+import { FormUrlEncodedMediaTypeEncoder } from './encoders/FormUrlEncodedMediaTypeEncoder';
 import type { OpenAPIV3, PostData } from '@har-sdk/core';
+import { OpenAPIV2 } from '@har-sdk/core';
 import pointer from 'json-pointer';
 
 export class Oas3RequestBodyConverter extends BodyConverter<OpenAPIV3.Document> {
+  private readonly formUrlEncodedEncoder = new FormUrlEncodedMediaTypeEncoder();
   constructor(spec: OpenAPIV3.Document, sampler: Sampler) {
     super(spec, sampler);
   }
@@ -40,6 +43,18 @@ export class Oas3RequestBodyConverter extends BodyConverter<OpenAPIV3.Document> 
     return this.sampler.sample({
       type: 'array',
       examples: keys
+    });
+  }
+
+  protected encodeFormUrlencoded(
+    value: unknown,
+    fields?: Record<string, OpenAPIV3.EncodingObject>,
+    schema?: OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject
+  ): string {
+    return this.formUrlEncodedEncoder.encode({
+      fields,
+      value,
+      schema
     });
   }
 
@@ -84,13 +99,15 @@ export class Oas3RequestBodyConverter extends BodyConverter<OpenAPIV3.Document> 
       Object.entries(mediaType.encoding ?? {}).map(
         ([property, encoding]: [string, OpenAPIV3.EncodingObject]) => [
           property,
-          this.encodeValue({
-            value: data[property],
-            contentType: encoding.contentType,
-            schema: (mediaType.schema as OpenAPIV3.SchemaObject).properties[
-              property
-            ]
-          })
+          encoding.contentType
+            ? this.encodeValue({
+                value: data[property],
+                contentType: encoding.contentType,
+                schema: (mediaType.schema as OpenAPIV3.SchemaObject).properties[
+                  property
+                ]
+              })
+            : data[property]
         ]
       )
     );

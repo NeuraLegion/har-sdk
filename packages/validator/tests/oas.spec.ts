@@ -52,6 +52,19 @@ describe('OASValidator', () => {
       expect(result).toEqual([]);
     });
 
+    it('should successfully validate valid oas v3.1 document (Petstore, yaml)', async () => {
+      const input: OpenAPIV3.Document = yaml.load(
+        await promisify(readFile)(
+          resolve(__dirname, './fixtures/oas3.1.petstore.yaml'),
+          'utf8'
+        )
+      ) as OpenAPIV3.Document;
+
+      const result = await validator.verify(input);
+
+      expect(result).toEqual([]);
+    });
+
     it('should throw exception if cannot determine version of document', async () => {
       const input: OpenAPIV2.Document = {
         swagger: 'xyz',

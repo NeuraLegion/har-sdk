@@ -55,30 +55,61 @@ export class StringSampler implements Sampler {
     const randExp = new RandExp(pattern);
 
     if (min) {
-      // ADHOC: make a probe for regex using min quantifier value
-      // e.g. ^[a]+[b]+$ expect 'ab', ^[a-z]*$ expect ''
-
-      randExp.max = 0;
-      randExp.randInt = (a, _) => a;
-
-      const result = randExp.gen();
-
-      if (result.length >= min) {
-        return result;
-      }
-
-      // ADHOC: fallback for failed min quantifier probe with doubled min length
-
-      randExp.max = 2 * min;
-      randExp.randInt = (a, b) => Math.floor((a + b) / 2);
-
-      return this.adjustMaxLength(randExp.gen(), max);
+      return this.sampleMinLength(randExp, min, max);
     }
 
     randExp.max = max ?? randExp.max;
     randExp.randInt = (a, b) => Math.floor((a + b) / 2);
 
-    return randExp.gen();
+    const result = randExp.gen();
+
+    return !!max && result.length > max && this.hasInfiniteQuantifier(pattern)
+      ? this.sampleInfiniteQuantifier(randExp, max)
+      : result;
+  }
+
+  private hasInfiniteQuantifier(pattern: string | RegExp) {
+    const pat = pattern.toString();
+
+    return ['+', '*', ',}'].some((q) => pat.includes(q));
+  }
+
+  private sampleInfiniteQuantifier(randExp: RandExp, max: number): string {
+
+    randExp.randInt = (a, b) => Math.floor((a + b) / 2);
+
+    for (let i = 1, lmax = max; lmax > 0; lmax = Math.floor(max / ++i)) {
+      randExp.max = lmax;
+
+      const result = randExp.gen();
+
+      if (result.length <= max) {
+        return result;
+      }
+    }
+
+    return '';
+  }
+
+  private sampleMinLength(randExp: RandExp, min: number, max: number) {
+    // ADHOC: make a probe for regex using min quantifier value
+    // e.g. ^[a]+[b]+$ expect 'ab', ^[a-z]*$ expect ''
+
+    randExp.max = 0;
+    randExp.randInt = (a, _) => a;
+
+    const result = randExp.gen();
+
+    if (result.length >= min) {
+      return result;
+    }
+
+    // ADHOC: fallback for failed min quantifier probe with doubled min length
+
+    randExp.max = 2 * min;
+    randExp.randInt = (a, b) => Math.floor((a + b) / 2);
+
+    return this.adjustMaxLength(randExp.gen(), max);
   }
 
   private checkLength(

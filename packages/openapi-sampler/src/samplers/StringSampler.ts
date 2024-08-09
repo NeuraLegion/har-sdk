@@ -75,7 +75,6 @@ export class StringSampler implements Sampler {
   }
 
   private sampleInfiniteQuantifier(randExp: RandExp, max: number): string {
-
     randExp.randInt = (a, b) => Math.floor((a + b) / 2);
 
     for (let i = 1, lmax = max; lmax > 0; lmax = Math.floor(max / ++i)) {

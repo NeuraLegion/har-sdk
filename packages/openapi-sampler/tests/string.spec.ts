@@ -4,6 +4,16 @@ describe('StringSampler', () => {
   [
     {
       input: {
+        maxLength: 55,
+        minLength: 0,
+        format: 'pattern',
+        pattern: '^[A-Za-z0-9._%-]+@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{1,4}$',
+        type: 'string'
+      },
+      expected: 'gggggg@FFFFFF.FFFFFF.FFFFFF.FFFFFF.FFFFFF.FFFFFF.zz'
+    },
+    {
+      input: {
         type: 'string',
         format: 'email'
       },

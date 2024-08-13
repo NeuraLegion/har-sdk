@@ -65,7 +65,9 @@ export class StringSampler implements Sampler {
     randExp.max = max ?? randExp.max;
     const result = randExp.gen();
 
-    return max !== undefined && result.length > max && this.hasInfiniteQuantifier(pattern)
+    return max !== undefined &&
+      result.length > max &&
+      this.hasInfiniteQuantifier(pattern)
       ? this.sampleWithMaxLength(randExp, max)
       : result;
   }

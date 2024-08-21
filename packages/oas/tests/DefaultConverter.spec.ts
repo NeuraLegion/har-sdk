@@ -398,5 +398,19 @@ describe('DefaultConverter', () => {
       // assert
       expect(result).toStrictEqual(expectedDoc);
     });
+
+    it('should correctly resolve path-item parameters', async () => {
+      // arrange
+      const { inputDoc, expectedDoc } = await createFixture({
+        inputFile: `./fixtures/path-item.params.resolution.oas.yaml`,
+        expectedFile: `./fixtures/path-item.params.resolution.oas.result.json`
+      });
+
+      // act
+      const result: Request[] = await oas2har(inputDoc as any);
+
+      // assert
+      expect(result).toStrictEqual(expectedDoc);
+    });
   });
 });

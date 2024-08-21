@@ -1,0 +1,47 @@
+openapi: 3.0.3
+info:
+  title: locations
+  version: '1.0'
+servers:
+  - url: https://brokencrystals.com
+paths:
+  /locations:
+    parameters:
+      - in: query
+        name: lat
+        schema:
+          type: number
+      - in: query
+        name: lng
+        schema:
+          type: number
+    get:
+      responses:
+        '200':
+          description: ''
+    post:
+      parameters:
+        - in: query
+          name: lat
+          schema:
+            type: string
+        - in: query
+          name: lng
+          schema:
+            type: string
+        - in: path
+          name: lng
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: ''
+    put:
+      parameters:
+        - in: query
+          name: type
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''

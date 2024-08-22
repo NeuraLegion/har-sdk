@@ -152,9 +152,7 @@ export class DefaultConverter implements Converter {
     const params: Postman.Variable[] | Record<string, string> | undefined =
       auth[auth.type];
 
-    return !params
-      ? params
-      : Array.isArray(params)
+    return Array.isArray(params)
       ? Object.fromEntries(
           params.map((val: Postman.Variable) =>
             [val.key, val.value].map(String)

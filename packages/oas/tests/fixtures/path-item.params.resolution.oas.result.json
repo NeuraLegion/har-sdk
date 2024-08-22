@@ -6,17 +6,8 @@
     "headersSize": 0,
     "httpVersion": "HTTP/1.1",
     "method": "GET",
-    "queryString": [
-      {
-        "name": "lat",
-        "value": "42"
-      },
-      {
-        "name": "lng",
-        "value": "42"
-      }
-    ],
-    "url": "https://brokencrystals.com/locations?lat=42&lng=42"
+    "queryString": [],
+    "url": "https://brokencrystals.com/users/42"
   },
   {
     "bodySize": 0,
@@ -25,17 +16,8 @@
     "headersSize": 0,
     "httpVersion": "HTTP/1.1",
     "method": "POST",
-    "queryString": [
-      {
-        "name": "lat",
-        "value": "lorem"
-      },
-      {
-        "name": "lng",
-        "value": "lorem"
-      }
-    ],
-    "url": "https://brokencrystals.com/locations?lat=lorem&lng=lorem"
+    "queryString": [],
+    "url": "https://brokencrystals.com/users/lorem"
   },
   {
     "bodySize": 0,
@@ -44,20 +26,7 @@
     "headersSize": 0,
     "httpVersion": "HTTP/1.1",
     "method": "PUT",
-    "queryString": [
-      {
-        "name": "lat",
-        "value": "42"
-      },
-      {
-        "name": "lng",
-        "value": "42"
-      },
-      {
-        "name": "type",
-        "value": "lorem"
-      }
-    ],
-    "url": "https://brokencrystals.com/locations?lat=42&lng=42&type=lorem"
+    "queryString": [],
+    "url": "https://brokencrystals.com/users/lorem"
   }
 ]

@@ -1,18 +1,15 @@
 openapi: 3.0.3
 info:
-  title: locations
+  title: users/{id}
   version: '1.0'
 servers:
   - url: https://brokencrystals.com
 paths:
-  /locations:
+  /users/{id}:
     parameters:
-      - in: query
-        name: lat
-        schema:
-          type: number
-      - in: query
-        name: lng
+      - in: path
+        name: id
+        required: true
         schema:
           type: number
     get:
@@ -21,27 +18,25 @@ paths:
           description: ''
     post:
       parameters:
-        - in: query
-          name: lat
-          schema:
-            type: string
-        - in: query
-          name: lng
-          schema:
-            type: string
         - in: path
-          name: lng
+          name: id
+          required: true
           schema:
-            type: integer
+            type: string
       responses:
         '200':
           description: ''
     put:
       parameters:
-        - in: query
-          name: type
-          schema:
-            type: string
+        - $ref: '#/components/parameters/userid'
       responses:
         '200':
           description: ''
+components:
+  parameters:
+    userid:
+      in: path
+      name: id
+      required: true
+      schema:
+        type: string

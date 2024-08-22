@@ -1,19 +1,28 @@
-import type { ParameterObject } from '../types';
-import type { OpenAPI } from '@har-sdk/core';
+import { ParameterObject } from '../types';
+import { getOperation } from './operation';
+import { OpenAPI } from '@har-sdk/core';
 
-const isParameter = (param: unknown): param is ParameterObject =>
-  param && typeof param === 'object' && 'in' in param && 'name' in param;
+const assertDereferencedParam = (param: unknown): param is ParameterObject => {
+  const isReference = !!param && typeof param === 'object' && '$ref' in param;
 
-const toParameters = (param: unknown): ParameterObject[] =>
-  Array.isArray(param) ? param.filter(isParameter) : [];
+  if (isReference) {
+    throw new Error('Specification document is expected to be dereferenced.');
+  }
+
+  return !isReference;
+};
 
 export const getParameters = (
   spec: OpenAPI.Document,
   path: string,
   method: string
 ): ParameterObject[] => {
-  const pathParams = toParameters(spec.paths[path]?.parameters);
-  const operationParams = toParameters(spec.paths[path]?.[method]?.parameters);
+  const pathParams = [...(spec.paths[path]?.parameters ?? [])].filter(
+    assertDereferencedParam
+  );
+  const operationParams = [
+    ...(getOperation(spec, path, method)?.parameters ?? [])
+  ].filter(assertDereferencedParam);
 
   const combinedParams = new Map<string, ParameterObject>(
     pathParams.map((x) => [`${x.in}:${x.name}`, x])

@@ -21,6 +21,11 @@ describe('DefaultConverter', () => {
 
     it.each([
       {
+        inputPath: './fixtures/v2.0.0-auth.postman_collection.json',
+        expectedPath: './fixtures/v2.0.0-auth.postman_collection.result.json',
+        label: 'v2.0.0 auth'
+      },
+      {
         inputPath: './fixtures/trailing-slash.postman_collection.json',
         expectedPath:
           './fixtures/trailing-slash.postman_collection.result.json',

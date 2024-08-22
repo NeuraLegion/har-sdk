@@ -121,20 +121,11 @@ export class DefaultConverter implements Converter {
 
   /* istanbul ignore next */
   private authRequest(request: Request, auth: Postman.RequestAuth): void {
-    const params: Postman.Variable[] | Record<string, string> | undefined =
-      auth[auth.type];
+    const options = this.getAuthOptions(auth);
 
-    if (!params) {
+    if (!options) {
       return;
     }
-
-    const options = Array.isArray(params)
-      ? Object.fromEntries(
-          params.map((val: Postman.Variable) =>
-            [val.key, val.value].map(String)
-          )
-        )
-      : params;
 
     switch (auth.type) {
       case 'apikey':
@@ -153,6 +144,23 @@ export class DefaultConverter implements Converter {
       default:
         break;
     }
+  }
+
+  private getAuthOptions(
+    auth: Postman.RequestAuth
+  ): Record<string, string> | undefined {
+    const params: Postman.Variable[] | Record<string, string> | undefined =
+      auth[auth.type];
+
+    return !params
+      ? params
+      : Array.isArray(params)
+      ? Object.fromEntries(
+          params.map((val: Postman.Variable) =>
+            [val.key, val.value].map(String)
+          )
+        )
+      : params;
   }
 
   /* istanbul ignore next */

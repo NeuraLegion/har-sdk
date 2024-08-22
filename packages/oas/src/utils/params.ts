@@ -17,18 +17,14 @@ export const getParameters = (
   path: string,
   method: string
 ): ParameterObject[] => {
-  const pathParams = [...(spec.paths[path]?.parameters ?? [])].filter(
-    assertDereferencedParam
-  );
-  const operationParams = [
+  const params = [
+    ...(spec.paths[path]?.parameters ?? []),
     ...(getOperation(spec, path, method)?.parameters ?? [])
   ].filter(assertDereferencedParam);
 
   const combinedParams = new Map<string, ParameterObject>(
-    pathParams.map((x) => [`${x.in}:${x.name}`, x])
+    params.map((x) => [`${x.in}:${x.name}`, x])
   );
-
-  operationParams.forEach((x) => combinedParams.set(`${x.in}:${x.name}`, x));
 
   return [...combinedParams.values()];
 };

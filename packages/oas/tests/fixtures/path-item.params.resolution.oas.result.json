@@ -7,26 +7,6 @@
     "httpVersion": "HTTP/1.1",
     "method": "GET",
     "queryString": [],
-    "url": "https://brokencrystals.com/users/42"
-  },
-  {
-    "bodySize": 0,
-    "cookies": [],
-    "headers": [],
-    "headersSize": 0,
-    "httpVersion": "HTTP/1.1",
-    "method": "POST",
-    "queryString": [],
-    "url": "https://brokencrystals.com/users/lorem"
-  },
-  {
-    "bodySize": 0,
-    "cookies": [],
-    "headers": [],
-    "headersSize": 0,
-    "httpVersion": "HTTP/1.1",
-    "method": "PUT",
-    "queryString": [],
-    "url": "https://brokencrystals.com/users/lorem"
+    "url": "https://brokencrystals.com/org/lorem/users/42/devices/42"
   }
 ]

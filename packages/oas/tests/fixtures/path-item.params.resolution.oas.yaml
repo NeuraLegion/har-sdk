@@ -5,38 +5,34 @@ info:
 servers:
   - url: https://brokencrystals.com
 paths:
-  /users/{id}:
+  /org/{orgId}/users/{userId}/devices/{deviceId}:
     parameters:
+      - $ref: '#/components/parameters/orgId'
       - in: path
-        name: id
+        name: userId
         required: true
         schema:
-          type: number
+          type: string
     get:
-      responses:
-        '200':
-          description: ''
-    post:
       parameters:
         - in: path
-          name: id
+          name: userId
           required: true
           schema:
-            type: string
-      responses:
-        '200':
-          description: ''
-    put:
-      parameters:
-        - $ref: '#/components/parameters/userid'
+            type: number
+        - in: path
+          name: deviceId
+          required: true
+          schema:
+            type: number
       responses:
         '200':
           description: ''
 components:
   parameters:
-    userid:
+    orgId:
       in: path
-      name: id
+      name: orgId
       required: true
       schema:
         type: string

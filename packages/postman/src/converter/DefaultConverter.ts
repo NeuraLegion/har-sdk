@@ -121,21 +121,20 @@ export class DefaultConverter implements Converter {
 
   /* istanbul ignore next */
   private authRequest(request: Request, auth: Postman.RequestAuth): void {
-    let params: Postman.Variable[] | Record<string, unknown> | undefined =
+    const params: Postman.Variable[] | Record<string, string> | undefined =
       auth[auth.type];
 
     if (!params) {
       return;
     }
 
-    // ADHOC: convert 2.0.0 auth carried as a Record
-    if (!Array.isArray(params)) {
-      params = Object.entries(params).map((x) => ({ key: x[0], value: x[1] }));
-    }
-
-    const options = Object.fromEntries(
-      params.map((val: Postman.Variable) => [val.key, val.value].map(String))
-    );
+    const options = Array.isArray(params)
+      ? Object.fromEntries(
+          params.map((val: Postman.Variable) =>
+            [val.key, val.value].map(String)
+          )
+        )
+      : params;
 
     switch (auth.type) {
       case 'apikey':

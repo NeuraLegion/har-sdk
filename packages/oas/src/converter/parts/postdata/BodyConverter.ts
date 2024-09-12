@@ -2,7 +2,6 @@ import type { Sampler } from '../../Sampler';
 import type { SubConverter } from '../../SubConverter';
 import { XmlSerializer } from '../../serializers';
 import type { OpenAPI, OpenAPIV2, OpenAPIV3, PostData } from '@har-sdk/core';
-import { stringify } from 'qs';
 
 export interface EncodingData {
   value: unknown;
@@ -38,6 +37,12 @@ export abstract class BodyConverter<T extends OpenAPI.Document>
     method: string
   ): string | undefined;
 
+  protected abstract encodeFormUrlencoded(
+    value: unknown,
+    fields?: Record<string, OpenAPIV3.EncodingObject>,
+    schema?: OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject
+  ): string;
+
   protected encodePayload({ contentType, ...options }: EncodingData): PostData {
     return {
       mimeType: contentType.includes('multipart')
@@ -70,7 +75,7 @@ export abstract class BodyConverter<T extends OpenAPI.Document>
       case 'application/json':
         return this.encodeJson(value);
       case 'application/x-www-form-urlencoded':
-        return this.encodeFormUrlencoded(value);
+        return this.encodeFormUrlencoded(value, fields, schema);
       case 'application/xml':
       case 'text/xml':
       case 'application/atom+xml':
@@ -186,14 +191,6 @@ export abstract class BodyConverter<T extends OpenAPI.Document>
 
   private encodeJson(value: unknown): string {
     return typeof value === 'string' ? value : JSON.stringify(value);
-  }
-
-  // TODO: we should take into account the the Encoding Object's style property (OAS3)
-  private encodeFormUrlencoded(value: unknown): string {
-    return stringify(value, {
-      format: 'RFC3986',
-      encode: false
-    });
   }
 
   private encodeXml(

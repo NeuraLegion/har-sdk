@@ -1,0 +1,40 @@
+openapi: 3.0.3
+info:
+  version: '1.0'
+servers:
+  - url: https://example.com/api/v1
+paths:
+  /user:
+    get:
+      parameters:
+        - name: Accept
+          in: header
+          description: ''
+          schema:
+            type: string
+            example: application/json;v=1.0
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+  /users:
+    get:
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+components:
+  schemas:
+    User:
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+

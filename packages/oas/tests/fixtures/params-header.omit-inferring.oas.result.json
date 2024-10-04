@@ -1,0 +1,32 @@
+[
+  {
+    "bodySize": 0,
+    "cookies": [],
+    "headers": [
+      {
+        "name": "accept",
+        "value": "application/json;v=1.0"
+      }
+    ],
+    "headersSize": 0,
+    "httpVersion": "HTTP/1.1",
+    "method": "GET",
+    "queryString": [],
+    "url": "https://example.com/api/v1/user"
+  },
+  {
+    "bodySize": 0,
+    "cookies": [],
+    "headers": [
+      {
+        "name": "accept",
+        "value": "application/json"
+      }
+    ],
+    "headersSize": 0,
+    "httpVersion": "HTTP/1.1",
+    "method": "GET",
+    "queryString": [],
+    "url": "https://example.com/api/v1/users"
+  }
+]

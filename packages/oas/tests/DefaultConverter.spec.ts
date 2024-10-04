@@ -412,5 +412,21 @@ describe('DefaultConverter', () => {
       // assert
       expect(result).toStrictEqual(expectedDoc);
     });
+
+    it('should omit the inferring of accept headers when accept header comes from parameters', async () => {
+      // arrange
+      const { inputDoc, expectedDoc } = await createFixture({
+        inputFile: `./fixtures/params-header.omit-inferring.oas.yaml`,
+        expectedFile: `./fixtures/params-header.omit-inferring.oas.result.json`
+      });
+
+      // act
+      const result: Request[] = await oas2har(inputDoc as any, {
+        omitInferredAcceptHeadersInFavorOfParam: true
+      });
+
+      // assert
+      expect(result).toStrictEqual(expectedDoc);
+    });
   });
 });

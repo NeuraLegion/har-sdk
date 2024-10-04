@@ -1,3 +1,4 @@
+import { ConverterOptions } from '../../Converter';
 import { isObject } from '../../../utils';
 import { LocationParam } from '../LocationParam';
 import { Sampler } from '../../Sampler';
@@ -8,8 +9,12 @@ import { Header, OpenAPIV3 } from '@har-sdk/core';
 export class Oas3HeadersConverter extends HeadersConverter<OpenAPIV3.Document> {
   private readonly uriTemplator = new UriTemplator();
 
-  constructor(spec: OpenAPIV3.Document, sampler: Sampler) {
-    super(spec, sampler);
+  constructor(
+    spec: OpenAPIV3.Document,
+    sampler: Sampler,
+    options: ConverterOptions
+  ) {
+    super(spec, sampler, options);
   }
 
   protected createContentTypeHeaders(

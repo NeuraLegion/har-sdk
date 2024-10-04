@@ -28,11 +28,7 @@ export class SubConverterFactory {
           Oas3HeadersConverter
         );
       case SubPart.PATH:
-        return this.instantiate(
-          spec,
-          Oas2PathConverter,
-          Oas3PathConverter
-        );
+        return this.instantiate(spec, Oas2PathConverter, Oas3PathConverter);
       case SubPart.POST_DATA:
         return this.instantiate(
           spec,

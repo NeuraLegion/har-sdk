@@ -1,7 +1,7 @@
 import { OpenAPI, Request } from '@har-sdk/core';
 
 export interface ConverterOptions {
-  omitInferredAcceptHeadersInFavorOfParam?: boolean;
+  omitInferringAcceptHeadersInFavorOfParams?: boolean;
 }
 
 export interface Converter {

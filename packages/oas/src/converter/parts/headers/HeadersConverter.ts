@@ -46,15 +46,15 @@ export abstract class HeadersConverter<T extends OpenAPI.Document>
       headers.push(...this.createContentTypeHeaders(pathObj));
     }
 
-    const acceptHeaders =  this.createAcceptHeaders(pathObj);
+    const acceptHeaders = this.createAcceptHeaders(pathObj);
 
-    const paramsHeaders =  this.parseFromParams(path, method);
+    const paramsHeaders = this.parseFromParams(path, method);
 
     const addInferred =
-      !this.options.omitInferredAcceptHeadersInFavorOfParam ||
+      !this.options.omitInferringAcceptHeadersInFavorOfParams ||
       !paramsHeaders.some((x) => x.name === 'accept');
 
-    headers.push(...(addInferred ? acceptHeaders : []), ...paramsHeaders );
+    headers.push(...(addInferred ? acceptHeaders : []), ...paramsHeaders);
 
     return headers;
   }

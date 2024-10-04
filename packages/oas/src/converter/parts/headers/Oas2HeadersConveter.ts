@@ -10,7 +10,11 @@ export class Oas2HeadersConverter extends HeadersConverter<OpenAPIV2.Document> {
   private readonly oas2ValueSerializer = new Oas2ValueSerializer();
   private readonly oas2MediaTypeResolver: Oas2MediaTypesResolver;
 
-  constructor(spec: OpenAPIV2.Document, sampler: Sampler, options: ConverterOptions) {
+  constructor(
+    spec: OpenAPIV2.Document,
+    sampler: Sampler,
+    options: ConverterOptions
+  ) {
     super(spec, sampler, options);
     this.oas2MediaTypeResolver = new Oas2MediaTypesResolver(spec);
   }

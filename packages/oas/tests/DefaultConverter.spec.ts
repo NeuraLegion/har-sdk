@@ -422,7 +422,7 @@ describe('DefaultConverter', () => {
 
       // act
       const result: Request[] = await oas2har(inputDoc as any, {
-        omitInferredAcceptHeadersInFavorOfParam: true
+        omitInferringAcceptHeadersInFavorOfParams: true
       });
 
       // assert

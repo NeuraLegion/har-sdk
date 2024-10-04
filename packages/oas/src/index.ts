@@ -30,6 +30,6 @@ export const oas2har = (
   return new DefaultConverter(
     baseUrlParser,
     subConverterRegistry,
-    securityRequirementsFactory,
+    securityRequirementsFactory
   ).convert(collection);
 };

@@ -14,7 +14,7 @@ export const oas2har = (
   collection: OpenAPI.Document,
   options: {
     includeVendorExamples?: boolean;
-    omitInferringAcceptHeadersInFavorOfParams?: boolean;
+    skipAcceptHeaderInference?: boolean;
   } = {}
 ): Promise<Request[]> => {
   if (!collection) {

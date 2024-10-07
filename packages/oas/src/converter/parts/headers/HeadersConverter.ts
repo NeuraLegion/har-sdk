@@ -51,7 +51,7 @@ export abstract class HeadersConverter<T extends OpenAPI.Document>
     const paramsHeaders = this.parseFromParams(path, method);
 
     const addInferred =
-      !this.options.omitInferringAcceptHeadersInFavorOfParams ||
+      !this.options.skipAcceptHeaderInference ||
       !paramsHeaders.some((x) => x.name === 'accept');
 
     headers.push(...(addInferred ? acceptHeaders : []), ...paramsHeaders);

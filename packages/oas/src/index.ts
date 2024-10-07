@@ -12,7 +12,10 @@ export * from './errors';
 
 export const oas2har = (
   collection: OpenAPI.Document,
-  options: { includeVendorExamples?: boolean } = {}
+  options: {
+    includeVendorExamples?: boolean;
+    skipAcceptHeaderInference?: boolean;
+  } = {}
 ): Promise<Request[]> => {
   if (!collection) {
     throw new TypeError('Please provide a valid OAS specification.');
@@ -20,7 +23,7 @@ export const oas2har = (
 
   const sampler = new Sampler(options);
   const baseUrlParser = new BaseUrlParser(sampler);
-  const subConverterFactory = new SubConverterFactory(sampler);
+  const subConverterFactory = new SubConverterFactory(sampler, options);
   const subConverterRegistry = new SubConverterRegistry(subConverterFactory);
   const securityRequirementsFactory = new SecurityRequirementsFactory(sampler);
 

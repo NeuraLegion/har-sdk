@@ -69,6 +69,16 @@ console.log(requests);
 
 Notice the `includeVendorExamples` option affects Swagger specifications only.
 
+Some specifications may have configuration for `Accept` header value in request parameters section. The automatically inferred `Accept` header values may be skipped, to skip these inferred values in output use the `oas2har` function as follows:
+
+```js
+import schema from './swagger.json' assert { type: 'json' };
+import { oas2har } from '@har-sdk/oas';
+
+const requests = await oas2har(schema, { skipAcceptHeaderInference: true });
+console.log(requests);
+```
+
 ## License
 
 Copyright © 2023 [Bright Security](https://brightsec.com/).

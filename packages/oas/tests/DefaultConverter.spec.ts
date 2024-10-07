@@ -412,5 +412,21 @@ describe('DefaultConverter', () => {
       // assert
       expect(result).toStrictEqual(expectedDoc);
     });
+
+    it('should skip accept header inference when it comes from parameters', async () => {
+      // arrange
+      const { inputDoc, expectedDoc } = await createFixture({
+        inputFile: `./fixtures/params-header.skip-inference.oas.yaml`,
+        expectedFile: `./fixtures/params-header.skip-inference.oas.result.json`
+      });
+
+      // act
+      const result: Request[] = await oas2har(inputDoc as any, {
+        skipAcceptHeaderInference: true
+      });
+
+      // assert
+      expect(result).toStrictEqual(expectedDoc);
+    });
   });
 });

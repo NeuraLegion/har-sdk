@@ -1,3 +1,4 @@
+import { ConverterOptions } from '../../Converter';
 import { OperationObject, ParameterObject } from '../../../types';
 import {
   filterLocationParams,
@@ -18,7 +19,8 @@ export abstract class HeadersConverter<T extends OpenAPI.Document>
 
   protected constructor(
     private readonly spec: T,
-    private readonly sampler: Sampler
+    private readonly sampler: Sampler,
+    private readonly options: ConverterOptions
   ) {}
 
   protected abstract createContentTypeHeaders(
@@ -44,9 +46,15 @@ export abstract class HeadersConverter<T extends OpenAPI.Document>
       headers.push(...this.createContentTypeHeaders(pathObj));
     }
 
-    headers.push(...this.createAcceptHeaders(pathObj));
+    const acceptHeaders = this.createAcceptHeaders(pathObj);
 
-    headers.push(...this.parseFromParams(path, method));
+    const paramsHeaders = this.parseFromParams(path, method);
+
+    const addInferred =
+      !this.options.skipAcceptHeaderInference ||
+      !paramsHeaders.some((x) => x.name === 'accept');
+
+    headers.push(...(addInferred ? acceptHeaders : []), ...paramsHeaders);
 
     return headers;
   }

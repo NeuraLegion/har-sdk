@@ -10,7 +10,7 @@ export type OpenAPIReferenceObject =
   | OpenAPIV3.ReferenceObject
   | OpenAPIV2.ReferenceObject;
 
-const isObject = <T extends Record<string, unknown>>(obj: T): obj is T =>
+export const isObject = <T extends Record<string, unknown>>(obj: T): obj is T =>
   obj && typeof obj === 'object';
 
 export const mergeDeep = (

@@ -62,11 +62,12 @@ export class Sampler {
 
   private createParamSchema(param: OpenAPI.Parameter): Schema {
     if ('schema' in param) {
-      const { schema, example, ...rest } = param;
+      const { schema, example, examples, ...rest } = param;
 
       return {
         ...schema,
         ...(example !== undefined ? { example } : {}),
+        ...(examples !== undefined ? { examples } : {}),
         ...this.extractVendorExamples(rest)
       };
     }

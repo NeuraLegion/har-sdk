@@ -7,7 +7,7 @@ import {
   VendorExtensions
 } from '@har-sdk/openapi-sampler';
 import pointer from 'json-pointer';
-import type { OpenAPI } from '@har-sdk/core';
+import { OpenAPI, OpenAPIV3 } from '@har-sdk/core';
 
 export class Sampler {
   constructor(private readonly options: Options) {}
@@ -62,7 +62,20 @@ export class Sampler {
 
   private createParamSchema(param: OpenAPI.Parameter): Schema {
     if ('schema' in param) {
-      const { schema, example, ...rest } = param;
+      const { schema, ...rest } = param;
+
+      const examples = (param.examples ?? {}) as Record<
+        string,
+        OpenAPIV3.ExampleObject
+      >;
+
+      const exampleKey = this.sample({
+        type: 'array',
+        examples: Object.keys(examples)
+      });
+
+      const example =
+        examples[exampleKey]?.value ?? param.example ?? schema.example;
 
       return {
         ...schema,

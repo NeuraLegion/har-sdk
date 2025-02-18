@@ -201,6 +201,11 @@ describe('DefaultConverter', () => {
         input: 'cookies.oas.yaml',
         expected: 'cookies.oas.result.json',
         message: 'should properly serialize cookies (oas)'
+      },
+      {
+        input: 'examples.oas.yaml',
+        expected: 'examples.oas.result.json',
+        message: 'should pick up the the sample value from examples node'
       }
     ].forEach(({ input: inputFile, expected: expectedFile, message }) => {
       it(message, async () => {

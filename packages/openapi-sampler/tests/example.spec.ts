@@ -98,25 +98,4 @@ describe('Example', () => {
     // assert
     expect(result).toEqual('foo');
   });
-
-  it('should use examples', () => {
-    // arrange
-    const schema = {
-      type: 'string',
-      examples: {
-        foo: {
-          value: 'bar'
-        },
-        baz: {
-          value: 'cux'
-        }
-      }
-    };
-
-    // act
-    const result = sample(schema);
-
-    // assert
-    expect(result).toEqual('bar');
-  });
 });

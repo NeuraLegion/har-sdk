@@ -15,6 +15,7 @@ export const oas2har = (
   options: {
     includeVendorExamples?: boolean;
     skipAcceptHeaderInference?: boolean;
+    skipSecuritySchemeInference?: boolean;
   } = {}
 ): Promise<Request[]> => {
   if (!collection) {
@@ -25,7 +26,10 @@ export const oas2har = (
   const baseUrlParser = new BaseUrlParser(sampler);
   const subConverterFactory = new SubConverterFactory(sampler, options);
   const subConverterRegistry = new SubConverterRegistry(subConverterFactory);
-  const securityRequirementsFactory = new SecurityRequirementsFactory(sampler);
+  const securityRequirementsFactory = new SecurityRequirementsFactory(
+    sampler,
+    options
+  );
 
   return new DefaultConverter(
     baseUrlParser,

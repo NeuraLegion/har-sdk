@@ -13,7 +13,7 @@ paths:
         '200':
           description: ''
       security:
-        - QueryApiKey: [ ]
+        - QueryApiKey: []
   /authors:
     get:
       parameters:

@@ -433,5 +433,21 @@ describe('DefaultConverter', () => {
       // assert
       expect(result).toStrictEqual(expectedDoc);
     });
+
+    it('should skip security scheme inference when it comes from parameters', async () => {
+      // arrange
+      const { inputDoc, expectedDoc } = await createFixture({
+        inputFile: `./fixtures/scheme-security.skip-inference.oas.yaml`,
+        expectedFile: `./fixtures/scheme-security.skip-inference.oas.result.json`
+      });
+
+      // act
+      const result: Request[] = await oas2har(inputDoc as any, {
+        skipSecuritySchemeInference: true
+      });
+
+      // assert
+      expect(result).toStrictEqual(expectedDoc);
+    });
   });
 });

@@ -3,11 +3,16 @@ import type { Sampler } from '../Sampler';
 import { HttpSecurityScheme } from './schemas';
 import type { SecurityScheme } from './schemas';
 import type { SecuritySchemeObject } from '../../types';
+import type { ConverterOptions } from '../Converter';
 import type { Cookie, Header, OpenAPIV3, QueryString } from '@har-sdk/core';
 
 export class Oas3SecurityRequirementsParser extends SecurityRequirementsParser<OpenAPIV3.Document> {
-  constructor(spec: OpenAPIV3.Document, sampler: Sampler) {
-    super(spec, sampler);
+  constructor(
+    spec: OpenAPIV3.Document,
+    sampler: Sampler,
+    options: ConverterOptions
+  ) {
+    super(spec, sampler, options);
   }
 
   protected getSecuritySchemes():
@@ -31,7 +36,7 @@ export class Oas3SecurityRequirementsParser extends SecurityRequirementsParser<O
     }
 
     if (securityScheme.type === 'http') {
-      return new HttpSecurityScheme(securityScheme, this.sampler);
+      return new HttpSecurityScheme(securityScheme, this.sampler, this.options);
     }
   }
 }

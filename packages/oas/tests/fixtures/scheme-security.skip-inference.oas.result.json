@@ -1,0 +1,52 @@
+[
+  {
+    "bodySize": 0,
+    "cookies": [],
+    "headers": [],
+    "headersSize": 0,
+    "httpVersion": "HTTP/1.1",
+    "method": "GET",
+    "queryString": [
+      {
+        "name": "api_key",
+        "value": "secured-query-api-key"
+      }
+    ],
+    "url": "https://example.com/books?api_key=secured-query-api-key"
+  },
+  {
+    "bodySize": 0,
+    "cookies": [],
+    "headers": [
+      {
+        "name": "api-key",
+        "value": "secured-header-api-key"
+      }
+    ],
+    "headersSize": 0,
+    "httpVersion": "HTTP/1.1",
+    "method": "GET",
+    "queryString": [],
+    "url": "https://example.com/authors"
+  },
+  {
+    "bodySize": 0,
+    "cookies": [
+      {
+        "name": "cookie_key",
+        "value": "secured-cookie-api-key"
+      }
+    ],
+    "headers": [
+      {
+        "name": "cookie",
+        "value": "cookie_key=secured-cookie-api-key"
+      }
+    ],
+    "headersSize": 0,
+    "httpVersion": "HTTP/1.1",
+    "method": "GET",
+    "queryString": [],
+    "url": "https://example.com/users"
+  }
+]

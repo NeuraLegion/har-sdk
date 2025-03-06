@@ -7,6 +7,7 @@ import {
   BearerSecurityScheme
 } from './schemas';
 import type { SecurityScheme } from './schemas';
+import type { ConverterOptions } from '../Converter';
 import type {
   SecurityRequirementObject,
   SecuritySchemeObject
@@ -23,7 +24,8 @@ import type {
 export abstract class SecurityRequirementsParser<T extends OpenAPI.Document> {
   protected constructor(
     protected readonly spec: T,
-    protected readonly sampler: Sampler
+    protected readonly sampler: Sampler,
+    protected readonly options: ConverterOptions
   ) {}
 
   protected abstract getSecuritySchemes():
@@ -62,11 +64,23 @@ export abstract class SecurityRequirementsParser<T extends OpenAPI.Document> {
     if ('in' in securityScheme) {
       switch (securityScheme.in) {
         case 'header':
-          return new ApiKeyHeaderSecurityScheme(securityScheme, this.sampler);
+          return new ApiKeyHeaderSecurityScheme(
+            securityScheme,
+            this.sampler,
+            this.options
+          );
         case 'query':
-          return new ApiKeyQuerySecurityScheme(securityScheme, this.sampler);
+          return new ApiKeyQuerySecurityScheme(
+            securityScheme,
+            this.sampler,
+            this.options
+          );
         case 'cookie':
-          return new ApiKeyCookieSecurityScheme(securityScheme, this.sampler);
+          return new ApiKeyCookieSecurityScheme(
+            securityScheme,
+            this.sampler,
+            this.options
+          );
       }
     }
   }
@@ -78,9 +92,17 @@ export abstract class SecurityRequirementsParser<T extends OpenAPI.Document> {
     | undefined {
     switch (securityScheme.type) {
       case 'basic':
-        return new BasicSecurityScheme(securityScheme, this.sampler);
+        return new BasicSecurityScheme(
+          securityScheme,
+          this.sampler,
+          this.options
+        );
       case 'oauth2':
-        return new BearerSecurityScheme(securityScheme, this.sampler);
+        return new BearerSecurityScheme(
+          securityScheme,
+          this.sampler,
+          this.options
+        );
       case 'apiKey':
         return this.createApiKeySchema(securityScheme);
     }

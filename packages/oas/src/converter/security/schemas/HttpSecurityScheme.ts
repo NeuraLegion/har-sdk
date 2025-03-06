@@ -1,4 +1,5 @@
 import { InjectionLocation, SecurityScheme } from './SecuritySchema';
+import type { ConverterOptions } from '../../Converter';
 import type { Sampler } from '../../Sampler';
 import type { Header, OpenAPIV3 } from '@har-sdk/core';
 
@@ -10,8 +11,12 @@ export class HttpSecurityScheme extends SecurityScheme<
     return 'headers';
   }
 
-  constructor(schema: OpenAPIV3.HttpSecurityScheme, sampler: Sampler) {
-    super(schema, sampler);
+  constructor(
+    schema: OpenAPIV3.HttpSecurityScheme,
+    sampler: Sampler,
+    options: ConverterOptions
+  ) {
+    super(schema, sampler, options);
   }
 
   public createCredentials(): Header {

@@ -1,0 +1,71 @@
+openapi: 3.0.1
+info:
+  title: Sample
+  version: 1.0.0
+servers:
+  - url: https://example.com
+paths:
+  /books:
+    get:
+      parameters:
+        - $ref: '#/components/parameters/query-api-key'
+      responses:
+        '200':
+          description: ''
+      security:
+        - QueryApiKey: []
+  /authors:
+    get:
+      parameters:
+        - $ref: '#/components/parameters/header-api-key'
+      responses:
+        '200':
+          description: ''
+      security:
+        - HeaderApiKey: []
+  /users:
+    get:
+      parameters:
+        - $ref: '#/components/parameters/cookie-session-id'
+      responses:
+        '200':
+          description: ''
+      security:
+        - CookieAuth: []
+components:
+  parameters:
+    header-api-key:
+      in: header
+      name: api-key
+      required: true
+      schema:
+        type: string
+        example: 'secured-header-api-key'
+    query-api-key:
+      in: query
+      name: api_key
+      required: true
+      schema:
+        type: string
+        example: 'secured-query-api-key'
+    cookie-session-id:
+      in: cookie
+      name: cookie_key
+      required: true
+      schema:
+        type: string
+        example: 'secured-cookie-api-key'
+
+  securitySchemes:
+    ApiKey:
+      type: apiKey
+      in: header
+      name: api-key
+    QueryApiKey:
+      type: apiKey
+      in: query
+      name: api_key
+    CookieAuth:
+      type: apiKey
+      in: cookie
+      name: cookie_key

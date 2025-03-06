@@ -1,5 +1,6 @@
 import type { Sampler } from '../../Sampler';
 import type { SecuritySchemeObject } from '../../../types';
+import type { ConverterOptions } from '../../Converter';
 import type { Cookie, Header, QueryString, Request } from '@har-sdk/core';
 
 export type InjectionLocation = keyof Pick<
@@ -15,13 +16,25 @@ export abstract class SecurityScheme<
 
   protected constructor(
     protected readonly schema: T,
-    private readonly sampler: Sampler
+    private readonly sampler: Sampler,
+    protected readonly options: ConverterOptions
   ) {}
 
   public abstract createCredentials(): R;
 
   public authorizeRequest(request: Pick<Request, InjectionLocation>): void {
-    request[this.location]?.push(this.createCredentials());
+    const credentials = this.createCredentials();
+    const location = request[this.location];
+
+    if (
+      this.options.skipSecuritySchemeInference &&
+      location &&
+      location.some((item) => item.name === credentials.name)
+    ) {
+      return;
+    }
+
+    location?.push(credentials);
   }
 
   protected createCookieHeader(cookie: Cookie): Header {

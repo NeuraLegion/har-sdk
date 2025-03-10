@@ -138,6 +138,19 @@ Also, the library logs console warning messages when it encounters an unsupporte
 sample(schema, { quiet: true });
 ```
 
+When the schema comes from the specification which does not allow the `example` node to exist e.g. OAS 2.0 parameter definition, some vendors may provide such schema example value in OAS vendor extension nodes namely `x-example` or `x-examples`. If you want to include such kind of example values into the output, you can use the `includeVendorExamples` as shown below:
+
+```js
+sample(
+  {
+    'type': 'string',
+    'x-example': 'some_value'
+  },
+  { includeVendorExamples: true }
+);
+// some_value
+```
+
 ## License
 
 Copyright © 2023 [Bright Security](https://brightsec.com/).

@@ -18,7 +18,7 @@ export abstract class BaseOasParameterObjectsParser<
 {
   protected constructor(
     protected readonly doc: D,
-    private readonly dereferencedDoc: D
+    protected readonly dereferencedDoc: D
   ) {}
 
   protected abstract getParameterValue(

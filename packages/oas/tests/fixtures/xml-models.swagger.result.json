@@ -6,6 +6,10 @@
       {
         "name": "content-type",
         "value": "application/xml"
+      },
+      {
+        "name": "accept",
+        "value": "*/*"
       }
     ],
     "headersSize": 0,

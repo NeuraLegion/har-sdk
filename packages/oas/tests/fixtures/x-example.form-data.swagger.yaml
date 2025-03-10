@@ -1,0 +1,23 @@
+swagger: '2.0'
+info:
+  title: Sample API
+  version: 1.0.0
+host: example.com
+schemes:
+  - https
+paths:
+  /sample:
+    post:
+      consumes:
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+        - name: name
+          in: formData
+          type: string
+          default: default_name
+          x-example: x_example_name
+      responses:
+        '201':
+          description: ''

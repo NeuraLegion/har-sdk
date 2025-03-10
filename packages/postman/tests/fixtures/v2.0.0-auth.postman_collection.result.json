@@ -1,0 +1,21 @@
+[
+  {
+    "bodySize": -1,
+    "cookies": [],
+    "headers": [
+      {
+        "name": "Accept",
+        "value": "application/json"
+      },
+      {
+        "name": "authorization",
+        "value": "Bearer token-value"
+      }
+    ],
+    "headersSize": -1,
+    "httpVersion": "HTTP/1.1",
+    "method": "GET",
+    "queryString": [],
+    "url": "https://example.com/api/v1/users"
+  }
+]

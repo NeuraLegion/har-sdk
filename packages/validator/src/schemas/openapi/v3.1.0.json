@@ -4,7 +4,7 @@
   "$async": true,
   "description": "Validation schema for OpenAPI Specification 3.1.X.",
   "type": "object",
-  "required": ["openapi", "info", "servers"],
+  "required": ["openapi", "info", "servers", "paths"],
   "properties": {
     "openapi": {
       "type": "string",

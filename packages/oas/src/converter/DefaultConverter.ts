@@ -9,6 +9,7 @@ import type { PathItemObject } from '../types';
 import { getOperation, isOASV2 } from '../utils';
 import $RefParser, { JSONSchema } from '@apidevtools/json-schema-ref-parser';
 import type {
+  Cookie,
   Header,
   OpenAPI,
   PostData,
@@ -18,6 +19,17 @@ import type {
 import pointer from 'json-pointer';
 
 export class DefaultConverter implements Converter {
+  private readonly ALLOWED_METHODS: readonly string[] = [
+    'GET',
+    'PUT',
+    'POST',
+    'DELETE',
+    'OPTIONS',
+    'HEAD',
+    'PATCH',
+    'TRACE'
+  ];
+
   private spec: OpenAPI.Document;
   private securityRequirements?: SecurityRequirementsParser<OpenAPI.Document>;
   private readonly refParser = new $RefParser();
@@ -38,9 +50,8 @@ export class DefaultConverter implements Converter {
     return Object.entries(this.spec.paths).flatMap(
       ([path, pathMethods]: [string, PathItemObject]) =>
         Object.keys(pathMethods)
-          .filter(
-            (method: string) =>
-              !method.toLowerCase().startsWith('x-swagger-router-controller')
+          .filter((method: string) =>
+            this.ALLOWED_METHODS.includes(method.toUpperCase())
           )
           .map((method) => this.createHarEntry(path, method))
     );
@@ -73,19 +84,20 @@ export class DefaultConverter implements Converter {
       path,
       method
     );
-
     const postData = this.convertPart<PostData>(
       SubPart.POST_DATA,
       path,
       method
     );
+    const cookies = this.convertPart<Cookie[]>(SubPart.COOKIES, path, method);
+    const headers = this.convertPart<Header[]>(SubPart.HEADERS, path, method);
 
     const request: Omit<Request, 'url'> = {
       queryString,
+      cookies,
       method: method.toUpperCase(),
-      headers: this.convertPart<Header[]>(SubPart.HEADERS, path, method),
+      headers: this.enrichHeadersWithCookies(headers, cookies),
       httpVersion: 'HTTP/1.1',
-      cookies: [],
       headersSize: 0,
       bodySize: 0,
       ...(postData ? { postData } : {})
@@ -97,6 +109,19 @@ export class DefaultConverter implements Converter {
       ...request,
       url: this.buildUrl(path, method, queryString)
     };
+  }
+
+  private enrichHeadersWithCookies(
+    headers: Header[],
+    cookies: Cookie[]
+  ): Header[] {
+    return [
+      ...headers,
+      ...cookies.map((cookie) => ({
+        name: 'cookie',
+        value: `${cookie.name}=${cookie.value}`
+      }))
+    ];
   }
 
   private authorizeRequest(

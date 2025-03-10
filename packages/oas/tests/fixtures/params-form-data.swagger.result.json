@@ -6,6 +6,10 @@
       {
         "name": "content-type",
         "value": "multipart/form-data"
+      },
+      {
+        "name": "accept",
+        "value": "application/json"
       }
     ],
     "postData": {

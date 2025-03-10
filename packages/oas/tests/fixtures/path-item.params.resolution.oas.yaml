@@ -1,0 +1,38 @@
+openapi: 3.0.3
+info:
+  title: users/{id}
+  version: '1.0'
+servers:
+  - url: https://brokencrystals.com
+paths:
+  /org/{orgId}/users/{userId}/devices/{deviceId}:
+    parameters:
+      - $ref: '#/components/parameters/orgId'
+      - in: path
+        name: userId
+        required: true
+        schema:
+          type: string
+    get:
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: number
+        - in: path
+          name: deviceId
+          required: true
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+components:
+  parameters:
+    orgId:
+      in: path
+      name: orgId
+      required: true
+      schema:
+        type: string

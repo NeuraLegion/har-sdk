@@ -1,4 +1,5 @@
 import { InjectionLocation, SecurityScheme } from './SecuritySchema';
+import type { ConverterOptions } from '../../Converter';
 import type { Sampler } from '../../Sampler';
 import type { Cookie, OpenAPIV3, Request } from '@har-sdk/core';
 
@@ -10,16 +11,22 @@ export class ApiKeyCookieSecurityScheme extends SecurityScheme<
     return 'cookies';
   }
 
-  constructor(schema: OpenAPIV3.ApiKeySecurityScheme, sampler: Sampler) {
-    super(schema, sampler);
+  constructor(
+    schema: OpenAPIV3.ApiKeySecurityScheme,
+    sampler: Sampler,
+    options: ConverterOptions
+  ) {
+    super(schema, sampler, options);
   }
 
   public override authorizeRequest(
     request: Pick<Request, InjectionLocation>
   ): void {
     const credentials = this.createCredentials();
-    request.cookies.push(credentials);
-    request.headers.push(this.createCookieHeader(credentials));
+    if (!request.cookies?.some((cookie) => cookie.name === credentials.name)) {
+      request.cookies.push(credentials);
+      request.headers.push(this.createCookieHeader(credentials));
+    }
   }
 
   public createCredentials(): Cookie {

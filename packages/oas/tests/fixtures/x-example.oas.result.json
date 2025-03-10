@@ -1,0 +1,68 @@
+[
+  {
+    "queryString": [
+      {
+        "name": "filter",
+        "value": "default_filter"
+      }
+    ],
+    "cookies": [],
+    "method": "PUT",
+    "headers": [
+      {
+        "value": "application/x-www-form-urlencoded",
+        "name": "content-type"
+      },
+      {
+        "value": "Bearer default_jwt_token",
+        "name": "authorization"
+      }
+    ],
+    "httpVersion": "HTTP/1.1",
+    "headersSize": 0,
+    "bodySize": 0,
+    "postData": {
+      "mimeType": "application/x-www-form-urlencoded",
+      "text": "name=default_name"
+    },
+    "url": "https://example.com/sample/0?filter=default_filter"
+  },
+  {
+    "queryString": [],
+    "cookies": [],
+    "method": "POST",
+    "headers": [
+      {
+        "value": "application/json",
+        "name": "content-type"
+      }
+    ],
+    "httpVersion": "HTTP/1.1",
+    "headersSize": 0,
+    "bodySize": 0,
+    "postData": {
+      "mimeType": "application/json",
+      "text": "{\"name\":\"default_name\",\"age\":42}"
+    },
+    "url": "https://example.com/sample"
+  },
+  {
+    "queryString": [],
+    "cookies": [],
+    "method": "PATCH",
+    "headers": [
+      {
+        "value": "application/json",
+        "name": "content-type"
+      }
+    ],
+    "httpVersion": "HTTP/1.1",
+    "headersSize": 0,
+    "bodySize": 0,
+    "postData": {
+      "mimeType": "application/json",
+      "text": "{\"name\":\"example_name\",\"age\":20}"
+    },
+    "url": "https://example.com/sample"
+  }
+]

@@ -1,11 +1,32 @@
 import { ConvertError, oas2har } from '../src';
-import yaml, { load } from 'js-yaml';
+import { load } from 'js-yaml';
 import { OpenAPIV2, Request } from '@har-sdk/core';
 import { resolve } from 'path';
-import { readFile, readFileSync } from 'fs';
+import { readFile } from 'fs';
 import { promisify } from 'util';
 
 describe('DefaultConverter', () => {
+  const readFileAsync = promisify(readFile);
+
+  const loadFile = async (fileName: string) => {
+    const filePath = resolve(__dirname, fileName);
+
+    const content = await readFileAsync(filePath, 'utf-8');
+
+    return content.endsWith('.json') ? JSON.parse(content) : load(content);
+  };
+
+  const createFixture = async ({
+    inputFile,
+    expectedFile
+  }: {
+    inputFile: string;
+    expectedFile: string;
+  }) => ({
+    inputDoc: await loadFile(inputFile),
+    expectedDoc: await loadFile(expectedFile)
+  });
+
   describe('convert', () => {
     [
       {
@@ -39,6 +60,29 @@ describe('DefaultConverter', () => {
         input: 'empty-schema.swagger.yaml',
         expected: 'empty-schema.swagger.result.json',
         message: 'should correctly handle empty schemas (swagger)'
+      },
+      {
+        input: 'consumes-produces-missing.swagger.yaml',
+        expected: 'consumes-produces-missing.swagger.result.json',
+        message: 'should correctly handle missing consumes/produces (swagger)'
+      },
+      {
+        input: 'consumes-produces-override.swagger.yaml',
+        expected: 'consumes-produces-override.swagger.result.json',
+        message:
+          'should correctly handle override consumes/produces to empty (swagger)'
+      },
+      {
+        input: 'consumes-produces-root.swagger.yaml',
+        expected: 'consumes-produces-root.swagger.result.json',
+        message:
+          'should correctly handle root level only consumes/produces (swagger)'
+      },
+      {
+        input: 'consumes-produces-operation.swagger.yaml',
+        expected: 'consumes-produces-operation.swagger.result.json',
+        message:
+          'should correctly handle operation level only consumes/produces (swagger)'
       },
       {
         input: 'empty-schema.oas.yaml',
@@ -152,27 +196,27 @@ describe('DefaultConverter', () => {
         input: 'binary-body.oas.yaml',
         expected: 'binary-body.oas.result.json',
         message: 'should properly serialize binary types (oas)'
+      },
+      {
+        input: 'cookies.oas.yaml',
+        expected: 'cookies.oas.result.json',
+        message: 'should properly serialize cookies (oas)'
+      },
+      {
+        input: 'examples.oas.yaml',
+        expected: 'examples.oas.result.json',
+        message: 'should pick up the the sample value from examples node'
       }
     ].forEach(({ input: inputFile, expected: expectedFile, message }) => {
       it(message, async () => {
-        const content = readFileSync(
-          resolve(__dirname, `./fixtures/${inputFile}`),
-          'utf-8'
-        );
-        const input = inputFile.endsWith('json')
-          ? JSON.parse(content)
-          : load(content);
+        const { inputDoc, expectedDoc } = await createFixture({
+          inputFile: `./fixtures/${inputFile}`,
+          expectedFile: `./fixtures/${expectedFile}`
+        });
 
-        const expected = JSON.parse(
-          readFileSync(
-            resolve(__dirname, `./fixtures/${expectedFile}`),
-            'utf-8'
-          )
-        );
+        const result: Request[] = await oas2har(inputDoc as any);
 
-        const result: Request[] = await oas2har(input as any);
-
-        expect(result).toStrictEqual(expected);
+        expect(result).toStrictEqual(expectedDoc);
       });
     });
 
@@ -243,12 +287,9 @@ describe('DefaultConverter', () => {
         /^convert-error-on-(.+)\.(.+)\.yaml$/,
         '$1 ($2)'
       )}`, async () => {
-        const content: string = await promisify(readFile)(
-          resolve(__dirname, `./fixtures/${input}`),
-          'utf8'
-        );
+        const inputDoc = await loadFile(`./fixtures/${input}`);
 
-        const result = oas2har(yaml.load(content) as OpenAPIV2.Document);
+        const result = oas2har(inputDoc as OpenAPIV2.Document);
 
         await expect(result).rejects.toThrow(ConvertError);
         await expect(result).rejects.toMatchObject({
@@ -256,5 +297,157 @@ describe('DefaultConverter', () => {
         });
       })
     );
+
+    it('should ignore x-example when includeVendorExamples is true (oas)', async () => {
+      // arrange
+      const { inputDoc, expectedDoc } = await createFixture({
+        inputFile: `./fixtures/x-example.oas.yaml`,
+        expectedFile: `./fixtures/x-example.oas.result.json`
+      });
+
+      // act
+      const result: Request[] = await oas2har(inputDoc as any, {
+        includeVendorExamples: true
+      });
+
+      // assert
+      expect(result).toStrictEqual(expectedDoc);
+    });
+
+    it.each(['path', 'query', 'header', 'form-data'])(
+      'should ignore %s parameter vendor example when vendor examples inclusion disabled (swagger)',
+      async (input) => {
+        // arrange
+        const { inputDoc, expectedDoc } = await createFixture({
+          inputFile: `./fixtures/x-example.${input}.swagger.yaml`,
+          expectedFile: `./fixtures/x-example.${input}.disabled.swagger.result.json`
+        });
+
+        // act
+        const result: Request[] = await oas2har(inputDoc as any, {
+          includeVendorExamples: false
+        });
+
+        // assert
+        expect(result).toStrictEqual(expectedDoc);
+      }
+    );
+
+    it.each(['path', 'query', 'header', 'form-data'])(
+      'should use %s parameter vendor example when vendor examples inclusion enabled (swagger)',
+      async (input) => {
+        // arrange
+        const { inputDoc, expectedDoc } = await createFixture({
+          inputFile: `./fixtures/x-example.${input}.swagger.yaml`,
+          expectedFile: `./fixtures/x-example.${input}.swagger.result.json`
+        });
+
+        // act
+        const result: Request[] = await oas2har(inputDoc as any, {
+          includeVendorExamples: true
+        });
+
+        // assert
+        expect(result).toStrictEqual(expectedDoc);
+      }
+    );
+
+    it.each(['schemathesis', 'redocly', 'api-connect', 'smartbear'])(
+      'should ignore body parameter vendor example when vendor examples inclusion disabled (swagger, %s)',
+      async (input) => {
+        // arrange
+        const { inputDoc, expectedDoc } = await createFixture({
+          inputFile: `./fixtures/x-example.body.${input}.swagger.yaml`,
+          expectedFile: `./fixtures/x-example.body.disabled.swagger.result.json`
+        });
+
+        // act
+        const result: Request[] = await oas2har(inputDoc as any, {
+          includeVendorExamples: false
+        });
+
+        // assert
+        expect(result).toStrictEqual(expectedDoc);
+      }
+    );
+
+    it.each(['schemathesis', 'redocly', 'api-connect', 'smartbear'])(
+      'should use body parameter vendor example when vendor examples inclusion enabled (swagger, %s)',
+      async (input) => {
+        // arrange
+        const { inputDoc, expectedDoc } = await createFixture({
+          inputFile: `./fixtures/x-example.body.${input}.swagger.yaml`,
+          expectedFile: `./fixtures/x-example.body.${input}.swagger.result.json`
+        });
+
+        // act
+        const result: Request[] = await oas2har(inputDoc as any, {
+          includeVendorExamples: true
+        });
+
+        // assert
+        expect(result).toStrictEqual(expectedDoc);
+      }
+    );
+
+    it('should ignore properties other than http method', async () => {
+      // arrange
+      const { inputDoc, expectedDoc } = await createFixture({
+        inputFile: `./fixtures/path-item.ignore-non-http-method-properties.oas.yaml`,
+        expectedFile: `./fixtures/path-item.ignore-non-http-method-properties.oas.result.json`
+      });
+
+      // act
+      const result: Request[] = await oas2har(inputDoc as any);
+
+      // assert
+      expect(result).toStrictEqual(expectedDoc);
+    });
+
+    it('should correctly resolve path-item parameters', async () => {
+      // arrange
+      const { inputDoc, expectedDoc } = await createFixture({
+        inputFile: `./fixtures/path-item.params.resolution.oas.yaml`,
+        expectedFile: `./fixtures/path-item.params.resolution.oas.result.json`
+      });
+
+      // act
+      const result: Request[] = await oas2har(inputDoc as any);
+
+      // assert
+      expect(result).toStrictEqual(expectedDoc);
+    });
+
+    it('should skip accept header inference when it comes from parameters', async () => {
+      // arrange
+      const { inputDoc, expectedDoc } = await createFixture({
+        inputFile: `./fixtures/params-header.skip-inference.oas.yaml`,
+        expectedFile: `./fixtures/params-header.skip-inference.oas.result.json`
+      });
+
+      // act
+      const result: Request[] = await oas2har(inputDoc as any, {
+        skipAcceptHeaderInference: true
+      });
+
+      // assert
+      expect(result).toStrictEqual(expectedDoc);
+    });
+
+    it('should skip security scheme inference when it comes from parameters', async () => {
+      // arrange
+      const { inputDoc, expectedDoc } = await createFixture({
+        inputFile: `./fixtures/scheme-security.skip-inference.oas.yaml`,
+        expectedFile: `./fixtures/scheme-security.skip-inference.oas.result.json`
+      });
+
+      // act
+      const result: Request[] = await oas2har(inputDoc as any, {
+        skipSecuritySchemeInference: true
+      });
+
+      // assert
+      expect(result).toStrictEqual(expectedDoc);
+    });
   });
 });

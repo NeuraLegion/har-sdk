@@ -1,3 +1,4 @@
+import { ConverterOptions } from '../../Converter';
 import { OperationObject, ParameterObject } from '../../../types';
 import {
   filterLocationParams,
@@ -13,9 +14,13 @@ import jsonPointer from 'json-pointer';
 export abstract class HeadersConverter<T extends OpenAPI.Document>
   implements SubConverter<Header[]>
 {
+  private readonly CONTENT_TYPE_METHODS = ['post', 'put', 'patch', 'delete'];
+  private readonly CONTENT_TYPE_HEADER = 'content-type';
+
   protected constructor(
     private readonly spec: T,
-    private readonly sampler: Sampler
+    private readonly sampler: Sampler,
+    private readonly options: ConverterOptions
   ) {}
 
   protected abstract createContentTypeHeaders(
@@ -32,10 +37,24 @@ export abstract class HeadersConverter<T extends OpenAPI.Document>
     const headers: Header[] = [];
     const pathObj = getOperation(this.spec, path, method);
 
-    headers.push(...this.createContentTypeHeaders(pathObj));
-    headers.push(...this.createAcceptHeaders(pathObj));
+    if (
+      this.CONTENT_TYPE_METHODS.includes(method.toLowerCase()) &&
+      !headers.some(
+        (header) => header.name.toLowerCase() === this.CONTENT_TYPE_HEADER
+      )
+    ) {
+      headers.push(...this.createContentTypeHeaders(pathObj));
+    }
 
-    headers.push(...this.parseFromParams(path, method));
+    const acceptHeaders = this.createAcceptHeaders(pathObj);
+
+    const paramsHeaders = this.parseFromParams(path, method);
+
+    const addInferred =
+      !this.options.skipAcceptHeaderInference ||
+      !paramsHeaders.some((x) => x.name === 'accept');
+
+    headers.push(...(addInferred ? acceptHeaders : []), ...paramsHeaders);
 
     return headers;
   }

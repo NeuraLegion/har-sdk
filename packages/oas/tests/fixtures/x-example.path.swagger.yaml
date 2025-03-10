@@ -1,0 +1,24 @@
+swagger: '2.0'
+info:
+  title: Sample API
+  version: 1.0.0
+host: example.com
+schemes:
+  - https
+paths:
+  /sample/{id}:
+    get:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+          default: 0
+          x-example: 123
+      responses:
+        '201':
+          description: ''

@@ -1,0 +1,49 @@
+openapi: 3.1.0
+info:
+  title: Dynamic List API
+  version: 1.0.0
+servers:
+  - url: https://example.com/api/v1
+paths:
+  /items:
+    post:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/List'
+      responses:
+        '200':
+          description: ''
+components:
+  schemas:
+    List:
+      type: object
+      required:
+        - items
+      properties:
+        items:
+          type: array
+          items:
+            dynamicRef: '#ListItem'
+    ListItem:
+      dynamicAnchor: 'ListItem'
+      type: object
+      required:
+        - id
+        - data
+      properties:
+        id:
+          type: string
+        data:
+          type: string
+
+  examples:
+    dynamic-list:
+      value:
+        items:
+          - id: '123'
+            data: 'First item'
+          - id: '456'
+            data: 'Second item'

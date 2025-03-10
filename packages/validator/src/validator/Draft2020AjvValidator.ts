@@ -11,6 +11,6 @@ export abstract class Draft2020AjvValidator<
   }
 
   protected override createAjv(options: Options): Ajv {
-    return new Ajv2020(options);
+    return new Ajv2020({ ...options, discriminator: true });
   }
 }

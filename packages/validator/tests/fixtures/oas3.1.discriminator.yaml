@@ -1,0 +1,67 @@
+openapi: 3.1.0
+info:
+  title: Animal API
+  version: 1.0.0
+servers:
+  - url: https://example.com/api/v1
+paths:
+  /animals:
+    post:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Animal'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Animal'
+components:
+  schemas:
+    Animal:
+      type: object
+      required:
+        - type
+      properties:
+        type:
+          type: string
+        name:
+          type: string
+      discriminator:
+        propertyName: type
+        mapping:
+          cat: '#/components/schemas/Cat'
+          dog: '#/components/schemas/Dog'
+
+    Cat:
+      allOf:
+        - $ref: '#/components/schemas/Animal'
+        - type: object
+          properties:
+            livesLeft:
+              type: integer
+
+    Dog:
+      allOf:
+        - $ref: '#/components/schemas/Animal'
+        - type: object
+          properties:
+            breed:
+              type: string
+
+  examples:
+    CatExample:
+      value:
+        type: cat
+        name: Whiskers
+        livesLeft: 9
+
+    DogExample:
+      value:
+        type: dog
+        name: Buddy
+        breed: Golden Retriever

@@ -1,0 +1,692 @@
+{
+  "openapi": "3.1.0",
+  "servers": [
+    {
+      "description": "SwaggerHub API Auto Mocking",
+      "url": "https://app.swaggerhub.com/apis/YAQEENISSA3_1/Ass/1.0.0-oas3.1"
+    }
+  ],
+  "info": {
+    "version": "1.0.0-oas3.1",
+    "title": "Inventory Management System Rest APIs",
+    "description": "This is a sample Inventory Management System based on the OpenAPI 3.1 specification. content 4 cors Customer(user), vendor, order, and items."
+  },
+  "paths": {
+    "/user": {
+      "get": {
+        "tags": ["user"],
+        "description": "Returns all registered users",
+        "operationId": "getuser",
+        "responses": {
+          "200": {
+            "description": "All the users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/UserInput" }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["user"],
+        "operationId": "registered",
+        "parameters": [
+          {
+            "name": "Customer_id",
+            "required": true,
+            "schema": { "type": "integer", "format": "int32" }
+          },
+          { "name": "Name", "required": true, "schema": { "type": "string" } },
+          {
+            "name": "UserName",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "Password",
+            "required": true,
+            "schema": { "type": "string", "format": "password" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/UserInput" }
+                }
+              }
+            }
+          },
+          "201": { "description": "Successfully created a new user" }
+        }
+      }
+    },
+    "/User/{Customer_Id}": {
+      "put": {
+        "tags": ["user"],
+        "summary": "Update an existing user",
+        "description": "Update an existing user by ID",
+        "operationId": "update",
+        "requestBody": {
+          "description": "Update an existing user",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UserInput" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "400": { "description": "Invalid ID supplied" },
+          "404": { "description": "User not found" },
+          "409": { "description": "conflict" }
+        }
+      },
+      "patch": {
+        "tags": ["user"],
+        "summary": "Update an existing user",
+        "description": "Update an existing user by ID using PATCH method",
+        "operationId": "updateUserPatch",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "Customer_id",
+            "description": "ID of the Customer to update",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "description": "Updated user information",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UserInput" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "User updated successfully" },
+          "204": { "description": "No Content" },
+          "404": { "description": "User not found" },
+          "409": {
+            "description": "There is a conflict with the current state of the user"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["user"],
+        "summary": "Deletes a User",
+        "description": "Delete a user",
+        "operationId": "deleteUser",
+        "parameters": [
+          {
+            "name": "Customer_id",
+            "in": "query",
+            "description": "User ID to delete",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "User Deleted" },
+          "400": { "description": "Invalid user value" },
+          "403": { "description": "Forbidden" }
+        }
+      },
+      "get": {
+        "tags": ["user"],
+        "summary": "Get user by ID",
+        "description": "Returns a single user based on the provided ID.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Customer_Id",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/UserInput" }
+              }
+            }
+          },
+          "404": { "description": "User not found" }
+        }
+      }
+    },
+    "/item": {
+      "post": {
+        "tags": ["item"],
+        "operationId": "Add new item",
+        "parameters": [
+          {
+            "name": "product_id",
+            "required": true,
+            "schema": { "type": "integer", "format": "int32" }
+          },
+          { "name": "Name", "required": true, "schema": { "type": "string" } },
+          { "name": "Price", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "product_id": { "type": "integer" },
+                      "Name": { "type": "string" },
+                      "Price": { "type": "integer" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "201": { "description": "Successfully created a new item" },
+          "405": {
+            "description": "the requested method is not allowed for this resource"
+          },
+          "409": { "description": "item with the same id already exists" }
+        }
+      },
+      "get": {
+        "tags": ["item"],
+        "description": "Returns all registered items",
+        "operationId": "getAllItems",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Iteminput" }
+                }
+              }
+            }
+          },
+          "400": { "description": "invalid request format" },
+          "404": { "description": "No items found" }
+        }
+      }
+    },
+    "/item/{product_id}": {
+      "get": {
+        "tags": ["item"],
+        "summary": "Get item by ID",
+        "description": "Returns a single item based on the provided ID.",
+        "operationId": "getItemById",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "product_id",
+            "description": "ID of the item to retrieve",
+            "required": true,
+            "schema": { "type": "integer", "format": "int32" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Iteminput" }
+              }
+            }
+          },
+          "400": { "description": "Invalid ID supplied" },
+          "404": { "description": "Item not found" },
+          "422": { "description": "Validation exception" }
+        }
+      },
+      "put": {
+        "tags": ["item"],
+        "description": "Update an existing item",
+        "operationId": "update item",
+        "requestBody": {
+          "description": "Update an existent item",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Iteminput" }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "product_id",
+            "description": "ID",
+            "schema": { "type": "integer", "format": "int32" }
+          },
+          {
+            "in": "query",
+            "name": "Name",
+            "description": "Product name",
+            "schema": { "type": "string" }
+          },
+          {
+            "in": "query",
+            "name": "Price",
+            "description": "Price of product",
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "400": { "description": "Invalid ID" },
+          "404": { "description": "Item not found" },
+          "409": { "description": "conflict" }
+        }
+      },
+      "patch": {
+        "tags": ["item"],
+        "summary": "Update an existing item",
+        "description": "Update an existing item by ID using PATCH method",
+        "operationId": "updateItemPatch",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "product_id",
+            "description": "ID of the item to update",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "description": "Updated item information",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Iteminput" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Item updated successfully" },
+          "204": { "description": "No Content" },
+          "400": { "description": "Invalid ID supplied" },
+          "404": { "description": "Item not found" }
+        }
+      },
+      "delete": {
+        "tags": ["item"],
+        "summary": "Deletes an item",
+        "description": "Delete an item by ID",
+        "operationId": "deleteItem",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "product_id",
+            "description": "ID of the item to delete",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Item Deleted" },
+          "400": { "description": "Invalid ID supplied" },
+          "403": {
+            "description": "the server understood the delete request but refuses to authorize it"
+          },
+          "404": { "description": "Item not found" }
+        }
+      }
+    },
+    "/vendor": {
+      "get": {
+        "tags": ["vendor"],
+        "summary": "Get all vendors",
+        "description": "Returns all registered vendors",
+        "operationId": "getAllVendors",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Vendor" }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["vendor"],
+        "summary": "Create a new vendor",
+        "operationId": "createVendor",
+        "requestBody": {
+          "description": "Vendor object to be created",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Vendor" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Vendor created successfully" },
+          "201": { "description": "created" }
+        }
+      }
+    },
+    "/Vendor/{vendor_id}": {
+      "get": {
+        "tags": ["vendor"],
+        "summary": "Get vendor by ID",
+        "description": "Returns a single vendor based on the provided ID",
+        "operationId": "getVendorById",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "vendor_id",
+            "description": "ID of the vendor to retrieve",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Vendor" }
+              }
+            }
+          },
+          "404": { "description": "Vendor not found" }
+        }
+      },
+      "put": {
+        "tags": ["vendor"],
+        "summary": "Update an existing vendor",
+        "description": "Update an existing vendor by ID",
+        "operationId": "updateVendor",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "vendor_id",
+            "description": "ID of the vendor to update",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "description": "Updated vendor information",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Vendor" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Vendor updated successfully" },
+          "400": { "description": "Invalid ID supplied" },
+          "404": { "description": "Vendor not found" },
+          "422": { "description": "Validation exception" }
+        }
+      },
+      "patch": {
+        "tags": ["vendor"],
+        "summary": "Update an existing vendor partially",
+        "description": "Update an existing vendor partially by ID",
+        "operationId": "partialUpdateVendor",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "vendor_id",
+            "description": "ID of the vendor to update",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "description": "Partially updated vendor information",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Vendor" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Vendor updated successfully" },
+          "400": { "description": "Invalid ID supplied" },
+          "404": { "description": "Vendor not found" },
+          "422": { "description": "Validation exception" }
+        }
+      },
+      "delete": {
+        "tags": ["vendor"],
+        "summary": "Delete a vendor",
+        "description": "Delete a vendor by ID",
+        "operationId": "deleteVendor",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "vendor_id",
+            "description": "ID of the vendor to delete",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Vendor deleted successfully" },
+          "400": { "description": "Invalid ID supplied" },
+          "404": { "description": "Vendor not found" }
+        }
+      }
+    },
+    "/order": {
+      "get": {
+        "tags": ["order"],
+        "summary": "Get all orders",
+        "description": "Returns all registered orders",
+        "operationId": "getAllOrders",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Order" }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["order"],
+        "summary": "Create a new order",
+        "operationId": "createOrder",
+        "requestBody": {
+          "description": "Order object to be created",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Order" }
+            }
+          }
+        },
+        "responses": { "200": { "description": "Order created successfully" } }
+      }
+    },
+    "/Order/{order_id}": {
+      "get": {
+        "tags": ["order"],
+        "summary": "Get order by ID",
+        "description": "Returns a single order based on the provided ID",
+        "operationId": "getOrderById",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "order_id",
+            "description": "ID of the order to retrieve",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Order" }
+              }
+            }
+          },
+          "404": { "description": "Order not found" }
+        }
+      },
+      "put": {
+        "tags": ["order"],
+        "summary": "Update an existing order",
+        "description": "Update an existing order by ID",
+        "operationId": "updateOrder",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "order_id",
+            "description": "ID of the order to update",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "description": "Updated order information",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Order" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Order updated successfully" },
+          "204": { "description": "No Content" },
+          "400": { "description": "Invalid ID supplied" },
+          "404": { "description": "Order not found" }
+        }
+      },
+      "patch": {
+        "tags": ["order"],
+        "summary": "Update an existing order partially",
+        "description": "Update an existing order partially by ID",
+        "operationId": "partialUpdateOrder",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "order_id",
+            "description": "ID of the order to update",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "description": "Partially updated order information",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Order" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Order updated successfully" },
+          "400": { "description": "Invalid ID supplied" },
+          "404": { "description": "Order not found" },
+          "409": { "description": "conflict" }
+        }
+      },
+      "delete": {
+        "tags": ["order"],
+        "summary": "Delete an order",
+        "description": "Delete an order by ID",
+        "operationId": "deleteOrder",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "order_id",
+            "description": "ID of the order to delete",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Order deleted successfully" },
+          "400": { "description": "Invalid ID supplied" },
+          "404": { "description": "Order not found" }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "UserInput": {
+        "type": "object",
+        "properties": {
+          "Customer_id": { "type": "integer" },
+          "Name": { "type": "string" },
+          "UserName": { "type": "string" },
+          "password": { "type": "string" }
+        },
+        "required": ["Customer_id", "Name", "UserName", "password"]
+      },
+      "Iteminput": {
+        "type": "object",
+        "properties": {
+          "product_id": { "type": "integer" },
+          "Name": { "type": "string" },
+          "price": { "type": "integer" }
+        },
+        "required": ["product_id", "Name", "price"]
+      },
+      "Vendor": {
+        "type": "object",
+        "properties": {
+          "vendor_id": { "type": "integer" },
+          "Name": { "type": "string" },
+          "UserName": { "type": "string" },
+          "password": { "type": "string" }
+        },
+        "required": ["vendor_id", "Name", "UserName", "password"]
+      },
+      "Order": {
+        "type": "object",
+        "properties": {
+          "order_id": { "type": "integer" },
+          "customer_id": { "type": "integer" },
+          "product_id": { "type": "integer" },
+          "Quantity": { "type": "integer" }
+        },
+        "required": ["order_id", "customer_id", "product_id", "Quantity"]
+      }
+    }
+  }
+}

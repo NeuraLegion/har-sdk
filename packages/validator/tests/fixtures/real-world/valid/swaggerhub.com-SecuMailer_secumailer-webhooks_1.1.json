@@ -1,0 +1,289 @@
+{
+  "openapi": "3.1.0",
+  "info": { "title": "SecuMailer Webhooks", "version": "1.1" },
+  "webhooks": {
+    "delivery": {
+      "post": {
+        "requestBody": {
+          "description": "Information about email delivery",
+          "content": {
+            "application/json": {
+              "schema": { "allOf": [{ "$ref": "#/components/schemas/event" }] }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Return a 200 status to indicate that the data was received successfully"
+          },
+          "201": {
+            "description": "Return a 201 status to indicate that the data was received successfully"
+          }
+        }
+      }
+    },
+    "failure": {
+      "post": {
+        "requestBody": {
+          "description": "Information about email failure",
+          "content": {
+            "application/json": {
+              "schema": { "allOf": [{ "$ref": "#/components/schemas/event" }] }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Return a 200 status to indicate that the data was received successfully"
+          },
+          "201": {
+            "description": "Return a 201 status to indicate that the data was received successfully"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "event": {
+        "required": ["status", "created", "logs"],
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": ["delivered", "dropped", "complaint"],
+            "description": "Audit log event status"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time",
+            "description": "audit log creation"
+          },
+          "updated": {
+            "type": "string",
+            "format": "date-time",
+            "description": "audit log update"
+          },
+          "logs": {
+            "type": "object",
+            "properties": {
+              "eventType": {
+                "type": "string",
+                "enum": ["Delivery", "Bounce", "Complaint"],
+                "description": "Message event status"
+              },
+              "mail": {
+                "type": "object",
+                "properties": {
+                  "timestamp": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Delivery event timestamp"
+                  },
+                  "source": {
+                    "type": "string",
+                    "description": "Sending email address"
+                  },
+                  "messageId": {
+                    "type": "string",
+                    "description": "Email message-id"
+                  },
+                  "destination": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Recipient email addresses"
+                    }
+                  },
+                  "headers": {
+                    "type": "array",
+                    "description": "A list of the email's original headers. Each header in the list has a name field and a value field.",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "Email header name"
+                        },
+                        "value": {
+                          "type": "string",
+                          "description": "Email header value"
+                        }
+                      }
+                    }
+                  },
+                  "commonHeaders": {
+                    "type": "object",
+                    "description": "Includes information about common email headers from the original email, including the From, To, and Subject fields. Within this object, each header is a key. The From and To fields are represented by arrays that can contain multiple values.",
+                    "properties": {
+                      "from": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "description": "Sending email address"
+                        }
+                      },
+                      "date": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Date header from email"
+                      },
+                      "to": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "description": "Recipient email address(es)"
+                        }
+                      },
+                      "messageId": {
+                        "type": "string",
+                        "description": "Email header message-id"
+                      },
+                      "subject": {
+                        "type": "string",
+                        "description": "Email subject header"
+                      }
+                    }
+                  }
+                }
+              },
+              "delivery": {
+                "properties": {
+                  "timestamp": { "type": "string", "format": "date-time" },
+                  "processingTimeMillis": {
+                    "type": "integer",
+                    "description": "Processing time for delivery"
+                  },
+                  "recipients": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Recipient email address(es)"
+                    }
+                  },
+                  "smtpResponse": {
+                    "type": "string",
+                    "description": "Response from recipient mail server"
+                  },
+                  "reportingMTA": {
+                    "type": "string",
+                    "description": "Identifier/hostname of recipient mail server"
+                  },
+                  "recipient": {
+                    "type": "string",
+                    "description": "Specific recipient that this email was delivered to"
+                  }
+                }
+              },
+              "bounce": {
+                "properties": {
+                  "feedbackId": {
+                    "type": "string",
+                    "description": "A unique ID for the bounce."
+                  },
+                  "bounceType": {
+                    "type": "string",
+                    "enum": ["Permanent", "Transient", "Undetermined"]
+                  },
+                  "bounceSubType": {
+                    "type": "string",
+                    "enum": [
+                      "Undetermined",
+                      "General",
+                      "NoEmail",
+                      "Suppressed",
+                      "OnAccountSuppressionList",
+                      "MailboxFull",
+                      "MessageTooLarge",
+                      "ContentRejected",
+                      "AttachmentRejected"
+                    ]
+                  },
+                  "bouncedRecipients": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "emailAddress": {
+                          "type": "string",
+                          "description": "The email address of the recipient"
+                        },
+                        "action": {
+                          "type": "string",
+                          "description": "This indicates the action performed by the Reporting-MTA as a result of its attempt to deliver the message to this recipient"
+                        },
+                        "status": {
+                          "type": "string",
+                          "description": "This is the per-recipient transport-independent status code that indicates the delivery status of the message"
+                        },
+                        "diagnosticCode": {
+                          "type": "string",
+                          "description": "The status code issued by the reporting MTA"
+                        }
+                      }
+                    }
+                  },
+                  "timestamp": { "type": "string", "format": "date-time" },
+                  "remoteMtaIp": {
+                    "type": "string",
+                    "format": "ipv4",
+                    "description": "The IP address of the MTA to which SecuMailer attempted to deliver the email"
+                  },
+                  "reportingMTA": {
+                    "type": "string",
+                    "description": "This is the value of the MTA that attempted to perform the delivery, relay, or gateway operation"
+                  }
+                }
+              },
+              "complaint": {
+                "properties": {
+                  "complaintRecipients": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "emailAddress": {
+                          "type": "string",
+                          "description": "The email address of the recipient"
+                        }
+                      }
+                    }
+                  },
+                  "timestamp": { "type": "string", "format": "date-time" },
+                  "feedbackId": {
+                    "type": "string",
+                    "description": "A unique ID for the complaint"
+                  },
+                  "complaintSubType": {
+                    "type": "string",
+                    "enum": ["OnAccountSuppressionList", null]
+                  },
+                  "userAgent": {
+                    "type": "string",
+                    "description": "This indicates the name and version of the system that generated the report"
+                  },
+                  "complaintFeedbackType": {
+                    "type": "string",
+                    "enum": [
+                      "abuse",
+                      "auth-failure",
+                      "fraud",
+                      "not-spam",
+                      "other",
+                      "virus"
+                    ],
+                    "description": "This contains the type of feedback"
+                  },
+                  "arrivalDate": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "The value of the Arrival-Date or Received-Date field from the feedback report (in ISO8601 format)"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

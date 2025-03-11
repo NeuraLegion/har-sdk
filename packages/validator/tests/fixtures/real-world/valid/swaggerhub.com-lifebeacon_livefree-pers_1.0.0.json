@@ -1,0 +1,297 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "LiveFree PERS API",
+    "description": "The Personal Emergency Response System (PERS) API enables partners to receive PERS alarms and location data via HTTP webhook.\n\n**Alarm Types**\n\n| Code | Alarm Type | Description |\n|---|---|---|\n| E100 | Medical Alarm (Primary Button) | The medical alarm button was activated. |\n| E101 | Personal Emergency Alarm (Pendant Button) | The personal emergency button was activated. |\n| E111 | Smoke Alarm | Smoke was detected by a compatible smoke detector. |\n| E301 | AC Power Loss | The device has lost AC power. |\n| E302 | Low Battery | The device battery is low. |\n| E308 | System Shutdown | The device is powering off due to low battery. |\n| E601 | Manual Test | A manually triggered test signal. |\n| E602 | Periodic Test | The device sent a recurring test signal. |\n| E641 | Fall Alarm | The device detected a fall. |\n| E643 | Geofence Exit | The user has exited a geofence area. |\n| E644 | Geofence Enter | The user has entered a geofence area. |\n| E646 | Remote Patient Monitoring (RPM) Alarm | A compatible remote patient monitoring device reported an alarm. |\n| R100 | Medical Alarm Cancel | A medical alarm was cancelled by the user. |\n**Provisioning**\n\nWebhooks must be configured by LiveFree support. To configure your webhook, contact support with your webhook URL and authentication info.\n",
+    "version": "1.0.0",
+    "contact": { "name": "API Support", "email": "engineering@lifebeacon.com" }
+  },
+  "webhooks": {
+    "DeviceEventNotification": {
+      "post": {
+        "summary": "Sends a notification message to your webhook URL whenever new device events occur.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/DeviceEvent" }
+            }
+          }
+        },
+        "responses": {
+          "2XX": { "description": "Notification received" },
+          "4XX": { "$ref": "#/components/responses/4XXClientError" },
+          "5XX": { "$ref": "#/components/responses/5XXServerError" }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ClientErrorResult": {
+        "type": "object",
+        "description": "A problem details object (see https://datatracker.ietf.org/doc/html/rfc7807).",
+        "properties": {
+          "type": {
+            "type": ["string", "null"],
+            "format": "uri-reference",
+            "description": "A URI reference that identifies the problem type.",
+            "examples": [
+              "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5"
+            ]
+          },
+          "title": {
+            "type": ["string", "null"],
+            "description": "A summary of the problem type.",
+            "examples": ["Bad Request"]
+          },
+          "status": {
+            "type": ["integer", "null"],
+            "format": "int32",
+            "description": "The HTTP status code.",
+            "examples": [400]
+          },
+          "detail": {
+            "type": ["string", "null"],
+            "description": "An explanation specific to this occurrence of the problem.",
+            "examples": ["Missing required field 'device'."]
+          }
+        }
+      },
+      "DeviceEvent": {
+        "type": "object",
+        "description": "This is the request body that will be sent to your webhook URL.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "A unique identifier for this event."
+          },
+          "device": { "$ref": "#/components/schemas/DeviceEventDevice" },
+          "event": { "$ref": "#/components/schemas/DeviceEventEvent" },
+          "location": { "$ref": "#/components/schemas/DeviceEventLocation" }
+        },
+        "required": ["id", "device"],
+        "anyOf": [{ "required": ["event"] }, { "required": ["location"] }]
+      },
+      "DeviceEventDevice": {
+        "type": "object",
+        "description": "Information about the device that reported the event.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "A unique identifier for the customer device where this event originated. The format of this ID may vary depending on the station where the device is assigned.",
+            "examples": ["5551234"]
+          },
+          "type": { "$ref": "#/components/schemas/DeviceType" },
+          "serialNumber": {
+            "type": "string",
+            "description": "The manufacturer serial number for the device.",
+            "examples": ["ABC1000000"]
+          },
+          "imei": {
+            "type": "string",
+            "description": "International Mobile Equipment Identity.",
+            "examples": ["861475034496382"]
+          },
+          "phoneNumber": {
+            "type": "string",
+            "pattern": "^\\+[1-9]\\d{1,14}$",
+            "description": "This is an E.164 formatted phone number. Examples include +14035551111 and +918067218000. This will always lead with a + and include only numbers afterwards (no dashes).",
+            "examples": ["+12085559999"]
+          },
+          "batteryPercentage": {
+            "type": ["integer", "null"],
+            "format": "int32",
+            "minimum": 0,
+            "maximum": 100,
+            "description": "The battery percentage at the time when this event occurred. This is an integer between 0 and 100. This value may not be present for all events.",
+            "examples": [75]
+          }
+        },
+        "required": ["id", "type", "phoneNumber"]
+      },
+      "DeviceEventEvent": {
+        "type": ["object", "null"],
+        "description": "Information about the event/alarm that was reported by the customer device. This property may be null or not present if this is a location-only message.",
+        "properties": {
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The time when the event occurred.",
+            "examples": ["2022-07-20T17:15:08.3801083Z"]
+          },
+          "type": { "$ref": "#/components/schemas/DeviceEventType" },
+          "code": {
+            "type": "string",
+            "description": "The Contact ID event code.",
+            "examples": ["E100"]
+          },
+          "zone": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 0,
+            "maximum": 255,
+            "description": "The zone number reporting the event/alarm."
+          }
+        },
+        "required": ["timestamp", "type", "code", "zone"]
+      },
+      "DeviceEventLocation": {
+        "type": ["object", "null"],
+        "description": "Information about the location where the device was located at the time of this event/alarm. Thie property may not be present for all events.",
+        "properties": {
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The time when the event occurred.",
+            "examples": ["2022-07-20T17:15:09Z"]
+          },
+          "fixType": { "$ref": "#/components/schemas/GpsFixType" },
+          "latitude": {
+            "type": "number",
+            "format": "double",
+            "minimum": -90,
+            "maximum": 90,
+            "examples": [40.8950143333333]
+          },
+          "longitude": {
+            "type": "number",
+            "format": "double",
+            "minimum": -180,
+            "maximum": 180,
+            "examples": [-76.74089605]
+          },
+          "speed": {
+            "type": ["number", "null"],
+            "format": "double",
+            "minimum": 0
+          },
+          "heading": {
+            "type": ["number", "null"],
+            "format": "double",
+            "minimum": 0,
+            "maximum": 360,
+            "examples": [325.8]
+          },
+          "gpsText": {
+            "type": ["string", "null"],
+            "description": "The raw location data reported by the device. For GPS fix types this will be in NMEA message structure.",
+            "examples": [
+              "$GPRMC,171509.00,A,4053.700860,N,07644.453763,W,0.0,325.8,200722,8.9,W,A"
+            ]
+          }
+        },
+        "required": ["timestamp", "fixType", "latitude", "longitude"]
+      },
+      "DeviceEventType": {
+        "type": "string",
+        "format": "DeviceEventType",
+        "description": "The type of event. This will determine the format of the code property. At this time all events use Contact ID (CID) format.\n* CID - A Contact ID event.\n",
+        "enum": ["CID"]
+      },
+      "DeviceType": {
+        "type": "string",
+        "format": "DeviceType",
+        "description": "The model of device that reported the event.\n* LifeBeacon - LifeBeacon Gen-1\n* EZCare - EZ-Care (7700, Landline)\n* EZCarePlus - EZ-Care Plus (7600, Cellular)\n* LifeBeaconGen2 - LifeBeacon Gen-2 (8200, Mobile PERS)\n* Duo - Duo (7800, Landline + Cellular)\n* Unknown - An unknown device type\n",
+        "enum": [
+          "LifeBeacon",
+          "EZCare",
+          "EZCarePlus",
+          "LifeBeaconGen2",
+          "Duo",
+          "Unknown"
+        ],
+        "examples": ["LifeBeaconGen2"]
+      },
+      "GpsFixType": {
+        "type": "string",
+        "format": "GpsFixType",
+        "description": "The type of signal or technique being used by the GPS receiver to determine its location.\n* GPS - A standard GPS signal.\n* DGPS - A differential GPS signal, which provides increased accuracy over standard GPS.\n* Estimated - An estimated location, which is based on a known point of origin and measurements of speed, heading, and elapsed time.\n* Manual - A location that has been manually entered.\n* Wifi - A location based on available Wifi networks in the area.\n* CellTower - A location based on cell towers detected in the area.\n* Invalid - There is no GPS signal being received or there are not enough sources available for proper location determination.\n",
+        "enum": [
+          "GPS",
+          "DGPS",
+          "Estimated",
+          "Manual",
+          "Wifi",
+          "CellTower",
+          "Invalid"
+        ]
+      },
+      "ServerErrorResult": {
+        "type": "object",
+        "description": "A problem details object (see https://datatracker.ietf.org/doc/html/rfc7807).",
+        "properties": {
+          "type": {
+            "type": ["string", "null"],
+            "format": "uri-reference",
+            "description": "A URI reference that identifies the problem type.",
+            "examples": [
+              "https://datatracker.ietf.org/doc/html/rfc7231#section-6.6"
+            ]
+          },
+          "title": {
+            "type": ["string", "null"],
+            "description": "A summary of the problem type.",
+            "examples": ["Internal Server Error"]
+          },
+          "status": {
+            "type": ["integer", "null"],
+            "format": "int32",
+            "description": "The HTTP status code.",
+            "examples": [500]
+          },
+          "detail": {
+            "type": ["string", "null"],
+            "description": "An explanation specific to this occurrence of the problem.",
+            "examples": ["An error occurred while processing the request."]
+          }
+        }
+      },
+      "SimpleErrorResult": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": ["string", "null"],
+            "description": "An explanation of the problem.",
+            "examples": ["An error occurred while processing the request."]
+          }
+        }
+      },
+      "TextErrorResult": {
+        "type": ["string", "null"],
+        "examples": ["An error occurred while processing the request."]
+      }
+    },
+    "responses": {
+      "4XXClientError": {
+        "description": "Client error",
+        "content": {
+          "application/problem+json": {
+            "schema": { "$ref": "#/components/schemas/ClientErrorResult" }
+          },
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/SimpleErrorResult" }
+          },
+          "text/plain": {
+            "schema": { "$ref": "#/components/schemas/TextErrorResult" }
+          }
+        }
+      },
+      "5XXServerError": {
+        "description": "Server error",
+        "content": {
+          "application/problem+json": {
+            "schema": { "$ref": "#/components/schemas/ServerErrorResult" }
+          },
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/SimpleErrorResult" }
+          },
+          "text/plain": {
+            "schema": { "$ref": "#/components/schemas/TextErrorResult" }
+          }
+        }
+      }
+    }
+  }
+}

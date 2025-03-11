@@ -1,0 +1,210 @@
+{
+  "openapi": "3.1.0",
+  "info": { "title": "FastAPI", "version": "0.1.0" },
+  "paths": {
+    "/hourly_consumption": {
+      "get": {
+        "tags": ["Energy Consumption"],
+        "summary": "Hourly Consumption",
+        "description": "This API enables users to fetch energy consumption data for a specific hour based on the provided datetime input. The response includes the usn, start datetime, end datetime, and the hourly energy consumption data in Watt-hours (Wh). If no datetime is provided, the API will consider the previous hour as the default input. If a datetime is specified, the API will retrieve the energy consumption data for that particular hour.",
+        "operationId": "hourly_consumption_hourly_consumption_get",
+        "parameters": [
+          {
+            "name": "start_datetime",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Specify the starting datetime (format: YYYY-MM-DD HH:MM)",
+              "title": "Start Datetime"
+            },
+            "description": "Specify the starting datetime (format: YYYY-MM-DD HH:MM)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/daily_consumption": {
+      "get": {
+        "tags": ["Energy Consumption"],
+        "summary": "Daily Consumption",
+        "description": "This API enables users to fetch energy consumption data for a specific day based on the provided date input. The response includes the usn, start datetime, end datetime, and the daily energy consumption data in Watt-hours (Wh). If no date is provided, the API will consider the previous day as the default input. If a date is specified, the API will retrieve the energy consumption data for that particular day.",
+        "operationId": "daily_consumption_daily_consumption_get",
+        "parameters": [
+          {
+            "name": "start_datetime",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Specify the starting datetime (format: YYYY-MM-DD)",
+              "title": "Start Datetime"
+            },
+            "description": "Specify the starting datetime (format: YYYY-MM-DD)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/weekly_consumption": {
+      "get": {
+        "tags": ["Energy Consumption"],
+        "summary": "Weekly Consumption",
+        "description": "This API enables users to fetch energy consumption data for a specific week based on the provided date input. The response includes the usn, start datetime, end datetime, and the weekly energy consumption data in Watt-hours (Wh). If no date is provided, the API will consider the previous week as the default input. If a date is specified, the API will retrieve the energy consumption data for the week that includes that date.",
+        "operationId": "weekly_consumption_weekly_consumption_get",
+        "parameters": [
+          {
+            "name": "start_datetime",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Specify the starting datetime (format: YYYY-MM-DD)",
+              "title": "Start Datetime"
+            },
+            "description": "Specify the starting datetime (format: YYYY-MM-DD)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/monthly_consumption": {
+      "get": {
+        "tags": ["Energy Consumption"],
+        "summary": "Monthly Consumption",
+        "description": "This API enables users to fetch energy consumption data for a specific month based on the provided month input. The response includes the usn, start datetime, end datetime, and the monthly energy consumption data in Watt-hours (Wh). If no month is provided, the API will consider the previous month as the default input. If a month is specified, the API will retrieve the energy consumption data for that month.",
+        "operationId": "monthly_consumption_monthly_consumption_get",
+        "parameters": [
+          {
+            "name": "start_datetime",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Specify the starting datetime (format: YYYY-MM)",
+              "title": "Start Datetime"
+            },
+            "description": "Specify the starting datetime (format: YYYY-MM)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/yearly_consumption": {
+      "get": {
+        "tags": ["Energy Consumption"],
+        "summary": "Yearly Consumption",
+        "description": "This API enables users to fetch energy consumption data for a specific year based on the provided year input. The response includes the usn, start datetime, end datetime, and the yearly energy consumption data in Watt-hours (Wh). If no year is provided, the API will consider the previous year as the default input. If a year is specified, the API will retrieve the energy consumption data for that year.",
+        "operationId": "yearly_consumption_yearly_consumption_get",
+        "parameters": [
+          {
+            "name": "start_datetime",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Specify the starting datetime (format: YYYY)",
+              "title": "Start Datetime"
+            },
+            "description": "Specify the starting datetime (format: YYYY)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": { "$ref": "#/components/schemas/ValidationError" },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": { "anyOf": [{ "type": "string" }, { "type": "integer" }] },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": { "type": "string", "title": "Message" },
+          "type": { "type": "string", "title": "Error Type" }
+        },
+        "type": "object",
+        "required": ["loc", "msg", "type"],
+        "title": "ValidationError"
+      }
+    }
+  }
+}

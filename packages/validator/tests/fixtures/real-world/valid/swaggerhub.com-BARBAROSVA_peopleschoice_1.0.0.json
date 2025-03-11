@@ -1,0 +1,136 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "PC Avatar API",
+    "description": "The API is intended for consumption by the control applications of the People Choice TV production.",
+    "contact": { "email": "bg@redroom.com.tr" },
+    "version": "1.0.0"
+  },
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  },
+  "servers": [{ "url": "http://api.pcgreece.com/pc/v3" }],
+  "tags": [
+    { "name": "avatar", "description": "Methods to return avatar objects" }
+  ],
+  "paths": {
+    "/avatars/latest/{timestamp}?limit={maxCount}": {
+      "get": {
+        "tags": ["avatar"],
+        "summary": "Returns latest avatars",
+        "description": "All avatars with timestamps greater than the supplied value will be returned",
+        "operationId": "avatarsLatest",
+        "parameters": [
+          {
+            "name": "timestamp",
+            "in": "path",
+            "description": "The minimum timestamp of avatars to be returned. If 0, all avatars will be returned.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "example": 1726251599
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The maximum number of avatars to be returned. If not specified, all avatars will be returned.",
+            "schema": { "type": "integer", "format": "int64", "example": 100 }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Avatar" }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The authorization token in the request header was missing or invalid."
+          }
+        }
+      }
+    },
+    "/avatars/random?limit={maxCount}": {
+      "get": {
+        "tags": ["avatar"],
+        "summary": "Returns a random subset of avatars",
+        "description": "Each response contains a different set of avatars being, limited to the maximum count specified",
+        "operationId": "avatarsRandom",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The maximum number of avatars to be returned. If not specified, all avatars will be returned.",
+            "schema": { "type": "integer", "format": "int64", "examples": [20] }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Avatar" }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The authorization token in the request header was missing or invalid."
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Avatar": {
+        "required": ["id", "name", "timestamp", "photoUrl"],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Unique identifier for the avatar.",
+            "examples": [8371]
+          },
+          "timestamp": {
+            "type": "integer",
+            "format": "int64",
+            "description": "An integer that is guaranteed to be greater that the timestamp of any avatar which was received earlier. This is purely to be used for the purposes of a [high water mark](https://en.wikipedia.org/wiki/High_water_mark). No other meaning will be inferred.",
+            "examples": [1726252332]
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the contributor of the avatar",
+            "examples": ["Rita Abatzi"]
+          },
+          "photoUrl": {
+            "type": "string",
+            "description": "URL from which the photo can be downloaded without any authentication headers",
+            "examples": [
+              "http://s3.eu-central-1.amazonaws.com/pcgreece/488a33c93af18913c128b89f6770e653db2323307593129d95b22bbf291ab7bb.jpg"
+            ]
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [{ "bearerAuth": [] }]
+}

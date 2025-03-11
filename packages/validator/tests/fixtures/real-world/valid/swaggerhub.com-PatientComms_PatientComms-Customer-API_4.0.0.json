@@ -1,0 +1,530 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "PatientComms Customer Messaging API",
+    "description": "API to enable PatientComms API customers to send and recieve messages. This API is intended to replace the V2/3 legacy API. It's use is recommended for new customers.",
+    "version": "4.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://customerapi.patientcomms.co.uk/api/v4",
+      "description": "Production API"
+    },
+    {
+      "url": "https://patientcomms-api-test.azurewebsites.net",
+      "description": "Test Environment API (simulates sending and delivery of messages)"
+    }
+  ],
+  "paths": {
+    "/account": {
+      "get": {
+        "tags": ["Account"],
+        "summary": "Returns the details of the currently authenticated account",
+        "operationId": "Account_GetAccountDetails",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AccountDetailsDto" }
+              },
+              "text/json": {
+                "schema": { "$ref": "#/components/schemas/AccountDetailsDto" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/AccountDetailsDto" }
+              },
+              "text/xml": {
+                "schema": { "$ref": "#/components/schemas/AccountDetailsDto" }
+              }
+            }
+          },
+          "400": {
+            "description": "Returned if the API key is not set, or is not a valid GUID",
+            "content": {}
+          },
+          "404": {
+            "description": "Returned if the API key does not match a valid, active account",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/sms/send": {
+      "post": {
+        "tags": ["Sms"],
+        "summary": "Sends a single SMS message",
+        "description": "When sending messages, the initial state of any new message will be 'Queued'. There can be a short delay after sending before the SMS /status is available for the message.",
+        "operationId": "Sms_SendSingleSms",
+        "requestBody": {
+          "description": "SingleSendRequest to send message associated with a practice",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/SingleSendRequestDto" }
+            },
+            "text/json": {
+              "schema": { "$ref": "#/components/schemas/SingleSendRequestDto" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleSendResponseDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleSendResponseDto"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleSendResponseDto"
+                }
+              },
+              "text/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleSendResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "sendRequest"
+      }
+    },
+    "/sms/send/batch": {
+      "post": {
+        "tags": ["Sms"],
+        "summary": "Sends multiple SMS messages (up to a maximum of 1000)",
+        "description": "When sending messages, the initial state of any new message will be 'Queued'. There can be a short delay after sending before the SMS /status is available for the message.",
+        "operationId": "Sms_SendMultipleSms",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/SingleSendRequestDto" }
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/SingleSendRequestDto" }
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/SingleSendRequestDto" }
+              }
+            },
+            "text/xml": {
+              "schema": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/SingleSendRequestDto" }
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/SingleSendRequestDto" }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/BulkSendResponseDto" }
+              },
+              "text/json": {
+                "schema": { "$ref": "#/components/schemas/BulkSendResponseDto" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/BulkSendResponseDto" }
+              },
+              "text/xml": {
+                "schema": { "$ref": "#/components/schemas/BulkSendResponseDto" }
+              }
+            }
+          }
+        },
+        "x-codegen-request-body-name": "sendRequest"
+      }
+    },
+    "/sms/{id}/status": {
+      "get": {
+        "tags": ["Sms"],
+        "summary": "Gets the status of a single SMS message.",
+        "description": "Intended for light/adhoc use only. If you need to query a large number of messages, we recommend you use the SMS DeliveryReport and/or Reply webhooks, detailed below.",
+        "operationId": "Sms_GetSingleSmsStatus",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The ID of the message",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          },
+          {
+            "name": "includeReplies",
+            "in": "query",
+            "description": "Set to true to include any replies received to this message.",
+            "schema": { "type": "boolean" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/SmsStatusDto" }
+              },
+              "text/json": {
+                "schema": { "$ref": "#/components/schemas/SmsStatusDto" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/SmsStatusDto" }
+              },
+              "text/xml": {
+                "schema": { "$ref": "#/components/schemas/SmsStatusDto" }
+              }
+            }
+          },
+          "404": {
+            "description": "The request SMS message was not found, or is outside of the searchable range.",
+            "content": {}
+          }
+        }
+      }
+    }
+  },
+  "webhooks": {
+    "SmsDeliveryReport": {
+      "post": {
+        "tags": ["Sms"],
+        "summary": "Posted each time an SMS (sent via /sms/send*) reaches either a DELIVERED or FAILED state",
+        "description": "SMS Delivery Report Webhook. To configure this webhook, please contact our support team with the URL you would like these reports delivered to.",
+        "requestBody": {
+          "description": "The following payload is delivered to your API for each SMS delivery report",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SmsWebhookDeliveryReportDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Return a 200 status to indicate that the data was received successfully"
+          }
+        }
+      }
+    },
+    "SmsReply": {
+      "post": {
+        "summary": "Posted the first time an SMS (sent via /sms/send*) recieves a response SMS from the recipient",
+        "requestBody": {
+          "description": "The following payload is delivered to your API for the FIRST SMS reply to an SMS sent via this API. Note that subsequent replies to the same message are not delivered by this webhook. To configure this webhook, please contact our support team with the URL you would like these reports delivered to.",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/SmsWebhookReplyDto" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Return a 200 status to indicate that the data was received successfully"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AccountDetailsDto": {
+        "type": "object",
+        "properties": {
+          "Practice": { "$ref": "#/components/schemas/PracticeDetailsDto" },
+          "Customer": { "$ref": "#/components/schemas/CustomerDetailsDto" }
+        }
+      },
+      "PracticeDetailsDto": {
+        "type": "object",
+        "properties": {
+          "Name": { "type": "string" },
+          "PostCode": { "type": "string" }
+        }
+      },
+      "CustomerDetailsDto": {
+        "type": "object",
+        "properties": { "Name": { "type": "string" } }
+      },
+      "SingleSendRequestDto": {
+        "required": ["Destination", "Message"],
+        "type": "object",
+        "properties": {
+          "Destination": {
+            "minimum": 1,
+            "type": "integer",
+            "description": "The target number for the SMS Message. This must be in the international E.164 format, without the '+' prefix. Country code is requried.",
+            "format": "int64"
+          },
+          "Message": {
+            "type": "string",
+            "description": "The body of the SMS message"
+          },
+          "Source": {
+            "maxLength": 14,
+            "minLength": 0,
+            "type": "string",
+            "description": "Optional: The number/name of the sender (if name used then 11 characters, no spaces max). If not set, then the practice's configured source is used.\r\nNOTE: This value is overridden if 'UseTwoWay' is set to true."
+          },
+          "AllowReplies": {
+            "type": "boolean",
+            "description": "Used to specify if the message should be two-way (i.e. allow replies).\r\nIf this is set to true, then the Source number will be overriden."
+          },
+          "Metadata": {
+            "type": "array",
+            "description": "Optional list of key/value pairs of custom metadata that can be attached to each SMS message.\r\nThis metadata will be returned in status-check API calls.",
+            "items": { "$ref": "#/components/schemas/SmsMessageMetadataItem" }
+          }
+        }
+      },
+      "SmsMessageMetadataItem": {
+        "type": "object",
+        "properties": {
+          "Key": { "type": "string" },
+          "Value": { "type": "string" }
+        },
+        "description": "Key / value meta data item object"
+      },
+      "SingleSendResponseDto": {
+        "type": "object",
+        "properties": {
+          "MessageDetail": {
+            "$ref": "#/components/schemas/SingleMessageResponseDto"
+          },
+          "SendRequestStatus": {
+            "type": "string",
+            "enum": [
+              "Unknown",
+              "Success",
+              "ValidationFailure",
+              "AccountOutOfCredit",
+              "Error"
+            ]
+          },
+          "Success": {
+            "type": "boolean",
+            "description": "Boolean denoting overall success or failure of the request"
+          },
+          "RemainingBundleSmsCredits": {
+            "type": "integer",
+            "description": "An estimate of the remaining number of SMS credits for the practice.\r\nIf not available, then this value will not be returned.",
+            "format": "int32"
+          }
+        }
+      },
+      "SingleMessageResponseDto": {
+        "type": "object",
+        "properties": {
+          "MessageId": {
+            "type": "string",
+            "description": "The ID of the SMS message",
+            "format": "uuid",
+            "example": "00000000-0000-0000-0000-000000000000"
+          },
+          "DestinationNumber": {
+            "type": "integer",
+            "description": "The destination mobile number",
+            "format": "int64"
+          },
+          "Metadata": {
+            "type": "array",
+            "description": "Optional custom metadata that was attached to the original SMS message.",
+            "items": { "$ref": "#/components/schemas/SmsMessageMetadataItem" }
+          },
+          "CreditsUsed": {
+            "type": "integer",
+            "description": "Credits set by PatientComms used to keep track of the cost incurred",
+            "format": "int32"
+          }
+        }
+      },
+      "BulkSendResponseDto": {
+        "type": "object",
+        "properties": {
+          "MessageDetails": {
+            "type": "array",
+            "description": "List of SingleMessageResponseDto objects",
+            "items": { "$ref": "#/components/schemas/SingleMessageResponseDto" }
+          },
+          "SendRequestStatus": { "type": "string" },
+          "Success": { "type": "boolean" },
+          "TotalCreditsUsed": { "type": "integer", "format": "int32" },
+          "RemainingBundleSmsCredits": { "type": "integer", "format": "int32" }
+        }
+      },
+      "SmsStatusDto": {
+        "type": "object",
+        "properties": {
+          "MessageId": {
+            "type": "string",
+            "description": "The ID of the message",
+            "format": "uuid",
+            "example": "00000000-0000-0000-0000-000000000000"
+          },
+          "Status": {
+            "type": "string",
+            "description": "The Status of the message (QUEUED, SENT_TO_NETWORK, DELIVERED, FAILED)"
+          },
+          "Updated": {
+            "type": "string",
+            "description": "When the message was last updated (typically due to a DLR/status update)",
+            "format": "date-time"
+          },
+          "Created": {
+            "type": "string",
+            "description": "When the message was created",
+            "format": "date-time"
+          },
+          "CreditsUsed": {
+            "type": "integer",
+            "description": "The number of SMS credits that were used when this message was sent.",
+            "format": "int32"
+          },
+          "Metadata": {
+            "type": "array",
+            "description": "Optional custom metadata that was included in the original SMS request.",
+            "items": { "$ref": "#/components/schemas/SmsMessageMetadataItem" }
+          },
+          "Replies": {
+            "type": "array",
+            "description": "Optional list of replies sent to this message. Note this will only be included if requested when calling the API.",
+            "items": { "$ref": "#/components/schemas/SmsReplyDto" }
+          }
+        },
+        "description": "A summary of a single SMS message"
+      },
+      "SmsWebhookDeliveryReportDto": {
+        "type": "object",
+        "properties": {
+          "MessageId": {
+            "type": "string",
+            "description": "The ID of the message",
+            "format": "uuid",
+            "example": "00000000-0000-0000-0000-000000000000"
+          },
+          "Status": {
+            "type": "string",
+            "description": "The Status of the message (QUEUED, SENT_TO_NETWORK, DELIVERED, FAILED)"
+          },
+          "Timestamp": {
+            "type": "string",
+            "description": "When the message was last updated (typically due to a DLR/status update)",
+            "format": "date-time"
+          },
+          "DestinationNumber": {
+            "type": "integer",
+            "description": "The destination mobile number",
+            "format": "int64"
+          },
+          "Metadata": {
+            "type": "array",
+            "description": "Optional custom metadata that was included in the original SMS request.",
+            "items": { "$ref": "#/components/schemas/SmsMessageMetadataItem" }
+          }
+        },
+        "description": "A summary of a single SMS message"
+      },
+      "SmsWebhookReplyDto": {
+        "type": "object",
+        "properties": {
+          "InResponseToMessageId": {
+            "type": "string",
+            "description": "The ID of the message that was being replied to, if relevant",
+            "format": "uuid",
+            "example": "00000000-0000-0000-0000-000000000000"
+          },
+          "Status": {
+            "type": "string",
+            "description": "The Status of the message (QUEUED, SENT_TO_NETWORK, DELIVERED, FAILED)"
+          },
+          "MessageContent": {
+            "type": "string",
+            "description": "The content of the incoming SMS message"
+          },
+          "Timestamp": {
+            "type": "string",
+            "description": "When the message was last updated (typically due to a DLR/status update)",
+            "format": "date-time"
+          },
+          "SourceNumber": {
+            "type": "integer",
+            "description": "The mobile number that the message was sent from",
+            "format": "int64"
+          },
+          "DestinationNumber": {
+            "type": "integer",
+            "description": "The mobile number that the message was sent to",
+            "format": "int64"
+          },
+          "OriginalMessageMetadata": {
+            "type": "array",
+            "description": "Optional custom metadata that was included in the original SMS request.",
+            "items": { "$ref": "#/components/schemas/SmsMessageMetadataItem" }
+          }
+        },
+        "description": "A summary of a single SMS message"
+      },
+      "SmsReplyDto": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "integer",
+            "description": "The unique ID of the reply",
+            "format": "int32"
+          },
+          "Message": {
+            "type": "string",
+            "description": "The content of the reply message"
+          },
+          "Received": {
+            "type": "string",
+            "description": "The date/time the reply was received",
+            "format": "date-time"
+          },
+          "Sender": {
+            "type": "string",
+            "description": "The ID or number of the sender of the reply"
+          }
+        },
+        "description": "Represents a reply to a single SMS message"
+      }
+    },
+    "securitySchemes": {
+      "practice-api-key": {
+        "type": "apiKey",
+        "description": "API Key Authentication",
+        "name": "practice-api-key",
+        "in": "header"
+      }
+    }
+  },
+  "x-original-swagger-version": "2.0",
+  "tags": [
+    { "name": "Sms", "description": "SMS Message Sending Features" },
+    { "name": "Account", "description": "Account query operations" }
+  ]
+}

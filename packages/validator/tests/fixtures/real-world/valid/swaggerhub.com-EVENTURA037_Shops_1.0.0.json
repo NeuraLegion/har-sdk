@@ -1,0 +1,97 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Swagger Petstore - OpenAPI 3.1",
+    "description": "This is a sample Pet Store Server based on the OpenAPI 3.1 specification.  You can find out more about\nSwagger at [https://swagger.io](https://swagger.io). In the third iteration of the pet store, we've switched to the design first approach!\nYou can now help us improve the API whether it's by making changes to the definition itself or to the code.\nThat way, with time, we can improve the API in general, and expose some of the new features in OAS3.\n\nSome useful links:\n- [The Pet Store repository](https://github.com/swagger-api/swagger-petstore)\n- [The source API definition for the Pet Store](https://github.com/swagger-api/swagger-petstore/blob/master/src/main/resources/openapi.yaml)",
+    "termsOfService": "http://swagger.io/terms/",
+    "contact": { "email": "apiteam@swagger.io" },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "1.0.0"
+  },
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  },
+  "servers": [{ "url": "https://petstore3.swagger.io/api/v3" }],
+  "tags": [
+    {
+      "name": "pet",
+      "description": "Everything about your Pets",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "http://swagger.io"
+      }
+    },
+    {
+      "name": "store",
+      "description": "Access to Petstore orders",
+      "externalDocs": {
+        "description": "Find out more about our store",
+        "url": "http://swagger.io"
+      }
+    },
+    { "name": "user", "description": "Operations about user" }
+  ],
+  "paths": {
+    "/shops": {
+      "get": {
+        "tags": ["shops"],
+        "summary": "Return WO control card",
+        "description": "Multiple status values can be provided with comma separated strings",
+        "operationId": "findWoControlCards",
+        "parameters": [
+          {
+            "name": "WORK_CONTROL_CARF",
+            "in": "query",
+            "description": "NUM OF WORK CONTROL CARD",
+            "required": true,
+            "schema": { "type": "string", "default": "2024-277446" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/WO_CONTROL" }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/WO_CONTROL" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "WO_CONTROL": {
+        "type": "object",
+        "properties": {
+          "WO": { "type": "string", "example": "2024-098" },
+          "TAIL": { "type": "string", "example": "N615NK" },
+          "DISTCREPANCY": {
+            "type": "string",
+            "example": "PERFORM LEAK CHECK ON BLEED AIR DUCTING IN WING AREA BETWEEN BLEED AIR PRECOOLER, WING ANTI ICE VALVE AND WING/FUSELAGE CONNECTION"
+          },
+          "MILLESTONE": { "type": "string", "example": "3/15/2024 6:00" },
+          "COMMETS": {
+            "type": "string",
+            "example": "SE HARA NRI - TASK CLOSED"
+          },
+          "CUSTOMER": { "type": "string", "example": "SPIRIT" }
+        }
+      }
+    }
+  }
+}

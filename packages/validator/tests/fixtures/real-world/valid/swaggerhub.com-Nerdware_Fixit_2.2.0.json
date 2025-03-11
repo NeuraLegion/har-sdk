@@ -1,0 +1,1382 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Fixit REST API",
+    "version": "2.2.0",
+    "summary": "OpenAPI Schema for the Fixit REST API.",
+    "description": "This schema describes the Fixit REST API, which is used for Fixit\nauthentication and user account management.\n### Schema Links:\n- [SwaggerHub Schema Ref](https://app.swaggerhub.com/apis/Nerdware/Fixit)\n- [Fixit API GitHub Repo](https://github.com/Nerdware-LLC/fixit-api)\n",
+    "termsOfService": "https://gofixit.app/tos",
+    "contact": {
+      "name": "Trevor Anderson",
+      "email": "Trevor@Nerdware.cloud",
+      "url": "https://github.com/trevor-anderson"
+    },
+    "license": {
+      "name": "Proprietary",
+      "url": "https://raw.githubusercontent.com/Nerdware-LLC/fixit-api/main/LICENSE"
+    }
+  },
+  "servers": [
+    { "url": "https://gofixit.app/api", "description": "Production API" },
+    { "url": "https://staging.gofixit.app/api", "description": "Staging API" }
+  ],
+  "tags": [
+    { "name": "admin", "description": "Administrative endpoints" },
+    { "name": "auth", "description": "Authentication endpoints" },
+    { "name": "checkout", "description": "Checkout-related endpoints" },
+    { "name": "stripe", "description": "Stripe-related endpoints" },
+    {
+      "name": "stripe-connect",
+      "description": "StripeConnect-related endpoints"
+    },
+    {
+      "name": "stripe-link",
+      "description": "Endpoints which return a Stripe link"
+    },
+    {
+      "name": "subscriptions",
+      "description": "Subscription management endpoints"
+    }
+  ],
+  "paths": {
+    "/admin/csp-violation": {
+      "post": {
+        "operationId": "CspViolation",
+        "summary": "Logs CSP violation reports.",
+        "security": [],
+        "tags": ["admin"],
+        "requestBody": {
+          "content": {
+            "application/csp-report": {
+              "schema": { "$ref": "#/components/schemas/CspViolationReport" }
+            }
+          }
+        },
+        "responses": {
+          "204": { "$ref": "#/components/responses/204.NoContent" },
+          "4XX": {
+            "$ref": "#/components/responses/default.UnexpectedResponse"
+          },
+          "default": {
+            "$ref": "#/components/responses/default.UnexpectedResponse"
+          }
+        }
+      }
+    },
+    "/admin/healthcheck": {
+      "get": {
+        "operationId": "Healthcheck",
+        "summary": "Responds to load balancer healthchecks.",
+        "security": [],
+        "tags": ["admin"],
+        "responses": {
+          "200": {
+            "description": "[200 OK](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/200)\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "enum": ["SUCCESS"],
+                      "description": "The string constant \"SUCCESS\"."
+                    }
+                  },
+                  "required": ["message"]
+                }
+              }
+            }
+          },
+          "4XX": {
+            "$ref": "#/components/responses/default.UnexpectedResponse"
+          },
+          "default": {
+            "$ref": "#/components/responses/default.UnexpectedResponse"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "operationId": "Login",
+        "summary": "Authenticates a user for the purposes of accessing protected resources.\n",
+        "security": [],
+        "tags": ["auth"],
+        "requestBody": { "$ref": "#/components/requestBodies/LoginRequest" },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/200.AuthTokenAndPreFetchedUserItems"
+          },
+          "400": { "$ref": "#/components/responses/400.InvalidUserInput" },
+          "401": {
+            "$ref": "#/components/responses/401.AuthenticationRequired"
+          },
+          "5XX": { "$ref": "#/components/responses/5xx.InternalServerError" },
+          "default": {
+            "$ref": "#/components/responses/default.UnexpectedResponse"
+          }
+        }
+      }
+    },
+    "/auth/register": {
+      "post": {
+        "operationId": "Register",
+        "summary": "Registers a new user.",
+        "security": [],
+        "tags": ["auth"],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/UserRegistrationRequest"
+        },
+        "responses": {
+          "201": { "$ref": "#/components/responses/201.AuthToken" },
+          "400": { "$ref": "#/components/responses/400.InvalidUserInput" },
+          "5XX": { "$ref": "#/components/responses/5xx.InternalServerError" },
+          "default": {
+            "$ref": "#/components/responses/default.UnexpectedResponse"
+          }
+        }
+      }
+    },
+    "/auth/token": {
+      "post": {
+        "operationId": "RefreshToken",
+        "summary": "Refreshes an existing user's auth token.",
+        "security": [{ "JwtBearerAuth": [] }],
+        "tags": ["auth"],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/RefreshAuthTokenRequest"
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/200.AuthTokenAndPreFetchedUserItems"
+          },
+          "401": {
+            "$ref": "#/components/responses/401.AuthenticationRequired"
+          },
+          "5XX": { "$ref": "#/components/responses/5xx.InternalServerError" },
+          "default": {
+            "$ref": "#/components/responses/default.UnexpectedResponse"
+          }
+        }
+      }
+    },
+    "/auth/google-token": {
+      "post": {
+        "operationId": "GoogleToken",
+        "summary": "Authenticates a user via Google OAuth JSON JWT from GoogleID services.",
+        "security": [],
+        "tags": ["auth"],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/GoogleTokenRequest"
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/200.AuthTokenAndPreFetchedUserItems"
+          },
+          "400": { "$ref": "#/components/responses/400.InvalidUserInput" },
+          "401": {
+            "$ref": "#/components/responses/401.AuthenticationRequired"
+          },
+          "5XX": { "$ref": "#/components/responses/5xx.InternalServerError" },
+          "default": {
+            "$ref": "#/components/responses/default.UnexpectedResponse"
+          }
+        }
+      }
+    },
+    "/auth/password-reset-init": {
+      "post": {
+        "operationId": "PasswordResetInit",
+        "summary": "Initiates the password-reset flow for a user.",
+        "security": [],
+        "tags": ["auth"],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/PasswordResetInitRequest"
+        },
+        "responses": {
+          "200": { "$ref": "#/components/responses/200.OK" },
+          "400": { "$ref": "#/components/responses/400.InvalidUserInput" },
+          "5XX": { "$ref": "#/components/responses/5xx.InternalServerError" },
+          "default": {
+            "$ref": "#/components/responses/default.UnexpectedResponse"
+          }
+        }
+      }
+    },
+    "/auth/password-reset": {
+      "post": {
+        "operationId": "PasswordReset",
+        "summary": "Updates the user's password to complete the password-reset flow.",
+        "security": [],
+        "tags": ["auth"],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/PasswordResetRequest"
+        },
+        "responses": {
+          "200": { "$ref": "#/components/responses/200.OK" },
+          "400": { "$ref": "#/components/responses/400.InvalidUserInput" },
+          "5XX": { "$ref": "#/components/responses/5xx.InternalServerError" },
+          "default": {
+            "$ref": "#/components/responses/default.UnexpectedResponse"
+          }
+        }
+      }
+    },
+    "/connect/account-link": {
+      "post": {
+        "operationId": "ConnectAccountLink",
+        "summary": "Provides a link to the Stripe Connect Account onboarding portal.",
+        "security": [{ "JwtBearerAuth": [] }],
+        "tags": ["stripe", "stripe-connect", "stripe-link"],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/StripeLinkRequest"
+        },
+        "responses": {
+          "201": { "$ref": "#/components/responses/201.StripeLink" },
+          "400": { "$ref": "#/components/responses/400.InvalidUserInput" },
+          "401": {
+            "$ref": "#/components/responses/401.AuthenticationRequired"
+          },
+          "5XX": { "$ref": "#/components/responses/5xx.InternalServerError" },
+          "default": {
+            "$ref": "#/components/responses/default.UnexpectedResponse"
+          }
+        }
+      }
+    },
+    "/connect/dashboard-link": {
+      "get": {
+        "operationId": "ConnectDashboardLink",
+        "summary": "Provides a link to the Stripe Connect Account dashboard portal.",
+        "security": [{ "JwtBearerAuth": [] }],
+        "tags": ["stripe", "stripe-connect", "stripe-link"],
+        "responses": {
+          "201": { "$ref": "#/components/responses/201.StripeLink" },
+          "401": {
+            "$ref": "#/components/responses/401.AuthenticationRequired"
+          },
+          "5XX": { "$ref": "#/components/responses/5xx.InternalServerError" },
+          "default": {
+            "$ref": "#/components/responses/default.UnexpectedResponse"
+          }
+        }
+      }
+    },
+    "/subscriptions/check-promo-code": {
+      "post": {
+        "operationId": "CheckPromoCode",
+        "summary": "Checks the validity of the provided promo code.",
+        "security": [{ "JwtBearerAuth": [] }],
+        "tags": ["checkout", "subscriptions"],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/CheckPromoCodeRequest"
+        },
+        "responses": {
+          "200": { "$ref": "#/components/responses/200.CheckPromoCode" },
+          "400": { "$ref": "#/components/responses/400.InvalidUserInput" },
+          "401": {
+            "$ref": "#/components/responses/401.AuthenticationRequired"
+          },
+          "5XX": { "$ref": "#/components/responses/5xx.InternalServerError" },
+          "default": {
+            "$ref": "#/components/responses/default.UnexpectedResponse"
+          }
+        }
+      }
+    },
+    "/subscriptions/customer-portal": {
+      "post": {
+        "operationId": "SubscriptionsCustomerPortal",
+        "summary": "Provides a link to the Stripe Customer portal.",
+        "security": [{ "JwtBearerAuth": [] }],
+        "tags": ["stripe", "stripe-link"],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/StripeLinkRequest"
+        },
+        "responses": {
+          "201": { "$ref": "#/components/responses/201.StripeLink" },
+          "400": { "$ref": "#/components/responses/400.InvalidUserInput" },
+          "401": {
+            "$ref": "#/components/responses/401.AuthenticationRequired"
+          },
+          "5XX": { "$ref": "#/components/responses/5xx.InternalServerError" },
+          "default": {
+            "$ref": "#/components/responses/default.UnexpectedResponse"
+          }
+        }
+      }
+    },
+    "/subscriptions/submit-payment": {
+      "post": {
+        "operationId": "SubscriptionsSubmitPayment",
+        "summary": "Processes checkout payment information.",
+        "security": [{ "JwtBearerAuth": [] }],
+        "tags": ["checkout", "subscriptions", "stripe"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "selectedSubscription": {
+                    "$ref": "#/components/schemas/SubscriptionPriceName"
+                  },
+                  "paymentMethodID": {
+                    "$ref": "#/components/schemas/paymentMethodID"
+                  },
+                  "promoCode": { "$ref": "#/components/schemas/promoCode" }
+                },
+                "required": ["selectedSubscription", "paymentMethodID"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "$ref": "#/components/responses/201.AuthTokenAndCheckoutCompletionInfo"
+          },
+          "400": { "$ref": "#/components/responses/400.InvalidUserInput" },
+          "401": {
+            "$ref": "#/components/responses/401.AuthenticationRequired"
+          },
+          "5XX": { "$ref": "#/components/responses/5xx.InternalServerError" },
+          "default": {
+            "$ref": "#/components/responses/default.UnexpectedResponse"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "JwtBearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "requestBodies": {
+      "CheckPromoCodeRequest": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "promoCode": { "$ref": "#/components/schemas/promoCode" }
+              },
+              "required": ["promoCode"]
+            }
+          }
+        }
+      },
+      "GoogleTokenRequest": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/GoogleIDTokenField" }
+          }
+        }
+      },
+      "LoginRequest": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/LoginParams" }
+          }
+        }
+      },
+      "PasswordResetInitRequest": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/PasswordResetInitParams" }
+          }
+        }
+      },
+      "PasswordResetRequest": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/PasswordResetParams" }
+          }
+        }
+      },
+      "RefreshAuthTokenRequest": {
+        "required": false,
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/ExpoPushTokenParam" }
+          }
+        }
+      },
+      "StripeLinkRequest": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "returnURL": { "$ref": "#/components/schemas/returnURL" }
+              },
+              "required": ["returnURL"]
+            }
+          }
+        }
+      },
+      "UserRegistrationRequest": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/UserRegistrationParams" }
+          }
+        }
+      }
+    },
+    "responses": {
+      "200AuthTokenAndPreFetchedUserItems": {
+        "$ref": "#/components/responses/200.AuthTokenAndPreFetchedUserItems"
+      },
+      "200CheckPromoCode": {
+        "$ref": "#/components/responses/200.CheckPromoCode"
+      },
+      "200OK": { "$ref": "#/components/responses/200.OK" },
+      "201AuthToken": { "$ref": "#/components/responses/201.AuthToken" },
+      "201AuthTokenAndCheckoutCompletionInfo": {
+        "$ref": "#/components/responses/201.AuthTokenAndCheckoutCompletionInfo"
+      },
+      "201StripeLink": { "$ref": "#/components/responses/201.StripeLink" },
+      "204NoContent": { "$ref": "#/components/responses/204.NoContent" },
+      "400InvalidUserInput": {
+        "$ref": "#/components/responses/400.InvalidUserInput"
+      },
+      "401AuthenticationRequired": {
+        "$ref": "#/components/responses/401.AuthenticationRequired"
+      },
+      "402PaymentRequired": {
+        "$ref": "#/components/responses/402.PaymentRequired"
+      },
+      "403Forbidden": { "$ref": "#/components/responses/403.Forbidden" },
+      "404ResourceNotFound": {
+        "$ref": "#/components/responses/404.ResourceNotFound"
+      },
+      "5xxInternalServerError": {
+        "$ref": "#/components/responses/5xx.InternalServerError"
+      },
+      "UnexpectedResponse": {
+        "$ref": "#/components/responses/default.UnexpectedResponse"
+      },
+      "default.UnexpectedResponse": {
+        "description": "[Unexpected Response] The server encountered an unexpected condition that\nprevented it from fulfilling the request. This fallback applies if no defined\nresponse status codes match the response.\n"
+      },
+      "204.NoContent": {
+        "description": "[204 No Content][mdn-docs] — Generic success response which does not\ninclude a response body.\n\n[mdn-docs]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/204\n"
+      },
+      "200.AuthTokenAndPreFetchedUserItems": {
+        "description": "[200 OK][mdn-docs] — Response for a successful authentication request. This\nresponse includes an authentication token, as well as pre-fetched user items\nto be stored in the client cache.\n\n[mdn-docs]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/200\n",
+        "content": {
+          "application/json": {
+            "schema": {
+              "allOf": [
+                { "$ref": "#/components/schemas/AuthTokenResponseField" },
+                {
+                  "$ref": "#/components/schemas/PreFetchedUserItemsResponseField"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "400.InvalidUserInput": {
+        "description": "[400 Bad Request][mdn-docs] — Invalid user input.\n\n[mdn-docs]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400\n",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/Error" }
+          }
+        }
+      },
+      "401.AuthenticationRequired": {
+        "description": "[401 Unauthorized][mdn-docs] — Authentication required.\n\n[mdn-docs]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401\n",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/Error" }
+          }
+        }
+      },
+      "5xx.InternalServerError": {
+        "description": "[5XX Internal Server Error][mdn-docs]\n\n[mdn-docs]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500\n",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/Error" }
+          }
+        }
+      },
+      "201.AuthToken": {
+        "description": "[201 Created][mdn-docs] — Response for successful user registration.\n\n[mdn-docs]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/201\n",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/AuthTokenResponseField" }
+          }
+        }
+      },
+      "200.OK": {
+        "description": "[200][mdn-docs] — Generic success response for a request that was processed\nsuccessfully, and which includes a response body.\n\n[mdn-docs]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/200\n"
+      },
+      "201.StripeLink": {
+        "description": "[201 Created][mdn-docs] — Response for successful creation of a Stripe link.\n\n[mdn-docs]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/201\n",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/StripeLinkResponseField" }
+          }
+        }
+      },
+      "200.CheckPromoCode": {
+        "description": "[200 OK][mdn-docs] — Response for checking a promo code's validity.\n\n[mdn-docs]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/200\n",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/PromoCodeInfoResponseField"
+            }
+          }
+        }
+      },
+      "201.AuthTokenAndCheckoutCompletionInfo": {
+        "description": "[201 Created][mdn-docs] — Response for successful payment submission.\n\n[mdn-docs]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/201\n",
+        "content": {
+          "application/json": {
+            "schema": {
+              "allOf": [
+                { "$ref": "#/components/schemas/AuthTokenResponseField" },
+                {
+                  "$ref": "#/components/schemas/CheckoutCompletionInfoResponseField"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "402.PaymentRequired": {
+        "description": "[402 Payment Required]\n",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/Error" }
+          }
+        }
+      },
+      "403.Forbidden": {
+        "description": "[403 Forbidden] The requesting user is not authorized to perform this action.\n",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/Error" }
+          }
+        }
+      },
+      "404.ResourceNotFound": {
+        "description": "[404 Not Found] The requested resource could not be found.\n",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/Error" }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "UserRegistrationParams": {
+        "allOf": [
+          { "$ref": "#/components/schemas/LoginCredentials" },
+          { "$ref": "#/components/schemas/ExpoPushTokenParam" },
+          {
+            "type": "object",
+            "properties": {
+              "handle": { "$ref": "#/components/schemas/handle" },
+              "email": { "$ref": "#/components/schemas/email" },
+              "phone": { "$ref": "#/components/schemas/phone" }
+            },
+            "required": ["handle", "email"]
+          }
+        ]
+      },
+      "LoginParams": {
+        "allOf": [
+          { "$ref": "#/components/schemas/LoginCredentials" },
+          { "$ref": "#/components/schemas/ExpoPushTokenParam" }
+        ]
+      },
+      "LoginCredentials": {
+        "oneOf": [
+          { "$ref": "#/components/schemas/LoginCredentials.Local" },
+          { "$ref": "#/components/schemas/LoginCredentials.GoogleOAuth" }
+        ]
+      },
+      "LocalLoginCredentials": {
+        "$ref": "#/components/schemas/LoginCredentials.Local"
+      },
+      "GoogleOAuthLoginCredentials": {
+        "$ref": "#/components/schemas/LoginCredentials.GoogleOAuth"
+      },
+      "GoogleIDTokenField": {
+        "type": "object",
+        "description": "An object which contains a base64-encoded JSON JWT from GoogleID services\nunder the key \"googleIDToken\".\n",
+        "properties": {
+          "googleIDToken": { "$ref": "#/components/schemas/googleIDToken" }
+        },
+        "required": ["googleIDToken"]
+      },
+      "ExpoPushTokenParam": {
+        "type": "object",
+        "description": "A user's Expo push token, which is used to send push notifications to the user's mobile device. This is an optional parameter which is only sent from mobile clients.\n",
+        "properties": {
+          "expoPushToken": {
+            "type": "string",
+            "description": "A user's Expo push token (only available on mobile clients)."
+          }
+        }
+      },
+      "PasswordResetInitParams": {
+        "type": "object",
+        "description": "The email address of the user initiating a password reset",
+        "properties": { "email": { "$ref": "#/components/schemas/email" } },
+        "required": ["email"]
+      },
+      "PasswordResetParams": {
+        "type": "object",
+        "description": "A new password and a valid password reset token",
+        "properties": {
+          "password": { "$ref": "#/components/schemas/password" },
+          "passwordResetToken": {
+            "$ref": "#/components/schemas/passwordResetToken"
+          }
+        },
+        "required": ["password", "passwordResetToken"]
+      },
+      "AuthTokenResponseField": {
+        "type": "object",
+        "description": "An object which contains an encoded and stringified auth token.",
+        "properties": {
+          "token": {
+            "type": "string",
+            "description": "An encoded and stringified auth token."
+          }
+        },
+        "required": ["token"]
+      },
+      "PreFetchedUserItemsResponseField": {
+        "type": "object",
+        "description": "An object which contains pre-fetched user items under the key `userItems`.\n",
+        "properties": {
+          "userItems": { "$ref": "#/components/schemas/PreFetchedUserItems" }
+        },
+        "required": ["userItems"]
+      },
+      "PreFetchedUserItems": {
+        "type": "object",
+        "description": "A User's pre-fetched WorkOrders, Invoices, and Contacts, which are written\ninto the client's Apollo Client cache on the front-end (used on logins).\nThis object's properties correspond to GraphQL queries of the same name.\n",
+        "required": ["myWorkOrders", "myInvoices", "myContacts"],
+        "properties": {
+          "myWorkOrders": {
+            "type": "object",
+            "description": "Pre-fetched `myWorkOrders` query objects for the front-end cache.",
+            "externalDocs": {
+              "description": "Apollo Studio Schema Reference for the `myWorkOrders` GQL query.",
+              "url": "https://studio.apollographql.com/public/fixit/variant/current/schema/reference#myWorkOrders"
+            },
+            "required": ["createdByUser", "assignedToUser"],
+            "properties": {
+              "createdByUser": {
+                "type": "array",
+                "description": "Work orders created by the user.",
+                "items": { "$ref": "#/components/schemas/WorkOrder" }
+              },
+              "assignedToUser": {
+                "type": "array",
+                "description": "Work orders assigned to the user.",
+                "items": { "$ref": "#/components/schemas/WorkOrder" }
+              }
+            }
+          },
+          "myInvoices": {
+            "type": "object",
+            "description": "Pre-fetched `myInvoices` query objects for the front-end cache.",
+            "externalDocs": {
+              "description": "Apollo Studio Schema Reference for the `myInvoices` GQL query.",
+              "url": "https://studio.apollographql.com/public/fixit/variant/current/schema/reference#myInvoices"
+            },
+            "required": ["createdByUser", "assignedToUser"],
+            "properties": {
+              "createdByUser": {
+                "type": "array",
+                "description": "Invoices created by the user.",
+                "items": { "$ref": "#/components/schemas/Invoice" }
+              },
+              "assignedToUser": {
+                "type": "array",
+                "description": "Invoices assigned to the user.",
+                "items": { "$ref": "#/components/schemas/Invoice" }
+              }
+            }
+          },
+          "myContacts": {
+            "type": "array",
+            "description": "Pre-fetched `myContacts` query objects for the front-end cache.",
+            "externalDocs": {
+              "description": "Apollo Studio Schema Reference for the `myInvoices` GQL query.",
+              "url": "https://studio.apollographql.com/public/fixit/variant/current/schema/reference#myInvoices"
+            },
+            "items": { "$ref": "#/components/schemas/Contact" }
+          }
+        }
+      },
+      "Contact": {
+        "type": "object",
+        "description": "A pre-fetched Contact object returned from a REST endpoint.",
+        "externalDocs": {
+          "description": "GQL Apollo Studio Schema Reference for the Contact object.",
+          "url": "https://studio.apollographql.com/public/fixit/variant/current/schema/reference/objects/Contact"
+        },
+        "required": [
+          "__typename",
+          "id",
+          "handle",
+          "email",
+          "phone",
+          "profile",
+          "createdAt",
+          "updatedAt"
+        ],
+        "properties": {
+          "__typename": {
+            "type": "string",
+            "enum": ["Contact"],
+            "description": "The object's GraphQL type name, `\"Contact\"`, included to facilitate\nwriting pre-fetched objects into the front-end's Apollo Client cache.\n"
+          },
+          "id": { "type": "string", "description": "The contact's user ID" },
+          "handle": { "$ref": "#/components/schemas/handle" },
+          "email": { "$ref": "#/components/schemas/email" },
+          "phone": { "$ref": "#/components/schemas/phone" },
+          "profile": { "$ref": "#/components/schemas/UserProfile" },
+          "createdAt": { "$ref": "#/components/schemas/createdAt" },
+          "updatedAt": { "$ref": "#/components/schemas/updatedAt" }
+        }
+      },
+      "Invoice": {
+        "type": "object",
+        "description": "A pre-fetched Invoice object returned from a Fixit REST endpoint.",
+        "externalDocs": {
+          "description": "GQL Apollo Studio Schema Reference for the Invoice object.",
+          "url": "https://studio.apollographql.com/public/fixit/variant/current/schema/reference/objects/Invoice"
+        },
+        "required": [
+          "__typename",
+          "id",
+          "createdBy",
+          "assignedTo",
+          "amount",
+          "status",
+          "createdAt",
+          "updatedAt"
+        ],
+        "properties": {
+          "__typename": {
+            "type": "string",
+            "enum": ["Invoice"],
+            "description": "The object's GraphQL type name, `\"Invoice\"`, included to facilitate\nwriting pre-fetched objects into the front-end's Apollo Client cache.\n"
+          },
+          "id": { "type": "string", "description": "The invoice's ID." },
+          "createdBy": {
+            "type": "object",
+            "description": "The user who created the invoice.",
+            "required": ["id"],
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "The ID of the user who created the invoice."
+              }
+            }
+          },
+          "assignedTo": {
+            "type": "object",
+            "description": "The user to whom the invoice is assigned.",
+            "required": ["id"],
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "The ID of the user to whom the invoice is assigned."
+              }
+            }
+          },
+          "amount": {
+            "type": "integer",
+            "description": "The Invoice amount, represented as an integer which reflects USD centage\n(i.e., an 'amount' of 1 = $0.01 USD).\n"
+          },
+          "status": { "$ref": "#/components/schemas/InvoiceStatus" },
+          "stripePaymentIntentID": {
+            "type": ["string", "null"],
+            "description": "The ID of the most recent successful paymentIntent applied to the Invoice, if any.\n"
+          },
+          "workOrder": {
+            "type": ["object", "null"],
+            "description": "The work order associated with the invoice.",
+            "required": ["id"],
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "The ID of the work order associated with the invoice."
+              }
+            }
+          },
+          "createdAt": { "$ref": "#/components/schemas/createdAt" },
+          "updatedAt": { "$ref": "#/components/schemas/updatedAt" }
+        }
+      },
+      "WorkOrder": {
+        "type": "object",
+        "description": "A pre-fetched WorkOrder object returned from a REST endpoint.",
+        "externalDocs": {
+          "description": "GQL Apollo Studio Schema Reference for the WorkOrder object.",
+          "url": "https://studio.apollographql.com/public/fixit/variant/current/schema/reference/objects/WorkOrder"
+        },
+        "required": [
+          "__typename",
+          "id",
+          "createdBy",
+          "status",
+          "priority",
+          "location",
+          "createdAt",
+          "updatedAt"
+        ],
+        "properties": {
+          "__typename": {
+            "type": "string",
+            "enum": ["WorkOrder"],
+            "description": "The object's GraphQL type name, `\"WorkOrder\"`, included to facilitate\nwriting pre-fetched objects into the front-end's Apollo Client cache.\n"
+          },
+          "id": { "type": "string", "description": "The work order's ID." },
+          "createdBy": {
+            "type": "object",
+            "description": "The user who created the work order.",
+            "required": ["id"],
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "The ID of the user who created the work order."
+              }
+            }
+          },
+          "assignedTo": {
+            "type": ["object", "null"],
+            "description": "The user to whom the work order is assigned.",
+            "required": ["id"],
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "The ID of the user to whom the work order is assigned."
+              }
+            }
+          },
+          "location": { "$ref": "#/components/schemas/Location" },
+          "status": { "$ref": "#/components/schemas/WorkOrderStatus" },
+          "priority": { "$ref": "#/components/schemas/WorkOrderPriority" },
+          "category": { "$ref": "#/components/schemas/WorkOrderCategory" },
+          "description": {
+            "type": ["string", "null"],
+            "description": "The work order's description."
+          },
+          "checklist": {
+            "type": ["array", "null"],
+            "items": {
+              "type": "object",
+              "description": "A checklist item.",
+              "required": ["id", "description", "isCompleted"],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "The ID of the checklist item."
+                },
+                "description": {
+                  "type": "string",
+                  "description": "The description of the checklist item."
+                },
+                "isCompleted": {
+                  "type": "boolean",
+                  "description": "Whether the checklist item is completed."
+                }
+              }
+            },
+            "description": "The work order's checklist."
+          },
+          "dueDate": {
+            "type": ["string", "null"],
+            "format": "date-time",
+            "description": "Timestamp of the WorkOrder's due date."
+          },
+          "scheduledDateTime": {
+            "type": ["string", "null"],
+            "format": "date-time",
+            "description": "Timestamp of the WorkOrder's scheduled completion."
+          },
+          "entryContact": {
+            "type": ["string", "null"],
+            "description": "The name of the work order's entry contact, if any."
+          },
+          "entryContactPhone": {
+            "type": ["string", "null"],
+            "description": "The phone number of the work order's entry contact, if any."
+          },
+          "contractorNotes": {
+            "type": ["string", "null"],
+            "description": "Notes from the WorkOrder's recipient."
+          },
+          "createdAt": { "$ref": "#/components/schemas/createdAt" },
+          "updatedAt": { "$ref": "#/components/schemas/updatedAt" }
+        }
+      },
+      "PromoCodeInfoResponseField": {
+        "type": "object",
+        "description": "An object which contains `promoCode` info under the key `promoCodeInfo`.\n",
+        "properties": {
+          "promoCodeInfo": { "$ref": "#/components/schemas/PromoCodeInfo" }
+        },
+        "required": ["promoCodeInfo"]
+      },
+      "PromoCodeInfo": {
+        "type": "object",
+        "description": "An object which contains information about whether a user-provided `promoCode`\nis valid, and if so, what percentage discount should be applied at checkout.\n",
+        "required": ["value", "isValidPromoCode"],
+        "properties": {
+          "value": {
+            "type": "string",
+            "description": "The original value provided by the user."
+          },
+          "isValidPromoCode": {
+            "type": "boolean",
+            "description": "Whether the user-provided `promoCode` is valid."
+          },
+          "discountPercentage": {
+            "type": "integer",
+            "description": "The percentage discount to apply to the total price of the selected\nsubscription. The returned number reflects a percentage, so a value of\n`10` would be a 10% discount. This field is only included in the response\nif the user-provided `promoCode` is valid.\n",
+            "minimum": 0,
+            "maximum": 100
+          }
+        }
+      },
+      "CheckoutCompletionInfoResponseField": {
+        "type": "object",
+        "description": "An object which contains data used for completing checkout/payment flows.\n",
+        "properties": {
+          "checkoutCompletionInfo": {
+            "$ref": "#/components/schemas/CheckoutCompletionInfo"
+          }
+        },
+        "required": ["checkoutCompletionInfo"]
+      },
+      "CheckoutCompletionInfo": {
+        "type": "object",
+        "description": "An object containing data regarding the status of the user's checkout-flow. In\nthe event that additional user input is required to complete the transaction,\nthis object will also contain the Stripe-provided client secret needed for the\nfront-end to invoke `stripe.handleNextAction`.\n",
+        "properties": {
+          "isCheckoutComplete": {
+            "type": "boolean",
+            "description": "A boolean indicating whether the checkout-flow is complete. A value of\n`true` indicates one of the following success conditions:\n- The user/customer owed a non-zero amount which was successfully paid.\n- The user/customer initiated a `TRIAL`, and the setup for payments after\n  the end of the trial-period has been successfully completed.\n- The user/customer provided a 100% discount `PROMO_CODE`, and the setup\n  for payments after the end of the discount-period has been successfully\n  completed.\n"
+          },
+          "clientSecret": {
+            "type": "string",
+            "description": "If additional user input is required to complete the transaction, such as\nauthenticating with 3D Secure or redirecting to a different site, this\nproperty will contain the Stripe-provided client secret needed for the\nfront-end to invoke `stripe.handleNextAction`.\n"
+          }
+        },
+        "required": ["isCheckoutComplete"]
+      },
+      "StripeLinkResponseField": {
+        "type": "object",
+        "description": "An object which contains a link to a Stripe-provided portal.",
+        "properties": {
+          "stripeLink": {
+            "type": "string",
+            "description": "A link to a Stripe-provided portal."
+          }
+        },
+        "required": ["stripeLink"]
+      },
+      "AuthTokenPayload": {
+        "type": "object",
+        "description": "User's Fixit API auth token payload object.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "An identifier for the user."
+          },
+          "handle": { "$ref": "#/components/schemas/handle" },
+          "email": { "$ref": "#/components/schemas/email" },
+          "phone": { "$ref": "#/components/schemas/phone" },
+          "profile": { "$ref": "#/components/schemas/UserProfile" },
+          "stripeCustomerID": {
+            "$ref": "#/components/schemas/stripeCustomerID"
+          },
+          "stripeConnectAccount": {
+            "$ref": "#/components/schemas/AuthTokenPayloadStripeConnectAccountInfo"
+          },
+          "subscription": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/AuthTokenPayloadSubscriptionInfo"
+              },
+              {
+                "type": "null",
+                "description": "The user does not have a subscription."
+              }
+            ]
+          },
+          "createdAt": { "$ref": "#/components/schemas/createdAt" },
+          "updatedAt": { "$ref": "#/components/schemas/updatedAt" }
+        },
+        "required": [
+          "id",
+          "handle",
+          "email",
+          "phone",
+          "profile",
+          "stripeCustomerID",
+          "stripeConnectAccount",
+          "subscription",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "AuthTokenPayloadSubscriptionInfo": {
+        "type": "object",
+        "description": "An object within the payload of a user's Fixit API auth token with data\nrelating to their current Fixit Subscription status.\n",
+        "externalDocs": {
+          "description": "GQL Apollo Studio Schema Reference for the UserSubscription object.",
+          "url": "https://studio.apollographql.com/public/fixit/variant/current/schema/reference/objects/UserSubscription"
+        },
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "An identifier for the subscription."
+          },
+          "status": { "$ref": "#/components/schemas/SubscriptionStatus" },
+          "currentPeriodEnd": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp indicating the end of the current billing period."
+          }
+        },
+        "required": ["id", "status", "currentPeriodEnd"]
+      },
+      "AuthTokenPayloadStripeConnectAccountInfo": {
+        "type": "object",
+        "description": "An object within the payload of a user's Fixit API auth token with data\nrelating to their current status in the Stripe Connect onboarding flow.\n",
+        "externalDocs": {
+          "description": "GQL Apollo Studio Schema Reference for the UserStripeConnectAccount object.",
+          "url": "https://studio.apollographql.com/public/fixit/variant/current/schema/reference/objects/UserStripeConnectAccount"
+        },
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "An identifier for the Stripe Connect Account."
+          },
+          "detailsSubmitted": {
+            "type": "boolean",
+            "description": "A boolean indicating whether the user has submitted their details to\nStripe Connect in the onboarding flow.\n"
+          },
+          "chargesEnabled": {
+            "type": "boolean",
+            "description": "A boolean indicating whether the user has enabled charges on their\nStripe Connect Account.\n"
+          },
+          "payoutsEnabled": {
+            "type": "boolean",
+            "description": "A boolean indicating whether the user has enabled payouts on their\nStripe Connect Account.\n"
+          }
+        },
+        "required": [
+          "id",
+          "detailsSubmitted",
+          "chargesEnabled",
+          "payoutsEnabled"
+        ]
+      },
+      "CspViolationReport": {
+        "type": "object",
+        "description": "A Content Security Policy (CSP) violation report.",
+        "externalDocs": {
+          "description": "CSP directives documentation",
+          "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy"
+        },
+        "properties": {
+          "document-uri": {
+            "type": "string",
+            "description": "The URI of the protected resource that was violated.\n"
+          },
+          "blocked-uri": {
+            "type": "string",
+            "description": "The URI of the resource that was blocked from loading.\n"
+          },
+          "status-code": {
+            "type": "integer",
+            "description": "The HTTP status code of the resource that was blocked from loading.\n"
+          },
+          "referrer": {
+            "type": "string",
+            "description": "The referrer of the protected resource that was violated.\n"
+          },
+          "script-sample": {
+            "type": "string",
+            "description": "The first 40 characters of the inline script, event handler, or style\nthat caused the violation.\n"
+          },
+          "original-policy": {
+            "type": "string",
+            "description": "The original policy as specified by the Content-Security-Policy header.\n"
+          },
+          "disposition": {
+            "type": "string",
+            "enum": ["enforce", "report"],
+            "description": "Either \"enforce\" or \"report\" depending on whether the Content-Security-Policy\nheader or the Content-Security-Policy-Report-Only header is used.\n"
+          },
+          "violated-directive": {
+            "type": "string",
+            "description": "The directive whose enforcement was violated (e.g. \"default-src 'self'\").\n"
+          },
+          "effective-directive": {
+            "type": "string",
+            "description": "The effective directive that was violated (e.g. 'img-src').\n"
+          },
+          "source-file": {
+            "type": "string",
+            "description": "The URI of the resource where the violation occurred.\n"
+          },
+          "line-number": {
+            "type": "integer",
+            "description": "The line number in the resource where the violation occurred.\n"
+          },
+          "column-number": {
+            "type": "integer",
+            "description": "The column number in the resource where the violation occurred.\n"
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "description": "An error response object.",
+        "properties": { "error": { "type": "string" } }
+      },
+      "Location": {
+        "type": "object",
+        "description": "An object containing the components of an address.",
+        "externalDocs": {
+          "description": "GQL Apollo Studio Schema Reference for the Location object.",
+          "url": "https://studio.apollographql.com/public/fixit/variant/current/schema/reference/objects/Location"
+        },
+        "required": ["streetLine1", "city", "region", "country"],
+        "properties": {
+          "streetLine1": {
+            "type": "string",
+            "description": "The first line of the location's street address."
+          },
+          "streetLine2": {
+            "type": ["string", "null"],
+            "description": "The second line of the location's street address."
+          },
+          "city": { "type": "string", "description": "The location's city." },
+          "region": {
+            "type": "string",
+            "description": "The location's region."
+          },
+          "country": {
+            "type": "string",
+            "description": "The location's country.",
+            "default": "USA"
+          }
+        }
+      },
+      "UserProfile": {
+        "type": "object",
+        "description": "A user's profile.",
+        "externalDocs": {
+          "description": "GQL Apollo Studio Schema Reference for the Profile object.",
+          "url": "https://studio.apollographql.com/public/fixit/variant/current/schema/reference/objects/Profile"
+        },
+        "properties": {
+          "displayName": {
+            "type": "string",
+            "description": "The user's display name."
+          },
+          "familyName": {
+            "type": ["string", "null"],
+            "description": "The user's family name."
+          },
+          "givenName": {
+            "type": ["string", "null"],
+            "description": "The user's given name."
+          },
+          "businessName": {
+            "type": ["string", "null"],
+            "description": "The user's business name."
+          },
+          "photoUrl": {
+            "type": ["string", "null"],
+            "description": "The user's profile picture URL."
+          }
+        },
+        "required": ["displayName"]
+      },
+      "InvoiceStatus": {
+        "type": "string",
+        "description": "The Invoice's status.",
+        "enum": ["OPEN", "CLOSED", "DISPUTED"]
+      },
+      "SubscriptionPriceName": {
+        "type": "string",
+        "enum": ["ANNUAL", "MONTHLY", "TRIAL"],
+        "externalDocs": {
+          "description": "GQL Apollo Studio Schema Reference for the SubscriptionPriceName enum.",
+          "url": "https://studio.apollographql.com/public/fixit/variant/current/schema/reference/enums/SubscriptionPriceName"
+        },
+        "description": "The Fixit Subscription price name — this value corresponds to the [Stripe Price\n\"nickname\" field](https://stripe.com/docs/api/prices/object#price_object-nickname).\n"
+      },
+      "SubscriptionStatus": {
+        "type": "string",
+        "description": "The Subscription's status, as provided by Stripe.\nSee https://docs.stripe.com/api/subscriptions/object#subscription_object-status\n",
+        "enum": [
+          "active",
+          "incomplete",
+          "incomplete_expired",
+          "trialing",
+          "past_due",
+          "canceled",
+          "unpaid"
+        ]
+      },
+      "WorkOrderCategory": {
+        "type": ["string", "null"],
+        "description": "The WorkOrder's category.",
+        "enum": [
+          null,
+          "DRYWALL",
+          "ELECTRICAL",
+          "FLOORING",
+          "GENERAL",
+          "HVAC",
+          "LANDSCAPING",
+          "MASONRY",
+          "PAINTING",
+          "PAVING",
+          "PEST",
+          "PLUMBING",
+          "ROOFING",
+          "TRASH",
+          "TURNOVER",
+          "WINDOWS"
+        ]
+      },
+      "WorkOrderPriority": {
+        "type": "string",
+        "description": "The WorkOrder's priority.",
+        "enum": ["LOW", "NORMAL", "HIGH"]
+      },
+      "WorkOrderStatus": {
+        "type": "string",
+        "description": "The WorkOrder's status.",
+        "enum": [
+          "UNASSIGNED",
+          "ASSIGNED",
+          "IN_PROGRESS",
+          "DEFERRED",
+          "CANCELLED",
+          "COMPLETE"
+        ]
+      },
+      "CreatedAt": { "$ref": "#/components/schemas/createdAt" },
+      "Email": { "$ref": "#/components/schemas/email" },
+      "GoogleIDToken": { "$ref": "#/components/schemas/googleIDToken" },
+      "Handle": { "$ref": "#/components/schemas/handle" },
+      "Password": { "$ref": "#/components/schemas/password" },
+      "PasswordResetToken": {
+        "$ref": "#/components/schemas/passwordResetToken"
+      },
+      "PaymentMethodID": { "$ref": "#/components/schemas/paymentMethodID" },
+      "Phone": { "$ref": "#/components/schemas/phone" },
+      "PromoCode": { "$ref": "#/components/schemas/promoCode" },
+      "ReturnURL": { "$ref": "#/components/schemas/returnURL" },
+      "StripeCustomerID": { "$ref": "#/components/schemas/stripeCustomerID" },
+      "UpdatedAt": { "$ref": "#/components/schemas/updatedAt" },
+      "email": {
+        "type": "string",
+        "format": "email",
+        "description": "User's email address."
+      },
+      "password": {
+        "type": "string",
+        "format": "password",
+        "minLength": 6,
+        "maxLength": 250,
+        "pattern": "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{6,250}$",
+        "description": "User's password (auth: local). In order to be valid, a password must meet\nall of the following criteria:\n  - Contains at least one lowercase letter.\n  - Contains at least one uppercase letter.\n  - Contains at least one number.\n  - Contains at least one of `!`, `@`, `#`, `$`, `%`, `^`, `&`, and/or `*`.\n  - Is at least 6 characters long, and no more than 250 characters long.\n"
+      },
+      "LoginCredentials.Local": {
+        "type": "object",
+        "description": "The user's login credentials for local authentication",
+        "properties": {
+          "email": { "$ref": "#/components/schemas/email" },
+          "password": { "$ref": "#/components/schemas/password" }
+        },
+        "required": ["email", "password"]
+      },
+      "googleIDToken": {
+        "type": "string",
+        "description": "Base64URL-encoded JSON JWT from GoogleID services (auth: google-oauth).\n"
+      },
+      "LoginCredentials.GoogleOAuth": {
+        "type": "object",
+        "description": "The user's login credentials for google-oauth authentication",
+        "properties": {
+          "email": { "$ref": "#/components/schemas/email" },
+          "googleIDToken": { "$ref": "#/components/schemas/googleIDToken" }
+        },
+        "required": ["email", "googleIDToken"]
+      },
+      "createdAt": {
+        "type": "string",
+        "format": "date-time",
+        "description": "Timestamp which indicates when the resource was created."
+      },
+      "updatedAt": {
+        "type": "string",
+        "format": "date-time",
+        "description": "The timestamp which indicates when the resource was last updated."
+      },
+      "handle": {
+        "type": "string",
+        "description": "User's Fixit handle.",
+        "pattern": "^@[a-zA-Z0-9_]{3,50}$",
+        "examples": ["@foo_user"]
+      },
+      "phone": {
+        "type": ["string", "null"],
+        "description": "User's phone number. Currently this API only supports US phone numbers. All\nwhitespace, non-numeric characters, and country/calling code prefixes will be\nstripped from the phone number upon receipt, so \"+1 (555) 555-5555\" will be\ntreated the same as \"5555555555\".\n"
+      },
+      "passwordResetToken": {
+        "type": "string",
+        "description": "A valid password-reset token for securely resetting a user's password.\n"
+      },
+      "returnURL": {
+        "type": "string",
+        "format": "uri",
+        "description": "The URL Stripe should redirect the user to upon exiting the Stripe portal.\n"
+      },
+      "promoCode": {
+        "type": "string",
+        "description": "A user-provided promo code to apply a discount at checkout."
+      },
+      "paymentMethodID": {
+        "type": "string",
+        "description": "The Stripe PaymentMethod ID of the user's chosen payment method.",
+        "pattern": "^pm_[a-zA-Z0-9]{10,150}$"
+      },
+      "stripeCustomerID": {
+        "type": "string",
+        "description": "User's Stripe Customer ID."
+      }
+    }
+  }
+}

@@ -1,0 +1,220 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "version": "0.0.1",
+    "title": "Nostr Serverless API",
+    "description": "This is an API for interacting with relays to send and receive information over the Nostr protocol."
+  },
+  "paths": {
+    "/v0/fetch/notes": {
+      "post": {
+        "summary": "Fetch all notes that meet the filtered criteria",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/FetchNotesRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully fetched notes that met the criteria",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/FetchNotesResponse" }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v0/send/note": {
+      "post": {
+        "summary": "Send a public note to a set of given relays",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/SendNoteRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully published the note to the relay[s]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Success" }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v0/send/dm": {
+      "post": {
+        "summary": "Broadcast a private note on a set of given relays",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/SendDmRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully sent the dm to the relay[s]",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Success" }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v0/send/verify": {
+      "post": {
+        "summary": "Fetch all notes that meet the filtered criteria",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/VerifyRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Success" }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "FetchNotesRequest": {
+        "type": "object",
+        "properties": {
+          "authors": { "type": "array", "items": { "type": "string" } },
+          "relays": { "type": "array", "items": { "type": "string" } },
+          "event_refs": { "type": "array", "items": { "type": "string" } },
+          "pubkey_refs": { "type": "array", "items": { "type": "string" } },
+          "since": { "type": "integer" },
+          "until": { "type": "integer" },
+          "limit": { "type": "integer" }
+        }
+      },
+      "FetchNotesResponse": {
+        "type": "object",
+        "properties": {
+          "time_created": { "type": "integer" },
+          "content": { "type": "string" },
+          "author": { "type": "string" },
+          "tags": {
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "oneOf": [
+                    { "type": "string" },
+                    {
+                      "type": "object",
+                      "additionalProperties": { "type": "string" }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "array",
+                "items": { "type": "object", "properties": {} }
+              }
+            ]
+          },
+          "signature": { "type": "string" }
+        }
+      },
+      "SendNoteRequest": {
+        "type": "object",
+        "properties": {
+          "text": { "type": "string" },
+          "private_key": { "type": "string" },
+          "relays": { "type": "array", "items": { "type": "string" } }
+        }
+      },
+      "VerifyRequest": {
+        "type": "object",
+        "properties": {
+          "private_key": { "type": "string" },
+          "relays": { "type": "array", "items": { "type": "string" } }
+        }
+      },
+      "SendDmRequest": {
+        "type": "object",
+        "properties": {
+          "text": { "type": "string" },
+          "sender_private_key": { "type": "string" },
+          "recipient_public_key": { "type": "string" },
+          "relays": { "type": "array", "items": { "type": "string" } }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": { "error": { "type": "string" } }
+      },
+      "Success": {
+        "type": "object",
+        "properties": { "error": { "type": "string" } }
+      }
+    }
+  }
+}

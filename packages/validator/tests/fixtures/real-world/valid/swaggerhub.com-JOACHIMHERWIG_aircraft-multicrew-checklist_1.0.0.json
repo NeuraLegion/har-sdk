@@ -1,0 +1,137 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Aircraft multi-crew checklist definition",
+    "description": "Definition of the JSON schema including examples to render the Multi-Crew-Checklist which can be rendered using \n[https://raw.githubusercontent.com/joeherwig/aircraft-multi-crew-checklists](https://raw.githubusercontent.com/joeherwig/aircraft-multi-crew-checklists)\n\nThis is how it might look like then:\n\n![](https://joachim.herwigs.info/projects/homecockpit/img/multi-crew-checklist.png)\n\n## Try it out\non my homecockpit blog at [https://joachim.herwigs.info/projects/homecockpit/checklist.html](https://joachim.herwigs.info/projects/homecockpit/checklist.html)\n"
+  },
+  "paths": {
+    "/": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "The checklist definition which is rendered by [https://raw.githubusercontent.com/joeherwig/aircraft-multi-crew-checklists/main/js/checklist.js](https://raw.githubusercontent.com/joeherwig/aircraft-multi-crew-checklists/main/js/checklist.js)",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/checklistRoot" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "checklistRoot": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "aircraft": {
+            "description": "Used to render the Headline to allow the user to identify for which aircraft the checklist is rendered.",
+            "type": "string",
+            "example": "A320 family"
+          },
+          "checklists": {
+            "type": "array",
+            "description": "The array holding the different checklists for each phase of the flight.",
+            "items": { "$ref": "#/components/schemas/checklist" },
+            "example": [
+              {
+                "name": "Cockpit preparation",
+                "triggeredBy": "Walkaround check completed",
+                "items": [
+                  { "checkpoint": "Gear pins & covers", "value": "removed" },
+                  { "checkpoint": "Fuel quantity", "value": "_____kg/lbs" },
+                  { "checkpoint": "Seatbelt signs", "value": "on" },
+                  { "checkpoint": "ADIRS", "value": "NAV" },
+                  { "checkpoint": "Baro Ref", "value": "_____ 3x" }
+                ]
+              },
+              {
+                "name": "Before Start",
+                "triggeredBy": "Departure briefing completed",
+                "items": [
+                  {
+                    "checkpoint": "ATC",
+                    "value": "Set for operation",
+                    "role": "pm"
+                  },
+                  { "checkpoint": "T.O Speeds & Thrust", "value": "_____ 2x" },
+                  { "checkpoint": "Windows", "value": "check closed" },
+                  { "checkpoint": "Beacon", "value": "on", "role": "pf" },
+                  {
+                    "checkpoint": "Doors/slides",
+                    "value": "check closed/armed"
+                  },
+                  {
+                    "checkpoint": "Thrust levers",
+                    "value": "idle",
+                    "role": "pf"
+                  },
+                  {
+                    "checkpoint": "Parking brake handle",
+                    "value": "on",
+                    "role": "pf"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "required": ["aircraft", "checklists"],
+        "title": "checklistRoot"
+      },
+      "checklist": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The Headline of the checklist that describes for which phase of the flight the included items aree relevant.",
+            "example": "Approach"
+          },
+          "triggeredBy": {
+            "type": "string",
+            "description": "A hint which event triggers running through the following checklist items.",
+            "example": "Below 10,000 ft AAE and BARO REF set"
+          },
+          "items": {
+            "description": null,
+            "type": "array",
+            "minItems": 1,
+            "items": { "$ref": "#/components/schemas/checklistItem" }
+          }
+        },
+        "required": ["items", "name"],
+        "title": "Checklist"
+      },
+      "checklistItem": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "checkpoint": {
+            "description": "listed on the left side of the checklist to show the user what item needs to be checked.",
+            "type": "string",
+            "example": "Gear pins & covers"
+          },
+          "value": {
+            "description": "The expected value to be checked for. (right aligned on the checklist just before the checkmark)",
+            "type": "string",
+            "example": "removed"
+          },
+          "role": { "$ref": "#/components/schemas/Role" }
+        },
+        "required": ["checkpoint", "value"],
+        "title": "checklistItem"
+      },
+      "Role": {
+        "description": "Optional parameter to mark items visually who is responsible to ensure the correct value is set.",
+        "example": "pm",
+        "type": "string",
+        "enum": ["pm", "pf"],
+        "title": "Role"
+      }
+    }
+  }
+}

@@ -1,0 +1,518 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Hack Hour API",
+    "version": "3.0.0",
+    "summary": "Manage sessions and check the availability of Hakkuun Slack bot through the Hack Hour API.",
+    "description": "This is an unofficial API docs behind [Heidi the Hakkuun](https://github.com/hackclub/hack-hour),\nthe Hack Club Slack bot that runs the `#arcade` channel for Summer of Making 2024 edition, built as part of Arcade 2024.\n\n## Important note about API usage\n\n_This section is copied from upstream's README for brevity._\n\nThere is no guarantee for the reliability of the API. If data is lost and/or\nis not registered for Arcade, there's not much we can do - use at your own risk.\n\n## Using the API\n\n### API Terms\n\n_This is unofficial text based off [this thread](https://hackclub.slack.com/archives/C077TSWKER0/p1721392147965059?thread_ts=1721369645.952189&cid=C077TSWKER0), and [patches are welcome](https://github.com/andreijiroh-dev/hackclub-scrapbook-log/blob/main/CONTRIBUTING.md) to improve this._\n\nBy using the Hack Hour API, you agree that:\n\n* You must abide by Hack Club Code of Conduct, linked in the terms of service below.\n* You must not make leaderboards off scraping the API. (try searching for `leaderboard in:#arcade-lounge in:#arcade-help` in Hack Club Slack for context)\n* Regarding the API reliability and the service during the course of summer/winter season, you should not burst-sending API requests and call at most one request per second (or minute once degraded performance or downtime is hapening or intermittent).\n\n### Getting an API token\n\nIn any Hack Club channel, especially on `#arcade`, send `/api` to get (or rotate) your Hack Club API token. The token is formatted like a\nUUID, like this: `b687bd17-d3ae-4768-a280-e1f55ee02b05` (this is not a real token if anyone tried to use this)\n\nYou must keep your API token secret as if it is your account password.\n\n### Finding your Slack user ID\n\n* **Desktop and Web**: Go to your profile, click the options icon (three dots)\nand select `Copy member ID`\n* **Mobile**: Send a message in [`#what-is-my-slack-id`](https://hackclub.slack.com/archives/C0159TSJVH8) channel and you should receive a\nautomated reply with your Slack user ID. Alternatively, [open this Slack message](https://hackclub.slack.com/archives/C0159TSJVH8/p1721386824641699?thread_ts=1721386824.641699&cid=C0159TSJVH8) and run the linked workflow to get your Slack ID.",
+    "contact": {
+      "name": "Andrei Jiroh Halili",
+      "url": "https://scrapbook.hackclub.com/andreijiroh-dev",
+      "email": "ajhalili2006@andreijiroh.xyz"
+    },
+    "termsOfService": "https://hackclub.com/conduct",
+    "license": {
+      "name": "ISC (based off upstream repository's manifest file)",
+      "url": "https://choosealicense.com/licenses/isc/"
+    }
+  },
+  "externalDocs": {
+    "description": "Learn more about Hack Club Arcade",
+    "url": "https://hackclub.com/arcade"
+  },
+  "servers": [{ "url": "https://hackhour.hackclub.com" }],
+  "tags": [
+    {
+      "name": "sessions",
+      "description": "Operations relating to viewing and managing your Arcade sessions over API.",
+      "externalDocs": {
+        "description": "Read the constitution",
+        "url": "https://github.com/hackclub/arcade-constitution/blob/main/README.md"
+      }
+    },
+    { "name": "meta", "description": "Operations relating to " }
+  ],
+  "components": {
+    "securitySchemes": {
+      "hackHourApiToken": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "Hack Hour API Token (UUID format)"
+      }
+    },
+    "schemas": {
+      "ArcadeGoal": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the goal, usually long-running projects over the course of summer/winter.",
+            "default": "No Goal"
+          },
+          "minutes": {
+            "type": "number",
+            "description": "Number of minutes spent working on particular project"
+          }
+        }
+      },
+      "ArcadeSession": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "default": "slackId",
+            "description": "Slack user ID of the user"
+          },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "time": { "type": "number", "default": 60 },
+          "elapsed": { "type": "number", "default": 15 },
+          "remaining": { "type": "number", "default": 45 },
+          "endTime": { "type": "string", "format": "date-time" },
+          "goal": { "$ref": "#/components/schemas/ArcadeGoal/properties/name" },
+          "work": {
+            "type": "string",
+            "description": "What the user is working on"
+          },
+          "paused": { "type": "boolean", "default": true },
+          "completed": { "type": "boolean", "default": false },
+          "messageTs": { "type": "string" }
+        }
+      },
+      "ArcadeStats": {
+        "type": "object",
+        "properties": {
+          "sessions": { "type": "number", "default": 0 },
+          "total": { "type": "number", "default": 0 }
+        }
+      },
+      "ArcadeSessions": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "createdAt": {
+              "$ref": "#/components/schemas/ArcadeSession/properties/createdAt"
+            },
+            "time": {
+              "$ref": "#/components/schemas/ArcadeSession/properties/time"
+            },
+            "elapsed": {
+              "$ref": "#/components/schemas/ArcadeSession/properties/elapsed"
+            },
+            "goal": {
+              "$ref": "#/components/schemas/ArcadeSession/properties/goal"
+            },
+            "ended": {
+              "$ref": "#/components/schemas/ArcadeSession/properties/ended"
+            },
+            "work": {
+              "$ref": "#/components/schemas/ArcadeSession/properties/work"
+            }
+          }
+        }
+      },
+      "ArcadeGoals": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "$ref": "#/components/schemas/ArcadeGoal/properties/name"
+            },
+            "minutes": {
+              "$ref": "#/components/schemas/ArcadeGoal/properties/minutes"
+            }
+          }
+        }
+      },
+      "BackendStatus": {
+        "type": "object",
+        "properties": {
+          "activeSessions": {
+            "type": "number",
+            "description": "Number of active sessions at the moment."
+          },
+          "airtableConnected": { "type": "boolean", "default": true },
+          "slackConnected": { "type": "boolean", "default": true }
+        }
+      },
+      "ApiErrorMessage": {
+        "type": "object",
+        "properties": {
+          "ok": { "type": "boolean", "default": false },
+          "error": { "type": "string", "description": "The error message" }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/api/session/{slackId}": {
+      "get": {
+        "security": [{ "hackHourApiToken": [] }],
+        "tags": ["sessions"],
+        "summary": "Get current session of a Arcade participant",
+        "description": "Queries a user's current session at the moment by their Slack user ID.",
+        "operationId": "getCurrentSessionByUserid",
+        "parameters": [
+          {
+            "name": "slackId",
+            "in": "path",
+            "description": "Slack user ID",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return a object of `ArcadeSession` in the `data`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": { "type": "boolean", "default": true },
+                    "data": { "$ref": "#/components/schemas/ArcadeSession" }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "API token is missing",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schema/ApiErrorMessage" }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schema/ApiErrorMessage" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/stats/{slackId}": {
+      "get": {
+        "tags": ["sessions"],
+        "security": [{ "hackHourApiToken": [] }],
+        "summary": "Get stats for a Slack user",
+        "operationId": "getStatsByUserid",
+        "parameters": [
+          {
+            "name": "slackId",
+            "in": "path",
+            "description": "Slack user ID",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return a object of `ArcadeSession` in the `data`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": { "type": "boolean", "default": true },
+                    "data": { "$ref": "#/components/schemas/ArcadeStats" }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "API token is missing",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schema/ApiErrorMessage" }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schema/ApiErrorMessage" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/goals/{slackId}": {
+      "get": {
+        "tags": ["sessions"],
+        "summary": "Gets the goals for the user.",
+        "description": "Currently you can only manage your goals within the session threads on Slack at the moment by clicking **Change Goals** on the bot's first reply in `#arcade` and either clicking `new goal` or `delete goal`.",
+        "parameters": [
+          {
+            "name": "slackId",
+            "in": "path",
+            "description": "Slack user ID",
+            "required": true,
+            "schema": {
+              "$id": "#/components/schemas/ArcadeSession/properties/id"
+            }
+          }
+        ],
+        "security": [{ "hackHourApiToken": [] }],
+        "responses": {
+          "200": {
+            "description": "Returns a list of goals for a user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": { "type": "boolean", "default": true },
+                    "data": { "$ref": "#/components/schemas/ArcadeGoals" }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "API token is missing",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schema/ApiErrorMessage" }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schema/ApiErrorMessage" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/history/{slackId}": {
+      "get": {
+        "operationId": "getSessionHistory",
+        "tags": ["sessions"],
+        "summary": "Get history of Arcade sessions for the user",
+        "parameters": [
+          {
+            "name": "slackId",
+            "in": "path",
+            "description": "Slack user ID",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ArcadeSession/properties/id"
+            }
+          }
+        ],
+        "security": [{ "hackHourApiToken": [] }],
+        "responses": {
+          "200": {
+            "description": "Returns a list of Arcade sessions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": { "type": "boolean", "default": true },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ArcadeSessions/properties/items"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/start/{slackId}": {
+      "post": {
+        "operationId": "startArcadeSession",
+        "tags": ["sessions"],
+        "summary": "Start a Arcade session",
+        "parameters": [
+          {
+            "name": "slackId",
+            "in": "path",
+            "description": "Slack user ID",
+            "required": true,
+            "schema": {
+              "$id": "#/components/schemas/ArcadeSession/properties/id"
+            }
+          }
+        ],
+        "security": [{ "hackHourApiToken": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "work": {
+                    "type": "string",
+                    "description": "What the user is working on"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns a OK status with the session ID and creation date and time.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": { "type": "boolean", "default": true },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "$ref": "#/components/schemas/ArcadeSession/properties/id"
+                        },
+                        "slackId": {
+                          "$ref": "#/components/schemas/ArcadeSession/properties/slackId"
+                        },
+                        "createdAt": {
+                          "$ref": "#/components/schemas/ArcadeSession/properties/createdAt"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "API token is missing",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schema/ApiErrorMessage" }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schema/ApiErrorMessage" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/pause/{slackId}": {
+      "post": {
+        "tags": ["sessions"],
+        "operationId": "pauseOrResumeSession",
+        "summary": "Pause or resume current session",
+        "description": "Pauses or resumes the current session for the user, depending on the current state.",
+        "parameters": [
+          {
+            "name": "slackId",
+            "in": "path",
+            "required": true,
+            "description": "Slack user ID",
+            "schema": {
+              "$id": "#/components/schemas/ArcadeSession/properties/id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a OK status with the session ID and creation date and time.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": { "type": "boolean", "default": true },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "$ref": "#/components/schemas/ArcadeSession/properties/id"
+                        },
+                        "slackId": {
+                          "$ref": "#/components/schemas/ArcadeSession/properties/slackId"
+                        },
+                        "createdAt": {
+                          "$ref": "#/components/schemas/ArcadeSession/properties/createdAt"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "API token is missing",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schema/ApiErrorMessage" }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schema/ApiErrorMessage" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ping": {
+      "get": {
+        "tags": ["meta"],
+        "operationId": "ping",
+        "summary": "Pings the server for uptime",
+        "description": "Should response with 200 with the word `pong`, otherwise the backend is probably experiencing issues.",
+        "responses": {
+          "200": {
+            "description": "The service is up and running.",
+            "content": {
+              "text/plain": {
+                "schema": { "type": "string", "default": "Pong" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/status": {
+      "get": {
+        "operationId": "backendStatus",
+        "tags": ["meta"],
+        "summary": "Get specific details on the status of the Hack Hour bot.",
+        "responses": {
+          "200": {
+            "description": "Shows active sections, alongside connectivity status of the backend to Slack and Airtable APIs.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/BackendStatus" }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

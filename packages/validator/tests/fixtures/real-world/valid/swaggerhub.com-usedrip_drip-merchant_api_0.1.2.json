@@ -1,0 +1,394 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Drip - Merchant API",
+    "description": "API Documentation of endpoints available to Merchants. All requests need to contain the `X-API-KEY` received during the initial Drip Merchant Onboarding. If you do not have it, contact one of the admins.",
+    "version": "0.1.2"
+  },
+  "servers": [
+    {
+      "url": "https://sbx-drip-be.usedrip.com.br/api/v1",
+      "description": "Sandbox"
+    },
+    {
+      "url": "https://drip-be.usedrip.com.br/api/v1",
+      "description": "Production"
+    }
+  ],
+  "paths": {
+    "/checkouts": {
+      "post": {
+        "summary": "Criar checkout",
+        "description": "Um checkout na Drip é uma intenção de pagamento do usuário. Ao selecionar a Drip como método de pagamento, um checkout é criado com os dados enviados pela api do parceiro, uma vez criado, o endpoint retorna algumas informações:\n- formUrl: Endereço no qual o usuário será redirecionado para finalizar o checkout, recomendamos que seja aberto um frame, desta forma o usuário continuará no ambiente do parceiro e também será possível o tracking via analytics. Para renderizar o modal deve passar sempre o parametro transparent=true no final da url do checkout drip-fe.usedrip.com.br/checkouts/{ID}?transparent=true\n- status: \n  - MORE_INFO: significa que a Drip necessita de mais informações do usuário para processar o pagamento.\n  - OK: Pagamento aprovado.\n  - KO: Pagamento não aprovado.\n- eventos enviados pela modal(no frontend):\n  - checkoutCompleted: Enviado quando o cliente finaliza o checkout (tanto pelo OK e KO)\n    - eventName: checkoutCompleted\n    - checkoutStatus: \"OK\" ou \"KO\"\n  - clickOnClose: Enviado quando usuário clica para fechar o checkout\n    - eventName: clickOnClose\n    - checkoutStatus: \"OK\" ou \"KO\"\n  - finishedCheckout: Quando clica para fechar o modal e ele já está finalizado(Substitui o clickOnClose quando o checkout se encontra finalizado)\n    - eventName: finishedCheckout\n    - checkoutStatus: \"OK\" ou \"KO\"\n",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CheckoutCreationParams"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Checkout" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/checkouts/{id}": {
+      "get": {
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Checkout ID",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Checkout" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/merchant/orders/{id}/detail": {
+      "get": {
+        "summary": "Listar detalhes da ordem",
+        "description": "Ordem é uma compra (checkout) aprovada pela Drip. Este endpoint retorna o detalhe da ordem\n",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Order ID",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Order" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/merchants/get_cnpj": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Return cnpj on json",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "cnpj": {
+                      "type": "string",
+                      "example": "17645766000126",
+                      "description": "CNPJ numbers from this X-API-Key header"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/instalments_simulator": {
+      "get": {
+        "summary": "Simular parcelas",
+        "description": "Utilizado para retornar ao usuário uma simulação de como ficará sua parcelas, bem como o valor de cashback. Geralmente é usado na página de checkout do e-commerce parceiro.",
+        "parameters": [
+          {
+            "name": "amount",
+            "in": "query",
+            "schema": { "type": "string" },
+            "description": "Valor total da ordem com 2 digitos depois do ponto, ex 1000.00 or 1.00"
+          },
+          {
+            "name": "date",
+            "in": "query",
+            "schema": { "type": "string", "format": "date" },
+            "description": "Data de hoje no formato yyyy-mm-dd, ex 2022-05-25"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retorna o percentual de cashback e uma lista de parcelas",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InstalmentsSimulator"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cancellation/{id}": {
+      "put": {
+        "summary": "Cancelamento",
+        "description": "Responsável por realizar o cancelamento de uma order na Drip. O cancelamento pode ser parcial ou total, o que determinará o tipo de cancelamento é o valor do amount, se igual ao valor da compra, será realizado o cancelamento total e a ordem será fechada, do contrário, será realizado o cancelamento parcial e a ordem continuará ativa.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Cancellation ID",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "amount": {
+                    "type": "number",
+                    "example": 20.0,
+                    "description": "Valor a ser cancelado, com 2 digitos depois do ponto"
+                  }
+                },
+                "required": ["amount"]
+              }
+            }
+          }
+        },
+        "responses": { "204": { "description": "No Content" } }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Checkout": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "merchantCode": { "type": "string", "example": "MyCode-123" },
+          "status": { "type": "string", "enum": ["MORE_INFO", "OK", "KO"] },
+          "formUrl": {
+            "type": "string",
+            "format": "url",
+            "example": "https://drip-fe.onrender.com/checkouts/5c1f65a8-a9d9-4185-b589-57ed7075a340"
+          },
+          "orderId": { "type": "string", "format": "uuid", "nullable": true }
+        },
+        "required": ["id", "merchantCode"]
+      },
+      "Order": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "canceledAmount": {
+            "type": "number",
+            "example": 110.01,
+            "description": "O cancelamento na Drip pode ser total ou parcial, o atributo canceled amount retorna o valor de cancelamento solicitado  pelo parceiro. Uma ordem cancelada é uma ordem onde o status é CLOSED e o canceledAmount = valor total da ordem, uma ordem paga por completo é uma ordem com status CLOSED e canceledAmount menor que o valor total da ordem"
+          },
+          "amount": {
+            "type": "number",
+            "example": 200,
+            "description": "Valor da ordem aprovada"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["ACTIVE", "CLOSED"],
+            "description": "ACTIVE = Ordem foi criada e não foi totalmente paga ou cancelada"
+          },
+          "createdDate": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Order created date in ISO 8601 format"
+          },
+          "closedDate": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Order closed date in ISO 8601 format"
+          }
+        }
+      },
+      "CheckoutCreationParams": {
+        "type": "object",
+        "description": "Information about the checkout. If the merchant does not have all the customer data parameters, they can be left out. We will request it from the customer himself during the checkout with Drip, if deemed necessary.",
+        "properties": {
+          "properties": null,
+          "amount": {
+            "type": "string",
+            "format": "amount",
+            "example": "100.00",
+            "description": "The total amount of the order in float type (e.g., 100.00 or 1.00)"
+          },
+          "customerCpf": {
+            "type": "string",
+            "example": "23100299900",
+            "description": "The customer's CPF (Brazilian identification number)"
+          },
+          "customerName": {
+            "type": "string",
+            "example": "John Doe",
+            "description": "The customer's name"
+          },
+          "customerEmail": {
+            "type": "string",
+            "format": "email",
+            "example": "john@doe.com",
+            "description": "The customer's email address"
+          },
+          "customerAddressCep": {
+            "type": "string",
+            "example": "10025-345",
+            "description": "The customer's address ZIP code (CEP)"
+          },
+          "customerAddressStreet": {
+            "type": "string",
+            "example": "Rua do teste",
+            "description": "The customer's street address"
+          },
+          "customerAddressNeighborhood": {
+            "type": "string",
+            "example": "Centro",
+            "description": "The customer's address neighborhood"
+          },
+          "customerAddressCity": {
+            "type": "string",
+            "example": "São Paulo",
+            "description": "The customer's address city"
+          },
+          "customerAddressState": {
+            "type": "string",
+            "example": "SP",
+            "description": "The customer's address state"
+          },
+          "customerAddressNumber": {
+            "type": "string",
+            "example": "1024",
+            "description": "The customer's address number"
+          },
+          "customerAddressComplement": {
+            "type": "string",
+            "example": "1098, 1o andar, apto. 101",
+            "description": "Additional information about the customer's address"
+          },
+          "merchantCode": {
+            "type": "string",
+            "example": "MyCode-123",
+            "description": "Should be the ID for the order/checkout in the merchant side, can be used by merchant to identify orders on Drip"
+          },
+          "resolveUrl": {
+            "type": "string",
+            "format": "url",
+            "example": "https://myshop.com/callback",
+            "description": "Should handle callbacks and redirections when a checkout is approved, MUST PROPERLY handle multiple requests to not create multiple orders."
+          }
+        }
+      },
+      "CheckoutProduct": {
+        "type": "object",
+        "properties": {
+          "merchantCode": {
+            "type": "string",
+            "example": "MyCode-123",
+            "description": "Should be the ID for the product in the merchant order side"
+          },
+          "featured": {
+            "type": "boolean",
+            "example": true,
+            "description": "Product is currently shown on the homepage"
+          },
+          "description": {
+            "type": "string",
+            "example": "Sunglasses with UVA and UVB protection",
+            "description": "Product description on merchant store"
+          },
+          "link": {
+            "type": "string",
+            "format": "url",
+            "example": "https://mystore.com/my-product",
+            "description": "Product link"
+          },
+          "regularPrice": {
+            "type": "number",
+            "example": 100,
+            "description": "Regular product price"
+          },
+          "name": {
+            "type": "string",
+            "example": "Nice Sunglasses",
+            "description": "Product name on merchant store"
+          },
+          "quantity": { "type": "integer", "example": 2 },
+          "amount": {
+            "type": "number",
+            "example": 100,
+            "description": "Actual product price on order"
+          },
+          "totalAmount": { "type": "number", "example": 200 }
+        }
+      },
+      "Instalment": {
+        "type": "object",
+        "properties": {
+          "dueDate": {
+            "type": "string",
+            "format": "date",
+            "example": "2022-06-25T00:00:00.000Z",
+            "description": "Dia do vencimento da parcela"
+          },
+          "amount": {
+            "type": "string",
+            "format": "amount",
+            "example": "10.00",
+            "description": "Valor da parcela"
+          },
+          "cashbackAmount": {
+            "type": "string",
+            "format": "amount",
+            "example": "0.20",
+            "description": "Valor de cashback aplicado na parcela."
+          }
+        }
+      },
+      "InstalmentsSimulator": {
+        "type": "object",
+        "properties": {
+          "cashbackRate": {
+            "type": "string",
+            "format": "percent",
+            "example": "0.02",
+            "description": "Quando aplicado, retorna o valor em % que o usuário receberá de cashback após realizar todos os pagamentos em dia."
+          },
+          "instalments": {
+            "type": "array",
+            "description": "Usually with 3 installments, the last installment has the cashback value != \"0\", and the first 2, has the cashback == \"0\"",
+            "items": { "$ref": "#/components/schemas/Instalment" }
+          }
+        }
+      },
+      "securitySchemes": {
+        "apiKey": { "type": "apiKey", "name": "X-API-KEY", "in": "header" }
+      }
+    }
+  },
+  "security": [{ "apiKey": [] }]
+}

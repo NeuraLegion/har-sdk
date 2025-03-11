@@ -1,0 +1,73 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "get_customer_object",
+    "description": "Retrieves customer data",
+    "version": "v1.0.0"
+  },
+  "servers": [{ "url": "https://openaiagent.gottacatchemall.repl.co" }],
+  "paths": {
+    "/get_user_id": {
+      "post": {
+        "description": "Get customer data given user email",
+        "operationId": "GetCustomerDataByEmail",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "description": "The email of the customer to get data about",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": { "$ref": "#/components/schemas/CustomerObject" }
+                }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" }
+        },
+        "deprecated": false
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CustomerObject": {
+        "type": "object",
+        "properties": {
+          "Customer ID": { "type": "number" },
+          "First Name": { "type": "string" },
+          "Last Name": { "type": "string" },
+          "Email": { "type": "string" },
+          "Accepts Email Marketing": { "type": "string" },
+          "Company": { "type": ["string", "null"] },
+          "Address1": { "type": "string" },
+          "Address2": { "type": ["string", "null"] },
+          "City": { "type": "string" },
+          "Province": { "type": "string" },
+          "Province Code": { "type": "string" },
+          "Country": { "type": "string" },
+          "Country Code": { "type": "string" },
+          "Zip": { "type": "string" },
+          "Phone": { "type": "string" },
+          "Accepts SMS Marketing": { "type": "string" },
+          "Total Spent": { "type": "number" },
+          "Total Orders": { "type": "integer" },
+          "Tags": { "type": ["array", "null"] },
+          "Note": { "type": ["string", "null"] },
+          "Tax Exempt": { "type": "string" }
+        }
+      }
+    }
+  }
+}

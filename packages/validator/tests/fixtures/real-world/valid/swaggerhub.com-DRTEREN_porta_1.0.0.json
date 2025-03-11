@@ -1,0 +1,2348 @@
+{
+  "openapi": "3.1.0",
+  "components": {
+    "requestBodies": {
+      "BookingConfirmationRequest": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "title": "Booking confirmation request",
+              "properties": {
+                "booking_id": {
+                  "description": "The ID of the booking to confirm.",
+                  "type": "string"
+                },
+                "booking_requests": {
+                  "description": "An array of items for the booking.",
+                  "items": {
+                    "properties": {
+                      "holder_category_id": {
+                        "description": "The holder category ID.",
+                        "pattern": "^(?!\\-|\\.|\\_)[0-9a-z\\-\\.\\_]{1,50}$",
+                        "type": "string"
+                      },
+                      "mandatory_answers": {
+                        "description": "An array of customer answers to any mandatory questions for the experience and/or option.\n\nAnswers to mandatory questions with a `level` property value of `BOOKING` appear for every booking item.\n\nAnswers to mandatory questions with a `level` property value of `BY_PAX` appear for their respective booking item.\n",
+                        "items": {
+                          "properties": {
+                            "answer": {
+                              "description": "The customer's answer to the question.",
+                              "type": "string"
+                            },
+                            "mandatory_question_id": {
+                              "description": "The mandatory question ID.",
+                              "pattern": "^(?!\\-|\\.|\\_)[0-9a-z\\-\\.\\_]{1,50}$",
+                              "type": "string"
+                            }
+                          },
+                          "required": ["answer", "mandatory_question_id"],
+                          "type": "object"
+                        },
+                        "type": "array"
+                      },
+                      "pickup_id": {
+                        "description": "The pickup ID, if any.",
+                        "pattern": "^(?!\\-|\\.|\\_)[0-9a-z\\-\\.\\_]{1,50}$",
+                        "type": "string"
+                      },
+                      "request_id": {
+                        "description": "PORTA's own ID for this item in the booking.",
+                        "format": "uuid",
+                        "type": "string"
+                      },
+                      "slot_id": {
+                        "description": "The availability slot ID.",
+                        "pattern": "^(?!\\-|\\.|\\_)[0-9a-z\\-\\.\\_]{1,50}$",
+                        "type": "string"
+                      }
+                    },
+                    "required": ["holder_category_id", "request_id", "slot_id"],
+                    "type": "object"
+                  },
+                  "type": "array",
+                  "uniqueItems": true
+                },
+                "hold_id": {
+                  "description": "The ID of the availability hold request made when a customer added the item to cart.",
+                  "type": "string"
+                },
+                "holder": {
+                  "description": "Information about the lead booker.",
+                  "properties": {
+                    "email": {
+                      "description": "The customer's email address.",
+                      "format": "email",
+                      "type": "string"
+                    },
+                    "first_name": {
+                      "description": "The customer's first name.",
+                      "type": "string"
+                    },
+                    "last_name": {
+                      "description": "The customer's last name.",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "required": ["email", "first_name", "last_name"]
+                },
+                "tuimm_booking_id": {
+                  "description": "This property contains Musement booking information.\n\nThe value consists of two IDs separated by an underscore. The first ID, consisting of `MUS` and numbers, is the order ID to use when contacting Musement Customer Care.\n\nThe second ID, consisting only of numbers, is the ID for a single item in the order. This ID is used for internal technical checks and is not relevant when contacting Musement Customer Care.\n",
+                  "pattern": "^MUS[0-9]+?_[0-9]+?$",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "booking_id",
+                "booking_requests",
+                "hold_id",
+                "holder",
+                "tuimm_booking_id"
+              ],
+              "type": "object"
+            }
+          }
+        }
+      },
+      "BookingCancellationRequest": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "oneOf": [
+                { "$ref": "#/components/schemas/BookingCancellation" },
+                { "$ref": "#/components/schemas/BookingCancellationTimeout" }
+              ]
+            }
+          }
+        }
+      },
+      "HoldAvailabilityRequest": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "title": "Hold availability request",
+              "properties": {
+                "experience_id": {
+                  "description": "The experience ID.",
+                  "pattern": "^(?!\\-|\\.|\\_)[0-9a-z\\-\\.\\_]{1,50}$",
+                  "type": "string"
+                },
+                "expiration_time": {
+                  "description": "When the hold availability request can expire, based on the agreed upon `hold_duration` value.\n\nThe value for this property must be in the local time for the experience with no time zone information, following the [ISO 8601 standard](https://www.iso.org/iso-8601-date-and-time-format.html).\n",
+                  "example": "2024-04-22T12:42:37Z",
+                  "format": "date-time",
+                  "type": "string"
+                },
+                "hold_id": {
+                  "description": "The ID of the hold availability request.",
+                  "format": "uuid",
+                  "type": "string"
+                },
+                "option_id": {
+                  "description": "The option ID.",
+                  "pattern": "^(?!\\-|\\.|\\_)[0-9a-z\\-\\.\\_]{1,50}$",
+                  "type": "string"
+                },
+                "pickup_id": {
+                  "description": "The pickup ID, if any.",
+                  "pattern": "^(?!\\-|\\.|\\_)[0-9a-z\\-\\.\\_]{1,50}$",
+                  "type": "string"
+                },
+                "quantities": {
+                  "description": "An array of the requested holder categories and their quantities.",
+                  "items": {
+                    "properties": {
+                      "holder_category_id": {
+                        "description": "The holder category ID.",
+                        "pattern": "^(?!\\-|\\.|\\_)[0-9a-z\\-\\.\\_]{1,50}$",
+                        "type": "string"
+                      },
+                      "guide_language": {
+                        "title": "Language",
+                        "description": "The requested language.\n\nThis property must follow the [ISO 639-1 standard](https://www.iso.org/iso-639-language-codes.html).\n",
+                        "type": "string"
+                      },
+                      "quantity": {
+                        "description": "The quantity of pax.",
+                        "minimum": 1,
+                        "format": "int32",
+                        "type": "integer"
+                      }
+                    },
+                    "type": "object",
+                    "required": ["holder_category_id", "quantity"]
+                  },
+                  "type": "array",
+                  "uniqueItems": true
+                },
+                "slot_id": {
+                  "description": "The availability slot ID.",
+                  "pattern": "^(?!\\-|\\.|\\_)[0-9a-z\\-\\.\\_]{1,50}$",
+                  "type": "string"
+                }
+              },
+              "type": "object",
+              "required": [
+                "experience_id",
+                "expiration_time",
+                "hold_id",
+                "option_id",
+                "quantities",
+                "slot_id"
+              ]
+            }
+          }
+        }
+      },
+      "TestBookingCancellationRequest": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "oneOf": [
+                { "$ref": "#/components/schemas/BookingCancellation" },
+                { "$ref": "#/components/schemas/BookingCancellationTimeout" }
+              ]
+            }
+          }
+        }
+      },
+      "TestBookingConfirmationRequest": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "title": "Test booking confirmation request",
+              "properties": {
+                "booking_id": {
+                  "description": "A randomly-generated UUID. The same `booking_id` value must be used when testing the booking cancellation webhook.",
+                  "format": "uuid",
+                  "type": "string"
+                },
+                "booking_requests": {
+                  "description": "An array of items for the booking.",
+                  "items": {
+                    "properties": {
+                      "holder_category_id": {
+                        "description": "The ID of a sandbox holder category.",
+                        "pattern": "^(?!\\-|\\.|\\_)[0-9a-z\\-\\.\\_]{1,50}$",
+                        "type": "string"
+                      },
+                      "mandatory_answers": {
+                        "description": "An array of customer answers to any mandatory questions for the sandbox experience and/or option.",
+                        "items": {
+                          "properties": {
+                            "answer": {
+                              "description": "A randomly-generated valid answer to the question.",
+                              "type": "string"
+                            },
+                            "mandatory_question_id": {
+                              "description": "The ID of an existing sandbox mandatory question.",
+                              "pattern": "^(?!\\-|\\.|\\_)[0-9a-z\\-\\.\\_]{1,50}$",
+                              "type": "string"
+                            }
+                          },
+                          "required": ["answer", "mandatory_question_id"],
+                          "type": "object"
+                        },
+                        "type": "array"
+                      }
+                    },
+                    "required": ["holder_category_id"],
+                    "type": "object"
+                  },
+                  "type": "array",
+                  "uniqueItems": true
+                },
+                "hold_id": {
+                  "description": "The ID of the sandbox hold availability request.",
+                  "type": "string"
+                },
+                "holder": {
+                  "description": "Randomly-generated lead booker information.",
+                  "properties": {
+                    "email": {
+                      "description": "Randomly-generated email address.",
+                      "format": "email",
+                      "type": "string"
+                    },
+                    "first_name": {
+                      "description": "Randomly-generated first name.",
+                      "type": "string"
+                    },
+                    "last_name": {
+                      "description": "Randomly-generated last name.",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object",
+                  "required": ["email", "first_name", "last_name"]
+                },
+                "pickup_id": {
+                  "description": "The ID of an existing sandbox pickup, if any.\n\nNote that the location of this property differs from its location in the confirmation request sent to your webhook service.\n",
+                  "pattern": "^(?!\\-|\\.|\\_)[0-9a-z\\-\\.\\_]{1,50}$",
+                  "type": "string"
+                },
+                "slot_id": {
+                  "description": "The ID of an existing sandbox availability slot.\n\nNote that the location of this property differs from its location in the confirmation request sent to your webhook service.\n",
+                  "pattern": "^(?!\\-|\\.|\\_)[0-9a-z\\-\\.\\_]{1,50}$",
+                  "type": "string"
+                },
+                "request_id": {
+                  "description": "In production this property reflects PORTA's own ID for the item in the webhook request. Here, it can be a randomly-generated UUID. The same `request_id` value will appear in the request sent to the webhook service.\n\nNote that the location of this property differs from its location in the confirmation request sent to your webhook service.\n",
+                  "format": "uuid",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "booking_id",
+                "booking_requests",
+                "hold_id",
+                "holder",
+                "request_id",
+                "slot_id"
+              ],
+              "type": "object"
+            }
+          }
+        }
+      },
+      "TestHoldAvailabilityRequest": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "title": "Test hold availability request",
+              "properties": {
+                "experience_id": {
+                  "description": "The ID for an existing sandbox experience.",
+                  "pattern": "^(?!\\-|\\.|\\_)[0-9a-z\\-\\.\\_]{1,50}$",
+                  "type": "string"
+                },
+                "expiration_time": {
+                  "description": "When the hold availability request can expire, based on the agreed upon `hold_duration` value.\n\nThe value for this property must be in the local time for the experience with no time zone information, following the [ISO 8601 standard](https://www.iso.org/iso-8601-date-and-time-format.html).\n",
+                  "example": "2024-04-22T12:42:37Z",
+                  "format": "date-time",
+                  "type": "string"
+                },
+                "hold_id": {
+                  "description": "A randomly-generated UUID. The same `hold_id` value must be used when testing the booking confirmation webhook.",
+                  "format": "uuid",
+                  "type": "string"
+                },
+                "option_id": {
+                  "description": "The ID for an existing sandbox option.",
+                  "pattern": "^(?!\\-|\\.|\\_)[0-9a-z\\-\\.\\_]{1,50}$",
+                  "type": "string"
+                },
+                "pickup_id": {
+                  "description": "The ID for an existing sandbox pickup, if any.",
+                  "pattern": "^(?!\\-|\\.|\\_)[0-9a-z\\-\\.\\_]{1,50}$",
+                  "type": "string"
+                },
+                "quantities": {
+                  "description": "An array of the requested holder categories and their quantities.",
+                  "items": {
+                    "properties": {
+                      "holder_category_id": {
+                        "description": "The ID for an existing sandbox holder category.",
+                        "pattern": "^(?!\\-|\\.|\\_)[0-9a-z\\-\\.\\_]{1,50}$",
+                        "type": "string"
+                      },
+                      "guide_language": {
+                        "title": "Language",
+                        "description": "The requested language.\n\nThis property must follow the [ISO 639-1 standard](https://www.iso.org/iso-639-language-codes.html).\n",
+                        "type": "string"
+                      },
+                      "quantity": {
+                        "description": "The quantity of pax.",
+                        "minimum": 1,
+                        "format": "int32",
+                        "type": "integer"
+                      }
+                    },
+                    "type": "object",
+                    "required": ["holder_category_id", "quantity"]
+                  },
+                  "type": "array",
+                  "uniqueItems": true
+                },
+                "slot_id": {
+                  "description": "The ID for an existing sandbox availability slot.",
+                  "pattern": "^(?!\\-|\\.|\\_)[0-9a-z\\-\\.\\_]{1,50}$",
+                  "type": "string"
+                }
+              },
+              "type": "object",
+              "required": [
+                "experience_id",
+                "expiration_time",
+                "hold_id",
+                "option_id",
+                "quantities",
+                "slot_id"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "Supplier-production": {
+        "description": "This is the default security scheme a supplier must use when accessing PORTA in the **production** environment.",
+        "type": "oauth2",
+        "flows": {
+          "clientCredentials": {
+            "tokenUrl": "https://prod.api.tui/oauth2/token",
+            "scopes": {}
+          }
+        }
+      },
+      "Supplier-sandbox": {
+        "description": "This is the default security scheme a supplier must use when accessing PORTA in the **sandbox** environment.",
+        "type": "oauth2",
+        "flows": {
+          "clientCredentials": {
+            "tokenUrl": "https://prod.api.tui/oauth2/token",
+            "scopes": {}
+          }
+        }
+      },
+      "Webhook": {
+        "description": "This security scheme is used by PORTA when calling a supplier's webhook service.",
+        "type": "apiKey",
+        "in": "header",
+        "name": "x-webhook-key"
+      }
+    },
+    "parameters": {
+      "accept": {
+        "name": "accept",
+        "description": "Specify the format of the response.",
+        "in": "header",
+        "required": true,
+        "schema": { "enum": ["application/json"], "type": "string" }
+      },
+      "accept-version": {
+        "name": "accept-version",
+        "description": "The version of PORTA for the request.",
+        "in": "header",
+        "required": true,
+        "schema": {
+          "title": "PORTA version",
+          "enum": ["vnd.porta-api.v1"],
+          "x-enumDescriptions": { "vnd.porta-api.v1": "Version 1.0.0" },
+          "type": "string"
+        }
+      },
+      "API-Key": {
+        "name": "API-Key",
+        "description": "The supplier's API key",
+        "in": "header",
+        "required": true,
+        "schema": {
+          "title": "API key",
+          "pattern": "^[a-zA-Z0-9-_\\.]{3,50}$",
+          "type": "string"
+        }
+      },
+      "experience_id": {
+        "name": "experience_id",
+        "description": "The experience ID.",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "pattern": "^(?!\\-|\\.|\\_)[0-9a-z\\-\\.\\_]{1,50}$",
+          "type": "string"
+        }
+      },
+      "option_id": {
+        "name": "option_id",
+        "description": "The option ID.",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "pattern": "^(?!\\-|\\.|\\_)[0-9a-z\\-\\.\\_]{1,50}$",
+          "type": "string"
+        }
+      },
+      "date_from": {
+        "name": "date_from",
+        "description": "Filters results to those which take place on or after the specified date.",
+        "in": "query",
+        "required": true,
+        "schema": { "format": "date", "type": "string" }
+      },
+      "date_to": {
+        "name": "date_to",
+        "description": "Filters results to those which take place on or before the specified date.",
+        "in": "query",
+        "required": true,
+        "schema": { "format": "date", "type": "string" }
+      },
+      "availability_slot_id": {
+        "name": "availability_slot_id",
+        "description": "The availability slot ID.",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "pattern": "^(?!\\-|\\.|\\_)[0-9a-z\\-\\.\\_]{1,50}$",
+          "type": "string"
+        }
+      },
+      "vendor_id": {
+        "name": "vendor_id",
+        "description": "Filter results to those which belong to the specified vendor.",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "pattern": "^(?!\\-|\\.|\\_)[0-9a-z\\-\\.\\_]{1,50}$",
+          "type": "string"
+        }
+      },
+      "mandatory_question_id": {
+        "name": "mandatory_question_id",
+        "description": "The mandatory question ID.",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "pattern": "^(?!\\-|\\.|\\_)[0-9a-z\\-\\.\\_]{1,50}$",
+          "type": "string"
+        }
+      },
+      "pickup_id": {
+        "name": "pickup_id",
+        "description": "The pickup ID.",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "pattern": "^(?!\\-|\\.|\\_)[0-9a-z\\-\\.\\_]{1,50}$",
+          "type": "string"
+        }
+      },
+      "accept-version-webhook": {
+        "name": "accept-version",
+        "description": "The version of PORTA for the webhook request.",
+        "in": "header",
+        "required": true,
+        "schema": {
+          "title": "PORTA webhook version",
+          "enum": ["vnd.porta-webhook-api.v1"],
+          "x-enumDescriptions": { "vnd.porta-webhook-api.v1": "Version 1.0.0" },
+          "type": "string"
+        }
+      },
+      "x-webhook-key": {
+        "name": "x-webhook-key",
+        "description": "The key which allows the PORTA to access the supplier's webhook service.",
+        "in": "header",
+        "required": true,
+        "schema": { "title": "Webhook key", "type": "string" }
+      }
+    },
+    "schemas": {
+      "DailySlot": {
+        "properties": {
+          "capacity": {
+            "description": "The remaining number of seats for the slot.",
+            "format": "int32",
+            "type": "integer"
+          },
+          "daily_slot": {
+            "title": "Daily slot",
+            "properties": {
+              "date": {
+                "description": "The date for the slot.",
+                "format": "date",
+                "type": "string"
+              }
+            },
+            "required": ["date"],
+            "type": "object"
+          }
+        },
+        "required": ["daily_slot"],
+        "type": "object"
+      },
+      "OpenSlot": {
+        "properties": {
+          "open_slot": {
+            "title": "Open slot",
+            "oneOf": [
+              {
+                "title": "Duration days",
+                "description": "Bookings are valid for a specified number of days after purchase.",
+                "properties": {
+                  "duration_days": {
+                    "description": "The number of days a booking is valid after purchase.",
+                    "format": "int32",
+                    "type": "integer"
+                  },
+                  "type": {
+                    "description": "The type of open slot.",
+                    "enum": ["DURATION_DAYS"],
+                    "type": "string"
+                  }
+                },
+                "required": ["type", "duration_days"],
+                "type": "object"
+              },
+              {
+                "title": "End date",
+                "description": "Bookings are valid until a specified date.",
+                "properties": {
+                  "end_date": {
+                    "description": "The date when customers can no longer redeem their booking.",
+                    "format": "date",
+                    "type": "string"
+                  },
+                  "type": {
+                    "description": "The type of open slot.",
+                    "enum": ["END_DATE"],
+                    "type": "string"
+                  }
+                },
+                "required": ["end_date", "type"],
+                "type": "object"
+              }
+            ]
+          }
+        },
+        "required": ["open_slot"],
+        "type": "object"
+      },
+      "TimeSlot": {
+        "properties": {
+          "capacity": {
+            "description": "The remaining number of seats for the slot.",
+            "format": "int32",
+            "type": "integer"
+          },
+          "time_slot": {
+            "title": "Time slot",
+            "properties": {
+              "end": {
+                "description": "The date and time the experience ends. If the experience duration is not well defined, suppliers can use the same value as the `start` property.\n\nThe value for this property must be in the local time for the experience with no time zone information, following the [ISO 8601 standard](https://www.iso.org/iso-8601-date-and-time-format.html).\n",
+                "example": "2023-04-22T20:00:00Z",
+                "format": "date-time",
+                "type": "string"
+              },
+              "pickup_ids": {
+                "title": "Pickups",
+                "description": "A list of IDs for pickups available for this time slot.",
+                "items": { "title": "Pickup IDs", "type": "string" },
+                "type": "array",
+                "uniqueItems": true
+              },
+              "start": {
+                "description": "The date and time the experience starts.\n\nThe value for this property must be in the local time for the experience with no time zone information, following the [ISO 8601 standard](https://www.iso.org/iso-8601-date-and-time-format.html).\n",
+                "example": "2023-04-22T18:00:00Z",
+                "format": "date-time",
+                "type": "string"
+              }
+            },
+            "required": ["end", "start"],
+            "type": "object"
+          }
+        },
+        "type": "object",
+        "required": ["time_slot"]
+      },
+      "AvailableHolderCategory": {
+        "title": "Holder category",
+        "properties": {
+          "holder_category_id": {
+            "description": "The holder category ID, assigned by the supplier.",
+            "pattern": "^(?!\\-|\\.|\\_)[0-9a-z\\-\\.\\_]{1,50}$",
+            "type": "string"
+          },
+          "max_quantity": {
+            "description": "The maximum quantity allowed per booking.",
+            "format": "int32",
+            "type": "integer"
+          },
+          "min_quantity": {
+            "description": "The minimum quantity required for a valid booking.",
+            "format": "int32",
+            "type": "integer"
+          },
+          "price_in_cents": {
+            "description": "The holder category price in cents.",
+            "format": "int64",
+            "type": "integer"
+          }
+        },
+        "required": ["holder_category_id", "price_in_cents"],
+        "type": "object"
+      },
+      "AvailabilitySlotGeneric": {
+        "title": "Availability generic slot",
+        "properties": {
+          "available_holder_categories": {
+            "title": "Holder categories",
+            "description": "Holder categories for the slot.",
+            "items": { "$ref": "#/components/schemas/AvailableHolderCategory" },
+            "type": "array",
+            "uniqueItems": true
+          },
+          "guide_languages": {
+            "title": "Languages",
+            "description": "A list of languages which can be booked for the slot. The languages will appear for *all* available holder categories in the slot.\n\nThis property must follow the [ISO 639-1 standard](https://www.iso.org/iso-639-language-codes.html).\n",
+            "items": { "title": "Language code", "type": "string" },
+            "type": "array",
+            "uniqueItems": true
+          },
+          "option_id": {
+            "description": "The ID of the option that the slot belongs to.",
+            "pattern": "^(?!\\-|\\.|\\_)[0-9a-z\\-\\.\\_]{1,50}$",
+            "type": "string"
+          },
+          "slot_id": {
+            "description": "The availability slot ID, assigned by the supplier.\n\nThe ID must be unique. The same ID cannot be re-used for different experiences.\n",
+            "pattern": "^(?!\\-|\\.|\\_)[0-9a-z\\-\\.\\_]{1,50}$",
+            "type": "string"
+          }
+        },
+        "required": ["available_holder_categories", "option_id", "slot_id"],
+        "type": "object"
+      },
+      "AvailabilitySlot": {
+        "title": "Availability slot",
+        "allOf": [
+          {
+            "oneOf": [
+              {
+                "allOf": [
+                  { "title": "Daily slot" },
+                  { "$ref": "#/components/schemas/DailySlot" }
+                ]
+              },
+              {
+                "allOf": [
+                  { "title": "Open slot" },
+                  { "$ref": "#/components/schemas/OpenSlot" }
+                ]
+              },
+              {
+                "allOf": [
+                  { "title": "Time slot" },
+                  { "$ref": "#/components/schemas/TimeSlot" }
+                ]
+              }
+            ]
+          },
+          { "$ref": "#/components/schemas/AvailabilitySlotGeneric" }
+        ],
+        "required": [
+          "available_holder_categories",
+          "option_id",
+          "slot_id",
+          "start"
+        ],
+        "type": "object"
+      },
+      "ErrorResponse": {
+        "title": "Error response",
+        "example": {
+          "id": "3ecae132-a32d-41f9-8f7d-586f34cc29ce",
+          "code": "0",
+          "message": "There was an error"
+        },
+        "properties": {
+          "code": {
+            "description": "The internal code for the error.",
+            "type": "string"
+          },
+          "id": {
+            "description": "The ID of the error to use for tracking.",
+            "format": "uuid",
+            "type": "string"
+          },
+          "message": {
+            "description": "A message with a brief explanation of the error.",
+            "type": "string"
+          }
+        },
+        "required": ["code", "id"],
+        "type": "object"
+      },
+      "AvailabilitySlotDaily": {
+        "title": "Availability daily slot",
+        "allOf": [
+          { "$ref": "#/components/schemas/AvailabilitySlotGeneric" },
+          { "$ref": "#/components/schemas/DailySlot" }
+        ],
+        "required": [
+          "available_holder_categories",
+          "daily_slot",
+          "option_id",
+          "slot_id"
+        ],
+        "type": "object"
+      },
+      "AvailabilityOpenSlot": {
+        "title": "Availability open slot",
+        "allOf": [
+          { "$ref": "#/components/schemas/AvailabilitySlotGeneric" },
+          { "$ref": "#/components/schemas/OpenSlot" }
+        ],
+        "required": [
+          "available_holder_categories",
+          "open_slot",
+          "option_id",
+          "slot_id"
+        ],
+        "type": "object"
+      },
+      "AvailabilityTimeSlot": {
+        "title": "Availability time slot",
+        "allOf": [
+          { "$ref": "#/components/schemas/AvailabilitySlotGeneric" },
+          { "$ref": "#/components/schemas/TimeSlot" }
+        ],
+        "required": [
+          "available_holder_categories",
+          "option_id",
+          "slot_id",
+          "time_slot"
+        ],
+        "type": "object"
+      },
+      "HolderCategory": {
+        "title": "Holder category",
+        "properties": {
+          "default_category": {
+            "description": "When `true` the holder category appears first in lists.\n\nIf no holder category is defined as the default, then the holder category with a `holder_type` value of `ADULT` is automatically made the default. If no adult holder categories are available, then the first holder category is automatically made the default.\n",
+            "type": "boolean"
+          },
+          "holder_category_id": {
+            "description": "The holder category ID, assigned by the supplier.",
+            "pattern": "^(?!\\-|\\.|\\_)[0-9a-z\\-\\.\\_]{1,50}$",
+            "type": "string"
+          },
+          "holder_type": {
+            "description": "The type of holder category.\n\nPlease note that usage of the `CUSTOM*` holder type requires approval from the PORTA team.\n",
+            "enum": [
+              "ADULT",
+              "CHILD",
+              "CUSTOM*",
+              "FAMILY",
+              "GROUP",
+              "INFANT",
+              "MILITARY",
+              "REGULAR",
+              "SENIOR",
+              "STUDENT",
+              "YOUTH"
+            ],
+            "type": "string"
+          },
+          "maximum_age": {
+            "description": "The maximum age customers can have to qualify for the holder category.",
+            "format": "int32",
+            "type": "integer"
+          },
+          "minimum_age": {
+            "description": "The minimum age customers must have to qualify for the holder category.",
+            "format": "int32",
+            "type": "integer"
+          }
+        },
+        "required": ["holder_category_id", "holder_type", "minimum_age"],
+        "type": "object"
+      },
+      "Option": {
+        "title": "Option",
+        "properties": {
+          "holder_categories": {
+            "description": "The holder categories for the option.",
+            "items": { "$ref": "#/components/schemas/HolderCategory" },
+            "type": "array",
+            "uniqueItems": true
+          },
+          "label": {
+            "description": "The human-friendly label for the option.",
+            "type": "string"
+          },
+          "main_option": {
+            "description": "When `true`, the main option appears first in the list of options.\n\nIf no option is defined as the default, then the first option is automatically made the default.\n",
+            "type": "boolean"
+          },
+          "max_booking_quantity": {
+            "description": "The maximum quantity allowed per booking.",
+            "format": "int32",
+            "type": "integer"
+          },
+          "min_booking_quantity": {
+            "description": "The minimum quantity required for a valid booking.",
+            "format": "int32",
+            "type": "integer"
+          },
+          "option_id": {
+            "description": "The option ID, assigned by the supplier.",
+            "pattern": "^(?!\\-|\\.|\\_)[0-9a-z\\-\\.\\_]{1,50}$",
+            "type": "string"
+          }
+        },
+        "required": ["holder_categories", "label", "option_id"],
+        "type": "object"
+      },
+      "Experience": {
+        "title": "Experience",
+        "properties": {
+          "archived": {
+            "description": "When an experience is archived, it is no longer for sale in Musement sites.\n\nWhen an experience is un-archived, a member of the *Content Supplier Connectivity* team is required to un-archive the corresponding business platform activity.\n",
+            "default": false,
+            "type": "boolean"
+          },
+          "availability_slot_type": {
+            "description": "The type of availability slot for the experience.",
+            "enum": ["DAILY", "OPEN", "TIME"],
+            "type": "string",
+            "x-enumDescriptions": {
+              "DAILY": "Customers must select a date for their booking. They do not select a time.",
+              "OPEN": "Customers do not select a date or time. Their booking expires on a set date or a set number of days after purchase.",
+              "TIME": "Customers must select a date and time for their booking."
+            }
+          },
+          "currency": {
+            "description": "The currency to use for billing.\n\nThis property must follow the [ISO 4217 standard](https://www.iso.org/iso-4217-currency-codes.html).\n",
+            "format": "currency",
+            "type": "string"
+          },
+          "cutoff_time": {
+            "default": "P0D",
+            "description": "The minimum amount of time required to book a travel date in advance.\n\nThis property must follow the [ISO 8601 standard](https://www.iso.org/iso-8601-date-and-time-format.html).\n",
+            "format": "duration",
+            "type": "string"
+          },
+          "experience_id": {
+            "description": "The experience ID, assigned by the supplier.",
+            "pattern": "^(?!\\-|\\.|\\_)[0-9a-z\\-\\.\\_]{1,50}$",
+            "type": "string"
+          },
+          "experience_name": {
+            "description": "The name of the experience as it will appear in PORTA.",
+            "type": "string"
+          },
+          "external_experience_id": {
+            "description": "An additional ID for the experience which suppliers can use for their own records.",
+            "type": "string"
+          },
+          "external_experience_name": {
+            "description": "An additional name for the experience which suppliers can use for their own records.",
+            "type": "string"
+          },
+          "options": {
+            "title": "Options",
+            "description": "The bookable options for the experience. This property must contain at least one option.",
+            "items": { "$ref": "#/components/schemas/Option" },
+            "type": "array",
+            "uniqueItems": true
+          },
+          "vendor_id": {
+            "description": "The ID of the vendor that the experience belongs to.",
+            "pattern": "^(?!\\-|\\.|\\_)[0-9a-z\\-\\.\\_]{1,50}$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "availability_slot_type",
+          "currency",
+          "experience_id",
+          "experience_name",
+          "options",
+          "vendor_id"
+        ],
+        "type": "object"
+      },
+      "ExperienceUpdateRequest": {
+        "title": "Experience update request",
+        "properties": {
+          "archived": {
+            "description": "When an experience is archived, it is no longer for sale in Musement sites.\n\nWhen an experience is un-archived, a member of the *Content Supplier Connectivity* team is required to un-archive the corresponding business platform activity.\n",
+            "default": false,
+            "type": "boolean"
+          },
+          "cutoff_time": {
+            "default": "P0D",
+            "description": "The minimum amount of time required to book a travel date in advance.\n\nThis property must follow the [ISO 8601 standard](https://www.iso.org/iso-8601-date-and-time-format.html).\n",
+            "format": "duration",
+            "type": "string"
+          },
+          "experience_name": {
+            "description": "The name of the experience as it will appear in PORTA.",
+            "type": "string"
+          },
+          "external_experience_id": {
+            "description": "An additional ID for the experience which suppliers can use for their own records.",
+            "type": "string"
+          },
+          "external_experience_name": {
+            "description": "An additional name for the experience which suppliers can use for their own records.",
+            "type": "string"
+          },
+          "vendor_id": {
+            "description": "The ID of the vendor that the experience belongs to.",
+            "pattern": "^(?!\\-|\\.|\\_)[0-9a-z\\-\\.\\_]{1,50}$",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "MandatoryQuestion": {
+        "title": "Mandatory question",
+        "properties": {
+          "data_pattern": {
+            "description": "For unsupported data types, suppliers can provide a regular expression validation pattern. The `data_type` property must be `STRING` to use this feature.",
+            "type": "string"
+          },
+          "data_type": {
+            "description": "The type of data the question will collect.",
+            "enum": [
+              "DATE",
+              "DECIMAL",
+              "EMAIL",
+              "INTEGER",
+              "PHONE_NUMBER",
+              "SELECT_ONE",
+              "STRING"
+            ],
+            "type": "string",
+            "x-enumDescriptions": {
+              "DATE": "Customers must select a single date.",
+              "DECIMAL": "Customers must provide a decimal number value.",
+              "EMAIL": "Customers must provide a valid email address.",
+              "INTEGER": "Customers must provide an integer value.",
+              "PHONE_NUMBER": "Customers must provide a phone number.",
+              "SELECT_ONE": "Customers must select one value.",
+              "STRING": "Customers must provide a text value."
+            }
+          },
+          "holder_category_id": {
+            "description": "The holder category associated with the question. When `null`, the question is applied to all holder categories.",
+            "type": ["null", "string"]
+          },
+          "level": {
+            "description": "The level determines how to request the question: once per booking or once per person in a booking.",
+            "enum": ["BOOKING", "BY_PAX"],
+            "type": "string",
+            "x-enumDescriptions": {
+              "BOOKING": "The question must be answered once per booking.",
+              "BY_PAX": "The question must be answered once per person in a booking."
+            }
+          },
+          "mandatory_question_id": {
+            "description": "The mandatory question ID, assigned by the supplier.",
+            "pattern": "^(?!\\-|\\.|\\_)[0-9a-z\\-\\.\\_]{1,50}$",
+            "type": "string"
+          },
+          "option_id": {
+            "description": "The option associated with the question. When `null`, the question is applied to all options.",
+            "type": ["null", "string"]
+          },
+          "question": {
+            "description": "The human-friendly question to show customers.",
+            "type": "string"
+          },
+          "select": {
+            "additionalProperties": {
+              "type": "string",
+              "description": "The human-friendly value to show customers.",
+              "x-additionalPropertiesName": "Raw key value"
+            },
+            "description": "When the `data_type` property is `SELECT_ONE`, use the `select` property to provide options for customers to select. The property value must be a key-value object of strings.",
+            "type": "object"
+          }
+        },
+        "required": [
+          "data_type",
+          "level",
+          "mandatory_question_id",
+          "name",
+          "question",
+          "type"
+        ],
+        "type": "object"
+      },
+      "Pickup": {
+        "title": "Pickup",
+        "properties": {
+          "name": {
+            "description": "The human-friendly name for the pickup.",
+            "type": "string"
+          },
+          "type": {
+            "description": "The type of pickup.",
+            "enum": ["HOTEL", "MEETING_POINT"],
+            "type": "string",
+            "x-enumDescriptions": {
+              "HOTEL": "The pickup is at a hotel.",
+              "MEETING_POINT": "The pickup is a general location."
+            }
+          },
+          "latitude": {
+            "description": "The latitude value for the pickup location. This value may be omitted.",
+            "format": "float",
+            "maximum": 90,
+            "minimum": -90,
+            "type": "number"
+          },
+          "longitude": {
+            "description": "The longitude value for the pickup location. This value may be omitted.",
+            "format": "float",
+            "maximum": 180,
+            "minimum": -180,
+            "type": "number"
+          },
+          "pickup_id": {
+            "description": "The pickup ID, assigned by the supplier.",
+            "pattern": "^(?!\\-|\\.|\\_)[0-9a-z\\-\\.\\_]{1,50}$",
+            "type": "string"
+          },
+          "time_margin": {
+            "default": 0,
+            "description": "The number of minutes a pickup will occur before or after a time slot. This property accepts both positive and negative values.\n\nA negative value indicates the pickup arrives *before* the time slot.\n\nA positive value indicates the pickup arrives *after* the time slot.\n",
+            "format": "int32",
+            "type": "integer"
+          }
+        },
+        "required": ["name", "pickup_id", "type"],
+        "type": "object"
+      },
+      "Vendor": {
+        "title": "Vendor",
+        "properties": {
+          "name": {
+            "description": "The name of the vendor as it will appear in PORTA.",
+            "type": "string"
+          },
+          "vendor_id": {
+            "description": "The vendor ID, assigned by the supplier.",
+            "pattern": "^(?!\\-|\\.|\\_)[0-9a-z\\-\\.\\_]{1,50}$",
+            "type": "string"
+          }
+        },
+        "required": ["name", "vendor_id"],
+        "type": "object"
+      },
+      "BookingCancellation": {
+        "title": "Booking cancellation",
+        "properties": {
+          "booking_id": {
+            "description": "The ID of the booking to cancel.",
+            "format": "uuid",
+            "type": "string"
+          },
+          "ticket_numbers": {
+            "description": "A list of ticket values issued by the original booking confirmation response.",
+            "items": { "type": "string" },
+            "type": "array"
+          },
+          "transaction_id": {
+            "description": "The ID issued by the original booking confirmation response.",
+            "type": "string"
+          }
+        },
+        "required": ["booking_id", "ticket_numbers", "transaction_id"],
+        "type": "object"
+      },
+      "BookingCancellationTimeout": {
+        "title": "Booking cancellation (timeout)",
+        "allOf": [
+          { "$ref": "#/components/schemas/BookingCancellation" },
+          {
+            "properties": {
+              "unconfirmed": {
+                "description": "When present, the original booking confirmation request timed out. When this happens, the booking is no longer considered valid and suppliers are required to cancel the confirmation request regardless of the experience's cancellation policy.",
+                "enum": [true],
+                "type": "boolean"
+              }
+            },
+            "required": ["unconfirmed"],
+            "type": "object"
+          }
+        ]
+      }
+    },
+    "responses": {
+      "409": {
+        "description": "Conflict: request conflicts with target resource",
+        "content": {
+          "application/json": {
+            "schema": {
+              "allOf": [
+                { "$ref": "#/components/schemas/ErrorResponse" },
+                {
+                  "example": {
+                    "code": "409",
+                    "id": "3ecae132-a32d-41f9-8f7d-586f34cc29ce",
+                    "message": "Request conflicts with target resource."
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "default": {
+        "description": "Error response",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+            "examples": {
+              "400": {
+                "summary": "400 Bad request: check the request for errors",
+                "value": {
+                  "code": "400",
+                  "id": "3ecae132-a32d-41f9-8f7d-586f34cc29ce",
+                  "message": "Check the request for errors."
+                }
+              },
+              "404": {
+                "summary": "404 Not found: resource does not exist",
+                "value": {
+                  "code": "404",
+                  "id": "3ecae132-a32d-41f9-8f7d-586f34cc29ce",
+                  "message": "Resource does not exist."
+                }
+              }
+            }
+          }
+        }
+      },
+      "WebhookHoldAvailabilityResponse": {
+        "description": "Hold availability request accepted",
+        "content": {
+          "application/json": {
+            "schema": {
+              "properties": {
+                "hold_id": {
+                  "description": "The hold ID from the request.",
+                  "type": "string"
+                },
+                "transaction_id": {
+                  "description": "The supplier's own ID for the hold request.",
+                  "type": "string"
+                }
+              },
+              "required": ["hold_id", "transaction_id"],
+              "type": "object"
+            }
+          }
+        }
+      },
+      "Webhook400": {
+        "description": "Bad request",
+        "content": {
+          "application/json": {
+            "schema": {
+              "properties": {
+                "code": {
+                  "description": "The code for the error.",
+                  "enum": [
+                    "INACTIVE_HOLD_KEY",
+                    "INACTIVE_OR_UNAVAILABLE_EXPERIENCE",
+                    "ELEMENT_NOT_FOUND",
+                    "NO_CAPACITY_LEFT",
+                    "NOT_CANCELLABLE_BOOKING",
+                    "VALIDATION_ERROR",
+                    "INCORRECT_REQUEST",
+                    "UNCLASSIFIED_ERROR"
+                  ],
+                  "x-enumDescriptions": {
+                    "ELEMENT_NOT_FOUND": "One or more of the IDs in the request are not recognized",
+                    "INACTIVE_HOLD_KEY": "When attempting to confirm a booking for an expired hold",
+                    "INACTIVE_OR_UNAVAILABLE_EXPERIENCE": "The experience is no longer available",
+                    "INCORRECT_REQUEST": "The request contains errors",
+                    "NO_CAPACITY_LEFT": "There are no more free seats available",
+                    "NOT_CANCELLABLE_BOOKING": "When attempting to cancel a booking that can no longer be cancelled",
+                    "UNCLASSIFIED_ERROR": "The error does not match any of the other cases",
+                    "VALIDATION_ERROR": "One or more of the properties (for example mandatory answers) does not match the expected type/format"
+                  },
+                  "type": "string"
+                },
+                "message": {
+                  "description": "A message with a brief explanation to contextualize the error.",
+                  "type": "string"
+                }
+              },
+              "required": ["code", "id"],
+              "type": "object"
+            }
+          }
+        }
+      },
+      "WebhookBookingConfirmationResponse": {
+        "description": "Booking confirmation request accepted",
+        "content": {
+          "application/json": {
+            "schema": {
+              "properties": {
+                "booking_id": {
+                  "description": "The booking ID from the request.",
+                  "type": "string"
+                },
+                "tickets": {
+                  "description": "An array of tickets that customers can use for their experience. Tickets can be unique per person in the booking or valid for the entire group.",
+                  "items": {
+                    "allOf": [
+                      {
+                        "properties": {
+                          "number": {
+                            "description": "The ticket value that customers must use for their experience. Despite the property name, values can contain letters and symbols.",
+                            "type": "string"
+                          }
+                        },
+                        "required": ["number"],
+                        "type": "object"
+                      },
+                      {
+                        "oneOf": [
+                          {
+                            "title": "Per person",
+                            "description": "This ticket is valid for a single person in the booking.",
+                            "properties": {
+                              "format": {
+                                "description": "Indicates how to display the ticket value, if at all.",
+                                "enum": ["BARCODE", "NONE", "QR", "TEXT"],
+                                "type": "string",
+                                "x-enumDescriptions": {
+                                  "BARCODE": "Ticket values should be displayed as barcodes (128).",
+                                  "NONE": "Ticket values do not need to be displayed.",
+                                  "QR": "Ticket values should be displayed as QR codes (UTF-8 encoding).",
+                                  "TEXT": "Ticket values should be displayed as simple text."
+                                }
+                              },
+                              "holder_category_id": {
+                                "description": "The holder category ID associated with the ticket value.",
+                                "pattern": "^(?!\\-|\\.|\\_)[0-9a-z\\-\\.\\_]{1,50}$",
+                                "type": "string"
+                              },
+                              "request_id": {
+                                "description": "The `request_id` from the corresponding `booking_requests` item in the request. This is PORTA's own ID for the item in the booking.",
+                                "format": "uuid",
+                                "type": "string"
+                              },
+                              "type": {
+                                "description": "Indicates whether the ticket value covers everyone in a booking or is for a single person.",
+                                "enum": ["FOR_SINGLE_PERSON"],
+                                "type": "string",
+                                "x-enumDescriptions": {
+                                  "FOR_SINGLE_PERSON": "The ticket value applies to a single person."
+                                }
+                              }
+                            },
+                            "required": [
+                              "format",
+                              "holder_category_id",
+                              "request_id",
+                              "type"
+                            ],
+                            "type": "object"
+                          },
+                          {
+                            "title": "Per group",
+                            "description": "This ticket is valid for everyone in the booking.",
+                            "properties": {
+                              "format": {
+                                "description": "Indicates how to display the ticket value, if at all.",
+                                "enum": [
+                                  "BARCODE",
+                                  "NONE",
+                                  "QR",
+                                  "TEXT",
+                                  "URL"
+                                ],
+                                "type": "string",
+                                "x-enumDescriptions": {
+                                  "BARCODE": "Ticket values should be displayed as barcodes (128).",
+                                  "NONE": "Ticket values do not need to be displayed.",
+                                  "QR": "Ticket values should be displayed as QR codes (UTF-8 encoding).",
+                                  "TEXT": "Ticket values should be displayed as simple text.",
+                                  "URL": "Tickets should be downloaded from a URL."
+                                }
+                              },
+                              "mimeType": {
+                                "description": "Used for tickets with `format` value of `URL` to indicate the type of file to download.\n\nFor more information on common MIME types, check out [Mozilla's guide](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types).\n",
+                                "type": "string"
+                              },
+                              "type": {
+                                "description": "Indicates whether the ticket value covers everyone in a booking or is for a single person.",
+                                "enum": ["FOR_ALL"],
+                                "type": "string",
+                                "x-enumDescriptions": {
+                                  "FOR_ALL": "The ticket value applies to all people in the booking."
+                                }
+                              }
+                            },
+                            "required": ["format", "type"],
+                            "type": "object"
+                          }
+                        ]
+                      }
+                    ],
+                    "type": "object",
+                    "uniqueItems": true
+                  },
+                  "type": "array"
+                },
+                "transaction_id": {
+                  "description": "The supplier's own ID for the booking request.",
+                  "type": "string"
+                }
+              },
+              "required": ["booking_id", "tickets", "transaction_id"],
+              "type": "object"
+            }
+          }
+        }
+      }
+    }
+  },
+  "info": {
+    "title": "PORTA",
+    "contact": { "email": "porta@tui.com", "name": "PORTA team" },
+    "description": "# About PORTA\n\nMusement's **PORTA** (*Perfect Open Road To Activities*) service allows suppliers to manage their experiences via API.\n\n# Authentication\n\n<SecurityDefinitions />\n\n# Release notes\n\nThis section contains a record of changes to the API.\n\n## 2023-12-06\n\n* Added `unconfirmed` property to booking cancellation request webhook\n\n## 2023-10-12\n\n* Added `vendor_id` query parameter to the endpoint `GET /supplier/catalog/experiences`\n\t* Filters results to those which belong to the specified vendor\n\n## 2023-10-02\n\n* Added `ticket_numbers` and `transaction_id` properties to booking cancellation request webhook\n\n## 2023-08-24\n\n* Changed `accept-version` header value used for webhook requests\n\t* New value is `vnd.porta-webhook-api.v1`\n\n## 2023-06-22\n\n* Added webhook test endpoints for sandbox environment:\n\t* `POST /supplier/integration-tests/book`\n\t* `POST /supplier/integration-tests/cancel-booking`\n\t* `POST /supplier/integration-tests/hold`\n\n## 2023-06-09\n\n* Added endpoint `PATCH /supplier/catalog/experiences/{experience_id}`\n* Added `archived` property to *Experience model*\n\t* Archived experiences are no longer for sale\n\n## 2023-05-04\n\n* Removed `supplier-code` header parameter from all endpoints\n* Removed exhaust vent that exposed the Core\n\n## 2023-04-20\n\n**Booking confirmation request**\n\n* Added `tuimm_booking_id` property\n\t* Human-friendly Musement booking ID\n\n**Vendors**\n\n* Added `Vendor` model\n\t* Used to categorize experiences by different sources, partners or channels\n* Added two endpoints:\n\t* `GET /supplier/vendors`\n\t* `POST /supplier/vendors`\n* Added `vendor_id` property to *Experience model*\n\n## 2023-03-23\n\n**Experience model**\n\n* Removed `content` and `media` properties\n",
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/supplier/availability/experiences/{experience_id}/options/{option_id}/slots": {
+      "delete": {
+        "summary": "Remove availability slots from option",
+        "description": "An availability slot cannot be deleted if it is part of a hold availability request.",
+        "operationId": "delete/availability/experiences/experience_id/options/option_id/slots",
+        "parameters": [
+          { "$ref": "#/components/parameters/accept" },
+          { "$ref": "#/components/parameters/accept-version" },
+          { "$ref": "#/components/parameters/API-Key" },
+          { "$ref": "#/components/parameters/experience_id" },
+          { "$ref": "#/components/parameters/option_id" }
+        ],
+        "responses": {
+          "204": {
+            "description": "Availability slots removed successfully from option"
+          },
+          "default": { "$ref": "#/components/responses/default" }
+        },
+        "tags": ["availability-slots"]
+      },
+      "post": {
+        "summary": "Create availability slots for experience",
+        "description": "The maximum number of items in the request body varies based on the type of availability slot:\n\n  * Daily slot: 100\n  * Open slot: 1\n  * Time slot: 100\n",
+        "operationId": "post/availability/experiences/experience_id/options/option_id/slots",
+        "parameters": [
+          { "$ref": "#/components/parameters/accept" },
+          { "$ref": "#/components/parameters/accept-version" },
+          { "$ref": "#/components/parameters/API-Key" },
+          { "$ref": "#/components/parameters/experience_id" },
+          { "$ref": "#/components/parameters/option_id" }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "items": { "$ref": "#/components/schemas/AvailabilitySlot" },
+                "type": "array"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Availability slot",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AvailabilitySlot" }
+              }
+            }
+          },
+          "default": { "$ref": "#/components/responses/default" }
+        },
+        "tags": ["availability-slots"]
+      }
+    },
+    "/supplier/availability/experiences/{experience_id}/options/{option_id}/slots/daily_slots": {
+      "get": {
+        "summary": "Get daily slots for option",
+        "description": "The `date_from` and `date_to` query parameters permit up to two years of dates.",
+        "operationId": "get/availability/experiences/experience_id/options/option_id/slots/daily_slots",
+        "parameters": [
+          { "$ref": "#/components/parameters/accept" },
+          { "$ref": "#/components/parameters/accept-version" },
+          { "$ref": "#/components/parameters/experience_id" },
+          { "$ref": "#/components/parameters/option_id" },
+          { "$ref": "#/components/parameters/date_from" },
+          { "$ref": "#/components/parameters/date_to" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Daily slots for option",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/AvailabilitySlotDaily"
+                  },
+                  "type": "array",
+                  "uniqueItems": true
+                }
+              }
+            }
+          },
+          "default": { "$ref": "#/components/responses/default" }
+        },
+        "tags": ["daily-slots"]
+      }
+    },
+    "/supplier/availability/experiences/{experience_id}/options/{option_id}/slots/open_slots": {
+      "get": {
+        "summary": "Get open slot for option",
+        "operationId": "get/availability/experiences/experience_id/options/option_id/slots/open_slots",
+        "parameters": [
+          { "$ref": "#/components/parameters/accept" },
+          { "$ref": "#/components/parameters/accept-version" },
+          { "$ref": "#/components/parameters/experience_id" },
+          { "$ref": "#/components/parameters/option_id" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Open slot for option",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AvailabilityOpenSlot"
+                }
+              }
+            }
+          },
+          "default": { "$ref": "#/components/responses/default" }
+        },
+        "tags": ["open-slots"]
+      }
+    },
+    "/supplier/availability/experiences/{experience_id}/options/{option_id}/slots/time_slots": {
+      "get": {
+        "summary": "Get time slots for option",
+        "description": "The `date_from` and `date_to` query parameters permit up to 31 days of dates.",
+        "operationId": "get/availability/experiences/experience_id/options/option_id/slots/time_slots",
+        "parameters": [
+          { "$ref": "#/components/parameters/accept" },
+          { "$ref": "#/components/parameters/accept-version" },
+          { "$ref": "#/components/parameters/experience_id" },
+          { "$ref": "#/components/parameters/option_id" },
+          { "$ref": "#/components/parameters/date_from" },
+          { "$ref": "#/components/parameters/date_to" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Time slots for option",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/AvailabilityTimeSlot"
+                  },
+                  "type": "array",
+                  "uniqueItems": true
+                }
+              }
+            }
+          },
+          "default": { "$ref": "#/components/responses/default" }
+        },
+        "tags": ["time-slots"]
+      }
+    },
+    "/supplier/availability/experiences/{experience_id}/options/{option_id}/slots/{availability_slot_id}": {
+      "delete": {
+        "summary": "Remove availability slot from option",
+        "description": "An availability slot cannot be deleted if it is part of a hold availability request.",
+        "operationId": "delete/availability/experiences/experience_id/options/option_id/slots/availability_slot_id",
+        "parameters": [
+          { "$ref": "#/components/parameters/accept" },
+          { "$ref": "#/components/parameters/accept-version" },
+          { "$ref": "#/components/parameters/experience_id" },
+          { "$ref": "#/components/parameters/option_id" },
+          { "$ref": "#/components/parameters/availability_slot_id" }
+        ],
+        "responses": {
+          "204": {
+            "description": "Availability slot removed successfully from option"
+          },
+          "default": { "$ref": "#/components/responses/default" }
+        },
+        "tags": ["availability-slots"]
+      },
+      "get": {
+        "summary": "Get availability slot for option",
+        "operationId": "get/availability/experiences/experience_id/options/option_id/slots/availability_slot_id",
+        "parameters": [
+          { "$ref": "#/components/parameters/accept" },
+          { "$ref": "#/components/parameters/accept-version" },
+          { "$ref": "#/components/parameters/experience_id" },
+          { "$ref": "#/components/parameters/option_id" },
+          { "$ref": "#/components/parameters/availability_slot_id" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Availability slot",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AvailabilitySlot" }
+              }
+            }
+          },
+          "default": { "$ref": "#/components/responses/default" }
+        },
+        "tags": ["availability-slots"]
+      },
+      "patch": {
+        "summary": "Update capacity for availability slot",
+        "operationId": "patch/availability/experiences/experience_id/options/option_id/slots/availability_slot_id",
+        "parameters": [
+          { "$ref": "#/components/parameters/accept" },
+          { "$ref": "#/components/parameters/accept-version" },
+          { "$ref": "#/components/parameters/experience_id" },
+          { "$ref": "#/components/parameters/option_id" },
+          { "$ref": "#/components/parameters/availability_slot_id" }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "capacity": {
+                    "description": "The remaining number of seats for the slot.",
+                    "format": "int32",
+                    "type": "integer"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Availability slot",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AvailabilitySlot" }
+              }
+            }
+          },
+          "default": { "$ref": "#/components/responses/default" }
+        },
+        "tags": ["availability-slots"]
+      },
+      "put": {
+        "summary": "Update availability slot for option",
+        "operationId": "put/availability/experiences/experience_id/options/option_id/slots/availability_slot_id",
+        "parameters": [
+          { "$ref": "#/components/parameters/accept" },
+          { "$ref": "#/components/parameters/accept-version" },
+          { "$ref": "#/components/parameters/experience_id" },
+          { "$ref": "#/components/parameters/option_id" },
+          { "$ref": "#/components/parameters/availability_slot_id" }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/AvailabilitySlot" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Availability slot",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AvailabilitySlot" }
+              }
+            }
+          },
+          "default": { "$ref": "#/components/responses/default" }
+        },
+        "tags": ["availability-slots"]
+      }
+    },
+    "/supplier/catalog/experiences": {
+      "get": {
+        "summary": "Get experiences",
+        "operationId": "get/catalog/experiences",
+        "parameters": [
+          { "$ref": "#/components/parameters/accept" },
+          { "$ref": "#/components/parameters/accept-version" },
+          { "$ref": "#/components/parameters/vendor_id" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Experiences",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": { "$ref": "#/components/schemas/Experience" },
+                  "type": "array",
+                  "uniqueItems": true
+                }
+              }
+            }
+          },
+          "default": { "$ref": "#/components/responses/default" }
+        },
+        "tags": ["experiences"]
+      },
+      "post": {
+        "summary": "Create experience",
+        "operationId": "post/catalog/experiences",
+        "parameters": [
+          { "$ref": "#/components/parameters/accept" },
+          { "$ref": "#/components/parameters/accept-version" }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Experience" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Experience",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Experience" }
+              }
+            }
+          },
+          "default": { "$ref": "#/components/responses/default" }
+        },
+        "tags": ["experiences"]
+      }
+    },
+    "/supplier/catalog/experiences/{experience_id}": {
+      "get": {
+        "summary": "Get experience",
+        "operationId": "get/catalog/experiences/experience_id",
+        "parameters": [
+          { "$ref": "#/components/parameters/accept" },
+          { "$ref": "#/components/parameters/accept-version" },
+          { "$ref": "#/components/parameters/experience_id" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Experience",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Experience" }
+              }
+            }
+          },
+          "default": { "$ref": "#/components/responses/default" }
+        },
+        "tags": ["experiences"]
+      },
+      "patch": {
+        "summary": "Update experience",
+        "description": "Updating an experience is limited to a small selection of properties.\n\nChanges may take up to 24 hours to appear in the business platform and distribution sites.\n",
+        "operationId": "patch/catalog/experiences/experience_id",
+        "parameters": [
+          { "$ref": "#/components/parameters/accept" },
+          { "$ref": "#/components/parameters/accept-version" },
+          { "$ref": "#/components/parameters/experience_id" }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExperienceUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Experience",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Experience" }
+              }
+            }
+          },
+          "default": { "$ref": "#/components/responses/default" }
+        },
+        "tags": ["experiences"]
+      }
+    },
+    "/supplier/catalog/experiences/{experience_id}/mandatory-questions": {
+      "get": {
+        "summary": "Get mandatory questions for experience",
+        "operationId": "get/catalog/experiences/experience_id/mandatory-questions",
+        "parameters": [
+          { "$ref": "#/components/parameters/accept" },
+          { "$ref": "#/components/parameters/accept-version" },
+          { "$ref": "#/components/parameters/experience_id" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Mandatory questions for experience",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": { "$ref": "#/components/schemas/MandatoryQuestion" },
+                  "type": "array",
+                  "uniqueItems": true
+                }
+              }
+            }
+          },
+          "default": { "$ref": "#/components/responses/default" }
+        },
+        "tags": ["mandatory-questions"]
+      },
+      "post": {
+        "summary": "Create mandatory question for experience",
+        "operationId": "post/catalog/experiences/experience_id/mandatory-questions",
+        "parameters": [
+          { "$ref": "#/components/parameters/accept" },
+          { "$ref": "#/components/parameters/accept-version" },
+          { "$ref": "#/components/parameters/experience_id" }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/MandatoryQuestion" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Mandatory question for experience",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/MandatoryQuestion" }
+              }
+            }
+          },
+          "default": { "$ref": "#/components/responses/default" }
+        },
+        "tags": ["mandatory-questions"]
+      }
+    },
+    "/supplier/catalog/experiences/{experience_id}/mandatory-questions/{mandatory_question_id}": {
+      "delete": {
+        "summary": "Remove mandatory question from experience",
+        "description": "A mandatory question cannot be removed if it is part of a hold availability request.",
+        "operationId": "delete/catalog/experiences/experience_id/mandatory-questions/mandatory_question_id",
+        "parameters": [
+          { "$ref": "#/components/parameters/accept" },
+          { "$ref": "#/components/parameters/accept-version" },
+          { "$ref": "#/components/parameters/experience_id" },
+          { "$ref": "#/components/parameters/mandatory_question_id" }
+        ],
+        "responses": {
+          "204": { "description": "Mandatory question removed successfully" },
+          "default": { "$ref": "#/components/responses/default" }
+        },
+        "tags": ["mandatory-questions"]
+      },
+      "get": {
+        "summary": "Get mandatory question for experience",
+        "operationId": "get/catalog/experiences/experience_id/mandatory-questions/mandatory_question_id",
+        "parameters": [
+          { "$ref": "#/components/parameters/accept" },
+          { "$ref": "#/components/parameters/accept-version" },
+          { "$ref": "#/components/parameters/experience_id" },
+          { "$ref": "#/components/parameters/mandatory_question_id" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Mandatory question for experience",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/MandatoryQuestion" }
+              }
+            }
+          },
+          "default": { "$ref": "#/components/responses/default" }
+        },
+        "tags": ["mandatory-questions"]
+      },
+      "put": {
+        "summary": "Update mandatory question for experience",
+        "operationId": "put/catalog/experiences/experience_id/mandatory-questions/mandatory_question_id",
+        "parameters": [
+          { "$ref": "#/components/parameters/accept" },
+          { "$ref": "#/components/parameters/accept-version" },
+          { "$ref": "#/components/parameters/experience_id" },
+          { "$ref": "#/components/parameters/mandatory_question_id" }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/MandatoryQuestion" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Mandatory question for experience",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/MandatoryQuestion" }
+              }
+            }
+          },
+          "default": { "$ref": "#/components/responses/default" }
+        },
+        "tags": ["mandatory-questions"]
+      }
+    },
+    "/supplier/catalog/experiences/{experience_id}/options": {
+      "post": {
+        "summary": "Create option for experience",
+        "operationId": "post/catalog/experiences/experience_id/options",
+        "parameters": [
+          { "$ref": "#/components/parameters/accept" },
+          { "$ref": "#/components/parameters/accept-version" },
+          { "$ref": "#/components/parameters/experience_id" }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Option" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Option",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Option" }
+              }
+            }
+          },
+          "default": { "$ref": "#/components/responses/default" }
+        },
+        "tags": ["options"]
+      }
+    },
+    "/supplier/catalog/experiences/{experience_id}/options/{option_id}": {
+      "delete": {
+        "summary": "Remove option from experience",
+        "operationId": "delete/catalog/experiences/experience_id/options/option_id",
+        "parameters": [
+          { "$ref": "#/components/parameters/accept" },
+          { "$ref": "#/components/parameters/accept-version" },
+          { "$ref": "#/components/parameters/experience_id" },
+          { "$ref": "#/components/parameters/option_id" }
+        ],
+        "responses": {
+          "204": { "description": "Option removed successfully" },
+          "default": { "$ref": "#/components/responses/default" }
+        },
+        "tags": ["options"]
+      },
+      "put": {
+        "summary": "Update option for experience",
+        "operationId": "put/catalog/experiences/experience_id/options/option_id",
+        "parameters": [
+          { "$ref": "#/components/parameters/accept" },
+          { "$ref": "#/components/parameters/accept-version" },
+          { "$ref": "#/components/parameters/experience_id" },
+          { "$ref": "#/components/parameters/option_id" }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Option" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Option",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Option" }
+              }
+            }
+          },
+          "409": { "$ref": "#/components/responses/409" },
+          "default": { "$ref": "#/components/responses/default" }
+        },
+        "tags": ["options"]
+      }
+    },
+    "/supplier/catalog/pickups": {
+      "get": {
+        "summary": "Get pickups",
+        "operationId": "get/catalog/pickups",
+        "parameters": [
+          { "$ref": "#/components/parameters/accept" },
+          { "$ref": "#/components/parameters/accept-version" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pickups",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": { "$ref": "#/components/schemas/Pickup" },
+                  "type": "array",
+                  "uniqueItems": true
+                }
+              }
+            }
+          },
+          "default": { "$ref": "#/components/responses/default" }
+        },
+        "tags": ["pickups"]
+      },
+      "post": {
+        "summary": "Create pickup",
+        "operationId": "post/catalog/pickups",
+        "parameters": [
+          { "$ref": "#/components/parameters/accept" },
+          { "$ref": "#/components/parameters/accept-version" }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Pickup" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Pickup",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Pickup" }
+              }
+            }
+          },
+          "default": { "$ref": "#/components/responses/default" }
+        },
+        "tags": ["pickups"]
+      }
+    },
+    "/supplier/catalog/pickups/{pickup_id}": {
+      "delete": {
+        "summary": "Remove pickup",
+        "description": "A pickup point cannot be removed if it is part of an availability slot. Suppliers must remove the pickup point from all availability slots first.",
+        "operationId": "delete/catalog/pickups/pickup_id",
+        "parameters": [
+          { "$ref": "#/components/parameters/accept" },
+          { "$ref": "#/components/parameters/accept-version" },
+          { "$ref": "#/components/parameters/pickup_id" }
+        ],
+        "responses": {
+          "204": { "description": "Pickup removed successfully" },
+          "default": { "$ref": "#/components/responses/default" }
+        },
+        "tags": ["pickups"]
+      },
+      "get": {
+        "summary": "Get pickup",
+        "operationId": "get/catalog/pickups/pickup_id",
+        "parameters": [
+          { "$ref": "#/components/parameters/accept" },
+          { "$ref": "#/components/parameters/accept-version" },
+          { "$ref": "#/components/parameters/pickup_id" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pickup",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Pickup" }
+              }
+            }
+          },
+          "default": { "$ref": "#/components/responses/default" }
+        },
+        "tags": ["pickups"]
+      }
+    },
+    "/supplier/vendors": {
+      "get": {
+        "summary": "Get vendors",
+        "operationId": "get/vendors",
+        "parameters": [
+          { "$ref": "#/components/parameters/accept" },
+          { "$ref": "#/components/parameters/accept-version" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Vendors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": { "$ref": "#/components/schemas/Vendor" },
+                  "type": "array",
+                  "uniqueItems": true
+                }
+              }
+            }
+          },
+          "default": { "$ref": "#/components/responses/default" }
+        },
+        "tags": ["vendors"]
+      },
+      "post": {
+        "summary": "Create vendor",
+        "operationId": "post/vendors",
+        "parameters": [
+          { "$ref": "#/components/parameters/accept" },
+          { "$ref": "#/components/parameters/accept-version" }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Vendor" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Vendor",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Vendor" }
+              }
+            }
+          },
+          "default": { "$ref": "#/components/responses/default" }
+        },
+        "tags": ["vendors"]
+      }
+    },
+    "/supplier/integration-tests/hold": {
+      "post": {
+        "summary": "Test hold availability",
+        "description": "Send a hold availability request in the sandbox environment to test your integration. The response will be the response from your webhook service.",
+        "operationId": "post/integration-tests/hold",
+        "parameters": [
+          { "$ref": "#/components/parameters/accept" },
+          { "$ref": "#/components/parameters/accept-version" }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/TestHoldAvailabilityRequest"
+        },
+        "responses": {
+          "200": { "description": "Test hold availability request accepted" },
+          "default": { "$ref": "#/components/responses/default" }
+        },
+        "security": [{ "Supplier-sandbox": [] }],
+        "tags": ["webhook-tests"]
+      }
+    },
+    "/supplier/integration-tests/book": {
+      "post": {
+        "summary": "Test booking confirmation",
+        "description": "Send a booking confirmation request in the sandbox environment to test your integration. This request format differs from what is eventually sent to the webhook service. The final request will also contain a randomly-generated `tuimm_booking_id` property.\n\nThe response will be the response from your webhook service.\n",
+        "operationId": "post/integration-tests/book",
+        "parameters": [
+          { "$ref": "#/components/parameters/accept" },
+          { "$ref": "#/components/parameters/accept-version" }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/TestBookingConfirmationRequest"
+        },
+        "responses": {
+          "200": {
+            "description": "Test booking confirmation request accepted"
+          },
+          "default": { "$ref": "#/components/responses/default" }
+        },
+        "security": [{ "Supplier-sandbox": [] }],
+        "tags": ["webhook-tests"]
+      }
+    },
+    "/supplier/integration-tests/cancel-booking": {
+      "post": {
+        "summary": "Test booking cancellation",
+        "description": "Send a booking cancellation request in the sandbox environment to test your integration. The response will be the response from your webhook service.",
+        "operationId": "post/integration-tests/cancel-booking",
+        "parameters": [
+          { "$ref": "#/components/parameters/accept" },
+          { "$ref": "#/components/parameters/accept-version" }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/TestBookingCancellationRequest"
+        },
+        "responses": {
+          "200": { "description": "Booking cancellation request accepted" },
+          "default": { "$ref": "#/components/responses/default" }
+        },
+        "security": [{ "Supplier-sandbox": [] }],
+        "tags": ["webhook-tests"]
+      }
+    }
+  },
+  "security": [{ "Supplier-production": [] }, { "Supplier-sandbox": [] }],
+  "servers": [
+    {
+      "description": "Production server",
+      "url": "https://prod.api.tui/tui-musement-porta"
+    },
+    {
+      "description": "Sandbox server",
+      "url": "https://prod.api.tui/tui-musement-porta-site"
+    }
+  ],
+  "tags": [
+    {
+      "name": "availability-slots",
+      "description": "Availability slots is the term for any type of slot used for a booking. This collection of endpoints will work for any type of slot",
+      "x-displayName": "Availability slots"
+    },
+    {
+      "name": "daily-slots",
+      "description": "Customers must select a date for a booking.",
+      "x-displayName": "Daily slots"
+    },
+    {
+      "name": "experiences",
+      "description": "Experiences are the products that the supplier provides. PORTA experiences can eventually be imported into Musement.",
+      "x-displayName": "Experiences"
+    },
+    {
+      "name": "mandatory-questions",
+      "description": "Mandatory questions allow suppliers to request customer information. Experiences are not required to have mandatory questions. However, when mandatory questions are present, customers must provide answers to complete a booking.",
+      "x-displayName": "Mandatory questions"
+    },
+    {
+      "name": "open-slots",
+      "description": "Bookings expire on a set date or a set number of days after purchase.",
+      "x-displayName": "Open slots"
+    },
+    {
+      "name": "options",
+      "description": "Options are a variations of an experience. A customer must select an option to complete a booking.",
+      "x-displayName": "Options"
+    },
+    {
+      "name": "pickups",
+      "description": "Pickups are locations where customers can be picked up for their experience. Experiences are not required to have pickups. However, when pickups are assigned to experience options, selecting a pickup is required to complete a booking.",
+      "x-displayName": "Pickups"
+    },
+    {
+      "name": "time-slots",
+      "description": "Customers must select a date and time for a booking.",
+      "x-displayName": "Time slots"
+    },
+    {
+      "name": "vendors",
+      "description": "Suppliers can use vendors to indicate when experiences are sourced differently.",
+      "x-displayName": "Vendors"
+    },
+    {
+      "name": "webhook-tests",
+      "description": "A collection of endpoints to test webhooks in PORTA's sandbox environment.",
+      "x-displayName": "Webhook tests"
+    },
+    {
+      "name": "webhooks",
+      "description": "A collection of requests that PORTA will make to a supplier's webhook service.",
+      "x-displayName": "Webhooks"
+    }
+  ],
+  "webhooks": {
+    "hold": {
+      "post": {
+        "summary": "Hold availability for booking",
+        "description": "A hold availability request is sent when a customer adds an item to their cart before payment. A successful response means the availability is guaranteed for the `hold_duration` value decided in the supplier's contract.\n\n**Request endpoint**: `POST {supplier_url}/hold`\n",
+        "operationId": "post/hold",
+        "parameters": [
+          { "$ref": "#/components/parameters/accept-version-webhook" },
+          { "$ref": "#/components/parameters/x-webhook-key" }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/HoldAvailabilityRequest"
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/WebhookHoldAvailabilityResponse"
+          },
+          "400": { "$ref": "#/components/responses/Webhook400" }
+        },
+        "security": [{ "Webhook": [] }],
+        "tags": ["webhooks"]
+      }
+    },
+    "booking": {
+      "post": {
+        "summary": "Confirm booking",
+        "description": "This request is sent after a customer has successfully created an order for the Musement catalog.\n\n**Request endpoint**: `POST {supplier_url}/booking`\n",
+        "operationId": "post/booking",
+        "parameters": [
+          { "$ref": "#/components/parameters/accept-version-webhook" },
+          { "$ref": "#/components/parameters/x-webhook-key" }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/BookingConfirmationRequest"
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/WebhookBookingConfirmationResponse"
+          },
+          "400": { "$ref": "#/components/responses/Webhook400" }
+        },
+        "security": [{ "Webhook": [] }],
+        "tags": ["webhooks"]
+      },
+      "delete": {
+        "summary": "Cancel booking",
+        "description": "This request is usually sent went a customer requests to cancel a booking. A cancellation request may also be sent when a booking confirmation request times out.\n\n**Request endpoint**: `DELETE {supplier_url}/booking`\n",
+        "operationId": "delete/booking",
+        "parameters": [
+          { "$ref": "#/components/parameters/accept-version-webhook" },
+          { "$ref": "#/components/parameters/x-webhook-key" }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/BookingCancellationRequest"
+        },
+        "responses": {
+          "200": { "description": "Booking successfully cancelled" },
+          "400": { "$ref": "#/components/responses/Webhook400" }
+        },
+        "security": [{ "Webhook": [] }],
+        "tags": ["webhooks"]
+      }
+    },
+    "health": {
+      "get": {
+        "summary": "Check webhook health",
+        "description": "This request is sent approximately every five minutes to check the status of the supplier's webhook endpoint.\n\n**Request endpoint**: `GET {supplier_url}/health`\n",
+        "operationId": "get/health",
+        "parameters": [
+          { "$ref": "#/components/parameters/accept-version-webhook" },
+          { "$ref": "#/components/parameters/x-webhook-key" }
+        ],
+        "responses": {
+          "200": { "description": "Webhook is healthy" },
+          "400": { "$ref": "#/components/responses/Webhook400" }
+        },
+        "security": [{ "Webhook": [] }],
+        "tags": ["webhooks"]
+      }
+    }
+  },
+  "x-tagGroups": [
+    {
+      "name": "Catalog",
+      "tags": ["experiences", "mandatory-questions", "options", "pickups"]
+    },
+    {
+      "name": "Availability",
+      "tags": ["availability-slots", "daily-slots", "open-slots", "time-slots"]
+    },
+    { "name": "Vendors", "tags": ["vendors"] },
+    { "name": "Webhooks", "tags": ["webhook-tests", "webhooks"] }
+  ]
+}

@@ -1,0 +1,74 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Pulse Used Vehicles API Documentation",
+    "version": "1.0.0",
+    "description": "Welcome to the Pulse Used Vehicle API documentation! This API allows you to manage your used vehicles and integrate to 3rd parties.\n\n## API Documentation\n\nFor additional API documentation, please refer to the [Pulse GET Used Vehicles API Postman](https://documenter.getpostman.com/view/26202827/2s9Y5VSiRV). You can choose to fork the collection into your workspace, view the collection in the public workspace, or import the collection into Postman. This allows you to begin interacting with our API very quickly.\n\n## Error Codes\n\nErrors use conventional HTTP response codes to indicate the success or failure of an API request. In general:\n\n- Codes in the 2xx range indicate success.\n- Codes in the 4xx range indicate an error that failed given the information provided (e.g. a required parameter was omitted).\n- Codes in the 5xx range indicate an error with Pulse Sales Solutions servers (these are rare).\n\nSome 4xx errors that could be handled programmatically (e.g. an empty secret key or format parameter) include an error code that briefly explains the error reported.\n",
+    "contact": {
+      "email": "dev@go-pulse.co.uk",
+      "url": "https://go-pulse.co.uk"
+    }
+  },
+  "paths": {
+    "/get-used-vehicles": {
+      "post": {
+        "tags": ["Used Vehicles"],
+        "security": [{ "ApiKeyAuth": [] }],
+        "operationId": "postUsedVehiclesCollection",
+        "summary": "Returns either a json or xml response with used vehicle records.",
+        "parameters": [
+          {
+            "name": "secretKey",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string" },
+            "example": "SpuyOdepuXusPOgLzosT5pRldecHaWra"
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string" },
+            "example": "json"
+          }
+        ],
+        "responses": {
+          "200": { "description": "Record(s) successfully returned" },
+          "404": {
+            "description": "No API key matching the posted API key was found"
+          },
+          "405": {
+            "description": "Secret key needs to be assigned and be 32 characters long"
+          },
+          "406": {
+            "description": "The data posted is not correct and needs reviewed"
+          },
+          "407": {
+            "description": "No form data supplied i.e. no secretKey and/or format params"
+          },
+          "408": {
+            "description": "Needs to be 128 characters long, please review"
+          },
+          "409": {
+            "description": "Incorrect REQUEST_METHOD supplied, it needs to be POST"
+          }
+        }
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://saas.pulsesalessolutions.com/pulse/api",
+      "description": "Live environment URL"
+    },
+    {
+      "url": "https://saas-testing.pulsesalessolutions.com/pulse/api",
+      "description": "Testing environment URL"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "ApiKeyAuth": { "type": "apiKey", "name": "apiKey", "in": "header" }
+    }
+  }
+}

@@ -1,0 +1,1106 @@
+{
+  "openapi": "3.1.0",
+  "info": { "title": "Sulie API", "version": "0.1.0" },
+  "paths": {
+    "/healthz": {
+      "get": {
+        "summary": "Healthz",
+        "operationId": "ducky_healthz_healthz_get",
+        "tags": ["Healthz"],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          }
+        }
+      }
+    },
+    "/keys": {
+      "get": {
+        "summary": "List Api Keys",
+        "description": "Query database and return valid API keys.\n\nArgs:\n    request (fastapi.Request): Incoming HTTP request.\n\nReturns:\n    List: List of API keys.",
+        "operationId": "ducky_list_api_keys_keys_get",
+        "tags": ["API Keys"],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": { "$ref": "#/components/schemas/APIKeyResponse" },
+                  "type": "array",
+                  "title": "Response List Api Keys Keys Get"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Verify Api Key",
+        "description": "Verify an API key exists and has not expired. \n\nArgs:\n    request: Incoming HTTP request.\n\nReturns:\n    APIKeyResponse: API key response data.",
+        "operationId": "ducky_verify_api_key_keys_put",
+        "tags": ["API Keys"],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    { "$ref": "#/components/schemas/APIKeyResponse" },
+                    { "type": "null" }
+                  ],
+                  "title": "Response Verify Api Key Keys Put"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create Api Key",
+        "description": "Create an API key and save to database.\n\nArgs:\n    data: JSON request payload.\n\nReturns:\n    APIKeyResponse: API key response data.",
+        "operationId": "ducky_create_api_key_keys_post",
+        "tags": ["API Keys"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "anyOf": [
+                  { "$ref": "#/components/schemas/CreateAPIKeyRequest" },
+                  { "type": "null" }
+                ],
+                "title": "Data",
+                "default": {}
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/APIKeyResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete Api Key",
+        "description": "Delete an API key from the database.\n\nArgs:\n    request (fastapi.Request): Incoming HTTP request.\n\nRaises:\n    fastapi.HTTPException: API key not found.",
+        "operationId": "ducky_delete_api_key_keys_delete",
+        "tags": ["API Keys"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/DeleteAPIKeyRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Patch Api Key",
+        "description": "\"Update an API key's name. \n\nArgs:\n    data (PatchAPIKeyRequest): JSON request payload.\n    request (fastapi.Request): Incoming HTTP request. \nReturns:\n    APIKeyResponse: API key response data.",
+        "operationId": "ducky_patch_api_key_keys_patch",
+        "tags": ["API Keys"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/PatchAPIKeyRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/APIKeyResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tokens": {
+      "put": {
+        "tags": ["Tokens"],
+        "summary": "Verify Token",
+        "description": "Verify the signature of a JWT authentication token.\n\nArgs:\n    request (fastapi.Request): Incoming HTTP request.\n\nReturns:\n    VerifyFirebaseTokenResponse: Firebase user ID.",
+        "operationId": "ducky_verify_token_tokens_put",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VerifyFirebaseTokenResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Tokens"],
+        "summary": "Get Token",
+        "description": "Create a JWT signed authentication token.\n\nArgs:\n    data (CreateFirebaseTokenRequest): JSON payload.\n\nReturns:\n    FirebaseTokenResponse: Firebase JWT token.",
+        "operationId": "ducky_get_token_tokens_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateFirebaseTokenRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FirebaseTokenResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "summary": "Get User",
+        "description": "Query database for information about the authenticated user.\n\nArgs:\n    user (User): User who made the request.\n\nReturns:\n    UserResponse: User information.",
+        "operationId": "ducky_get_user_users_get",
+        "tags": ["Users"],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/UserResponse" }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create User",
+        "description": "Create a new user and register him with Auth API.\n\nArgs:\n    data (CreateUserRequest): JSON data.\n\nReturns:\n    UserResponse: User information.",
+        "operationId": "ducky_create_user_users_post",
+        "tags": ["Users"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreateUserRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/UserResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update Self",
+        "description": "Update user information.\n\nArgs:\n    data (UpdateSelfRequest): JSON request data.\n    user (User): User who made the request.\n\nReturns:\n    User: Updated user",
+        "operationId": "ducky_update_self_users_put",
+        "tags": ["Users"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UpdateSelfRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/UserResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{uid}": {
+      "put": {
+        "summary": "Update User",
+        "description": "Update user information.\n\nArgs:\n    uid (str): User ID.\n    data (UpdateUserRequest): JSON request payload.\n\nReturns:\n    dict: User information.",
+        "operationId": "ducky_update_user_users__uid__put",
+        "tags": ["Users"],
+        "parameters": [
+          {
+            "name": "uid",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "Uid" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UpdateUserRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/passwords/match": {
+      "post": {
+        "summary": "Password Match",
+        "description": "Query database for password information and return whether the password\nset for the user equals the one passed through the JSON payload.\n\nArgs:\n    data (PasswordRequest): JSON data.\n    request (fastapi.Request): Incoming HTTP request.",
+        "operationId": "ducky_password_match_passwords_match_post",
+        "tags": ["Passwords"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/PasswordRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/passwords/strength": {
+      "post": {
+        "summary": "Get Password Strength",
+        "description": "Determine the strength of a password.\n\nArgs:\n    data (PasswordRequest): JSON data.\n\nReturns:\n    PasswordStrengthResponse:",
+        "operationId": "ducky_get_password_strength_passwords_strength_post",
+        "tags": ["Passwords"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/PasswordRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PasswordStrengthResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/emails/code": {
+      "get": {
+        "summary": "Get Verification Code",
+        "description": "Get an email verification code.\n\nArgs:\n    email (str): Recipients email address.\n\nReturns: \n    VerificationCodeResponse: Email information.",
+        "operationId": "ducky_get_verification_code_emails_code_get",
+        "tags": ["Emails"],
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "title": "Email" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VerificationCodeResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/emails/verify": {
+      "post": {
+        "summary": "Verify Email",
+        "description": "Verify an email address.\n\nArgs:\n    email (str): Recipients email address.\n    code (str): Verification code.\n\nReturns: \n    VerificationCodeResponse: Email information.\n:param email: Email to verify.\n:param code: Verification code.\n:returns: User object.",
+        "operationId": "ducky_verify_email_emails_verify_post",
+        "tags": ["Emails"],
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "title": "Email" }
+          },
+          {
+            "name": "code",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "title": "Code" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VerificationCodeResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/invitations": {
+      "post": {
+        "summary": "Send Invitations",
+        "description": "Send invitations to new organization members.\n\nArgs:\n    data (list): Invitation recipient data.\n    user (User): User making the request.\n\nReturns:\n    list: List of invitations.",
+        "operationId": "ducky_send_invitations_invitations_post",
+        "tags": ["Invitations"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/SendInvitationRequest"
+                },
+                "title": "Data"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/InvitationResponse"
+                  },
+                  "title": "Response Send Invitations Invitations Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Get Invitation",
+        "description": "Query database for an invitation using the recipients email or the JWT\ninvitation code (unsecure).\n\nArgs:\n    email (str): Recipient email address.\n    code (str): Invitation code.\n\nReturns:\n    InvitationResponse: Invitation data.",
+        "operationId": "ducky_get_invitation_invitations_get",
+        "tags": ["Invitations"],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/InvitationResponse" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete Invitation",
+        "description": "Delete an invitation.\n\nArgs:\n    email (str): Recipient email address.\n    user (User): User who made the invitation.\n\nReturns:\n    dict: Invitation data.",
+        "operationId": "ducky_delete_invitation_invitations_delete",
+        "tags": ["Invitations"],
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "title": "Email" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/InvitationResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Accept Invitation",
+        "description": "Accept an invitation.\n\nArgs:\n    code (str): Invitation code.\n\nReturns:\n    dict: Invitation data.",
+        "operationId": "ducky_accept_invitation_invitations_put",
+        "tags": ["Invitations"],
+        "parameters": [
+          {
+            "name": "code",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "title": "Code" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/InvitationResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/invitations/resend": {
+      "post": {
+        "summary": "Resend Invitation",
+        "description": "Resend an invitation..\n\nArgs:\n    email (str): Recipient email address.\n    user (User): User sending the invitation.\n\nReturns:\n    None.",
+        "operationId": "ducky_resend_invitation_invitations_resend_post",
+        "tags": ["Invitations"],
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "title": "Email" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/whoami": {
+      "get": {
+        "summary": "Whoami",
+        "description": "Get information about the authenticated user.\n\nArgs:\n    user (User): User who made the request.\n\nReturns:\n    WhoamiResponse: User information.",
+        "operationId": "ducky_whoami_whoami_get",
+        "tags": ["Whoami"],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/WhoamiResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/webhook": {
+      "post": {
+        "summary": "Handle Webhook Event",
+        "description": "Handle the Stripe API webhook event. \n\nThis is limited only to certain events:\n* customer.created: New customer is created.\n* customer.updated: A property of customer has changed.\n* customer.subscription.created: New customer subscription is created.\n* customer.subscription.updated: Existing customer subscription updated.\n* customer.subscription.deleted: End subscription.\n\nArgs:\n    request (fastapi.Request): Incoming HTTP request.",
+        "operationId": "ducky_handle_webhook_event_webhook_post",
+        "tags": ["Subscriptions"],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          }
+        }
+      }
+    },
+    "/subscriptions": {
+      "get": {
+        "summary": "Get Subscription",
+        "description": "Query subscription information.\n\nArgs:\n    request (fastapi.Request): Incoming HTTP request.\n\nReturns:\n    SubscriptionResponse: Subscription metadata.",
+        "operationId": "ducky_get_subscription_subscriptions_get",
+        "tags": ["Subscriptions"],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubscriptionResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/subscriptions/session": {
+      "post": {
+        "summary": "Get Subscription Checkout Session",
+        "description": "Create a checkout session for creating a subscription.\n\nArgs:\n    data (SubscriptionCheckoutRequest): Incoming JSON data.\n\nReturns:\n    SubscriptionCheckoutResponse: Subscription response.",
+        "operationId": "ducky_get_subscription_checkout_session_subscriptions_session_post",
+        "tags": ["Subscriptions"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubscriptionCheckoutRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubscriptionCheckoutResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "APIKeyResponse": {
+        "properties": {
+          "id": { "type": "string", "title": "Id" },
+          "name": { "type": "string", "title": "Name" },
+          "organization_id": { "type": "string", "title": "Organization Id" },
+          "expired": { "type": "boolean", "title": "Expired" },
+          "secret_key": { "type": "string", "title": "Secret Key" },
+          "last_used": {
+            "anyOf": [
+              { "type": "string", "format": "date-time" },
+              { "type": "null" }
+            ],
+            "title": "Last Used"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "organization_id",
+          "expired",
+          "secret_key",
+          "last_used"
+        ],
+        "title": "APIKeyResponse",
+        "description": "Response data for APIKey model."
+      },
+      "CreateAPIKeyRequest": {
+        "properties": {
+          "organization_id": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Organization Id"
+          }
+        },
+        "type": "object",
+        "title": "CreateAPIKeyRequest",
+        "description": "JSON payload for create API key request."
+      },
+      "CreateFirebaseTokenRequest": {
+        "properties": {
+          "password": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Password"
+          },
+          "email": { "type": "string", "title": "Email" }
+        },
+        "type": "object",
+        "required": ["email"],
+        "title": "CreateFirebaseTokenRequest",
+        "description": "JSON payload for creating a Firebase OAuth token."
+      },
+      "CreateUserRequest": {
+        "properties": {
+          "display_name": { "type": "string", "title": "Display Name" },
+          "email": { "type": "string", "title": "Email", "format": "email" },
+          "email_verified": {
+            "anyOf": [{ "type": "boolean" }, { "type": "null" }],
+            "title": "Email Verified",
+            "default": true
+          },
+          "password": {
+            "anyOf": [
+              { "type": "string" },
+              { "type": "null" },
+              { "type": "string" },
+              { "type": "null" }
+            ],
+            "title": "Password"
+          },
+          "name": { "type": "string", "title": "Name" },
+          "organization": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Organization"
+          }
+        },
+        "type": "object",
+        "required": ["display_name", "email", "email", "name"],
+        "title": "CreateUserRequest",
+        "description": "Request payload for creating a new user."
+      },
+      "DeleteAPIKeyRequest": {
+        "properties": {
+          "secret_key": { "type": "string", "title": "Secret Key" }
+        },
+        "type": "object",
+        "required": ["secret_key"],
+        "title": "DeleteAPIKeyRequest",
+        "description": "JSON payload for deleting an API key."
+      },
+      "FirebaseTokenResponse": {
+        "properties": { "token": { "type": "string", "title": "Token" } },
+        "type": "object",
+        "required": ["token"],
+        "title": "FirebaseTokenResponse",
+        "description": "Response data for returning Firebase OAuth token."
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": { "$ref": "#/components/schemas/ValidationError" },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "PasswordRequest": {
+        "properties": { "password": { "type": "string", "title": "Password" } },
+        "type": "object",
+        "required": ["password"],
+        "title": "PasswordRequest",
+        "description": "JSON payload for determining password strength."
+      },
+      "PasswordStrengthResponse": {
+        "properties": {
+          "strength": { "type": "integer", "title": "Strength" },
+          "details": {
+            "items": { "type": "string" },
+            "type": "array",
+            "title": "Details",
+            "default": []
+          }
+        },
+        "type": "object",
+        "required": ["strength"],
+        "title": "PasswordStrengthResponse",
+        "description": "Response data for password strength."
+      },
+      "PatchAPIKeyRequest": {
+        "properties": {
+          "id": { "type": "string", "title": "Id" },
+          "organization_id": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Organization Id"
+          },
+          "name": { "type": "string", "title": "Name" }
+        },
+        "type": "object",
+        "required": ["id", "name"],
+        "title": "PatchAPIKeyRequest",
+        "description": "JSON payload for patch API key request."
+      },
+      "UpdateUserRequest": {
+        "properties": {
+          "display_name": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Display Name"
+          },
+          "password": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Password"
+          }
+        },
+        "type": "object",
+        "title": "UpdateUserRequest",
+        "description": "JSON payload for updating user information."
+      },
+      "UserResponse": {
+        "properties": {
+          "display_name": { "type": "string", "title": "Display Name" },
+          "uid": { "type": "string", "title": "Uid" },
+          "email": { "type": "string", "title": "Email", "format": "email" },
+          "user_id": { "type": "string", "title": "User Id" },
+          "name": { "type": "string", "title": "Name" },
+          "euid": { "type": "string", "title": "Euid" },
+          "role": { "$ref": "#/components/schemas/UserRole" },
+          "organization_id": { "type": "string", "title": "Organization Id" },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "display_name",
+          "uid",
+          "email",
+          "user_id",
+          "name",
+          "email",
+          "euid",
+          "role",
+          "organization_id",
+          "created_at"
+        ],
+        "title": "UserResponse",
+        "description": "JSON response for returning user information."
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                { "type": "string" },
+                { "type": "integer" },
+                { "type": "string" },
+                { "type": "integer" },
+                { "type": "string" },
+                { "type": "integer" }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": { "type": "string", "title": "Message" },
+          "type": { "type": "string", "title": "Error Type" }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type",
+          "loc",
+          "msg",
+          "type",
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      },
+      "VerifyFirebaseTokenResponse": {
+        "properties": { "uid": { "type": "string", "title": "Uid" } },
+        "type": "object",
+        "required": ["uid"],
+        "title": "VerifyFirebaseTokenResponse",
+        "description": "Response data for returning user Firebase metadata."
+      },
+      "InvitationResponse": {
+        "properties": {
+          "sender_id": { "type": "string", "title": "Sender Id" },
+          "organization": {
+            "$ref": "#/components/schemas/OrganizationResponse"
+          },
+          "email": { "type": "string", "format": "email", "title": "Email" },
+          "role": { "$ref": "#/components/schemas/UserRole" }
+        },
+        "type": "object",
+        "required": ["sender_id", "organization", "email", "role"],
+        "title": "InvitationResponse",
+        "description": "Invitation attributes response data."
+      },
+      "OrganizationResponse": {
+        "properties": {
+          "name": { "type": "string", "title": "Name" },
+          "organization_id": { "type": "string", "title": "Organization Id" }
+        },
+        "type": "object",
+        "required": ["name", "organization_id"],
+        "title": "OrganizationResponse",
+        "description": "Response data for describing an organization."
+      },
+      "SendInvitationRequest": {
+        "properties": {
+          "email": { "type": "string", "format": "email", "title": "Email" },
+          "role": { "type": "string", "title": "Role", "default": "member" }
+        },
+        "type": "object",
+        "required": ["email"],
+        "title": "SendInvitationRequest",
+        "description": "Create invitation request data."
+      },
+      "UpdateSelfRequest": {
+        "properties": {
+          "name": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Name"
+          },
+          "password": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Password"
+          }
+        },
+        "type": "object",
+        "title": "UpdateSelfRequest",
+        "description": "Request payload for updating user information."
+      },
+      "UserRole": {
+        "type": "string",
+        "enum": ["member", "admin"],
+        "title": "UserRole"
+      },
+      "VerificationCodeResponse": {
+        "properties": {
+          "email": { "type": "string", "format": "email", "title": "Email" }
+        },
+        "type": "object",
+        "required": ["email"],
+        "title": "VerificationCodeResponse",
+        "description": "Get verification code response data."
+      },
+      "WhoamiResponse": {
+        "properties": {
+          "user_id": { "type": "string", "title": "User Id" },
+          "name": { "type": "string", "title": "Name" },
+          "email": { "type": "string", "format": "email", "title": "Email" },
+          "euid": { "type": "string", "title": "Euid" },
+          "role": { "$ref": "#/components/schemas/UserRole" },
+          "organization_id": { "type": "string", "title": "Organization Id" },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "organization": {
+            "$ref": "#/components/schemas/OrganizationResponse"
+          }
+        },
+        "type": "object",
+        "required": [
+          "user_id",
+          "name",
+          "email",
+          "euid",
+          "role",
+          "organization_id",
+          "created_at",
+          "organization"
+        ],
+        "title": "WhoamiResponse",
+        "description": "JSON response returning user information."
+      },
+      "SubscriptionCheckoutRequest": {
+        "properties": {
+          "name": { "type": "string", "title": "Name" },
+          "email": { "type": "string", "title": "Email" },
+          "organization_id": { "type": "string", "title": "Organization Id" }
+        },
+        "type": "object",
+        "required": ["name", "email", "organization_id"],
+        "title": "SubscriptionCheckoutRequest",
+        "description": "Request body for creating a subscription checkout session."
+      },
+      "SubscriptionCheckoutResponse": {
+        "properties": { "url": { "type": "string", "title": "Url" } },
+        "type": "object",
+        "required": ["url"],
+        "title": "SubscriptionCheckoutResponse",
+        "description": "Response data for checkout session data."
+      },
+      "SubscriptionProduct": {
+        "properties": {
+          "name": { "type": "string", "title": "Name" },
+          "description": { "type": "string", "title": "Description" },
+          "price": { "type": "number", "title": "Price" },
+          "currency": { "type": "string", "title": "Currency" }
+        },
+        "type": "object",
+        "required": ["name", "description", "price", "currency"],
+        "title": "SubscriptionProduct",
+        "description": "Response data for describing a subscribed product."
+      },
+      "SubscriptionResponse": {
+        "properties": {
+          "organization_id": { "type": "string", "title": "Organization Id" },
+          "product": { "$ref": "#/components/schemas/SubscriptionProduct" },
+          "state": { "$ref": "#/components/schemas/SubscriptionState" },
+          "last_paid_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Last Paid At"
+          }
+        },
+        "type": "object",
+        "required": ["organization_id", "product", "state", "last_paid_at"],
+        "title": "SubscriptionResponse",
+        "description": "Response data for retrieving subscription data."
+      },
+      "SubscriptionState": {
+        "type": "string",
+        "enum": ["not_active", "expired", "active", "cancelled"],
+        "title": "SubscriptionState"
+      }
+    }
+  }
+}

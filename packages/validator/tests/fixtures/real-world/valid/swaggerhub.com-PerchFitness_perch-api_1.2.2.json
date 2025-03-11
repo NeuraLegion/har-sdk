@@ -1,0 +1,1090 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Perch API",
+    "description": "Perch API for accessing data from Perch. See our [API Guide](https://docs.google.com/document/d/1ms6LFNwFN4C4WkrfWs8Hlu5igFBpNLhNr7uLEkGmvJA) for guidance on best practices. <br/> <br/> Find out more about Perch at [https://perch.fit](https://perch.fit) or by contacting us at [support@perch.fit](mailto:support@perch.fit).",
+    "termsOfService": "https://perch.fit/policies/api",
+    "contact": { "email": "support@perch.fit" },
+    "version": "1.2.2"
+  },
+  "servers": [
+    {
+      "url": "https://api.perch.fit/",
+      "description": "Production API endpoint"
+    }
+  ],
+  "tags": [
+    { "name": "Exercise", "description": "Access exercises in Perch." },
+    {
+      "name": "Set",
+      "description": "Access sets tracked or recorded on Perch."
+    },
+    { "name": "Stat", "description": "Access stats in Perch." },
+    { "name": "User", "description": "Access users in Perch." }
+  ],
+  "paths": {
+    "/v3/exercises": {
+      "summary": "Fetch exercises from Perch.",
+      "get": {
+        "tags": ["Exercise"],
+        "summary": "Get Exercises",
+        "description": "Get all Exercises for the requester's organization. Same effect as POST /v3/exercises with an empty body.",
+        "operationId": "getExercises",
+        "responses": {
+          "200": {
+            "description": "Success.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FilterExercisesResponse"
+                }
+              }
+            }
+          },
+          "429": { "$ref": "#/components/responses/RateLimitResponse" }
+        },
+        "security": [{ "ApiKeyAuth": [] }]
+      },
+      "post": {
+        "tags": ["Exercise"],
+        "summary": "Filter exercises",
+        "operationId": "filterExercises",
+        "requestBody": {
+          "description": "Parameters on which to filter exercises. Without any filters, Exercises returned implicity include all those available to the requester.",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/FilterExercisesParams" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FilterExercisesResponse"
+                }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/BadParamsResponse" },
+          "404": { "$ref": "#/components/responses/MissingResponse" },
+          "429": { "$ref": "#/components/responses/RateLimitResponse" }
+        },
+        "security": [{ "ApiKeyAuth": [] }]
+      }
+    },
+    "/v3/sets": {
+      "post": {
+        "tags": ["Set"],
+        "summary": "Filter sets",
+        "operationId": "filterSets",
+        "requestBody": {
+          "description": "Filters on Sets. Requires at least one filter, multiple may be specified and will be combined to find matching records. If neither `user_id` nor `group_id` is specified, the default behavior or this endpoint is to return only Sets with the same `user_id` as the requester.",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/FilterSetsParams" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success, here are matching sets",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/FilterSetsResponse" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/BadParamsResponse" },
+          "404": { "$ref": "#/components/responses/MissingResponse" },
+          "429": { "$ref": "#/components/responses/RateLimitResponse" }
+        },
+        "security": [{ "ApiKeyAuth": [] }]
+      }
+    },
+    "/stats": {
+      "get": {
+        "tags": ["Stat"],
+        "summary": "Get stats for the logged in user",
+        "operationId": "getStats",
+        "responses": {
+          "200": {
+            "description": "Success, here are all stats",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/FilterStatsResponse" }
+              }
+            }
+          },
+          "429": { "$ref": "#/components/responses/RateLimitResponse" }
+        },
+        "security": [{ "ApiKeyAuth": [] }]
+      },
+      "post": {
+        "tags": ["Stat"],
+        "summary": "Filter stats",
+        "operationId": "filterStats",
+        "requestBody": {
+          "description": "Parameters on which to filter stats.",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/FilterStatsParams" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success, here are matching exercises",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/FilterStatsResponse" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/BadParamsResponse" },
+          "404": { "$ref": "#/components/responses/MissingResponse" },
+          "429": { "$ref": "#/components/responses/RateLimitResponse" }
+        },
+        "security": [{ "ApiKeyAuth": [] }]
+      }
+    },
+    "/v2/user": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Get user",
+        "operationId": "getUser",
+        "responses": {
+          "200": {
+            "description": "Success, here is your user.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/GetUserResponse" }
+              }
+            }
+          },
+          "429": { "$ref": "#/components/responses/RateLimitResponse" }
+        },
+        "security": [{ "ApiKeyAuth": [] }]
+      }
+    },
+    "/v2/users": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Filter users",
+        "operationId": "filterUsers",
+        "requestBody": {
+          "description": "Filters on users. Requires at least one of `id` or `group_id`.",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/FilterUsersParams" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success, here are matching users.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/FilterUsersResponse" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/BadParamsResponse" },
+          "404": { "$ref": "#/components/responses/MissingResponse" },
+          "429": { "$ref": "#/components/responses/RateLimitResponse" }
+        },
+        "security": [{ "ApiKeyAuth": [] }]
+      }
+    },
+    "/users/create": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Create a user",
+        "operationId": "createUser",
+        "requestBody": {
+          "description": "Create a new user",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreateUserParams" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success, user created.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/CreateUserResponse" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/BadParamsResponse" },
+          "404": { "$ref": "#/components/responses/MissingResponse" },
+          "429": { "$ref": "#/components/responses/RateLimitResponse" }
+        },
+        "security": [{ "ApiKeyAuth": [] }]
+      }
+    },
+    "/v2/users/update": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Update a user",
+        "operationId": "updateUser",
+        "requestBody": {
+          "description": "Update a user. All fields are optional except `id`, this endpoint acts as a PATCH.",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UpdateUserParams" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success, user updated.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericSuccessResponse"
+                }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/BadParamsResponse" },
+          "404": { "$ref": "#/components/responses/MissingResponse" },
+          "429": { "$ref": "#/components/responses/RateLimitResponse" }
+        },
+        "security": [{ "ApiKeyAuth": [] }]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Group": {
+        "required": ["id", "name", "type"],
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "example": 1 },
+          "name": { "type": "string", "example": "Perch" }
+        }
+      },
+      "User": {
+        "required": ["id", "active", "created_at", "org_id"],
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "active": {
+            "type": "boolean",
+            "description": "Users can be deactivated. Once they are, you will stop seeing them and their data in responses. Organization administrators control user deactivation."
+          },
+          "email": { "type": "string", "format": "email" },
+          "org_id": { "type": "integer" },
+          "created_at": {
+            "type": "integer",
+            "format": "unix",
+            "example": 1551376897
+          },
+          "first_name": { "type": "string" },
+          "last_name": { "type": "string" },
+          "name": {
+            "type": "string",
+            "description": "Concatenated first and last name"
+          },
+          "gender": { "$ref": "#/components/schemas/Gender" },
+          "height": { "type": "number", "format": "in", "example": 72 },
+          "weight": { "type": "number", "format": "lbs", "example": 185 },
+          "img_url": {
+            "type": "string",
+            "format": "url",
+            "example": "https://s3.amazonaws.com/bucket/image-file"
+          }
+        }
+      },
+      "Rep": {
+        "type": "object",
+        "description": "The object representing an individual rep tracked by a Perch camera. You'll notice the lack of mean power stats, which are calculated simply by converting the corresponding mean velocity to `m/s` and multiplying by the weight in `kg`. Peak power stats are given in strange units. This is to make those fields independent from the `Set.weight`, which is an editable field required to calculate the actual power (i.e. in units of watts). Equations to convert these stats to watts are provided.",
+        "properties": {
+          "limb": {
+            "type": "string",
+            "nullable": true,
+            "enum": ["RIGHT", "LEFT"],
+            "description": "For a unilateral exercise, this is the limb with which the athlete used for this rep. For other exercises, this value will be null."
+          },
+          "concentric_mean_velocity_z": {
+            "type": "number",
+            "format": "in / s",
+            "description": "The average vertical component of velocity for the concentric phase of the rep.",
+            "example": 28.71
+          },
+          "eccentric_mean_velocity_z": {
+            "type": "number",
+            "format": "in / s",
+            "description": "The average vertical component of velocity for the eccentric phase of the rep.",
+            "example": -26.45
+          },
+          "concentric_peak_velocity_z": {
+            "type": "number",
+            "format": "in / s",
+            "description": "The maximum instantaneous vertical component of velocity for the concentric phase of the rep.",
+            "example": 42.96
+          },
+          "concentric_time_to_peak_velocity_z": {
+            "type": "number",
+            "format": "s",
+            "description": "The time (in seconds) the athelete took to achieve peak velocity (on the Z axis) during the concentric phase of the movement."
+          },
+          "concentric_time_to_peak_power_z": {
+            "type": "number",
+            "format": "s",
+            "description": "The time (in seconds) the athelete took to achieve peak power during the concentric phase of the movement."
+          },
+          "concentric_velocity_at_100_ms_z": {
+            "type": "number",
+            "format": "in / s",
+            "description": "The instantaneous velocity at 100ms into the concentric phase of the movement."
+          },
+          "eccentric_peak_velocity_z": {
+            "type": "number",
+            "format": "in / s",
+            "description": "The maximum instantaneous vertical component of velocity for the eccentric phase of the rep.",
+            "example": 3.31
+          },
+          "concentric_peak_power_per_mass_z": {
+            "type": "number",
+            "format": "in^2 / sec^3",
+            "description": "Convert to peak power in watts: `(m/in)**2 * concentric_peak_power_per_mass_z * kg/lbs * Set.weight`",
+            "example": 15160.17
+          },
+          "concentric_disp_z": {
+            "type": "number",
+            "format": "in",
+            "description": "Displacement of the concentric portion of the repetition along the Z axis in inches.",
+            "example": 22.5
+          },
+          "eccentric_disp_z": {
+            "type": "number",
+            "format": "in",
+            "description": "Displacement of the eccentric portion of the repetition along the Z axis in inches.",
+            "example": 22.5
+          }
+        }
+      },
+      "SetError": {
+        "type": "object",
+        "description": "An object describing any reported issues from the user.",
+        "properties": {
+          "missed_reps": {
+            "type": "boolean",
+            "description": "Whether the user indicated that reps were missed."
+          },
+          "ghost_reps": {
+            "type": "boolean",
+            "description": "Whether the user indicated that some reps that were tracked were not actually performed."
+          },
+          "wrong_values": {
+            "type": "boolean",
+            "description": "Whether the user indicated that some/all of the tracked metrics appeared incorrect."
+          },
+          "ghost_rep_indices": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "description": "An index into the `Set.reps` array corresponding to a rep that was tracked that wasn\"t performed by the user."
+            }
+          }
+        }
+      },
+      "Set": {
+        "type": "object",
+        "description": "An object representing a set tracked by or entered into Perch.",
+        "required": [
+          "id",
+          "created_at",
+          "start_time",
+          "weight",
+          "user_id",
+          "exercise_id",
+          "org_id",
+          "tracked"
+        ],
+        "properties": {
+          "id": { "type": "integer", "description": "Unique id for the set" },
+          "deleted": {
+            "type": "boolean",
+            "description": "Set to true if the User has marked the set as deleted."
+          },
+          "created_at": { "$ref": "#/components/schemas/UnixTimestamp" },
+          "user_id": { "type": "integer" },
+          "org_id": {
+            "type": "integer",
+            "description": "The ID of the organization the user who performed the set belongs to."
+          },
+          "exercise_id": { "type": "integer" },
+          "weight": {
+            "type": "number",
+            "format": "lbs",
+            "description": "The weight the lift was performed with."
+          },
+          "pct_1rm": {
+            "type": "number",
+            "example": 0.25,
+            "description": "The percentage [0.0 - 1.0] this set\"s weight is of the user\"s One Rep Max (1RM) for this exercise."
+          },
+          "tracked": {
+            "type": "boolean",
+            "description": "Delineates whether this set was tracked by a Perch camera (`true`) or manually entered into Perch."
+          },
+          "bands_used": {
+            "type": "boolean",
+            "description": "Whether bands were used for this set."
+          },
+          "chains_used": {
+            "type": "boolean",
+            "description": "Whether chains were used for this set."
+          },
+          "start_time": {
+            "allOf": [
+              { "$ref": "#/components/schemas/UnixTimestamp" },
+              { "description": "When the set was started." }
+            ]
+          },
+          "end_time": {
+            "allOf": [
+              { "$ref": "#/components/schemas/UnixTimestamp" },
+              { "description": "When the set was completed." }
+            ]
+          },
+          "error": { "$ref": "#/components/schemas/SetError" },
+          "reps": {
+            "type": "array",
+            "description": "Contains all reps the Perch device tracked. `Set.error.ghost_rep_indices` optionally contains indices into this array that were marked by the user as erroneous and should be ignored.",
+            "items": { "$ref": "#/components/schemas/Rep" }
+          },
+          "num_reps": {
+            "type": "integer",
+            "description": "The number of VALID reps on this set. This is the same as then length of the Reps array, unless the user marked an error and removed ghost reps. In that case, this count of reps reflects the removal of those ghost reps."
+          },
+          "num_tracked_reps": {
+            "type": "integer",
+            "description": "The number of reps the Perch camera tracked for this set. This will always be exactly the length of the Reps array."
+          },
+          "first_limb": {
+            "type": "string",
+            "enum": ["RIGHT", "LEFT"],
+            "description": "In a unilateral exercise, this is the limb with which the athlete began their reps."
+          },
+          "limb_pattern": { "$ref": "#/components/schemas/LimbPattern" },
+          "min_mean_power": {
+            "type": "number",
+            "format": "in * lbs / s",
+            "description": "The minimum of `Rep.concentric_mean_velocity_z * Set.weight` across all reps. Convert to watts: `m/in * N/lbs * min_mean_power`",
+            "example": 1409.24
+          },
+          "avg_mean_power": {
+            "type": "number",
+            "format": "in * lbs / s",
+            "description": "The mean of `Rep.concentric_mean_velocity_z * Set.weight` across all reps. Convert to watts: `m/in * N/lbs * avg_mean_power`",
+            "example": 1409.24
+          },
+          "max_mean_power": {
+            "type": "number",
+            "format": "in * lbs / s",
+            "description": "The max of `Rep.concentric_mean_velocity_z * Set.weight` across all reps. Convert to watts: `m/in * N/lbs * max_mean_power`",
+            "example": 1536.75
+          },
+          "min_mean_velocity": {
+            "type": "number",
+            "format": "in / s",
+            "description": "The minimum of `Rep.concentric_mean_velocity_z` across all reps. Convert to m/s: `m/in * min_mean_velocity`",
+            "example": 31.32
+          },
+          "avg_mean_velocity": {
+            "type": "number",
+            "format": "in / s",
+            "description": "The mean of `Rep.concentric_mean_velocity_z` across all reps. Convert to m/s: `m/in * avg_mean_velocity`",
+            "example": 31.32
+          },
+          "max_mean_velocity": {
+            "type": "number",
+            "format": "in / s",
+            "description": "The max of `Rep.concentric_mean_velocity_z` across all reps. Convert to m/s: `m/in * max_mean_velocity`",
+            "example": 34.15
+          },
+          "avg_ecc_mean_velocity": {
+            "type": "number",
+            "format": "in / s",
+            "description": "The mean of `Rep.eccentric_mean_velocity_z` across all reps. Convert to m/s: `m/in * avg_ecc_mean_velocity`",
+            "example": 31.46
+          },
+          "max_ecc_mean_velocity": {
+            "type": "number",
+            "format": "in / s",
+            "description": "The max of `Rep.eccentric_mean_velocity_z` across all reps. Convert to m/s: `m/in * max_ecc_mean_velocity`",
+            "example": 39.12
+          },
+          "min_ecc_mean_velocity": {
+            "type": "number",
+            "format": "in / s",
+            "description": "The min of `Rep.eccentric_mean_velocity_z` across all reps. Convert to m/s: `m/in * min_ecc_mean_velocity`",
+            "example": 26.45
+          },
+          "min_peak_power": {
+            "type": "number",
+            "format": "(in^2 * lbs) / sec^3",
+            "description": "The minimum of `Rep.concentric_peak_power_per_mass_z * Set.weight` across all reps. Convert to watts: `m/in * m/in * kg/lbs * min_peak_power`",
+            "example": 2458751.45
+          },
+          "avg_peak_power": {
+            "type": "number",
+            "format": "(in^2 * lbs) / sec^3",
+            "description": "The mean of `Rep.concentric_peak_power_per_mass_z * Set.weight` across all reps. Convert to watts: `m/in * m/in * kg/lbs * avg_peak_power`",
+            "example": 2458751.45
+          },
+          "max_peak_power": {
+            "type": "number",
+            "format": "(in^2 * lbs) / sec^3",
+            "description": "The max of `Rep.concentric_peak_power_per_mass_z * Set.weight` across all reps. Convert to watts: `m/in * m/in * kg/lbs * max_peak_power`",
+            "example": 2458751.45
+          },
+          "min_peak_velocity": {
+            "type": "number",
+            "format": "in / s",
+            "description": "The minimum of `Rep.concentric_peak_velocity_z` across all reps. Convert to m/s: `m/in * min_peak_velocity`",
+            "example": 49.48
+          },
+          "avg_peak_velocity": {
+            "type": "number",
+            "format": "in / s",
+            "description": "The mean of `Rep.concentric_peak_velocity_z` across all reps. Convert to m/s: `m/in * avg_peak_velocity`",
+            "example": 49.48
+          },
+          "max_peak_velocity": {
+            "type": "number",
+            "format": "in / s",
+            "description": "The max of `Rep.concentric_peak_velocity_z` across all reps. Convert to m/s: `m/in * max_peak_velocity`",
+            "example": 55.98
+          },
+          "avg_ecc_peak_velocity": {
+            "type": "number",
+            "format": "in / s",
+            "description": "The mean of `Rep.eccentric_peak_velocity_z` across all reps. Convert to m/s: `m/in * avg_ecc_peak_velocity`",
+            "example": 48.3508597416838
+          },
+          "max_ecc_peak_velocity": {
+            "type": "number",
+            "format": "in / s",
+            "description": "The max of `Rep.eccentric_peak_velocity_z` across all reps. Convert to m/s: `m/in * max_ecc_peak_velocity`",
+            "example": 56.4116308796593
+          },
+          "min_ecc_peak_velocity": {
+            "type": "number",
+            "format": "in / s",
+            "description": "The min of `Rep.eccentric_peak_velocity_z` across all reps. Convert to m/s: `m/in * min_ecc_peak_velocity`",
+            "example": 41.24
+          },
+          "avg_ecc_time": {
+            "type": "number",
+            "format": "microsecond",
+            "description": "The mean of `(Rep.eccentric_end_time - Rep.eccentric_end_time)` across all reps. Convert to seconds: `us/s * avg_ecc_time`",
+            "example": 758960.86
+          },
+          "max_ecc_time": {
+            "type": "number",
+            "format": "microsecond",
+            "description": "The max of `(Rep.eccentric_end_time - Rep.eccentric_end_time)` across all reps. Convert to seconds: `us/s * max_ecc_time`",
+            "example": 850079.962962687
+          },
+          "min_ecc_time": {
+            "type": "number",
+            "format": "microsecond",
+            "description": "The min of `(Rep.eccentric_end_time - Rep.eccentric_end_time)` across all reps. Convert to seconds: `us/s * min_ecc_time`",
+            "example": 603388.29
+          },
+          "max_velocity_at_100_ms": {
+            "type": "number",
+            "format": "in / s",
+            "description": "The maximum value of `Rep.concentric_velocity_at_100_ms` across all reps. Convert to m/s: `m/in * max_velocity_at_100_ms`"
+          },
+          "avg_velocity_at_100_ms": {
+            "type": "number",
+            "format": "in / s",
+            "description": "The average value of `Rep.concentric_velocity_at_100_ms` across all reps. Convert to m/s: `m/in * avg_velocity_at_100_ms`"
+          },
+          "min_velocity_at_100_ms": {
+            "type": "number",
+            "format": "in / s",
+            "description": "The minimum value of `Rep.concentric_velocity_at_100_ms` across all reps. Convert to m/s: `m/in * min_velocity_at_100_ms`"
+          },
+          "max_time_to_peak_velocity": {
+            "type": "number",
+            "format": "s",
+            "description": "The maximum value of `Rep.concentric_time_to_peak_velocity` across all reps."
+          },
+          "avg_time_to_peak_velocity": {
+            "type": "number",
+            "format": "s",
+            "description": "The average value of `Rep.concentric_time_to_peak_velocity` across all reps."
+          },
+          "min_time_to_peak_velocity": {
+            "type": "number",
+            "format": "s",
+            "description": "The minimum value of `Rep.concentric_time_to_peak_velocity` across all reps."
+          },
+          "max_time_to_peak_power": {
+            "type": "number",
+            "format": "s",
+            "description": "The maximum value of `Rep.concentric_time_to_peak_power` across all reps."
+          },
+          "avg_time_to_peak_power": {
+            "type": "number",
+            "format": "s",
+            "description": "The average value of `Rep.concentric_time_to_peak_power` across all reps."
+          },
+          "min_time_to_peak_power": {
+            "type": "number",
+            "format": "s",
+            "description": "The minimum value of `Rep.concentric_time_to_peak_power` across all reps."
+          },
+          "avg_displacement": {
+            "type": "number",
+            "format": "in",
+            "description": "The average displacement in inches on the Z axis of the first portion of the movement (concentric or eccentric) in the exercise across all reps. This is computed using either `Rep.concentric_disp_z` or `Rep.eccentric_disp_z` depending on the exercise being performed.",
+            "example": 22.5
+          },
+          "min_displacement": {
+            "type": "number",
+            "format": "in",
+            "description": "The minimum displacement in inches on the Z axis of the first portion of the movement (concentric or eccentric) in the exercise across all reps. This is computed using either `Rep.concentric_disp_z` or `Rep.eccentric_disp_z` depending on the exercise being performed.",
+            "example": 22.5
+          },
+          "max_displacement": {
+            "type": "number",
+            "format": "in",
+            "description": "The maximum displacement in inches on the Z axis of the first portion of the movement (concentric or eccentric) in the exercise across all reps. This is computed using either `Rep.concentric_disp_z` or `Rep.eccentric_disp_z` depending on the exercise being performed.",
+            "example": 22.5
+          }
+        }
+      },
+      "Exercise": {
+        "type": "object",
+        "required": ["id", "name", "limbed"],
+        "properties": {
+          "id": { "type": "integer" },
+          "name": { "type": "string" },
+          "org_id": {
+            "type": "integer",
+            "description": "(Optional) Integer ID of the customer Group (aka Organization) that owns this exercise. Exercises with an `org_id` of `null` are considered \"global\" (meaning no Group owns the exercise and it is useable by any customer). Exercises with a non-null value for `org_id` are \"owned\" by the corresponding customer organization and only visible to / usable by that customer."
+          },
+          "limbed": {
+            "type": "boolean",
+            "description": "Whether or not the exercise is performed on right and left limbs individually. E.g. Back Squat is not limbed, whereas Split Squat is limbed."
+          },
+          "tracked": {
+            "type": "boolean",
+            "description": "Whether this exercise is tracked by the Perch camera or data is manually entered."
+          }
+        }
+      },
+      "Stat": {
+        "type": "object",
+        "required": ["user_id", "type", "timestamp", "value", "unit"],
+        "properties": {
+          "user_id": { "type": "integer" },
+          "type": {
+            "type": "string",
+            "enum": ["ONE_RM"],
+            "description": "A descriptor for what this recorded stat is."
+          },
+          "timestamp": {
+            "type": "integer",
+            "format": "unix",
+            "description": "Time at which the stat was recorded."
+          },
+          "unit": {
+            "type": "string",
+            "enum": ["LBS", "KG"],
+            "description": "The unit for this stat\"s value."
+          },
+          "value": {
+            "type": "number",
+            "description": "The value recorded in this stat."
+          },
+          "exercise_id": {
+            "type": "integer",
+            "description": "If this stat is associated with an exercise, this is the id of said exercise. Otherwise, null."
+          }
+        }
+      },
+      "Gender": { "type": "string", "enum": ["MALE", "FEMALE", "OTHER"] },
+      "LimbPattern": {
+        "type": "string",
+        "description": "Denotes the pattern used with executing a unilateral movement.",
+        "enum": ["ALTERNATING", "SEQUENTIAL", "SINGLE"]
+      },
+      "InclusiveFilter": {
+        "type": "string",
+        "enum": ["ONLY", "INCLUDE", "EXCLUDE"]
+      },
+      "UnixTimestamp": {
+        "type": "number",
+        "format": "unix",
+        "example": 1561742528
+      },
+      "ApiPageParams": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "type": "integer",
+            "description": "Limit the number of data items returned per page. This will default to (and be capped at) the configured page size for each individual endpoint."
+          },
+          "next_token": {
+            "type": "string",
+            "description": "The `next_token` from a previous page response."
+          }
+        }
+      },
+      "FilterSetsParams": {
+        "allOf": [
+          { "$ref": "#/components/schemas/ApiPageParams" },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "description": "Retrieve a single set with this ID (response data will be a single object not an array)."
+              },
+              "user_id": {
+                "type": "integer",
+                "description": "Retrieve only sets for the user with ID = `user_id`."
+              },
+              "group_id": {
+                "type": "integer",
+                "description": "Retrieve only sets for users in the group with the corresponding `id`. This can be set to the `org_id` of a user, which would filter for all users in said organization."
+              },
+              "exercise_id": {
+                "type": "integer",
+                "description": "Retrieve only sets for the exercise with ID = `exercise_id`."
+              },
+              "begin_time": {
+                "$ref": "#/components/schemas/UnixTimestamp",
+                "description": "Retrieve only sets where `Set.start_time >= begin_time`."
+              },
+              "end_time": {
+                "$ref": "#/components/schemas/UnixTimestamp",
+                "description": "Retrieve only sets where `Set.start_time < end_time`."
+              },
+              "untracked": {
+                "$ref": "#/components/schemas/InclusiveFilter",
+                "default": "INCLUDE",
+                "description": "Controls whether manually entered sets are returned."
+              },
+              "include_reps": {
+                "type": "boolean",
+                "default": false,
+                "description": "By specifying `include_reps = true`, the `reps` field will be included on Sets returned. Otherwise, it will be omitted."
+              }
+            }
+          }
+        ]
+      },
+      "FilterExercisesParams": {
+        "allOf": [
+          { "$ref": "#/components/schemas/ApiPageParams" },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "description": "Retrieve a single exercise with this ID (response data will be a single object not an array)."
+              },
+              "untracked": {
+                "$ref": "#/components/schemas/InclusiveFilter",
+                "description": "Control whether exercises which are manually input are included",
+                "default": "INCLUDE"
+              },
+              "inactive": {
+                "$ref": "#/components/schemas/InclusiveFilter",
+                "description": "Control whether exercises which have been archived are included",
+                "default": "INCLUDE"
+              }
+            }
+          }
+        ]
+      },
+      "FilterStatsParams": {
+        "allOf": [
+          { "$ref": "#/components/schemas/ApiPageParams" },
+          {
+            "type": "object",
+            "properties": {
+              "user_id": {
+                "type": "integer",
+                "description": "Retrieve only stats for the user with ID = `user_id`."
+              },
+              "group_id": {
+                "type": "integer",
+                "description": "Retrieve only stats for users in the group with ID = `group_id`."
+              },
+              "exercise_id": {
+                "type": "integer",
+                "description": "Retrieve only sets for the exercise with ID = `exercise_id`."
+              },
+              "begin_time": {
+                "$ref": "#/components/schemas/UnixTimestamp",
+                "description": "Retrieve only stats where `Stat.timestamp >= begin_time`."
+              },
+              "end_time": {
+                "$ref": "#/components/schemas/UnixTimestamp",
+                "description": "Retrieve only stats where `Stat.timestamp < end_time`."
+              },
+              "type": {
+                "type": "string",
+                "enum": ["ONE_RM"],
+                "description": "A descriptor for what this recorded stat represents."
+              }
+            }
+          }
+        ]
+      },
+      "FilterUsersParams": {
+        "allOf": [
+          { "$ref": "#/components/schemas/ApiPageParams" },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "description": "Retrieve a single user with this ID (response data will be a single object not an array)."
+              },
+              "group_id": {
+                "type": "integer",
+                "description": "Retrieve users who are members of a group (with id `group_id`)."
+              }
+            }
+          }
+        ]
+      },
+      "CreateUserParams": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "required": ["first_name", "last_name"],
+            "properties": {
+              "email": { "type": "string", "format": "email" },
+              "first_name": { "type": "string" },
+              "last_name": { "type": "string" },
+              "gender": { "$ref": "#/components/schemas/Gender" },
+              "height": {
+                "type": "number",
+                "format": "in",
+                "example": 72,
+                "description": "Height in floating point inches."
+              },
+              "weight": {
+                "type": "number",
+                "format": "lbs",
+                "example": 185,
+                "description": "Weight in floating point inches."
+              }
+            }
+          }
+        }
+      },
+      "UpdateUserParams": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "required": ["id"],
+            "properties": {
+              "id": {
+                "type": "integer",
+                "description": "ID of user you want to update."
+              },
+              "active": {
+                "type": "boolean",
+                "description": "A boolean indicating if the user is active."
+              },
+              "first_name": { "type": "string" },
+              "last_name": { "type": "string" },
+              "gender": { "$ref": "#/components/schemas/Gender" },
+              "height": {
+                "type": "number",
+                "format": "in",
+                "example": 72,
+                "description": "Height in floating point inches."
+              },
+              "weight": {
+                "type": "number",
+                "format": "lbs",
+                "example": 185,
+                "description": "Weight in floating point inches."
+              }
+            }
+          }
+        }
+      },
+      "ApiPageResponse": {
+        "type": "object",
+        "required": ["truncated", "data"],
+        "properties": {
+          "truncated": {
+            "type": "boolean",
+            "nullable": false,
+            "description": "Indicates that the result set was truncated and there are more results."
+          },
+          "next_token": {
+            "type": "string",
+            "nullable": true,
+            "description": "When `truncated = true`, `next_token` will be non-null and can be used to retrieve further results. Send `next_token` in a subsequent request to the same endpoint using the same POST body to get the next set of results."
+          }
+        }
+      },
+      "GenericSuccessResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Whether the action succeeded."
+          }
+        }
+      },
+      "FilterExercisesResponse": {
+        "allOf": [
+          { "$ref": "#/components/schemas/ApiPageResponse" },
+          {
+            "type": "object",
+            "properties": {
+              "data": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": { "$ref": "#/components/schemas/Exercise" }
+                  },
+                  { "$ref": "#/components/schemas/Exercise" }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "FilterSetsResponse": {
+        "allOf": [
+          { "$ref": "#/components/schemas/ApiPageResponse" },
+          {
+            "type": "object",
+            "properties": {
+              "data": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": { "$ref": "#/components/schemas/Set" }
+                  },
+                  { "$ref": "#/components/schemas/Set" }
+                ]
+              },
+              "refs": {
+                "type": "object",
+                "properties": {
+                  "exercises": {
+                    "type": "array",
+                    "items": { "$ref": "#/components/schemas/Exercise" }
+                  },
+                  "users": {
+                    "type": "array",
+                    "items": { "$ref": "#/components/schemas/User" }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "FilterUsersResponse": {
+        "allOf": [
+          { "$ref": "#/components/schemas/ApiPageResponse" },
+          {
+            "type": "object",
+            "properties": {
+              "data": {
+                "oneOf": [
+                  {
+                    "type": "array",
+                    "items": { "$ref": "#/components/schemas/User" }
+                  },
+                  { "$ref": "#/components/schemas/User" }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "GetUserResponse": {
+        "type": "object",
+        "properties": { "data": { "$ref": "#/components/schemas/User" } }
+      },
+      "CreateUserResponse": {
+        "allOf": [
+          { "$ref": "#/components/schemas/GenericSuccessResponse" },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "description": "The `id` of the User created."
+              }
+            }
+          }
+        ]
+      },
+      "FilterStatsResponse": {
+        "allOf": [
+          { "$ref": "#/components/schemas/ApiPageResponse" },
+          {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/Stat" }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "responses": {
+      "BadParamsResponse": {
+        "description": "Request is missing required parameters or includes invalid or unrecognized parameters.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": { "type": "string" },
+                "info": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "array",
+                    "items": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "MissingResponse": {
+        "description": "Could not find an object you tried to retrive / filter.",
+        "content": {}
+      },
+      "RateLimitResponse": {
+        "description": "Rate limit exceeded",
+        "content": {}
+      }
+    },
+    "securitySchemes": { "ApiKeyAuth": { "type": "http", "scheme": "bearer" } }
+  }
+}

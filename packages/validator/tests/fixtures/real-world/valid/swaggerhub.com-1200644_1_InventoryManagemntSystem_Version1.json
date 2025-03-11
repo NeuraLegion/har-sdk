@@ -1,0 +1,465 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Inventory Management System API",
+    "description": "API for Inventory Management System, it saves items(\"Products\") in an Inventory, each Item has a Provider that provides it, and also there is consumers who sonsumes therse Items(\"Products\")",
+    "version": "Version1"
+  },
+  "tags": [
+    { "name": "Consumer", "description": "Operations about consumers" },
+    { "name": "Inventory", "description": "Operations about inventories" },
+    { "name": "Item", "description": "Operations about items" },
+    { "name": "Provider", "description": "Operations about providers" }
+  ],
+  "paths": {
+    "/consumer/{consumerID}": {
+      "get": {
+        "tags": ["Consumer"],
+        "summary": "Get consumer by ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "consumerID",
+            "required": true,
+            "description": "ID of the consumer to get",
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Consumer" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/consumer/getconsumers": {
+      "get": {
+        "tags": ["Consumer"],
+        "summary": "Get all consumers",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Consumer" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/consumer/addNewConsumer": {
+      "post": {
+        "tags": ["Consumer"],
+        "summary": "Add a new consumer",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Consumer" }
+            }
+          }
+        },
+        "responses": { "200": { "description": "Successful operation" } }
+      }
+    },
+    "/consumer/deleteConsumer/{consumerID}": {
+      "delete": {
+        "tags": ["Consumer"],
+        "summary": "Delete consumer by ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "consumerID",
+            "required": true,
+            "description": "ID of the consumer to delete",
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": { "200": { "description": "Successful operation" } }
+      }
+    },
+    "/consumer/updateConsumer/{consumerID}": {
+      "put": {
+        "tags": ["Consumer"],
+        "summary": "Update consumer by ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "consumerID",
+            "required": true,
+            "description": "ID of the consumer to update",
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Consumer" }
+            }
+          }
+        },
+        "responses": { "200": { "description": "Successful operation" } }
+      }
+    },
+    "/inventory/{inventoryID}": {
+      "get": {
+        "tags": ["Inventory"],
+        "summary": "Get inventory by ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "inventoryID",
+            "required": true,
+            "description": "ID of the inventory to get",
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Inventory" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/inventory/getinventories": {
+      "get": {
+        "tags": ["Inventory"],
+        "summary": "Get all inventories",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Inventory" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/inventory/addnewinventory": {
+      "post": {
+        "tags": ["Inventory"],
+        "summary": "Add a new inventory",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Inventory" }
+            }
+          }
+        },
+        "responses": { "200": { "description": "Successful operation" } }
+      }
+    },
+    "/inventory/deleteInventory/{inventoryID}": {
+      "delete": {
+        "tags": ["Inventory"],
+        "summary": "Delete inventory by ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "inventoryID",
+            "required": true,
+            "description": "ID of the inventory to delete",
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": { "200": { "description": "Successful operation" } }
+      }
+    },
+    "/inventory/updateInventory/{inventoryID}": {
+      "put": {
+        "tags": ["Inventory"],
+        "summary": "Update inventory by ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "inventoryID",
+            "required": true,
+            "description": "ID of the inventory to update",
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Inventory" }
+            }
+          }
+        },
+        "responses": { "200": { "description": "Successful operation" } }
+      }
+    },
+    "/item/getitems": {
+      "get": {
+        "tags": ["Item"],
+        "summary": "Get all items",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Item" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/item/{itemID}": {
+      "get": {
+        "tags": ["Item"],
+        "summary": "Get item by ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "itemID",
+            "required": true,
+            "description": "ID of the item to get",
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Item" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/item/additem": {
+      "post": {
+        "tags": ["Item"],
+        "summary": "Add a new item",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Item" }
+            }
+          }
+        },
+        "responses": { "200": { "description": "Successful operation" } }
+      }
+    },
+    "/item/deleteitem/{itemID}": {
+      "delete": {
+        "tags": ["Item"],
+        "summary": "Delete item by ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "itemID",
+            "required": true,
+            "description": "ID of the item to delete",
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": { "200": { "description": "Successful operation" } }
+      }
+    },
+    "/item/updateitem/{itemID}": {
+      "put": {
+        "tags": ["Item"],
+        "summary": "Update item by ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "itemID",
+            "required": true,
+            "description": "ID of the item to update",
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Item" }
+            }
+          }
+        },
+        "responses": { "200": { "description": "Successful operation" } }
+      }
+    },
+    "/provider/getproviders": {
+      "get": {
+        "tags": ["Provider"],
+        "summary": "Get all providers",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Provider" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/provider/{providerID}": {
+      "get": {
+        "tags": ["Provider"],
+        "summary": "Get provider by ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "providerID",
+            "required": true,
+            "description": "ID of the provider to get",
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Provider" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/provider/addprovider": {
+      "post": {
+        "tags": ["Provider"],
+        "summary": "Add a new provider",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Provider" }
+            }
+          }
+        },
+        "responses": { "200": { "description": "Successful operation" } }
+      }
+    },
+    "/provider/deleteprovider/{providerID}": {
+      "delete": {
+        "tags": ["Provider"],
+        "summary": "Delete provider by ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "providerID",
+            "required": true,
+            "description": "ID of the provider to delete",
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": { "200": { "description": "Successful operation" } }
+      }
+    },
+    "/provider/updateprovider/{providerID}": {
+      "put": {
+        "tags": ["Provider"],
+        "summary": "Update provider by ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "providerID",
+            "required": true,
+            "description": "ID of the provider to update",
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Provider" }
+            }
+          }
+        },
+        "responses": { "200": { "description": "Successful operation" } }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Consumer": {
+        "type": "object",
+        "properties": {
+          "consumerID": { "type": "integer" },
+          "consumerName": { "type": "string" },
+          "consumerBD": { "type": "string" },
+          "consumerLocation": { "type": "string" },
+          "items": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Item" }
+          }
+        },
+        "required": ["consumerName", "consumerBD", "consumerLocation"]
+      },
+      "Inventory": {
+        "type": "object",
+        "properties": {
+          "inventoryID": { "type": "integer" },
+          "inventoryName": { "type": "string" },
+          "inventoryLocation": { "type": "string" },
+          "ownerName": { "type": "string" }
+        },
+        "required": ["inventoryName", "inventoryLocation", "ownerName"]
+      },
+      "Item": {
+        "type": "object",
+        "properties": {
+          "itemID": { "type": "integer" },
+          "itemName": { "type": "string" },
+          "itemBarcode": { "type": "string" },
+          "itemPrice": { "type": "number" },
+          "inventory": { "$ref": "#/components/schemas/Inventory" }
+        },
+        "required": ["itemName", "itemBarcode", "itemPrice", "inventory"]
+      },
+      "Provider": {
+        "type": "object",
+        "properties": {
+          "providerID": { "type": "integer" },
+          "providerName": { "type": "string" },
+          "providerPNum": { "type": "string" },
+          "providerLocation": { "type": "string" },
+          "items": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Item" }
+          }
+        },
+        "required": ["providerName", "providerPNum", "providerLocation"]
+      }
+    }
+  }
+}

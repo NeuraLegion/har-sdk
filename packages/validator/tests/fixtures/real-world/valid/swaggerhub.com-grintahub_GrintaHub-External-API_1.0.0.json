@@ -1,0 +1,600 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "GrintaHub External API - OpenAPI 3.1",
+    "description": "This is the GrintaHub External API documentation for the OpenAPI 3.1 specification. This API is used to interact with the GrintaHub platform. Including Events listsing & filtering, tickets listing & filtering, tickets reservation, tickets purchase, and more.",
+    "contact": { "email": "ismailibrahim@grintahub.com" },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://grintahub.com/api/v1",
+      "description": "Production server (Arabic Version)"
+    },
+    {
+      "url": "https://dev.grintahub.com/api/v1",
+      "description": "Staging server (Arabic Version)"
+    },
+    {
+      "url": "https://grintahub.com/en/api/v1",
+      "description": "Production server (English Version)"
+    },
+    {
+      "url": "https://dev.grintahub.com/en/api/v1",
+      "description": "Staging server (English Version)"
+    }
+  ],
+  "tags": [
+    { "name": "Events", "description": "Operations related to events" },
+    { "name": "Tickets", "description": "Operations related to tickets" },
+    { "name": "Orders", "description": "Operations related to orders" },
+    {
+      "name": "Notifications",
+      "description": "Webhook for order notifications"
+    }
+  ],
+  "security": [{ "BearerAuth": [] }],
+  "paths": {
+    "/events": {
+      "get": {
+        "tags": ["Events"],
+        "summary": "Retrieve a list of events",
+        "parameters": [
+          {
+            "name": "tag",
+            "in": "query",
+            "description": "Filter events by tag IDs",
+            "schema": { "type": "array", "items": { "type": "integer" } },
+            "style": "form",
+            "explode": false
+          },
+          {
+            "name": "date_from",
+            "in": "query",
+            "description": "Filter events starting from this date",
+            "schema": { "type": "string", "format": "date" }
+          },
+          {
+            "name": "date_to",
+            "in": "query",
+            "description": "Filter events up to this date",
+            "schema": { "type": "string", "format": "date" }
+          },
+          {
+            "name": "order_by_time",
+            "in": "query",
+            "description": "Order events by time (ASC or DESC)",
+            "schema": { "type": "string", "enum": ["ASC", "DESC"] }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A JSON array of events",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/EventResponse" }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No events found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "No events found matching the criteria."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tickets/{event_id}": {
+      "get": {
+        "tags": ["Tickets"],
+        "summary": "Retrieve a list of tickets for an event",
+        "parameters": [
+          {
+            "name": "event_id",
+            "in": "path",
+            "required": true,
+            "description": "ID of the event",
+            "schema": { "type": "integer" }
+          },
+          {
+            "name": "ticket_number",
+            "in": "query",
+            "description": "Filter tickets by range",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "section_id",
+            "in": "query",
+            "description": "Filter tickets by section ID",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "seated_together",
+            "in": "query",
+            "description": "Filter tickets by seating arrangement",
+            "schema": { "type": "boolean" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A JSON object containing venue and ticket details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TicketListingResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No tickets found for the event",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "No tickets found for the specified event."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tickets/reserve/{ticket_upload_id}": {
+      "post": {
+        "tags": ["Tickets"],
+        "summary": "Reserve tickets",
+        "parameters": [
+          {
+            "name": "ticket_upload_id",
+            "in": "path",
+            "required": true,
+            "description": "ID of the ticket upload",
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TicketReservationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Reservation created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TicketReservationResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Ticket upload not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Ticket upload not found."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tickets/download/{ticket_id}": {
+      "get": {
+        "tags": ["Tickets"],
+        "summary": "Download ticket",
+        "parameters": [
+          {
+            "name": "ticket_id",
+            "in": "path",
+            "required": true,
+            "description": "ID of the ticket",
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ticket download details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TicketDownloadResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Ticket not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Ticket not found."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/{order_id}": {
+      "post": {
+        "tags": ["Orders"],
+        "summary": "Confirm an order",
+        "parameters": [
+          {
+            "name": "order_id",
+            "in": "path",
+            "required": true,
+            "description": "ID of the order",
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderConfirmationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Order confirmed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderDetailsResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Order not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Order not found."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Orders"],
+        "summary": "Retrieve order details",
+        "parameters": [
+          {
+            "name": "order_id",
+            "in": "path",
+            "required": true,
+            "description": "ID of the order",
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Order details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderDetailsResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Order not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Order not found."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/notifications/order": {
+      "post": {
+        "tags": ["Notifications"],
+        "summary": "Receive order status updates via webhook",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NotificationWebhookRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Notification received successfully" },
+          "404": {
+            "description": "Order not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Order not found."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "EventResponse": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "name": { "type": "string" },
+          "event_date_time": { "type": "string", "format": "date-time" },
+          "image_url": { "type": "string", "format": "uri" },
+          "type": { "type": "string", "enum": ["app", "direct", "later"] },
+          "app_name": { "type": "string" },
+          "venue": { "$ref": "#/components/schemas/Venue" },
+          "country": { "$ref": "#/components/schemas/Country" },
+          "city": { "$ref": "#/components/schemas/City" }
+        },
+        "required": ["event", "venue", "country", "city"]
+      },
+      "Venue": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "name": { "type": "string" },
+          "image_url": { "type": "string", "format": "uri" }
+        },
+        "required": ["id", "name"]
+      },
+      "Country": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "name": { "type": "string" }
+        },
+        "required": ["id", "name"]
+      },
+      "City": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "name": { "type": "string" }
+        },
+        "required": ["id", "name"]
+      },
+      "TicketListingResponse": {
+        "type": "object",
+        "properties": {
+          "venue": { "$ref": "#/components/schemas/Venue" },
+          "sections": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Section" }
+          },
+          "ticket_uploads": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/TicketUpload" }
+          }
+        },
+        "required": ["venue", "sections", "ticket_uploads"]
+      },
+      "Section": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "name": { "type": "string" },
+          "color_hex_code": { "type": "string" }
+        },
+        "required": ["id", "name"]
+      },
+      "TicketUpload": {
+        "type": "object",
+        "properties": {
+          "ticket_upload_id": { "type": "integer" },
+          "section_id": { "type": "integer" },
+          "section_name": { "type": "string" },
+          "seated_together": { "type": "boolean" },
+          "section_color": { "type": "string" },
+          "price": { "type": "number" },
+          "tickets_range": { "type": "string" },
+          "total": { "type": "integer" }
+        },
+        "required": [
+          "ticket_upload_id",
+          "section_id",
+          "seated_together",
+          "section_color",
+          "price",
+          "tickets_range",
+          "total"
+        ]
+      },
+      "TicketReservationRequest": {
+        "type": "object",
+        "properties": {
+          "ticket_number": { "type": "integer" },
+          "customer": { "$ref": "#/components/schemas/Customer" }
+        },
+        "required": ["ticket_number", "customer"]
+      },
+      "Customer": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "email": { "type": "string", "format": "email" },
+          "phone": { "type": "string" }
+        },
+        "required": ["name", "email", "phone"]
+      },
+      "TicketReservationResponse": {
+        "type": "object",
+        "properties": {
+          "order_id": { "type": "integer" },
+          "total": { "type": "number" },
+          "ticket_number": { "type": "integer" },
+          "ticket_id": { "type": "array", "items": { "type": "integer" } },
+          "status": { "$ref": "#/components/schemas/OrderStatus" },
+          "event": { "$ref": "#/components/schemas/EventResponse" },
+          "section": { "$ref": "#/components/schemas/Section" },
+          "venue": { "$ref": "#/components/schemas/Venue" },
+          "country": { "$ref": "#/components/schemas/Country" },
+          "city": { "$ref": "#/components/schemas/City" },
+          "reservation_time_in_seconds": { "type": "integer" }
+        },
+        "required": [
+          "order_id",
+          "total",
+          "ticket_number",
+          "ticket_id",
+          "status",
+          "event",
+          "section",
+          "venue",
+          "country",
+          "city",
+          "reservation_time_in_seconds"
+        ]
+      },
+      "TicketDownloadResponse": {
+        "type": "object",
+        "properties": {
+          "order_id": { "type": "integer" },
+          "status": { "$ref": "#/components/schemas/OrderStatus" },
+          "url": {
+            "type": "string",
+            "nullable": true,
+            "description": "a temporary URL to download the ticket (null with app events)",
+            "format": "uri"
+          },
+          "expires_at": {
+            "type": "integer",
+            "nullable": true,
+            "description": "timestamp that represents the expiration time of the URL (null with app events)",
+            "examples": [1741175066]
+          }
+        },
+        "required": ["order_id", "status"]
+      },
+      "OrderConfirmationRequest": {
+        "type": "object",
+        "properties": { "payment_successful": { "type": "boolean" } },
+        "required": ["payment_successful"]
+      },
+      "OrderDetailsResponse": {
+        "type": "object",
+        "properties": {
+          "order_id": { "type": "integer" },
+          "total": { "type": "number" },
+          "ticket_number": { "type": "integer" },
+          "ticket_ids": { "type": "array", "items": { "type": "integer" } },
+          "status": { "$ref": "#/components/schemas/OrderStatus" },
+          "event": { "$ref": "#/components/schemas/EventResponse" },
+          "section": { "$ref": "#/components/schemas/Section" },
+          "venue": { "$ref": "#/components/schemas/Venue" },
+          "country": { "$ref": "#/components/schemas/Country" },
+          "city": { "$ref": "#/components/schemas/City" }
+        },
+        "required": [
+          "order_id",
+          "total",
+          "ticket_number",
+          "ticket_ids",
+          "status",
+          "event",
+          "section",
+          "venue",
+          "country",
+          "city"
+        ]
+      },
+      "OrderStatus": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "name": { "type": "string" }
+        },
+        "required": ["id", "name"],
+        "description": "Possible order statuses include: - {id: 1, name: \"بإنتظار الدفع\"} - {id: 2, name: \"تحت الإجراء\"} - {id: 3, name: \"بحاجة للتعويض\"} - {id: 4, name: \"ملغي\"} - {id: 5, name: \"مقبول\"} - {id: 6, name: \"تحت التحقيق\"} - {id: 7, name: \"مكتمل\"} - {id: 8, name: \"فشل الدفع\"} - {id: 9, name: \"تم الإسترجاع\"} - {id: 10, name: \"تم فرض غرامة واسترجعت\"} - {id: 11, name: \"تم فرض غرامة وعوضت\"} - {id: 12, name: \"تم التعويض\"} - {id: 13, name: \"لم تسلم\"} - {id: 14, name: \"موقف للغرامة\"} - {id: 15, name: \"بحاجة للإسترجاع\"} - {id: 16, name: \"بحاجة للتعويض من البائع\"}\n"
+      },
+      "NotificationWebhookRequest": {
+        "type": "object",
+        "properties": {
+          "order_id": { "type": "integer" },
+          "status": { "$ref": "#/components/schemas/OrderStatus" }
+        },
+        "required": ["order_id", "status"]
+      }
+    },
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

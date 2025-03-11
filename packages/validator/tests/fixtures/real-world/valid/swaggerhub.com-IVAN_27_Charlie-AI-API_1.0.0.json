@@ -1,0 +1,382 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Charlie AI API",
+    "description": "Welcome to Charlie AI public API documentation Portal. Any documentation updates will be posted here. Prerequisites: API Key, that can be found and copied from your Ai Setter (Use Case). Loom with setup: <a>https://www.loom.com/share/23c135531a2a44d3b54dfde9ecb79934?sid=3001fe6e-acb8-489d-b2a3-3be505d48527</a>",
+    "version": "1.0.0"
+  },
+  "servers": [{ "url": "https://api.charlieai.io/api/v1" }],
+  "components": {
+    "securitySchemes": {
+      "ApiKeyAuth": { "type": "apiKey", "in": "header", "name": "x-api-key" }
+    }
+  },
+  "security": [{ "ApiKeyAuth": [] }],
+  "paths": {
+    "/leads/flags/kill-switch/apply": {
+      "post": {
+        "summary": "Apply Kill Switch",
+        "operationId": "applyKillSwitch",
+        "tags": ["Lead Flags"],
+        "parameters": [
+          {
+            "name": "X-Api-Key",
+            "in": "header",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "API Key is needed to authorize the request."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "contact_id": {
+                    "type": "string",
+                    "description": "The unique identifier for the lead to apply the kill switch."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Kill switch applied successfully." },
+          "201": { "description": "Kill switch failed." },
+          "400": { "description": "Invalid request body." },
+          "401": { "description": "This request requires a valid API Key." },
+          "405": { "description": "Method Not Allowed." }
+        }
+      }
+    },
+    "/leads/generic/create": {
+      "post": {
+        "summary": "Create Lead (using native Twilio/Sendblue)",
+        "operationId": "createLead",
+        "tags": ["Leads"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "useCaseId": {
+                    "type": "string",
+                    "description": "The unique identifier for the specific Ai Setter (use case) associated with the request."
+                  },
+                  "api_key": {
+                    "type": "string",
+                    "description": "The API key used for authentication and authorization purposes."
+                  },
+                  "twilio_phone": {
+                    "type": "string",
+                    "description": "The Twilio phone number associated with the account."
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "The name of the lead."
+                  },
+                  "first_name": {
+                    "type": "string",
+                    "description": "The first name of the user."
+                  },
+                  "last_name": {
+                    "type": "string",
+                    "description": "The last wame of the user."
+                  },
+                  "full_address": {
+                    "type": "string",
+                    "description": "The complete address, including street, city, state, and country."
+                  },
+                  "address1": {
+                    "type": "string",
+                    "description": "The first line of the address."
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "description": "The email address of the user."
+                  },
+                  "phone": {
+                    "type": "string",
+                    "description": "The phone number of the user."
+                  },
+                  "company_name": {
+                    "type": "string",
+                    "description": "The name of the company or organization."
+                  },
+                  "timezone": {
+                    "type": "string",
+                    "description": "The timezone setting for the account."
+                  },
+                  "postal_code": {
+                    "type": "string",
+                    "description": "The postal code or ZIP code associated with the address provided."
+                  },
+                  "CUSTOMFIELD1": {
+                    "type": "string",
+                    "description": "Custom field for additional data."
+                  },
+                  "CUSTOMFIELD2": {
+                    "type": "string",
+                    "description": "Another custom field for additional data."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Lead created successfully" },
+          "400": { "description": "Bad request" },
+          "401": { "description": "Unauthorized" }
+        }
+      }
+    },
+    "/leads/custom/create": {
+      "post": {
+        "summary": "Create Lead and Retrieve Next Intro Message (using custom CRM setup)",
+        "operationId": "createCustomLead",
+        "tags": ["Leads"],
+        "parameters": [
+          {
+            "name": "X-Api-Key",
+            "in": "header",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "API Key is needed to authorize the request."
+          },
+          {
+            "name": "useCaseId",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "The Ai Setter Id (use case id) to associate the lead with."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "The ID of the lead (contact). It's recommended to use the respective contact id from your CRM."
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "The full name of the lead."
+                  },
+                  "first_name": {
+                    "type": "string",
+                    "description": "The first name of the lead."
+                  },
+                  "last_name": {
+                    "type": "string",
+                    "description": "The last name of the lead."
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "description": "The email address of the user."
+                  },
+                  "phone": {
+                    "type": "string",
+                    "description": "The phone number of the user."
+                  },
+                  "company_name": {
+                    "type": "string",
+                    "description": "The name of the company or organization."
+                  },
+                  "timezone": {
+                    "type": "string",
+                    "description": "The timezone setting for the account."
+                  },
+                  "postal_code": {
+                    "type": "string",
+                    "description": "The postal code or ZIP code associated with the address provided."
+                  },
+                  "agent_first_name": {
+                    "type": "string",
+                    "description": "The assigned agent's first name."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Next_Intro_Message" },
+          "201": { "description": "Lead created successfully" },
+          "208": {
+            "description": "All intro messages were already sent/The account is deactivated/No intro messages configured"
+          },
+          "400": { "description": "Bad request" },
+          "401": { "description": "The API Key was not provided" },
+          "403": { "description": "No access to the Ai Setter (Use Case)" }
+        }
+      }
+    },
+    "/hunts/follow-up": {
+      "post": {
+        "summary": "Process next follow up and retrieve",
+        "operationId": "nextFollowUp",
+        "tags": ["Hunts"],
+        "parameters": [
+          {
+            "name": "X-Api-Key",
+            "in": "header",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "API Key is needed to authorize the request."
+          },
+          {
+            "name": "useCaseId",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "The Ai Setter Id (use case id) to associate the lead with."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "lead_id": {
+                    "type": "string",
+                    "description": "The ID of the lead (contact)."
+                  },
+                  "step": {
+                    "type": "string",
+                    "description": "Step of current follow up 1-9. Auto increment it and reset when lead messages."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Next_Follow_Up" },
+          "202": { "description": "No hunts on this step." },
+          "204": { "description": "Lead not found." },
+          "208": { "description": "Lead disqualified/Account deactivated" },
+          "400": { "description": "Bad request" },
+          "401": { "description": "The API Key was not provided" },
+          "403": { "description": "No access to the Ai Setter (Use Case)" },
+          "500": { "description": "Message not saved" }
+        }
+      }
+    },
+    "/inbound/new-inbound": {
+      "post": {
+        "summary": "Process New Inbound message from the lead",
+        "operationId": "newInbound",
+        "tags": ["Inbound"],
+        "parameters": [
+          {
+            "name": "X-Api-Key",
+            "in": "header",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "API Key is needed to authorize the request."
+          },
+          {
+            "name": "useCaseId",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "The Ai Setter Id (use case id) to associate the lead with."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "lead_id": {
+                    "type": "string",
+                    "description": "The ID of the lead (contact)."
+                  },
+                  "lead_message": {
+                    "type": "string",
+                    "description": "The message that the lead sent."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Message_To_Send" },
+          "400": { "description": "Bad Request" },
+          "404": {
+            "description": "Lead not found/User not found or deactivated/Use case not found"
+          },
+          "405": { "description": "Method Not Allowed" },
+          "500": { "description": "Internal Server Error (retry)" }
+        }
+      }
+    },
+    "/leads/custom-values/update": {
+      "post": {
+        "summary": "Update custom values of the Lead",
+        "operationId": "customValuesUpdate",
+        "tags": ["Lead Custom values"],
+        "parameters": [
+          {
+            "name": "X-Api-Key",
+            "in": "header",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "API Key is needed to authorize the request."
+          },
+          {
+            "name": "X-Use-Case-Id",
+            "in": "header",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "The Ai Setter Id (use case id) to associate the lead with."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "contact_id": {
+                    "type": "string",
+                    "description": "The ID of the lead (contact)."
+                  },
+                  "customData": {
+                    "type": "object",
+                    "description": "custom values key-value pairs (record of strings)."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Success/Partial Success" },
+          "400": { "description": "Bad Request" },
+          "401": { "description": "Invalid API Key provided" },
+          "405": { "description": "Method Not Allowed" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    }
+  }
+}

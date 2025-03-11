@@ -1,0 +1,390 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Research REST API",
+    "description": "This document describes the Research REST API endpoints for accessing report information. \nIt may be updated over time to reflect changes in circumstances, with efforts made to maintain accuracy based on the most recent information. \n\nThe Research REST API requires an oAuth Access token for authentication of requests. Please reach out to your customer service representative to request an oAuth access token.",
+    "termsOfService": "https://portal.policyreporter.com/platform-terms-of-use",
+    "contact": { "email": "info@policyreporter.com" },
+    "version": "1.0.0"
+  },
+  "externalDocs": {
+    "description": "Find out more about Policy Reporter",
+    "url": "https://www.policyreporter.com/"
+  },
+  "servers": [
+    { "url": "http://policyreporter.priv", "description": "Dev Instance" },
+    {
+      "url": "https://staging.policyreporter.us",
+      "description": "Staging Instance"
+    },
+    {
+      "url": "https://portal.policyreporter.com",
+      "description": "Production Instance"
+    }
+  ],
+  "tags": [
+    {
+      "name": "research",
+      "description": "Research REST API endpoints for accessing report information"
+    }
+  ],
+  "paths": {
+    "/api/research/v1/report/{reportId}": {
+      "get": {
+        "tags": ["research report"],
+        "summary": "Get report data by report ID",
+        "description": "Returns a single report",
+        "operationId": "getReport",
+        "parameters": [
+          {
+            "name": "reportId",
+            "in": "path",
+            "description": "ID of report to return",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          },
+          {
+            "name": "state[]",
+            "in": "query",
+            "description": "query report data by postal state abbreviations",
+            "required": false,
+            "style": "deepObject",
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": { "$ref": "#/components/schemas/State" }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Report" }
+              }
+            }
+          },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Invalid end point" },
+          "422": {
+            "description": "Indicates a missing required input parameter, or invalid parameters"
+          },
+          "500": { "description": "Server error" }
+        },
+        "security": [{ "TokenCredentials": [] }]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "TokenCredentials": { "type": "http", "scheme": "bearer" }
+    },
+    "schemas": {
+      "State": {
+        "type": "string",
+        "enum": [
+          "AK",
+          "AL",
+          "AR",
+          "AZ",
+          "CA",
+          "CO",
+          "CT",
+          "DC",
+          "DE",
+          "FL",
+          "GA",
+          "HI",
+          "IA",
+          "ID",
+          "IL",
+          "IN",
+          "KS",
+          "KY",
+          "LA",
+          "MA",
+          "MD",
+          "ME",
+          "MI",
+          "MN",
+          "MO",
+          "MS",
+          "MT",
+          "NC",
+          "ND",
+          "NE",
+          "NH",
+          "NJ",
+          "NM",
+          "NV",
+          "NY",
+          "OH",
+          "OK",
+          "OR",
+          "PA",
+          "PR",
+          "RI",
+          "SC",
+          "SD",
+          "TN",
+          "TX",
+          "UT",
+          "VA",
+          "VT",
+          "WA",
+          "WI",
+          "WV",
+          "WY",
+          "GU",
+          "AS",
+          "MP",
+          "VI",
+          "FN"
+        ]
+      },
+      "Document": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Document ID",
+            "example": 69960
+          },
+          "assetRevisionId": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Asset Revision ID",
+            "example": 4278704
+          },
+          "documentTitle": {
+            "type": "string",
+            "description": "Document Title",
+            "example": "Pub 100-02 Chapter 15 Covered Medical and Other Health Services - Benefit Policy Manual"
+          },
+          "source": {
+            "type": "string",
+            "description": "Link to original file on payer’s website",
+            "example": "https://www.cms.gov/Regulations-and-Guidance/Guidance/Manuals/downloads/bp102c15.pdf"
+          },
+          "file": {
+            "type": "string",
+            "description": "Link to locally stored file (requires Portal user/login)",
+            "example": "https://staging.policyreporter.us/geturlupdate.php?urlid=69960&updateid=4278704&type=default"
+          },
+          "documentTypes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "format": "int32",
+                  "description": "Document Type ID",
+                  "example": 36
+                },
+                "name": {
+                  "type": "string",
+                  "description": "Document Type Name",
+                  "example": "Provider Manual"
+                }
+              }
+            }
+          },
+          "lastReviewDate": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The latest review date of the document",
+            "example": "2024-05-09T00:00:00+00:00"
+          }
+        },
+        "required": [
+          "id",
+          "assetRevisionId",
+          "documentTitle",
+          "source",
+          "file",
+          "documentTypes",
+          "lastReviewDate"
+        ]
+      },
+      "Report": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Report ID",
+            "example": 60
+          },
+          "projectName": {
+            "type": "string",
+            "description": "Project Name on Report Management",
+            "example": "Mercalis -  Cimerli - API"
+          },
+          "publishedDate": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The date and time the report was published",
+            "example": "2024-08-30T17:08:56+00:00"
+          },
+          "documents": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "document": {
+                  "$ref": "#/components/schemas/Document",
+                  "description": "The primary document"
+                },
+                "payers": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "payer": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "format": "int32",
+                            "description": "Payer company ID",
+                            "example": 111
+                          },
+                          "name": {
+                            "type": "string",
+                            "description": "Payer company Name",
+                            "example": "CMS"
+                          }
+                        }
+                      },
+                      "planTypes": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "planType": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "format": "int32",
+                                  "description": "Plan Type ID",
+                                  "example": 9
+                                },
+                                "name": {
+                                  "type": "string",
+                                  "description": "Plan Type Name",
+                                  "example": "Medicare FFS"
+                                }
+                              },
+                              "required": ["id", "name"]
+                            },
+                            "states": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "coveredLives": {
+                                    "type": "object",
+                                    "patternProperties": {
+                                      "^(AK|AL|AR|AZ|CA|CO|CT|DC|DE|FL|GA|HI|IA|ID|IL|IN|KS|KY|LA|MA|MD|ME|MI|MN|MO|MS|MT|NC|ND|NE|NH|NJ|NM|NV|NY|OH|OK|OR|PA|PR|RI|SC|SD|TN|TX|UT|VA|VT|WA|WI|WV|WY|GU|AS|MP|VI|FN)$": {
+                                        "type": "integer"
+                                      }
+                                    },
+                                    "minProperties": 1,
+                                    "additionalProperties": false,
+                                    "description": "This is an object of key/value pairs, with the value representing the number of covered lives per document-payer-planType-state. The keys of this object are state abbreviations. Document, payer, plan type can be derived from its parent objects.",
+                                    "example": { "AR": 307381, "AZ": 601839 }
+                                  },
+                                  "researches": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "object",
+                                      "properties": {
+                                        "coverageDependentVariables": {
+                                          "type": "array",
+                                          "items": {
+                                            "type": "object",
+                                            "properties": {
+                                              "fieldName": {
+                                                "type": "string",
+                                                "description": "The field name of a coverage dependent variable.",
+                                                "example": "product"
+                                              },
+                                              "value": {
+                                                "type": "string",
+                                                "description": "The value of the coverage dependent variable.",
+                                                "example": "Cimerli"
+                                              }
+                                            },
+                                            "required": ["fieldName", "value"]
+                                          },
+                                          "description": "Coverage dependent variables that the research data is for, which can be multiples."
+                                        },
+                                        "supportingDocuments": {
+                                          "type": "array",
+                                          "items": {
+                                            "$ref": "#/components/schemas/Document"
+                                          },
+                                          "description": "Additional supporting documents for the research data. There could be 0-n supporting documents."
+                                        },
+                                        "data": {
+                                          "type": "array",
+                                          "items": {
+                                            "type": "object",
+                                            "properties": {
+                                              "value": {
+                                                "type": "string",
+                                                "description": "The value of the research field.",
+                                                "example": true
+                                              },
+                                              "fieldName": {
+                                                "type": "string",
+                                                "description": "A research field.",
+                                                "example": "Covered"
+                                              }
+                                            },
+                                            "required": ["fieldName", "value"]
+                                          },
+                                          "minItems": 1,
+                                          "description": "Research data."
+                                        }
+                                      },
+                                      "required": [
+                                        "coverageDependentVariables",
+                                        "supportingDocuments",
+                                        "data"
+                                      ]
+                                    }
+                                  }
+                                },
+                                "required": ["coveredLives", "researches"]
+                              },
+                              "minItems": 1,
+                              "description": "4th level grouping of research data"
+                            }
+                          }
+                        },
+                        "minItems": 1,
+                        "description": "3rd level grouping of research data"
+                      }
+                    },
+                    "required": ["payer", "planTypes"]
+                  },
+                  "minItems": 1,
+                  "description": "2nd level grouping of research data"
+                }
+              }
+            },
+            "minItems": 1,
+            "description": "Research data is grouped by one unique primary document, one unique payer, one unique plan type, multiple unique states. Documents is the highest level of this grouping (hierarchy)"
+          }
+        },
+        "required": ["id", "projectName", "publishedDate", "documents"]
+      }
+    }
+  }
+}

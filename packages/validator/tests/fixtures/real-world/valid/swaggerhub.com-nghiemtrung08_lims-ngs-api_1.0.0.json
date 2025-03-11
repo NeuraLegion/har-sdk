@@ -1,0 +1,316 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "LIMS NGS API",
+    "description": "API đồng độ dữ liệu từ FLU.KCB về LIMS NGS",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "description": "Development server",
+      "url": "http://lims.viettinlab.com:7009"
+    }
+  ],
+  "components": {
+    "securitySchemes": { "bearerAuth": { "type": "http", "scheme": "bearer" } },
+    "schemas": {
+      "Auth": {
+        "type": "object",
+        "properties": {
+          "userName": { "type": "string", "example": "flu.kcb" },
+          "password": { "type": "string", "example": "123" }
+        },
+        "required": ["userName", "password"]
+      },
+      "SyncData": {
+        "type": "object",
+        "properties": {
+          "ngsData": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "patientName": {
+                  "type": "string",
+                  "example": "Nguyễn Văn Test"
+                },
+                "sex": { "type": "string", "enum": ["M", "F"] },
+                "age": { "type": "number", "example": 23 },
+                "monthAge": { "type": "number", "example": 10 },
+                "address": { "type": "string", "example": "Hà Nội" },
+                "provincial": { "type": "string", "enum": ["01"] },
+                "districts": { "type": "string", "enum": ["001"] },
+                "wards": { "type": "string", "enum": ["00001"] },
+                "medicalReferral": { "type": "string", "example": 123456789 },
+                "pid": { "type": "string", "example": 987654321 },
+                "sickDayStart": {
+                  "type": "string",
+                  "format": "dd/MM/yyyy",
+                  "example": "14/05/2024"
+                },
+                "locationID": { "type": "string", "enum": ["BVBM"] },
+                "sampleInfo": {
+                  "type": "object",
+                  "properties": {
+                    "codeSampleLocation": {
+                      "type": "string",
+                      "example": "test_001"
+                    },
+                    "type": { "type": "string", "enum": ["DTH"] },
+                    "typeName": { "type": "string", "example": "Dịch tỵ hầu" },
+                    "userGetSample": {
+                      "type": "string",
+                      "example": "Nguyễn Thị B"
+                    },
+                    "dateGet": {
+                      "type": "string",
+                      "format": "dd/MM/yyyy",
+                      "example": "14/05/2024"
+                    }
+                  },
+                  "required": ["type", "typeName", "dateGet"]
+                },
+                "resultSurveyInfo": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "key": { "type": "string" },
+                      "value": { "type": "string" }
+                    }
+                  },
+                  "example": [
+                    { "key": "ciC0C2EWZyf", "value": "10/05/2024" },
+                    { "key": "XjjjL2YVRLL", "value": "10/05/2024" }
+                  ]
+                }
+              },
+              "required": [
+                "patientName",
+                "sex",
+                "age",
+                "provincial",
+                "district",
+                "wards",
+                "pid",
+                "locationID",
+                "sampleInfo",
+                "resultSurveyInfo"
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  "security": [{ "bearerAuth": [] }],
+  "paths": {
+    "/api/Ngs/Auth": {
+      "post": {
+        "tags": ["Danh sách API"],
+        "summary": "Bước 1: Tạo token",
+        "description": "### Payload\n\n``` json\n{\n    \"userName\": \"flu.kcb\",\n    \"password\": \"123\"\n}\n```\n\n- Ghi chú\n    - userName: mặc định là flu.kcb\n    - password: LIMS cung cấp\n\n### Kết quả trả về\n\n| Status Code | Description |\n| --- | --- |\n| 201 | Tạo token thành công |\n| 401 | Kiểm tra lại username, password |\n| 500 | Lỗi server |\n\n- Tạo token thành công\n    - Token trả trong trường data\n\n``` json\n{\n    \"data\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJxxxx\",\n    \"error\": null\n}\n ```\n\n- Tạo token thất bại\n    \n\n``` json\n{\n    \"data\": null,\n    \"error\": \"Unauthorized\"\n}\n ```",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "userName": { "type": "string", "example": "flu.kcb" },
+                  "password": { "type": "string", "example": "123" }
+                },
+                "required": ["userName", "password"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Thành công",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "string",
+                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJxxxx"
+                    },
+                    "error": { "type": "string", "example": null }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Kiểm tra lại username, password",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": { "type": "string", "example": null },
+                    "error": { "type": "string", "example": "Unauthorized" }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Lỗi server",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": { "type": "string", "example": null },
+                    "error": {
+                      "type": "string",
+                      "example": "InternalServerError"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Ngs/SyncData": {
+      "post": {
+        "tags": ["Danh sách API"],
+        "summary": "Bước 2: Đồng bộ dữ liệu",
+        "description": "### Authoriztion\n\n- Sử dụng Bearer Token\n    \n- Token lấy từ api/Ngs/Auth\n    \n\n### Payload\n\n| Status Code | Description |\n| --- | --- |\n| 200 | Đồng bộ thành công |\n| 401 | Token xác thực không hợp lệ |\n| 400 | Dữ liệu đồng bộ không hợp lệ |\n| 500 | Lỗi server |\n\n- Thành công\n    \n\n``` json\n{\n    \"data\": null,\n    \"error\": null\n}\n ```\n\n- Dữ liệu đồng bộ không hợp lệ\n    \n    - error: danh sách chi tiết các lỗi\n        \n\n``` json\n{\n    \"data\": null,\n    \"error\": [\n        \"NgsData[0].PatientName: required\",\n        \"NgsData[0].Sex: 'MM' is not valid value\",\n        \"NgsData[0].Provincial: '01m' doesn't exists\"\n    ]\n}\n ```",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "ngsData": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "patientName": {
+                          "type": "string",
+                          "example": "Nguyễn Văn Test"
+                        },
+                        "sex": { "type": "string", "enum": ["M", "F"] },
+                        "age": { "type": "number", "example": 23 },
+                        "monthAge": { "type": "number", "example": 10 },
+                        "address": { "type": "string", "example": "Hà Nội" },
+                        "provincial": { "type": "string", "enum": ["01"] },
+                        "districts": { "type": "string", "enum": ["001"] },
+                        "wards": { "type": "string", "enum": ["00001"] },
+                        "medicalReferral": {
+                          "type": "string",
+                          "example": 123456789
+                        },
+                        "pid": { "type": "string", "example": 987654321 },
+                        "sickDayStart": {
+                          "type": "string",
+                          "format": "dd/MM/yyyy",
+                          "example": "14/05/2024"
+                        },
+                        "locationID": { "type": "string", "enum": ["BVBM"] },
+                        "sampleInfo": {
+                          "type": "object",
+                          "properties": {
+                            "codeSampleLocation": {
+                              "type": "string",
+                              "example": "test_001"
+                            },
+                            "type": { "type": "string", "enum": ["DTH"] },
+                            "typeName": {
+                              "type": "string",
+                              "example": "Dịch tỵ hầu"
+                            },
+                            "userGetSample": {
+                              "type": "string",
+                              "example": "Nguyễn Thị B"
+                            },
+                            "dateGet": {
+                              "type": "string",
+                              "format": "dd/MM/yyyy",
+                              "example": "14/05/2024"
+                            }
+                          },
+                          "required": ["type", "typeName", "dateGet"]
+                        },
+                        "resultSurveyInfo": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "key": { "type": "string" },
+                              "value": { "type": "string" }
+                            }
+                          },
+                          "example": [
+                            { "key": "ciC0C2EWZyf", "value": "10/05/2024" },
+                            { "key": "XjjjL2YVRLL", "value": "10/05/2024" }
+                          ]
+                        }
+                      },
+                      "required": [
+                        "patientName",
+                        "sex",
+                        "age",
+                        "provincial",
+                        "district",
+                        "wards",
+                        "pid",
+                        "locationID",
+                        "sampleInfo",
+                        "resultSurveyInfo"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Thành công",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": { "type": "string", "example": null },
+                    "error": { "type": "string", "example": null }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dữ liệu đồng bộ không hợp lệ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": { "type": "string", "example": null },
+                    "error": {
+                      "type": "array",
+                      "example": [
+                        "NgsData[0].PatientName: required",
+                        "NgsData[0].Sex: 'MM' is not valid value",
+                        "NgsData[0].Provincial: '01m' doesn't exists"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

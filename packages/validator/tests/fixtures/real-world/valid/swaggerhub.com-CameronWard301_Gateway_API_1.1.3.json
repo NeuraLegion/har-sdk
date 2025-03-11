@@ -1,0 +1,88 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Reference Gateway API",
+    "description": "Reference Gateway API for invoking a communication gateway",
+    "version": "1.1.3"
+  },
+  "servers": [
+    {
+      "url": "https://localhost:8080/api/v1",
+      "description": "Local development server"
+    }
+  ],
+  "tags": [{ "name": "gateway", "description": "Gateway API" }],
+  "paths": {
+    "/email/newsletter": {
+      "post": {
+        "tags": ["gateway"],
+        "summary": "Send monthly newsletter to customer via email",
+        "operationId": "sendMonthlyNewsletterByEmail",
+        "requestBody": {
+          "description": "The customer ID and message ID",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/GatewayBody" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": ["object"],
+                  "properties": {
+                    "userId": {
+                      "type": ["string"],
+                      "format": "uuid",
+                      "examples": [123456789]
+                    },
+                    "messageHash": {
+                      "type": ["string"],
+                      "examples": [
+                        "a95582bcff5be7bd1613350681160406673498ca9ddad51aa97d16cd7b3ca221"
+                      ]
+                    },
+                    "errorMessage": { "type": ["string"], "examples": [""] }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "x-worker-api-key"
+      }
+    },
+    "schemas": {
+      "GatewayBody": {
+        "properties": {
+          "userId": {
+            "type": "string",
+            "description": "The user ID of the customer",
+            "examples": [123456789]
+          },
+          "workflowRunId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "The workflowRunId of the message being sent"
+          }
+        }
+      }
+    }
+  }
+}

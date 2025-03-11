@@ -1,0 +1,381 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Gamestream Backup Service API",
+    "description": "REST API for Gamestream Cloud Gaming game saves backups management\nSome useful links:\n- [Gamestream](https://www.gamestream?biz)\n- [Pleio](https://www.pleio.games)",
+    "termsOfService": null,
+    "contact": { "email": "xavier@gamestream.biz" },
+    "license": { "name": null, "url": null },
+    "version": "0.0.1"
+  },
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  },
+  "servers": [{ "url": "https://glusterfs1.sgx.io:8443" }],
+  "tags": [
+    { "name": "auth", "description": "Authentication methods" },
+    {
+      "name": "backup",
+      "description": "Management operations about game saves backups"
+    }
+  ],
+  "paths": {
+    "/auth": {
+      "post": {
+        "tags": ["auth"],
+        "summary": "Authenticate",
+        "description": "Authenticate to Gamestream Backup Service. This step is mandatory to acess backup management methods. Authentication is purely cookie based. The JWT Token returned is response body if purely informational.",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/UserPasswordParameters"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AuthResponse" }
+              }
+            }
+          },
+          "401": { "description": "authentication failed" }
+        },
+        "security": [{ "cookieAuth": [] }, { "sessionCookieAuth": [] }]
+      }
+    },
+    "/logout": {
+      "post": {
+        "tags": ["auth"],
+        "summary": "Logout",
+        "description": "Logout from Gamestream Backup Service. When logout is successfull, the auuthorization cookie is automatically removed, and backup management methods are no longer accessible.",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/xhtml+xml": { "schema": { "type": "string" } }
+            }
+          }
+        },
+        "security": [{ "cookieAuth": [] }, { "sessionCookieAuth": [] }]
+      }
+    },
+    "/backup/user/list": {
+      "post": {
+        "tags": ["backup"],
+        "summary": "Get the list of players",
+        "description": "Get the list of players having at least one game save in the system.",
+        "requestBody": { "$ref": "#/components/requestBodies/UsersBody" },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/UsersResponse" }
+              }
+            }
+          },
+          "500": { "description": "Request error" }
+        },
+        "security": [{ "cookieAuth": [] }, { "sessionCookieAuth": [] }]
+      }
+    },
+    "/backup/profile/list": {
+      "post": {
+        "tags": ["backup"],
+        "summary": "Get the list of profiles",
+        "description": "Get the list of profiles for a given user",
+        "requestBody": { "$ref": "#/components/requestBodies/ProfilesBody" },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/UsersResponse" }
+              }
+            }
+          },
+          "500": { "description": "Request error" }
+        },
+        "security": [{ "cookieAuth": [] }, { "sessionCookieAuth": [] }]
+      }
+    },
+    "/backup/item/list": {
+      "post": {
+        "tags": ["backup"],
+        "summary": "Get the list of saves",
+        "description": "Get the list of saves for a profile for a given user",
+        "requestBody": { "$ref": "#/components/requestBodies/ItemsBody" },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/UsersResponse" }
+              }
+            }
+          },
+          "500": { "description": "Request error" }
+        },
+        "security": [{ "cookieAuth": [] }, { "sessionCookieAuth": [] }]
+      }
+    },
+    "/backup/item/delete": {
+      "post": {
+        "tags": ["backup"],
+        "summary": "Delete a save",
+        "description": "Delete a save for a profile for a given user",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/RestoreDeleteBody"
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": { "schema": { "type": "object" } }
+            }
+          },
+          "500": { "description": "Request error" }
+        },
+        "security": [{ "cookieAuth": [] }, { "sessionCookieAuth": [] }]
+      }
+    },
+    "/backup/item/restore": {
+      "post": {
+        "tags": ["backup"],
+        "summary": "Restore a save",
+        "description": "Restore a save for a profile for a given user",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/RestoreDeleteBody"
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/RestoreResponse" }
+              }
+            }
+          },
+          "500": { "description": "Request error" }
+        },
+        "security": [{ "cookieAuth": [] }, { "sessionCookieAuth": [] }]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "cookieAuth": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "secure:token"
+      },
+      "sessionCookieAuth": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "secure:sessionHash"
+      }
+    },
+    "requestBodies": {
+      "UsersBody": {
+        "description": "Request body to retrieve the list of users",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/RequestUserParameters" }
+          }
+        }
+      },
+      "ProfilesBody": {
+        "description": "Request body to retrieve the list of profiles for a given user",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/RequestProfileParameters"
+            }
+          }
+        }
+      },
+      "ItemsBody": {
+        "description": "Request body to retrieve the list of saves of a profile for a given user",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/RequestItemParameters" }
+          }
+        }
+      },
+      "RestoreDeleteBody": {
+        "description": "Request body to restore or delete a save of a profile for a given user",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/RestoreDeleteParameters" }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "RequestUserSharedParameters": {
+        "title": "Shared user request parameters",
+        "type": "object",
+        "properties": {
+          "draw": {
+            "type": "integer",
+            "description": "draw parameter, must be set to 1",
+            "minimum": 1,
+            "maximum": 1,
+            "default": 1
+          },
+          "needle": {
+            "type": "string",
+            "description": "case sensitive string to filter output data (empty string means no filtering)",
+            "default": ""
+          },
+          "limit_start": {
+            "type": "integer",
+            "description": "first index of the output data to be returned (first item index is 0)",
+            "minimum": 0,
+            "default": 0
+          },
+          "limit_length": {
+            "type": "integer",
+            "description": "maximum number of items to be returned (0 means all items)",
+            "minimum": 0,
+            "default": 15
+          }
+        },
+        "required": ["draw", "needle", "limit_start", "limit_length"]
+      },
+      "RequestUserParameters": {
+        "title": "Users list request parameters",
+        "$ref": "#/components/schemas/RequestUserSharedParameters"
+      },
+      "RequestProfileParameters": {
+        "title": "Profile list request parameters",
+        "allOf": [
+          { "$ref": "#/components/schemas/RequestUserSharedParameters" },
+          {
+            "type": "object",
+            "properties": {
+              "userid": {
+                "type": "string",
+                "description": "ID of the user",
+                "default": ""
+              }
+            },
+            "required": ["userid"]
+          }
+        ]
+      },
+      "RequestItemParameters": {
+        "title": "Item list request parameters",
+        "allOf": [
+          { "$ref": "#/components/schemas/RequestProfileParameters" },
+          {
+            "type": "object",
+            "properties": {
+              "profile": {
+                "type": "string",
+                "description": "ID of the profile of the user",
+                "default": ""
+              }
+            },
+            "required": ["profile"]
+          }
+        ]
+      },
+      "RestoreDeleteParameters": {
+        "title": "Restore and delete RequestItemParameters",
+        "type": "object",
+        "properties": {
+          "userid": {
+            "type": "string",
+            "description": "ID of the user",
+            "default": ""
+          },
+          "profile": {
+            "type": "string",
+            "description": "ID of the profile of the user",
+            "default": ""
+          },
+          "item": {
+            "type": "string",
+            "description": "item name to delete",
+            "default": ""
+          }
+        },
+        "required": ["userid", "profile", "item"]
+      },
+      "UserPasswordParameters": {
+        "type": "object",
+        "properties": {
+          "username": { "type": "string" },
+          "password": { "type": "string" }
+        },
+        "required": ["username", "password"]
+      },
+      "AuthResponse": {
+        "type": "object",
+        "properties": {
+          "access_token": { "type": "string", "default": "JWTToken" },
+          "token_type": { "type": "string", "default": "Bearer" }
+        }
+      },
+      "UsersResponse": {
+        "type": "object",
+        "properties": {
+          "draw": {
+            "type": "integer",
+            "description": "draw parameter, always set to 1",
+            "minimum": 1,
+            "maximum": 1,
+            "default": 1
+          },
+          "recordsTotal": {
+            "type": "integer",
+            "description": "total count of records (whatever the parameters)",
+            "minimum": 0
+          },
+          "recordsFiltered": {
+            "type": "integer",
+            "description": "count records which have been filtered through needle parameter",
+            "minimum": 0
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "name of user, profile or game save"
+                },
+                "timestamp": {
+                  "type": "integer",
+                  "description": "timestamp of last modification"
+                }
+              }
+            }
+          }
+        }
+      },
+      "RestoreResponse": {
+        "type": "object",
+        "properties": {
+          "new_item_revision": {
+            "type": "string",
+            "description": "new name of the restored item",
+            "default": ""
+          }
+        }
+      }
+    }
+  }
+}

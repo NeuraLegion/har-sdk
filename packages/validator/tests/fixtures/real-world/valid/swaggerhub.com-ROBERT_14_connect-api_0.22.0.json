@@ -1,0 +1,460 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "connect-api",
+    "version": "0.22.0",
+    "x-logo": {
+      "url": "../logo.png",
+      "backgroundColor": "#FFFFFF",
+      "altText": "Prusa logo"
+    },
+    "description": "# API Rules\n* Null values are not sent / received.\n* Object IDs are **always** sent in list methods, but are **ignored** in create / update methods.\n* All request and response objects are at the root of the returned structure, if they contain only one entity.\n* Response of multiple entities is returned as an object that contains the list of entities and a structure `pager`, if necessary.\n### Additional documentation:\n* [Camera registration](../camera_registration/)\n* [Camera communication](../camera_communication/)\n### HTTP Status\n* 200 - OK, response contains data (usually the entire entity)\n* 201 - OK, entry created; response contains data as required\n* 204 - OK, no response\n* 304 - Response has not been modified\n* 400 - Invalid request / invalid input (SDK error)\n* 401 - Endpoint is being accessed without credentials (SDK error)\n* 403 - Request can't be served, usually due to insufficient rights (user error)\n* 404 - Entity not found (user error or outdated data)\n* 409 - Conflict with the state of target resource (user error)\n* 50x - Server side error"
+  },
+  "tags": [{ "name": "camera" }, { "name": "cameras" }],
+  "x-tagGroups": [
+    { "name": "General", "tags": ["version", "health"] },
+    { "name": "App", "tags": ["cameras"] },
+    { "name": "Camera", "tags": ["camera"] }
+  ],
+  "servers": [
+    {
+      "url": "http://{hostname}:{port}",
+      "description": "Local development server",
+      "variables": {
+        "hostname": {
+          "default": "localhost",
+          "description": "Developer's hostname"
+        },
+        "port": { "default": "8000", "description": "Developer's port" }
+      }
+    },
+    {
+      "url": "http://{hostname}",
+      "description": "Any working server",
+      "variables": {
+        "hostname": {
+          "default": "localhost",
+          "description": "Developer's hostname"
+        }
+      }
+    },
+    {
+      "url": "https://{hostname}",
+      "description": "Any working server",
+      "variables": {
+        "hostname": {
+          "default": "localhost",
+          "description": "Developer's hostname"
+        }
+      }
+    },
+    {
+      "url": "https://connect.prusa3d.com",
+      "description": "Production environment"
+    }
+  ],
+  "paths": {
+    "/app/printers/{printer_uuid}/camera": {
+      "post": {
+        "summary": "Register camera to Connect by user.",
+        "parameters": [
+          { "$ref": "#/components/parameters/printer_uuid_param" },
+          {
+            "name": "origin",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "description": "Use OTHER for camera registration via api. WEB is used when registering camera via web qr code",
+              "type": "string",
+              "default": "WEB",
+              "enum": ["WEB", "OTHER"]
+            }
+          }
+        ],
+        "tags": ["cameras"],
+        "security": [{ "Cookie": [] }],
+        "responses": {
+          "200": {
+            "description": "**OK**",
+            "headers": {
+              "Token": {
+                "required": true,
+                "schema": { "$ref": "#/components/schemas/token" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/400" },
+          "401": { "$ref": "#/components/responses/401-app" },
+          "403": { "$ref": "#/components/responses/403-app" },
+          "503": { "$ref": "#/components/responses/503" }
+        }
+      }
+    },
+    "/c/snapshot": {
+      "put": {
+        "summary": "Upload snapshot to Connect",
+        "tags": ["camera"],
+        "security": [{ "Token": [], "Fingerprint": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "image/jpg": {
+              "schema": {
+                "type": "string",
+                "format": "binary",
+                "description": "Max snapshot size is 16MB"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": { "$ref": "#/components/responses/204" },
+          "400": { "$ref": "#/components/responses/400" },
+          "401": { "$ref": "#/components/responses/401-p" },
+          "403": { "$ref": "#/components/responses/403-p" },
+          "404": { "$ref": "#/components/responses/404" },
+          "503": { "$ref": "#/components/responses/503" }
+        }
+      }
+    },
+    "/c/info": {
+      "put": {
+        "summary": "Update camera attributes",
+        "tags": ["camera"],
+        "security": [{ "Token": [], "Fingerprint": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/camera_request" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "**OK**",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/camera_response" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/400" },
+          "401": { "$ref": "#/components/responses/401-p" },
+          "403": { "$ref": "#/components/responses/403-p" },
+          "503": { "$ref": "#/components/responses/503" }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "token": {
+        "type": "string",
+        "minLength": 20,
+        "maxLength": 20,
+        "example": "T0nSPU2v05v0pJeKYFYV"
+      },
+      "network_info": {
+        "type": "object",
+        "description": "Network information",
+        "properties": {
+          "lan_mac": {
+            "type": "string",
+            "example": "0a:bc:12:34:56:7f",
+            "description": "Hardware address of ethernet port."
+          },
+          "lan_ipv4": {
+            "type": "string",
+            "example": "192.168.1.5",
+            "description": "IPv4 address of ethernet port."
+          },
+          "lan_ipv6": {
+            "type": "string",
+            "example": "2e0a::1234:5678:abcd:efab/64",
+            "description": "IPv6 address of ethernet port."
+          },
+          "wifi_mac": {
+            "type": "string",
+            "example": "0a:bc:12:34:ab:7f",
+            "description": "Hardware address of Wi-Fi device."
+          },
+          "wifi_ipv4": {
+            "type": "string",
+            "example": "192.168.1.6",
+            "description": "IPv4 address of Wi-Fi device."
+          },
+          "wifi_ipv6": {
+            "type": "string",
+            "example": "2e0a::1234:5678:abcd:0123/64",
+            "description": "IPv6 address of Wi-Fi device."
+          },
+          "wifi_ssid": {
+            "type": "string",
+            "example": "PublicWiFi",
+            "description": "SSID of Wi-Fi network which is used by Wi-Fi device."
+          }
+        }
+      },
+      "camera_resolution": {
+        "type": "object",
+        "properties": {
+          "width": { "type": "integer", "example": 640 },
+          "height": { "type": "integer", "example": 480 }
+        }
+      },
+      "camera_capabilities": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "enum": ["trigger_scheme", "imaging", "resolution", "focus"]
+        }
+      },
+      "camera_config": {
+        "type": "object",
+        "description": "Configuration of the camera",
+        "properties": {
+          "camera_id": { "type": "string", "example": null },
+          "path": {
+            "type": "string",
+            "description": "Path to the driver",
+            "example": "/dev/video0"
+          },
+          "name": { "$ref": "#/components/schemas/device_name" },
+          "driver": { "type": "string", "example": "V4L2" },
+          "trigger_scheme": {
+            "type": "string",
+            "example": "THIRTY_SEC",
+            "default": "THIRTY_SEC",
+            "enum": [
+              "MANUAL",
+              "EACH_LAYER",
+              "FIFTH_LAYER",
+              "GCODE",
+              "TEN_SEC",
+              "THIRTY_SEC",
+              "SIXTY_SEC",
+              "TEN_MIN"
+            ],
+            "description": "Type of snapshot trigger scheme. Manual, layer, gcode only for LINK cameras"
+          },
+          "resolution": { "$ref": "#/components/schemas/camera_resolution" },
+          "network_info": { "$ref": "#/components/schemas/network_info" }
+        },
+        "required": ["name"]
+      },
+      "camera_options": {
+        "type": "object",
+        "description": "Configuration of the camera",
+        "properties": {
+          "available_resolutions": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/camera_resolution" }
+          }
+        }
+      },
+      "camera_origin": {
+        "description": "Camera origin whether it is registered by web (WEB) or by printer (LINK) or manually via camera api (OTHER)",
+        "type": "string",
+        "enum": ["LINK", "WEB", "OTHER"]
+      },
+      "camera_request": {
+        "type": "object",
+        "properties": {
+          "config": { "$ref": "#/components/schemas/camera_config" },
+          "options": { "$ref": "#/components/schemas/camera_options" },
+          "capabilities": { "$ref": "#/components/schemas/camera_capabilities" }
+        },
+        "required": ["config"]
+      },
+      "camera_response": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "name": { "$ref": "#/components/schemas/device_name" },
+          "config": { "$ref": "#/components/schemas/camera_config" },
+          "options": { "$ref": "#/components/schemas/camera_options" },
+          "capabilities": {
+            "$ref": "#/components/schemas/camera_capabilities"
+          },
+          "team_id": { "$ref": "#/components/schemas/team_id" },
+          "printer_uuid": { "$ref": "#/components/schemas/printer_uuid" },
+          "token": { "$ref": "#/components/schemas/token" },
+          "origin": { "$ref": "#/components/schemas/camera_origin" },
+          "deleted": {
+            "type": "integer",
+            "description": "Timestamp of camera deletion. Deleted cameras are listed only in job detail!"
+          },
+          "registered": {
+            "type": "boolean",
+            "description": "True if the registration process of camera is finished"
+          },
+          "sort_order": {
+            "type": "integer",
+            "description": "Sort order of the cameras per printer! For now it is not possible to change the camera's sort order"
+          }
+        },
+        "required": ["id", "team_id", "printer_uuid", "origin", "registered"]
+      },
+      "status": {
+        "type": "object",
+        "properties": {
+          "code": { "type": "string", "description": "Error code" },
+          "message": {
+            "type": "string",
+            "description": "Human readable error message",
+            "minLength": 1
+          }
+        },
+        "required": ["code", "message"]
+      },
+      "device_name": {
+        "type": "string",
+        "maxLength": 64,
+        "nullable": true,
+        "description": "Name defined by user",
+        "example": "Olomouc"
+      },
+      "team_id": {
+        "type": "integer",
+        "minimum": 0,
+        "description": "Team id. 0 is reserved for anonymous."
+      },
+      "printer_uuid": {
+        "type": "string",
+        "description": "Printer UUID - can be found in the url in printer detail or in the printer settings tab",
+        "pattern": "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}",
+        "example": "cfed5dce-86f4-4d7c-a198-9a81b176369f"
+      }
+    },
+    "parameters": {
+      "printer_uuid_param": {
+        "name": "printer_uuid",
+        "in": "path",
+        "required": true,
+        "schema": { "$ref": "#/components/schemas/printer_uuid" }
+      }
+    },
+    "responses": {
+      "204": {
+        "description": "**No Content**\nData was accepted by the server."
+      },
+      "302": { "description": "**Found**\nMoved temporarily." },
+      "303": { "description": "**See other**" },
+      "304": {
+        "description": "**Response not modified**",
+        "headers": {
+          "Last-Modified": { "$ref": "#/components/headers/Last-Modified" },
+          "etag": { "$ref": "#/components/headers/etag" }
+        }
+      },
+      "400": {
+        "description": "**Bad Request**\nSome data received is not valid. Typically this happens for POST requests with incorrect structure or a path argument was sent that is not defined in the URL."
+      },
+      "401-app": {
+        "description": "**Unauthorized**\nMissing security token or it is not valid.",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/status" }
+          }
+        }
+      },
+      "401-p": {
+        "description": "**Unauthorized**\nMissing security token or it is not valid.",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/status" }
+          }
+        }
+      },
+      "403-app": {
+        "description": "**Forbidden**\nSecurity token is not valid or is outdated. Or user doesn't has rights for perform action.",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/status" }
+          }
+        }
+      },
+      "403-p": {
+        "description": "**Forbidden**\nSecurity token is not valid or is outdated.",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/status" }
+          }
+        }
+      },
+      "404": {
+        "description": "**Not Found** Entity not found or invalid auth token.",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/status" }
+          }
+        }
+      },
+      "409": {
+        "description": "**Conflict**\nRequest could not be processed because the requested change would create a conflict in the database.",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/status" }
+          }
+        }
+      },
+      "413": {
+        "description": "**Payload too large**\nChunked request was too large.",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/status" }
+          }
+        }
+      },
+      "429": {
+        "description": "**Too many requests**",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/status" }
+          }
+        }
+      },
+      "503": {
+        "description": "**Service Unavailable**\nService is unavailable at this moment. Try again later.",
+        "content": {
+          "text/plain": { "schema": { "type": "string" } },
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/status" }
+          }
+        }
+      }
+    },
+    "headers": {
+      "Last-Modified": {
+        "schema": {
+          "type": "string",
+          "example": "Last-Modified: Wed, 14 Oct 2015 16:57:02 GMT",
+          "description": "Last modified time defined by RFC 7232, [section 2.2](https://tools.ietf.org/html/rfc7232#section-2.2)"
+        }
+      },
+      "etag": {
+        "schema": {
+          "type": "string",
+          "example": "etag: W/'98f4143a4a'",
+          "description": "An identifier for a specific version of a response"
+        }
+      }
+    },
+    "securitySchemes": {
+      "Token": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Token",
+        "description": "Camera token generated by Connect server."
+      },
+      "Fingerprint": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Fingerprint",
+        "description": "Camera fingerprint generated by camera. It has to have at least 16 and maximum of 64 characters."
+      },
+      "Cookie": { "type": "apiKey", "in": "cookie", "name": "SESSID" }
+    }
+  }
+}

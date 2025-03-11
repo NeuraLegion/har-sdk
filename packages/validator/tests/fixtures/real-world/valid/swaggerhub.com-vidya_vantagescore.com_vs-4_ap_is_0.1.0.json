@@ -1,0 +1,956 @@
+{
+  "openapi": "3.1.0",
+  "servers": [{ "url": "/" }],
+  "info": {
+    "contact": { "email": "vs4plus@vantagescore.com" },
+    "description": "This file describes the VS4+ APIs using the swagger notation.",
+    "title": "VS4+ APIs",
+    "version": "0.1.0",
+    "x-providerName": "vantagescore.com"
+  },
+  "security": [{ "bearerAuth": [] }],
+  "tags": [
+    {
+      "name": "Scoring API",
+      "description": "VS4+ API that analyses a consumer's financial information and returns an augmented credit score."
+    },
+    {
+      "name": "Upload API",
+      "description": "VS4+ API supports scoring requests that have a body up to 10MB. Some consumers may have account files that are tens or even hundreds of MBs in size. The Upload API allows them to upload their large consumer files to VS4+ system first, then submit the file path to the scoring API, to workaround the 10MB request size limit."
+    },
+    {
+      "name": "Verification API",
+      "description": "VS4+ checks the account holder information of the aggregator accounts and the credit report, and makes sure they belong to the same person, before scoring the file. The Verification API accepts a consumer file, and responds with a boolean indicating whether it the account holders look like the same person or not."
+    }
+  ],
+  "paths": {
+    "/score": {
+      "post": {
+        "summary": "Get a VS4+ Score",
+        "description": "Calculates a weighted credit score for a consumer based on its accounts, transaction history and credit information, using VS4+'s proprietary model.",
+        "operationId": "getScore",
+        "parameters": [
+          {
+            "name": "consumer_id",
+            "description": "The pseudonimized consumer ID.",
+            "in": "query",
+            "allowEmptyValue": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "request_date",
+            "description": "The date to send the scoring request.",
+            "in": "query",
+            "allowEmptyValue": true,
+            "schema": { "type": "string", "format": "date" }
+          },
+          {
+            "name": "upload_id",
+            "description": "ID of the upload session. Required when submitting consumer files by uploading them to S3.",
+            "in": "query",
+            "allowEmptyValue": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "description": "Consumer file and credit report data.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "anyOf": [
+                  { "$ref": "#/components/schemas/ConsumerFile" },
+                  { "$ref": "#/components/schemas/ConsumerFileUpload" }
+                ]
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "consumer_file": {
+                    "$ref": "#/components/schemas/ConsumerFile"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "VS4+ score is calculated successfully.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ScoreResponse" }
+              }
+            }
+          },
+          "206": {
+            "description": "Consumer profile is valid but not qualified for VS4+ score calculation.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ScoreResponse" }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/GenericError" }
+              }
+            }
+          },
+          "415": {
+            "description": "Invalid content type.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/GenericError" }
+              }
+            }
+          }
+        },
+        "tags": ["Scoring API"],
+        "deprecated": false
+      }
+    },
+    "/sandbox": {
+      "post": {
+        "summary": "Get a Dummy VS4+ Score",
+        "description": "Calculates a dummy credit score. Used in development for input validation.",
+        "operationId": "getSandboxScore",
+        "parameters": [
+          {
+            "name": "consumer_id",
+            "description": "The pseudonimized consumer ID.",
+            "in": "query",
+            "allowEmptyValue": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "request_date",
+            "description": "The date to send the scoring request.",
+            "in": "query",
+            "allowEmptyValue": true,
+            "schema": { "type": "string", "format": "date" }
+          },
+          {
+            "name": "upload_id",
+            "description": "ID of the upload session. Required when submitting consumer files by uploading them to S3.",
+            "in": "query",
+            "allowEmptyValue": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "description": "Consumer file and credit report data.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "anyOf": [
+                  { "$ref": "#/components/schemas/ConsumerFile" },
+                  { "$ref": "#/components/schemas/ConsumerFileUpload" }
+                ]
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "consumer_file": {
+                    "$ref": "#/components/schemas/ConsumerFile"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "VS4+ score is calculated successfully.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ScoreResponse" }
+              }
+            }
+          },
+          "206": {
+            "description": "Consumer profile is valid but not qualified for VS4+ score calculation.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ScoreResponse" }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/GenericError" }
+              }
+            }
+          },
+          "415": {
+            "description": "Invalid content type.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/GenericError" }
+              }
+            }
+          }
+        },
+        "tags": ["Scoring API"],
+        "deprecated": false
+      }
+    },
+    "/attributes": {
+      "post": {
+        "summary": "Get VS4+ attributes",
+        "description": "Returns all VS4+ attributes calculated for a consumer based on its accounts, transaction history and credit information, using VS4+'s proprietary model.",
+        "operationId": "getAttributes",
+        "parameters": [
+          {
+            "name": "consumer_id",
+            "description": "The pseudonimized consumer ID.",
+            "in": "query",
+            "allowEmptyValue": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "request_date",
+            "description": "The date to send the scoring request.",
+            "in": "query",
+            "allowEmptyValue": true,
+            "schema": { "type": "string", "format": "date" }
+          },
+          {
+            "name": "upload_id",
+            "description": "ID of the upload session. Required when submitting consumer files by uploading them to S3.",
+            "in": "query",
+            "allowEmptyValue": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "description": "Consumer file and credit report data.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "anyOf": [
+                  { "$ref": "#/components/schemas/ConsumerFile" },
+                  { "$ref": "#/components/schemas/ConsumerFileUpload" }
+                ]
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "consumer_file": {
+                    "$ref": "#/components/schemas/ConsumerFile"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "VS4+ attributes are calculated successfully.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AttributesResponse" },
+                "example": {
+                  "response": "OK",
+                  "attributes": {
+                    "credit_score_model_value": "VantageScore Version 4.0",
+                    "qc1101": 123,
+                    "qc1203": 12,
+                    "qc4103": 98765.43,
+                    "qc5101": 12345.67,
+                    "qd3103": 345,
+                    "qr5202": 5432.1,
+                    "qr5303": -1234.5,
+                    "qr5501": 3,
+                    "qr5902": 17
+                  }
+                }
+              }
+            }
+          },
+          "206": {
+            "description": "Consumer profile is valid but does not qualify VS4+ attributes calculation.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AttributesResponse" },
+                "example": { "response": "OK", "attributes": {} }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/GenericError" },
+                "example": {
+                  "response": "FAIL",
+                  "errors": ["crc_file is missing."]
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "Invalid content type.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/GenericError" },
+                "example": {
+                  "response": "FAIL",
+                  "errors": ["Invalid content type x/www-form-urlencoded"]
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Scoring API"],
+        "deprecated": false
+      }
+    },
+    "/upload/session": {
+      "post": {
+        "summary": "Start upload session",
+        "description": "Starts a new file upload session to upload aggregator files and credit report for scoring purpose.",
+        "operationId": "startUploadSession",
+        "responses": {
+          "200": {
+            "description": "Upload session started successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UploadSessionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/GenericError" }
+              }
+            }
+          }
+        },
+        "tags": ["Upload API"],
+        "deprecated": false
+      }
+    },
+    "/upload/generate-url": {
+      "post": {
+        "summary": "Generate upload URL",
+        "description": "Generates a unique and safe URL to upload file.",
+        "operationId": "generateUploadURL",
+        "parameters": [
+          {
+            "name": "sessionID",
+            "description": "ID of an active upload session.",
+            "in": "query",
+            "allowEmptyValue": false,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Upload path generated successfully.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/UploadURLResponse" }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/GenericError" }
+              }
+            }
+          },
+          "401": {
+            "description": "Upload session already expired.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/GenericError" }
+              }
+            }
+          },
+          "404": {
+            "description": "Upload session not found.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/GenericError" }
+              }
+            }
+          }
+        },
+        "tags": ["Upload API"],
+        "deprecated": false
+      }
+    },
+    "/verify": {
+      "post": {
+        "summary": "Verify consumer file holder of a consumer file",
+        "description": "Verifies the owner of accounts and credit files in a consumer file.",
+        "operationId": "verifyConsumerFile",
+        "requestBody": {
+          "description": "Consumer file and credit report data.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsumerFileForVerification"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Consumer file is verified successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VerificationResponse"
+                },
+                "example": { "response": "OK" }
+              }
+            }
+          },
+          "400": {
+            "description": "Accounts and credit files seem to belong to different persons.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VerificationResponse"
+                },
+                "example": { "response": "FAIL" }
+              }
+            }
+          }
+        },
+        "tags": ["Verification API"],
+        "deprecated": false
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "ConsumerFile": {
+        "title": "ConsumerFile",
+        "type": "object",
+        "properties": {
+          "aggregator": {
+            "description": "The financial aggregator that exports accounts data.",
+            "type": "string",
+            "enum": ["finicity", "mx", "yodlee"]
+          },
+          "accounts": {
+            "description": "Financial institution accounts.",
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Account" }
+          },
+          "bureau": {
+            "description": "The credit bureau that exports credit report data.",
+            "type": "string",
+            "enum": ["efx", "exp", "tu"]
+          },
+          "credit": { "$ref": "#/components/schemas/Credit" }
+        },
+        "required": ["aggregator", "accounts", "bureau", "credit"]
+      },
+      "Account": {
+        "title": "Account",
+        "description": "An account in a financial institution.",
+        "type": "object",
+        "properties": {
+          "bank_id": {
+            "description": "Aggregator-specific ID of the financial institution the account is opened in.",
+            "type": "string",
+            "example": "bank-id-1234"
+          },
+          "account_id": {
+            "description": "Pseudonymous ID of the account.",
+            "type": "string",
+            "example": "12345678-1234-1234-1234-123456789012"
+          },
+          "product_type": {
+            "description": "Aggregator-specific account type.",
+            "type": "string",
+            "example": "SAVINGS"
+          },
+          "open_date": {
+            "description": "Account open date. YYYY-MM-DD for mx and yodlee. An epoch timestamp for finicity.",
+            "type": ["string", "integer"],
+            "example": "2020-01-23"
+          },
+          "balance": {
+            "description": "Account balance at balance_date.",
+            "type": "number",
+            "example": 30.0
+          },
+          "balance_date": {
+            "description": "The date the account balance is exported to the consumer file.",
+            "type": ["string", "integer"],
+            "example": "2023-01-23"
+          },
+          "transactions": {
+            "description": "All transactions registered in the account.",
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Transaction" }
+          }
+        },
+        "required": [
+          "bank_id",
+          "account_id",
+          "product_type",
+          "balance",
+          "balance_date",
+          "transactions"
+        ]
+      },
+      "Transaction": {
+        "title": "Transaction",
+        "description": "A credit or debit transaction.",
+        "type": "object",
+        "properties": {
+          "account_id": {
+            "description": "The account ID.",
+            "type": "string",
+            "example": "12345678-1234-1234-1234-123456789012"
+          },
+          "transaction_type": {
+            "description": "Nature of the transaction.",
+            "type": "string",
+            "enum": ["credit", "debit"],
+            "example": "credit"
+          },
+          "transaction_amount": {
+            "description": "Amount of the transaction.",
+            "type": "number",
+            "example": 5.0
+          },
+          "transaction_date": {
+            "description": "The date the transaction is recorded in the account.",
+            "type": ["string", "integer"],
+            "example": "2023-01-01"
+          }
+        },
+        "required": [
+          "account_id",
+          "transaction_type",
+          "transaction_amount",
+          "transaction_date"
+        ]
+      },
+      "Credit": {
+        "title": "Credit",
+        "description": "The credit score section of a credit report.",
+        "type": "object",
+        "properties": {
+          "credit_score_date": {
+            "description": "The date the credit score is calculated.",
+            "type": "string",
+            "format": "date",
+            "example": "2022-12-01"
+          },
+          "credit_score_facta_inquiries_indicator": {
+            "description": "Indicates whether FACTA inquiries have happened.",
+            "type": "boolean",
+            "example": true
+          },
+          "credit_score_model_name_type": {
+            "description": "Type of the credit score model used to calculate the score.",
+            "type": "string",
+            "example": "Custom"
+          },
+          "credit_score_model_name_description": {
+            "description": "Name of the credit score model used to calculate the score.",
+            "type": "string",
+            "example": "VantageScoreEquifaxV4.0"
+          },
+          "credit_score_rank_percentile_value": {
+            "description": "The percentile position of the credit score in the whole spectrum. A small percentile represents a low score.",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100,
+            "example": 35
+          },
+          "credit_score_value": {
+            "description": "The actual credit score.",
+            "type": "integer",
+            "minimum": 300,
+            "maximum": 850,
+            "example": 479
+          },
+          "credit_score_factors": {
+            "description": "List of factors that affect the credit score.",
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/CreditScoreFactor" }
+          }
+        },
+        "required": [
+          "credit_score_date",
+          "credit_score_facta_inquiries_indicator",
+          "credit_score_model_name_type",
+          "credit_score_model_name_description",
+          "credit_score_rank_percentile_value",
+          "credit_score_value",
+          "credit_score_factors"
+        ]
+      },
+      "CreditScoreFactor": {
+        "title": "CreditScoreFactor",
+        "description": "A factor that affects credit score calculation.",
+        "type": "object",
+        "properties": {
+          "credit_score_factor_code": {
+            "description": "Credit bureau-specific code that identifies the factor.",
+            "type": "string",
+            "example": "FA"
+          },
+          "credit_score_factor_text": {
+            "description": "Description of the factor.",
+            "type": "string",
+            "example": "Credit inquiry happened."
+          }
+        },
+        "required": ["credit_score_factor_code", "credit_score_factor_text"]
+      },
+      "ConsumerFileUpload": {
+        "title": "ConsumerFileUpload",
+        "description": "Payload of a consumer file upload session.",
+        "type": "object",
+        "properties": {
+          "aggregator": {
+            "description": "The financial aggregator that exports accounts data.",
+            "type": "string",
+            "enum": ["finicity", "mx", "yodlee"]
+          },
+          "aggregator_files": {
+            "description": "List of all uploaded aggregator files.",
+            "type": "array",
+            "items": { "type": "string", "format": "uri" }
+          },
+          "bureau": {
+            "description": "The credit bureau that exports credit report data.",
+            "type": "string",
+            "enum": ["efx", "exp", "tu"]
+          },
+          "credit_file": {
+            "description": "The uploaded credit report.",
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": ["aggregator", "aggregator_files", "bureau", "credit_file"]
+      },
+      "ScoreResponse": {
+        "title": "ScoreResponse",
+        "type": "object",
+        "properties": {
+          "response": {
+            "description": "Result of the scoring request.",
+            "type": "string",
+            "enum": ["OK", "FAIL"]
+          },
+          "score": {
+            "description": "The VS4+ weighted credit score.",
+            "type": "integer",
+            "minimum": 300,
+            "maximum": 850
+          },
+          "reasonCodes": {
+            "description": "List of all factors considered in the calculation of the VS4+ score.",
+            "type": "array",
+            "items": {
+              "description": "Map of factor code to its description.",
+              "type": "object"
+            }
+          }
+        },
+        "required": ["response"]
+      },
+      "AttributesResponse": {
+        "title": "AttributesResponse",
+        "type": "object",
+        "properties": {
+          "response": {
+            "description": "Result of the attributes request.",
+            "type": "string",
+            "enum": ["OK", "FAIL"]
+          },
+          "attributes": {
+            "description": "All calculated VS4+ attributes.",
+            "type": "object",
+            "properties": {
+              "credit_score_model_value": {
+                "description": "The scoring model of the consumer's credit file.",
+                "type": "string"
+              },
+              "qc1101": {
+                "description": "Total number of credits on all accounts within 30 days.",
+                "type": "integer",
+                "minimum": 0
+              },
+              "qc1203": {
+                "description": "Total number of credits higher than $1,500 on all accounts within 90 days.",
+                "type": "integer",
+                "minimum": 0
+              },
+              "qc4103": {
+                "description": "Total credit amount on all accounts within 90 days.",
+                "type": "number"
+              },
+              "qc5101": {
+                "description": "Highest total credit amount on accounts within 30 days.",
+                "type": "number"
+              },
+              "qd3103": {
+                "description": "Highest number of debits on accounts within 90 days.",
+                "type": "integer",
+                "minimum": 0
+              },
+              "qr5202": {
+                "description": "Highest adb per account within 60 days.",
+                "type": "number"
+              },
+              "qr5303": {
+                "description": "Lowest running daily balance on accounts within 90 days.",
+                "type": "number"
+              },
+              "qr5501": {
+                "description": "Total number of negative daily running balances on all accounts within 30 days.",
+                "type": "integer",
+                "minimum": 0
+              },
+              "qr5902": {
+                "description": "Total number of days having daily running balance >= $5000 within 60 days.",
+                "type": "integer",
+                "minimum": 0
+              }
+            }
+          }
+        },
+        "required": ["response"]
+      },
+      "GenericError": {
+        "title": "GenericError",
+        "description": "Generic error response, used in multiple API endpoints.",
+        "type": "object",
+        "properties": {
+          "response": {
+            "description": "Result of the scoring request.",
+            "type": "string",
+            "enum": ["OK", "FAIL"]
+          },
+          "errors": {
+            "description": "List of errors.",
+            "type": "array",
+            "items": { "oneOf": [{ "type": "string" }, { "type": "object" }] }
+          }
+        },
+        "required": ["response", "errors"],
+        "example": { "response": "FAIL", "errors": null }
+      },
+      "UploadSessionResponse": {
+        "title": "UploadSessionResponse",
+        "type": "object",
+        "properties": {
+          "session_id": {
+            "description": "Unique ID that identifies an upload session.",
+            "type": "string"
+          }
+        },
+        "required": ["session_id"]
+      },
+      "UploadURLResponse": {
+        "title": "UploadURLResponse",
+        "type": "object",
+        "properties": {
+          "response": {
+            "description": "Result of the request.",
+            "type": "string",
+            "enum": ["OK", "FAIL"]
+          },
+          "uploadURL": {
+            "description": "The URL to upload files to.",
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": ["response", "uploadURL"]
+      },
+      "ConsumerFileForVerification": {
+        "title": "ConsumerFileForVerification",
+        "type": "object",
+        "properties": {
+          "accounts": {
+            "description": "Financial institution accounts.",
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/AccountForVerification" }
+          },
+          "credit": { "$ref": "#/components/schemas/CreditForVerification" }
+        },
+        "required": ["accounts", "credit"]
+      },
+      "AccountForVerification": {
+        "title": "AccountForVerification",
+        "description": "An account in a financial institution that contains holder information.",
+        "type": "object",
+        "properties": {
+          "owners": {
+            "description": "List of owners of the account.",
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/AccountOwner" }
+          }
+        },
+        "required": ["owners"]
+      },
+      "AccountOwner": {
+        "title": "AccountOwner",
+        "description": "Owner of an account.",
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "Name of an account owner.",
+            "$ref": "#/components/schemas/AccountOwnerName"
+          },
+          "addresses": {
+            "description": "List of addresses belonging to the account owner.",
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/AccountOwnerAddress" }
+          }
+        },
+        "required": ["name", "addresses"]
+      },
+      "AccountOwnerName": {
+        "title": "AccountOwnerName",
+        "description": "Name of an account owner.",
+        "type": "object",
+        "properties": {
+          "first_name": {
+            "description": "First name of an account owner.",
+            "type": "string"
+          },
+          "last_name": {
+            "description": "Last name of an account owner.",
+            "type": "string"
+          }
+        },
+        "required": ["first_name", "last_name"]
+      },
+      "AccountOwnerAddress": {
+        "title": "AccountOwnerAddress",
+        "description": "Address belonging to an account owner.",
+        "type": "object",
+        "properties": {
+          "address_line": {
+            "description": "The major address line.",
+            "type": "string"
+          },
+          "city": { "description": "City of the address.", "type": "string" },
+          "state": { "description": "State of the address.", "type": "string" },
+          "postal_code": {
+            "description": "Postal code of the address.",
+            "type": "string"
+          }
+        },
+        "required": ["address_line", "city"]
+      },
+      "CreditForVerification": {
+        "title": "CreditForVerification",
+        "description": "A credit report that contains holder information.",
+        "type": "object",
+        "properties": {
+          "owner": {
+            "description": "Owner of the account.",
+            "$ref": "#/components/schemas/CreditOwner"
+          }
+        },
+        "required": ["owner"]
+      },
+      "CreditOwner": {
+        "title": "CreditOwner",
+        "description": "Owner of a credit report.",
+        "type": "object",
+        "properties": {
+          "names": {
+            "description": "Name of a credit report owner.",
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/CreditOwnerName" }
+          },
+          "addresses": {
+            "description": "List of addresses belonging to a credit report owner.",
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/CreditOwnerAddress" }
+          }
+        },
+        "required": ["names", "addresses"]
+      },
+      "CreditOwnerName": {
+        "title": "CreditOwnerName",
+        "description": "Name of a credit report owner.",
+        "type": "object",
+        "properties": {
+          "first_name": {
+            "description": "First name of a credit report owner.",
+            "type": "string"
+          },
+          "last_name": {
+            "description": "Last name of a credit report owner.",
+            "type": "string"
+          }
+        },
+        "required": ["first_name", "last_name"]
+      },
+      "CreditOwnerAddress": {
+        "title": "CreditOwnerAddress",
+        "description": "Address belonging to a credit report owner.",
+        "type": "object",
+        "properties": {
+          "address_line": {
+            "description": "The major address line.",
+            "type": "string"
+          },
+          "city": { "description": "City of the address.", "type": "string" },
+          "state": { "description": "State of the address.", "type": "string" },
+          "postal_code": {
+            "description": "Postal code of the address.",
+            "type": "string"
+          }
+        },
+        "required": ["address_line"]
+      },
+      "VerificationResponse": {
+        "title": "VerificationResponse",
+        "type": "object",
+        "properties": {
+          "response": {
+            "description": "Result of the request.",
+            "type": "string",
+            "enum": ["OK", "FAIL"]
+          }
+        },
+        "required": ["response"]
+      }
+    }
+  }
+}

@@ -1,0 +1,695 @@
+{
+  "openapi": "3.1.0",
+  "info": { "version": "1.0.1", "title": "Customer Payment Domain" },
+  "paths": {
+    "/messageEnvelope": {
+      "post": {
+        "summary": "Create a MessageEnvelope",
+        "operationId": "createMessageEnvelope",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CompositeModel" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "MessageEnvelope was successfully created",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/CompositeModel" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CompositeModel": {
+        "type": "object",
+        "properties": {
+          "messageEnvelope": { "$ref": "#/components/schemas/MessageEnvelope" }
+        }
+      },
+      "MessageEnvelope": {
+        "type": "object",
+        "properties": {
+          "messageHeader": { "$ref": "#/components/schemas/MessageHeader" },
+          "augmentationPoint": {
+            "$ref": "#/components/schemas/AugmentationPoint"
+          },
+          "payload": { "$ref": "#/components/schemas/Payload" }
+        }
+      },
+      "MessageHeader": {
+        "type": "object",
+        "properties": {
+          "headerVersion": { "type": "string" },
+          "timestamp": { "type": "string", "format": "date-time" },
+          "sourceContext": { "$ref": "#/components/schemas/SourceContext" },
+          "messageContext": { "$ref": "#/components/schemas/MessageContext" },
+          "multiPartMessageContextType": {
+            "$ref": "#/components/schemas/MultiPartMessageContextType"
+          }
+        }
+      },
+      "AugmentationPoint": { "type": "object", "properties": null },
+      "Payload": {
+        "type": "object",
+        "properties": {
+          "ccReconHeader": { "$ref": "#/components/schemas/CcReconHeader" },
+          "document": { "$ref": "#/components/schemas/Document" },
+          "reportingInfo": { "$ref": "#/components/schemas/ReportingInfo" },
+          "paymentDetails": { "$ref": "#/components/schemas/PaymentDetails" },
+          "araAccountingTransactionDetail": {
+            "$ref": "#/components/schemas/AraAccountingTransactionDetail"
+          }
+        }
+      },
+      "Document": {
+        "type": "object",
+        "properties": {
+          "transactionType": {
+            "type": "string",
+            "enum": ["SALE", "REFUND", "VOID"],
+            "examples": ["SALE/REFUND/VOID"]
+          },
+          "sourceEventTimestamp": { "type": "string", "format": "date-time" },
+          "documentNumber": { "type": "string" },
+          "issueDate": { "type": "string" },
+          "issueCountryCode": { "type": "string" },
+          "totalDocumentAmount": {
+            "$ref": "#/components/schemas/TotalDocumentAmount"
+          },
+          "agentSine": { "type": "string" },
+          "pnrInfo": { "$ref": "#/components/schemas/PnrInfo" },
+          "documentType": { "type": "string" },
+          "stationAlpha": { "type": "string" },
+          "iataAgencyNumber": { "type": "string" },
+          "couponDetails": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/CouponDetails" }
+          },
+          "passengerInfo": { "$ref": "#/components/schemas/PassengerInfo" },
+          "formOfPaymentSale": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/FormOfPaymentSale" }
+          },
+          "exchangeDocumentInfo": {
+            "$ref": "#/components/schemas/ExchangeDocumentInfo"
+          }
+        }
+      },
+      "PnrInfo": {
+        "type": "object",
+        "properties": {
+          "sabreRecordLocator": {
+            "$ref": "#/components/schemas/RecordLocator"
+          },
+          "otherGDSRecordLocator": {
+            "$ref": "#/components/schemas/RecordLocator"
+          }
+        }
+      },
+      "TotalDocumentAmount": {
+        "type": "object",
+        "properties": {
+          "amount": { "type": "number" },
+          "currencyCode": { "type": "string" },
+          "rateOfExchange": { "type": "number" }
+        }
+      },
+      "RecordLocator": {
+        "type": "object",
+        "properties": {
+          "recordLocator": { "type": "string" },
+          "reservationCreatedTime": { "type": "string", "format": "date-time" },
+          "issuedByAirlineCode": { "type": "string" }
+        }
+      },
+      "CouponDetails": {
+        "type": "object",
+        "properties": {
+          "conjunctiveDocumentNumber": { "type": "string" },
+          "conjunctiveCouponNumber": { "type": "string" },
+          "emdDetails": { "$ref": "#/components/schemas/EmdDetails" }
+        }
+      },
+      "EmdDetails": {
+        "type": "object",
+        "properties": {
+          "attributeGroup": { "type": "string" },
+          "attributeSubgroup": { "type": "string" },
+          "rficCode": { "type": "string" },
+          "rfiscCode": { "type": "string" },
+          "emdDescription": { "type": "string" },
+          "associatedTicketDocumentNumber": { "type": "string" },
+          "associatedCouponNumber": { "type": "string" }
+        }
+      },
+      "PassengerInfo": {
+        "type": "object",
+        "properties": {
+          "firstName": { "type": "string" },
+          "lastName": { "type": "string" },
+          "passengerType": { "type": "string" }
+        }
+      },
+      "ExchangeDocumentInfo": {
+        "type": "object",
+        "properties": {
+          "originalDocumentId": { "type": "string" },
+          "originalDocumentIssueDate": { "type": "string" },
+          "exchangeFromDocumentId": { "type": "string" },
+          "exchangeFromDocumentIssueDate": { "type": "string" }
+        }
+      },
+      "FormOfPaymentSale": {
+        "type": "object",
+        "properties": {
+          "typeCode": { "type": "string" },
+          "paymentAmountLocal": {
+            "$ref": "#/components/schemas/PaymentAmount"
+          },
+          "paymentAmountUSD": { "$ref": "#/components/schemas/PaymentAmount" },
+          "creditCardInfo": { "$ref": "#/components/schemas/CreditCardInfo" }
+        }
+      },
+      "PaymentAmount": {
+        "type": "object",
+        "properties": {
+          "amount": { "type": "number" },
+          "currencyCode": { "type": "string" }
+        }
+      },
+      "CreditCardInfo": {
+        "type": "object",
+        "properties": {
+          "maskedCardNumber": { "type": "string" },
+          "cardBin": { "type": "string" },
+          "cardLastFourDigits": { "type": "string" },
+          "expiryDate": { "type": "string" },
+          "cardApprovalCode": { "type": "string" },
+          "cardType": { "type": "string" }
+        }
+      },
+      "ReportingInfo": {
+        "type": "object",
+        "properties": {
+          "reportingInformationSource": { "type": "string" },
+          "currencyOfPayment": { "type": "string" },
+          "countryCode": { "type": "string" },
+          "reportingPeriod": { "type": "string", "format": "date" },
+          "billingPeriod": { "type": "string", "format": "date" },
+          "cycleNumber": { "type": "string", "examples": ["HOT"] },
+          "processingDate": { "type": "string", "format": "date" },
+          "processingTime": { "type": "string", "format": "time" },
+          "reportingWeekNumber": { "type": "number" },
+          "reportingMonthNumber": { "type": "number" },
+          "pendingManualValidation": { "type": "boolean" },
+          "bspIdOrBankCode": { "type": "string" }
+        }
+      },
+      "PaymentDetails": {
+        "type": "object",
+        "properties": {
+          "authorizations": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Authorization" }
+          },
+          "captures": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Capture" }
+          },
+          "installments": {
+            "type": "object",
+            "properties": {
+              "installmentAuthorizationPayment": {
+                "$ref": "#/components/schemas/InstallmentAuthorizationPayment"
+              },
+              "autoCapture": { "$ref": "#/components/schemas/AutoCapture" },
+              "authPnr": { "$ref": "#/components/schemas/AuthPnr" },
+              "segments": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/Segment" }
+              },
+              "passengers": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/Passenger" }
+              }
+            }
+          },
+          "cancels": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/AuthCancel" }
+          }
+        }
+      },
+      "CcReconHeader": {
+        "type": "object",
+        "properties": {
+          "fopChannel": { "type": "string" },
+          "messageType": { "type": "string" },
+          "missingCatalog": { "type": "array" },
+          "incompletePaymentDetailsRetryCount": { "type": "number" },
+          "payloadDataSchema": { "type": "string" },
+          "eventType": { "type": "string", "examples": ["File-Event"] },
+          "eventState": { "type": "string", "enum": ["BEGIN", "TRANS"] },
+          "totalNumberOfCCRecords": { "type": "string", "examples": ["100"] },
+          "totalNumberOfRecords": { "type": "string", "examples": ["200"] },
+          "recordLineNumber": { "type": "string", "examples": ["refer"] },
+          "fileDetailsId": { "type": "string", "examples": ["1234"] },
+          "ccReconExceptions": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/CcReconException" }
+          }
+        }
+      },
+      "CcReconException": {
+        "type": "object",
+        "properties": {
+          "exceptionUUID": { "type": "string" },
+          "exceptionCode": { "type": "string" },
+          "psp": { "type": "string" },
+          "createdDate": { "type": "string", "format": "date-time" },
+          "latestUpdateDate": { "type": "string", "format": "date-time" },
+          "exceptionSource": { "type": "string" },
+          "documentUUID": { "type": "string" },
+          "documentNumber": { "type": "string" },
+          "pnr": { "type": "string" },
+          "assignedUserID": { "type": "string" },
+          "autoResolver": { "type": "string" },
+          "exceptionStatus": { "type": "string" }
+        }
+      },
+      "AraAccountingTransactionDetail": {
+        "type": "object",
+        "properties": {
+          "documentNumber": { "type": "string" },
+          "issuanceDate": { "type": "string" },
+          "postedToLedger": { "type": "string" },
+          "accountedAmount": { "type": "string" },
+          "originalAmount": { "type": "string" },
+          "originalCurrency": { "type": "string" },
+          "accountingDate": { "type": "string" }
+        }
+      },
+      "Authorization": {
+        "type": "object",
+        "properties": {
+          "formOfPayment": { "$ref": "#/components/schemas/FormOfPayment" },
+          "accountHolder": { "$ref": "#/components/schemas/AccountHolder" },
+          "authPnr": { "$ref": "#/components/schemas/AuthPnr" },
+          "segments": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Segment" }
+          },
+          "passengers": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Passenger" }
+          },
+          "clientAuthReceived": {
+            "$ref": "#/components/schemas/ClientAuthReceived"
+          },
+          "paymentNotifications": {
+            "$ref": "#/components/schemas/PaymentNotifications"
+          },
+          "authResponse": { "$ref": "#/components/schemas/AuthResponse" }
+        }
+      },
+      "Capture": {
+        "type": "object",
+        "properties": {
+          "clientCaptureReceived": {
+            "$ref": "#/components/schemas/ClientCaptureReceived"
+          },
+          "captureRequestResponse": {
+            "$ref": "#/components/schemas/CaptureRequestResponse"
+          },
+          "paymentNotifications": {
+            "$ref": "#/components/schemas/PaymentNotifications"
+          },
+          "capturePnr": { "$ref": "#/components/schemas/CapturePnr" }
+        }
+      },
+      "PaymentHeader": {
+        "type": "object",
+        "properties": {
+          "fopChannel": { "type": "string" },
+          "messageType": { "type": "string" },
+          "missingCatalog": { "type": "array", "items": { "type": "string" } },
+          "exceptions": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Exceptions" }
+          },
+          "incompletePaymentDetailsRetryCount": { "type": "integer" },
+          "payloadDataSchema": { "type": "string" }
+        }
+      },
+      "SourceContext": {
+        "type": "object",
+        "properties": {
+          "sourceId": { "type": "string" },
+          "applicationId": { "type": "string" },
+          "transactionId": { "type": "string" }
+        }
+      },
+      "MessageContext": {
+        "type": "object",
+        "properties": {
+          "messageContentType": { "type": "string" },
+          "messageContentEncoding": { "type": "string" },
+          "payloadHashValue": { "type": "string" },
+          "hashingAlgorithm": { "type": "string" }
+        }
+      },
+      "MultiPartMessageContextType": {
+        "type": "object",
+        "properties": {
+          "messageCorrelationId": { "type": "string" },
+          "messageSequenceNumber": { "type": "number" },
+          "messageSequenceSize": { "type": "string" }
+        }
+      },
+      "Exceptions": {
+        "type": "object",
+        "properties": {
+          "exception": { "type": "string" },
+          "code": { "type": "string" },
+          "description": { "type": "string" },
+          "source": { "type": "string" }
+        }
+      },
+      "FormOfPayment": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "expiryYear": { "type": "integer" },
+          "cardType": { "type": "string" },
+          "formOfPaymentType": { "type": "string" },
+          "bin": { "type": "string" },
+          "lastFourDigits": { "type": "string" },
+          "expiryMonth": { "type": "integer" },
+          "isStored": { "type": "string" },
+          "storePaymentMethod": { "type": "string" },
+          "storedPaymentMethodId": { "type": "string" },
+          "afopType": { "type": "string" },
+          "afopNumber": { "type": "string" },
+          "timestampCreated": { "type": "string", "format": "date-time" },
+          "clientAuthReceivedId": { "type": "string" },
+          "accountHolderId": { "type": "string" },
+          "billingAddressId": { "type": "string" }
+        }
+      },
+      "AccountHolder": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "firstName": { "type": "string" },
+          "middleName": { "type": "string" },
+          "lastName": { "type": "string" },
+          "timestampCreated": { "type": "string", "format": "date-time" }
+        }
+      },
+      "ClientAuthReceived": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "authRequestAmount": { "type": "number" },
+          "currencyCode": { "type": "string" },
+          "interaction": { "type": "string" },
+          "clientId": { "type": "string" },
+          "shoppingCartId": { "type": "string" },
+          "pspReference": { "type": "string" },
+          "originalTimestampCreated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "timestampCreated": { "type": "string", "format": "date-time" },
+          "authPnrId": { "type": "string" },
+          "ip": { "type": "string" },
+          "deviceFingerprint": { "type": "string" }
+        }
+      },
+      "AuthResponse": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "clientResult": { "type": "string" },
+          "gatewayAuthCode": { "type": "string" },
+          "refusalReason": { "type": "string" },
+          "pspReference": { "type": "string" },
+          "resultCode": { "type": "string" },
+          "lastFourDigits": { "type": "string" },
+          "bin": { "type": "string" },
+          "cardIssuingCountry": { "type": "string" },
+          "merchantId": { "type": "string" },
+          "acquirerCode": { "type": "string" },
+          "authResponseAmount": { "type": "number" },
+          "currencyCode": { "type": "string" },
+          "cardType": { "type": "string" },
+          "originalCreatedTimestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "shoppingCartIdResponse": { "type": "string" },
+          "errorCode": { "type": "string" },
+          "errorDescription": { "type": "string" },
+          "clientAuthReceivedId": { "type": "string" }
+        }
+      },
+      "ClientCaptureReceived": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "authResponseId": { "type": "string" },
+          "capturePnrId": { "type": "string" },
+          "autoCaptureId": { "type": "string" },
+          "ancillaryProductCode": { "type": "string" },
+          "amount": { "type": "number" },
+          "currencyCode": { "type": "string" },
+          "ticketFirstName": { "type": "string" },
+          "ticketMiddleName": { "type": "string" },
+          "ticketLastName": { "type": "string" },
+          "associatedTicketNumber": { "type": "string" },
+          "ticketCount": { "type": "integer" },
+          "pspReference": { "type": "string" },
+          "clientId": { "type": "string" },
+          "formOfPaymentType": { "type": "string" },
+          "cardType": { "type": "string" },
+          "subType": { "type": "string" },
+          "shoppingCartId": { "type": "string" },
+          "originalCreatedTimestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "errorMessage": { "type": "string" },
+          "timestampCreated": { "type": "string", "format": "date-time" },
+          "result": { "type": "string" },
+          "ticketNumber": { "type": "string" },
+          "shoppingCartIdResponse": { "type": "string" }
+        }
+      },
+      "CaptureRequestResponse": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "clientCaptureReceivedId": { "type": "string" },
+          "allocation": { "type": "string" },
+          "pspReference": { "type": "string" },
+          "merchantAccount": { "type": "string" },
+          "pnrNumber": { "type": "string" },
+          "documentType": { "type": "string" },
+          "ticketNumber": { "type": "string" },
+          "passengerName": { "type": "string" },
+          "amount": { "type": "number" },
+          "currencyCode": { "type": "string" },
+          "modifiedPspReference": { "type": "string" },
+          "originalCreatedTimestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "timestampCreated": { "type": "string", "format": "date-time" }
+        }
+      },
+      "CapturePnr": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "computerizedReservationSystem": { "type": "string" },
+          "airlineCode": { "type": "string" },
+          "flightDate": { "type": "string", "format": "date" },
+          "designatorCode": { "type": "string" },
+          "pointOfSale": { "type": "string" },
+          "pnrNumber": { "type": "string" },
+          "timestampCreated": { "type": "string", "format": "date-time" }
+        }
+      },
+      "InstallmentAuthorizationPayment": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "afopType": { "type": "string" },
+          "checkoutToken": { "type": "string" },
+          "pnrNumber": { "type": "string" },
+          "clientId": { "type": "string" },
+          "amount": { "type": "number" },
+          "authorizationExpiration": { "type": "string" },
+          "responseTimeStamp": { "type": "string", "format": "date-time" },
+          "currencyCode": { "type": "string" },
+          "eventId": { "type": "string" },
+          "pspReference": { "type": "string" },
+          "vendorResult": { "type": "string" },
+          "transformedResult": { "type": "string" },
+          "gatewayAuthCode": { "type": "string" },
+          "afopNumber": { "type": "string" },
+          "authPnrId": { "type": "string" },
+          "affirmCheckoutId": { "type": "string" }
+        }
+      },
+      "AutoCapture": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "captureId": { "type": "string" },
+          "amount": { "type": "number" },
+          "captureTimestamp": { "type": "string", "format": "date-time" },
+          "clientId": { "type": "string" },
+          "currencyCode": { "type": "string" },
+          "pnrNumber": { "type": "string" },
+          "pspReference": { "type": "string" },
+          "transformedResult": { "type": "string" },
+          "vendorFee": { "type": "string" },
+          "timestampCreated": { "type": "string", "format": "date-time" },
+          "installmentAuthorizationPaymentId": { "type": "string" }
+        }
+      },
+      "AuthCancel": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "clientId": { "type": "string" },
+          "pspReference": { "type": "string" },
+          "pnrNumber": { "type": "string" },
+          "reasonForCancel": { "type": "string" },
+          "processingStatus": { "type": "string" },
+          "transformedResult": { "type": "string" },
+          "clientAuthReceivedId": { "type": "string" }
+        }
+      },
+      "Segment": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "origin": { "type": "string" },
+          "flightNo": { "type": "string" },
+          "carrierCode": { "type": "string" },
+          "fareBaseCode": { "type": "string" },
+          "classOfTravel": { "type": "string" },
+          "stopOverCode": { "type": "string" },
+          "destination": { "type": "string" },
+          "dateOfTravel": { "type": "string", "format": "date" },
+          "segmentsId": { "type": "integer" },
+          "slicesId": { "type": "string" },
+          "timestampCreated": { "type": "string", "format": "date-time" },
+          "authPnrId": { "type": "string" }
+        }
+      },
+      "Passenger": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "firstName": { "type": "string" },
+          "middleName": { "type": "string" },
+          "lastName": { "type": "string" },
+          "passengersId": { "type": "string" },
+          "timestampCreated": { "type": "string", "format": "date-time" },
+          "authPnrId": { "type": "string" }
+        }
+      },
+      "AuthPnr": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "computerizedReservationSystem": { "type": "string" },
+          "airlineCode": { "type": "string" },
+          "flightDate": { "type": "string", "format": "date" },
+          "designatorCode": { "type": "string" },
+          "pointOfSale": { "type": "string" },
+          "agencyName": { "type": "string" },
+          "timestampCreated": { "type": "string", "format": "date-time" },
+          "pnrNumber": { "type": "string" }
+        }
+      },
+      "PaymentNotifications": {
+        "type": "object",
+        "properties": {
+          "notificationTerminal": {
+            "$ref": "#/components/schemas/NotificationTerminal"
+          },
+          "notification": { "$ref": "#/components/schemas/Notification" }
+        }
+      },
+      "NotificationTerminal": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "salesId": { "type": "string" },
+          "messageType": { "type": "string" },
+          "messageCategory": { "type": "string" },
+          "serviceId": { "type": "string" },
+          "authorizedAmount": { "type": "number" },
+          "currencyCode": { "type": "string" },
+          "pspReference": { "type": "string" },
+          "gatewayAuthCode": { "type": "string" },
+          "merchantAccount": { "type": "string" },
+          "cardType": { "type": "string" },
+          "eventResult": { "type": "boolean" },
+          "timestampCreated": { "type": "string", "format": "date-time" },
+          "pnrNumber": { "type": "string" },
+          "deviceId": { "type": "string" }
+        }
+      },
+      "Notification": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "amount": { "type": "number" },
+          "currencyCode": { "type": "string" },
+          "failureReason": { "type": "string" },
+          "eventResult": { "type": "boolean" },
+          "eventType": { "type": "string" },
+          "eventDate": { "type": "string", "format": "date" },
+          "modifiedPspReference": { "type": "string" },
+          "paymentMethod": { "type": "string" },
+          "allocation": { "type": "string" },
+          "pspReference": { "type": "string" },
+          "merchantAccount": { "type": "string" },
+          "originalTimestampCreated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "timestampCreated": { "type": "string", "format": "date-time" },
+          "captureReqResId": { "type": "string" },
+          "paymentRefundId": { "type": "string" },
+          "lastFourDigits": { "type": "string" },
+          "bin": { "type": "string" },
+          "cardIssuingCountry": { "type": "string" },
+          "merchantId": { "type": "string" },
+          "acquirerCode": { "type": "string" }
+        }
+      }
+    }
+  },
+  "servers": [
+    {
+      "description": "SwaggerHub API Auto Mocking",
+      "url": "https://virtserver.swaggerhub.com/IT-Financial-Systems/composite-model/1.0.0"
+    }
+  ]
+}

@@ -1,0 +1,1071 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Communication API",
+    "description": "Communication API",
+    "version": "1.0.2"
+  },
+  "tags": [
+    {
+      "name": "Authentication API",
+      "description": "Authentication API for retrieving tokens"
+    },
+    {
+      "name": "Communication Gateway API",
+      "description": "Manage Communication Gateways"
+    },
+    { "name": "Schedule API", "description": "Manage Communication Schedules" },
+    {
+      "name": "Preferences API",
+      "description": "Manage Communication Preferences"
+    },
+    {
+      "name": "History API",
+      "description": "Query previous communications and status"
+    }
+  ],
+  "servers": [
+    {
+      "url": "http://localhost:8000/v1",
+      "description": "Local development server"
+    }
+  ],
+  "paths": {
+    "/auth": {
+      "post": {
+        "tags": ["Authentication API"],
+        "summary": "Get a JWT token for the given scopes",
+        "operationId": "getJwtToken",
+        "requestBody": {
+          "description": "Scopes to request",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": ["array"],
+                "items": { "type": ["string"] },
+                "examples": ["gateway:read", "gateway:write"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": ["object"],
+                  "properties": {
+                    "token": { "type": ["string"] },
+                    "expires": { "type": ["string"], "format": "date-time" }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "401": { "description": "Unauthorised" },
+          "403": { "description": "Forbidden" }
+        }
+      }
+    },
+    "/gateway": {
+      "get": {
+        "tags": ["Communication Gateway API"],
+        "summary": "Get all communication gateways",
+        "operationId": "getCommunicationGateways",
+        "description": "requires gateway:read scope",
+        "security": [{ "bearerAuth": ["gateway:read"] }],
+        "parameters": [
+          {
+            "name": "pageNumber",
+            "in": "query",
+            "description": "The page number to retrieve",
+            "schema": { "type": ["integer"], "default": 0 }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "The number of items per page",
+            "schema": { "type": ["integer"], "default": 25 }
+          },
+          {
+            "name": "friendlyName",
+            "in": "query",
+            "description": "The friendly name to search for",
+            "schema": { "type": ["string"] }
+          },
+          {
+            "name": "endpointUrl",
+            "in": "query",
+            "description": "The endpointUrl to search for",
+            "schema": { "type": ["string"] }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": ["object"],
+                  "properties": {
+                    "total": { "type": ["integer"] },
+                    "content": {
+                      "type": ["array"],
+                      "items": {
+                        "$ref": "#/components/schemas/CommunicationGateway"
+                      }
+                    },
+                    "pageable": {
+                      "type": ["object"],
+                      "$ref": "#/components/schemas/Pageable"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": { "description": "Unauthorised" },
+          "403": { "description": "Forbidden" }
+        }
+      },
+      "post": {
+        "tags": ["Communication Gateway API"],
+        "summary": "Create a communication gateway",
+        "operationId": "createCommunicationGateway",
+        "description": "requires gateway:write scope",
+        "security": [{ "bearerAuth": ["gateway:write"] }],
+        "requestBody": {
+          "description": "Communication gateway to create",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCommunicationGateway"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommunicationGateway"
+                }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "401": { "description": "Unauthorised" },
+          "403": { "description": "Forbidden" },
+          "409": { "description": "Conflict" }
+        }
+      },
+      "put": {
+        "tags": ["Communication Gateway API"],
+        "summary": "Update a communication gateway",
+        "operationId": "updateCommunicationGateway",
+        "description": "requires gateway:write scope",
+        "security": [{ "bearerAuth": ["gateway:write"] }],
+        "requestBody": {
+          "description": "Communication gateway to update",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CommunicationGateway" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommunicationGateway"
+                }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "401": { "description": "Unauthorised" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        }
+      }
+    },
+    "/gateway/{gatewayId}": {
+      "get": {
+        "tags": ["Communication Gateway API"],
+        "summary": "Get gateway by ID",
+        "operationId": "getCommunicationGatewayById",
+        "description": "requires gateway:read scope",
+        "security": [{ "bearerAuth": ["gateway:read"] }],
+        "parameters": [
+          {
+            "name": "gatewayId",
+            "in": "path",
+            "description": "ID of the communication gateway to return",
+            "required": true,
+            "schema": { "type": ["string"], "format": "uuid" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/CommunicationGateway"
+                  }
+                }
+              }
+            }
+          },
+          "401": { "description": "Unauthorised" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        }
+      },
+      "delete": {
+        "tags": ["Communication Gateway API"],
+        "summary": "Delete a communication gateway",
+        "operationId": "deleteCommunicationGateway",
+        "description": "requires gateway:delete scope",
+        "security": [{ "bearerAuth": ["gateway:delete"] }],
+        "parameters": [
+          {
+            "name": "gatewayId",
+            "in": "path",
+            "description": "ID of the communication gateway to delete",
+            "required": true,
+            "schema": { "type": ["string"], "format": "uuid" }
+          }
+        ],
+        "responses": {
+          "204": { "description": "No Content" },
+          "404": { "description": "Not Found" },
+          "401": { "description": "Unauthorised" },
+          "403": { "description": "Forbidden" }
+        }
+      }
+    },
+    "/schedule": {
+      "post": {
+        "tags": ["Schedule API"],
+        "summary": "Create a new communication schedule",
+        "operationId": "createCommunicationSchedule",
+        "description": "requires schedule:write scope",
+        "security": [{ "bearerAuth": ["schedule:write"] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCommunicationSchedule"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommunicationSchedule"
+                }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "401": { "description": "Unauthorised" },
+          "403": { "description": "Forbidden" },
+          "409": { "description": "Conflict - already exists" }
+        }
+      },
+      "put": {
+        "tags": ["Schedule API"],
+        "summary": "Updates an existing communication schedule",
+        "operationId": "updateCommunicationSchedule",
+        "description": "requires schedule:write scope",
+        "security": [{ "bearerAuth": ["schedule:write"] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "type": ["object"],
+                    "properties": {
+                      "id": { "type": ["string"], "format": "uuid" }
+                    }
+                  },
+                  { "$ref": "#/components/schemas/CreateCommunicationSchedule" }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommunicationSchedule"
+                }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "401": { "description": "Unauthorised" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" },
+          "409": { "description": "Conflict - already exists" }
+        }
+      },
+      "get": {
+        "tags": ["Schedule API"],
+        "summary": "Get all communication schedules",
+        "operationId": "getCommunicationSchedules",
+        "description": "requires schedule:read scope",
+        "security": [{ "bearerAuth": ["schedule:read"] }],
+        "parameters": [
+          {
+            "name": "pageNumber",
+            "in": "query",
+            "description": "The page number to retrieve",
+            "schema": { "type": ["integer"], "default": 0 }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "The number of items per page",
+            "schema": { "type": ["integer"], "default": 50 }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": ["object"],
+                  "properties": {
+                    "total": { "type": ["integer"] },
+                    "content": {
+                      "type": ["array"],
+                      "items": {
+                        "$ref": "#/components/schemas/CommunicationSchedule"
+                      }
+                    },
+                    "pageable": {
+                      "type": ["object"],
+                      "$ref": "#/components/schemas/Pageable"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": { "description": "Unauthorised" },
+          "403": { "description": "Forbidden" }
+        }
+      }
+    },
+    "/schedule/{scheduleId}": {
+      "delete": {
+        "tags": ["Schedule API"],
+        "summary": "Delete an existing communication schedule by id",
+        "operationId": "deleteCommunicationSchedule",
+        "description": "requires schedule:delete scope",
+        "security": [{ "bearerAuth": ["schedule:delete"] }],
+        "parameters": [
+          {
+            "name": "scheduleId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": ["string"], "format": "uuid" }
+          }
+        ],
+        "responses": {
+          "204": { "description": "No Content" },
+          "401": { "description": "Unauthorised" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        }
+      },
+      "get": {
+        "tags": ["Schedule API"],
+        "summary": "Get communication schedule by scheduleId",
+        "operationId": "getCommunicationSchedulesByScheduleId",
+        "description": "requires schedule:read scope",
+        "security": [{ "bearerAuth": ["schedule:read"] }],
+        "parameters": [
+          {
+            "name": "scheduleId",
+            "in": "path",
+            "description": "The schedules to retrieve by scheduleId",
+            "schema": { "type": ["integer"] },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommunicationSchedule"
+                }
+              }
+            }
+          },
+          "401": { "description": "Unauthorised" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        }
+      }
+    },
+    "/schedule/gateway/{gatewayId}": {
+      "get": {
+        "tags": ["Schedule API"],
+        "summary": "Get all communication schedules by gatewayId",
+        "operationId": "getCommunicationSchedulesByGatewayId",
+        "description": "requires schedule:read scope",
+        "security": [{ "bearerAuth": ["schedule:read"] }],
+        "parameters": [
+          {
+            "name": "pageNumber",
+            "in": "query",
+            "description": "The page number to retrieve",
+            "schema": { "type": ["integer"], "default": 0 }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "The number of items per page",
+            "schema": { "type": ["integer"], "default": 50 }
+          },
+          {
+            "name": "gatewayId",
+            "in": "path",
+            "description": "The schedules to retrieve by gatewayId",
+            "schema": { "type": ["integer"] },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": ["object"],
+                  "properties": {
+                    "total": { "type": ["integer"] },
+                    "content": {
+                      "type": ["array"],
+                      "items": {
+                        "$ref": "#/components/schemas/CommunicationSchedule"
+                      }
+                    },
+                    "pageable": {
+                      "type": ["object"],
+                      "$ref": "#/components/schemas/Pageable"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": { "description": "Unauthorised" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        }
+      },
+      "delete": {
+        "tags": ["Schedule API"],
+        "summary": "Delete all communication schedules by gatewayId",
+        "operationId": "deleteCommunicationSchedulesByGatewayId",
+        "description": "requires schedule:delete scope",
+        "security": [{ "bearerAuth": ["schedule:delete"] }],
+        "parameters": [
+          {
+            "name": "gatewayId",
+            "in": "path",
+            "description": "The schedules to retrieve by gatewayId",
+            "schema": { "type": ["integer"] },
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": { "description": "No Content" },
+          "404": { "description": "Not Found" },
+          "401": { "description": "Unauthorised" },
+          "403": { "description": "Forbidden" }
+        }
+      },
+      "put": {
+        "tags": ["Schedule API"],
+        "summary": "Updates all communication schedules by gatewayId to the given request body",
+        "operationId": "updateCommunicationSchedulesByGatewayId",
+        "description": "requires schedule:write scope",
+        "security": [{ "bearerAuth": ["schedule:write"] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": ["object"],
+                    "properties": {
+                      "gatewayId": { "type": ["string"], "format": "uuid" }
+                    },
+                    "description": "Gateway Id"
+                  },
+                  {
+                    "type": ["object"],
+                    "properties": { "paused": { "type": ["boolean"] } },
+                    "description": "Paused"
+                  },
+                  {
+                    "$ref": "#/components/schemas/CalendarSpec",
+                    "description": "CalendarSpec"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommunicationSchedule"
+                }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "401": { "description": "Unauthorised" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" },
+          "409": { "description": "Conflict - already exists" }
+        }
+      }
+    },
+    "/schedule/user/{userId}": {
+      "get": {
+        "tags": ["Schedule API"],
+        "summary": "Get all communication schedules by userId",
+        "operationId": "getCommunicationSchedulesByUserId",
+        "description": "requires schedule:read scope",
+        "security": [{ "bearerAuth": ["schedule:read"] }],
+        "parameters": [
+          {
+            "name": "pageNumber",
+            "in": "query",
+            "description": "The page number to retrieve",
+            "schema": { "type": ["integer"], "default": 0 }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "The number of items per page",
+            "schema": { "type": ["integer"], "default": 50 }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "The schedules to retrieve by userId",
+            "schema": { "type": ["integer"] },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": ["object"],
+                  "properties": {
+                    "total": { "type": ["integer"] },
+                    "content": {
+                      "type": ["array"],
+                      "items": {
+                        "$ref": "#/components/schemas/CommunicationSchedule"
+                      }
+                    },
+                    "pageable": {
+                      "type": ["object"],
+                      "$ref": "#/components/schemas/Pageable"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": { "description": "Not Found" },
+          "401": { "description": "Unauthorised" },
+          "403": { "description": "Forbidden" }
+        }
+      },
+      "delete": {
+        "tags": ["Schedule API"],
+        "summary": "Delete all communication schedules by userId",
+        "operationId": "deleteCommunicationSchedulesByUserId",
+        "description": "requires schedule:delete scope",
+        "security": [{ "bearerAuth": ["schedule:delete"] }],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "The schedules to retrieve by userId",
+            "schema": { "type": ["integer"] },
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": { "description": "No Content" },
+          "404": { "description": "Not Found" },
+          "401": { "description": "Unauthorised" },
+          "403": { "description": "Forbidden" }
+        }
+      },
+      "put": {
+        "tags": ["Schedule API"],
+        "summary": "Updates all communication schedules by userId to the given request body",
+        "operationId": "updateCommunicationSchedulesByUserId",
+        "description": "requires schedule:write scope",
+        "security": [{ "bearerAuth": ["schedule:write"] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": ["object"],
+                    "properties": {
+                      "gatewayId": { "type": ["string"], "format": "uuid" }
+                    },
+                    "description": "user Id"
+                  },
+                  {
+                    "type": ["object"],
+                    "properties": { "paused": { "type": ["boolean"] } },
+                    "description": "Paused"
+                  },
+                  {
+                    "$ref": "#/components/schemas/CalendarSpec",
+                    "description": "CalendarSpec"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommunicationSchedule"
+                }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "401": { "description": "Unauthorised" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" },
+          "409": { "description": "Conflict - already exists" }
+        }
+      }
+    },
+    "/preferences/retry-policy": {
+      "get": {
+        "tags": ["Preferences API"],
+        "summary": "Get the retry policy for communications",
+        "operationId": "getRetryPolicy",
+        "description": "requires preferences:read scope",
+        "security": [{ "bearerAuth": ["preferences:read"] }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/RetryPolicy" }
+              }
+            }
+          },
+          "401": { "description": "Unauthorised" },
+          "403": { "description": "Forbidden" }
+        }
+      },
+      "put": {
+        "tags": ["Preferences API"],
+        "summary": "Update the retry policy for communications",
+        "operationId": "updateRetryPolicy",
+        "description": "requires preferences:write scope",
+        "security": [{ "bearerAuth": ["preferences:write"] }],
+        "requestBody": { "$ref": "#/components/schemas/RetryPolicy" },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/RetryPolicy" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "401": { "description": "Unauthorised" },
+          "403": { "description": "Forbidden" }
+        }
+      }
+    },
+    "/history": {
+      "get": {
+        "tags": ["History API"],
+        "summary": "Get the previous communication workflows by status, userId or gatewayId",
+        "operationId": "getPreviousCommunications",
+        "description": "requires history:read scope",
+        "security": [{ "bearerAuth": ["history:read"] }],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "The userId",
+            "schema": { "type": ["integer"] }
+          },
+          {
+            "name": "gatewayId",
+            "in": "query",
+            "description": "The gatewayId",
+            "schema": { "type": ["integer"] }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "The integer representing the temporal status",
+            "schema": { "type": ["integer"], "default": 0 }
+          },
+          {
+            "name": "pageNumber",
+            "in": "query",
+            "description": "The page number to retrieve",
+            "schema": { "type": ["integer"], "default": 0 }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "The number of items per page",
+            "schema": { "type": ["integer"], "default": 50 }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": ["object"],
+                  "properties": {
+                    "total": { "type": ["number"] },
+                    "content": {
+                      "type": ["array"],
+                      "items": {
+                        "$ref": "#/components/schemas/CommunicationWorkflow"
+                      }
+                    },
+                    "pageable": {
+                      "type": ["object"],
+                      "$ref": "#/components/schemas/Pageable"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "401": { "description": "Unauthorised" },
+          "403": { "description": "Forbidden" }
+        }
+      }
+    },
+    "/history/total": {
+      "get": {
+        "tags": ["History API"],
+        "summary": "Get the total number of workflows that match the query",
+        "operationId": "getCommunicationWorkflowTotalByQuery",
+        "description": "requires history:read scope",
+        "security": [{ "bearerAuth": ["history:read"] }],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "The userId",
+            "schema": { "type": ["integer"] }
+          },
+          {
+            "name": "gatewayId",
+            "in": "query",
+            "description": "The gatewayId",
+            "schema": { "type": ["integer"] }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "The integer ENUM value representing the temporal status",
+            "schema": { "type": ["integer"], "default": 0 }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": ["object"],
+                  "properties": { "total": { "type": ["number"] } }
+                }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "401": { "description": "Unauthorised" },
+          "403": { "description": "Forbidden" }
+        }
+      }
+    },
+    "/history/workflowId/{workflowId}": {
+      "get": {
+        "tags": ["History API"],
+        "summary": "Get the workflow by its Id",
+        "operationId": "getCommunicationWorkflowById",
+        "description": "requires history:read scope",
+        "security": [{ "bearerAuth": ["history:read"] }],
+        "parameters": [
+          {
+            "name": "workflowId",
+            "required": true,
+            "in": "path",
+            "description": "The workflowId to search for",
+            "schema": { "type": ["integer"] }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": ["object"],
+                  "$ref": "#/components/schemas/CommunicationWorkflow"
+                }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "401": { "description": "Unauthorised" },
+          "403": { "description": "Forbidden" }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "CommunicationWorkflow": {
+        "type": ["object"],
+        "properties": {
+          "id": {
+            "description": "ID of workflow",
+            "type": ["string"],
+            "examples": ["cs1-sms-2023-10-26T11:40:30Z"]
+          },
+          "type": {
+            "description": "Workflow type",
+            "type": ["string"],
+            "examples": ["CommunicationWorkflow"]
+          },
+          "start_time": {
+            "description": "Time the workflow started",
+            "type": ["object"],
+            "$ref": "#/components/schemas/Timestamp"
+          },
+          "end_time": {
+            "description": "Time the workflow ended",
+            "type": ["object"],
+            "$ref": "#/components/schemas/Timestamp"
+          },
+          "taskQueue": { "type": ["string"] },
+          "status": {
+            "type": ["number"],
+            "description": "ENUM value of the temporal status",
+            "default": 0
+          }
+        }
+      },
+      "RetryPolicy": {
+        "type": ["object"],
+        "description": "Retry policy for communications",
+        "properties": {
+          "maximumAttempts": {
+            "description": "0 means unlimited, otherwise the maximum number of attempts",
+            "type": ["string"],
+            "default": "PT0S",
+            "format": "duration"
+          },
+          "backoffCoefficient": {
+            "description": "The backoff coefficient to use for exponential backoff. 1.0 means no backoff and always use the initial interval value.",
+            "type": ["number"],
+            "default": 2.0
+          },
+          "initialInterval": {
+            "description": "Amount of time before the first retry. Subsequent retries will also be at this interval if backoff coefficient is set to > 1.0",
+            "type": ["string"],
+            "format": "duration",
+            "default": "PT1S"
+          },
+          "maximumInterval": {
+            "description": "Maximum amount of time between retries. The interval will not exceed this value to stop waiting exponentially due to the backoff coefficient.",
+            "type": ["string"],
+            "format": "duration",
+            "default": "PT100S"
+          },
+          "startToCloseTimeout": {
+            "description": "Maximum amount of time for the workflow to be scheduled and to complete. Set to \"PT0S\" to disable",
+            "type": ["string"],
+            "format": "duration",
+            "default": "PT0S"
+          }
+        }
+      },
+      "CreateCommunicationGateway": {
+        "required": ["endpointUrl", "friendlyName"],
+        "type": ["object"],
+        "properties": {
+          "endpointUrl": { "type": ["string"], "format": "uri" },
+          "friendlyName": { "type": ["string"] },
+          "description": { "type": ["string"] }
+        }
+      },
+      "CommunicationGateway": {
+        "required": ["endpointUrl", "friendlyName"],
+        "allOf": [
+          {
+            "type": ["object"],
+            "properties": { "id": { "type": ["string"], "format": "uuid" } }
+          },
+          { "$ref": "#/components/schemas/CreateCommunicationGateway" }
+        ]
+      },
+      "CreateCommunicationSchedule": {
+        "required": ["userId", "gatewayId", "calendarSpec", "paused"],
+        "properties": {
+          "gatewayId": { "type": ["string"], "format": "uuid" },
+          "userId": { "type": ["string"], "format": "uuid" },
+          "calendarSpec": {
+            "type": ["object"],
+            "$ref": "#/components/schemas/CalendarSpec"
+          },
+          "paused": { "type": ["boolean"], "default": false }
+        }
+      },
+      "CommunicationSchedule": {
+        "required": ["gatewayId", "userId", "calendarSpec"],
+        "allOf": [
+          {
+            "type": ["object"],
+            "properties": {
+              "id": { "type": ["string"], "format": "uuid" },
+              "recentActions": {
+                "type": ["array"],
+                "items": { "$ref": "#/components/schemas/ScheduleActionResult" }
+              },
+              "nextActionTimes": {
+                "type": ["array"],
+                "items": { "type": ["string"], "format": "uuid" }
+              }
+            }
+          },
+          { "$ref": "#/components/schemas/CreateCommunicationSchedule" }
+        ]
+      },
+      "CalendarSpec": {
+        "properties": {
+          "seconds": {
+            "type": ["array"],
+            "items": { "$ref": "#/components/schemas/ScheduledRange" }
+          },
+          "minutes": {
+            "type": ["array"],
+            "items": { "$ref": "#/components/schemas/ScheduledRange" }
+          },
+          "hour": {
+            "type": ["array"],
+            "items": { "$ref": "#/components/schemas/ScheduledRange" }
+          },
+          "dayOfMonth": {
+            "type": ["array"],
+            "items": { "$ref": "#/components/schemas/ScheduledRange" }
+          },
+          "month": {
+            "type": ["array"],
+            "$ref": "#/components/schemas/ScheduledRange"
+          },
+          "year": {
+            "type": ["array"],
+            "items": { "$ref": "#/components/schemas/ScheduledRange" }
+          },
+          "dayOfWeek": {
+            "type": ["array"],
+            "items": { "$ref": "#/components/schemas/ScheduledRange" }
+          }
+        }
+      },
+      "ScheduledRange": {
+        "properties": {
+          "start": { "type": ["integer"] },
+          "end": { "type": ["integer"] },
+          "step": { "type": ["integer"] }
+        }
+      },
+      "ScheduleActionResult": {
+        "properties": {
+          "scheduledAt": { "type": ["string"], "format": "date-time" },
+          "runId": { "type": ["string"], "format": "uuid" }
+        }
+      },
+      "Timestamp": {
+        "properties": {
+          "seconds": { "type": ["number"], "examples": [1698320430] },
+          "nanos": { "type": ["number"], "examples": [23592608] }
+        }
+      },
+      "Pageable": {
+        "properties": {
+          "pageNumber": { "type": ["integer"] },
+          "pageSize": { "type": ["integer"] }
+        }
+      }
+    }
+  }
+}

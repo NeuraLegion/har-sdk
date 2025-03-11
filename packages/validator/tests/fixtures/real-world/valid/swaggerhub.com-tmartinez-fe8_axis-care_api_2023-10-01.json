@@ -1,0 +1,2419 @@
+{
+  "openapi": "3.1.0",
+  "x-stoplight": { "id": "pv0gelonti46g" },
+  "info": { "title": "AxisCare API", "version": "2023-10-01" },
+  "servers": [
+    {
+      "url": "https://{siteNumber}.axiscare.com",
+      "variables": {
+        "siteNumber": {
+          "default": "",
+          "description": "Your unique AxisCare site number"
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/api/clients": {
+      "get": {
+        "summary": "List Clients",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "results": {
+                      "type": "object",
+                      "x-stoplight": { "id": "btpupro55eclz" },
+                      "properties": {
+                        "clients": {
+                          "type": "array",
+                          "x-stoplight": { "id": "9op50x6f7bu8l" },
+                          "items": {
+                            "$ref": "../Client.yaml",
+                            "x-stoplight": { "id": "5h1bvzrd3ar3c" }
+                          }
+                        },
+                        "nextPage": {
+                          "type": ["string", "null"],
+                          "x-stoplight": { "id": "r1ur5xy7mmgje" },
+                          "description": "If more results match than what the endpoint is set to return, a URL to the next page of results will be provided here."
+                        },
+                        "": {
+                          "type": "string",
+                          "x-stoplight": { "id": "3876ub7dgmfuh" }
+                        }
+                      }
+                    },
+                    "errors": {
+                      "type": ["array", "null"],
+                      "x-stoplight": { "id": "kgn30ecqu1ylo" },
+                      "items": {}
+                    }
+                  }
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "results": {
+                        "clients": [
+                          {
+                            "id": 1,
+                            "firstName": "John",
+                            "lastName": "Lakeman",
+                            "goesBy": "Sure Shot",
+                            "gender": "Male",
+                            "dateOfBirth": "1972-05-12",
+                            "ssn": 123456789,
+                            "status": { "active": true, "label": "Active" },
+                            "createdDate": "2023-01-18",
+                            "assessmentDate": "2023-01-20",
+                            "conversionDate": "2023-01-25",
+                            "startDate": "2023-01-25",
+                            "effectiveEndDate": null,
+                            "administrators": [
+                              {
+                                "id": 25,
+                                "name": "Leslie Claret",
+                                "username": "lgclaret"
+                              }
+                            ],
+                            "classes": [
+                              { "code": "SDC", "name": "Self-Directed Care" }
+                            ],
+                            "region": { "id": 1, "name": "Milkwaukee" },
+                            "referredBy": {
+                              "type": "contact",
+                              "name": "Ed Tavner"
+                            },
+                            "community": { "id": 5, "name": "McMillan" },
+                            "medicaidNumber": "1234567890",
+                            "preferredCaregiver": {
+                              "id": 4,
+                              "firstName": "Alice",
+                              "lastName": "Tavner"
+                            },
+                            "residentialAddress": {
+                              "name": "John Lakeman",
+                              "streetAddress1": "123 Main St",
+                              "streetAddress2": "",
+                              "locality": "Milwaukee",
+                              "region": "WI",
+                              "postalCode": "53201",
+                              "latitude": "43.0346",
+                              "longitude": "-87.9153"
+                            },
+                            "billingAddress": {
+                              "name": "John Lakeman",
+                              "streetAddress1": "123 Main St",
+                              "streetAddress2": "",
+                              "locality": "Milwaukee",
+                              "region": "WI",
+                              "postalCode": "53201"
+                            },
+                            "personalEmail": "jtavner@cia.gov",
+                            "billingEmail": "jtavner@cia.gov",
+                            "homePhone": "234-567-8901",
+                            "mobilePhone": "+2-345-678-9012",
+                            "otherPhone": null,
+                            "telephonyPhone": "Unrestricted",
+                            "priorityNote": "Important note"
+                          }
+                        ],
+                        "nextPage": "https://agency.axiscare.com/api/clients?startAfterId=1&limit=1"
+                      },
+                      "errors": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "results": {
+                      "type": ["array", "null"],
+                      "x-stoplight": { "id": "sigw0w4iyd2ft" },
+                      "items": {}
+                    },
+                    "errors": {
+                      "type": "array",
+                      "x-stoplight": { "id": "bbc7la76h4ify" },
+                      "items": {
+                        "x-stoplight": { "id": "bztjgaaqgp3sy" },
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "success": false,
+                      "results": null,
+                      "errors": ["Class label PRV not found"]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "clients.list",
+        "x-stoplight": { "id": "b04micrxba8r3" },
+        "parameters": [
+          {
+            "schema": { "type": "string", "uniqueItems": true },
+            "in": "query",
+            "name": "clientIds",
+            "description": "Comma-delimited string of client IDs to return",
+            "allowEmptyValue": false,
+            "style": "form"
+          },
+          {
+            "schema": { "type": "string", "uniqueItems": true },
+            "in": "query",
+            "name": "statuses",
+            "description": "Comma-delimited string of statuses to filter client result set",
+            "allowEmptyValue": false,
+            "style": "form"
+          },
+          {
+            "schema": { "type": "string", "uniqueItems": true },
+            "in": "query",
+            "name": "regionIds",
+            "description": "Comma-delimited string of region IDs to filter client result set",
+            "allowEmptyValue": false,
+            "style": "form"
+          },
+          {
+            "schema": { "type": "string", "uniqueItems": true },
+            "in": "query",
+            "name": "regionNames",
+            "description": "Comma-delimited string of region names to filter client result set",
+            "allowEmptyValue": false,
+            "style": "form"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "enum": ["2023-10-01"],
+              "format": "date"
+            },
+            "in": "header",
+            "name": "X-AxisCare-Api-Version",
+            "required": true,
+            "description": "API version"
+          },
+          {
+            "schema": { "type": "string", "uniqueItems": true },
+            "in": "query",
+            "name": "classCodes",
+            "description": "Comma-delimited string of class codes to filter client result set",
+            "style": "form"
+          },
+          {
+            "schema": { "type": "string", "uniqueItems": true },
+            "in": "query",
+            "name": "classLabels",
+            "description": "Comma-delimited string of class labels to filter client result set",
+            "style": "form"
+          },
+          {
+            "schema": { "type": "string", "uniqueItems": true },
+            "in": "query",
+            "name": "adminIds",
+            "description": "Comma-delimited string of administrator IDs to filter client result set",
+            "allowEmptyValue": false,
+            "style": "form"
+          },
+          {
+            "schema": { "type": "string", "uniqueItems": true },
+            "in": "query",
+            "name": "externalIds",
+            "description": "Comma-delimited string of external IDs to filter client result set",
+            "allowEmptyValue": false,
+            "style": "form"
+          },
+          {
+            "schema": { "type": "string", "uniqueItems": true },
+            "in": "query",
+            "description": "Comma-delimited string of administrator usernames to filter client result set",
+            "name": "adminUsernames",
+            "style": "form"
+          },
+          {
+            "schema": { "type": "integer" },
+            "in": "query",
+            "name": "startAfterId",
+            "description": "Used in pagination to specify the client ID after which to start the next page"
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "default": 100,
+              "minimum": 1,
+              "maximum": 500,
+              "exclusiveMinimum": false,
+              "exclusiveMaximum": false
+            },
+            "in": "query",
+            "name": "limit",
+            "description": "Limit the number of clients returned"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "uniqueItems": true,
+              "example": "ssn"
+            },
+            "in": "query",
+            "name": "requestedSensitiveFields",
+            "description": "Comma-delimited string of names of sensitive fields to include in the payload",
+            "style": "form"
+          }
+        ],
+        "requestBody": { "content": {}, "description": "" },
+        "description": "This endpoint allows you to list clients and filter them by various values. The filters work in an \"AND\" fashion, so client must match all the requested filters in order to be returned, unless explicitly asked for via the `clientIds` parameter.\n\nIf more results match than what the endpoint is set to return, a URL to the next page of results will be provided in the response.\n\nBy default, client SSNs are excluded from the response unless both a) the token has permission to view sensitive client data and b) the SSN field was requested in the request via the `requestedSensitiveFields` parameter."
+      },
+      "post": {
+        "summary": "Add Client",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "results": {
+                      "$ref": "../Client.yaml",
+                      "x-stoplight": { "id": "m0azm96d6tltb" }
+                    },
+                    "errors": {
+                      "type": "array",
+                      "x-stoplight": { "id": "6bmn67jud4nk4" },
+                      "items": {}
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "results": {
+                      "type": ["array", "null"],
+                      "x-stoplight": { "id": "qxn2ls6od5xwl" },
+                      "items": {}
+                    },
+                    "errors": {
+                      "type": "array",
+                      "x-stoplight": { "id": "uli2i47t5028k" },
+                      "items": {
+                        "x-stoplight": { "id": "hawfw2tjdcppc" },
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "post-api-clients",
+        "x-stoplight": { "id": "my6uy73zxib4a" },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "type": "string",
+                    "x-stoplight": { "id": "ui9d43x7u0wsv" }
+                  },
+                  "lastName": {
+                    "type": "string",
+                    "x-stoplight": { "id": "uz0bqcxud7zt1" }
+                  },
+                  "status": {
+                    "type": "string",
+                    "x-stoplight": { "id": "hjuy09lprrkxl" }
+                  },
+                  "dateOfBirth": {
+                    "type": ["string", "null"],
+                    "x-stoplight": { "id": "5pb63inow29yl" },
+                    "format": "date"
+                  },
+                  "ssn": {
+                    "type": ["string", "null"],
+                    "x-stoplight": { "id": "y3beiy3nhq1zp" }
+                  },
+                  "residentialAddress": {
+                    "type": ["object", "null"],
+                    "x-stoplight": { "id": "c01b3t8cwr1ou" },
+                    "description": "If specified, must provide the entire `residentialAddress` object.",
+                    "properties": {
+                      "name": { "type": ["string", "null"] },
+                      "streetAddress1": {
+                        "type": "string",
+                        "x-stoplight": { "id": "0az6owkpr2dcv" }
+                      },
+                      "streetAddress2": {
+                        "type": ["string", "null"],
+                        "x-stoplight": { "id": "at76kdh1a8eow" }
+                      },
+                      "city": {
+                        "type": "string",
+                        "x-stoplight": { "id": "s3rm8ohtgu76x" }
+                      },
+                      "state": {
+                        "type": "string",
+                        "x-stoplight": { "id": "6k9bso5fvafli" }
+                      },
+                      "postalCode": {
+                        "type": "string",
+                        "x-stoplight": { "id": "zd0v8bepvscgp" }
+                      }
+                    }
+                  },
+                  "personalEmail": {
+                    "type": ["string", "null"],
+                    "x-stoplight": { "id": "fcp3n7y3mzt98" },
+                    "format": "email"
+                  },
+                  "homePhone": {
+                    "type": ["string", "null"],
+                    "x-stoplight": { "id": "kqt17ksjefxu5" }
+                  },
+                  "mobilePhone": {
+                    "type": ["string", "null"],
+                    "x-stoplight": { "id": "cx8ncusct7adk" }
+                  },
+                  "medicaidNumber": {
+                    "type": ["string", "null"],
+                    "x-stoplight": { "id": "oujfh3gbpfxgb" }
+                  },
+                  "externalId": { "type": ["string", "null"] },
+                  "goesBy": { "type": ["string", "null"] },
+                  "gender": {
+                    "type": ["string", "null"],
+                    "description": "M or F"
+                  },
+                  "assessmentDate": {
+                    "type": ["string", "null"],
+                    "description": "Date in ISO8601 format",
+                    "examples": ["2020-02-20T20:20:20+00:00"]
+                  },
+                  "conversionDate": {
+                    "type": ["string", "null"],
+                    "description": "Date in ISO8601 format",
+                    "examples": ["2020-02-20T20:20:20+00:00"]
+                  },
+                  "startDate": {
+                    "type": ["string", "null"],
+                    "description": "Date in ISO8601 format",
+                    "examples": ["2020-02-20T20:20:20+00:00"]
+                  },
+                  "classes": {
+                    "type": "array",
+                    "description": "Use code or label, both are optional but should provide one of them",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "code": { "type": "string" },
+                        "label": { "type": "string" }
+                      }
+                    }
+                  },
+                  "region": {
+                    "type": ["string", "null"],
+                    "description": "Region name"
+                  },
+                  "referredBy": {
+                    "type": ["object", "null"],
+                    "description": "Type is required. Use id or name, both are optional but should provide one of them",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "examples": [
+                          "client | caregiver | contact | organization | other"
+                        ]
+                      },
+                      "id": { "type": "string" },
+                      "name": { "type": "string" }
+                    }
+                  },
+                  "preferredCaregiver": {
+                    "type": ["string", "null"],
+                    "description": "Caregiver ID or Name in `FirstName LastName` format",
+                    "examples": ["John Adams"]
+                  },
+                  "billingAddress": {
+                    "type": ["object", "null"],
+                    "description": "If specified, must provide the entire `billingAddress` object.",
+                    "properties": {
+                      "name": { "type": ["string", "null"] },
+                      "streetAddress1": { "type": "string" },
+                      "streetAddress2": { "type": ["string", "null"] },
+                      "city": { "type": "string" },
+                      "state": { "type": "string" },
+                      "postalCode": { "type": "string" }
+                    }
+                  },
+                  "billingEmail": {
+                    "type": ["string", "null"],
+                    "format": "email"
+                  },
+                  "otherPhone": { "type": ["string", "null"] },
+                  "telephonyPhone": {
+                    "type": ["string", "null"],
+                    "examples": ["home | mobile | other | unrestricted"]
+                  },
+                  "priorityNote": { "type": ["string", "null"] }
+                },
+                "required": ["firstName", "lastName"]
+              }
+            }
+          }
+        },
+        "description": "This endpoint allows you to add new clients to AxisCare. The minimum required information is a first name and last name, and a new client will be created with an Active status.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "enum": ["2023-10-01"],
+              "format": "date"
+            },
+            "in": "header",
+            "name": "X-AxisCare-Api-Version",
+            "description": "API version",
+            "required": true
+          }
+        ]
+      },
+      "parameters": []
+    },
+    "/api/clients/{clientId}": {
+      "parameters": [
+        {
+          "schema": { "type": "integer" },
+          "name": "clientId",
+          "in": "path",
+          "required": true,
+          "description": "Client ID"
+        }
+      ],
+      "get": {
+        "summary": "Get Client",
+        "operationId": "clients.get-single",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "results": {
+                      "$ref": "../Client.yaml",
+                      "x-stoplight": { "id": "9v8nhf2918nz3" }
+                    },
+                    "errors": {
+                      "type": "array",
+                      "x-stoplight": { "id": "gz69cy4d2nyf0" },
+                      "items": {
+                        "x-stoplight": { "id": "c4yoo74l5azdx" },
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "results": {
+                      "type": ["array", "null"],
+                      "x-stoplight": { "id": "wxxc7vlazlvt0" },
+                      "items": {}
+                    },
+                    "errors": {
+                      "type": "array",
+                      "x-stoplight": { "id": "3wtmd3wlnchpo" },
+                      "items": {
+                        "x-stoplight": { "id": "5tqgi6srki66t" },
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-stoplight": { "id": "4h93jlorpxzph" },
+        "description": "This endpoint returns a single client.\n\nBy default, client SSNs are excluded from the response unless both a) the token has permission to view sensitive client data and b) the SSN field was requested in the request via the `requestedSensitiveFields` parameter.",
+        "parameters": [
+          {
+            "schema": { "type": "string", "example": "ssn" },
+            "in": "query",
+            "name": "requestedSensitiveFields",
+            "description": "Comma-delimited string of names of sensitive fields to include in the payload",
+            "style": "form"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "enum": ["2023-10-01"],
+              "format": "date"
+            },
+            "in": "header",
+            "name": "X-AxisCare-Api-Version",
+            "description": "API version",
+            "required": true
+          }
+        ]
+      },
+      "patch": {
+        "summary": "Update Client",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "results": {
+                      "$ref": "../Client.yaml",
+                      "x-stoplight": { "id": "d1jt4yh8h10i6" }
+                    },
+                    "errors": {
+                      "type": "array",
+                      "x-stoplight": { "id": "qbid54i99w470" },
+                      "items": {}
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "results": {
+                      "type": ["array", "null"],
+                      "x-stoplight": { "id": "akff10kc1ixyh" },
+                      "items": {}
+                    },
+                    "errors": {
+                      "type": "array",
+                      "x-stoplight": { "id": "vrb8g85zwsnur" },
+                      "items": {
+                        "x-stoplight": { "id": "3tzy3ebq8jngx" },
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": { "type": "object", "properties": {} }
+              }
+            }
+          }
+        },
+        "operationId": "patch-api-clients",
+        "x-stoplight": { "id": "fcbiptyhmsaj2" },
+        "description": "This endpoint allows you to edit clients in AxisCare. You can supply a partial payload of only the keys you want to update.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "type": "string",
+                    "x-stoplight": { "id": "dluy78idywihu" },
+                    "description": "If specified, must also include `lastName`."
+                  },
+                  "lastName": {
+                    "type": "string",
+                    "x-stoplight": { "id": "z84q9gjsn7pgs" },
+                    "description": "If specified, must also include `firstName`."
+                  },
+                  "status": {
+                    "type": ["string", "null"],
+                    "x-stoplight": { "id": "fc9yjpei6kr1i" }
+                  },
+                  "dateOfBirth": {
+                    "type": ["string", "null"],
+                    "x-stoplight": { "id": "x3w0yaz3tydmc" },
+                    "format": "date"
+                  },
+                  "ssn": {
+                    "type": ["string", "null"],
+                    "x-stoplight": { "id": "aoyen02wr2cs2" }
+                  },
+                  "residentialAddress": {
+                    "type": ["object", "null"],
+                    "x-stoplight": { "id": "hw8jtc56o6x1z" },
+                    "description": "If specified, must provide the entire `residentialAddress` object.",
+                    "properties": {
+                      "name": { "type": ["string", "null"] },
+                      "streetAddress1": {
+                        "type": "string",
+                        "x-stoplight": { "id": "d37ercm0nvzim" }
+                      },
+                      "streetAddress2": {
+                        "type": ["string", "null"],
+                        "x-stoplight": { "id": "0ppznog4wcik5" }
+                      },
+                      "city": {
+                        "type": "string",
+                        "x-stoplight": { "id": "0l1sxb1ye24fe" }
+                      },
+                      "state": {
+                        "type": "string",
+                        "x-stoplight": { "id": "d819b8f4kdwrf" }
+                      },
+                      "postalCode": {
+                        "type": "string",
+                        "x-stoplight": { "id": "ibmvz5sv5v5kz" }
+                      }
+                    }
+                  },
+                  "personalEmail": {
+                    "type": ["string", "null"],
+                    "x-stoplight": { "id": "93rs87v6mqakv" },
+                    "format": "email"
+                  },
+                  "homePhone": {
+                    "type": ["string", "null"],
+                    "x-stoplight": { "id": "ot0h6pco354x9" }
+                  },
+                  "mobilePhone": {
+                    "type": ["string", "null"],
+                    "x-stoplight": { "id": "dpc3rvw8o8q7z" }
+                  },
+                  "medicaidNumber": {
+                    "type": ["string", "null"],
+                    "x-stoplight": { "id": "sqb799vny2zyy" }
+                  },
+                  "externalId": { "type": ["string", "null"] },
+                  "goesBy": { "type": ["string", "null"] },
+                  "gender": {
+                    "type": ["string", "null"],
+                    "description": "M or F"
+                  },
+                  "assessmentDate": {
+                    "type": ["string", "null"],
+                    "description": "Date in ISO8601 format",
+                    "examples": ["2020-02-20T20:20:20+00:00"]
+                  },
+                  "conversionDate": {
+                    "type": ["string", "null"],
+                    "description": "Date in ISO8601 format",
+                    "examples": ["2020-02-20T20:20:20+00:00"]
+                  },
+                  "startDate": {
+                    "type": ["string", "null"],
+                    "description": "Date in ISO8601 format",
+                    "examples": ["2020-02-20T20:20:20+00:00"]
+                  },
+                  "classes": {
+                    "type": "array",
+                    "description": "Use code or label, both are optional but should provide one of them",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "code": { "type": "string" },
+                        "label": { "type": "string" }
+                      }
+                    }
+                  },
+                  "region": {
+                    "type": ["string", "null"],
+                    "description": "Region name"
+                  },
+                  "referredBy": {
+                    "type": ["object", "null"],
+                    "description": "Type is required. Use id or name, both are optional but should provide one of them",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "examples": [
+                          "client | caregiver | contact | organization | other"
+                        ]
+                      },
+                      "id": { "type": "string" },
+                      "name": { "type": "string" }
+                    }
+                  },
+                  "preferredCaregiver": {
+                    "type": ["string", "null"],
+                    "description": "Caregiver ID or Name in `FirstName LastName` format",
+                    "examples": ["John Adams"]
+                  },
+                  "billingAddress": {
+                    "type": ["object", "null"],
+                    "description": "If specified, must provide the entire `billingAddress` object.",
+                    "properties": {
+                      "name": { "type": ["string", "null"] },
+                      "streetAddress1": { "type": "string" },
+                      "streetAddress2": { "type": ["string", "null"] },
+                      "city": { "type": "string" },
+                      "state": { "type": "string" },
+                      "postalCode": { "type": "string" }
+                    }
+                  },
+                  "billingEmail": {
+                    "type": ["string", "null"],
+                    "format": "email"
+                  },
+                  "otherPhone": { "type": ["string", "null"] },
+                  "telephonyPhone": {
+                    "type": ["string", "null"],
+                    "examples": ["home | mobile | other | unrestricted"]
+                  },
+                  "priorityNote": { "type": ["string", "null"] }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "enum": ["2023-10-01"],
+              "format": "date"
+            },
+            "in": "header",
+            "name": "X-AxisCare-Api-Version",
+            "description": "API version",
+            "required": true
+          }
+        ]
+      }
+    },
+    "/api/caregivers": {
+      "get": {
+        "summary": "List Caregivers",
+        "operationId": "get-api-caregivers",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "caregivers": {
+                      "type": "array",
+                      "x-stoplight": { "id": "k1bft21xh2jt1" },
+                      "items": {
+                        "$ref": "../Caregiver.yaml",
+                        "x-stoplight": { "id": "36jrzsr1zjkup" }
+                      }
+                    },
+                    "nextPage": {
+                      "type": "string",
+                      "x-stoplight": { "id": "unhwlm4y1w2uu" }
+                    },
+                    "caregiversNotFound": {
+                      "type": "array",
+                      "x-stoplight": { "id": "wk6bu2i3rnde3" },
+                      "items": {
+                        "x-stoplight": { "id": "xhfjw53vawz8y" },
+                        "type": "integer"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "207": {
+            "description": "Multi-Status (WebDAV)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "caregivers": {
+                      "type": "array",
+                      "x-stoplight": { "id": "5ztmxp7sh9ag0" },
+                      "items": {
+                        "$ref": "../Caregiver.yaml",
+                        "x-stoplight": { "id": "0dxmcx0qrp2z6" }
+                      }
+                    },
+                    "nextPage": {
+                      "type": "string",
+                      "x-stoplight": { "id": "9lm53l93y911h" }
+                    },
+                    "caregiversNotFound": {
+                      "type": "array",
+                      "x-stoplight": { "id": "detizjhk09mf7" },
+                      "items": {
+                        "x-stoplight": { "id": "908rxuib8o2ir" },
+                        "type": "integer"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "caregivers": {
+                      "type": "array",
+                      "x-stoplight": { "id": "259oi4jqewqsj" },
+                      "items": {
+                        "$ref": "../Caregiver.yaml",
+                        "x-stoplight": { "id": "1sd3283zvxs7e" }
+                      }
+                    },
+                    "nextPage": {
+                      "type": "string",
+                      "x-stoplight": { "id": "yar7uta0wu5e8" }
+                    },
+                    "caregiversNotFound": {
+                      "type": "array",
+                      "x-stoplight": { "id": "ht7kz289ecrfj" },
+                      "items": {
+                        "x-stoplight": { "id": "dyvcy7xhlkyh3" },
+                        "type": "integer"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": { "description": "Internal Server Error" }
+        },
+        "x-stoplight": { "id": "9ql9gcc4r01b1" },
+        "description": "This endpoint allows you to list caregivers and filter them by various values. The filters work in an\n\"AND\" fashion, so caregivers must match all the requested filters in order to be returned, unless\nexplicitly asked for via the `caregiverIds` parameter.\n\nIf more results match than what the endpoint is set to return, a URL to the next page of results\nwill be provided in the response.\n\nBy default, caregiver SSNs are excluded from the response unless both a) the token has permission\nto view sensitive client data and b) the SSN field was requested in the request via the\n`requestedSensitiveFields` parameter.\n\nIn the case that some caregivers are not found by ID, there is a property called `caregiversNotFound` that contains an array of the not found IDs.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "enum": ["2023-10-01"]
+            },
+            "in": "header",
+            "name": "X-Axiscare-Api-Version",
+            "description": "API version",
+            "required": true
+          },
+          {
+            "schema": { "type": "string" },
+            "in": "query",
+            "name": "caregiverIds",
+            "description": "Comma-delimited string of caregiver IDs to return"
+          },
+          {
+            "schema": { "type": "string" },
+            "in": "query",
+            "name": "statuses",
+            "description": "Comma-delimited string of statuses to filter caregiver result set"
+          },
+          {
+            "schema": { "type": "string" },
+            "in": "query",
+            "name": "regionIds",
+            "description": "Comma-delimited string of region IDs to filter caregiver result set"
+          },
+          {
+            "schema": { "type": "string" },
+            "in": "query",
+            "name": "regionNames",
+            "description": "Comma-delimited string of region names to filter caregiver result set"
+          },
+          {
+            "schema": { "type": "string" },
+            "in": "query",
+            "name": "classCodes",
+            "description": "Comma-delimited string of class codes to filter caregiver result set"
+          },
+          {
+            "schema": { "type": "string" },
+            "in": "query",
+            "name": "classLabels",
+            "description": "Comma-delimited string of class labels to filter caregiver result set"
+          },
+          {
+            "schema": { "type": "string" },
+            "in": "query",
+            "name": "adminIds",
+            "description": "Comma-delimited string of administrator IDs to filter caregiver result set"
+          },
+          {
+            "schema": { "type": "string" },
+            "in": "query",
+            "name": "adminUsernames",
+            "description": "Comma-delimited string of administrator usernames to filter caregiver result set"
+          },
+          {
+            "schema": { "type": "string" },
+            "in": "query",
+            "name": "startAfterId",
+            "description": "Used in pagination to specify the caregiver ID after which to start the next page"
+          },
+          {
+            "schema": { "type": "string" },
+            "in": "query",
+            "name": "limit",
+            "description": "Limit the number of caregiver returned"
+          },
+          {
+            "schema": { "type": "string" },
+            "in": "query",
+            "name": "requestedSensitiverFields",
+            "description": "Comma-delimited string of names of sensitive fields to include in the payload"
+          }
+        ]
+      },
+      "post": {
+        "summary": "Add Caregiver",
+        "tags": [],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "results": {
+                      "$ref": "../Caregiver.yaml",
+                      "x-stoplight": { "id": "uxsx56crh4x0y" }
+                    },
+                    "errors": {
+                      "type": ["array", "null"],
+                      "x-stoplight": { "id": "qk3ypubav2k3s" },
+                      "items": {}
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errors": {
+                      "type": "array",
+                      "x-stoplight": { "id": "y5v5y0odwf0ch" },
+                      "items": {
+                        "x-stoplight": { "id": "teoxc7mdurxeo" },
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Invalid Input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errors": {
+                      "type": "array",
+                      "x-stoplight": { "id": "im0bhernlnytb" },
+                      "items": {
+                        "x-stoplight": { "id": "7in23kus0txzs" },
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "post-api-caregivers",
+        "x-stoplight": { "id": "udx7meve2ir4w" },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "type": "string",
+                    "x-stoplight": { "id": "rxpyr0id3pqop" }
+                  },
+                  "lastName": {
+                    "type": "string",
+                    "x-stoplight": { "id": "cr0zlql2uhcc5" }
+                  },
+                  "ssn": {
+                    "type": ["number", "null"],
+                    "x-stoplight": { "id": "hv3h9stkd0cyk" }
+                  },
+                  "startDate": {
+                    "type": ["string", "null"],
+                    "x-stoplight": { "id": "grd7f07bq7u45" },
+                    "format": "date"
+                  },
+                  "terminationDate": {
+                    "type": ["string", "null"],
+                    "x-stoplight": { "id": "iv5sq0pb662w6" },
+                    "format": "date"
+                  },
+                  "classes": {
+                    "type": ["array", "null"],
+                    "x-stoplight": { "id": "rj6lbovno33t0" },
+                    "description": "If not a full class object, either a `code` or `label` can be supplied and the corresponding class will be associated.",
+                    "items": {
+                      "x-stoplight": { "id": "t9iuhh0737ke8" },
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": ["string", "null"],
+                          "x-stoplight": { "id": "12w8yq296q8fa" }
+                        },
+                        "label": {
+                          "type": ["string", "null"],
+                          "x-stoplight": { "id": "s54d4kw6lixob" }
+                        }
+                      }
+                    }
+                  },
+                  "mailingAddress": {
+                    "type": ["object", "null"],
+                    "x-stoplight": { "id": "gu8skz41jd164" },
+                    "description": "If specified, must provide the entire `mailingAddress` object.",
+                    "properties": {
+                      "streetAddress1": {
+                        "type": "string",
+                        "x-stoplight": { "id": "ziwo33hut3izl" }
+                      },
+                      "streetAddress2": {
+                        "type": ["string", "null"],
+                        "x-stoplight": { "id": "cf7he9c3ovuzp" }
+                      },
+                      "city": {
+                        "type": "string",
+                        "x-stoplight": { "id": "lxuxbj4pnhy0q" }
+                      },
+                      "state": {
+                        "type": "string",
+                        "x-stoplight": { "id": "9a7p5ukr99qpl" }
+                      },
+                      "postalCode": {
+                        "type": "string",
+                        "x-stoplight": { "id": "qv9gtenjf396n" }
+                      }
+                    }
+                  },
+                  "personalEmail": {
+                    "type": ["string", "null"],
+                    "x-stoplight": { "id": "fri1vdnf5g8l3" },
+                    "format": "email"
+                  },
+                  "mobilePhone": {
+                    "type": ["string", "null"],
+                    "x-stoplight": { "id": "xlt7qep5zp8f9" }
+                  },
+                  "goesBy": { "type": ["string", "null"] },
+                  "gender": {
+                    "type": ["string", "null"],
+                    "description": "M or F"
+                  },
+                  "dateOfBirth": {
+                    "type": ["string", "null"],
+                    "description": "Date in `YYYY-MM-DD` format",
+                    "examples": ["1980-01-20"]
+                  },
+                  "status": {
+                    "type": ["string", "null"],
+                    "description": "Status name"
+                  },
+                  "hireDate": {
+                    "type": ["string", "null"],
+                    "description": "Date in ISO8601 format",
+                    "examples": ["2020-02-20T20:20:20+00:00"]
+                  },
+                  "region": {
+                    "type": ["string", "null"],
+                    "description": "Region name"
+                  },
+                  "referredBy": {
+                    "type": ["object", "null"],
+                    "description": "Type is required. Use id or name, both are optional but should provide one of them",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "examples": [
+                          "client | caregiver | contact | organization | other"
+                        ]
+                      },
+                      "id": { "type": "string" },
+                      "name": { "type": "string" }
+                    }
+                  },
+                  "payrollId": { "type": ["string", "null"] },
+                  "homePhone": { "type": ["string", "null"] },
+                  "applicationDate": {
+                    "type": ["string", "null"],
+                    "description": "Date in ISO8601 format",
+                    "examples": ["2020-02-20T20:20:20+00:00"]
+                  },
+                  "interviewDate": {
+                    "type": ["string", "null"],
+                    "description": "Date in ISO8601 format",
+                    "examples": ["2020-02-20T20:20:20+00:00"]
+                  },
+                  "externalId": { "type": ["string", "null"] },
+                  "ethnicity": { "type": ["string", "null"] },
+                  "otherPhone": { "type": ["string", "null"] },
+                  "driverLicenseNumber": { "type": ["string", "null"] }
+                },
+                "required": ["firstName", "lastName"]
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "enum": ["2023-10-01"]
+            },
+            "in": "header",
+            "name": "X-AxisCare-Api-Version",
+            "description": "API version",
+            "required": true
+          }
+        ],
+        "description": "This endpoint allows you to add new caregivers to AxisCare. The minimum required information is a first name and last name, and a new caregiver will be created with an Active status."
+      }
+    },
+    "/api/caregivers/{caregiverId}": {
+      "parameters": [
+        {
+          "schema": { "type": "integer" },
+          "name": "caregiverId",
+          "in": "path",
+          "required": true,
+          "description": "Caregiver ID"
+        }
+      ],
+      "patch": {
+        "summary": "Update Caregiver",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "results": {
+                      "$ref": "../Caregiver.yaml",
+                      "x-stoplight": { "id": "3xd86cs8qfguz" }
+                    },
+                    "errors": {
+                      "type": "array",
+                      "x-stoplight": { "id": "13ywqdae5eajd" },
+                      "items": {}
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errors": {
+                      "type": "array",
+                      "x-stoplight": { "id": "i9zkk6vky61od" },
+                      "items": {
+                        "x-stoplight": { "id": "42vqsd9iyw6e7" },
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errors": {
+                      "type": "array",
+                      "x-stoplight": { "id": "szgwr851hpct2" },
+                      "items": {
+                        "x-stoplight": { "id": "ofb3mxk9hv8rk" },
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Invalid Input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errors": {
+                      "type": "array",
+                      "x-stoplight": { "id": "8y6hhp7uzhdt9" },
+                      "items": {
+                        "x-stoplight": { "id": "ple44lseopfyr" },
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "patch-api-caregivers-caregiverId",
+        "x-stoplight": { "id": "k0yiwp6td3mub" },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "enum": ["2023-10-01"]
+            },
+            "in": "header",
+            "name": "X-AxisCare-Api-Version",
+            "description": "API version",
+            "required": true
+          }
+        ],
+        "description": "This endpoint allows you to edit caregivers in AxisCare. You can supply a partial payload of only the keys you want to update.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "type": "string",
+                    "x-stoplight": { "id": "zt6g9nkbvxc5h" },
+                    "description": "If specified, must also include `lastName`."
+                  },
+                  "lastName": {
+                    "type": "string",
+                    "x-stoplight": { "id": "g9romxupw0c6r" },
+                    "description": "If specified, must also include `firstName`."
+                  },
+                  "ssn": {
+                    "type": ["number", "null"],
+                    "x-stoplight": { "id": "5e52nw5kcj5ea" }
+                  },
+                  "startDate": {
+                    "type": ["string", "null"],
+                    "x-stoplight": { "id": "by0zgjx16jtff" },
+                    "format": "date"
+                  },
+                  "terminationDate": {
+                    "type": ["string", "null"],
+                    "x-stoplight": { "id": "tooq1a3vjqmat" },
+                    "format": "date"
+                  },
+                  "classes": {
+                    "type": ["array", "null"],
+                    "x-stoplight": { "id": "e8qkc410hw5o5" },
+                    "description": "When set on an update, specify the entire set of classes that should be associated with a caregiver.\n\nIf a full class object can't be supplied, either a `code` or `label` can be supplied and the corresponding class will be associated.",
+                    "items": {
+                      "x-stoplight": { "id": "pslj5s1er577a" },
+                      "type": "object",
+                      "properties": {
+                        "code": {
+                          "type": ["string", "null"],
+                          "x-stoplight": { "id": "6shmlkk2xr6ah" }
+                        },
+                        "label": {
+                          "type": ["string", "null"],
+                          "x-stoplight": { "id": "kkk3oz66q77ig" }
+                        }
+                      }
+                    }
+                  },
+                  "mailingAddress": {
+                    "type": ["object", "null"],
+                    "x-stoplight": { "id": "sypizpu6bkjvz" },
+                    "description": "If specified, must provide the entire `mailingAddress` object.",
+                    "properties": {
+                      "streetAddress1": {
+                        "type": "string",
+                        "x-stoplight": { "id": "8nmcznenbji17" }
+                      },
+                      "streetAddress2": {
+                        "type": ["string", "null"],
+                        "x-stoplight": { "id": "vyku6ixa1b4q3" }
+                      },
+                      "city": {
+                        "type": "string",
+                        "x-stoplight": { "id": "jv7t2i48y7zp7" }
+                      },
+                      "state": {
+                        "type": "string",
+                        "x-stoplight": { "id": "bvwf8081evmsc" }
+                      },
+                      "postalCode": {
+                        "type": "string",
+                        "x-stoplight": { "id": "pqibi0fcya4cu" }
+                      }
+                    }
+                  },
+                  "personalEmail": {
+                    "type": ["string", "null"],
+                    "x-stoplight": { "id": "mvk7ozfdtnfb0" },
+                    "format": "email"
+                  },
+                  "mobilePhone": {
+                    "type": ["string", "null"],
+                    "x-stoplight": { "id": "87hahbaj0qc8o" }
+                  },
+                  "goesBy": { "type": ["string", "null"] },
+                  "gender": {
+                    "type": ["string", "null"],
+                    "description": "M or F"
+                  },
+                  "dateOfBirth": {
+                    "type": ["string", "null"],
+                    "description": "Date in `YYYY-MM-DD` format",
+                    "examples": ["1980-01-20"]
+                  },
+                  "status": {
+                    "type": ["string", "null"],
+                    "description": "Status name"
+                  },
+                  "hireDate": {
+                    "type": ["string", "null"],
+                    "description": "Date in ISO8601 format",
+                    "examples": ["2020-02-20T20:20:20+00:00"]
+                  },
+                  "region": {
+                    "type": ["string", "null"],
+                    "description": "Region name"
+                  },
+                  "referredBy": {
+                    "type": ["object", "null"],
+                    "description": "Type is required. Use id or name, both are optional but should provide one of them",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "examples": [
+                          "client | caregiver | contact | organization | other"
+                        ]
+                      },
+                      "id": { "type": "string" },
+                      "name": { "type": "string" }
+                    }
+                  },
+                  "payrollId": { "type": ["string", "null"] },
+                  "homePhone": { "type": ["string", "null"] },
+                  "applicationDate": {
+                    "type": ["string", "null"],
+                    "description": "Date in ISO8601 format",
+                    "examples": ["2020-02-20T20:20:20+00:00"]
+                  },
+                  "interviewDate": {
+                    "type": ["string", "null"],
+                    "description": "Date in ISO8601 format",
+                    "examples": ["2020-02-20T20:20:20+00:00"]
+                  },
+                  "externalId": { "type": ["string", "null"] },
+                  "ethnicity": { "type": ["string", "null"] },
+                  "otherPhone": { "type": ["string", "null"] },
+                  "driverLicenseNumber": { "type": ["string", "null"] }
+                }
+              }
+            }
+          },
+          "description": ""
+        }
+      },
+      "get": {
+        "summary": "Get Caregiver",
+        "operationId": "get-api-caregivers-caregiverId",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "results": {
+                      "type": "object",
+                      "x-stoplight": { "id": "hprtrkcu67sjz" },
+                      "properties": {
+                        "data": {
+                          "$ref": "../Caregiver.yaml",
+                          "x-stoplight": { "id": "maxzgzhv068a6" }
+                        }
+                      }
+                    },
+                    "errors": {
+                      "type": ["array", "null"],
+                      "x-stoplight": { "id": "adbgioi5fu6f4" },
+                      "items": {
+                        "x-stoplight": { "id": "v8ydzpvjzmkhq" },
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-stoplight": { "id": "cwoswtqnqru7d" },
+        "description": "This endpoint returns a single caregiver.\n\nBy default, caregiver SSNs are excluded from the response unless both a) the token has permission to view sensitive client data and b) the SSN field was requested in the request via the `requestedSensitiveFields` parameter.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "enum": ["2023-10-01"]
+            },
+            "in": "header",
+            "name": "X-AxisCare-Api-Version",
+            "description": "API version",
+            "required": true
+          },
+          {
+            "schema": { "type": "string" },
+            "in": "query",
+            "name": "requestedSensitiveFields",
+            "description": "Comma-delimited string of names of sensitive fields to include in the payload"
+          }
+        ]
+      }
+    },
+    "/api/visits": {
+      "get": {
+        "summary": "List Visits",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "results": {
+                      "type": "object",
+                      "x-stoplight": { "id": "b6zojv6v9rdhe" },
+                      "properties": {
+                        "visits": {
+                          "x-stoplight": { "id": "y3l5u5t1mw5xs" },
+                          "type": "array",
+                          "items": {
+                            "$ref": "../Visit.yaml",
+                            "x-stoplight": { "id": "vb90w4q5x57es" }
+                          }
+                        },
+                        "nextPage": {
+                          "type": ["string", "null"],
+                          "x-stoplight": { "id": "kahmiblgz6bc1" },
+                          "description": "If more results match than what the endpoint is able to return at once, a URL to the next page of results will be provided here."
+                        }
+                      }
+                    },
+                    "errors": {
+                      "type": ["array", "null"],
+                      "x-stoplight": { "id": "7q1jlfxt560x4" },
+                      "items": {}
+                    }
+                  }
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "results": {
+                        "visits": [
+                          {
+                            "id": "s=1:d=2023-10-01",
+                            "client": {
+                              "id": 1,
+                              "firstName": "John",
+                              "lastName": "Lakeman",
+                              "externalId": "123456789"
+                            },
+                            "caregiver": {
+                              "id": 1,
+                              "firstName": "Alice",
+                              "lastName": "Tavner",
+                              "externalId": "987654321"
+                            },
+                            "startDate": "2023-10-01T16:00:00Z",
+                            "endDate": "2023-10-01T18:00:00Z",
+                            "clockIn": {
+                              "time": "2023-10-01T16:01:22Z",
+                              "method": "Mobile",
+                              "coordinates": {
+                                "latitude": "43.0389",
+                                "longitude": "87.9065"
+                              },
+                              "location": {
+                                "streetAddress1": "123 Main St",
+                                "streetAddress2": "",
+                                "city": "Milwaukee",
+                                "state": "WI",
+                                "postalCode": "53201"
+                              },
+                              "telephonyPhone": null
+                            },
+                            "clockOut": {
+                              "time": "2023-10-01T18:00:00Z",
+                              "method": "Web",
+                              "coordinates": null,
+                              "location": null,
+                              "telephonyPhone": null
+                            },
+                            "timezone": "US/Eastern",
+                            "service": {
+                              "id": 1,
+                              "code": "HOMEMAKING",
+                              "description": "Homemaking",
+                              "procedureCode": "S5130"
+                            },
+                            "type": "Hourly",
+                            "verified": true
+                          }
+                        ],
+                        "nextPage": "https://agency.axiscare.com/api/visits?pageToken=12345"
+                      },
+                      "errors": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errors": {
+                      "type": "array",
+                      "x-stoplight": { "id": "5oy2e67rlpsby" },
+                      "items": {
+                        "x-stoplight": { "id": "q3u4ntwur5t8b" },
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "results": {
+                      "type": "object",
+                      "x-stoplight": { "id": "m0pot6uysjye7" },
+                      "properties": {
+                        "visits": {
+                          "type": "array",
+                          "x-stoplight": { "id": "j70pxueyma9x5" },
+                          "items": {}
+                        },
+                        "nextPage": {
+                          "type": ["string", "null"],
+                          "x-stoplight": { "id": "glz1426ofsj9f" }
+                        }
+                      }
+                    },
+                    "errors": {
+                      "type": ["array", "null"],
+                      "x-stoplight": { "id": "4ssv6o8p750ad" },
+                      "items": {}
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Invalid Input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errors": {
+                      "type": "array",
+                      "x-stoplight": { "id": "8hfhms2mmr4i9" },
+                      "items": {
+                        "x-stoplight": { "id": "2rrgg3ue7q6w9" },
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errors": {
+                      "type": "array",
+                      "x-stoplight": { "id": "ops1ii7j8oepc" },
+                      "items": {
+                        "x-stoplight": { "id": "jjsmgj7jfdenc" },
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-api-visits",
+        "x-stoplight": { "id": "j5r9k9dik1f3l" },
+        "parameters": [
+          {
+            "schema": { "type": "string", "enum": ["2023-10-01"] },
+            "in": "header",
+            "name": "X-AxisCare-Api-Version",
+            "description": "API Version",
+            "required": true
+          },
+          {
+            "schema": { "type": "string" },
+            "in": "query",
+            "name": "clientIds",
+            "description": "Comma-delimited string of client IDs to filter visit result set"
+          },
+          {
+            "schema": { "type": "string" },
+            "in": "query",
+            "name": "clientClassCodes",
+            "description": "Comma-delimited string of client class codes to filter visit result set"
+          },
+          {
+            "schema": { "type": "string" },
+            "in": "query",
+            "name": "clientClassLabels",
+            "description": "Comma-delimited string of client class labels to filter visit result set"
+          },
+          {
+            "schema": { "type": "string" },
+            "in": "query",
+            "name": "clientAdminIds",
+            "description": "Comma-delimited string of client administrator IDs to filter visit result set"
+          },
+          {
+            "schema": { "type": "string" },
+            "in": "query",
+            "name": "caregiverIds",
+            "description": "Comma-delimited string of caregiver IDs to filter visit result set"
+          },
+          {
+            "schema": { "type": "string" },
+            "in": "query",
+            "name": "caregiverClassCodes",
+            "description": "Comma-delimited string of caregiver class codes to filter visit result set"
+          },
+          {
+            "schema": { "type": "string" },
+            "in": "query",
+            "name": "caregiverClassLabels",
+            "description": "Comma-delimited string of caregiver class labels to filter visit result set"
+          },
+          {
+            "schema": { "type": "string" },
+            "in": "query",
+            "name": "caregiverAdminIds",
+            "description": "Comma-delimited string of caregiver administrator IDs to filter visit result set"
+          },
+          {
+            "schema": { "type": "string" },
+            "in": "query",
+            "name": "caregiverAdminUsernames",
+            "description": "Comma-delimited string of caregiver administrator usernames to filter visit result set"
+          },
+          {
+            "schema": { "type": "string" },
+            "in": "query",
+            "name": "regionIds",
+            "description": "Comma-delimited string of client region IDs to filter visit result set"
+          },
+          {
+            "schema": { "type": "string" },
+            "in": "query",
+            "name": "regionNames",
+            "description": "Comma-delimited string of client region names to filter visit result set"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "example": "2023-10-01",
+              "format": "date"
+            },
+            "in": "query",
+            "name": "startDate",
+            "description": "Visit start date localized to visit timezone. Required if updatedSinceDate is not used"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "example": "2023-10-07",
+              "format": "date"
+            },
+            "in": "query",
+            "name": "endDate",
+            "description": "Visit end date localized to visit timezone. Required if updatedSinceDate is not used"
+          },
+          {
+            "schema": { "type": "string" },
+            "in": "query",
+            "name": "clientAdminUsernames",
+            "description": "Comma-delimited string of client administrator usernames to filter visit result set"
+          },
+          {
+            "schema": { "type": "boolean" },
+            "in": "query",
+            "name": "verified",
+            "description": "Verification status of visits, all visits returned by default"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "date-time",
+              "example": "2023-12-01T00:00:00Z"
+            },
+            "in": "query",
+            "name": "updatedSinceDate",
+            "description": "UTC date to return visits which have been updated since said date"
+          },
+          {
+            "schema": { "type": "string" },
+            "in": "query",
+            "name": "visitIds",
+            "description": "Comma-delimited string of visit IDs to filter visit result set. If this filter is provided, then no other filters can be used."
+          }
+        ],
+        "requestBody": { "content": {}, "description": "" },
+        "description": "This endpoint allows you to list visits and filter them by various values. The filters work in an \"AND\" fashion, so the visit must match all the requested filters in order to be returned.\n\nIf more results match than what the endpoint is set to return, a URL to the next page of results will be provided in the response."
+      },
+      "post": {
+        "summary": "Add Visit",
+        "tags": [],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "visit": {
+                      "$ref": "../Visit.yaml",
+                      "x-stoplight": { "id": "isxpl9txxfech" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errors": {
+                      "type": "array",
+                      "x-stoplight": { "id": "i2xf6dptzxm2x" },
+                      "items": {}
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errors": {
+                      "type": "array",
+                      "x-stoplight": { "id": "d4wxp9mq19r06" },
+                      "items": {}
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error\n\nIf attempting to to add a `chargeRate` and change the `billableRateMode`, and custom bill rate adjustments have not been enabled, you will get an error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errors": {
+                      "type": "array",
+                      "x-stoplight": { "id": "00wwxrrbnkxs6" },
+                      "items": {}
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "post-api-visits",
+        "x-stoplight": { "id": "m6yah4ryshmh1" },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "clientId": {
+                    "type": "integer",
+                    "x-stoplight": { "id": "84snaqy9sasw7" }
+                  },
+                  "visitDate": {
+                    "type": "string",
+                    "x-stoplight": { "id": "l0747wu6h0dap" },
+                    "format": "date"
+                  },
+                  "startTime": {
+                    "type": "string",
+                    "x-stoplight": { "id": "69n7ty8gwmobc" },
+                    "example": "09:00",
+                    "pattern": "\\d{2}:\\d{2}"
+                  },
+                  "endTime": {
+                    "type": "string",
+                    "x-stoplight": { "id": "6d6h2c0ggl7f1" },
+                    "example": "10:00",
+                    "pattern": "\\d{2}:\\d{2}"
+                  },
+                  "caregiverId": {
+                    "type": ["integer", "null"],
+                    "x-stoplight": { "id": "u3j7to6n8wfzc" }
+                  },
+                  "doNotBill": {
+                    "type": ["boolean", "null"],
+                    "x-stoplight": { "id": "bkz2wg8n8f96u" }
+                  },
+                  "doNotPay": {
+                    "type": ["boolean", "null"],
+                    "x-stoplight": { "id": "a0aihr891adi9" }
+                  },
+                  "serviceCode": {
+                    "type": ["string", "null"],
+                    "x-stoplight": { "id": "ss5wzsr3np7le" }
+                  },
+                  "serviceDescription": {
+                    "type": ["string", "null"],
+                    "x-stoplight": { "id": "ciukzgbwb2286" }
+                  },
+                  "mileage": {
+                    "type": ["number", "null"],
+                    "x-stoplight": { "id": "doqdb3wla0xn5" }
+                  },
+                  "expenses": {
+                    "type": ["number", "null"],
+                    "x-stoplight": { "id": "gc9nqw69b8xd1" }
+                  },
+                  "billableRateMode": {
+                    "type": ["string", "null"],
+                    "x-stoplight": { "id": "jtxbxc3bg7ttv" }
+                  },
+                  "chargeRate": {
+                    "type": ["number", "null"],
+                    "x-stoplight": { "id": "jjli27p6748an" }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "\"This endpoint allows you to add a visit. The minimum required information is a client ID, a visit date, a start time, and an end time. You may specify *either* a service code *or* a description, but not both.  It also supports a custom billable rate property that you add to the request body:\n\n`\"billableRateMode\": \"custom\"`.  \n\nWhen using the custom billable mode, you will need to provide a `chargeRate`:\n\n`\"chargeRate\": 120.45`",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "enum": ["2023-10-01"]
+            },
+            "in": "header",
+            "name": "X-AxisCare-Api-Version",
+            "description": "API version",
+            "required": true
+          }
+        ]
+      }
+    },
+    "/api/visits/{visitId}": {
+      "parameters": [
+        {
+          "schema": { "type": "string" },
+          "name": "visitId",
+          "in": "path",
+          "required": true
+        },
+        {
+          "schema": { "type": "string" },
+          "name": "visitId",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "patch": {
+        "summary": "Update Visit",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "visit": {
+                      "$ref": "../Visit.yaml",
+                      "x-stoplight": { "id": "drd981jt6z6w8" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errors": {
+                      "type": "array",
+                      "x-stoplight": { "id": "rhsipxcfiufdb" },
+                      "items": {}
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errors": {
+                      "type": "array",
+                      "x-stoplight": { "id": "fcziis9yvtr5s" },
+                      "items": {}
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error\n\nIf attempting to to add a `chargeRate` and change the `billableRateMode`, and custom bill rate adjustments have not been enabled, you will get an error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errors": {
+                      "type": "array",
+                      "x-stoplight": { "id": "grzf3ngi7yheq" },
+                      "items": {}
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "patch-api-visits-visitId",
+        "x-stoplight": { "id": "wj6d4ycdsv40n" },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "clientId": {
+                    "type": ["integer", "null"],
+                    "x-stoplight": { "id": "mbhyc46vglcko" }
+                  },
+                  "visitDate": {
+                    "type": ["string", "null"],
+                    "x-stoplight": { "id": "30bwmaddnt9rm" },
+                    "format": "date"
+                  },
+                  "startTime": {
+                    "type": ["string", "null"],
+                    "x-stoplight": { "id": "m0knamf2ss31h" },
+                    "example": "09:00",
+                    "pattern": "\\d{2}:\\d{2}"
+                  },
+                  "endTime": {
+                    "type": ["string", "null"],
+                    "x-stoplight": { "id": "09de9gtuxh823" },
+                    "example": "10:00",
+                    "pattern": "\\d{2}:\\d{2}"
+                  },
+                  "caregiverId": {
+                    "type": ["integer", "null"],
+                    "x-stoplight": { "id": "w5ar8skbtxd5z" }
+                  },
+                  "doNotBill": {
+                    "type": ["boolean", "null"],
+                    "x-stoplight": { "id": "1gf3jiwocssn1" }
+                  },
+                  "doNotPay": {
+                    "type": ["boolean", "null"],
+                    "x-stoplight": { "id": "czaqwbwkw813m" }
+                  },
+                  "serviceCode": {
+                    "type": ["string", "null"],
+                    "x-stoplight": { "id": "gjdymw0osf634" }
+                  },
+                  "serviceDescription": {
+                    "type": ["string", "null"],
+                    "x-stoplight": { "id": "47pxe5nlcnvxy" }
+                  },
+                  "mileage": {
+                    "type": ["number", "null"],
+                    "x-stoplight": { "id": "3kdvxzdjmk7b3" }
+                  },
+                  "expenses": {
+                    "type": ["number", "null"],
+                    "x-stoplight": { "id": "9kfbbb46bbn3q" }
+                  },
+                  "billableRateMode": {
+                    "type": ["string", "null"],
+                    "x-stoplight": { "id": "3v6q9cfauhfne" }
+                  },
+                  "chargeRate": {
+                    "type": ["number", "null"],
+                    "x-stoplight": { "id": "dvqipb50jnd17" }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "This endpoint allows you to modify an existing visit by its ID (e.g. `s=222:d=2024-03-04`). You can supply a partial payload of only the keys you want to update. You may specify *either* a service code *or* a description, but not both.  It also supports a custom billable rate property that you add to the request body:\n\n`\"billableRateMode\": \"custom\"`.  \n\nWhen using the custom billable mode, you will need to provide a `chargeRate`:\n\n`\"chargeRate\": 120.45`",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "enum": ["2023-10-01"]
+            },
+            "in": "header",
+            "name": "X-AxisCare-Api-Version",
+            "description": "API version",
+            "required": true
+          }
+        ]
+      }
+    },
+    "/api/applicants/{applicantId}": {
+      "parameters": [
+        {
+          "schema": { "type": "string" },
+          "name": "applicantId",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "Get Applicant",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "results": {
+                      "type": "object",
+                      "x-stoplight": { "id": "38lveb6mpx61j" },
+                      "properties": {
+                        "data": {
+                          "$ref": "../Applicant.yaml",
+                          "x-stoplight": { "id": "f8xqvccr5pr09" }
+                        }
+                      }
+                    },
+                    "errors": {
+                      "type": "array",
+                      "x-stoplight": { "id": "m9hdgsj8la1vh" },
+                      "items": {
+                        "x-stoplight": { "id": "wwv1p0kx82iw2" },
+                        "type": ["string", "null"]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-api-applicant-applicantId",
+        "x-stoplight": { "id": "qie647rrnbv3k" },
+        "description": "This endpoint returns a single applicant.\n\nBy default, applicant SSNs are excluded from the response unless both a) the token has permission to view sensitive client data and b) the SSN field was requested in the request via the `requestedSensitiveFields` parameter.",
+        "parameters": [
+          {
+            "schema": { "type": "string" },
+            "in": "header",
+            "name": "X-AxisCare-Api-Version",
+            "description": "API version"
+          },
+          {
+            "schema": { "type": "string" },
+            "in": "query",
+            "name": "requestedSensitiveFields",
+            "description": "Comma-delimited string of names of sensitive fields to include in the payload"
+          }
+        ]
+      }
+    },
+    "/api/applicants": {
+      "get": {
+        "summary": "List Applicants",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "applicants": {
+                      "type": "array",
+                      "x-stoplight": { "id": "3b196knfy8yss" },
+                      "items": {
+                        "$ref": "../Applicant.yaml",
+                        "x-stoplight": { "id": "pyn46rnj772zn" }
+                      }
+                    },
+                    "nextPage": {
+                      "type": "string",
+                      "x-stoplight": { "id": "zd2a37icenk8k" }
+                    },
+                    "applicantsNotFound": {
+                      "type": "array",
+                      "x-stoplight": { "id": "79iaoajxeyoo5" },
+                      "items": {
+                        "x-stoplight": { "id": "ai6fs73xc34li" },
+                        "type": "integer"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "207": {
+            "description": "Multi-Status (WebDAV)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "applicants": {
+                      "type": "array",
+                      "x-stoplight": { "id": "0ewczj5b1be2n" },
+                      "items": {
+                        "$ref": "../Applicant.yaml",
+                        "x-stoplight": { "id": "xxdq3hcqbyhds" }
+                      }
+                    },
+                    "nextPage": {
+                      "type": "string",
+                      "x-stoplight": { "id": "dinfonyz6z9aw" }
+                    },
+                    "applicantsNotFound": {
+                      "type": "array",
+                      "x-stoplight": { "id": "an6omeqtlwlni" },
+                      "items": {
+                        "x-stoplight": { "id": "vf0jkre552c64" },
+                        "type": "integer"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "applicants": {
+                      "type": "array",
+                      "x-stoplight": { "id": "7nydeo5d52qyz" },
+                      "items": {
+                        "$ref": "../Applicant.yaml",
+                        "x-stoplight": { "id": "5kb5sl3n4krfk" }
+                      }
+                    },
+                    "nextPage": {
+                      "type": "string",
+                      "x-stoplight": { "id": "1wwty9tgtlaog" }
+                    },
+                    "applicantsNotFound": {
+                      "type": "array",
+                      "x-stoplight": { "id": "1p2qd9h7rsdbw" },
+                      "items": {
+                        "x-stoplight": { "id": "fww9myduddejo" },
+                        "type": "integer"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": { "description": "Internal Server Error" }
+        },
+        "operationId": "get-api-applicants",
+        "x-stoplight": { "id": "2xxrmi8d7jdwm" },
+        "description": "This endpoint allows you to list applicants and filter them by various values. The filters work in an\n\"AND\" fashion, so applicants must match all the requested filters in order to be returned, unless\nexplicitly asked for via the `applicantIds` parameter.\n\nIf more results match than what the endpoint is set to return, a URL to the next page of results\nwill be provided in the response.\n\nBy default, caregiver SSNs are excluded from the response unless both a) the token has permission\nto view sensitive client data and b) the SSN field was requested in the request via the\n`requestedSensitiveFields` parameter.\n\nIn the case that some applicants are not found by ID, there is a property called `applicantsNotFound` that contains an array of the not found IDs.",
+        "parameters": [
+          {
+            "schema": { "type": "string" },
+            "in": "query",
+            "name": "applicantIds",
+            "description": "Comma-delimited string of applicant IDs to return"
+          },
+          {
+            "schema": { "type": "string" },
+            "in": "query",
+            "name": "statuses",
+            "description": "Comma-delimited string of statuses to filter applicants result set"
+          },
+          {
+            "schema": { "type": "string" },
+            "in": "query",
+            "name": "requestedSensitiverFields",
+            "description": "Comma-delimited string of names of sensitive fields to include in the payload"
+          },
+          {
+            "schema": { "type": "string" },
+            "in": "query",
+            "name": "startAfterId",
+            "description": "Used in pagination to specify the applicant ID after which to start the next page"
+          },
+          {
+            "schema": { "type": "string" },
+            "in": "header",
+            "name": "X-Axiscare-Api-Version",
+            "description": "API version"
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {},
+    "securitySchemes": {
+      "Authorization": { "type": "http", "scheme": "bearer" }
+    }
+  },
+  "security": [{ "Authorization": [] }]
+}

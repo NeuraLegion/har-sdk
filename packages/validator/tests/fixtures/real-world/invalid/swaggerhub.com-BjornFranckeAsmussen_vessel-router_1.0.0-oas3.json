@@ -1,0 +1,54 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "vessel_router API",
+    "description": "vessel_router API",
+    "version": "1.0.0-oas3"
+  },
+  "servers": [{ "url": "http://localhost:300" }],
+  "paths": {
+    "/": {
+      "get": {
+        "summary": "GET ",
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/vessel": {
+      "get": {
+        "summary": "GET vessel",
+        "responses": { "200": { "description": "OK" } }
+      },
+      "post": {
+        "summary": "POST vessel",
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/port": {
+      "get": {
+        "summary": "GET port",
+        "responses": { "200": { "description": "OK" } }
+      },
+      "post": {
+        "summary": "POST port",
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/route": {
+      "get": {
+        "summary": "GET route",
+        "responses": { "200": { "description": "OK" } }
+      },
+      "post": {
+        "summary": "POST route",
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/route/{routeId}/geojson": {
+      "get": {
+        "summary": "GET route/{routeId}/geojson",
+        "parameters": [{ "name": "routeId", "in": "path", "required": true }],
+        "responses": { "200": { "description": "OK" } }
+      }
+    }
+  }
+}

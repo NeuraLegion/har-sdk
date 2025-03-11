@@ -1,0 +1,1007 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "CRM Cotización",
+    "description": "CRM Cotización",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/api/v1/login/token": {
+      "post": {
+        "tags": ["login"],
+        "summary": "Login For Access Token",
+        "operationId": "login_for_access_token_api_v1_login_token_post",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_login_for_access_token_api_v1_login_token_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AuthResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/public/contact-form/{formId}": {
+      "post": {
+        "tags": ["public"],
+        "summary": "Post Form Data",
+        "operationId": "post_form_data_api_v1_public_contact_form__formId__post",
+        "parameters": [
+          {
+            "name": "formId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "Formid" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "title": "Formdata" } }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/public/contact-form/schema/{formId}": {
+      "get": {
+        "tags": ["public"],
+        "summary": "Get Form Schema",
+        "operationId": "get_form_schema_api_v1_public_contact_form_schema__formId__get",
+        "parameters": [
+          {
+            "name": "formId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "Formid" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/public/user/register": {
+      "post": {
+        "tags": ["public"],
+        "summary": "Register",
+        "operationId": "register_api_v1_public_user_register_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UserRegisterDTO" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/pipelines/": {
+      "post": {
+        "tags": ["pipelines"],
+        "summary": "Create Pipeline",
+        "operationId": "create_pipeline_api_v1_pipelines__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_create_pipeline_api_v1_pipelines__post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "OAuth2PasswordBearer": [] }]
+      }
+    },
+    "/api/v1/pipelines/{pipelineId}/phases/": {
+      "get": {
+        "tags": ["pipelines"],
+        "summary": "List Pipeline Phases",
+        "operationId": "list_pipeline_phases_api_v1_pipelines__pipelineId__phases__get",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "pipelineId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "Pipelineid" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/contacts/schema": {
+      "post": {
+        "tags": ["contacts"],
+        "summary": "Create Contact Schema",
+        "operationId": "create_contact_schema_api_v1_contacts_schema_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_create_contact_schema_api_v1_contacts_schema_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "OAuth2PasswordBearer": [] }]
+      }
+    },
+    "/api/v1/contacts/schema/{organizationId}": {
+      "get": {
+        "tags": ["contacts"],
+        "summary": "List Contact Schema",
+        "operationId": "list_contact_schema_api_v1_contacts_schema__organizationId__get",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "organizationId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "Organizationid" }
+          },
+          {
+            "name": "populate",
+            "in": "query",
+            "required": false,
+            "schema": { "title": "Populate" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/contacts/schema/{schemaId}/fields": {
+      "get": {
+        "tags": ["contacts"],
+        "summary": "Get Schema Fields",
+        "operationId": "get_schema_fields_api_v1_contacts_schema__schemaId__fields_get",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "schemaId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "Schemaid" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/contacts/": {
+      "post": {
+        "tags": ["contacts"],
+        "summary": "Create Contact",
+        "operationId": "create_contact_api_v1_contacts__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_create_contact_api_v1_contacts__post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "OAuth2PasswordBearer": [] }]
+      }
+    },
+    "/api/v1/contacts/{organizationId}": {
+      "get": {
+        "tags": ["contacts"],
+        "summary": "List Contacts",
+        "operationId": "list_contacts_api_v1_contacts__organizationId__get",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "organizationId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "Organizationid" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/businesses/": {
+      "post": {
+        "tags": ["businesses"],
+        "summary": "Create Bussines",
+        "operationId": "create_bussines_api_v1_businesses__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_create_bussines_api_v1_businesses__post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "OAuth2PasswordBearer": [] }]
+      }
+    },
+    "/api/v1/businesses/{businessId}/phase": {
+      "put": {
+        "tags": ["businesses"],
+        "summary": "Change Business Phase",
+        "operationId": "change_business_phase_api_v1_businesses__businessId__phase_put",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "businessId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "Businessid" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_change_business_phase_api_v1_businesses__businessId__phase_put"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/businesses/pipeline/{pipelineId}": {
+      "get": {
+        "tags": ["businesses"],
+        "summary": "Get Business In Pipeline",
+        "operationId": "get_business_in_pipeline_api_v1_businesses_pipeline__pipelineId__get",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "pipelineId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "Pipelineid" }
+          },
+          {
+            "name": "populate",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Populate"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_get_business_in_pipeline_api_v1_businesses_pipeline__pipelineId__get"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/businesses/{businessId}": {
+      "get": {
+        "tags": ["businesses"],
+        "summary": "Get Business",
+        "operationId": "get_business_api_v1_businesses__businessId__get",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "businessId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "Businessid" }
+          },
+          {
+            "name": "populate",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Populate"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/organizations/all": {
+      "get": {
+        "tags": ["organizations"],
+        "summary": "Get All Organizations",
+        "operationId": "get_all_organizations_api_v1_organizations_all_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          }
+        },
+        "security": [{ "OAuth2PasswordBearer": [] }]
+      }
+    },
+    "/api/v1/organizations/": {
+      "post": {
+        "tags": ["organizations"],
+        "summary": "Create Organization",
+        "operationId": "create_organization_api_v1_organizations__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreateOrganzationDTO" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "OAuth2PasswordBearer": [] }]
+      }
+    },
+    "/api/v1/forms/": {
+      "get": {
+        "tags": ["forms"],
+        "summary": "Get All Forms",
+        "operationId": "get_all_forms_api_v1_forms__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          }
+        },
+        "security": [{ "OAuth2PasswordBearer": [] }]
+      },
+      "post": {
+        "tags": ["forms"],
+        "summary": "Create Form",
+        "operationId": "create_form_api_v1_forms__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_create_form_api_v1_forms__post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "OAuth2PasswordBearer": [] }]
+      }
+    },
+    "/api/v1/forms/{formId}/iframe": {
+      "get": {
+        "tags": ["forms"],
+        "summary": "Get Form Iframe",
+        "operationId": "get_form_iframe_api_v1_forms__formId__iframe_get",
+        "security": [{ "OAuth2PasswordBearer": [] }],
+        "parameters": [
+          {
+            "name": "formId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "Formid" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AuthResponse": {
+        "properties": {
+          "access_token": { "type": "string", "title": "Access Token" },
+          "token_type": { "type": "string", "title": "Token Type" },
+          "user": { "$ref": "#/components/schemas/UserResponse" }
+        },
+        "type": "object",
+        "required": ["access_token", "token_type", "user"],
+        "title": "AuthResponse"
+      },
+      "Body_change_business_phase_api_v1_businesses__businessId__phase_put": {
+        "properties": {
+          "phaseId": { "type": "string", "title": "Phaseid" },
+          "organizationId": { "type": "string", "title": "Organizationid" }
+        },
+        "type": "object",
+        "required": ["phaseId", "organizationId"],
+        "title": "Body_change_business_phase_api_v1_businesses__businessId__phase_put"
+      },
+      "Body_create_bussines_api_v1_businesses__post": {
+        "properties": {
+          "bussines": { "$ref": "#/components/schemas/CreateBusiness" },
+          "organizationId": { "type": "string", "title": "Organizationid" }
+        },
+        "type": "object",
+        "required": ["bussines", "organizationId"],
+        "title": "Body_create_bussines_api_v1_businesses__post"
+      },
+      "Body_create_contact_api_v1_contacts__post": {
+        "properties": {
+          "contact": { "$ref": "#/components/schemas/CreateContactDTO" },
+          "organizationId": { "type": "string", "title": "Organizationid" }
+        },
+        "type": "object",
+        "required": ["contact", "organizationId"],
+        "title": "Body_create_contact_api_v1_contacts__post"
+      },
+      "Body_create_contact_schema_api_v1_contacts_schema_post": {
+        "properties": {
+          "contact_schema": { "$ref": "#/components/schemas/ContactSchemaDTO" },
+          "organizationId": { "type": "string", "title": "Organizationid" }
+        },
+        "type": "object",
+        "required": ["contact_schema", "organizationId"],
+        "title": "Body_create_contact_schema_api_v1_contacts_schema_post"
+      },
+      "Body_create_form_api_v1_forms__post": {
+        "properties": {
+          "form": { "$ref": "#/components/schemas/CreateFormDTO" },
+          "organizationId": { "type": "string", "title": "Organizationid" }
+        },
+        "type": "object",
+        "required": ["form", "organizationId"],
+        "title": "Body_create_form_api_v1_forms__post"
+      },
+      "Body_create_pipeline_api_v1_pipelines__post": {
+        "properties": {
+          "pipeline": { "$ref": "#/components/schemas/CreatePipeline" },
+          "organizationId": { "type": "string", "title": "Organizationid" }
+        },
+        "type": "object",
+        "required": ["pipeline", "organizationId"],
+        "title": "Body_create_pipeline_api_v1_pipelines__post"
+      },
+      "Body_get_business_in_pipeline_api_v1_businesses_pipeline__pipelineId__get": {
+        "properties": { "organizationId": { "title": "Organizationid" } },
+        "type": "object",
+        "required": ["organizationId"],
+        "title": "Body_get_business_in_pipeline_api_v1_businesses_pipeline__pipelineId__get"
+      },
+      "Body_login_for_access_token_api_v1_login_token_post": {
+        "properties": {
+          "grant_type": {
+            "anyOf": [
+              { "type": "string", "pattern": "password" },
+              { "type": "null" }
+            ],
+            "title": "Grant Type"
+          },
+          "username": { "type": "string", "title": "Username" },
+          "password": { "type": "string", "title": "Password" },
+          "scope": { "type": "string", "title": "Scope", "default": "" },
+          "client_id": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Client Id"
+          },
+          "client_secret": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Client Secret"
+          }
+        },
+        "type": "object",
+        "required": ["username", "password"],
+        "title": "Body_login_for_access_token_api_v1_login_token_post"
+      },
+      "ContactSchemaDTO": {
+        "properties": {
+          "name": { "type": "string", "title": "Name" },
+          "description": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Description"
+          },
+          "fields": {
+            "items": { "$ref": "#/components/schemas/ContactSchemaFieldDTO" },
+            "type": "array",
+            "title": "Fields"
+          }
+        },
+        "type": "object",
+        "required": ["name", "fields"],
+        "title": "ContactSchemaDTO"
+      },
+      "ContactSchemaFieldDTO": {
+        "properties": {
+          "isIndex": { "type": "boolean", "title": "Isindex" },
+          "name": { "type": "string", "title": "Name" },
+          "type": { "$ref": "#/components/schemas/FormFieldTypeEnum" },
+          "required": { "type": "boolean", "title": "Required" },
+          "order": { "type": "integer", "title": "Order" },
+          "label": { "type": "string", "title": "Label" },
+          "placeholder": { "type": "string", "title": "Placeholder" },
+          "options": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ContactSchemaOptionsFieldDTO"
+                },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "title": "Options"
+          },
+          "metadata": { "type": "string", "title": "Metadata" }
+        },
+        "type": "object",
+        "required": ["isIndex", "name", "type", "required", "order", "label"],
+        "title": "ContactSchemaFieldDTO"
+      },
+      "ContactSchemaOptionsFieldDTO": {
+        "properties": {
+          "value": { "type": "string", "title": "Value" },
+          "label": { "type": "string", "title": "Label" }
+        },
+        "type": "object",
+        "required": ["value", "label"],
+        "title": "ContactSchemaOptionsFieldDTO"
+      },
+      "CreateBusiness": {
+        "properties": {
+          "name": { "type": "string", "title": "Name" },
+          "description": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Description"
+          },
+          "pipelineId": { "type": "string", "title": "Pipelineid" },
+          "pipelinePhaseId": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Pipelinephaseid"
+          },
+          "contactId": { "type": "string", "title": "Contactid" },
+          "operatorId": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Operatorid"
+          }
+        },
+        "type": "object",
+        "required": ["name", "pipelineId", "contactId"],
+        "title": "CreateBusiness"
+      },
+      "CreateContactDTO": {
+        "properties": {
+          "schemaId": { "type": "string", "title": "Schemaid" },
+          "data": {
+            "items": { "$ref": "#/components/schemas/CreateContactDataDTO" },
+            "type": "array",
+            "title": "Data"
+          }
+        },
+        "type": "object",
+        "required": ["schemaId", "data"],
+        "title": "CreateContactDTO"
+      },
+      "CreateContactDataDTO": {
+        "properties": {
+          "fieldName": { "type": "string", "title": "Fieldname" },
+          "value": { "type": "string", "title": "Value" }
+        },
+        "type": "object",
+        "required": ["fieldName", "value"],
+        "title": "CreateContactDataDTO"
+      },
+      "CreateFormDTO": {
+        "properties": {
+          "name": { "type": "string", "title": "Name" },
+          "description": { "type": "string", "title": "Description" },
+          "contactSchemaId": { "type": "string", "title": "Contactschemaid" },
+          "selectedFieldsId": {
+            "items": { "type": "string" },
+            "type": "array",
+            "title": "Selectedfieldsid"
+          },
+          "customFields": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ContactSchemaFieldDTO"
+                },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "title": "Customfields"
+          },
+          "pipelineId": { "type": "string", "title": "Pipelineid" }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "description",
+          "contactSchemaId",
+          "selectedFieldsId",
+          "pipelineId"
+        ],
+        "title": "CreateFormDTO"
+      },
+      "CreateOrganzationDTO": {
+        "properties": {
+          "name": { "type": "string", "title": "Name" },
+          "description": { "type": "string", "title": "Description" },
+          "ownerId": { "type": "string", "title": "Ownerid" }
+        },
+        "type": "object",
+        "required": ["name", "description", "ownerId"],
+        "title": "CreateOrganzationDTO"
+      },
+      "CreatePipeline": {
+        "properties": {
+          "name": { "type": "string", "title": "Name" },
+          "description": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Description"
+          },
+          "phases": {
+            "items": { "$ref": "#/components/schemas/PipelinePhase" },
+            "type": "array",
+            "title": "Phases"
+          },
+          "config": {
+            "allOf": [{ "$ref": "#/components/schemas/PipelineConfig" }]
+          }
+        },
+        "type": "object",
+        "required": ["name", "phases"],
+        "title": "CreatePipeline"
+      },
+      "FormFieldTypeEnum": {
+        "type": "string",
+        "enum": ["text", "select", "radio", "phone", "email"],
+        "title": "FormFieldTypeEnum"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": { "$ref": "#/components/schemas/ValidationError" },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "PipelineConfig": {
+        "properties": {
+          "defaultMaxDays": {
+            "type": "integer",
+            "minimum": 0,
+            "title": "Defaultmaxdays"
+          },
+          "defaultPhase": {
+            "type": "integer",
+            "minimum": 0,
+            "title": "Defaultphase"
+          }
+        },
+        "type": "object",
+        "required": ["defaultMaxDays", "defaultPhase"],
+        "title": "PipelineConfig"
+      },
+      "PipelinePhase": {
+        "properties": {
+          "name": { "type": "string", "title": "Name" },
+          "description": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Description"
+          },
+          "order": { "type": "integer", "minimum": 0, "title": "Order" },
+          "status": { "type": "string", "title": "Status" }
+        },
+        "type": "object",
+        "required": ["name", "order", "status"],
+        "title": "PipelinePhase"
+      },
+      "UserRegisterDTO": {
+        "properties": {
+          "firstName": { "type": "string", "title": "Firstname" },
+          "lastName": { "type": "string", "title": "Lastname" },
+          "email": { "type": "string", "format": "email", "title": "Email" },
+          "password": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 6,
+            "format": "password",
+            "title": "Password",
+            "writeOnly": true
+          }
+        },
+        "type": "object",
+        "required": ["firstName", "lastName", "email", "password"],
+        "title": "UserRegisterDTO"
+      },
+      "UserResponse": {
+        "properties": {
+          "user_id": { "type": "string", "title": "User Id" },
+          "first_name": { "type": "string", "title": "First Name" },
+          "last_name": { "type": "string", "title": "Last Name" },
+          "email": { "type": "string", "title": "Email" },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "user_id",
+          "first_name",
+          "last_name",
+          "email",
+          "created_at"
+        ],
+        "title": "UserResponse"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": { "anyOf": [{ "type": "string" }, { "type": "integer" }] },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": { "type": "string", "title": "Message" },
+          "type": { "type": "string", "title": "Error Type" }
+        },
+        "type": "object",
+        "required": ["loc", "msg", "type"],
+        "title": "ValidationError"
+      }
+    },
+    "securitySchemes": {
+      "OAuth2PasswordBearer": {
+        "type": "oauth2",
+        "flows": { "password": { "scopes": {}, "tokenUrl": "token" } }
+      }
+    }
+  }
+}

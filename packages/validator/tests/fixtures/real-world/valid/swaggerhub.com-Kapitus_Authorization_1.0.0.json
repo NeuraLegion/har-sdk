@@ -1,0 +1,91 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Authorization Instructions",
+    "description": "Describes the various methods for authorizing to our services.\n\nEach service should have its autorization method defined as part of its own documentation. Cross reference the method from the service's documentation with the section in this document to find auxillary information on how to access the services.\n\nFor example, if the service you are trying to use authenticates via OAuth 2, see the OAuth2 section.\n",
+    "version": "1.0.0"
+  },
+  "servers": [
+    { "url": "https://token.kapitusdev.com", "description": "Development" },
+    { "url": "https://token.kapitusqa.com", "description": "QA" },
+    { "url": "https://token.kapitusprod.com", "description": "Production" }
+  ],
+  "tags": [{ "name": "OAuth2", "description": "Authenticate via OAuth 2" }],
+  "paths": {
+    "/oauth2/token": {
+      "post": {
+        "tags": ["OAuth2"],
+        "summary": "Obtain an JWT token to use for authentication",
+        "description": "For APIs that use OAuth 2 for their authentication, one needs to generate a token from their client ID and secret. \n\nThe token returned from here need to be set in the `Authorization` header of requests to the API(s) that you want to interact with, like so: \n  \n`Authorization: dsuhf49hf9WFNDSNF98438NF49238f0ISJHDK532...`\n\nWe use AWS Cognito to drive our OAuth 2 implementation. This is the documentation for just one way to generate a token. For the full list of available methods for generating a token, see:\n  \nhttps://docs.aws.amazon.com/cognito/latest/developerguide/token-endpoint.html\n",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": ["grant_type", "client_id", "client_secret"],
+                "properties": {
+                  "grant_type": {
+                    "type": "string",
+                    "enum": ["client_credentials"],
+                    "default": "client_credentials",
+                    "description": "The grant type being used. This is always `client_credentials`"
+                  },
+                  "client_id": {
+                    "type": "string",
+                    "description": "Your client ID"
+                  },
+                  "client_secret": {
+                    "type": "string",
+                    "description": "Your client secret"
+                  },
+                  "scope": {
+                    "type": "string",
+                    "description": "Optional. A space separated list of scopes you want to use for your request. These must be scopes that are associated with your client already. Leaving this out implies that you want to generate a token with all \nscopes available to the client. \n\nThe scopes available are specific to the API you are interacting with, and the client you are using. Please read the documentation for the service you want to interact with for a list of available scopes if you need to provide this for your use case.\n"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response returning the access token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "access_token": {
+                      "type": "string",
+                      "description": "The access token"
+                    },
+                    "token_type": {
+                      "type": "string",
+                      "description": "Type of token (e.g., Bearer)"
+                    },
+                    "expires_in": {
+                      "type": "integer",
+                      "description": "Time in seconds until the token expires"
+                    },
+                    "scope": {
+                      "type": "string",
+                      "description": "The scope of the access token"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "description": "Bad request. Invalid parameters provided." },
+          "401": {
+            "description": "Unauthorized. Client authentication failed."
+          },
+          "500": {
+            "description": "Internal server error. Something went wrong on the server side."
+          }
+        },
+        "security": []
+      }
+    }
+  }
+}

@@ -1,0 +1,353 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Tenant Management API",
+    "description": "API for creating, updating, deleting, and listing tenants, including a lookup feature against person identifiers.",
+    "version": "1.0.0.0"
+  },
+  "servers": [{ "url": "https://example.com/api/v1" }],
+  "paths": {
+    "/tenants": {
+      "get": {
+        "summary": "List all tenants",
+        "operationId": "listTenants",
+        "responses": {
+          "200": {
+            "description": "A list of tenants.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Tenant" }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new tenant",
+        "operationId": "createTenant",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Tenant" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Tenant created successfully.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Tenant" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tenants/{tenantId}": {
+      "get": {
+        "summary": "Get a tenant by ID",
+        "operationId": "getTenant",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tenant details.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Tenant" }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a tenant",
+        "operationId": "updateTenant",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Tenant" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Tenant updated successfully." }
+        }
+      },
+      "delete": {
+        "summary": "Delete a tenant",
+        "operationId": "deleteTenant",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "204": { "description": "Tenant deleted successfully." }
+        }
+      }
+    },
+    "/tenant/lookup": {
+      "post": {
+        "summary": "Lookup person by identifier",
+        "operationId": "lookupPersonByIdentifier",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "userPrinciple": {
+                    "type": "string",
+                    "description": "OneLogin User Principle."
+                  },
+                  "openId": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Tenants Associated with the the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TenantLookupResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tenant/{tenantId}/assign-user": {
+      "post": {
+        "summary": "Assign user to an organisation",
+        "operationId": "assignUserToorganisation",
+        "tags": ["User Management"],
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The unique identifier for the tenant."
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "userId": {
+                    "type": "string",
+                    "description": "Unique identifier of the user to assign."
+                  },
+                  "organisationId": {
+                    "type": "string",
+                    "description": "Unique identifier of the organisation to which the user will be assigned."
+                  }
+                },
+                "required": ["userId", "organisationId"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User successfully assigned to the organisation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "User assigned successfully."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "description": "Bad request parameters." }
+        }
+      }
+    },
+    "/tenant/{tenantId}/user-permissions": {
+      "patch": {
+        "summary": "Modify user permissions within an organisation",
+        "operationId": "modifyUserPermissions",
+        "tags": ["User Management"],
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The unique identifier for the tenant."
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "userId": {
+                    "type": "string",
+                    "description": "Unique identifier of the user whose permissions will be modified."
+                  },
+                  "organisationId": {
+                    "type": "string",
+                    "description": "Unique identifier of the organisation where permissions will be modified."
+                  },
+                  "permissions": {
+                    "type": "array",
+                    "items": { "type": "string" },
+                    "description": "The set of permissions to add or remove."
+                  },
+                  "action": {
+                    "type": "string",
+                    "enum": ["add", "remove"],
+                    "description": "Whether to add or remove the specified permissions."
+                  }
+                },
+                "required": [
+                  "userId",
+                  "organisationId",
+                  "permissions",
+                  "action"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User permissions modified successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "User permissions updated successfully."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "description": "Bad request parameters." }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "TenantLookupResponse": {
+        "type": "object",
+        "properties": {
+          "userPrinciple": { "type": "string" },
+          "userDetails": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "email": { "type": "string", "format": "email" }
+            }
+          },
+          "userTenants": {
+            "type": "array",
+            "$ref": "#/components/schemas/UserInTenants"
+          }
+        }
+      },
+      "UserInTenants": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "description": "TenantId Id" },
+          "name": { "type": "string", "description": "Name of the Tenant" }
+        }
+      },
+      "IdentifierDto": {
+        "type": "object",
+        "properties": {
+          "scheme": { "type": "string" },
+          "id": { "type": "string", "format": "uuid" },
+          "legalname": { "type": "string" },
+          "uri": { "type": "string" },
+          "OrganisationReference": {
+            "type": "object",
+            "properties": {
+              "reference": {
+                "type": "string",
+                "description": "Primary Organisation Id"
+              },
+              "name": { "type": "string", "description": "Organisation name" },
+              "AdditionalIdentifiersDto": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/IdentifierDto" }
+              },
+              "UserScope": { "type": "array", "items": { "type": "string" } }
+            }
+          }
+        }
+      },
+      "Tenant": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "description": "OpenId Id" },
+          "name": { "type": "string", "description": "Name of the Tenant" },
+          "contactInfo": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "type": "string",
+                "format": "email",
+                "description": "Contact email of the tenant"
+              },
+              "phone": {
+                "type": "string",
+                "description": "Contact phone number of the tenant"
+              }
+            }
+          }
+        },
+        "required": ["id", "name"]
+      }
+    }
+  }
+}

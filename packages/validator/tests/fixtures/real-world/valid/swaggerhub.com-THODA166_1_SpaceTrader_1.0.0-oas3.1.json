@@ -1,0 +1,279 @@
+{
+  "openapi": "3.1.0",
+  "servers": [
+    {
+      "description": "SwaggerHub API Auto Mocking",
+      "url": "https://virtserver.swaggerhub.com/THODA166_1/SpaceTrader/1.0.0"
+    },
+    {
+      "description": "SpaceTrader API",
+      "url": "https://api.spacetraders.io/v2/"
+    }
+  ],
+  "info": {
+    "description": "This is SpaceTrader API Clone",
+    "version": "1.0.0-oas3.1",
+    "title": "Simple Inventory API",
+    "contact": { "email": "thoda166@school.lu" },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "tags": [
+    { "name": "SpaceTrader", "description": "SpaceTrader paths" },
+    { "name": "Symbol System", "description": "Action the a System" },
+    { "name": "Shipyard", "description": "Action in Shipyard" }
+  ],
+  "paths": {
+    "/register": {
+      "post": {
+        "tags": ["SpaceTrader"],
+        "summary": "Register a new Agent",
+        "operationId": "registerNewAgent",
+        "description": "Here you can register a new agent. After that, you get a token",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "symbol",
+            "schema": { "type": "string" },
+            "required": true,
+            "description": "Enter a symbol and faction"
+          }
+        ]
+      }
+    },
+    "/systems": {
+      "get": {
+        "tags": ["Symbol System"],
+        "summary": "Get all available Systems",
+        "operationId": "searchInventory",
+        "description": "Getting all Systems in SpaceInvader\n",
+        "responses": {
+          "200": {
+            "description": "All Systems Resulat",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/System" }
+                }
+              }
+            }
+          },
+          "500": { "description": "Server Error" }
+        }
+      }
+    },
+    "/systems/systemSymbol": {
+      "get": {
+        "tags": ["Symbol System"],
+        "summary": "Get all information about a specific system",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "systemSymbol",
+            "schema": { "type": "string" },
+            "required": true,
+            "description": "Enter a symbol of a system"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/System" }
+              }
+            }
+          },
+          "404": {
+            "description": "The system you enter does not exist. Please another system"
+          }
+        }
+      }
+    },
+    "/systems/{systemSymbol}/waypoints": {
+      "get": {
+        "tags": ["Symbol System"],
+        "summary": "Get all information about a specific system",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "systemSymbol",
+            "schema": { "type": "string" },
+            "required": true,
+            "description": "Enter a symbol of a systems"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/System" }
+              }
+            }
+          },
+          "404": {
+            "description": "The system you enter does not exist. Please another system"
+          }
+        }
+      }
+    },
+    "/systems/{systemSymbol}/waypoints/{symbol}/shipyard": {
+      "get": {
+        "tags": ["Symbol System"],
+        "summary": "Get all information about a specific system",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "systemSymbol",
+            "schema": { "type": "string" },
+            "required": true,
+            "description": "Enter a systemSymbol of a systems"
+          },
+          {
+            "in": "path",
+            "name": "symbol",
+            "schema": { "type": "string" },
+            "required": true,
+            "description": "Enter a systemSymbol of a systems"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/System" }
+              }
+            }
+          },
+          "404": {
+            "description": "The system you enter does not exist. Please another system"
+          }
+        }
+      }
+    },
+    "/my/ships": {
+      "post": {
+        "tags": ["Shipyard"],
+        "summary": "Purchase a ship",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "shipType",
+            "schema": { "type": "string" },
+            "required": true,
+            "description": "Enter a ship type"
+          },
+          {
+            "in": "header",
+            "name": "waypointSymbol",
+            "schema": { "type": "string" },
+            "required": true,
+            "description": "Enter a waypoint symbol"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/System" }
+              }
+            }
+          },
+          "404": {
+            "description": "The header you enter does not exist. Please another system"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "System": {
+        "type": "object",
+        "required": ["symbol", "sectorSymbol", "type", "waypoints", "factions"],
+        "properties": {
+          "symbol": { "type": "string" },
+          "sectorSymbol": { "type": "string" },
+          "type": { "type": "string" },
+          "waypoints": { "$ref": "#/components/schemas/Waypoint" },
+          "factions": {
+            "type": "object",
+            "properties": {
+              "symbol": {
+                "type": "string",
+                "enum": [
+                  "COSMIC",
+                  "VOID",
+                  "GALATIC",
+                  "QUANTUM",
+                  "DOMINION",
+                  "ASTRO"
+                ],
+                "minimum": 1
+              }
+            },
+            "required": ["symbol"]
+          }
+        }
+      },
+      "Waypoint": {
+        "required": [
+          "symbol",
+          "type",
+          "systemSymbol",
+          "x",
+          "y",
+          "orbitals",
+          "traits"
+        ],
+        "properties": {
+          "symbol": { "type": "string" },
+          "type": { "type": "string" },
+          "systemSymbol": { "type": "string", "minLength": 1 },
+          "x": { "type": "integer", "minimum": 0, "maximum": 10000 },
+          "y": { "type": "integer", "minimum": 0, "maximum": 10000 },
+          "orbitals": { "type": "array", "items": { "type": "string" } },
+          "orbits": { "type": "string" },
+          "faction": {
+            "type": "object",
+            "properties": {
+              "symbol": {
+                "type": "string",
+                "enum": [
+                  "COSMIC",
+                  "VOID",
+                  "GALATIC",
+                  "QUANTUM",
+                  "DOMINION",
+                  "ASTRO"
+                ],
+                "minimum": 1
+              }
+            },
+            "required": ["symbol"]
+          },
+          "traits": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "symbol": { "type": "string" },
+                "name": { "type": "string" },
+                "description": { "type": "string" }
+              },
+              "required": ["symbol", "name", "description"]
+            }
+          },
+          "chart": { "type": "object" }
+        },
+        "type": "object"
+      }
+    }
+  }
+}

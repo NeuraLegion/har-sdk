@@ -1,0 +1,121 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Unofficial Chatango API",
+    "summary": "Bruh moment",
+    "description": "deez",
+    "termsOfService": "https://chatango.vissle.repl.co/policy",
+    "contact": { "name": "@Cheese", "url": "https://cheese.chatango.com/" },
+    "license": { "name": "MIT", "identifier": "MIT" },
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/v1/profile/{user}": {
+      "get": {
+        "tags": ["api"],
+        "summary": "Profile",
+        "operationId": "profile_v1_profile__user__get",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 20,
+              "description": "bruh moment",
+              "title": "Name"
+            },
+            "description": "bruh moment"
+          },
+          {
+            "name": "get",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Optionally set multiple queries separated by a comma.",
+              "enum": [
+                "mini",
+                "full",
+                "background",
+                "style",
+                "css",
+                "purchase",
+                "group"
+              ],
+              "title": "Get"
+            },
+            "description": "Optionally set multiple queries separated by a comma."
+          },
+          {
+            "name": "image",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Optionally set multiple queries separated by a comma.",
+              "enum": [
+                "avatar",
+                "thumb",
+                "thumb_m",
+                "message",
+                "flag",
+                "flag_t",
+                "vr_t"
+              ],
+              "title": "Image"
+            },
+            "description": "Optionally set multiple queries separated by a comma."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": { "schema": { "type": "string" } }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": { "$ref": "#/components/schemas/ValidationError" },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": { "anyOf": [{ "type": "string" }, { "type": "integer" }] },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": { "type": "string", "title": "Message" },
+          "type": { "type": "string", "title": "Error Type" }
+        },
+        "type": "object",
+        "required": ["loc", "msg", "type"],
+        "title": "ValidationError"
+      }
+    }
+  }
+}

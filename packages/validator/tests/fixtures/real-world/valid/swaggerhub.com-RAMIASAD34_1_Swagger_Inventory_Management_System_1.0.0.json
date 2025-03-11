@@ -1,0 +1,865 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Swagger Inventory Management System - OpenAPI 3.1",
+    "description": "This is a simple API that helps with managing an inventory of products, It includes a variety of services such as creating deleting and updating products, customer, or orders information.",
+    "contact": { "email": "1203355@student.birzeit.edu" },
+    "version": "1.0.0"
+  },
+  "servers": [{ "url": "https://productstore3.swagger.io/api/v3" }],
+  "tags": [
+    { "name": "employees" },
+    {
+      "name": "products",
+      "description": "Everything products related",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "https://github.com/RamiAsad1/inventory-management-system/blob/main/README.md#collection-resource-products-"
+      }
+    },
+    {
+      "name": "categories",
+      "description": "categories",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "https://github.com/RamiAsad1/inventory-management-system/blob/main/README.md#collection-resource-categories-"
+      }
+    },
+    {
+      "name": "customers",
+      "description": "Operations about customer",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "https://github.com/RamiAsad1/inventory-management-system/blob/main/README.md#collection-resource-customers-"
+      }
+    },
+    {
+      "name": "orders",
+      "description": "operations abour orders",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "https://github.com/RamiAsad1/inventory-management-system/blob/main/README.md#collection-resource-orders-"
+      }
+    }
+  ],
+  "paths": {
+    "/employees": {
+      "post": {
+        "tags": ["employees"],
+        "summary": "Add a new employee",
+        "description": "Add a new employee",
+        "operationId": "addEmployee",
+        "requestBody": {
+          "description": "Create a new employee",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/employees" }
+            },
+            "application/xml": {
+              "schema": { "$ref": "#/components/schemas/employees" }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": { "$ref": "#/components/schemas/employees" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Employee created",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/employees" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/employees" }
+              }
+            }
+          },
+          "400": { "description": "Invalid input" }
+        }
+      }
+    },
+    "/products/create": {
+      "post": {
+        "tags": ["products"],
+        "summary": "Add a new product to the store",
+        "description": "Add a new product to the store",
+        "operationId": "addProducts",
+        "requestBody": {
+          "description": "Create a new product in the store",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/products" }
+            },
+            "application/xml": {
+              "schema": { "$ref": "#/components/schemas/products" }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": { "$ref": "#/components/schemas/products" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Product created",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/products" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/products" }
+              }
+            }
+          },
+          "400": { "description": "Invalid input" }
+        }
+      }
+    },
+    "/products/": {
+      "get": {
+        "tags": ["products"],
+        "summary": "Returns all products in inventory",
+        "description": "Retruns all products in currently in inventory",
+        "operationId": "getAllProducts",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/products" }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/products" }
+                }
+              }
+            }
+          },
+          "404": { "description": "No products in inventory" }
+        }
+      }
+    },
+    "/products/{productId}": {
+      "get": {
+        "tags": ["products"],
+        "summary": "Find product by ID",
+        "description": "Returns a products information",
+        "operationId": "getProductsById",
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "description": "ID of product to return",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/products" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/products" }
+              }
+            }
+          },
+          "400": { "description": "Invalid ID supplied" },
+          "404": { "description": "Products not found" }
+        }
+      }
+    },
+    "/products/delete/{productId}": {
+      "delete": {
+        "tags": ["products"],
+        "summary": "Deletes a product",
+        "description": "delete a product",
+        "operationId": "deleteProducts",
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "description": "Product id to delete",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "204": { "description": "Deleted successfully" },
+          "400": { "description": "Invalid Id value" },
+          "404": { "description": "Product not found" }
+        }
+      }
+    },
+    "/products/update/{productId}": {
+      "patch": {
+        "tags": ["products"],
+        "summary": "Update an existing product",
+        "description": "Update an existing product by Id",
+        "operationId": "updateProducts",
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "description": "Product id to delete",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "requestBody": {
+          "description": "Update an existent product in the store",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/products" }
+            },
+            "application/xml": {
+              "schema": { "$ref": "#/components/schemas/products" }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": { "$ref": "#/components/schemas/products" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/products" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/products" }
+              }
+            }
+          },
+          "400": { "description": "Invalid ID supplied" },
+          "404": { "description": "Products not found" }
+        }
+      }
+    },
+    "/categories/create": {
+      "post": {
+        "tags": ["categories"],
+        "summary": "Add a new product to the store",
+        "description": "Add a new product to the store",
+        "operationId": "createCategory",
+        "requestBody": {
+          "description": "Create a new product in the store",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/products" }
+            },
+            "application/xml": {
+              "schema": { "$ref": "#/components/schemas/products" }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": { "$ref": "#/components/schemas/products" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Category created",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/products" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/products" }
+              }
+            }
+          },
+          "400": { "description": "Invalid input" }
+        }
+      }
+    },
+    "/categories/": {
+      "get": {
+        "tags": ["categories"],
+        "summary": "Returns all categories in inventory",
+        "description": "Retruns all categories currently in inventory",
+        "operationId": "getAllCategories",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/categories" }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/categories" }
+                }
+              }
+            }
+          },
+          "404": { "description": "No products in inventory" }
+        }
+      }
+    },
+    "/categories/{categoryId}": {
+      "get": {
+        "tags": ["categories"],
+        "summary": "Find category by ID",
+        "description": "Returns a categorys information",
+        "operationId": "getCategoryById",
+        "parameters": [
+          {
+            "name": "categoryId",
+            "in": "path",
+            "description": "ID of category to return",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/categories" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/categories" }
+              }
+            }
+          },
+          "400": { "description": "Invalid ID supplied" },
+          "404": { "description": "Products not found" }
+        }
+      }
+    },
+    "/categories/delete/{categoryId}": {
+      "delete": {
+        "tags": ["categories"],
+        "summary": "Deletes a product",
+        "description": "delete a product",
+        "operationId": "deleteCategory",
+        "parameters": [
+          {
+            "name": "categoryId",
+            "in": "path",
+            "description": "ID of category to return",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "204": { "description": "Deleted successfully" },
+          "400": { "description": "Invalid Id value" },
+          "404": { "description": "Product not found" }
+        }
+      }
+    },
+    "/categories/update/{categoryId}": {
+      "patch": {
+        "tags": ["categories"],
+        "summary": "Update an existing category",
+        "description": "Update an existing category by Id",
+        "operationId": "updateCategories",
+        "parameters": [
+          {
+            "name": "categoryId",
+            "in": "path",
+            "description": "ID of category to return",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "requestBody": {
+          "description": "Update an the description of an existing category",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/categories" }
+            },
+            "application/xml": {
+              "schema": { "$ref": "#/components/schemas/categories" }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": { "$ref": "#/components/schemas/categories" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/categories" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/categories" }
+              }
+            }
+          },
+          "400": { "description": "Invalid ID supplied" },
+          "404": { "description": "Category not found" }
+        }
+      }
+    },
+    "/customers/create": {
+      "post": {
+        "tags": ["customers"],
+        "summary": "Create customer",
+        "description": "This can only be done by the logged in customer.",
+        "operationId": "createCustomer",
+        "requestBody": {
+          "description": "Created customer object",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/customers" }
+            },
+            "application/xml": {
+              "schema": { "$ref": "#/components/schemas/customers" }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": { "$ref": "#/components/schemas/customers" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "customer created",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/customers" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/customers" }
+              }
+            }
+          },
+          "400": { "description": "Bad request body" }
+        }
+      }
+    },
+    "/customers": {
+      "get": {
+        "tags": ["customers"],
+        "summary": "Returns all customers",
+        "description": "Retruns all customers",
+        "operationId": "getAllCustomers",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/customers" }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/customers" }
+                }
+              }
+            }
+          },
+          "404": { "description": "No customers in database" }
+        }
+      }
+    },
+    "/customers/{customerId}": {
+      "get": {
+        "tags": ["customers"],
+        "summary": "Get customer by id",
+        "description": "",
+        "operationId": "getCustomerById",
+        "parameters": [
+          {
+            "name": "customerId",
+            "in": "path",
+            "description": "customer id to return",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/customers" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/customers" }
+              }
+            }
+          },
+          "400": { "description": "Invalid Id supplied" },
+          "404": { "description": "customer not found" }
+        }
+      }
+    },
+    "/customers/delete/{customerId}": {
+      "delete": {
+        "tags": ["customers"],
+        "summary": "Delete customer by id",
+        "description": "delete customer by id.",
+        "operationId": "deletecustomer",
+        "parameters": [
+          {
+            "name": "customerId",
+            "in": "path",
+            "description": "customer id to be returned",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "204": { "description": "Deleted successfully" },
+          "400": { "description": "Invalid Id supplied" },
+          "404": { "description": "customer not found" }
+        }
+      }
+    },
+    "/customers/update/{customerId}": {
+      "patch": {
+        "tags": ["customers"],
+        "summary": "Update customer",
+        "description": "update a customers information.",
+        "operationId": "updatecustomer",
+        "parameters": [
+          {
+            "name": "customerId",
+            "in": "path",
+            "description": "customer id to be returned",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "description": "Update an existent customer in the system",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/customers" }
+            },
+            "application/xml": {
+              "schema": { "$ref": "#/components/schemas/customers" }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": { "$ref": "#/components/schemas/customers" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/customers" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/customers" }
+              }
+            }
+          },
+          "400": { "description": "Invalid ID supplied" },
+          "404": { "description": "Category not found" }
+        }
+      }
+    },
+    "/orders/create": {
+      "post": {
+        "tags": ["orders"],
+        "summary": "Add a new product to the store",
+        "description": "Add a new product to the store",
+        "operationId": "addOrders",
+        "requestBody": {
+          "description": "Create a new product in the store",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/products" }
+            },
+            "application/xml": {
+              "schema": { "$ref": "#/components/schemas/products" }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": { "$ref": "#/components/schemas/products" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Product created",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/products" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/products" }
+              }
+            }
+          },
+          "400": { "description": "Invalid input" }
+        }
+      }
+    },
+    "/orders/": {
+      "get": {
+        "tags": ["orders"],
+        "summary": "Returns all products in inventory",
+        "description": "Retruns all products in currently in inventory",
+        "operationId": "getAllOrders",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/products" }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/products" }
+                }
+              }
+            }
+          },
+          "404": { "description": "No products in inventory" }
+        }
+      }
+    },
+    "/orders/{orderId}": {
+      "get": {
+        "tags": ["orders"],
+        "summary": "Find product by ID",
+        "description": "Returns a products information",
+        "operationId": "getOrdersById",
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "ID of product to return",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/products" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/products" }
+              }
+            }
+          },
+          "400": { "description": "Invalid ID supplied" },
+          "404": { "description": "Products not found" }
+        }
+      }
+    },
+    "/orders/delete/{orderId}": {
+      "delete": {
+        "tags": ["orders"],
+        "summary": "Deletes a product",
+        "description": "delete a product",
+        "operationId": "deleteOrders",
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "Product id to delete",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "204": { "description": "Deleted successfully" },
+          "400": { "description": "Invalid Id value" },
+          "404": { "description": "Product not found" }
+        }
+      }
+    },
+    "/orders/update/{orderId}": {
+      "patch": {
+        "tags": ["orders"],
+        "summary": "Update an existing product",
+        "description": "Update an existing product by Id",
+        "operationId": "updateOrders",
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "description": "Product id to delete",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "requestBody": {
+          "description": "Update an existent product in the store",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/products" }
+            },
+            "application/xml": {
+              "schema": { "$ref": "#/components/schemas/products" }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": { "$ref": "#/components/schemas/products" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/products" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/products" }
+              }
+            }
+          },
+          "400": { "description": "Invalid ID supplied" },
+          "404": { "description": "Products not found" }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "employees": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64", "examples": [1254] },
+          "name": { "type": "string", "examples": ["Rami Asad"] }
+        },
+        "xml": { "name": "employee" }
+      },
+      "orders": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64", "examples": [10] },
+          "productId": {
+            "type": "integer",
+            "format": "int64",
+            "examples": [198772]
+          },
+          "quantity": { "type": "integer", "format": "int32", "examples": [7] },
+          "Date": { "type": "string", "format": "date-time" },
+          "status": {
+            "type": "string",
+            "description": "Order Status",
+            "examples": ["approved"],
+            "enum": ["placed", "approved", "delivered"]
+          },
+          "complete": { "type": "boolean" }
+        },
+        "xml": { "name": "order" }
+      },
+      "categories": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64", "examples": [1] },
+          "name": { "type": "string", "examples": ["Diary products"] },
+          "description": {
+            "type": "string",
+            "examples": ["containing diary products"]
+          }
+        },
+        "xml": { "name": "category" }
+      },
+      "customers": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64", "examples": [10] },
+          "customername": { "type": "string", "examples": ["john ahmad"] },
+          "email": { "type": "string", "examples": ["john@email.com"] },
+          "password": { "type": "string", "examples": ["12345"] },
+          "phone": { "type": "string", "examples": ["12345"] },
+          "address": {
+            "type": "string",
+            "description": "customer's address",
+            "examples": ["123 Main street"]
+          }
+        },
+        "xml": { "name": "customer" }
+      },
+      "products": {
+        "required": ["name"],
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64", "examples": [10] },
+          "name": { "type": "string", "examples": ["soap"] },
+          "description": {
+            "type": "string",
+            "examples": ["soap made from olives"]
+          },
+          "price": { "type": "integer", "format": "int64", "examples": [20] },
+          "quantity": {
+            "type": "integer",
+            "format": "int64",
+            "examples": [150]
+          },
+          "categoryId": {
+            "type": "integer",
+            "format": "int64",
+            "examples": [10]
+          }
+        },
+        "xml": { "name": "product" }
+      }
+    },
+    "requestBodies": {
+      "Products": {
+        "description": "Products object that needs to be added to the store",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/products" }
+          }
+        }
+      },
+      "Customers": {
+        "description": "Customer object that needs to be added to the store",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/customers" }
+          }
+        }
+      },
+      "Categories": {
+        "description": "Category object that needs to be added to the store",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/categories" }
+          }
+        }
+      },
+      "Orders": {
+        "description": "Order object that needs to be added to the store",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/orders" }
+          }
+        }
+      }
+    }
+  }
+}

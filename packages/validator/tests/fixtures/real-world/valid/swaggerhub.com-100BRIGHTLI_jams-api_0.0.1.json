@@ -1,0 +1,273 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "JAMS API",
+    "description": "An API for Jams services and an API gateway for other needed services.",
+    "contact": { "name": "Arpan Pandey", "email": "arpan@hackclub.com" },
+    "version": "0.0.1"
+  },
+  "paths": {
+    "/": {
+      "get": {
+        "summary": "Root",
+        "operationId": "root__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          }
+        }
+      }
+    },
+    "/openai/models": {
+      "get": {
+        "summary": "Models",
+        "description": "Get the list of models available on OpenAI API",
+        "operationId": "models_openai_models_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      }
+    },
+    "/openai/models/{model_name}": {
+      "get": {
+        "summary": "Model",
+        "description": "Get the details of a model available on OpenAI API",
+        "operationId": "model_openai_models__model_name__get",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "name": "model_name",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "Model Name" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/openai/chat/completions": {
+      "post": {
+        "summary": "Post Chat Completions",
+        "description": "Post a chat to OpenAI API",
+        "operationId": "post_chat_completions_openai_chat_completions_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "type": "object", "title": "Data" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      }
+    },
+    "/openai/images/generations": {
+      "post": {
+        "summary": "Create Image",
+        "description": "Create an image on OpenAI API",
+        "operationId": "create_image_openai_images_generations_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "type": "object", "title": "Data" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      }
+    },
+    "/openai/embeddings": {
+      "post": {
+        "summary": "Embeddings",
+        "description": "Get the embeddings of a text on OpenAI API",
+        "operationId": "embeddings_openai_embeddings_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "type": "object", "title": "Data" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      }
+    },
+    "/submitJam/{jam_slug}/{finishedURL}/{title}": {
+      "get": {
+        "summary": "Submit Jams",
+        "operationId": "submit_jams_submitJam__jam_slug___finishedURL___title__get",
+        "parameters": [
+          {
+            "name": "jam_slug",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "Jam Slug" }
+          },
+          {
+            "name": "finishedURL",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "Finishedurl" }
+          },
+          {
+            "name": "title",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "Title" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/getSubmissions": {
+      "get": {
+        "summary": "Get Submissions",
+        "operationId": "get_submissions_getSubmissions_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          }
+        }
+      }
+    },
+    "/deleteSubmission": {
+      "delete": {
+        "summary": "Delete Submission",
+        "operationId": "delete_submission_deleteSubmission_delete",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "title": "Url" }
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "title": "Password" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": { "$ref": "#/components/schemas/ValidationError" },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": { "anyOf": [{ "type": "string" }, { "type": "integer" }] },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": { "type": "string", "title": "Message" },
+          "type": { "type": "string", "title": "Error Type" }
+        },
+        "type": "object",
+        "required": ["loc", "msg", "type"],
+        "title": "ValidationError"
+      }
+    },
+    "securitySchemes": { "HTTPBearer": { "type": "http", "scheme": "bearer" } }
+  }
+}

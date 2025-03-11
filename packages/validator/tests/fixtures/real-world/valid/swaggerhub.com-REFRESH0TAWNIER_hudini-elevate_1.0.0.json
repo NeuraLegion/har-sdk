@@ -1,0 +1,837 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Hudini Elevate",
+    "description": "Explore reference documentation for Hudini Elevate - A collection of APIs that application developers can utilize to extend hospitality functions on their experiences",
+    "termsOfService": "http://hudini.io/terms/",
+    "contact": { "email": "developers@hudini.io" },
+    "version": "1.0.0"
+  },
+  "externalDocs": {
+    "description": "Find out more about Hudini",
+    "url": "http://hudini.io"
+  },
+  "servers": [{ "url": "https://api.hudini.io/v1" }],
+  "tags": [
+    {
+      "name": "reservation",
+      "description": "Operations on a room reservation."
+    }
+  ],
+  "paths": {
+    "/{hotelId}/reservations": {
+      "get": {
+        "tags": ["reservation"],
+        "summary": "Find Reservations",
+        "description": "Returns a collection of reservations",
+        "operationId": "getReservations",
+        "parameters": [
+          {
+            "name": "hotelId",
+            "in": "path",
+            "description": "Hudini Hotel Identifier",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          },
+          {
+            "name": "fromDate",
+            "in": "query",
+            "description": "Start of range for check in dates",
+            "schema": { "type": "string", "format": "date-time" }
+          },
+          {
+            "name": "toDate",
+            "in": "query",
+            "description": "End of range for check in dates",
+            "schema": { "type": "string", "format": "date-time" }
+          },
+          {
+            "name": "firstName",
+            "in": "query",
+            "description": "First name of guest",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "lastName",
+            "in": "query",
+            "description": "Last name of guest",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "allOf": [
+                      { "$ref": "#/components/schemas/ReservationSummary" },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "roomTypes": {
+                            "type": "array",
+                            "description": "Rooms booked on the reservation",
+                            "items": {
+                              "$ref": "#/components/schemas/RoomTypeSummary"
+                            }
+                          },
+                          "guests": {
+                            "type": "array",
+                            "description": "Collection of guests on the reservation",
+                            "items": {
+                              "$ref": "#/components/schemas/GuestSummary"
+                            }
+                          },
+                          "additionalData": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "key": {
+                                  "type": "string",
+                                  "description": "Unique key for a hotel-specific advanced proeprty",
+                                  "examples": ["arrival-time"]
+                                },
+                                "value": {
+                                  "type": "string",
+                                  "description": "Value of a hotel-specific advanced property",
+                                  "examples": ["01-01-2020 12:00"]
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "503": {
+            "description": "Downstream system unavailable",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          }
+        },
+        "security": [
+          { "api_key": [] },
+          { "hudini_auth": ["read:reservations"] }
+        ]
+      }
+    },
+    "/{hotelId}/reservations/{reservationId}": {
+      "get": {
+        "tags": ["reservation"],
+        "summary": "Find Reservation Details",
+        "description": "Returns details about a reservation",
+        "operationId": "getReservationDetails",
+        "parameters": [
+          {
+            "name": "hotelId",
+            "in": "path",
+            "description": "Hudini Hotel Identifier",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          },
+          {
+            "name": "reservationId",
+            "in": "path",
+            "description": "Reservation ID",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/ReservationSummary" },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "roomTypes": {
+                          "type": "array",
+                          "description": "Rooms booked on the reservation",
+                          "items": { "$ref": "#/components/schemas/RoomType" }
+                        },
+                        "guests": {
+                          "type": "array",
+                          "description": "Collection of guests on the reservation",
+                          "items": {
+                            "$ref": "#/components/schemas/GuestSummary"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "503": {
+            "description": "Downstream system unavailable",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          }
+        },
+        "security": [
+          { "api_key": [] },
+          { "hudini_auth": ["read:reservations"] }
+        ]
+      }
+    },
+    "/{hotelId}/reservations/{reservationId}/guests": {
+      "get": {
+        "tags": ["reservation"],
+        "summary": "Find Guests on a reservation",
+        "description": "Returns details about all guests on reservation",
+        "operationId": "getReservationGuests",
+        "parameters": [
+          {
+            "name": "hotelId",
+            "in": "path",
+            "description": "Hudini Hotel Identifier",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          },
+          {
+            "name": "reservationId",
+            "in": "path",
+            "description": "Reservation ID",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Guest" }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "503": {
+            "description": "Downstream system unavailable",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          }
+        },
+        "security": [
+          { "api_key": [] },
+          { "hudini_auth": ["read:reservations"] }
+        ]
+      },
+      "post": {
+        "tags": ["reservation"],
+        "summary": "Add a guest",
+        "description": "Add a new guest to the reservation",
+        "operationId": "addReservationGuest",
+        "parameters": [
+          {
+            "name": "hotelId",
+            "in": "path",
+            "description": "Hudini Hotel Identifier",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          },
+          {
+            "name": "reservationId",
+            "in": "path",
+            "description": "Reservation ID",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Guest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Guest" }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "503": {
+            "description": "Downstream system unavailable",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          }
+        },
+        "security": [
+          { "api_key": [] },
+          { "hudini_auth": ["write:reservations"] }
+        ]
+      }
+    },
+    "/{hotelId}/reservations/{reservationId}/guests/{guestId}": {
+      "get": {
+        "tags": ["reservation"],
+        "summary": "Find Guests Details on a reservation",
+        "description": "Returns details about a guest on reservation",
+        "operationId": "getReservationGuestDetails",
+        "parameters": [
+          {
+            "name": "hotelId",
+            "in": "path",
+            "description": "Hudini Hotel Identifier",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          },
+          {
+            "name": "reservationId",
+            "in": "path",
+            "description": "Reservation ID",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "guestId",
+            "in": "path",
+            "description": "Guest ID",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Guest" }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "503": {
+            "description": "Downstream system unavailable",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          }
+        },
+        "security": [
+          { "api_key": [] },
+          { "hudini_auth": ["read:reservations"] }
+        ]
+      },
+      "patch": {
+        "tags": ["reservation"],
+        "summary": "Add a guest",
+        "description": "Add a new guest to the reservation",
+        "operationId": "updateReservationGuest",
+        "parameters": [
+          {
+            "name": "hotelId",
+            "in": "path",
+            "description": "Hudini Hotel Identifier",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          },
+          {
+            "name": "reservationId",
+            "in": "path",
+            "description": "Reservation ID",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "guestId",
+            "in": "path",
+            "description": "Guest ID",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Guest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Guest" }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "503": {
+            "description": "Downstream system unavailable",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          }
+        },
+        "security": [
+          { "api_key": [] },
+          { "hudini_auth": ["write:reservations"] }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "errorCode": {
+            "type": "integer",
+            "format": "int64",
+            "examples": [1001]
+          },
+          "errorMessage": {
+            "type": "string",
+            "examples": ["Details of error message."]
+          }
+        }
+      },
+      "ReservationSummary": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "System generated unique ID for a reservation",
+            "examples": ["4574510"]
+          },
+          "externalIds": {
+            "type": "array",
+            "description": "One or more reference IDs for a reservation. Uniqueness is not guarenteed.",
+            "items": { "$ref": "#/components/schemas/ExternalReservationID" }
+          },
+          "checkinDate": {
+            "type": "string",
+            "description": "Start of stay reservation",
+            "format": "date-time",
+            "examples": ["1-Jan-2000"]
+          },
+          "checkoutDate": {
+            "type": "string",
+            "description": "End of stay reservation",
+            "format": "date-time",
+            "examples": ["5-Jan-2000"]
+          },
+          "status": {
+            "type": "string",
+            "description": "Status of reservation",
+            "enum": ["CONFIRMED", "CHECKED_IN", ""]
+          },
+          "numAdults": {
+            "type": "integer",
+            "description": "Total number of adults on the reservation"
+          },
+          "numChildren": {
+            "type": "integer",
+            "description": "Total number of children on the reservation"
+          },
+          "payments": {
+            "type": "array",
+            "items": {
+              "allOf": [
+                { "$ref": "#/components/schemas/Amount" },
+                {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": ["PAID", "HOLD", "PENDING"]
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "ExternalReservationID": {
+        "type": "object",
+        "description": "Alternate reference IDs for the reservation. Uniqueness of this reference number is not guarenteed",
+        "properties": {
+          "id": { "type": "string", "examples": ["43434323"] },
+          "type": {
+            "type": "string",
+            "enum": ["EXTERNAL_ID", "CONFIRMATION_ID", "CRS_ID", "OTA_ID"]
+          },
+          "source": {
+            "type": "string",
+            "description": "Reference to the source of external ID",
+            "examples": ["booking.com"]
+          }
+        }
+      },
+      "RoomTypeSummary": {
+        "type": "object",
+        "properties": {
+          "code": { "type": "string", "examples": ["DK"] },
+          "name": { "type": "string", "examples": ["Deluxe King"] },
+          "isAssigned": {
+            "type": "boolean",
+            "description": "Is set to true is a room is assigned"
+          },
+          "roomNo": {
+            "type": "string",
+            "description": "Assigned room number, when isAssigned is true",
+            "examples": ["2100"]
+          }
+        }
+      },
+      "RoomType": {
+        "allOf": [
+          { "$ref": "#/components/schemas/RoomTypeSummary" },
+          {
+            "type": "object",
+            "properties": {
+              "ratePlan": {
+                "type": "object",
+                "properties": {
+                  "code": { "type": "string", "examples": ["APR"] },
+                  "name": {
+                    "type": "string",
+                    "examples": ["Advance Purchase Rate"]
+                  },
+                  "rate": {
+                    "type": "number",
+                    "format": "float",
+                    "examples": ["100.00"]
+                  },
+                  "currency": { "type": "string", "examples": ["USD"] }
+                }
+              },
+              "addOns": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "code": { "type": "string", "examples": ["FLR"] },
+                    "title": {
+                      "type": "string",
+                      "examples": ["Flower Arrangement"]
+                    },
+                    "price": { "$ref": "#/components/schemas/Amount" }
+                  }
+                }
+              },
+              "preferences": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "code": { "type": "string", "examples": ["NOSMOKE"] },
+                    "title": {
+                      "type": "string",
+                      "examples": ["Non-smoking room"]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "Amount": {
+        "type": "object",
+        "properties": {
+          "description": { "type": "string", "examples": ["Room charges"] },
+          "unitAmount": {
+            "type": "number",
+            "format": "float",
+            "examples": ["100.00"]
+          },
+          "units": { "type": "number", "format": "float", "examples": ["1.0"] },
+          "currency": { "type": "string", "examples": ["USD"] }
+        }
+      },
+      "GuestSummary": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "examples": ["2322455"] },
+          "title": { "type": "string", "examples": ["Mr"] },
+          "firstName": { "type": "string", "examples": ["John"] },
+          "lastName": { "type": "string", "examples": ["Smith"] },
+          "middleName": { "type": "string", "examples": ["C"] },
+          "isAdult": {
+            "description": "Set to true when a guest is considered an adult as per hotel rules",
+            "type": "boolean"
+          },
+          "isVerified": {
+            "description": "Set to true when a guest has been verified against an ID Docuemnt",
+            "type": "boolean"
+          },
+          "isPrimary": {
+            "description": "Set to true if this is a primary guest",
+            "type": "boolean"
+          }
+        }
+      },
+      "Guest": {
+        "allOf": [
+          { "$ref": "#/components/schemas/GuestSummary" },
+          {
+            "type": "object",
+            "properties": {
+              "gender": {
+                "type": "string",
+                "enum": ["MALE", "FEMALE", "OTHER", "NA"]
+              },
+              "emailAddresses": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/EmailAddress" }
+              },
+              "phoneNumbers": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/PhoneNumber" }
+              },
+              "addresses": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/Address" }
+              },
+              "nationality": { "$ref": "#/components/schemas/Country" },
+              "identity": {
+                "type": "object",
+                "properties": {
+                  "IDType": {
+                    "type": "string",
+                    "enum": [
+                      "PASSPORT",
+                      "DRIVERS_LICENSE",
+                      "NATIONAL_ID",
+                      "OTHER_ID"
+                    ]
+                  },
+                  "number": { "type": "string", "examples": ["D846864"] },
+                  "issueDate": {
+                    "type": "string",
+                    "format": "datetime",
+                    "examples": ["1-1-2020"]
+                  },
+                  "expiryDate": {
+                    "type": "string",
+                    "format": "datetime",
+                    "examples": ["1-1-2030"]
+                  },
+                  "issueCountry": { "$ref": "#/components/schemas/Country" }
+                }
+              },
+              "verification": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "description": "Value set based on verification performed",
+                    "enum": ["ID_VERIFIED", "FACE_MATCHED", "EXTERNAL"]
+                  },
+                  "score": {
+                    "type": "number",
+                    "description": "Verification score",
+                    "format": "float"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "EmailAddress": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "examples": ["john.smith@example.com"]
+          },
+          "type": { "type": "string", "enum": ["PRIMARY", "OTHER"] }
+        }
+      },
+      "Country": {
+        "type": "object",
+        "properties": {
+          "countryCode": {
+            "description": "ISO 3166 A-2 country code corresponding to the country",
+            "type": "string",
+            "examples": ["US"]
+          },
+          "countryName": {
+            "type": "string",
+            "examples": ["United States of America"]
+          }
+        }
+      },
+      "PhoneNumber": {
+        "type": "object",
+        "properties": {
+          "countryCode": {
+            "type": "integer",
+            "format": "int64",
+            "examples": [1]
+          },
+          "phone": {
+            "type": "integer",
+            "format": "int64",
+            "examples": [5876749802]
+          },
+          "type": {
+            "type": "string",
+            "enum": ["MOBILE", "HOME", "WHATSAPP", "TEXT"]
+          }
+        }
+      },
+      "Address": {
+        "type": "object",
+        "properties": {
+          "line1": { "type": "string", "examples": ["House No. 123"] },
+          "line2": { "type": "string", "examples": ["3rd Street"] },
+          "city": { "type": "string", "examples": ["New York City"] },
+          "state": { "type": "string", "examples": ["New York"] },
+          "country": { "$ref": "#/components/schemas/Country" },
+          "type": { "type": "string", "enum": ["HOME", "WORK", "OTHER"] }
+        }
+      }
+    },
+    "securitySchemes": {
+      "hudini_auth": {
+        "type": "oauth2",
+        "flows": {
+          "implicit": {
+            "authorizationUrl": "https://auth.hudini.io/oauth/authorize",
+            "scopes": {
+              "write:reservations": "modify authorized reservations",
+              "read:reservations": "read authorized reservations"
+            }
+          }
+        }
+      },
+      "api_key": { "type": "apiKey", "name": "api_key", "in": "header" }
+    }
+  }
+}

@@ -1,0 +1,219 @@
+{
+  "openapi": "3.1.0",
+  "servers": [
+    {
+      "url": "https://api.dmitriy-bondar.dev/resume",
+      "description": "Next.js implementetion of the Resume API"
+    },
+    {
+      "url": "https://virtserver.swaggerhub.com/Chiocciola/Resume/1.0.0",
+      "description": "SwaggerHub API Auto Mocking"
+    }
+  ],
+  "info": {
+    "version": "1.0.1",
+    "title": "Resume API",
+    "contact": {
+      "email": "di-man@yandex.ru",
+      "name": "Dmitriy Bondar",
+      "url": "https://dmitriy-bondar.dev"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "description": "The Resume API allows developers to access resume content, providing detailed information about an individual's professional and educational background. This API offers endpoints for retrieving general information, such as name and contact details, as well as detailed sections for experience and education."
+  },
+  "paths": {
+    "/": {
+      "get": {
+        "summary": "Index of resume section endpoints",
+        "responses": {
+          "200": {
+            "description": "Section list",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Sections" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/general": {
+      "get": {
+        "summary": "General information",
+        "responses": {
+          "200": {
+            "description": "Section content",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["title", "content"],
+                  "properties": {
+                    "title": { "type": "string" },
+                    "content": { "$ref": "#/components/schemas/General" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/skills": {
+      "get": {
+        "summary": "Hard and soft skills, technologies and programming languages",
+        "responses": {
+          "200": {
+            "description": "Section content",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["title", "content"],
+                  "properties": {
+                    "title": { "type": "string" },
+                    "content": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/SkillSet" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/experience": {
+      "get": {
+        "summary": "Information about professional background",
+        "responses": {
+          "200": {
+            "description": "Section content",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["title", "content"],
+                  "properties": {
+                    "title": { "type": "string" },
+                    "content": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/Employer" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/education": {
+      "get": {
+        "summary": "Information about educational background",
+        "responses": {
+          "200": {
+            "description": "Section content",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["title", "content"],
+                  "properties": {
+                    "title": { "type": "string" },
+                    "content": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/Degree" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Url": {
+        "type": "object",
+        "required": ["url"],
+        "properties": { "url": { "type": "string", "format": "url" } }
+      },
+      "Sections": {
+        "type": "array",
+        "items": { "$ref": "#/components/schemas/Url" }
+      },
+      "General": {
+        "type": "object",
+        "required": ["name", "title", "location"],
+        "properties": {
+          "name": { "type": "string", "example": "Wile E. Coyote" },
+          "title": { "type": "string", "example": "Coyote" },
+          "location": { "type": "string", "example": "Nevada, USA" },
+          "phone": { "type": "string", "example": "123-456-7890" },
+          "email": { "type": "string", "example": "coyote@acme-corp.com" },
+          "linkedin": { "$ref": "#/components/schemas/Url" },
+          "summary": { "type": "string" }
+        }
+      },
+      "SkillSet": {
+        "type": "object",
+        "required": ["kind", "skills"],
+        "properties": {
+          "kind": { "type": "string" },
+          "skills": { "type": "array", "items": { "type": "string" } }
+        }
+      },
+      "Employer": {
+        "type": "object",
+        "required": ["company", "logo", "positions"],
+        "properties": {
+          "company": { "type": "string" },
+          "logo": { "$ref": "#/components/schemas/Url" },
+          "positions": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Position" }
+          }
+        }
+      },
+      "Position": {
+        "type": "object",
+        "required": ["title", "location", "startDate"],
+        "properties": {
+          "title": { "type": "string" },
+          "location": { "type": "string" },
+          "startDate": { "type": "string" },
+          "endDate": { "type": "string" },
+          "summary": { "type": "string" },
+          "highlights": { "type": "array", "items": { "type": "string" } }
+        }
+      },
+      "Degree": {
+        "type": "object",
+        "required": [
+          "institution",
+          "logo",
+          "degree",
+          "location",
+          "startDate",
+          "endDate"
+        ],
+        "properties": {
+          "institution": { "type": "string" },
+          "logo": { "$ref": "#/components/schemas/Url" },
+          "degree": { "type": "string" },
+          "location": { "type": "string" },
+          "startDate": { "type": "string" },
+          "endDate": { "type": "string" }
+        }
+      },
+      "Language": { "description": "Spoken language", "type": "string" }
+    }
+  }
+}

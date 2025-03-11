@@ -1,0 +1,170 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Tacos API",
+    "description": "An API for managing tacos with a touch of humor and a hint of spice! Join us on a delightful journey through the world of tacos, where every bite is a fiesta. Explore our menu, create your own taco masterpieces, and savor the flavor of happiness. Tacos, because who needs a superhero when you have tacos?",
+    "version": "1.0.0",
+    "termsOfService": "https://tacosapi.com/terms-of-service",
+    "contact": {
+      "name": "Taco Enthusiast",
+      "url": "https://tacosapi.com/contact",
+      "email": "contact@tacosapi.com"
+    },
+    "license": { "name": "Taco License", "url": "https://tacosapi.com/license" }
+  },
+  "paths": {
+    "/tacos": {
+      "get": {
+        "summary": "Get a list of all tacos",
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved a mouthwatering list of tacos",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "id": 1,
+                    "name": "Classic Beef Taco",
+                    "description": "The timeless favorite with seasoned beef, lettuce, and cheese.",
+                    "price": 4.99
+                  },
+                  {
+                    "id": 2,
+                    "name": "Spicy Chicken Taco",
+                    "description": "For those who like it hot! Grilled chicken with jalapeños and salsa.",
+                    "price": 5.49
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new taco",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Taco" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Taco created successfully! Your taste buds will thank you.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 3,
+                  "name": "Veggie Delight Taco",
+                  "description": "A garden-fresh taco with crisp vegetables and zesty sauce.",
+                  "price": 4.79
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Oops! Something went wrong. Please check your taco ingredients."
+          }
+        }
+      }
+    },
+    "/tacos/{tacoId}": {
+      "get": {
+        "summary": "Get a specific taco by ID",
+        "parameters": [
+          {
+            "name": "tacoId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" },
+            "description": "ID of the taco to savor"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved a unique taco experience",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "name": "Classic Beef Taco",
+                  "description": "The timeless favorite with seasoned beef, lettuce, and cheese.",
+                  "price": 4.99
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Oops! This taco has mysteriously disappeared from the menu."
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a specific taco by ID",
+        "parameters": [
+          {
+            "name": "tacoId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" },
+            "description": "ID of the taco to customize"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Taco" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Taco updated successfully! Your taco is now as unique as you are."
+          },
+          "400": {
+            "description": "Oops! The taco transformation couldn't be completed. Please check your recipe."
+          },
+          "404": {
+            "description": "Oops! This taco has vanished into thin air."
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a specific taco by ID",
+        "parameters": [
+          {
+            "name": "tacoId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" },
+            "description": "ID of the taco to bid farewell"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Taco successfully vanished from the menu. Farewell, old friend."
+          },
+          "404": {
+            "description": "Oops! We couldn't find this taco to say our goodbyes."
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Taco": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "description": { "type": "string" },
+          "price": { "type": "number", "format": "float" }
+        },
+        "required": ["name", "description", "price"]
+      }
+    }
+  }
+}

@@ -1,0 +1,361 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "version": "2.0.2",
+    "title": "CDR REST API Specification",
+    "description": "<h2><strong>Revision</strong></h1> <ul>\n  <li>[03-Jun-2024][2.0.1] The first REST API specification has been written.</li>\n  <li>[07-Jun-2024][2.0.2] The description of the Common Data Model has been updated.</li>\n</ul>\n"
+  },
+  "tags": [{ "name": "API v2", "description": "(CDR Cloud API v2)" }],
+  "paths": {
+    "/api/v2/disarm": {
+      "post": {
+        "summary": "Request CDR analysis",
+        "tags": ["API v2"],
+        "security": [{ "BearerAuth": [] }],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "File"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "Password for the file. If the file is compressed and password protected, the password is required"
+                  },
+                  "callback": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "Callback URL to receive CDR results"
+                  }
+                },
+                "required": ["file"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK. The request has succeeded",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Transaction" }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized. The request has not been completed because it lacks valid authentication credentials for the requested resource.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorInfo" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error. The server encountered an unexpected condition that prevented it from fulfilling the request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorInfo" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/disarm/{txId}": {
+      "get": {
+        "summary": "Query the analysis result (Transaction information)",
+        "tags": ["API v2"],
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [{ "$ref": "#/components/parameters/TxIdParam" }],
+        "responses": {
+          "200": {
+            "description": "OK. The request has succeeded",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Transaction" }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized. The request has not been completed because it lacks valid authentication credentials for the requested",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorInfo" }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found. No analysis result (Transaction Information)",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorInfo" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error. The server encountered an unexpected condition that prevented it from fulfilling the request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorInfo" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/disarm/{txId}/report": {
+      "get": {
+        "summary": "Query the CDR report which provides detailed information on CDR results",
+        "tags": ["API v2"],
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [{ "$ref": "#/components/parameters/TxIdParam" }],
+        "responses": {
+          "200": {
+            "description": "OK. The request has succeeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "targetId": {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "Target identifier of the sanitized file"
+                      },
+                      "status": {
+                        "$ref": "#/components/schemas/Transaction/properties/cdrStatus"
+                      },
+                      "message": {
+                        "type": "string",
+                        "description": "CDR result message"
+                      },
+                      "entities": {
+                        "type": "object",
+                        "description": "CDR Data by Category ( Map<Category, Entity> )",
+                        "additionalProperties": {
+                          "$ref": "#/components/schemas/Entity"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized. The request has not been completed because it lacks valid authentication credentials for the requested",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorInfo" }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found. No CDR report",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorInfo" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error. The server encountered an unexpected condition that prevented it from fulfilling the request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorInfo" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/disarm/download/{targetId}": {
+      "get": {
+        "summary": "Download the sanitized file",
+        "tags": ["API v2"],
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [{ "$ref": "#/components/parameters/TargetIdIdParam" }],
+        "responses": {
+          "200": {
+            "description": "OK. The request has succeeded",
+            "content": {
+              "application/octet-stream": {
+                "schema": { "type": "string", "format": "binary" }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized. The request has not been completed because it lacks valid authentication credentials for the requested",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorInfo" }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found. No Target Information",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorInfo" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error. The server encountered an unexpected condition that prevented it from fulfilling the request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorInfo" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "parameters": {
+      "TxIdParam": {
+        "name": "txId",
+        "in": "path",
+        "required": true,
+        "description": "Transaction ID",
+        "schema": { "type": "string", "format": "uuid" }
+      },
+      "TargetIdIdParam": {
+        "name": "targetId",
+        "in": "path",
+        "required": true,
+        "description": "Target ID for sanitized file",
+        "schema": { "type": "string", "format": "uuid" }
+      }
+    },
+    "schemas": {
+      "Transaction": {
+        "type": "object",
+        "properties": {
+          "txId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Transaction ID"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["QUEUED", "ANLALYZING", "DONE"],
+            "description": "Transaction status"
+          },
+          "diagnosisResult": {
+            "type": "string",
+            "enum": ["BENIGN", "MALICIOUS", "ERROR"],
+            "description": "Analysis result"
+          },
+          "cdrStatus": {
+            "type": "string",
+            "enum": [
+              "SUCCESS",
+              "NO_DETECTION",
+              "FAILURE",
+              "NO_SUPPORT",
+              "ENCRYPTION"
+            ],
+            "description": "CDR result status"
+          }
+        }
+      },
+      "Entity": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "Path information of CDR data"
+                  }
+                },
+                "name": { "type": "string", "description": "Name Of CDR data" },
+                "data": { "type": "string", "description": "CDR Data" },
+                "itemStatus": {
+                  "type": "string",
+                  "enum": [
+                    "DETECT",
+                    "INSERT",
+                    "MOVE",
+                    "NORMALIZE",
+                    "REMOVE",
+                    "RENAME",
+                    "REPLACE",
+                    "SANITIZE",
+                    "EXTRACT"
+                  ],
+                  "description": "CDR Method enumeration type"
+                },
+                "itemType": {
+                  "type": "string",
+                  "enum": [
+                    "JS",
+                    "VBA",
+                    "PROGRAM_ID",
+                    "DRAWING_ML",
+                    "CFB_STORAGE",
+                    "CFB_STREAM",
+                    "CFB_RECORD",
+                    "XML_NODE",
+                    "ZIP_ENTRY",
+                    "PDF_FILE_SPEC_ENTRY",
+                    "PDF_JAVA_SCRIPT_ENTRY",
+                    "PDF_JS_ENTRY",
+                    "PDF_STREAM_OBJ",
+                    "PDF_URI_ENTRY",
+                    "IMAGE_META_DATA",
+                    "IMAGE_COMMENT",
+                    "IMAGE_UNSPECIFIED_DATA",
+                    "LNK_LINKTARGET_IDLIST",
+                    "LNK_LINK_INFO",
+                    "LNK_STRING_DATA",
+                    "LNK_EXTRA_DATA",
+                    "ETC"
+                  ],
+                  "description": "CDR supported data enumeration type"
+                },
+                "report": { "type": "object", "description": "CDR report" },
+                "count": {
+                  "type": "integer",
+                  "description": "Number of identical item"
+                }
+              }
+            }
+          },
+          "total": {
+            "type": "integer",
+            "description": "Total number of CDR Data in the Entity (Sum of counts for each items described above 'count')"
+          }
+        }
+      },
+      "ErrorInfo": {
+        "type": "object",
+        "properties": {
+          "code": { "type": "string", "description": "Error code" },
+          "message": { "type": "string", "description": "Error message" }
+        }
+      }
+    }
+  }
+}

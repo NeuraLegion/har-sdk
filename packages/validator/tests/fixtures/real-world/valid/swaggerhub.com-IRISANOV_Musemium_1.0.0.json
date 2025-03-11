@@ -1,0 +1,373 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Musemium",
+    "description": "API приложения Musemium для планирования походов в музей",
+    "termsOfService": "http://swagger.io/terms/",
+    "version": "1.0.0"
+  },
+  "servers": [{ "url": "https://musemium.swagger.io/api/" }],
+  "tags": [
+    {
+      "name": "Музеи",
+      "description": "Информация о музеях",
+      "externalDocs": {
+        "description": "Полное описание по ссылке",
+        "url": "https://www.musemium.ru/museums/"
+      }
+    },
+    {
+      "name": "Посещения",
+      "description": "Информация о запланированных посещениях музеев",
+      "externalDocs": {
+        "description": "Полное описание по ссылке",
+        "url": "https://www.musemium.ru/museum_visits/"
+      }
+    },
+    {
+      "name": "Заметки",
+      "description": "Информация о заметках о заметках о посещении",
+      "externalDocs": {
+        "description": "Полное описание по ссылке",
+        "url": "https://www.musemium.ru/museum_notes/"
+      }
+    }
+  ],
+  "paths": {
+    "/museums": {
+      "get": {
+        "tags": ["Музеи"],
+        "summary": "Получить информацию о музее",
+        "description": "С помощь этого метода можно получить информацию о выбранном музее",
+        "parameters": [
+          {
+            "name": "museum_id",
+            "in": "query",
+            "description": "Идентификатор музея",
+            "required": true,
+            "schema": { "type": "integer", "example": 186 }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/museums_info" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/museums_info" }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found museum_id",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/error404" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/error404" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/error500" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/error500" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/museums/{museum_id}": {
+      "put": {
+        "tags": ["Музеи"],
+        "summary": "Изменить информацию о музее",
+        "description": "С помощь этого метода модератор может изменить информацию о выбранном музее",
+        "parameters": [
+          {
+            "name": "museum_id",
+            "in": "path",
+            "description": "Идентификатор музея",
+            "required": true,
+            "schema": { "type": "integer", "example": 186 }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/museum" }
+            },
+            "application/xml": {
+              "schema": { "$ref": "#/components/schemas/museum" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/museum" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/museum" }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found museum_id",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/error404" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/error404" }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/error400" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/error400" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/error500" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/error500" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/visits": {
+      "post": {
+        "tags": ["Посещения"],
+        "summary": "Запланировать посещение",
+        "description": "С помощью этого метода можно добавить запись в таблицу посещений",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/museum_visits" }
+            },
+            "application/xml": {
+              "schema": { "$ref": "#/components/schemas/museum_visits" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "OK" },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/error400" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/error400" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/error500" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/error500" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/notes/{note_id}": {
+      "delete": {
+        "tags": ["Заметки"],
+        "summary": "Удалить заметку",
+        "description": "С помощью этого метода можно удалить заметку",
+        "parameters": [
+          {
+            "name": "note_id",
+            "in": "path",
+            "description": "Идентификатор заметки",
+            "required": true,
+            "schema": { "type": "integer", "example": 58965233 }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/visit_notes_delete" }
+            },
+            "application/xml": {
+              "schema": { "$ref": "#/components/schemas/visit_notes_delete" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "OК" },
+          "400": {
+            "description": "Invalid status value (неверно сформулирован запрос)",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/error400" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/error400" }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found note_id",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/error404" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/error404" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "error400": {
+        "type": "object",
+        "properties": {
+          "text": { "type": "string", "example": "Неверный формат запроса" }
+        },
+        "xml": { "name": "error400" }
+      },
+      "error404": {
+        "type": "object",
+        "properties": {
+          "text": { "type": "string", "example": "Ресурс не найден" }
+        },
+        "xml": { "name": "error404" }
+      },
+      "error500": {
+        "type": "object",
+        "properties": {
+          "text": { "type": "string", "example": "Ошибка сервера" }
+        },
+        "xml": { "name": "error500" }
+      },
+      "museums_info": {
+        "type": "object",
+        "properties": {
+          "museum_name": {
+            "type": "string",
+            "description": "Наименование музея",
+            "example": "Государственный Эрмитаж"
+          },
+          "museum_webcite": {
+            "type": "string",
+            "description": "Веб-сайт музея",
+            "example": "https://www.hermitagemuseum.org/wps/portal/hermitage/?lng=ru"
+          },
+          "museum_adress": {
+            "type": "string",
+            "description": "Адрес расположения музея",
+            "example": "Россия, 190000, Санкт-Петербург, Дворцовая набережная, 34"
+          },
+          "museum_phone": {
+            "type": "integer",
+            "description": "Номер телефона для справок (11-значное число)",
+            "example": 78127109079
+          }
+        },
+        "xml": { "name": "museums_info" }
+      },
+      "museum": {
+        "type": "object",
+        "properties": {
+          "city_id": {
+            "type": "integer",
+            "description": "Идентификатор города",
+            "example": 145
+          },
+          "museum_name": {
+            "type": "string",
+            "description": "Наименование музея",
+            "example": "Государственный Эрмитаж"
+          },
+          "museum_webcite": {
+            "type": "string",
+            "description": "Веб-сайт музея",
+            "example": "https://www.hermitagemuseum.org/wps/portal/hermitage/?lng=ru"
+          },
+          "museum_adress": {
+            "type": "string",
+            "description": "Адрес расположения музея",
+            "example": "Россия, 190000, Санкт-Петербург, Дворцовая набережная, 34"
+          },
+          "museum_phone": {
+            "type": "integer",
+            "description": "Номер телефона для справок (11-значное число)",
+            "example": 78127109079
+          }
+        },
+        "xml": { "name": "museum" }
+      },
+      "museum_visits": {
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "type": "integer",
+            "description": "Идентификатор пользователя",
+            "example": 178569
+          },
+          "museum_id": {
+            "type": "integer",
+            "description": "Идентификатор музея",
+            "example": 589
+          },
+          "visit_date": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Дата и время посещения музея"
+          }
+        },
+        "xml": { "name": "museum_visits" }
+      },
+      "visit_notes_delete": {
+        "type": "object",
+        "properties": {
+          "note_id": {
+            "type": "integer",
+            "description": "Идентификатор заметки",
+            "example": 58965233
+          },
+          "is_delete": {
+            "type": "boolean",
+            "description": "Пометка на удаление",
+            "default": true
+          }
+        },
+        "xml": { "name": "visit_notes_delete" }
+      }
+    }
+  }
+}

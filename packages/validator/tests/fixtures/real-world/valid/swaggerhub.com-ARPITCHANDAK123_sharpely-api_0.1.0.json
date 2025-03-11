@@ -1,0 +1,93 @@
+{
+  "openapi": "3.1.0",
+  "info": { "title": "sharpelyAPI", "version": "0.1.0" },
+  "paths": {
+    "/core/getAccessToken": {
+      "post": {
+        "tags": ["user_auth"],
+        "summary": "Getaccesstoken",
+        "operationId": "getAccessToken_core_getAccessToken_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/AuthUID" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/core/getStocksMetricData": {
+      "post": {
+        "tags": ["Opigo-API"],
+        "summary": "Getstocksmetricdata",
+        "operationId": "getStocksMetricData_core_getStocksMetricData_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/StockData2" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "JWTBearer": [] }]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AuthUID": {
+        "properties": { "id": { "type": "string", "title": "Id" } },
+        "type": "object",
+        "title": "AuthUID"
+      },
+      "StockData2": {
+        "properties": {
+          "stocks": {
+            "items": { "type": "string" },
+            "type": "array",
+            "title": "Stocks",
+            "default": []
+          },
+          "cols": {
+            "items": { "type": "string" },
+            "type": "array",
+            "title": "Cols",
+            "default": []
+          }
+        },
+        "type": "object",
+        "title": "StockData2"
+      }
+    },
+    "securitySchemes": { "JWTBearer": { "type": "http", "scheme": "bearer" } }
+  }
+}

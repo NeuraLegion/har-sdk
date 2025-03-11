@@ -1,0 +1,530 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "의류 보관 서비스 API",
+    "description": "의류 보관 서비스를 위한 API 명세서",
+    "version": "1.0.0"
+  },
+  "servers": [{ "url": "http://localhost:3000" }],
+  "paths": {
+    "/users": {
+      "post": {
+        "summary": "회원가입",
+        "description": "핸드폰 번호, 주소, 비밀번호로 새로운 사용자 등록",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "phoneNumber": {
+                    "type": "string",
+                    "description": "사용자 핸드폰 번호 = unique."
+                  },
+                  "address": {
+                    "type": "string",
+                    "description": "수거 및 배송을 위한 사용자 주소"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "사용자 비밀번호"
+                  }
+                },
+                "required": ["phoneNumber", "address", "password"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "User created successfully" },
+          "400": { "description": "Invalid input" }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "summary": "로그인",
+        "description": "사용자 이메일과 비밀번호를 통해 로그인을 진행하고, 인증 토큰을 발급합니다.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["email", "password"],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "description": "사용자의 이메일 주소"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "사용자의 비밀번호"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "로그인 성공",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "description": "요청 성공 여부"
+                    },
+                    "token": {
+                      "type": "string",
+                      "description": "발급된 인증 토큰"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "처리 결과 메시지"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "description": "요청 실패 여부"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "인증 실패 메시지"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "summary": "로그아웃",
+        "description": "현재 세션의 사용자를 로그아웃 처리합니다.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["token"],
+                "properties": {
+                  "token": {
+                    "type": "string",
+                    "description": "사용자의 인증 토큰"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "로그아웃 성공",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "description": "요청 성공 여부"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "로그아웃 처리 결과 메시지"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/clothes/store": {
+      "post": {
+        "summary": "의류 보관 신청",
+        "description": "사용자가 의류 보관을 신청하는 API",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_id": { "type": "integer" },
+                  "order_id": { "type": "integer" },
+                  "description": { "type": "string" },
+                  "clothes_category_id": { "type": "integer" },
+                  "order_date": { "type": "string", "format": "date" },
+                  "storage_duration_months": { "type": "integer" },
+                  "token": {
+                    "type": "string",
+                    "description": "사용자의 인증 토큰"
+                  }
+                },
+                "required": [
+                  "user_id",
+                  "order_id",
+                  "clothes_category_id",
+                  "order_date",
+                  "storage_duration_months",
+                  "token"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "의류 보관 신청 성공",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "description": "요청 성공 여부"
+                    },
+                    "order_storage_amount": {
+                      "type": "integer",
+                      "description": "할인 적용 전 총 비용"
+                    },
+                    "discount_applied": {
+                      "type": "integer",
+                      "description": "적용된 할인 금액"
+                    },
+                    "order_final_amount": {
+                      "type": "integer",
+                      "description": "할인 후 최종 비용"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "주문 생성 및 계산 결과 메시지"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "description": "Invalid input data" },
+          "401": { "description": "User not authenticated" },
+          "403": {
+            "description": "User is not authorized to perform this action"
+          }
+        }
+      }
+    },
+    "/clothes/return": {
+      "post": {
+        "summary": "의류 반환 신청",
+        "description": "사용자가 보관된 의류의 반환을 신청합니다.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["order_id", "token"],
+                "properties": {
+                  "order_id": {
+                    "type": "integer",
+                    "description": "반환을 요청하는 주문 ID"
+                  },
+                  "token": {
+                    "type": "string",
+                    "description": "사용자의 인증 토큰"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": null,
+        "200": {
+          "description": "반환 요청이 성공적으로 접수되었습니다.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean",
+                    "description": "요청 성공 여부"
+                  },
+                  "message": {
+                    "type": "string",
+                    "description": "처리 결과 메시지"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "400": { "description": "Invalid order ID" },
+        "401": { "description": "Unauthorized or invalid token" },
+        "404": { "description": "Order not found" }
+      }
+    },
+    "/clothes/list/{user_id}": {
+      "get": {
+        "summary": "보관한 의류 리스트 조회",
+        "description": "사용자가 보관한 의류 리스트를 조회하는 API",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "보관한 의류 리스트 조회 성공",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "clothes": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "clothes_id": { "type": "integer" },
+                          "description": { "type": "string" },
+                          "clothes_status": { "type": "string" },
+                          "storage_start_date": {
+                            "type": "string",
+                            "format": "date",
+                            "description": "보관 시작 날짜"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": { "description": "No clothes found" },
+          "401": { "description": "User not authenticated" }
+        }
+      }
+    },
+    "/payments/{userId}/auto": {
+      "get": {
+        "summary": "자동 결제",
+        "description": "사용자의 월별 결제에 대한 자동 결제 상태를 검색",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" },
+            "description": "user ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "결제 상태 검색",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "isAutoPayment": {
+                      "type": "boolean",
+                      "description": "결제가 자동 결제되도록 설정되어 있는지 여부"
+                    },
+                    "lastAttemptedAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "마지막 결제 시도의 타임스탬프"
+                    },
+                    "failedAttempts": {
+                      "type": "integer",
+                      "description": "연속 결제 시도 실패 횟수"
+                    },
+                    "nextPaymentDue": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "다음 결제일"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": { "description": "User not found" }
+        }
+      }
+    },
+    "/payments/retry": {
+      "post": {
+        "summary": "실패한 결제 재시도",
+        "description": "저장된 카드 정보를 사용하여 매일 실패한 결제를 자동으로 재시도",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "userId": {
+                    "type": "integer",
+                    "description": "결제에 실패한 사용자의 ID"
+                  }
+                },
+                "required": ["userId"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "결제 재시도 시작됨" },
+          "404": { "description": "사용자를 찾을 수 없음" }
+        }
+      }
+    },
+    "/notifications/slack": {
+      "post": {
+        "summary": "Slack에 알림 보내기",
+        "description": "결제 실패 시 구성된 Slack 채널로 알림 메시지를 보냄",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "userId": {
+                    "type": "integer",
+                    "description": "결제에 실패한 사용자의 ID"
+                  },
+                  "message": {
+                    "type": "string",
+                    "description": "Slack으로 전송할 메시지 콘텐츠"
+                  }
+                },
+                "required": ["userId", "message"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "알림 전송" },
+          "400": { "description": "잘못된 입력" }
+        }
+      }
+    },
+    "/storage-requests/{requestId}/pickup": {
+      "put": {
+        "summary": "의류 수거 완료 (배송팀용)",
+        "parameters": [
+          {
+            "name": "requestId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "의류 수거 완료",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "requestId": { "type": "string" },
+                    "status": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/storage-requests/{requestId}/store": {
+      "put": {
+        "summary": "의류 적재 완료 (물류팀용)",
+        "parameters": [
+          {
+            "name": "requestId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "의류 적재 완료",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "requestId": { "type": "string" },
+                    "status": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/return-requests/{requestId}/return": {
+      "put": {
+        "summary": "의류 반환 완료 (배송팀용)",
+        "parameters": [
+          {
+            "name": "requestId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "의류 반환 완료",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "requestId": { "type": "string" },
+                    "status": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

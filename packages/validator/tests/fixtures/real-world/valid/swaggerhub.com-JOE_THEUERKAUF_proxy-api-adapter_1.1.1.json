@@ -1,0 +1,1252 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Proxy API Adapter",
+    "description": "Convert standard OpenAPI requests to Internal API s**t show, respond with normalized data and messaging",
+    "version": "1.1.1"
+  },
+  "servers": [
+    {
+      "url": "https://adapter.sandbox.local",
+      "description": "API Adapter Server"
+    }
+  ],
+  "paths": {
+    "/oauth/token": {
+      "post": {
+        "tags": ["Authentication"],
+        "description": "Request authentication token",
+        "operationId": "auth-login",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Request.Authentication.ClientCredentials"
+              },
+              "examples": {
+                "client-credentials": {
+                  "summary": "Initial Authentication",
+                  "value": { "grant_type": "client_credentials" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "$ref": "#/components/responses/Authentication.200" },
+          "401": { "$ref": "#/components/responses/Authentication.401" },
+          "406": { "$ref": "#/components/responses/Authentication.406" },
+          "422": { "$ref": "#/components/responses/Authentication.422" }
+        },
+        "security": [{ "Basic-Auth": [] }]
+      }
+    },
+    "/v1/records/files/create": {
+      "post": {
+        "tags": ["Records/Files"],
+        "description": "Upload new file",
+        "operationId": "upload-new-file",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": ["document_id", "file", "profile_id", "sha1_check"],
+                "properties": {
+                  "document_id": {
+                    "$ref": "#/components/schemas/Param.document_id"
+                  },
+                  "file": { "$ref": "#/components/schemas/Param.file" },
+                  "profile_id": {
+                    "$ref": "#/components/schemas/Param.profile_id"
+                  },
+                  "sha1_check": {
+                    "$ref": "#/components/schemas/Param.sha1_check"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status": { "type": "boolean", "examples": [true] },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "properties": {
+                          "file_name": {
+                            "type": "string",
+                            "examples": ["abc.pdf"]
+                          },
+                          "nuid": { "$ref": "#/components/schemas/String.UUID" }
+                        },
+                        "type": "object"
+                      }
+                    }
+                  },
+                  "type": "object"
+                },
+                "example": {
+                  "success": true,
+                  "data": [
+                    {
+                      "file_name": "abc.pdf",
+                      "nuid": "b20f8ce0-8a67-4489-acc4-10e5cd9b6b33",
+                      "page_count": 1
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response.Information"
+                },
+                "example": {
+                  "success": false,
+                  "message": "You are not authorized to perform this request."
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Unauthorized access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response.Information"
+                },
+                "examples": {
+                  "profile-access-denied": {
+                    "summary": "Profile Access Denied",
+                    "value": {
+                      "success": false,
+                      "message": "Access denied to the requested Profile"
+                    }
+                  },
+                  "image-access-denied": {
+                    "summary": "Image Access Denied",
+                    "value": {
+                      "success": false,
+                      "message": "Access denied to the requested Image"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    { "$ref": "#/components/schemas/Response.Errors" },
+                    { "$ref": "#/components/schemas/Response.Information" }
+                  ]
+                },
+                "examples": {
+                  "profile-not-found": {
+                    "summary": "Profile not found",
+                    "value": {
+                      "success": false,
+                      "message": "There was a problem processing the request in {the Internal API}",
+                      "errors": ["Requested Profile not found"]
+                    }
+                  },
+                  "image-not-found": {
+                    "summary": "Image Not Found",
+                    "value": {
+                      "success": false,
+                      "message": "Requested Image not found"
+                    }
+                  },
+                  "tab-not-found": {
+                    "summary": "Tab Not Found",
+                    "value": {
+                      "success": false,
+                      "message": "Requested Tab not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Not Acceptable (Validation errors)",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response.Errors" },
+                "examples": {
+                  "details-from-esd": {
+                    "summary": "Errors from Internal API",
+                    "value": [
+                      "\"profile_id\" is required",
+                      "\"document_id\" is missing or invalid",
+                      "There was a problem processing the request in {the Internal API}"
+                    ]
+                  },
+                  "details-from-adapter": {
+                    "summary": "Errors from Adapter Proxy",
+                    "value": [
+                      "\"sha1_check\" does not match uploaded file",
+                      "Could not find data for request parameter \"file\""
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response.Errors" },
+                "example": {
+                  "success": false,
+                  "message": "There was a problem processing the request in {the Internal API}",
+                  "errors": ["Duplicate Bookmark detected"]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/records/files/replace": {
+      "put": {
+        "tags": ["Records/Files"],
+        "description": "Upload new version of a file",
+        "operationId": "upload-file-revision",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": ["file", "old_nuid", "profile_id", "sha1_check"],
+                "properties": {
+                  "file": { "$ref": "#/components/schemas/Param.file" },
+                  "old_nuid": { "$ref": "#/components/schemas/Param.uuid" },
+                  "profile_id": {
+                    "$ref": "#/components/schemas/Param.profile_id"
+                  },
+                  "sha1_check": {
+                    "$ref": "#/components/schemas/Param.sha1_check"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response.Success.Array.Objects"
+                },
+                "example": {
+                  "success": true,
+                  "data": [
+                    {
+                      "nuid": "b20f8ce0-8a67-4489-acc4-10e5cd9b6b33",
+                      "file_name": "abc.pdf",
+                      "page_count": 1
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response.Information"
+                },
+                "example": {
+                  "success": false,
+                  "message": "You are not authorized to perform this request."
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Unauthorized access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response.Information"
+                },
+                "examples": {
+                  "profile-access-denied": {
+                    "summary": "Profile Access Denied",
+                    "value": {
+                      "success": false,
+                      "message": "Access denied to the requested Profile"
+                    }
+                  },
+                  "image-access-denied": {
+                    "summary": "Image Access Denied",
+                    "value": {
+                      "success": false,
+                      "message": "Access denied to the requested Image"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Not Acceptable (Validation errors)",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response.Errors" },
+                "examples": {
+                  "details-from-esd": {
+                    "summary": "Errors from Internal API",
+                    "value": [
+                      "\"profile_id\" is required",
+                      "\"profile_id\" must be a positive (non-zero) integer",
+                      "\"document_id\" is missing or invalid",
+                      "\"old_nuid\" is required",
+                      "\"old_nuid\" is not a valid UUID",
+                      "There was a problem processing the request in {the Internal API}"
+                    ]
+                  },
+                  "details-from-adapter": {
+                    "summary": "Errors from Proxy API",
+                    "value": [
+                      "\"sha1_check\" does not match uploaded file",
+                      "Could not find data for request parameter \"file\""
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response.Errors" },
+                "example": {
+                  "success": false,
+                  "message": "There was a problem processing the request in {the Internal API}",
+                  "errors": ["Duplicate data detected"]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/records/files/view": {
+      "get": {
+        "tags": ["Records/Files"],
+        "description": "Fetch file objects based on provided IDs",
+        "operationId": "view-record-files",
+        "parameters": [
+          { "$ref": "#/components/parameters/Param.profile_id.required" },
+          {
+            "name": "document_ids[]",
+            "in": "query",
+            "description": "Send multiple IDs by duplicating the parameter name for each ID: <br/>`document_ids[]=ID_1&document_ids[]=ID_2&...`",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": { "type": "string" },
+              "examples": [
+                "UUZjU0pITGZDOUpnZG03ZDhPV0ZEZz09X19DHtvRJJ3mr-UmBOKernGr",
+                "ZG03ZDhPV0ZEUpnZz09X19DZjU0pHtvRJJ3mrUUITGZDO-GrKernUmBO"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response.Success.Array.Objects"
+                },
+                "examples": {
+                  "success-response": {
+                    "summary": "Successful response",
+                    "value": [
+                      {
+                        "success": true,
+                        "data": [
+                          {
+                            "id": 1,
+                            "files": [
+                              {
+                                "download_link": "\"https://docuview-lbs.sima.io/docuvieware?nuid=c5e990d2-...&profile_id=1367&doc_id=RFA0MDhwe...\"",
+                                "filename": "abc.pdf",
+                                "nuid": "b20f8ce0-8a67-4489-acc4-10e5cd9b6b33",
+                                "uploaded_on": "2023-02-18",
+                                "uploaded_by": "Admin",
+                                "version": 1,
+                                "view_link": "\"https://docuview-lbs.sima.io/docuvieware?nuid=c5e990d2-...&profile_id=1367&doc_id=RFA0MDhwe...\""
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "x-Note": "Values in \"data\" are not necessarily delivered as intuitive type"
+          },
+          "403": {
+            "description": "Unauthorized access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response.Information"
+                },
+                "examples": {
+                  "profile-access-denied": {
+                    "summary": "Profile Access Denied",
+                    "value": {
+                      "success": false,
+                      "message": "Access denied to the requested Profile"
+                    }
+                  },
+                  "image-access-denied": {
+                    "summary": "Image Access Denied",
+                    "value": {
+                      "success": false,
+                      "message": "Access denied to the requested Image"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Not Acceptable (Validation errors)",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response.Errors" },
+                "example": {
+                  "success": false,
+                  "message": "Invalid parameters received",
+                  "errors": [
+                    "\"profile_id\" is required",
+                    "\"profile_id\" must be a positive (non-zero) integer",
+                    "Required parameter \"image_id\" is missing or invalid",
+                    "\"page\" must be a positive (non-zero) integer",
+                    "\"page_size\" must be a positive (non-zero) integer",
+                    "\"order\" must be \"asc\" or \"desc\"",
+                    "\"order_by\" must \"create_on\" or \"path\""
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/profiles/describe": {
+      "get": {
+        "tags": ["Profiles"],
+        "description": "Describe Record fields in a Profile",
+        "operationId": "describe-profile-fields",
+        "parameters": [
+          { "$ref": "#/components/parameters/Param.profile_id.required" }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "success": { "type": "boolean", "examples": [true] },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "examples": ["file_number"]
+                          },
+                          "label": { "type": "string", "examples": ["File #"] },
+                          "input_data_type": {
+                            "type": "string",
+                            "examples": ["NUMERIC"]
+                          },
+                          "required": { "type": "boolean", "examples": [true] }
+                        },
+                        "type": "object"
+                      },
+                      "examples": [
+                        {
+                          "name": "file_number",
+                          "label": "File #",
+                          "input_data_type": "NUMERIC",
+                          "required": true
+                        },
+                        {
+                          "name": "license_type",
+                          "label": "License Type",
+                          "input_data_type": "ALPHA",
+                          "required": false
+                        }
+                      ]
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "x-Note": "Values in \"data\" are not necessarily delivered as intuitive type"
+          },
+          "406": {
+            "description": "Not Acceptable (Validation errors)",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response.Errors" },
+                "example": {
+                  "success": false,
+                  "message": "Invalid parameters received",
+                  "errors": [
+                    "Access denied to the requested Profile",
+                    "Missing or invalid parameter: \"profile_id\""
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/records/create": {
+      "post": {
+        "tags": ["Records"],
+        "description": "Create file containers with metadata",
+        "operationId": "create-record",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": ["profile_id", "fields"],
+                "properties": {
+                  "profile_id": {},
+                  "fields": {
+                    "type": "object",
+                    "examples": [{ "field_name": "value to set" }]
+                  }
+                },
+                "type": "object",
+                "examples": [
+                  {
+                    "profile_id": 1,
+                    "fields": [
+                      {
+                        "license_number": "929909",
+                        "file_number": "54324325",
+                        "city": "Houston"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response.Success.Object"
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "document_id": "cUtlSmVHVXp1QmZQQjd5eTh4R3pBQT09X1-1ZthKwMt-VjnUwGQCYtBi"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Unauthorized access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response.Information"
+                },
+                "example": {
+                  "success": false,
+                  "message": "Access denied to the requested Profile"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response.Errors" },
+                "example": {
+                  "success": false,
+                  "message": "There was a problem processing the request in {the Internal API}",
+                  "errors": ["Requested Profile not found"]
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Not Acceptable (Validation errors)",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response.Errors" },
+                "examples": {
+                  "create-esd-validation": {
+                    "summary": "Validation errors from Internal API",
+                    "value": {
+                      "success": false,
+                      "message": "Invalid parameters received",
+                      "errors": [
+                        "Profile has no usable fields",
+                        "\"fields\" content is required to create a new Record"
+                      ]
+                    }
+                  },
+                  "create-empty-profile_id": {
+                    "summary": "\"profile_id\" is missing or has no value",
+                    "value": {
+                      "success": false,
+                      "message": "\"profile_id\" is required"
+                    }
+                  },
+                  "create-profile_id-positive-integer": {
+                    "summary": "\"profile_id\" is incorrect data type",
+                    "value": {
+                      "success": false,
+                      "message": "\"profile_id\" must be a positive (non-zero) integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Response.Errors" },
+                "example": {
+                  "success": false,
+                  "message": "There was a problem processing the request in {the Internal API}",
+                  "errors": [
+                    "Duplicate data detected",
+                    "Access denied to the requested Profile"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/records/search": {
+      "post": {
+        "tags": ["Records"],
+        "description": "Search files and metadata in a container",
+        "operationId": "search-records",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": ["profile_id", "search_fields"],
+                "properties": {
+                  "profile_id": {},
+                  "search_fields": {
+                    "type": "array",
+                    "items": {
+                      "properties": {
+                        "field_name": {
+                          "type": "string",
+                          "examples": ["city"]
+                        },
+                        "field_value": {
+                          "type": "string",
+                          "examples": ["Houston"]
+                        }
+                      },
+                      "type": "object"
+                    }
+                  }
+                },
+                "type": "object",
+                "examples": [
+                  {
+                    "profile_id": 1,
+                    "search_fields": [
+                      { "field_name": "city", "field_value": "Houston" },
+                      { "field_name": "file_number", "field_value": "54324325" }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response.Success.Array.Objects"
+                },
+                "example": {
+                  "success": true,
+                  "data": [
+                    {
+                      "document_id": "Y293YVY1bm8yU3dWT0lSLytOUHU4UT09X1-kmYhvY7B3SRqG-_ZHL8Y9",
+                      "address": "30 Rockefeller Ave",
+                      "city": "New York City",
+                      "state": "NY",
+                      "district": "14"
+                    },
+                    {
+                      "document_id": "1X90TU4UHUOtyLSl0TWd3Uy8mb1YVY392Y-GqRS3B7YvhYmk-_9Y8LHZ",
+                      "address": "1600 Pennsylvania Ave",
+                      "city": "Washington, D.C.",
+                      "state": "",
+                      "district": "11"
+                    }
+                  ]
+                }
+              }
+            },
+            "x-Note": "Values in \"data\" are not necessarily delivered as intuitive type"
+          },
+          "403": {
+            "description": "Unauthorized access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response.Information"
+                },
+                "example": {
+                  "success": false,
+                  "message": "Access denied to the requested Profile"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response.Information"
+                },
+                "examples": {
+                  "Profile not found": {
+                    "summary": "Profile not found",
+                    "value": {
+                      "status": false,
+                      "message": "Requested Profile not found"
+                    }
+                  },
+                  "Image not found": {
+                    "summary": "Image not found",
+                    "value": {
+                      "status": false,
+                      "message": "Requested Image not found"
+                    }
+                  },
+                  "Tab not found": {
+                    "summary": "Tab not found",
+                    "value": {
+                      "status": false,
+                      "message": "Requested Tab not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Not Acceptable (Validation errors)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response.Information"
+                },
+                "examples": {
+                  "search-esd-validation": {
+                    "summary": "Validation errors from Internal API",
+                    "value": {
+                      "success": false,
+                      "message": "Invalid parameters received",
+                      "errors": [
+                        "Every \"search_fields\" entry must have a \"field_name\" and \"field_value\"",
+                        "Some search fields are not valid for the selected Profile",
+                        "Requested Profile not found"
+                      ]
+                    }
+                  },
+                  "search-empty-profile_id": {
+                    "summary": "\"profile_id\" is missing or has no value",
+                    "value": {
+                      "success": false,
+                      "message": "\"profile_id\" is required"
+                    }
+                  },
+                  "search-profile_id-positive-integer": {
+                    "summary": "\"profile_id\" is incorrect data type",
+                    "value": {
+                      "success": false,
+                      "message": "\"profile_id\" must be a positive (non-zero) integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Not Acceptable (Validation errors)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Response.Information"
+                },
+                "examples": {
+                  "No searchable fields": {
+                    "summary": "Profile has no searchable fields",
+                    "value": {
+                      "status": false,
+                      "message": "Profile has no searchable fields"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AbstractController": {
+        "title": "abstract",
+        "x-Comment": "Empty Schema lets extending Controllers define their own Schemas"
+      },
+      "Integer.Positive": {
+        "title": "Positive Integer",
+        "type": "integer",
+        "format": "int64",
+        "minimum": 1,
+        "examples": [1]
+      },
+      "Type.Mixed": { "title": "Mixed Data" },
+      "String.UUID": {
+        "title": "UUID",
+        "type": "string",
+        "format": "uuid",
+        "examples": ["b20f8ce0-8a67-4489-acc4-10e5cd9b6b33"]
+      },
+      "Param.document_id": {
+        "title": "Parameter: document_id",
+        "type": "string",
+        "examples": ["dk5kQ21PQXdMbTJMaEN0d2NNVm9xQT09X18gJMePd_8lOgtf1MbPxzmK"]
+      },
+      "Param.profile_id": {
+        "title": "Parameter: profile_id",
+        "allOf": [{ "$ref": "#/components/schemas/Integer.Positive" }]
+      },
+      "Param.uuid": {
+        "title": "Parameter: uuid",
+        "allOf": [{ "$ref": "#/components/schemas/String.UUID" }]
+      },
+      "Request.Authentication.ClientCredentials": {
+        "title": "Initial Authentication",
+        "description": "Initial authentication",
+        "required": ["grant_type"],
+        "properties": { "grant_type": { "enum": ["client_credentials"] } },
+        "type": "object"
+      },
+      "Response.Success": {
+        "title": "Response: Generic Success",
+        "oneOf": [
+          { "$ref": "#/components/schemas/Response.Success.Array" },
+          { "$ref": "#/components/schemas/Response.Success.Array.Objects" },
+          { "$ref": "#/components/schemas/Response.Success.Boolean" },
+          { "$ref": "#/components/schemas/Response.Success.Double" },
+          { "$ref": "#/components/schemas/Response.Success.Integer" },
+          { "$ref": "#/components/schemas/Response.Success.Number" },
+          { "$ref": "#/components/schemas/Response.Success.Object" },
+          { "$ref": "#/components/schemas/Response.Success.String" }
+        ]
+      },
+      "Response.Success.Array": {
+        "title": "Response: Success, \"data\" as Array",
+        "properties": {
+          "success": { "type": "boolean" },
+          "data": {
+            "title": "Array",
+            "type": "array",
+            "items": {
+              "allOf": [
+                { "$ref": "#/components/schemas/Type.Mixed" },
+                { "title": "Mixed" }
+              ]
+            }
+          }
+        },
+        "type": "object"
+      },
+      "Response.Success.Array.Objects": {
+        "title": "Response: Success, \"data\" as Array of Objects",
+        "properties": {
+          "success": { "type": "boolean" },
+          "data": {
+            "title": "Array",
+            "type": "array",
+            "items": { "title": "Objects", "type": "object" }
+          }
+        },
+        "type": "object"
+      },
+      "Response.Success.Boolean": {
+        "title": "Response: Success, \"data\" as Boolean",
+        "properties": {
+          "success": { "type": "boolean" },
+          "data": { "type": "boolean" }
+        },
+        "type": "object"
+      },
+      "Response.Success.Double": {
+        "title": "Response: Success, \"data\" as Double",
+        "properties": {
+          "success": { "type": "boolean" },
+          "data": { "type": "number", "format": "double" }
+        },
+        "type": "object"
+      },
+      "Response.Success.Integer": {
+        "title": "Response: Success, \"data\" as Integer",
+        "properties": {
+          "success": { "type": "boolean" },
+          "data": { "type": "integer", "format": "int64", "minimum": 1 }
+        },
+        "type": "object"
+      },
+      "Response.Success.Number": {
+        "title": "Response: Success, \"data\" as general Number",
+        "properties": {
+          "success": { "type": "boolean" },
+          "data": { "type": "number", "minimum": 1 }
+        },
+        "type": "object"
+      },
+      "Response.Success.Object": {
+        "title": "Response: Success, \"data\" as Object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "data": { "title": "Object", "type": "object" }
+        },
+        "type": "object"
+      },
+      "Response.Success.String": {
+        "title": "Response: Success, \"data\" as String",
+        "properties": {
+          "success": { "type": "boolean" },
+          "data": { "type": "string" }
+        },
+        "type": "object"
+      },
+      "Response.Errors": {
+        "title": "Response: Fail, with \"errors\" Array",
+        "properties": {
+          "success": { "type": "boolean" },
+          "message": { "type": "string" },
+          "errors": {
+            "type": "array",
+            "items": { "title": "Strings", "type": "string" }
+          }
+        },
+        "type": "object"
+      },
+      "Response.Information": {
+        "title": "Response: Fail, summary \"message\" only",
+        "properties": {
+          "success": { "type": "boolean" },
+          "message": { "type": "string" }
+        },
+        "type": "object"
+      },
+      "Response.Auth.Fail.Mixed": {
+        "title": "Response: Fail, summary \"message\" and/or \"errors\" Array",
+        "oneOf": [
+          { "$ref": "#/components/schemas/Response.Errors" },
+          { "$ref": "#/components/schemas/Response.Information" }
+        ]
+      },
+      "Param.file": {
+        "title": "Parameter: file",
+        "type": "string",
+        "format": "binary",
+        "examples": ["client/path/to/abc.pdf"],
+        "allOf": [{ "$ref": "#/components/schemas/AbstractController" }]
+      },
+      "Param.sha1_check": {
+        "title": "Parameter: sha1_check",
+        "description": "SHA-1 hash of the submitted file",
+        "type": "string",
+        "examples": ["6fa965914d813ad9872cde5a45a1a393aa961e92"],
+        "allOf": [{ "$ref": "#/components/schemas/AbstractController" }]
+      }
+    },
+    "responses": {
+      "Success": {
+        "description": "Request completed successfully",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/Response.Success" }
+          }
+        }
+      },
+      "Information": {
+        "description": "General response with a single message",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/Response.Information" }
+          }
+        }
+      },
+      "Errors": {
+        "description": "Failure response with specific error messages",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/Response.Errors" }
+          }
+        }
+      },
+      "Fail.Mixed": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Response.Auth.Fail.Mixed"
+            }
+          }
+        }
+      },
+      "Authentication.Fail.Mixed": {
+        "description": "Authentication failed",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Response.Auth.Fail.Mixed"
+            }
+          }
+        }
+      },
+      "Authentication.Fail.Token": {
+        "description": "Authentication failed",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/Response.Errors" },
+            "example": {
+              "success": false,
+              "message": "Authentication failed",
+              "errors": ["Access token is invalid"]
+            }
+          }
+        }
+      },
+      "Authorization.Fail.Mixed": {
+        "description": "Authorization failed",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Response.Auth.Fail.Mixed"
+            }
+          }
+        }
+      },
+      "NotFound.Fail.Mixed": {
+        "description": "Not Found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Response.Auth.Fail.Mixed"
+            }
+          }
+        }
+      },
+      "Invalid.Errors": {
+        "description": "Not Acceptable (Validation errors)",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/Response.Errors" }
+          }
+        }
+      },
+      "Authentication.200": {
+        "description": "OK",
+        "content": {
+          "application/json": {
+            "schema": {
+              "properties": {
+                "access_token": {
+                  "description": "JSON Web Token",
+                  "type": "string",
+                  "examples": ["ePtZAZT2CCf0oQujbj1.mcvxVWAJqW.hKcoLEaqevw"]
+                },
+                "expires_in": { "type": "integer", "examples": [300] },
+                "refresh_expires_in": { "type": "integer", "examples": [0] },
+                "scope": {
+                  "type": "string",
+                  "examples": ["profile email nde"]
+                },
+                "token_type": { "type": "string", "examples": ["bearer"] },
+                "not-before-policy": { "type": "integer", "examples": [0] }
+              },
+              "type": "object"
+            }
+          }
+        }
+      },
+      "Authentication.401": {
+        "description": "Authentication failed",
+        "content": {
+          "application/json": {
+            "schema": {
+              "oneOf": [
+                { "$ref": "#/components/schemas/Response.Errors" },
+                { "$ref": "#/components/schemas/Response.Information" }
+              ]
+            },
+            "examples": {
+              "Example.Authentication.401.Errors": {
+                "summary": "Error details",
+                "value": {
+                  "success": false,
+                  "message": "Authentication failed",
+                  "errors": ["Invalid client or Invalid client credentials"]
+                }
+              },
+              "Example.Authentication.401.Information": {
+                "summary": "Summary error",
+                "value": { "success": false, "message": "Authorization failed" }
+              },
+              "Example.Authentication.401.Adapter": {
+                "summary": "Summary error",
+                "value": {
+                  "success": false,
+                  "message": "Access token could not be found"
+                }
+              }
+            }
+          }
+        }
+      },
+      "Authentication.406": {
+        "description": "Not Acceptable (Validation errors)",
+        "content": {
+          "application/json": {
+            "schema": {
+              "allOf": [
+                { "$ref": "#/components/schemas/Response.Errors" },
+                {
+                  "type": "object",
+                  "examples": [
+                    {
+                      "success": false,
+                      "message": "Invalid parameters received",
+                      "errors": ["Client credentials validation failed"]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      },
+      "Authentication.422": {
+        "description": "Misconfigured Account",
+        "content": {
+          "application/json": {
+            "schema": {
+              "allOf": [
+                { "$ref": "#/components/schemas/Response.Information" },
+                {
+                  "type": "object",
+                  "examples": [
+                    {
+                      "success": false,
+                      "message": "There was a problem with your account configuration"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "parameters": {
+      "Param.profile_id.required": {
+        "name": "profile_id",
+        "in": "query",
+        "required": true,
+        "schema": { "$ref": "#/components/schemas/Param.profile_id" }
+      }
+    },
+    "securitySchemes": {
+      "Basic-Auth": {
+        "type": "http",
+        "description": "Client Authentication, Basic token",
+        "scheme": "basic"
+      },
+      "internal-JWT": {
+        "type": "http",
+        "description": "Authentication with JSON Web Token",
+        "bearerFormat": "JWT",
+        "scheme": "bearer"
+      }
+    }
+  },
+  "security": [{ "internal-JWT": [] }],
+  "tags": [
+    { "name": "Authentication" },
+    { "name": "Profiles", "description": "Project field definitions" },
+    { "name": "Records", "description": "File containers with metadata" },
+    {
+      "name": "Records/Files",
+      "description": "Digital files such as documents, attachments, etc."
+    }
+  ]
+}

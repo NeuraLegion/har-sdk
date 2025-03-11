@@ -1,0 +1,803 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Simple E-Commerce - OpenAPI 3.1",
+    "description": "This is a simple E-commerce Application based on the OpenAPI 3.1 specification.\n<br>Some useful links:\n- [The Simple E-Commerce repository](https://github.com/enok/simple-ecommerce)\n- [The source API definition for the Simple E-Commerce](https://github.com/enok/simple-ecommerce/tree/main/documentation/api/simple_ecommerce.yaml)",
+    "contact": { "email": "enok.jesus@gmail.com" },
+    "version": "1.0.0"
+  },
+  "servers": [{ "url": "http://localhost:8080/api" }],
+  "tags": [
+    { "name": "products", "description": "Products operations" },
+    { "name": "orders", "description": "Orders operations" },
+    { "name": "order-items", "description": "Order Items operations" }
+  ],
+  "paths": {
+    "/products": {
+      "get": {
+        "tags": ["products"],
+        "summary": "Get a list of all products",
+        "description": "Get a list of all products",
+        "operationId": "getProducts",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "$ref": "#/components/responses/ProductsResponseBody"
+          },
+          "405": { "$ref": "#/components/responses/405" },
+          "406": { "$ref": "#/components/responses/406" },
+          "500": { "$ref": "#/components/responses/500" },
+          "503": { "$ref": "#/components/responses/503" }
+        }
+      },
+      "post": {
+        "tags": ["products"],
+        "summary": "Create a new product",
+        "description": "Create a new product",
+        "operationId": "addProduct",
+        "requestBody": {
+          "description": "Create a new product",
+          "$ref": "#/components/requestBodies/ProductRequestBody",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "$ref": "#/components/responses/ProductResponseBody"
+          },
+          "400": { "$ref": "#/components/responses/400" },
+          "405": { "$ref": "#/components/responses/405" },
+          "406": { "$ref": "#/components/responses/406" },
+          "415": { "$ref": "#/components/responses/415" },
+          "500": { "$ref": "#/components/responses/500" },
+          "503": { "$ref": "#/components/responses/503" }
+        }
+      }
+    },
+    "/products/{id}": {
+      "get": {
+        "tags": ["products"],
+        "summary": "Get a product by ID",
+        "description": "Get a product by ID",
+        "operationId": "getProductById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of product",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "$ref": "#/components/responses/ProductResponseBody"
+          },
+          "404": { "$ref": "#/components/responses/404" },
+          "405": { "$ref": "#/components/responses/405" },
+          "406": { "$ref": "#/components/responses/406" },
+          "500": { "$ref": "#/components/responses/500" },
+          "503": { "$ref": "#/components/responses/503" }
+        }
+      },
+      "put": {
+        "tags": ["products"],
+        "summary": "Update an existing product",
+        "description": "Update an existing product",
+        "operationId": "updateProduct",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of product",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "requestBody": {
+          "description": "Update an existing product",
+          "$ref": "#/components/requestBodies/ProductRequestBody",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "$ref": "#/components/responses/ProductResponseBody"
+          },
+          "400": { "$ref": "#/components/responses/400" },
+          "404": { "$ref": "#/components/responses/404" },
+          "405": { "$ref": "#/components/responses/405" },
+          "406": { "$ref": "#/components/responses/406" },
+          "415": { "$ref": "#/components/responses/415" },
+          "500": { "$ref": "#/components/responses/500" },
+          "503": { "$ref": "#/components/responses/503" }
+        }
+      },
+      "delete": {
+        "tags": ["products"],
+        "summary": "Delete a product by ID",
+        "description": "Delete a product by ID",
+        "operationId": "deleteProduct",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of product",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "204": { "description": "Successful operation" },
+          "400": { "$ref": "#/components/responses/400" },
+          "404": { "$ref": "#/components/responses/404" },
+          "405": { "$ref": "#/components/responses/405" },
+          "500": { "$ref": "#/components/responses/500" },
+          "503": { "$ref": "#/components/responses/503" }
+        }
+      }
+    },
+    "/orders": {
+      "get": {
+        "tags": ["orders"],
+        "summary": "Get a list of all orders",
+        "description": "Get a list of all orders",
+        "operationId": "getOrders",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "$ref": "#/components/responses/OrdersResponseBody"
+          },
+          "405": { "$ref": "#/components/responses/405" },
+          "406": { "$ref": "#/components/responses/406" },
+          "500": { "$ref": "#/components/responses/500" },
+          "503": { "$ref": "#/components/responses/503" }
+        }
+      },
+      "post": {
+        "tags": ["orders"],
+        "summary": "Create a new order",
+        "description": "Create a new order",
+        "operationId": "addOrder",
+        "requestBody": {
+          "description": "Create a new order",
+          "$ref": "#/components/requestBodies/OrderRequestBody",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "$ref": "#/components/responses/OrderResponseBody"
+          },
+          "400": { "$ref": "#/components/responses/400" },
+          "405": { "$ref": "#/components/responses/405" },
+          "406": { "$ref": "#/components/responses/406" },
+          "415": { "$ref": "#/components/responses/415" },
+          "500": { "$ref": "#/components/responses/500" },
+          "503": { "$ref": "#/components/responses/503" }
+        }
+      }
+    },
+    "/orders/{id}": {
+      "get": {
+        "tags": ["orders"],
+        "summary": "Get an order by ID",
+        "description": "Get an order by ID",
+        "operationId": "getOrderById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of order",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "$ref": "#/components/responses/OrderResponseBody"
+          },
+          "404": { "$ref": "#/components/responses/404" },
+          "405": { "$ref": "#/components/responses/405" },
+          "406": { "$ref": "#/components/responses/406" },
+          "500": { "$ref": "#/components/responses/500" },
+          "503": { "$ref": "#/components/responses/503" }
+        }
+      },
+      "put": {
+        "tags": ["orders"],
+        "summary": "Update an existing order",
+        "description": "Update an existing order",
+        "operationId": "updateOrder",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of order",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "requestBody": {
+          "description": "Update an existing order",
+          "$ref": "#/components/requestBodies/OrderUpdateRequestBody",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "$ref": "#/components/responses/OrderResponseBody"
+          },
+          "400": { "$ref": "#/components/responses/400" },
+          "404": { "$ref": "#/components/responses/404" },
+          "405": { "$ref": "#/components/responses/405" },
+          "406": { "$ref": "#/components/responses/406" },
+          "415": { "$ref": "#/components/responses/415" },
+          "500": { "$ref": "#/components/responses/500" },
+          "503": { "$ref": "#/components/responses/503" }
+        }
+      },
+      "delete": {
+        "tags": ["orders"],
+        "summary": "Delete an order by ID",
+        "description": "Delete an order by ID",
+        "operationId": "deleteOrder",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of order",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "204": { "description": "Successful operation" },
+          "400": { "$ref": "#/components/responses/400" },
+          "404": { "$ref": "#/components/responses/404" },
+          "405": { "$ref": "#/components/responses/405" },
+          "500": { "$ref": "#/components/responses/500" },
+          "503": { "$ref": "#/components/responses/503" }
+        }
+      }
+    },
+    "/order-items": {
+      "get": {
+        "tags": ["order-items"],
+        "summary": "Get a list of all order items",
+        "description": "Get a list of all order items",
+        "operationId": "getOrderItems",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "$ref": "#/components/responses/OrderItemsResponseBody"
+          },
+          "405": { "$ref": "#/components/responses/405" },
+          "406": { "$ref": "#/components/responses/406" },
+          "500": { "$ref": "#/components/responses/500" },
+          "503": { "$ref": "#/components/responses/503" }
+        }
+      },
+      "post": {
+        "tags": ["order-items"],
+        "summary": "Create a new order item",
+        "description": "Create a new order item",
+        "operationId": "addOrderItem",
+        "requestBody": {
+          "description": "Create a new order item",
+          "$ref": "#/components/requestBodies/OrderItemRequestBody",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "$ref": "#/components/responses/OrderItemResponseBody"
+          },
+          "400": { "$ref": "#/components/responses/400" },
+          "405": { "$ref": "#/components/responses/405" },
+          "406": { "$ref": "#/components/responses/406" },
+          "415": { "$ref": "#/components/responses/415" },
+          "500": { "$ref": "#/components/responses/500" },
+          "503": { "$ref": "#/components/responses/503" }
+        }
+      }
+    },
+    "/order-items/{id}": {
+      "get": {
+        "tags": ["order-items"],
+        "summary": "Get an order item by ID",
+        "description": "Get an order item by ID",
+        "operationId": "getOrderItemById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of order item",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "$ref": "#/components/responses/OrderItemResponseBody"
+          },
+          "404": { "$ref": "#/components/responses/404" },
+          "405": { "$ref": "#/components/responses/405" },
+          "406": { "$ref": "#/components/responses/406" },
+          "500": { "$ref": "#/components/responses/500" },
+          "503": { "$ref": "#/components/responses/503" }
+        }
+      },
+      "put": {
+        "tags": ["order-items"],
+        "summary": "Update an existing order",
+        "description": "Update an existing order",
+        "operationId": "updateOrderItem",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of order item",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "requestBody": {
+          "description": "Update an existing order",
+          "$ref": "#/components/requestBodies/OrderItemRequestBody",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "$ref": "#/components/responses/OrderItemResponseBody"
+          },
+          "400": { "$ref": "#/components/responses/400" },
+          "404": { "$ref": "#/components/responses/404" },
+          "405": { "$ref": "#/components/responses/405" },
+          "406": { "$ref": "#/components/responses/406" },
+          "415": { "$ref": "#/components/responses/415" },
+          "500": { "$ref": "#/components/responses/500" },
+          "503": { "$ref": "#/components/responses/503" }
+        }
+      },
+      "delete": {
+        "tags": ["order-items"],
+        "summary": "Delete an order item by ID",
+        "description": "Delete an order item by ID",
+        "operationId": "deleteOrderItem",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of order item",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "204": { "description": "Successful operation" },
+          "400": { "$ref": "#/components/responses/400" },
+          "404": { "$ref": "#/components/responses/404" },
+          "405": { "$ref": "#/components/responses/405" },
+          "500": { "$ref": "#/components/responses/500" },
+          "503": { "$ref": "#/components/responses/503" }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ProductRequest": {
+        "required": ["name", "quantity", "price"],
+        "type": "object",
+        "properties": {
+          "name": { "type": "string", "example": "tv" },
+          "description": { "type": "string", "example": "television" },
+          "quantity": { "type": "integer", "format": "int64", "example": 5 },
+          "price": { "type": "number", "format": "double", "example": 100.0 }
+        },
+        "xml": { "name": "product" }
+      },
+      "ProductResponse": {
+        "required": ["id", "name", "quantity", "price"],
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64", "example": 1 },
+          "name": { "type": "string", "example": "tv" },
+          "description": { "type": "string", "example": "television" },
+          "quantity": { "type": "integer", "format": "int64", "example": 5 },
+          "price": { "type": "number", "format": "double", "example": 100.0 }
+        },
+        "xml": { "name": "product" }
+      },
+      "OrderRequest": {
+        "required": ["description"],
+        "type": "object",
+        "properties": {
+          "description": { "type": "string", "example": "sales 1" }
+        },
+        "xml": { "name": "order" }
+      },
+      "OrderUpdateRequest": {
+        "required": ["description"],
+        "type": "object",
+        "properties": {
+          "description": { "type": "string", "example": "sales 1" },
+          "totalAmount": {
+            "type": "number",
+            "format": "double",
+            "example": 100.0
+          }
+        },
+        "xml": { "name": "order" }
+      },
+      "OrderResponse": {
+        "required": ["id", "price"],
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64", "example": 1 },
+          "description": { "type": "string", "example": "sales 1" },
+          "totalAmount": {
+            "type": "number",
+            "format": "double",
+            "example": 0.0
+          }
+        },
+        "xml": { "name": "order" }
+      },
+      "OrderItemRequest": {
+        "required": ["orderId", "productId"],
+        "type": "object",
+        "properties": {
+          "orderId": { "type": "integer", "format": "int64", "example": 1 },
+          "productId": { "type": "integer", "format": "int64", "example": 1 }
+        },
+        "xml": { "name": "order-items" }
+      },
+      "OrderItemResponse": {
+        "required": [
+          "id",
+          "orderId",
+          "productId",
+          "productName",
+          "productPrice"
+        ],
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64", "example": 1 },
+          "orderId": { "type": "integer", "format": "int64", "example": 1 },
+          "productId": { "type": "integer", "format": "int64", "example": 1 },
+          "productName": { "type": "string", "example": "tv" },
+          "productDescription": { "type": "string", "example": "television" },
+          "productPrice": {
+            "type": "number",
+            "format": "double",
+            "example": 100.0
+          }
+        },
+        "xml": { "name": "order-item" }
+      },
+      "400": {
+        "type": "object",
+        "properties": {
+          "httpCode": { "type": "integer", "format": "int64", "example": 400 },
+          "message": { "type": "string", "example": "Bad Request" },
+          "detailedMessage": { "type": "string", "example": "Bad Request." },
+          "detailedErrors": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "Name is mandatory",
+              "xml": { "name": "detailedError" }
+            },
+            "xml": { "name": "detailedErrors", "wrapped": true }
+          }
+        }
+      },
+      "404": {
+        "type": "object",
+        "properties": {
+          "httpCode": { "type": "integer", "format": "int64", "example": 404 },
+          "message": { "type": "string", "example": "Not Found" },
+          "detailedMessage": {
+            "type": "string",
+            "example": "Resource not found."
+          }
+        }
+      },
+      "405": {
+        "type": "object",
+        "properties": {
+          "httpCode": { "type": "integer", "format": "int64", "example": 405 },
+          "message": { "type": "string", "example": "Method Not Allowed" },
+          "detailedMessage": {
+            "type": "string",
+            "example": "Unavailable HTTP method."
+          }
+        }
+      },
+      "406": {
+        "type": "object",
+        "properties": {
+          "httpCode": { "type": "integer", "format": "int64", "example": 406 },
+          "message": { "type": "string", "example": "Request Not Acceptable" },
+          "detailedMessage": {
+            "type": "string",
+            "example": "Requested content type not acceptable."
+          }
+        }
+      },
+      "415": {
+        "type": "object",
+        "properties": {
+          "httpCode": { "type": "integer", "format": "int64", "example": 415 },
+          "message": { "type": "string", "example": "Unsupported Media Type" },
+          "detailedMessage": {
+            "type": "string",
+            "example": "Unsupported Media Type."
+          }
+        }
+      },
+      "500": {
+        "type": "object",
+        "properties": {
+          "httpCode": { "type": "integer", "format": "int64", "example": 500 },
+          "message": { "type": "string", "example": "Internal Server Error" },
+          "detailedMessage": {
+            "type": "string",
+            "example": "Internal Server Error."
+          }
+        }
+      },
+      "503": {
+        "type": "object",
+        "properties": {
+          "httpCode": { "type": "integer", "format": "int64", "example": 503 },
+          "message": { "type": "string", "example": "Service Unavailable" },
+          "detailedMessage": {
+            "type": "string",
+            "example": "Service Unavailable."
+          }
+        }
+      }
+    },
+    "requestBodies": {
+      "ProductRequestBody": {
+        "description": "Product object for requests",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/ProductRequest" }
+          },
+          "application/xml": {
+            "schema": { "$ref": "#/components/schemas/ProductRequest" }
+          }
+        }
+      },
+      "OrderRequestBody": {
+        "description": "Order object for requests",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/OrderRequest" }
+          },
+          "application/xml": {
+            "schema": { "$ref": "#/components/schemas/OrderRequest" }
+          }
+        }
+      },
+      "OrderUpdateRequestBody": {
+        "description": "Order object for update requests",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/OrderUpdateRequest" }
+          },
+          "application/xml": {
+            "schema": { "$ref": "#/components/schemas/OrderUpdateRequest" }
+          }
+        }
+      },
+      "OrderItemRequestBody": {
+        "description": "Order Item object for requests",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/OrderItemRequest" }
+          },
+          "application/xml": {
+            "schema": { "$ref": "#/components/schemas/OrderItemRequest" }
+          }
+        }
+      }
+    },
+    "responses": {
+      "ProductsResponseBody": {
+        "description": "Products response object",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "array",
+              "items": { "$ref": "#/components/schemas/ProductResponse" }
+            }
+          },
+          "application/xml": {
+            "schema": {
+              "type": "array",
+              "items": { "$ref": "#/components/schemas/ProductResponse" },
+              "xml": { "name": "products", "wrapped": true }
+            }
+          }
+        }
+      },
+      "ProductResponseBody": {
+        "description": "Product response object",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/ProductResponse" }
+          },
+          "application/xml": {
+            "schema": { "$ref": "#/components/schemas/ProductResponse" }
+          }
+        }
+      },
+      "OrdersResponseBody": {
+        "description": "Orders response object",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "array",
+              "items": { "$ref": "#/components/schemas/OrderResponse" }
+            }
+          },
+          "application/xml": {
+            "schema": {
+              "type": "array",
+              "items": { "$ref": "#/components/schemas/OrderResponse" },
+              "xml": { "name": "orders", "wrapped": true }
+            }
+          }
+        }
+      },
+      "OrderResponseBody": {
+        "description": "Order response object",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/OrderResponse" }
+          },
+          "application/xml": {
+            "schema": { "$ref": "#/components/schemas/OrderResponse" }
+          }
+        }
+      },
+      "OrderItemsResponseBody": {
+        "description": "Order Items response object",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "array",
+              "items": { "$ref": "#/components/schemas/OrderItemResponse" }
+            }
+          },
+          "application/xml": {
+            "schema": {
+              "type": "array",
+              "items": { "$ref": "#/components/schemas/OrderItemResponse" },
+              "xml": { "name": "order-items", "wrapped": true }
+            }
+          }
+        }
+      },
+      "OrderItemResponseBody": {
+        "description": "Order Item response object",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/OrderItemResponse" }
+          },
+          "application/xml": {
+            "schema": { "$ref": "#/components/schemas/OrderItemResponse" }
+          }
+        }
+      },
+      "400": {
+        "description": "Bad Request",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/400" }
+          },
+          "application/xml": {
+            "schema": {
+              "$ref": "#/components/schemas/400",
+              "xml": { "name": "error" }
+            }
+          }
+        }
+      },
+      "404": {
+        "description": "Not Found",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/404" }
+          },
+          "application/xml": {
+            "schema": {
+              "$ref": "#/components/schemas/404",
+              "xml": { "name": "error" }
+            }
+          }
+        }
+      },
+      "405": {
+        "description": "Method Not Allowed",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/405" }
+          },
+          "application/xml": {
+            "schema": {
+              "$ref": "#/components/schemas/405",
+              "xml": { "name": "error" }
+            }
+          }
+        }
+      },
+      "406": {
+        "description": "Not Acceptable",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/406" }
+          },
+          "application/xml": {
+            "schema": {
+              "$ref": "#/components/schemas/406",
+              "xml": { "name": "error" }
+            }
+          }
+        }
+      },
+      "415": {
+        "description": "Unsupported Media Type",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/415" }
+          },
+          "application/xml": {
+            "schema": {
+              "$ref": "#/components/schemas/415",
+              "xml": { "name": "error" }
+            }
+          }
+        }
+      },
+      "500": {
+        "description": "Internal Server Error",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/500" }
+          },
+          "application/xml": {
+            "schema": {
+              "$ref": "#/components/schemas/500",
+              "xml": { "name": "error" }
+            }
+          }
+        }
+      },
+      "503": {
+        "description": "Service unavailable",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/503" }
+          },
+          "application/xml": {
+            "schema": {
+              "$ref": "#/components/schemas/503",
+              "xml": { "name": "error" }
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": null
+  }
+}

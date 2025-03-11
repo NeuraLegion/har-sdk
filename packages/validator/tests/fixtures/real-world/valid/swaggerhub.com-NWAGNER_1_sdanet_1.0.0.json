@@ -1,0 +1,251 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "SDANet - OpenAPI 3.1",
+    "description": "[WIP] API for third-party developers to interact with Anduril's SDANet system.",
+    "contact": { "email": "nwagner@anduril.com" },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "1.0.0"
+  },
+  "tags": [
+    {
+      "name": "message",
+      "description": "Interact with the Flux network to transit data around the network."
+    },
+    {
+      "name": "health",
+      "description": "Contains methods related to the status of the SSN or SDANet."
+    },
+    {
+      "name": "udl",
+      "description": "Contains methods that pass through SDANet directly to the UDL."
+    }
+  ],
+  "paths": {
+    "/message": {
+      "post": {
+        "tags": ["message"],
+        "summary": "Send a message over the Flux network",
+        "requestBody": {
+          "description": "The message content to send",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Message" }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["message"],
+        "summary": "Subscribe to an SSE stream of messages coming from the Flux network",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "format",
+            "schema": { "type": "string", "enum": ["udl", "iwsd"] },
+            "description": "Whether to receive messages in an 'IWSD' or 'UDL' format."
+          }
+        ]
+      }
+    },
+    "/site-state": {
+      "post": {
+        "tags": ["health"],
+        "summary": "Update the state of a C2 or sensor site.",
+        "requestBody": {
+          "description": "The message content to send",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/SensorState" }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["health"],
+        "summary": "Receive the state of a C2 or sensor site.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "siteID",
+            "schema": { "type": "string" },
+            "description": "The ID of the site to retrieve health status"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A successful state lookup.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/SensorState" }
+              }
+            }
+          },
+          "400": { "description": "A failed lookup, the site ID wasn't found." }
+        }
+      }
+    },
+    "/flux-state": {
+      "get": {
+        "tags": ["health"],
+        "summary": "Receive the state of the SDANet Flux mesh network.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "siteID",
+            "schema": { "type": "string" },
+            "description": "The ID of the site to retrieve Flux link status."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A successful state lookup.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/FluxState" }
+              }
+            }
+          },
+          "400": { "description": "A failed lookup, the site ID wasn't found." }
+        }
+      }
+    },
+    "/udl": {
+      "post": { "tags": ["udl"] },
+      "get": { "tags": ["udl"] },
+      "put": { "tags": ["udl"] },
+      "delete": { "tags": ["udl"] }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Message": {
+        "type": "object",
+        "properties": {
+          "iwsd": {
+            "type": "string",
+            "description": "The raw IWSD fixed-width message type",
+            "examples": [
+              "4060610000TR000039800001UU0010000TEST))U\\r\\r\\\\n13398000010010000000000900000736000007999999957099999997 $$"
+            ]
+          },
+          "udl": {
+            "type": "object",
+            "description": "The UDL JSON object to send.",
+            "examples": [
+              {
+                "azimuth": 360,
+                "classificationMarking": "U",
+                "dataMode": "TEST",
+                "declination": 90,
+                "idSensor": "398",
+                "obTime": "2024-01-01T00:00:00Z",
+                "range": 9999999,
+                "rangeRate": 99.99999,
+                "satNo": 1,
+                "source": "Anduril",
+                "origin": "398"
+              }
+            ]
+          }
+        }
+      },
+      "FluxState": {
+        "type": "object",
+        "properties": {
+          "idSite": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 36,
+            "description": "The ID of the site, if this status is associated with a fixed site or platform.",
+            "examples": ["VANDENBERG"]
+          },
+          "linkState": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "remoteID": {
+                  "type": "string",
+                  "description": "The siteID of the remote site that this link status describes.",
+                  "examples": ["SOCORRO"]
+                },
+                "linkState": {
+                  "type": "string",
+                  "enum": ["UNKNOWN", "DISCONNECTED", "DEGRADED", "CONNECTED"],
+                  "examples": ["DEGRADED"]
+                }
+              }
+            }
+          }
+        }
+      },
+      "SensorState": {
+        "type": "object",
+        "properties": {
+          "idSite": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 36,
+            "description": "The ID of the site, if this status is associated with a fixed site or platform.",
+            "examples": ["41e3e554-9790-40b9-bd7b-f30d864dcad8"]
+          },
+          "siteType": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string",
+            "description": "Optional site type or further detail of type.  Intended for, but not limited to, Link-16 site type specifications (e.g. ADOC, GACC, SOC, TACC, etc.)."
+          },
+          "instStatus": {
+            "maxLength": 3,
+            "minLength": 0,
+            "type": "string",
+            "description": "The status of the installation.  FMC - Fully Mission Capable   PMC - Partially Mission Capable  NMC - Non Mission Capable  UNK - Unknown.",
+            "example": "PMC",
+            "enum": ["FMC PMC NMC UNK"]
+          },
+          "fpcon": {
+            "maxLength": 7,
+            "minLength": 0,
+            "type": "string",
+            "description": "Force Protection Condition (FPCON).    NORMAL - Applies when a general global threat of possible terrorist activity exists and warrants a routine security posture.  ALPHA - Applies when an increased general threat of possible terrorist activity against personnel or facilities. Nature and extent of threat are unpredictable.  BRAVO - Applies when an increased or predictable threat of terrorist activity exists.  CHARLIE - Applies when an incident occurs or intelligence is received indicating some form of terrorist action against personnel and facilities is imminent.  DELTA - Applies in the immediate area where an attack has occurred or when intelligence is received indicating terrorist action against a location is imminent.",
+            "example": "BRAVO",
+            "enum": ["NORMAL ALPHA BRAVO CHARLIE DELTA"]
+          },
+          "hpcon": {
+            "maxLength": 7,
+            "minLength": 0,
+            "type": "string",
+            "description": "Health Protection Condition (HPCON).    0 - Routine no community transmission.  ALPHA - Limited community transmission beginning.  BRAVO - Moderate increased community transmission.  CHARLIE - Substantial sustained community transmission.  DELTA - Severe widespread community transmission.",
+            "example": "CHARLIE",
+            "enum": ["0 ALPHA BRAVO CHARLIE DELTA"]
+          },
+          "cpcon": {
+            "maxLength": 1,
+            "minLength": 0,
+            "type": "string",
+            "description": "Cyberspace Protection Condition (CPCON).    1 - VERY HIGH - Critical functions.  2 - HIGH - Critical and essential functions.  3 - MEDIUM - Critical essential and support functions.  4 - LOW - All functions.  5 - VERY LOW - All functions.",
+            "example": 4,
+            "enum": ["1 2 3 4 5"]
+          },
+          "reportTime": {
+            "type": "string",
+            "description": "Time of report in ISO8601 UTC format.",
+            "format": "date-time",
+            "example": "2021-01-01T01:01:01.123Z"
+          },
+          "weatherMessage": {
+            "maxLength": 512,
+            "minLength": 0,
+            "type": "string",
+            "description": "Description of the current weather conditions over a site.",
+            "example": "Heavy rain"
+          }
+        }
+      }
+    }
+  }
+}

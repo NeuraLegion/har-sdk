@@ -1,0 +1,895 @@
+{
+  "openapi": "3.1.0",
+  "info": { "title": "API ESG PMI - assessment", "version": "v1.0.2" },
+  "servers": [
+    { "url": "https://api-eseg.mindlogix.it", "description": "Staging Server" }
+  ],
+  "paths": {
+    "/frameworks": {
+      "get": {
+        "tags": ["Retrieve"],
+        "description": "Endpoint to get all available framework",
+        "operationId": "getAllFrameworks",
+        "responses": {
+          "200": {
+            "description": "all frameworks available",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AllFrameworkModel" }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/framework/{id}": {
+      "get": {
+        "tags": ["Retrieve"],
+        "description": "Endpoint to get specific framework by ID. You find the right ID with previous endpoint",
+        "operationId": "getFramework",
+        "parameters": [
+          {
+            "description": "ID of framework.",
+            "required": true,
+            "deprecated": false,
+            "style": "simple",
+            "explode": true,
+            "schema": { "type": "integer" },
+            "name": "id",
+            "in": "path",
+            "allowEmptyValue": false,
+            "allowReserved": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "framework",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FrameworkResponseModel"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/areas/{framework_id}": {
+      "get": {
+        "tags": ["Retrieve"],
+        "description": "Endpoint to get all areas",
+        "operationId": "getAllAreas",
+        "parameters": [
+          {
+            "description": "ID of a framework",
+            "required": true,
+            "deprecated": false,
+            "style": "simple",
+            "explode": true,
+            "schema": { "type": "integer" },
+            "name": "framework_id",
+            "in": "path",
+            "allowEmptyValue": false,
+            "allowReserved": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "all areas available",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AllAreasModel" }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/area/{id}": {
+      "get": {
+        "tags": ["Retrieve"],
+        "description": "Endpoint to get specific area by ID. You find the right ID with previous endpoint",
+        "operationId": "getArea",
+        "parameters": [
+          {
+            "description": "ID of area.",
+            "required": true,
+            "deprecated": false,
+            "style": "simple",
+            "explode": true,
+            "schema": { "type": "integer" },
+            "name": "id",
+            "in": "path",
+            "allowEmptyValue": false,
+            "allowReserved": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "all areas available",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AreaResponseModel" }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/subareas/{area_id}": {
+      "get": {
+        "tags": ["Retrieve"],
+        "description": "Endpoint to get all subareas",
+        "operationId": "getAllSubAreas",
+        "parameters": [
+          {
+            "description": "ID of a framework",
+            "required": true,
+            "deprecated": false,
+            "style": "simple",
+            "explode": true,
+            "schema": { "type": "integer" },
+            "name": "area_id",
+            "in": "path",
+            "allowEmptyValue": false,
+            "allowReserved": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "all areas available",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AllSubAreasModel" }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/subarea/{id}": {
+      "get": {
+        "tags": ["Retrieve"],
+        "description": "Endpoint to get specific subarea by ID. You find the right ID with previous endpoint",
+        "operationId": "getSubArea",
+        "parameters": [
+          {
+            "description": "ID of subarea.",
+            "required": true,
+            "deprecated": false,
+            "style": "simple",
+            "explode": true,
+            "schema": { "type": "integer" },
+            "name": "id",
+            "in": "path",
+            "allowEmptyValue": false,
+            "allowReserved": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "all areas available",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubAreaResponseModel"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/facts/{subarea_id}/{nace}": {
+      "get": {
+        "tags": ["Retrieve"],
+        "description": "Endpoint to get all facts for a specific nace. If you dont provide nace you will get all the facts",
+        "operationId": "getAllFacts",
+        "parameters": [
+          {
+            "description": "nace code. if provided gives all facts for the given nace. otherwise gives you all facts",
+            "required": true,
+            "deprecated": false,
+            "style": "simple",
+            "explode": true,
+            "schema": { "type": "string" },
+            "name": "nace",
+            "in": "path",
+            "allowEmptyValue": false,
+            "allowReserved": false
+          },
+          {
+            "description": "subarea ID",
+            "required": true,
+            "deprecated": false,
+            "style": "simple",
+            "explode": true,
+            "schema": { "type": "string" },
+            "name": "subarea_id",
+            "in": "path",
+            "allowEmptyValue": false,
+            "allowReserved": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "all facts available",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AllFactsModel" }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/fact/{id}": {
+      "get": {
+        "tags": ["Retrieve"],
+        "description": "Endpoint to get specific fact by ID. You find the right ID with previous endpoint",
+        "operationId": "getFact",
+        "parameters": [
+          {
+            "description": "ID of fact.",
+            "required": true,
+            "deprecated": false,
+            "style": "simple",
+            "explode": true,
+            "schema": { "type": "integer" },
+            "name": "id",
+            "in": "path",
+            "allowEmptyValue": false,
+            "allowReserved": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "all areas available",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/FactResponseModel" }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/ateco2nace/{ateco}": {
+      "get": {
+        "tags": ["Service"],
+        "operationId": "getNaceFromAteco",
+        "parameters": [
+          {
+            "description": "ateco code",
+            "required": true,
+            "deprecated": false,
+            "style": "simple",
+            "explode": true,
+            "schema": { "type": "string" },
+            "name": "ateco",
+            "in": "path",
+            "allowEmptyValue": false,
+            "allowReserved": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "nace code",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AtecoToNaceResponse" }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/score": {
+      "post": {
+        "tags": ["Score"],
+        "operationId": "calculateScore",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ScoreBodyModel" }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "all areas available",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ScoreResponseModel" }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AllAreas": {
+        "properties": {
+          "id": { "type": "integer", "title": "Id" },
+          "name": { "type": "string", "title": "Name" }
+        },
+        "type": "object",
+        "required": ["id", "name"],
+        "title": "AllAreas"
+      },
+      "AllAreasModel": {
+        "properties": {
+          "areas": {
+            "items": { "$ref": "#/components/schemas/AllAreas" },
+            "type": "array",
+            "title": "Areas"
+          }
+        },
+        "type": "object",
+        "required": ["areas"],
+        "title": "AllAreasModel",
+        "description": "this model list all available areas"
+      },
+      "AllFacts": {
+        "properties": {
+          "id": { "type": "integer", "title": "Id" },
+          "name": { "type": "string", "title": "Name" }
+        },
+        "type": "object",
+        "required": ["id", "name"],
+        "title": "AllFacts"
+      },
+      "AllFactsModel": {
+        "properties": {
+          "facts": {
+            "items": { "$ref": "#/components/schemas/AllFacts" },
+            "type": "array",
+            "title": "Facts"
+          }
+        },
+        "type": "object",
+        "required": ["facts"],
+        "title": "AllFactsModel",
+        "description": "this model list all available subareas"
+      },
+      "AllFrameworkModel": {
+        "properties": {
+          "frameworks": {
+            "items": { "$ref": "#/components/schemas/AllFrameworks" },
+            "type": "array",
+            "title": "Frameworks"
+          }
+        },
+        "type": "object",
+        "required": ["frameworks"],
+        "title": "AllFrameworkModel",
+        "description": "this model list all available frameworks"
+      },
+      "AllFrameworks": {
+        "properties": {
+          "id": { "type": "integer", "title": "Id" },
+          "name": { "type": "string", "title": "Name" }
+        },
+        "type": "object",
+        "required": ["id", "name"],
+        "title": "AllFrameworks"
+      },
+      "AllSubAreas": {
+        "properties": {
+          "id": { "type": "integer", "title": "Id" },
+          "name": { "type": "string", "title": "Name" }
+        },
+        "type": "object",
+        "required": ["id", "name"],
+        "title": "AllSubAreas"
+      },
+      "AllSubAreasModel": {
+        "properties": {
+          "subareas": {
+            "items": { "$ref": "#/components/schemas/AllSubAreas" },
+            "type": "array",
+            "title": "Subareas"
+          }
+        },
+        "type": "object",
+        "required": ["subareas"],
+        "title": "AllSubAreasModel",
+        "description": "this model list all available subareas"
+      },
+      "AreaResponseModel": {
+        "properties": {
+          "id": { "type": "integer", "title": "Id" },
+          "framework_id": { "type": "integer", "title": "Framework Id" },
+          "name": { "type": "string", "title": "Name" },
+          "description": {
+            "type": "string",
+            "title": "Governance",
+            "description": "Governance",
+            "default": "Area type"
+          },
+          "code": { "type": "string", "title": "Code" },
+          "language": { "$ref": "#/components/schemas/Language" },
+          "ls_area_weights": { "type": "number", "title": "Ls Area Weights" },
+          "maximum_area_score": {
+            "type": "number",
+            "title": "Maximum Area Score"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "framework_id",
+          "name",
+          "code",
+          "language",
+          "ls_area_weights",
+          "maximum_area_score"
+        ],
+        "title": "Area",
+        "description": "this model describe area structure"
+      },
+      "AreaScore": {
+        "properties": {
+          "area_code": { "type": "string", "title": "Area Code" },
+          "score_area": { "type": "number", "title": "Score Area" },
+          "score_area_max": { "type": "number", "title": "Score Area Max" },
+          "score_area_ToBe": { "type": "number", "title": "Score Area Tobe" },
+          "delta_improvements_area": {
+            "type": "number",
+            "title": "Delta Improvements Area"
+          },
+          "delta_critical_issues_area": {
+            "type": "number",
+            "title": "Delta Critical Issues Area"
+          },
+          "improvements_area": {
+            "type": "string",
+            "title": "Improvements Area"
+          },
+          "critical_issues_area": {
+            "type": "string",
+            "title": "Critical Issues Area"
+          }
+        },
+        "type": "object",
+        "required": [
+          "area_code",
+          "score_area",
+          "score_area_max",
+          "score_area_ToBe",
+          "delta_improvements_area",
+          "delta_critical_issues_area",
+          "improvements_area",
+          "critical_issues_area"
+        ],
+        "title": "AreaScore"
+      },
+      "AtecoToNaceResponse": {
+        "properties": {
+          "nace_code": { "type": "string", "title": "Nace Code" }
+        },
+        "type": "object",
+        "required": ["nace_code"],
+        "title": "AtecoToNaceResponse"
+      },
+      "FactResponseModel": {
+        "properties": {
+          "id": { "type": "integer", "title": "Id" },
+          "framework_id": { "type": "integer", "title": "Framework Id" },
+          "area_id": { "type": "integer", "title": "Area Id" },
+          "subarea_id": { "type": "integer", "title": "Subarea Id" },
+          "indicator_id": { "type": "integer", "title": "Indicator Id" },
+          "name": { "type": "string", "title": "Name" },
+          "description": {
+            "type": "string",
+            "title": "Governance",
+            "description": "Governance",
+            "default": "Area type"
+          },
+          "code": { "type": "string", "title": "Code" },
+          "language": { "$ref": "#/components/schemas/Language" },
+          "maximum_fact_score": {
+            "type": "number",
+            "title": "Maximum Fact Score"
+          },
+          "fact_weight": { "type": "number", "title": "Fact Weight" },
+          "fact_cost": { "type": "number", "title": "Fact Cost" },
+          "kpis": {
+            "items": { "$ref": "#/components/schemas/KpiResponseModel" },
+            "type": "array",
+            "title": "Kpis"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "framework_id",
+          "area_id",
+          "subarea_id",
+          "indicator_id",
+          "name",
+          "code",
+          "language",
+          "maximum_fact_score",
+          "fact_weight",
+          "fact_cost",
+          "kpis"
+        ],
+        "title": "Area",
+        "description": "this model describe area structure"
+      },
+      "FrameworkResponseModel": {
+        "properties": {
+          "id": { "type": "integer", "title": "Id" },
+          "name": { "type": "string", "title": "Name" },
+          "description": {
+            "type": "string",
+            "title": "GRI",
+            "description": "Based on GRI",
+            "default": "Based on GRI"
+          },
+          "fl_ESG_score_max": { "type": "number", "title": "Fl Esg Score Max" },
+          "transform_Likert_KPI": {
+            "type": "boolean",
+            "title": "Transform Likert Kpi"
+          },
+          "language": { "$ref": "#/components/schemas/Language" }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "fl_ESG_score_max",
+          "transform_Likert_KPI",
+          "language"
+        ],
+        "title": "Framework",
+        "description": "this model describe framework output structure"
+      },
+      "GlobalScore": {
+        "properties": {
+          "global_esg": { "type": "number", "title": "Global Esg" }
+        },
+        "type": "object",
+        "required": ["global_esg"],
+        "title": "GlobalScore"
+      },
+      "IndicatoriScore": {
+        "properties": {
+          "indicator_code": { "type": "string", "title": "Indicator Code" },
+          "score_indicator": { "type": "number", "title": "Score Indicator" },
+          "score_indicator_max": {
+            "type": "number",
+            "title": "Score Indicator Max"
+          },
+          "score_indicator_ToBe": {
+            "type": "number",
+            "title": "Score Indicator Tobe"
+          },
+          "delta_improvements_ind": {
+            "type": "number",
+            "title": "Delta Improvements Ind"
+          },
+          "delta_critical_issues_ind": {
+            "type": "number",
+            "title": "Delta Critical Issues Ind"
+          },
+          "improvements_ind": { "type": "string", "title": "Improvements Ind" },
+          "critical_issues_ind": {
+            "type": "string",
+            "title": "Critical Issues Ind"
+          },
+          "indicator_weight": { "type": "number", "title": "Indicator Weight" },
+          "indicator_cost": { "type": "number", "title": "Indicator Cost" },
+          "type_KPI_list": { "title": "Type Kpi List" },
+          "cod_KPI_list": { "title": "Cod Kpi List" },
+          "weight_KPI_list": { "title": "Weight Kpi List" },
+          "questionnaire_values_list": { "title": "Questionnaire Values List" },
+          "questionnaire_values_ToBe_list": {
+            "title": "Questionnaire Values Tobe List"
+          },
+          "ESG_KPI_score_list": { "title": "Esg Kpi Score List" },
+          "ESG_KPI_score_ToBe_list": { "title": "Esg Kpi Score Tobe List" }
+        },
+        "type": "object",
+        "required": [
+          "indicator_code",
+          "score_indicator",
+          "score_indicator_max",
+          "score_indicator_ToBe",
+          "delta_improvements_ind",
+          "delta_critical_issues_ind",
+          "improvements_ind",
+          "critical_issues_ind",
+          "indicator_weight",
+          "indicator_cost",
+          "type_KPI_list",
+          "cod_KPI_list",
+          "weight_KPI_list",
+          "questionnaire_values_list",
+          "questionnaire_values_ToBe_list",
+          "ESG_KPI_score_list",
+          "ESG_KPI_score_ToBe_list"
+        ],
+        "title": "IndicatoriScore"
+      },
+      "KpiAnswerModel": {
+        "properties": {
+          "text": { "type": "string", "title": "Text" },
+          "value": { "type": "number", "title": "Value" }
+        },
+        "type": "object",
+        "required": ["text", "value"],
+        "title": "KpiAnswerModel"
+      },
+      "KpiDependOnModel": {
+        "properties": {
+          "kpi_id": { "type": "integer", "title": "Kpi Id" },
+          "kpi_code": { "type": "string", "title": "Kpi Code" }
+        },
+        "type": "object",
+        "required": ["kpi_id", "kpi_code"],
+        "title": "KpiDependOnModel"
+      },
+      "KpiFileModel": {
+        "properties": {
+          "have_file": { "type": "boolean", "title": "Have File" },
+          "file_description": { "type": "string", "title": "File Description" }
+        },
+        "type": "object",
+        "required": ["have_file", "file_description"],
+        "title": "KpiFileModel"
+      },
+      "KpiResponseModel": {
+        "properties": {
+          "id": { "type": "integer", "title": "Id" },
+          "framework_id": { "type": "integer", "title": "Framework Id" },
+          "area_id": { "type": "integer", "title": "Area Id" },
+          "subarea_id": { "type": "integer", "title": "Subarea Id" },
+          "indicator_id": { "type": "integer", "title": "Indicator Id" },
+          "fact_id": { "type": "integer", "title": "Fact Id" },
+          "name": { "type": "string", "title": "Name" },
+          "description": {
+            "type": "string",
+            "title": "Governance",
+            "description": "Governance",
+            "default": "Area type"
+          },
+          "code": { "type": "string", "title": "Code" },
+          "language": { "$ref": "#/components/schemas/Language" },
+          "type": { "$ref": "#/components/schemas/KpiTypes" },
+          "tooltip": { "type": "string", "title": "Tooltip" },
+          "answers": { "$ref": "#/components/schemas/KpiAnswerModel" },
+          "sequence": { "type": "integer", "title": "Sequence" },
+          "relevance": { "type": "integer", "title": "Relevance" },
+          "unit_measure": { "type": "string", "title": "Unit Measure" },
+          "file": { "$ref": "#/components/schemas/KpiFileModel" },
+          "depends_on": { "$ref": "#/components/schemas/KpiDependOnModel" },
+          "consistency_check": { "type": "null", "title": "Consistency Check" }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "framework_id",
+          "area_id",
+          "subarea_id",
+          "indicator_id",
+          "fact_id",
+          "name",
+          "code",
+          "language",
+          "type",
+          "tooltip",
+          "answers",
+          "sequence",
+          "relevance",
+          "unit_measure",
+          "file",
+          "depends_on",
+          "consistency_check"
+        ],
+        "title": "Kpi",
+        "description": "this model describe area structure"
+      },
+      "KpiTypes": {
+        "type": "string",
+        "enum": ["LIKERT3", "LIKERT5", "BINARY"],
+        "title": "KpiTypes"
+      },
+      "Language": {
+        "type": "string",
+        "enum": ["it", "en"],
+        "title": "Language"
+      },
+      "ScoreBodyModel": {
+        "properties": {
+          "user_id": { "type": "string", "title": "User Id" },
+          "report_id": { "type": "string", "title": "Report Id" },
+          "nace_code": { "type": "string", "title": "Nace Code" },
+          "data": {
+            "items": { "$ref": "#/components/schemas/ScoreDataModel" },
+            "type": "array",
+            "title": "Data"
+          }
+        },
+        "type": "object",
+        "required": ["user_id", "report_id", "nace_code", "data"],
+        "title": "Score",
+        "description": "this model describe score structure"
+      },
+      "ScoreDataModel": {
+        "properties": {
+          "subarea_code": { "type": "string", "title": "Subarea Code" },
+          "area_code": { "type": "string", "title": "Area Code" },
+          "indicator_number": { "type": "string", "title": "Indicator Number" },
+          "indicator": { "type": "string", "title": "Indicator" },
+          "num_KPI": { "type": "integer", "title": "Num Kpi" },
+          "type_KPI": { "type": "string", "title": "Type Kpi" },
+          "code_KPI": { "type": "string", "title": "Code Kpi" },
+          "desc_KPI": { "type": "string", "title": "Desc Kpi" },
+          "confirmed_response": {
+            "type": "integer",
+            "title": "Confirmed Response"
+          },
+          "questionnaire_values": {
+            "type": "integer",
+            "title": "Questionnaire Values"
+          },
+          "company_category_code": {
+            "type": "string",
+            "title": "Company Category Code"
+          },
+          "weight_indicator_binary_sum": {
+            "type": "integer",
+            "title": "Weight Indicator Binary Sum"
+          }
+        },
+        "type": "object",
+        "required": [
+          "subarea_code",
+          "area_code",
+          "indicator_number",
+          "indicator",
+          "num_KPI",
+          "type_KPI",
+          "code_KPI",
+          "desc_KPI",
+          "confirmed_response",
+          "questionnaire_values",
+          "company_category_code",
+          "weight_indicator_binary_sum"
+        ],
+        "title": "ScoreDataModel"
+      },
+      "ScoreResponseModel": {
+        "properties": {
+          "code": { "type": "integer", "title": "Code" },
+          "response": { "$ref": "#/components/schemas/ScoreSubResponseModel" }
+        },
+        "type": "object",
+        "required": ["code", "response"],
+        "title": "Score",
+        "description": "this model describe score input structure"
+      },
+      "ScoreSubResponseModel": {
+        "properties": {
+          "subareas": {
+            "items": { "$ref": "#/components/schemas/SubAreaScore" },
+            "type": "array",
+            "title": "Subareas"
+          },
+          "areas": {
+            "items": { "$ref": "#/components/schemas/AreaScore" },
+            "type": "array",
+            "title": "Areas"
+          },
+          "indicators": {
+            "items": { "$ref": "#/components/schemas/IndicatoriScore" },
+            "type": "array",
+            "title": "Indicators"
+          },
+          "global_score": { "$ref": "#/components/schemas/GlobalScore" }
+        },
+        "type": "object",
+        "required": ["subareas", "areas", "indicators", "global_score"],
+        "title": "ScoreSubResponseModel"
+      },
+      "SubAreaResponseModel": {
+        "properties": {
+          "id": { "type": "integer", "title": "Id" },
+          "framework_id": { "type": "integer", "title": "Framework Id" },
+          "area_id": { "type": "integer", "title": "Area Id" },
+          "name": { "type": "string", "title": "Name" },
+          "description": {
+            "type": "string",
+            "title": "Governance",
+            "description": "Governance",
+            "default": "Area type"
+          },
+          "code": { "type": "string", "title": "Code" },
+          "language": { "$ref": "#/components/schemas/Language" },
+          "maximum_subarea_score": {
+            "type": "number",
+            "title": "Maximum Subarea Score"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "framework_id",
+          "area_id",
+          "name",
+          "code",
+          "language",
+          "maximum_subarea_score"
+        ],
+        "title": "Area",
+        "description": "this model describe area structure"
+      },
+      "SubAreaScore": {
+        "properties": {
+          "subarea_code": { "type": "string", "title": "Subarea Code" },
+          "score_subarea": { "type": "number", "title": "Score Subarea" },
+          "score_subarea_max": {
+            "type": "number",
+            "title": "Score Subarea Max"
+          },
+          "score_subarea_ToBe": {
+            "type": "number",
+            "title": "Score Subarea Tobe"
+          },
+          "delta_improvements_subarea": {
+            "type": "number",
+            "title": "Delta Improvements Subarea"
+          },
+          "delta_critical_issues_subarea": {
+            "type": "number",
+            "title": "Delta Critical Issues Subarea"
+          },
+          "improvements_subarea": {
+            "type": "string",
+            "title": "Improvements Subarea"
+          },
+          "critical_issues_subarea": {
+            "type": "string",
+            "title": "Critical Issues Subarea"
+          }
+        },
+        "type": "object",
+        "required": [
+          "subarea_code",
+          "score_subarea",
+          "score_subarea_max",
+          "score_subarea_ToBe",
+          "delta_improvements_subarea",
+          "delta_critical_issues_subarea",
+          "improvements_subarea",
+          "critical_issues_subarea"
+        ],
+        "title": "SubAreaScore"
+      }
+    }
+  },
+  "tags": [
+    { "name": "Service", "description": "Service endpoints" },
+    {
+      "name": "Retrieve",
+      "description": "Operations related to retrieve framework objects"
+    },
+    { "name": "Score", "description": "Operations related to score" }
+  ]
+}

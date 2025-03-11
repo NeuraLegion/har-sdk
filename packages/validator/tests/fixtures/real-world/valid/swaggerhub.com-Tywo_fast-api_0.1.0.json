@@ -1,0 +1,1521 @@
+{
+  "openapi": "3.1.0",
+  "info": { "title": "FastAPI", "version": "0.1.0" },
+  "paths": {
+    "/v1/network/stats": {
+      "get": {
+        "tags": ["network"],
+        "summary": "Network Stats",
+        "description": "get network stats for supplier or for all suppliers",
+        "operationId": "network_stats_v1_network_stats_get",
+        "parameters": [
+          {
+            "name": "supplier_name",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string", "title": "Supplier Name" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NetworkStatsResponse"
+                }
+              }
+            }
+          },
+          "404": { "description": "Not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/network/market_snapshot": {
+      "get": {
+        "tags": ["network"],
+        "summary": "Market Snapshot",
+        "description": "get market snapshot",
+        "operationId": "market_snapshot_v1_network_market_snapshot_get",
+        "parameters": [
+          {
+            "name": "brand",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "title": "Brand" }
+          },
+          {
+            "name": "system_type",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "title": "System Type" }
+          },
+          {
+            "name": "connectivity",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "title": "Connectivity" }
+          },
+          {
+            "name": "security",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "title": "Security" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MarketSnapshotResponse"
+                }
+              }
+            }
+          },
+          "404": { "description": "Not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/clusters/": {
+      "get": {
+        "tags": ["clusters"],
+        "summary": "All Cluster",
+        "description": "get all cluster",
+        "operationId": "all_cluster_v1_clusters__get",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "title": "Status" }
+          },
+          {
+            "name": "last",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "title": "Last" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ClustersResponse" }
+              }
+            }
+          },
+          "404": { "description": "Not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/clusters/stats": {
+      "get": {
+        "tags": ["clusters"],
+        "summary": "Cluster Stats",
+        "description": "get all cluster stats",
+        "operationId": "cluster_stats_v1_clusters_stats_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClusterStatsResponse"
+                }
+              }
+            }
+          },
+          "404": { "description": "Not found" }
+        }
+      }
+    },
+    "/v1/clusters/search": {
+      "get": {
+        "tags": ["clusters"],
+        "summary": "Search",
+        "description": "search cluster by cluster_id",
+        "operationId": "search_v1_clusters_search_get",
+        "parameters": [
+          {
+            "name": "cluster_id",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "title": "Cluster Id" }
+          },
+          {
+            "name": "only_if_found",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Only If Found"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClusterSearchResponse"
+                }
+              }
+            }
+          },
+          "404": { "description": "Not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/clusters/{cluster_id}": {
+      "get": {
+        "tags": ["clusters"],
+        "summary": "Cluster Details",
+        "description": "get cluster details by cluster_id and/or cluster_url",
+        "operationId": "cluster_details_v1_clusters__cluster_id__get",
+        "parameters": [
+          {
+            "name": "cluster_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "Cluster Id" }
+          },
+          {
+            "name": "cluster_url",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string", "title": "Cluster Url" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClusterDetailsResponse"
+                }
+              }
+            }
+          },
+          "404": { "description": "Not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/clusters/{cluster_id}/status": {
+      "get": {
+        "tags": ["clusters"],
+        "summary": "Cluster Status",
+        "description": "get cluster status by cluster_id",
+        "operationId": "cluster_status_v1_clusters__cluster_id__status_get",
+        "parameters": [
+          {
+            "name": "cluster_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "Cluster Id" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClusterStatusResponse"
+                }
+              }
+            }
+          },
+          "404": { "description": "Not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/instances/": {
+      "get": {
+        "tags": ["instances"],
+        "summary": "All Instances",
+        "description": "get all instances",
+        "operationId": "all_instances_v1_instances__get",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "title": "Status" }
+          },
+          {
+            "name": "last",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "title": "Last" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/InstancesResponse" }
+              }
+            }
+          },
+          "404": { "description": "Not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/instances/stats": {
+      "get": {
+        "tags": ["instances"],
+        "summary": "Instance Stats",
+        "description": "get all instance stats",
+        "operationId": "instance_stats_v1_instances_stats_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InstanceStatsResponse"
+                }
+              }
+            }
+          },
+          "404": { "description": "Not found" }
+        }
+      }
+    },
+    "/v1/instances/search": {
+      "get": {
+        "tags": ["instances"],
+        "summary": "Search",
+        "description": "search cluster by instance_id",
+        "operationId": "search_v1_instances_search_get",
+        "parameters": [
+          {
+            "name": "instance_id",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "title": "Instance Id" }
+          },
+          {
+            "name": "only_if_found",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Only If Found"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InstanceSearchResponse"
+                }
+              }
+            }
+          },
+          "404": { "description": "Not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/instances/{instance_id}": {
+      "get": {
+        "tags": ["instances"],
+        "summary": "Instance Details",
+        "description": "get instance details by instance_id and/or instance_url",
+        "operationId": "instance_details_v1_instances__instance_id__get",
+        "parameters": [
+          {
+            "name": "instance_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "Instance Id" }
+          },
+          {
+            "name": "instance_url",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string", "title": "Instance Url" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InstanceDetailsResponse"
+                }
+              }
+            }
+          },
+          "404": { "description": "Not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/instances/{instance_id}/status": {
+      "get": {
+        "tags": ["instances"],
+        "summary": "Instance Status",
+        "description": "get instance status by instance_id",
+        "operationId": "instance_status_v1_instances__instance_id__status_get",
+        "parameters": [
+          {
+            "name": "instance_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "Instance Id" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InstanceStatusResponse"
+                }
+              }
+            }
+          },
+          "404": { "description": "Not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/devices/{device_id}/details": {
+      "get": {
+        "tags": ["devices"],
+        "summary": "Device Details",
+        "description": "get the details of a device",
+        "operationId": "device_details_v1_devices__device_id__details_get",
+        "parameters": [
+          {
+            "name": "device_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "Device Id" }
+          },
+          {
+            "name": "device_url",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string", "title": "Device Url" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeviceDetailsResponse"
+                }
+              }
+            }
+          },
+          "404": { "description": "Not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/devices/{device_id}/earnings": {
+      "get": {
+        "tags": ["devices"],
+        "summary": "Device Earnings",
+        "description": "get the earnings of a device",
+        "operationId": "device_earnings_v1_devices__device_id__earnings_get",
+        "parameters": [
+          {
+            "name": "device_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "Device Id" }
+          },
+          {
+            "name": "device_url",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string", "title": "Device Url" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeviceEarningsResponse"
+                }
+              }
+            }
+          },
+          "404": { "description": "Not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/users/notifications": {
+      "get": {
+        "tags": ["users"],
+        "summary": "User Notifications",
+        "description": "get user notifications",
+        "operationId": "user_notifications_v1_users_notifications_get",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "title": "Email" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserNotificationsResponse"
+                }
+              }
+            }
+          },
+          "404": { "description": "Not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/users/balance": {
+      "get": {
+        "tags": ["users"],
+        "summary": "User Balance",
+        "description": "get user balance",
+        "operationId": "user_balance_v1_users_balance_get",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "title": "Email" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/UserBalanceResponse" }
+              }
+            }
+          },
+          "404": { "description": "Not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/users/clusters": {
+      "get": {
+        "tags": ["users"],
+        "summary": "User Clusters",
+        "description": "get user clusters",
+        "operationId": "user_clusters_v1_users_clusters_get",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "title": "Email" }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string", "title": "Status" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserClustersResponse"
+                }
+              }
+            }
+          },
+          "404": { "description": "Not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/users/instances": {
+      "get": {
+        "tags": ["users"],
+        "summary": "User Instances",
+        "description": "get user instances",
+        "operationId": "user_instances_v1_users_instances_get",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "title": "Email" }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string", "title": "Status" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserInstancesResponse"
+                }
+              }
+            }
+          },
+          "404": { "description": "Not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/users/details": {
+      "get": {
+        "tags": ["users"],
+        "summary": "User Details",
+        "description": "get user details",
+        "operationId": "user_details_v1_users_details_get",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "title": "Email" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/UserDetailsResponse" }
+              }
+            }
+          },
+          "404": { "description": "Not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/users/billings": {
+      "get": {
+        "tags": ["users"],
+        "summary": "User Billings History",
+        "description": "get user billings history",
+        "operationId": "user_billings_history_v1_users_billings_get",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "title": "Email" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserBillingsResponse"
+                }
+              }
+            }
+          },
+          "404": { "description": "Not found" },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/pools/details": {
+      "get": {
+        "tags": ["pools"],
+        "summary": "Pools Details",
+        "description": "get all pools details",
+        "operationId": "pools_details_v1_pools_details_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PoolsDetailsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/": {
+      "get": {
+        "summary": "Root",
+        "operationId": "root__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ClusterDetailsResponse": {
+        "properties": { "data": { "type": "object", "title": "Data" } },
+        "type": "object",
+        "required": ["data"],
+        "title": "ClusterDetailsResponse",
+        "example": {
+          "data": {
+            "cluster_id": "eae6bbe6-da66-41c3-8d48-34509ff04b90",
+            "cluster_status": "deploying",
+            "cluster_url": "https://app.iohk.io",
+            "compute_minutes_remaining": 60,
+            "compute_minutes_served": 0,
+            "finished_at": "2023-07-22T20:11:39.695152+00:00",
+            "locations": ["San Francisco", "New York"],
+            "payments": 0,
+            "percent_completed": 0,
+            "security_compliance": ["SOC2", "E2EE"],
+            "service": "ray",
+            "started_at": "2023-07-22T20:11:39.695152+00:00",
+            "total_payments_amount": 0,
+            "total_refund_payments_amount": 0,
+            "worker_cpu_quantity": 4,
+            "worker_gpu_quantity": 5,
+            "worker_quantity": 2,
+            "worker_tflops": 0,
+            "workers": [
+              {
+                "compute_minutes_served": 0,
+                "earned": 0,
+                "hardware_used": [
+                  {
+                    "TFLOPS": 500,
+                    "VRAM": 80,
+                    "brand": "nvidia",
+                    "name": "RTX 4090",
+                    "type": "GPU"
+                  },
+                  {
+                    "brand": "intel",
+                    "name": "i71300k",
+                    "processor_speed": "2.5Ghz",
+                    "type": "CPU"
+                  },
+                  {
+                    "brand": "seagate",
+                    "name": "seagate_ssd_512gb",
+                    "size": "512GB",
+                    "type": "STORAGE"
+                  },
+                  {
+                    "brand": "samsung",
+                    "name": "samsung_memory_16gb",
+                    "size": "16GB",
+                    "type": "MEMORY"
+                  }
+                ],
+                "reward_claimed_txid_url": "https://explorer.antbit.io/tx/txid-123456789",
+                "slashed": 0,
+                "total_hire_rate": 10,
+                "uptime_percent": 100,
+                "worker_id": "explorer.antbit.io/device/device-id-123456789",
+                "worker_name": "my-gaming-laptop"
+              },
+              {
+                "compute_minutes_served": 30,
+                "earned": 0,
+                "hardware_used": [
+                  {
+                    "TFLOPS": 300,
+                    "VRAM": 60,
+                    "brand": "amd",
+                    "name": "AMD Radeon Pro 5300M",
+                    "type": "GPU"
+                  },
+                  {
+                    "brand": "intel",
+                    "name": "i7-9750H",
+                    "processor_speed": "2.6Ghz",
+                    "type": "CPU"
+                  },
+                  {
+                    "brand": "kingston",
+                    "name": "kingston_ssd_1tb",
+                    "size": "1TB",
+                    "type": "STORAGE"
+                  },
+                  {
+                    "brand": "corsair",
+                    "name": "corsair_memory_32gb",
+                    "size": "32GB",
+                    "type": "MEMORY"
+                  }
+                ],
+                "reward_claimed_txid_url": "https://explorer.antbit.io/tx/txid-987654321",
+                "slashed": 0,
+                "total_hire_rate": 10,
+                "uptime_percent": 98,
+                "worker_id": "explorer.antbit.io/device/device-id-987654321",
+                "worker_name": "developer-workstation"
+              }
+            ]
+          }
+        }
+      },
+      "ClusterSearchResponse": {
+        "properties": { "data": { "type": "object", "title": "Data" } },
+        "type": "object",
+        "required": ["data"],
+        "title": "ClusterSearchResponse",
+        "example": {
+          "data": [
+            {
+              "cluster_id": "eae6bbe6-da66-41c3-8d48-34509ff04b90",
+              "cluster_url": "https://app.iohk.io"
+            }
+          ]
+        }
+      },
+      "ClusterStatsResponse": {
+        "properties": { "data": { "type": "object", "title": "Data" } },
+        "type": "object",
+        "required": ["data"],
+        "title": "ClusterStatsResponse",
+        "example": {
+          "data": [
+            {
+              "today_clusters_earnings": 10000,
+              "total_clusters": 25000,
+              "total_clusters_earnings": 1000000,
+              "total_clusters_today": 500,
+              "total_compute_hours_served": 5000000,
+              "total_compute_hours_served_today": 50000
+            }
+          ]
+        }
+      },
+      "ClusterStatusResponse": {
+        "properties": { "data": { "type": "object", "title": "Data" } },
+        "type": "object",
+        "required": ["data"],
+        "title": "ClusterStatusResponse",
+        "example": { "data": { "status": "running" } }
+      },
+      "ClustersResponse": {
+        "properties": { "data": { "type": "object", "title": "Data" } },
+        "type": "object",
+        "required": ["data"],
+        "title": "ClustersResponse",
+        "example": {
+          "data": [
+            {
+              "cluster_id": "eae6bbe6-da66-41c3-8d48-34509ff04b90",
+              "compute_minutes_remaining": 60,
+              "compute_minutes_served": 0,
+              "percent_completed": 0,
+              "reward": 10,
+              "status": "deploying"
+            }
+          ]
+        }
+      },
+      "DeviceDetailsResponse": {
+        "properties": { "data": { "type": "object", "title": "Data" } },
+        "type": "object",
+        "required": ["data"],
+        "title": "DeviceDetailsResponse",
+        "example": {
+          "data": {
+            "connected_services": [
+              { "service": "io-master", "status": "connected" },
+              { "service": "ray", "status": "connected" },
+              { "service": "ludwig", "status": "failed" }
+            ],
+            "connectivity_tier": "Ultra Fast",
+            "device_connected": true,
+            "device_id": "460dd1f4-bbd7-4eab-845c-c0c4953c45b3",
+            "device_status": "Idle",
+            "device_url": "explorer.antbit.io/device/device-id-123456789",
+            "download_speed_mbps": 800.34,
+            "hardware": [
+              {
+                "TFLOPS": 500,
+                "VRAM": 80,
+                "brand": "nvidia",
+                "name": "RTX 4090",
+                "type": "GPU"
+              },
+              {
+                "brand": "intel",
+                "name": "i71300k",
+                "processor_speed": "2.5Ghz",
+                "type": "CPU"
+              },
+              {
+                "brand": "seagate",
+                "name": "seagate_ssd_512gb",
+                "size": "512GB",
+                "type": "STORAGE"
+              },
+              {
+                "brand": "samsung",
+                "name": "samsung_memory_16gb",
+                "size": "16GB",
+                "type": "MEMORY"
+              }
+            ],
+            "location": "USA, San Francisco",
+            "total_download_traffic": 0,
+            "total_upload_traffic": 0,
+            "upload_speed_mbps": 900.75,
+            "uptime_bar": [
+              {
+                "note": "Down for 3 hours ",
+                "online": false,
+                "timestamp": "2023-05-30"
+              },
+              {
+                "note": "Down for 1 hour",
+                "online": true,
+                "timestamp": "2023-05-31"
+              }
+            ],
+            "uptime_percent": 100
+          }
+        }
+      },
+      "DeviceEarningsResponse": {
+        "properties": { "data": { "type": "object", "title": "Data" } },
+        "type": "object",
+        "required": ["data"],
+        "title": "DeviceEarningsResponse",
+        "example": {
+          "data": {
+            "jobs": [
+              {
+                "compute_minutes_hired": 60,
+                "compute_minutes_served": 0,
+                "earned": 0,
+                "earning_claim_taxid_url": "https://explorer.antbit.io/earning/claim-taxid/123456789",
+                "end": "2023-05-30T00:00:00+00:00",
+                "for_url": "",
+                "slashed": 0,
+                "start": "2023-05-30T00:00:00+00:00",
+                "status": "finished",
+                "total_hire_rate": 10
+              }
+            ],
+            "slashed_earnings": 0,
+            "total_compute_hours_served": 0,
+            "total_earnings": 0,
+            "total_jobs": 0,
+            "used_hardware_list": [
+              { "brand": "nvidia", "name": "RTX 4090", "type": "GPU" },
+              { "brand": "intel", "name": "i71300k", "type": "CPU" },
+              {
+                "brand": "seagate",
+                "name": "seagate_ssd_512gb",
+                "type": "STORAGE"
+              },
+              {
+                "brand": "samsung",
+                "name": "samsung_memory_16gb",
+                "type": "MEMORY"
+              }
+            ]
+          }
+        }
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": { "$ref": "#/components/schemas/ValidationError" },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "InstanceDetailsResponse": {
+        "properties": { "data": { "type": "object", "title": "Data" } },
+        "type": "object",
+        "required": ["data"],
+        "title": "InstanceDetailsResponse",
+        "example": {
+          "data": {
+            "compute_minutes_remaining": 30,
+            "compute_minutes_served": 30,
+            "finished_at": "2023-07-22T20:11:39+00:00",
+            "instance_id": "ba257ef3-187b-4c40-a10f-74e6a6939cca",
+            "instance_status": "running",
+            "instance_url": "www.antbit_instance.com/",
+            "locations": ["San Francisco"],
+            "payments": 0,
+            "percent_completed": 50,
+            "security_compliance": ["SOC2", "E2EE"],
+            "service": "ubuntu 20.04 LTS",
+            "started_at": "2023-07-22T20:11:39+00:00",
+            "total_payments_amount": 0,
+            "total_refund_payments_amount": 0,
+            "worker_cpu_quantity": 1,
+            "worker_gpu_quantity": 2,
+            "worker_quantity": 1,
+            "worker_tflops": 60,
+            "workers": [
+              {
+                "compute_minutes_served": 0,
+                "earned": 0,
+                "hardware_used": [
+                  {
+                    "TFLOPS": 500,
+                    "VRAM": 80,
+                    "brand": "nvidia",
+                    "name": "RTX 4090",
+                    "type": "GPU"
+                  },
+                  {
+                    "brand": "intel",
+                    "name": "i71300k",
+                    "processor_speed": "2.5Ghz",
+                    "type": "CPU"
+                  },
+                  {
+                    "brand": "seagate",
+                    "name": "seagate_ssd_512gb",
+                    "size": "512GB",
+                    "type": "STORAGE"
+                  },
+                  {
+                    "brand": "samsung",
+                    "name": "samsung_memory_16gb",
+                    "size": "16GB",
+                    "type": "MEMORY"
+                  }
+                ],
+                "reward_claimed_txid_url": "https://explorer.antbit.io/tx/txid-123456789",
+                "slashed": 0,
+                "total_hire_rate": 10,
+                "uptime_percent": 100,
+                "worker_id": "explorer.antbit.io/device/device-id-123456789",
+                "worker_name": "my-gaming-laptop"
+              }
+            ]
+          }
+        }
+      },
+      "InstanceSearchResponse": {
+        "properties": { "data": { "type": "object", "title": "Data" } },
+        "type": "object",
+        "required": ["data"],
+        "title": "InstanceSearchResponse",
+        "example": {
+          "data": [
+            {
+              "instance_id": "ba257ef3-187b-4c40-a10f-74e6a6939cca",
+              "instance_url": "www.antbit_instance.com/"
+            }
+          ]
+        }
+      },
+      "InstanceStatsResponse": {
+        "properties": { "data": { "type": "object", "title": "Data" } },
+        "type": "object",
+        "required": ["data"],
+        "title": "InstanceStatsResponse",
+        "example": {
+          "data": [
+            {
+              "today_instances_earnings": 10000,
+              "total_compute_hours_served": 5000000,
+              "total_compute_hours_served_today": 50000,
+              "total_instances": 25000,
+              "total_instances_earnings": 1000000,
+              "total_instances_today": 500
+            }
+          ]
+        }
+      },
+      "InstanceStatusResponse": {
+        "properties": { "data": { "type": "object", "title": "Data" } },
+        "type": "object",
+        "required": ["data"],
+        "title": "InstanceStatusResponse",
+        "example": { "data": { "status": "running" } }
+      },
+      "InstancesResponse": {
+        "properties": { "data": { "type": "object", "title": "Data" } },
+        "type": "object",
+        "required": ["data"],
+        "title": "InstancesResponse",
+        "example": {
+          "data": [
+            {
+              "compute_minutes_remaining": 60,
+              "compute_minutes_served": 0,
+              "instance_id": "eae6bbe6-da66-41c3-8d48-34509ff04b90",
+              "instance_url": "https://app.iohk.io",
+              "percent_completed": 0,
+              "reward": 10,
+              "status": "deploying",
+              "total_tflops": 0
+            }
+          ]
+        }
+      },
+      "MarketSnapshotResponse": {
+        "properties": { "data": { "type": "object", "title": "Data" } },
+        "type": "object",
+        "required": ["data"],
+        "title": "MarketSnapshotResponse",
+        "example": {
+          "data": [
+            {
+              "brand": "nvidia",
+              "connectivity": "Ultra High",
+              "name": "RTX 3060\n",
+              "price_per_hour": 0.1,
+              "price_per_hour_chg_percent": 5,
+              "quantity": 400,
+              "quantity_available": 200,
+              "quantity_available_percent": 50,
+              "quantity_busy_percent": 50,
+              "security": ["SOC2"],
+              "type": "gpu"
+            }
+          ]
+        }
+      },
+      "NetworkStatsResponse": {
+        "properties": { "data": { "type": "object", "title": "Data" } },
+        "type": "object",
+        "required": ["data"],
+        "title": "NetworkStatsResponse",
+        "example": {
+          "data": [
+            {
+              "cpu_quantity": 8000,
+              "earnings": 890000,
+              "earnings_chg": 5.3,
+              "earnings_timeseries": [
+                { "timestamp": "2023-07-23T00:00:00Z", "value": 1000000 },
+                { "timestamp": "2023-07-23T01:00:00Z", "value": 1050000 },
+                { "timestamp": "2023-07-23T02:00:00Z", "value": 1100000 },
+                { "timestamp": "2023-07-23T03:00:00Z", "value": 1200000 },
+                { "timestamp": "2023-07-23T04:00:00Z", "value": 1100000 },
+                { "timestamp": "2023-07-23T05:00:00Z", "value": 1150000 },
+                { "timestamp": "2023-07-23T06:00:00Z", "value": 1200000 }
+              ],
+              "gpu_quantity": 5000,
+              "hours_of_compute_served": 7000,
+              "network_pressure_percent": 86.5,
+              "supplier_name": "filecoin"
+            }
+          ]
+        }
+      },
+      "PoolsDetailsResponse": {
+        "properties": { "data": { "type": "object", "title": "Data" } },
+        "type": "object",
+        "required": ["data"],
+        "title": "PoolsDetailsResponse",
+        "example": {
+          "data": {
+            "connectivity_tiers": [
+              {
+                "active_cpus": 8000,
+                "active_gpus": 5000,
+                "download_speed": 500,
+                "name": "Ultra Speed",
+                "unit": "Mbps",
+                "upload_speed": 400
+              }
+            ],
+            "locations": [
+              { "active_cpus": 10000, "active_gpus": 5000, "name": "Japan" }
+            ],
+            "security_compliance": [
+              { "active_cpus": 700, "active_gpus": 400, "name": "SOC2" }
+            ],
+            "services": [
+              { "active_cpus": 9000, "active_gpus": 4500, "name": "predibase" }
+            ]
+          }
+        }
+      },
+      "UserBalanceResponse": {
+        "properties": { "data": { "type": "object", "title": "Data" } },
+        "type": "object",
+        "required": ["data"],
+        "title": "UserBalanceResponse",
+        "example": { "data": { "balance": 100 } }
+      },
+      "UserBillingsResponse": {
+        "properties": { "data": { "type": "object", "title": "Data" } },
+        "type": "object",
+        "required": ["data"],
+        "title": "UserBillingsResponse",
+        "example": {
+          "data": [
+            {
+              "amount_paid": 10,
+              "amount_refunded": 0,
+              "for": "cluster",
+              "for_url": "https://antbit.io",
+              "invoice_amount": 10,
+              "invoice_date": "2023-07-22T17:14:54.798851+00:00",
+              "invoice_id": "787f2981-05ed-42ca-b129-66f4e4d59264",
+              "invoice_pdf_url": "https://antbit.io",
+              "owner_email": "john.doe@antbit.io",
+              "status": "paid",
+              "txid_urls": ["https://antbit.io"]
+            }
+          ]
+        }
+      },
+      "UserClustersResponse": {
+        "properties": { "data": { "type": "object", "title": "Data" } },
+        "type": "object",
+        "required": ["data"],
+        "title": "UserClustersResponse",
+        "example": {
+          "data": [
+            {
+              "cluster_dashboard_url": "https://app.iohk.io",
+              "cluster_id": "eae6bbe6-da66-41c3-8d48-34509ff04b90",
+              "cluster_url": "https://app.iohk.io",
+              "compute_minutes_remaining": 60,
+              "compute_minutes_served": 0,
+              "head_node_ip": "192.168.0.1",
+              "head_node_ssh_command": "ssh -i ~/.ssh/id_rsa -p 22 ubuntu@",
+              "location": ["San Francisco", "New York"],
+              "percent_completed": 0,
+              "service": "ray",
+              "specs": {
+                "CPU": [
+                  {
+                    "brand": "intel",
+                    "name": "i71300k",
+                    "processor_speed": "2.5Ghz"
+                  },
+                  {
+                    "brand": "intel",
+                    "name": "i7-9750H",
+                    "processor_speed": "2.6Ghz"
+                  }
+                ],
+                "GPU": [
+                  {
+                    "TFLOPS": 500,
+                    "VRAM": 80,
+                    "brand": "nvidia",
+                    "name": "RTX 4090"
+                  },
+                  {
+                    "TFLOPS": 300,
+                    "VRAM": 60,
+                    "brand": "amd",
+                    "name": "AMD Radeon Pro 5300M"
+                  }
+                ],
+                "MEMORY": [
+                  {
+                    "brand": "samsung",
+                    "name": "samsung_memory_16gb",
+                    "size": "16GB"
+                  },
+                  {
+                    "brand": "corsair",
+                    "name": "corsair_memory_32gb",
+                    "size": "32GB"
+                  }
+                ],
+                "STORAGE": [
+                  {
+                    "brand": "seagate",
+                    "name": "seagate_ssd_512gb",
+                    "size": "512GB"
+                  },
+                  {
+                    "brand": "kingston",
+                    "name": "kingston_ssd_1tb",
+                    "size": "1TB"
+                  }
+                ]
+              },
+              "started_at": "2023-07-22T20:11:39.695152+00:00",
+              "status": "deploying"
+            }
+          ]
+        }
+      },
+      "UserDetailsResponse": {
+        "properties": { "data": { "type": "object", "title": "Data" } },
+        "type": "object",
+        "required": ["data"],
+        "title": "UserDetailsResponse",
+        "example": {
+          "data": {
+            "balance": 0,
+            "city": "Kuala Lumpur",
+            "country": "Malaysia",
+            "email": "john_doe@antbit.io",
+            "joined": 1690036546,
+            "last_accessed": 1690036546,
+            "name": "John Doe",
+            "status": "Active",
+            "type": "Personal",
+            "website": "www.antbit.io"
+          }
+        }
+      },
+      "UserInstancesResponse": {
+        "properties": { "data": { "type": "object", "title": "Data" } },
+        "type": "object",
+        "required": ["data"],
+        "title": "UserInstancesResponse",
+        "example": {
+          "data": [
+            {
+              "compute_minutes_remaining": 30,
+              "compute_minutes_served": 30,
+              "instance_id": "ba257ef3-187b-4c40-a10f-74e6a6939cca",
+              "instance_url": "www.antbit_instance.com/",
+              "location": ["San Francisco"],
+              "percent_completed": 50,
+              "public_ip": "198.128.68",
+              "resource_private_name": "my-instance-1",
+              "service": "ubuntu 20.04 LTS",
+              "specs": {
+                "CPU": [
+                  {
+                    "brand": "intel",
+                    "name": "i71300k",
+                    "processor_speed": "2.5Ghz"
+                  }
+                ],
+                "GPU": [
+                  {
+                    "TFLOPS": 500,
+                    "VRAM": 80,
+                    "brand": "nvidia",
+                    "name": "RTX 4090"
+                  }
+                ],
+                "MEMORY": [
+                  {
+                    "brand": "samsung",
+                    "name": "samsung_memory_16gb",
+                    "size": "16GB"
+                  }
+                ],
+                "STORAGE": [
+                  {
+                    "brand": "seagate",
+                    "name": "seagate_ssd_512gb",
+                    "size": "512GB"
+                  }
+                ]
+              },
+              "ssh_command": "ssh ubuntu@198.128.68",
+              "started_at": "2023-07-22T20:11:39+00:00",
+              "status": "running"
+            }
+          ]
+        }
+      },
+      "UserNotificationsResponse": {
+        "properties": { "data": { "type": "object", "title": "Data" } },
+        "type": "object",
+        "required": ["data"],
+        "title": "UserNotificationsResponse",
+        "example": {
+          "data": [
+            "Cluster deployed",
+            "Cluster deployed ",
+            "Payment Success for Cluster deployment of $10"
+          ]
+        }
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": { "anyOf": [{ "type": "string" }, { "type": "integer" }] },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": { "type": "string", "title": "Message" },
+          "type": { "type": "string", "title": "Error Type" }
+        },
+        "type": "object",
+        "required": ["loc", "msg", "type"],
+        "title": "ValidationError"
+      }
+    }
+  }
+}

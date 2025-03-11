@@ -1,0 +1,1091 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "version": "3.0",
+    "title": "RapiXchange Web Services",
+    "description": "The RapiXchange Web Services API offers a secure, scalable, and efficient solution for managing ACH third-party account registrations, ACH virtual cards, and ACH transfers.    "
+  },
+  "servers": [
+    {
+      "url": "https://rapi-ws.herokuapp.com",
+      "description": "RapiXchange development server"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "paths": {
+    "/api/v1/rapixchange/login": {
+      "post": {
+        "tags": ["Authentication"],
+        "summary": "User Login",
+        "description": "This endpoint allows a user to log in to the RapiXchange system. The user must provide valid credentials to obtain access.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user": {
+                    "type": "string",
+                    "description": "The user's unique identifier or username.",
+                    "example": "1e75b1050fd1"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "The user's password.",
+                    "format": "password",
+                    "example": "1e75b1050fd1"
+                  }
+                },
+                "required": ["user", "password"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful login.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string",
+                      "description": "Authentication token to be used for subsequent API requests.",
+                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized. Invalid credentials.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "Error message indicating why the login failed.",
+                      "example": "Invalid username or password."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/rapixchange/virtual_card/create": {
+      "post": {
+        "tags": ["Virtual Cards"],
+        "summary": "Create Virtual Card",
+        "description": "This endpoint allows the creation of a new virtual card associated with a specific wallet through wallet_id identifier. The request must include a valid authorization token.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "wallet_id": {
+                    "type": "string",
+                    "description": "The unique identifier of the wallet to which the virtual card will be linked.",
+                    "example": "4b0f-96cd-a0527d9161a9"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "The name of the cardholder.",
+                    "example": "Raymod Phillps"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "description": "The email address of the cardholder.",
+                    "example": "rphilly@demo.com"
+                  }
+                },
+                "required": ["wallet_id", "name", "email"]
+              }
+            }
+          }
+        },
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "201": {
+            "description": "Virtual card created successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "date": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "The date and time when the virtual card was created.",
+                      "example": "2024-09-01T17:52:43-06:00"
+                    },
+                    "status": {
+                      "type": "boolean",
+                      "description": "Indicates if the creation was successful.",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "A message confirming the successful creation of the virtual card.",
+                      "example": "New Virtual Card Created"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "virtual_card": {
+                          "type": "object",
+                          "properties": {
+                            "identifier": {
+                              "type": "string",
+                              "description": "The unique identifier of the newly created virtual card.",
+                              "example": "5dc92a7c-a3bb-4e76-8f2e-34c8de6fe7ec"
+                            },
+                            "vcard_type": {
+                              "type": "string",
+                              "description": "The type of the virtual card (e.g., Prepaid).",
+                              "example": "Prepaid"
+                            },
+                            "vcard_number": {
+                              "type": "string",
+                              "description": "The virtual card number.",
+                              "example": "6070800100000030"
+                            },
+                            "vcard_internal_account_id": {
+                              "type": "string",
+                              "description": "The internal account identifier linked to the virtual card.",
+                              "example": "0af590b8-f24c-441b-b034-75ed18c8401a"
+                            },
+                            "name": {
+                              "type": "string",
+                              "description": "The name of the cardholder.",
+                              "example": "Raymod Phillps"
+                            },
+                            "email": {
+                              "type": "string",
+                              "format": "email",
+                              "description": "The email address of the cardholder.",
+                              "example": "rphilly@demo.com"
+                            },
+                            "vcard_expires": {
+                              "type": "boolean",
+                              "description": "Indicates if the virtual card has an expiration date.",
+                              "example": false
+                            },
+                            "vcard_expiration": {
+                              "type": "string",
+                              "format": "date-time",
+                              "nullable": true,
+                              "description": "The expiration date of the virtual card, if applicable.",
+                              "example": null
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "description": "Virtual card created successfully.",
+                  "content": {
+                    "application/json": {
+                      "schema": {
+                        "type": "object",
+                        "properties": {
+                          "card_id": {
+                            "type": "string",
+                            "description": "The unique identifier of the newly created virtual card.",
+                            "example": "vc_12345"
+                          },
+                          "status": {
+                            "type": "string",
+                            "description": "Status of the virtual card creation.",
+                            "example": "CREATED"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Virtual card already exists.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "date": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "The date and time when the request was made.",
+                      "example": "2024-09-01T18:01:37-06:00"
+                    },
+                    "status": {
+                      "type": "boolean",
+                      "description": "Indicates that the request was successful but the virtual card was already created.",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "A message indicating that the virtual card was previously created.",
+                      "example": "Virtual card previously created"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "virtual_card": {
+                          "type": "object",
+                          "properties": {
+                            "identifier": {
+                              "type": "string",
+                              "description": "The unique identifier of the existing virtual card.",
+                              "example": "5dc92a7c-a3bb-4e76-8f2e-34c8de6fe7ec"
+                            },
+                            "vcard_type": {
+                              "type": "string",
+                              "description": "The type of the virtual card (e.g., Prepaid).",
+                              "example": "Prepaid"
+                            },
+                            "vcard_number": {
+                              "type": "string",
+                              "description": "The virtual card number.",
+                              "example": "6070800100000030"
+                            },
+                            "vcard_internal_account_id": {
+                              "type": "string",
+                              "description": "The internal account identifier linked to the virtual card.",
+                              "example": "0af590b8-f24c-441b-b034-75ed18c8401a"
+                            },
+                            "name": {
+                              "type": "string",
+                              "description": "The name of the cardholder.",
+                              "example": "Raymod Phillps"
+                            },
+                            "email": {
+                              "type": "string",
+                              "format": "email",
+                              "description": "The email address of the cardholder.",
+                              "example": "rphilly@demo.com"
+                            },
+                            "vcard_expires": {
+                              "type": "boolean",
+                              "description": "Indicates if the virtual card has an expiration date.",
+                              "example": false
+                            },
+                            "vcard_expiration": {
+                              "type": "string",
+                              "format": "date-time",
+                              "nullable": true,
+                              "description": "The expiration date of the virtual card, if applicable.",
+                              "example": null
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized. Invalid or missing authorization token.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "description": "Error message indicating the reason for the failure.",
+                      "example": "Not authenticated. Signature has expired."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/rapixchange/virtual_cards": {
+      "get": {
+        "tags": ["Virtual Cards"],
+        "summary": "Query Virtual Cards by Wallet ID",
+        "description": "This endpoint retrieves virtual cards associated with a specific wallet ID. The request must include a valid authorization token.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "wallet_id",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "The unique identifier \"wallet_id\" of the wallet to query virtual cards.",
+            "example": "4b0f-96cd-a0527d9161a9"
+          }
+        ],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Successful retrieval of virtual cards.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "date": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "The date and time when the request was made.",
+                      "example": "2024-09-01T18:04:37-06:00"
+                    },
+                    "status": {
+                      "type": "boolean",
+                      "description": "Indicates if the request was successful.",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "A message indicating the result of the request.",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "virtual_cards": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "identifier": {
+                                "type": "string",
+                                "description": "The unique identifier of the virtual card.",
+                                "example": "5dc92a7c-a3bb-4e76-8f2e-34c8de6fe7ec"
+                              },
+                              "vcard_type": {
+                                "type": "string",
+                                "description": "The type of the virtual card (e.g., Prepaid).",
+                                "example": "Prepaid"
+                              },
+                              "vcard_number": {
+                                "type": "string",
+                                "description": "The virtual card number.",
+                                "example": "6070800100000030"
+                              },
+                              "vcard_internal_account_id": {
+                                "type": "string",
+                                "description": "The internal account identifier linked to the virtual card.",
+                                "example": "0af590b8-f24c-441b-b034-75ed18c8401a"
+                              },
+                              "vcard_expires": {
+                                "type": "boolean",
+                                "description": "Indicates if the virtual card has an expiration date.",
+                                "example": false
+                              },
+                              "vcard_expiration": {
+                                "type": "string",
+                                "format": "date-time",
+                                "nullable": true,
+                                "description": "The expiration date of the virtual card, if applicable.",
+                                "example": null
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No virtual cards found for the specified wallet ID.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "date": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "The date and time when the request was made.",
+                      "example": "2024-09-01T18:05:45-06:00"
+                    },
+                    "status": {
+                      "type": "boolean",
+                      "description": "Indicates if the request was successful.",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "A message indicating that no virtual cards were found.",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "virtual_cards": {
+                          "type": "array",
+                          "items": { "type": "object" },
+                          "example": []
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/rapixchange/ach_third_party_accounts": {
+      "post": {
+        "tags": ["ACH Third-Party Accounts"],
+        "summary": "Create ACH Third-Party Account",
+        "description": "This endpoint allows the creation of a new ACH third-party account. The request must include a valid authorization token.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "ach_third_party_account": {
+                    "type": "object",
+                    "properties": {
+                      "shortname": {
+                        "type": "string",
+                        "description": "A short, user-friendly name for the account.",
+                        "example": "Sample ACH Account"
+                      },
+                      "account_number": {
+                        "type": "string",
+                        "description": "The account number for the third-party ACH account.",
+                        "example": "123456789"
+                      },
+                      "ach_bank": {
+                        "type": "string",
+                        "description": "The ACH bank code where the account is held. Must be one of the following codes.",
+                        "enum": [
+                          "BAGU",
+                          "CHNA",
+                          "TRAJ",
+                          "BINM",
+                          "INDL",
+                          "BRRL",
+                          "DIBI",
+                          "CTRC",
+                          "CITI",
+                          "PBAP",
+                          "FCOH",
+                          "BPRC",
+                          "ANTG",
+                          "AMCN",
+                          "CITB",
+                          "AGRO",
+                          "GTCO",
+                          "BDCT",
+                          "AZTK"
+                        ],
+                        "example": "BRRL"
+                      },
+                      "currency": {
+                        "type": "string",
+                        "description": "The currency of the account. Only GTQ and USD are supported.",
+                        "enum": ["GTQ", "USD"],
+                        "example": "GTQ"
+                      },
+                      "ach_product": {
+                        "type": "integer",
+                        "description": "The product type associated with the ACH account. Must be 1 for monetary deposit accounts or 2 for savings accounts.",
+                        "enum": [1, 2],
+                        "example": 1
+                      },
+                      "wallet_id": {
+                        "type": "string",
+                        "description": "The unique identifier of the wallet to which this ACH account will be linked.",
+                        "example": "96cd-a0527d9161a9"
+                      }
+                    }
+                  }
+                },
+                "required": [
+                  "shortname",
+                  "account_number",
+                  "ach_bank",
+                  "currency",
+                  "ach_product",
+                  "wallet_id"
+                ]
+              }
+            }
+          }
+        },
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "201": {
+            "description": "ACH third-party account created successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "date": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "The date and time when the ACH third-party account was created.",
+                      "example": "2024-09-01T18:33:18-06:00"
+                    },
+                    "status": {
+                      "type": "boolean",
+                      "description": "Indicates if the creation was successful.",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "A message confirming the successful creation of the ACH third-party account.",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "ach_third_party_account": {
+                          "type": "object",
+                          "properties": {
+                            "shortname": {
+                              "type": "string",
+                              "description": "The short name provided for the account.",
+                              "example": "Sample ACH Account"
+                            },
+                            "ach_bank": {
+                              "type": "string",
+                              "description": "The ACH bank where the account is held.",
+                              "example": "BANCO DE DESARROLLO RURAL, S.A."
+                            },
+                            "currency": {
+                              "type": "string",
+                              "description": "The currency of the account.",
+                              "example": "GTQ"
+                            },
+                            "ach_product": {
+                              "type": "string",
+                              "description": "The product type associated with the ACH account.",
+                              "example": "DEPOSITOS MONETARIOS"
+                            },
+                            "account_number": {
+                              "type": "string",
+                              "description": "The account number of the ACH third-party account.",
+                              "example": "1234567890"
+                            },
+                            "iban": {
+                              "type": "string",
+                              "description": "The IBAN associated with the ACH third-party account.",
+                              "example": "GT84BRRL01010000001234567890"
+                            },
+                            "wallet_id": {
+                              "type": "string",
+                              "description": "The wallet ID associated with this ACH account.",
+                              "example": "96cd-a0527d9161a9"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity. The request could not be processed due to various issues such as missing parameters, duplicate records, or malformed JSON.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "date": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "The date and time when the error occurred.",
+                      "example": "2024-09-01T18:36:55-06:00"
+                    },
+                    "status": {
+                      "type": "boolean",
+                      "description": "Indicates that the request failed.",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "A message indicating the reason for the failure.",
+                      "example": "wallet_id property must exist, IBAN Account has already been registered"
+                    },
+                    "data": {
+                      "type": "object",
+                      "description": "An empty object, as no additional data is provided in this response.",
+                      "example": {}
+                    }
+                  }
+                },
+                "examples": {
+                  "duplicate_account": {
+                    "summary": "Duplicate Account",
+                    "value": {
+                      "date": "2024-09-01T18:36:55-06:00",
+                      "status": false,
+                      "message": "IBAN Account has already been registered",
+                      "data": {}
+                    }
+                  },
+                  "invalid_json": {
+                    "summary": "Malformed JSON",
+                    "value": {
+                      "date": "2024-09-01T18:39:11-06:00",
+                      "status": false,
+                      "message": "Error occurred while parsing request parameters",
+                      "data": {}
+                    }
+                  },
+                  "missing_parameter": {
+                    "summary": "Missing Required Parameter",
+                    "value": {
+                      "date": "2024-09-01T18:39:35-06:00",
+                      "status": false,
+                      "message": "wallet_id property must exist",
+                      "data": {}
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["ACH Third-Party Accounts"],
+        "summary": "Retrieve ACH Third-Party Accounts",
+        "description": "This endpoint retrieves a list of ACH third-party accounts associated with a specific wallet ID. The request must include a valid authorization token.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "wallet_id",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "The unique identifier of the wallet to query ACH third-party accounts.",
+            "example": "96cd-a0527d9161a9"
+          }
+        ],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Successful retrieval of ACH third-party accounts.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "date": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "The date and time when the request was processed.",
+                      "example": "2024-09-01T19:14:34-06:00"
+                    },
+                    "status": {
+                      "type": "boolean",
+                      "description": "Indicates that the request was successful.",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "A message indicating the result of the request.",
+                      "example": "Third-party accounts list"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "ach_third_party_accounts": {
+                          "type": "array",
+                          "description": "A list of ACH third-party accounts associated with the specified wallet ID.",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "shortname": {
+                                "type": "string",
+                                "description": "The short name provided for the account.",
+                                "example": "Sample ACH Account"
+                              },
+                              "ach_bank": {
+                                "type": "string",
+                                "description": "The ACH bank where the account is held.",
+                                "example": "BANCO DE DESARROLLO RURAL, S.A."
+                              },
+                              "currency": {
+                                "type": "string",
+                                "description": "The currency of the account.",
+                                "example": "GTQ"
+                              },
+                              "ach_product": {
+                                "type": "string",
+                                "description": "The product type associated with the ACH account.",
+                                "example": "DEPOSITOS MONETARIOS"
+                              },
+                              "account_number": {
+                                "type": "string",
+                                "description": "The account number of the ACH third-party account.",
+                                "example": "1234567890"
+                              },
+                              "iban": {
+                                "type": "string",
+                                "description": "The IBAN associated with the ACH third-party account.",
+                                "example": "GT84BRRL01010000001234567890"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "accounts_found": {
+                    "summary": "Accounts Found",
+                    "value": {
+                      "date": "2024-09-01T19:14:34-06:00",
+                      "status": true,
+                      "message": "Third-party accounts list",
+                      "data": {
+                        "ach_third_party_accounts": [
+                          {
+                            "shortname": "Sample ACH Account",
+                            "ach_bank": "BANCO DE DESARROLLO RURAL, S.A.",
+                            "currency": "GTQ",
+                            "ach_product": "DEPOSITOS MONETARIOS",
+                            "account_number": "1234567890",
+                            "iban": "GT84BRRL01010000001234567890"
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  "no_accounts_found": {
+                    "summary": "No Accounts Found",
+                    "value": {
+                      "date": "2024-09-01T19:15:52-06:00",
+                      "status": true,
+                      "message": "Third-party accounts list",
+                      "data": { "ach_third_party_accounts": [] }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/rapixchange/ach_wire_transfer": {
+      "post": {
+        "tags": ["ACH Wire Transfers"],
+        "summary": "Initiate ACH Wire Transfer",
+        "description": "This endpoint initiates an ACH wire transfer. The transfer is received and then awaits processing by the ACH network. A valid authorization token is required.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "ach_wire_transfer": {
+                    "type": "object",
+                    "properties": {
+                      "wallet_id": {
+                        "type": "string",
+                        "description": "The unique identifier of the wallet initiating the transfer.",
+                        "example": "96cd-a0527d9161a9"
+                      },
+                      "vcard_number": {
+                        "type": "string",
+                        "description": "The virtual card number representing the account from which the funds will be withdrawn.",
+                        "example": "6070800100000028"
+                      },
+                      "ach_third_party_account": {
+                        "type": "string",
+                        "description": "The IBAN of the ACH third-party account receiving the transfer.",
+                        "example": "GT96BRRL01010000009988012421"
+                      },
+                      "description": {
+                        "type": "string",
+                        "description": "A description of the transfer.",
+                        "example": "TEST"
+                      },
+                      "amount": {
+                        "type": "number",
+                        "format": "float",
+                        "description": "The amount to be transferred.",
+                        "example": 1.0
+                      },
+                      "webhook": {
+                        "type": "string",
+                        "format": "uri",
+                        "description": "The client’s optional URL where the response will be sent once the ACH transfer is processed by the ACH Network.",
+                        "example": "https://mywebhook/sample/ach_transfer_response"
+                      }
+                    }
+                  }
+                },
+                "required": [
+                  "wallet_id",
+                  "vcard_number",
+                  "ach_third_party_account",
+                  "amount",
+                  "webhook"
+                ]
+              }
+            }
+          }
+        },
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "201": {
+            "description": "ACH wire transfer request received and awaiting processing.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "date": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "The date and time when the request was received.",
+                      "example": "2024-09-01T19:20:04-06:00"
+                    },
+                    "status": {
+                      "type": "boolean",
+                      "description": "Indicates that the request was received successfully and is awaiting processing.",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "A message indicating that the request has been received and is in process.",
+                      "example": "ACH request received and awaiting processing."
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "ach_wire_transfer": {
+                          "type": "object",
+                          "properties": {
+                            "wallet_id": {
+                              "type": "string",
+                              "description": "The unique identifier of the wallet initiating the transfer.",
+                              "example": "96cd-a0527d9161a9"
+                            },
+                            "identifier": {
+                              "type": "string",
+                              "description": "A unique identifier for the ACH wire transfer.",
+                              "example": "c135299a-cf9c-4a06-9004-20e32582a0e8"
+                            },
+                            "order_id": {
+                              "type": "string",
+                              "description": "The order ID associated with the transfer.",
+                              "example": "febb5945-31ae-4145-b71a-630b611d6975"
+                            },
+                            "webhook": {
+                              "type": "string",
+                              "format": "uri",
+                              "description": "The URL that will be called when the transfer is processed.",
+                              "example": "https://mywebhook/sample/ach_transfer_response"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity. The request could not be processed due to an error, such as a non-existent or invalid required field.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "date": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "The date and time when the error occurred.",
+                      "example": "2024-09-01T19:21:44-06:00"
+                    },
+                    "status": {
+                      "type": "boolean",
+                      "description": "Indicates that the request failed.",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "A message describing the reason for the failure.",
+                      "example": "ACH Third Party Account doesn't exist"
+                    },
+                    "data": {
+                      "type": "object",
+                      "description": "An empty object, as no additional data is provided in this response.",
+                      "example": {}
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/rapixchange/ach_wire_transfer/{transfer_id}": {
+      "get": {
+        "tags": ["ACH Wire Transfers"],
+        "summary": "Get ACH Wire Transfer Status",
+        "description": "This endpoint retrieves the status of a specific ACH wire transfer using its unique identifier. A valid authorization token is required.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "transfer_id",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "The unique identifier of the ACH wire transfer.",
+            "example": "f6da672d-7d43-4db7-b26f-1ff0ce033472"
+          }
+        ],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved the status of the ACH wire transfer.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "date": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "The date and time when the status was retrieved.",
+                      "example": "2024-09-01T22:33:36-06:00"
+                    },
+                    "status": {
+                      "type": "boolean",
+                      "description": "Indicates whether the request was successful.",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Provides specific details about the ACH wire transfer's status. If the transfer was successful, this message confirms the completion. If there was an error, it explains the reason for the failure.",
+                      "example": "The ACH network failed to process the transfer due to an invalid account number."
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "ach_wire_transfer": {
+                          "type": "object",
+                          "properties": {
+                            "identifier": {
+                              "type": "string",
+                              "description": "The unique identifier of the ACH wire transfer.",
+                              "example": "f6da672d-7d43-4db7-b26f-1ff0ce033472"
+                            },
+                            "wallet_id": {
+                              "type": "string",
+                              "description": "The unique identifier of the wallet initiating the transfer.",
+                              "example": "96cd-a0527d9161a9"
+                            },
+                            "order_id": {
+                              "type": "string",
+                              "description": "The order ID associated with the transfer.",
+                              "example": "4c21b974-f6be-4a0e-9881-a825147ac14b"
+                            },
+                            "status": {
+                              "type": "string",
+                              "description": "The current status of the ACH wire transfer, indicating whether it was successful or encountered an error.",
+                              "enum": ["Success", "Error"]
+                            },
+                            "amount": {
+                              "type": "number",
+                              "format": "float",
+                              "description": "The amount of the transfer.",
+                              "example": 1.0
+                            },
+                            "reference_number": {
+                              "type": "string",
+                              "description": "The reference number associated with the ACH transfer.",
+                              "example": "040042"
+                            },
+                            "webhook": {
+                              "type": "string",
+                              "format": "uri",
+                              "description": "The URL that was called when the transfer was processed.",
+                              "example": "https://mywebhook/sample/ach_transfer_response"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found. The ACH wire transfer does not exist.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "date": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "The date and time when the error occurred.",
+                      "example": "2024-09-01T22:34:07-06:00"
+                    },
+                    "status": {
+                      "type": "boolean",
+                      "description": "Indicates that the request failed.",
+                      "example": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "A message indicating that the ACH wire transfer does not exist.",
+                      "example": "ACH Wire Transfer doesn't exist"
+                    },
+                    "data": {
+                      "type": "object",
+                      "description": "An empty object, as no additional data is provided in this response.",
+                      "example": {}
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

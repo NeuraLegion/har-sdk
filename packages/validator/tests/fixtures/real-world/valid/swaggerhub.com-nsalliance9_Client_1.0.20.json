@@ -1,0 +1,3250 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "description": "This is the official Client API To interact with National Service Alliance (NSA)\n\n# Dates\nAll dates are in the ISO 8601 format - YYYY-MM-DD - ex. 2021-12-31\n\nSee this article for more information: [ISO 8601 article](https://en.wikipedia.org/wiki/ISO_8601)\n\n# Authenication\nAuthenication is handled via basic authentication. \n\nDev and Production credentials will be provided during the implimentation process\n\nSee this article for more information: [basic auth article](https://en.wikipedia.org/wiki/Basic_access_authentication)\n",
+    "version": "1.0.20",
+    "title": "NSA Client API",
+    "contact": { "email": "rj.whitehead@nationalservicealliance.com" }
+  },
+  "servers": [
+    {
+      "description": "Dev Endpoint",
+      "url": "https://dev1.nationalservicealliance.com/clientapi"
+    },
+    {
+      "description": "Production Endpoint",
+      "url": "https://nationalservicealliance.com/clientapi"
+    },
+    {
+      "description": "SwaggerHub API Auto Mocking",
+      "url": "https://virtserver.swaggerhub.com/nsalliance9/Client/1.0.14"
+    }
+  ],
+  "tags": [
+    { "name": "Availability" },
+    { "name": "Create Dispatch" },
+    { "name": "Cancel" },
+    { "name": "Estimates" }
+  ],
+  "paths": {
+    "/coverage/coverageCheck.php": {
+      "post": {
+        "tags": ["Coverage"],
+        "summary": "Confirms in NSA has coverage for provided parameters",
+        "operationId": "getCoverage",
+        "responses": {
+          "200": {
+            "description": "Successful request. \n",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/CoverageResponse" },
+                "examples": {
+                  "hasCoverage": { "value": { "hasCoverage": true } },
+                  "noCoverage": { "value": { "hasCoverage": false } }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "User request error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": [
+                  {
+                    "errorCode": "401",
+                    "errorMessage": "You are not authorized. Please validate your authentication details."
+                  }
+                ]
+              }
+            }
+          },
+          "5XX": {
+            "description": "Unexpected server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": [
+                  {
+                    "errorCode": "500",
+                    "errorMessage": "Unexpected server error"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "security": [{ "basicAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/AvailabilityRequest" }
+            }
+          }
+        }
+      }
+    },
+    "/availability/availability.php": {
+      "post": {
+        "tags": ["Availability"],
+        "summary": "Provides availability by NSA based on provided parameters",
+        "operationId": "getAvailability",
+        "responses": {
+          "200": {
+            "description": "Successful request. You will get one of two responses:\n1) an array of dates with availability\n2) an empty array signifiying that there is no availability\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AvailabilityResponse"
+                },
+                "examples": {
+                  "hasAvailability": {
+                    "value": [
+                      "2021-12-08",
+                      "2021-12-09",
+                      "2021-12-10",
+                      "2021-12-13",
+                      "2021-12-14"
+                    ]
+                  },
+                  "noAvailability": { "value": [] }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "User request error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": [
+                  {
+                    "errorCode": "401",
+                    "errorMessage": "You are not authorized. Please validate your authentication details."
+                  }
+                ]
+              }
+            }
+          },
+          "5XX": {
+            "description": "Unexpected server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": [
+                  {
+                    "errorCode": "500",
+                    "errorMessage": "Unexpected server error"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "security": [{ "basicAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/AvailabilityRequest" }
+            }
+          }
+        }
+      }
+    },
+    "/availability/availabilityWithCODCost.php": {
+      "post": {
+        "tags": ["Availability"],
+        "summary": "Provides availability by NSA based on provided parameters and associated COD Cost",
+        "operationId": "getAvailabilityWithCODCost",
+        "responses": {
+          "200": {
+            "description": "Successful request. You will get one of two responses:\n1) an array of dates with availability\n2) an empty array signifiying that there is no availability\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AvailabilityWithCODCostResponse"
+                },
+                "examples": {
+                  "hasAvailability": {
+                    "value": {
+                      "availability": [
+                        "2021-12-08",
+                        "2021-12-09",
+                        "2021-12-10",
+                        "2021-12-13",
+                        "2021-12-14"
+                      ],
+                      "cost": {
+                        "rateType": "flatRate",
+                        "areaType": "normal",
+                        "cost": 199.89
+                      }
+                    }
+                  },
+                  "noAvailability": { "value": { "availability": [] } }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "User request error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": [
+                  {
+                    "errorCode": "401",
+                    "errorMessage": "You are not authorized. Please validate your authentication details."
+                  }
+                ]
+              }
+            }
+          },
+          "5XX": {
+            "description": "Unexpected server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": [
+                  {
+                    "errorCode": "500",
+                    "errorMessage": "Unexpected server error"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "security": [{ "basicAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/AvailabilityRequest" }
+            }
+          }
+        }
+      }
+    },
+    "/availability/availabilityVirtualTech.php": {
+      "post": {
+        "tags": ["Availability"],
+        "summary": "Provides availability by NSA's virtual technicians",
+        "operationId": "getAvailabilityVirtualTech",
+        "responses": {
+          "200": {
+            "description": "Successful request. You will get one of two responses:\n1) an array of dates with availability\n2) an empty array signifiying that there is no availability\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AvailabilityVirutalTechResponse"
+                },
+                "examples": {
+                  "hasAvailability": {
+                    "value": [
+                      {
+                        "date": "2022-04-05",
+                        "slots": [
+                          "0900-0930",
+                          "0930-1000",
+                          "1000-1030",
+                          "1300-1330",
+                          "1700-1730"
+                        ]
+                      },
+                      {
+                        "date": "2022-04-06",
+                        "slots": [
+                          "0900-0930",
+                          "0930-1000",
+                          "1000-1030",
+                          "1300-1330",
+                          "1700-1730"
+                        ]
+                      }
+                    ]
+                  },
+                  "noAvailability": { "value": [] }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "User request error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": [
+                  {
+                    "errorCode": "401",
+                    "errorMessage": "You are not authorized. Please validate your authentication details."
+                  }
+                ]
+              }
+            }
+          },
+          "5XX": {
+            "description": "Unexpected server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": [
+                  {
+                    "errorCode": "500",
+                    "errorMessage": "Unexpected server error"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "security": [{ "basicAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AvailabilityVirtualTechRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/create/create.php": {
+      "post": {
+        "tags": ["Create Dispatch"],
+        "summary": "Create new Dispatch",
+        "operationId": "createDispatch",
+        "responses": {
+          "200": {
+            "description": "Successful request.\n",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/CreateResponse" },
+                "examples": {
+                  "servicerAssigned": {
+                    "summary": "Servicer Assigned",
+                    "value": {
+                      "dispatchNumber": "DISPATCH111",
+                      "serviceProvider": {
+                        "depotName": "Depot111",
+                        "serviceProviderName": "ABC Repair Shop",
+                        "phoneNumber": "999-999-9999",
+                        "email": "test@test.com",
+                        "partsShippingAddress": {
+                          "contact": "John Doe",
+                          "email": "test@test.com",
+                          "phone": "801-269-0123",
+                          "address1": "6762 South 1300 East",
+                          "address2": "STE 1",
+                          "city": "Salt Lake City",
+                          "state": "UT",
+                          "zip": "84121"
+                        }
+                      }
+                    }
+                  },
+                  "servicerNotAssigned": {
+                    "summary": "Servicer Not Assigned",
+                    "value": { "dispatchNumber": "DISPATCH111" }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": [
+                  {
+                    "errorCode": "401",
+                    "errorMessage": "You are not authorized. Please validate your authentication details."
+                  }
+                ]
+              }
+            }
+          },
+          "5XX": {
+            "description": "Unexpected server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": [
+                  {
+                    "errorCode": "500",
+                    "errorMessage": "Unexpected server error"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "security": [{ "basicAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreateRequest" },
+              "examples": {
+                "withParts": {
+                  "summary": "With Parts",
+                  "value": {
+                    "bookingDetails": {
+                      "caseNumber": "CASE111",
+                      "complaintCode": "DEAD",
+                      "complaint": "Bed will not raise or lower",
+                      "specialInstruction": "please knock instead of ringing door bell",
+                      "scheduleDate": "2021-12-10",
+                      "timePreference": "A",
+                      "preAuthorizationLimit": 249.99,
+                      "limitOfLiabilityRemaining": 555.55,
+                      "limitOfLiabilityTotal": 999.99,
+                      "deductibleAmount": 49.99,
+                      "planCode": "Platinum",
+                      "relationshipCode": "Salesforce portal",
+                      "authorizationNumber": "Auth111",
+                      "suspectedRecall": false,
+                      "exclusions": "Gasket, Buttons, Power cord"
+                    },
+                    "customer": {
+                      "firstName": "John",
+                      "lastName": "Doe",
+                      "email": "test@test.com",
+                      "phone1": "801-269-0123",
+                      "phone2": "999-999-9999",
+                      "phone3": "999-999-9999",
+                      "address1": "6762 South 1300 East",
+                      "address2": "STE 1",
+                      "city": "Salt Lake City",
+                      "state": "UT",
+                      "zip": "84121",
+                      "customerNumber": "CUST1111"
+                    },
+                    "product": {
+                      "dateOfPurchase": "2021-01-01",
+                      "productType": "Adjustable Bed Base",
+                      "brand": "ERGOMOTION",
+                      "serialNumber": "SERIAL111",
+                      "serialNumber2": "serial2",
+                      "modelNumber": "MODEL111",
+                      "modelVersion": "v2",
+                      "sellingDealer": "Best Buy"
+                    },
+                    "parts": [
+                      {
+                        "brand": "Ergomotion",
+                        "partNumber": "PART111",
+                        "description": "DESC111",
+                        "quantity": 1,
+                        "costEach": 11.11,
+                        "hasCore": true,
+                        "coreCostEach": 150,
+                        "supplier": "Encompass"
+                      },
+                      {
+                        "brand": "Ergomotion",
+                        "partNumber": "PART222",
+                        "description": "DESC222",
+                        "quantity": 2,
+                        "costEach": 22.22,
+                        "hasCore": false,
+                        "coreCostEach": 0,
+                        "supplier": "Encompass"
+                      }
+                    ]
+                  }
+                },
+                "withoutParts": {
+                  "summary": "Without Parts",
+                  "value": {
+                    "bookingDetails": {
+                      "caseNumber": "CASE111",
+                      "complaintCode": "DEAD",
+                      "complaint": "Bed will not raise or lower",
+                      "specialInstruction": "please knock instead of ringing door bell",
+                      "scheduleDate": "2021-12-10",
+                      "timePreference": "A",
+                      "preAuthorizationLimit": 249.99,
+                      "deductibleAmount": 49.99,
+                      "planCode": "Platinum",
+                      "authorizationNumber": "Auth111",
+                      "relationshipCode": "Salesforce portal",
+                      "suspectedRecall": false,
+                      "exclusions": "Gasket, Buttons, Power cord",
+                      "noPartsNeeded": true
+                    },
+                    "customer": {
+                      "firstName": "John",
+                      "lastName": "Doe",
+                      "email": "test@test.com",
+                      "phone1": "801-269-0123",
+                      "phone2": "999-999-9999",
+                      "phone3": "999-999-9999",
+                      "address1": "6762 South 1300 East",
+                      "address2": "STE 1",
+                      "city": "Salt Lake City",
+                      "state": "UT",
+                      "zip": "84121",
+                      "customerNumber": "CUST1111"
+                    },
+                    "product": {
+                      "dateOfPurchase": "2021-01-01",
+                      "productType": "Adjustable Bed Base",
+                      "brand": "ERGOMOTION",
+                      "serialNumber": "SERIAL111",
+                      "serialNumber2": "serial2",
+                      "modelNumber": "MODEL111",
+                      "modelVersion": "v2",
+                      "sellingDealer": "Best Buy"
+                    }
+                  }
+                },
+                "isUrgent": {
+                  "summary": "Is Urgent",
+                  "value": {
+                    "bookingDetails": {
+                      "caseNumber": "CASE111",
+                      "complaintCode": "DEAD",
+                      "complaint": "Bed will not raise or lower",
+                      "specialInstruction": "please knock instead of ringing door bell",
+                      "scheduleDate": "2021-12-10",
+                      "timePreference": "A",
+                      "preAuthorizationLimit": 249.99,
+                      "deductibleAmount": 49.99,
+                      "planCode": "Platinum",
+                      "authorizationNumber": "Auth111",
+                      "relationshipCode": "Salesforce portal",
+                      "suspectedRecall": false,
+                      "exclusions": "Gasket, Buttons, Power cord",
+                      "noPartsNeeded": true,
+                      "isUrgent": true,
+                      "urgentReason": "flooding"
+                    },
+                    "customer": {
+                      "firstName": "John",
+                      "lastName": "Doe",
+                      "email": "test@test.com",
+                      "phone1": "801-269-0123",
+                      "phone2": "999-999-9999",
+                      "phone3": "999-999-9999",
+                      "address1": "6762 South 1300 East",
+                      "address2": "STE 1",
+                      "city": "Salt Lake City",
+                      "state": "UT",
+                      "zip": "84121",
+                      "customerNumber": "CUST1111"
+                    },
+                    "product": {
+                      "dateOfPurchase": "2021-01-01",
+                      "productType": "Adjustable Bed Base",
+                      "brand": "ERGOMOTION",
+                      "serialNumber": "SERIAL111",
+                      "serialNumber2": "serial2",
+                      "modelNumber": "MODEL111",
+                      "modelVersion": "v2",
+                      "sellingDealer": "Best Buy"
+                    }
+                  }
+                },
+                "requiredFieldsOnly": {
+                  "summary": "Required Fields Only",
+                  "value": {
+                    "bookingDetails": {
+                      "caseNumber": "CASE111",
+                      "complaint": "Bed will not raise or lower"
+                    },
+                    "customer": {
+                      "firstName": "John",
+                      "lastName": "Doe",
+                      "email": "test@test.com",
+                      "phone1": "801-269-0123",
+                      "address1": "6762 South 1300 East",
+                      "city": "Salt Lake City",
+                      "state": "UT",
+                      "zip": "84121"
+                    },
+                    "product": {
+                      "productType": "Adjustable Bed Base",
+                      "brand": "ERGOMOTION",
+                      "serialNumber": "SERIAL111",
+                      "modelNumber": "MODEL111"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/create/createVirtualTech.php": {
+      "post": {
+        "tags": ["Create Dispatch"],
+        "summary": "Create new Virtual Tech Dispatch",
+        "operationId": "createVirtualTechDispatch",
+        "responses": {
+          "200": {
+            "description": "Successful request.\n",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/CreateResponse" },
+                "examples": {
+                  "servicerAssigned": {
+                    "summary": "Servicer Assigned",
+                    "value": {
+                      "dispatchNumber": "DISPATCH111",
+                      "serviceProvider": {
+                        "depotName": "Depot111",
+                        "serviceProviderName": "ABC Repair Shop",
+                        "phoneNumber": "999-999-9999",
+                        "email": "test@test.com",
+                        "partsShippingAddress": {
+                          "contact": "John Doe",
+                          "email": "test@test.com",
+                          "phone": "801-269-0123",
+                          "address1": "6762 South 1300 East",
+                          "address2": "STE 1",
+                          "city": "Salt Lake City",
+                          "state": "UT",
+                          "zip": "84121"
+                        }
+                      }
+                    }
+                  },
+                  "servicerNotAssigned": {
+                    "summary": "Servicer Not Assigned",
+                    "value": { "dispatchNumber": "DISPATCH111" }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": [
+                  {
+                    "errorCode": "401",
+                    "errorMessage": "You are not authorized. Please validate your authentication details."
+                  }
+                ]
+              }
+            }
+          },
+          "5XX": {
+            "description": "Unexpected server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": [
+                  {
+                    "errorCode": "500",
+                    "errorMessage": "Unexpected server error"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "security": [{ "basicAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateVirtualTechRequest"
+              },
+              "examples": {
+                "withParts": {
+                  "summary": "With Parts",
+                  "value": {
+                    "bookingDetails": {
+                      "caseNumber": "CASE111",
+                      "complaintCode": "DEAD",
+                      "complaint": "Bed will not raise or lower",
+                      "specialInstruction": "please knock instead of ringing door bell",
+                      "scheduleDate": "2021-12-10",
+                      "slot": "1300-1330",
+                      "preAuthorizationLimit": 249.99,
+                      "deductibleAmount": 49.99,
+                      "planCode": "Platinum",
+                      "authorizationNumber": "Auth111",
+                      "suspectedRecall": false,
+                      "exclusions": "Gasket, Buttons, Power cord",
+                      "virtualBookingType": "diagnosisOnly"
+                    },
+                    "customer": {
+                      "firstName": "John",
+                      "lastName": "Doe",
+                      "email": "test@test.com",
+                      "phone1": "801-269-0123",
+                      "phone2": "999-999-9999",
+                      "phone3": "999-999-9999",
+                      "address1": "6762 South 1300 East",
+                      "address2": "STE 1",
+                      "city": "Salt Lake City",
+                      "state": "UT",
+                      "zip": "84121",
+                      "customerNumber": "CUST1111"
+                    },
+                    "product": {
+                      "dateOfPurchase": "2021-01-01",
+                      "productType": "Adjustable Bed Base",
+                      "brand": "ERGOMOTION",
+                      "serialNumber": "SERIAL111",
+                      "serialNumber2": "serial2",
+                      "modelNumber": "MODEL111",
+                      "modelVersion": "v2",
+                      "sellingDealer": "Best Buy"
+                    },
+                    "parts": [
+                      {
+                        "brand": "Ergomotion",
+                        "partNumber": "PART111",
+                        "description": "DESC111",
+                        "quantity": 1,
+                        "costEach": 11.11,
+                        "hasCore": true,
+                        "coreCostEach": 150,
+                        "supplier": "Encompass"
+                      },
+                      {
+                        "brand": "Ergomotion",
+                        "partNumber": "PART222",
+                        "description": "DESC222",
+                        "quantity": 2,
+                        "costEach": 22.22,
+                        "hasCore": false,
+                        "coreCostEach": 0,
+                        "supplier": "Encompass"
+                      }
+                    ]
+                  }
+                },
+                "withoutParts": {
+                  "summary": "Without Parts",
+                  "value": {
+                    "bookingDetails": {
+                      "caseNumber": "CASE111",
+                      "complaintCode": "DEAD",
+                      "complaint": "Bed will not raise or lower",
+                      "specialInstruction": "please knock instead of ringing door bell",
+                      "scheduleDate": "2021-12-10",
+                      "slot": "1300-1330",
+                      "preAuthorizationLimit": 249.99,
+                      "deductibleAmount": 49.99,
+                      "planCode": "Platinum",
+                      "authorizationNumber": "Auth111",
+                      "suspectedRecall": false,
+                      "exclusions": "Gasket, Buttons, Power cord",
+                      "virtualBookingType": "diagnosisOnly"
+                    },
+                    "customer": {
+                      "firstName": "John",
+                      "lastName": "Doe",
+                      "email": "test@test.com",
+                      "phone1": "801-269-0123",
+                      "phone2": "999-999-9999",
+                      "phone3": "999-999-9999",
+                      "address1": "6762 South 1300 East",
+                      "address2": "STE 1",
+                      "city": "Salt Lake City",
+                      "state": "UT",
+                      "zip": "84121",
+                      "customerNumber": "CUST1111"
+                    },
+                    "product": {
+                      "dateOfPurchase": "2021-01-01",
+                      "productType": "Adjustable Bed Base",
+                      "brand": "ERGOMOTION",
+                      "serialNumber": "SERIAL111",
+                      "serialNumber2": "serial2",
+                      "modelNumber": "MODEL111",
+                      "modelVersion": "v2",
+                      "sellingDealer": "Best Buy"
+                    }
+                  }
+                },
+                "requiredFieldsOnly": {
+                  "summary": "Required Fields Only",
+                  "value": {
+                    "bookingDetails": {
+                      "caseNumber": "CASE111",
+                      "complaintCode": "DEAD",
+                      "complaint": "Bed will not raise or lower",
+                      "scheduleDate": "2021-12-10",
+                      "slot": "1300-1330"
+                    },
+                    "customer": {
+                      "firstName": "John",
+                      "lastName": "Doe",
+                      "email": "test@test.com",
+                      "phone1": "801-269-0123",
+                      "address1": "6762 South 1300 East",
+                      "city": "Salt Lake City",
+                      "state": "UT",
+                      "zip": "84121"
+                    },
+                    "product": {
+                      "productType": "Adjustable Bed Base",
+                      "brand": "ERGOMOTION",
+                      "serialNumber": "SERIAL111",
+                      "modelNumber": "MODEL111"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cancel/cancel.php": {
+      "post": {
+        "tags": ["Cancel"],
+        "summary": "Cancels an open dispatch",
+        "operationId": "cancelDispatch",
+        "responses": {
+          "200": { "description": "Successful cancellation" },
+          "400": {
+            "description": "User request error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": [
+                  {
+                    "errorCode": "401",
+                    "errorMessage": "You are not authorized. Please validate your authentication details."
+                  }
+                ]
+              }
+            }
+          },
+          "409": {
+            "description": "Cannot cancel because dispatch is not in a cancellable state",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": [
+                  {
+                    "errorCode": "409",
+                    "errorMessage": "Cannot cancel because dispatch is not in a cancellable state"
+                  }
+                ]
+              }
+            }
+          },
+          "5XX": {
+            "description": "Unexpected server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": [
+                  {
+                    "errorCode": "500",
+                    "errorMessage": "Unexpected server error"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "security": [{ "basicAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CancelRequest" }
+            }
+          }
+        }
+      }
+    },
+    "/estimates/estimates.php": {
+      "get": {
+        "tags": ["Estimates"],
+        "summary": "Get estimates list",
+        "operationId": "getEstiamtes",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "status",
+            "required": true,
+            "schema": { "type": "string", "enum": ["open", "all"] }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": { "type": "integer", "minimum": 1 }
+          },
+          {
+            "in": "query",
+            "name": "updateTimeUTC",
+            "description": "format: YYYY-MM-DD hh:mm:ss",
+            "example": "2022-01-31 23:59:59",
+            "schema": { "type": "integer", "minimum": 1 }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EstimateListResponse"
+                },
+                "examples": {
+                  "estimatesFound": {
+                    "summary": "Estimate list with details",
+                    "value": [
+                      {
+                        "estimateID": 11111,
+                        "dipatchNumber": "dispatch111",
+                        "caseNumber": "case111",
+                        "estimateProcessedStatusCode": "Approved",
+                        "total": 101.11,
+                        "deductible": 50,
+                        "totalAmountLessDeductible": 51.11,
+                        "submissionTimestamp": "2022-01-31 23:59:59",
+                        "processedTimestamp": "2022-01-31 23:59:59",
+                        "rejectProcessingNeeded": "2022-01-31 23:59:59",
+                        "unitAge": "<1 Year",
+                        "causeOfFailure": "Normal wear and tear failure",
+                        "declineReason": null,
+                        "lines": [
+                          {
+                            "lineID": 222,
+                            "amount": 50,
+                            "coverageTypeCode": "Labor",
+                            "procesesingReference": "Ref111",
+                            "lineStatus": "Approved",
+                            "notes": "Approved",
+                            "createTimestamp": "2022-01-31 23:59:59",
+                            "processedTimestamp": "2022-01-31 23:59:59"
+                          },
+                          {
+                            "lineID": 223,
+                            "amount": 51.11,
+                            "coverageTypeCode": "Parts",
+                            "procesesingReference": "Ref111",
+                            "lineStatus": "Approved",
+                            "notes": "Approved",
+                            "createTimestamp": "2022-01-31 23:59:59",
+                            "processedTimestamp": "2022-01-31 23:59:59"
+                          },
+                          {
+                            "lineID": 224,
+                            "amount": 10,
+                            "coverageTypeCode": "Other",
+                            "procesesingReference": "Ref111",
+                            "lineStatus": "Approved",
+                            "notes": "Approved",
+                            "createTimestamp": "2022-01-31 23:59:59",
+                            "processedTimestamp": "2022-01-31 23:59:59"
+                          },
+                          {
+                            "lineID": 225,
+                            "amount": 11,
+                            "coverageTypeCode": "Tax",
+                            "procesesingReference": "Ref111",
+                            "lineStatus": "Approved",
+                            "notes": "Approved",
+                            "createTimestamp": "2022-01-31 23:59:59",
+                            "processedTimestamp": "2022-01-31 23:59:59"
+                          },
+                          {
+                            "lineID": 226,
+                            "amount": 12,
+                            "coverageTypeCode": "Mileage",
+                            "procesesingReference": "Ref111",
+                            "lineStatus": "Approved",
+                            "notes": "Approved",
+                            "createTimestamp": "2022-01-31 23:59:59",
+                            "processedTimestamp": "2022-01-31 23:59:59"
+                          }
+                        ],
+                        "parts": [
+                          {
+                            "estimatePartID": 333,
+                            "partBrand": "Samsung",
+                            "partNumber": "Part1",
+                            "description": "Desc",
+                            "quantity": 2,
+                            "cost": 11.11,
+                            "extendedCost": 22.22,
+                            "requestedSupplier": "Encompass",
+                            "alreadyUsed": "N",
+                            "alreadyOrdered": "N",
+                            "approved": "Y",
+                            "createTimestamp": "2022-01-31 23:59:59"
+                          },
+                          {
+                            "estimatePartID": 334,
+                            "partBrand": "Samsung",
+                            "partNumber": "Part2",
+                            "description": "Desc2",
+                            "quantity": 1,
+                            "cost": 28.89,
+                            "extendedCost": 28.89,
+                            "requestedSupplier": "Encompass",
+                            "alreadyUsed": "N",
+                            "alreadyOrdered": "N",
+                            "approved": "Y",
+                            "createTimestamp": "2022-01-31 23:59:59"
+                          }
+                        ],
+                        "notes": [
+                          {
+                            "estimateNoteID": 444,
+                            "note": "This unit needs two parts",
+                            "userType": "NsaAdmin",
+                            "creator": "RJ",
+                            "createTimestamp": "2022-01-31 23:59:59"
+                          },
+                          {
+                            "estimateNoteID": 445,
+                            "note": "This is under the pre-auth. Please proceed",
+                            "userType": "thirdParty",
+                            "creator": "apiUser",
+                            "createTimestamp": "2022-01-31 23:59:59"
+                          }
+                        ]
+                      },
+                      {
+                        "estimateID": 22222,
+                        "dipatchNumber": "dispatch111",
+                        "caseNumber": "case111",
+                        "estimateProcessedStatusCode": "Approved",
+                        "total": 101.11,
+                        "deductible": 50,
+                        "totalAmountLessDeductible": 51.11,
+                        "submissionTimestamp": "2022-01-31 23:59:59",
+                        "processedTimestamp": "2022-01-31 23:59:59",
+                        "rejectProcessingNeeded": "2022-01-31 23:59:59",
+                        "unitAge": "<1 Year",
+                        "causeOfFailure": "Normal wear and tear failure",
+                        "declineReason": null,
+                        "lines": [
+                          {
+                            "lineID": 222,
+                            "amount": 50,
+                            "coverageTypeCode": "Labor",
+                            "procesesingReference": "Ref111",
+                            "lineStatus": "Approved",
+                            "notes": "Approved",
+                            "createTimestamp": "2022-01-31 23:59:59",
+                            "processedTimestamp": "2022-01-31 23:59:59"
+                          },
+                          {
+                            "lineID": 223,
+                            "amount": 51.11,
+                            "coverageTypeCode": "Parts",
+                            "procesesingReference": "Ref111",
+                            "lineStatus": "Approved",
+                            "notes": "Approved",
+                            "createTimestamp": "2022-01-31 23:59:59",
+                            "processedTimestamp": "2022-01-31 23:59:59"
+                          },
+                          {
+                            "lineID": 224,
+                            "amount": 10,
+                            "coverageTypeCode": "Other",
+                            "procesesingReference": "Ref111",
+                            "lineStatus": "Approved",
+                            "notes": "Approved",
+                            "createTimestamp": "2022-01-31 23:59:59",
+                            "processedTimestamp": "2022-01-31 23:59:59"
+                          },
+                          {
+                            "lineID": 225,
+                            "amount": 11,
+                            "coverageTypeCode": "Tax",
+                            "procesesingReference": "Ref111",
+                            "lineStatus": "Approved",
+                            "notes": "Approved",
+                            "createTimestamp": "2022-01-31 23:59:59",
+                            "processedTimestamp": "2022-01-31 23:59:59"
+                          },
+                          {
+                            "lineID": 226,
+                            "amount": 12,
+                            "coverageTypeCode": "Mileage",
+                            "procesesingReference": "Ref111",
+                            "lineStatus": "Approved",
+                            "notes": "Approved",
+                            "createTimestamp": "2022-01-31 23:59:59",
+                            "processedTimestamp": "2022-01-31 23:59:59"
+                          }
+                        ],
+                        "parts": [
+                          {
+                            "estimatePartID": 333,
+                            "partBrand": "Samsung",
+                            "partNumber": "Part1",
+                            "description": "Desc",
+                            "quantity": 2,
+                            "cost": 11.11,
+                            "extendedCost": 22.22,
+                            "requestedSupplier": "Encompass",
+                            "alreadyUsed": "N",
+                            "alreadyOrdered": "N",
+                            "approved": "Y",
+                            "createTimestamp": "2022-01-31 23:59:59"
+                          },
+                          {
+                            "estimatePartID": 334,
+                            "partBrand": "Samsung",
+                            "partNumber": "Part2",
+                            "description": "Desc2",
+                            "quantity": 1,
+                            "cost": 28.89,
+                            "extendedCost": 28.89,
+                            "requestedSupplier": "Encompass",
+                            "alreadyUsed": "N",
+                            "alreadyOrdered": "N",
+                            "approved": "Y",
+                            "createTimestamp": "2022-01-31 23:59:59"
+                          }
+                        ],
+                        "notes": [
+                          {
+                            "estimateNoteID": 444,
+                            "note": "This unit needs two parts",
+                            "userType": "NsaAdmin",
+                            "creator": "RJ",
+                            "createTimestamp": "2022-01-31 23:59:59"
+                          },
+                          {
+                            "estimateNoteID": 445,
+                            "note": "This is under the pre-auth. Please proceed",
+                            "userType": "thirdParty",
+                            "creator": "apiUser",
+                            "createTimestamp": "2022-01-31 23:59:59"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": [
+                  {
+                    "errorCode": "401",
+                    "errorMessage": "You are not authorized. Please validate your authentication details."
+                  }
+                ]
+              }
+            }
+          },
+          "5XX": {
+            "description": "Unexpected server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": [
+                  {
+                    "errorCode": "500",
+                    "errorMessage": "Unexpected server error"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "security": [{ "basicAuth": [] }]
+      }
+    },
+    "/estimates/estimate.php": {
+      "get": {
+        "tags": ["Estimates"],
+        "summary": "Get estimate by ID",
+        "operationId": "getEstiamteByID",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "estimateID",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful request.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/EstimateObject" },
+                "examples": {
+                  "estimatesFound": {
+                    "summary": "Estimate details",
+                    "value": {
+                      "estimateID": 11111,
+                      "dipatchNumber": "dispatch111",
+                      "caseNumber": "case111",
+                      "estimateProcessedStatusCode": "Approved",
+                      "total": 101.11,
+                      "deductible": 50,
+                      "totalAmountLessDeductible": 51.11,
+                      "submissionTimestamp": "2022-01-31 23:59:59",
+                      "processedTimestamp": "2022-01-31 23:59:59",
+                      "rejectProcessingNeeded": "2022-01-31 23:59:59",
+                      "unitAge": "<1 Year",
+                      "causeOfFailure": "Normal wear and tear failure",
+                      "declineReason": null,
+                      "lines": [
+                        {
+                          "lineID": 222,
+                          "amount": 50,
+                          "coverageTypeCode": "Labor",
+                          "procesesingReference": "Ref111",
+                          "lineStatus": "Approved",
+                          "notes": "Approved",
+                          "createTimestamp": "2022-01-31 23:59:59",
+                          "processedTimestamp": "2022-01-31 23:59:59"
+                        },
+                        {
+                          "lineID": 223,
+                          "amount": 51.11,
+                          "coverageTypeCode": "Parts",
+                          "procesesingReference": "Ref111",
+                          "lineStatus": "Approved",
+                          "notes": "Approved",
+                          "createTimestamp": "2022-01-31 23:59:59",
+                          "processedTimestamp": "2022-01-31 23:59:59"
+                        },
+                        {
+                          "lineID": 224,
+                          "amount": 10,
+                          "coverageTypeCode": "Other",
+                          "procesesingReference": "Ref111",
+                          "lineStatus": "Approved",
+                          "notes": "Approved",
+                          "createTimestamp": "2022-01-31 23:59:59",
+                          "processedTimestamp": "2022-01-31 23:59:59"
+                        },
+                        {
+                          "lineID": 225,
+                          "amount": 11,
+                          "coverageTypeCode": "Tax",
+                          "procesesingReference": "Ref111",
+                          "lineStatus": "Approved",
+                          "notes": "Approved",
+                          "createTimestamp": "2022-01-31 23:59:59",
+                          "processedTimestamp": "2022-01-31 23:59:59"
+                        },
+                        {
+                          "lineID": 226,
+                          "amount": 12,
+                          "coverageTypeCode": "Mileage",
+                          "procesesingReference": "Ref111",
+                          "lineStatus": "Approved",
+                          "notes": "Approved",
+                          "createTimestamp": "2022-01-31 23:59:59",
+                          "processedTimestamp": "2022-01-31 23:59:59"
+                        }
+                      ],
+                      "parts": [
+                        {
+                          "estimatePartID": 333,
+                          "partBrand": "Samsung",
+                          "partNumber": "Part1",
+                          "description": "Desc",
+                          "quantity": 2,
+                          "cost": 11.11,
+                          "extendedCost": 22.22,
+                          "requestedSupplier": "Encompass",
+                          "alreadyUsed": "N",
+                          "alreadyOrdered": "N",
+                          "approved": "Y",
+                          "createTimestamp": "2022-01-31 23:59:59"
+                        },
+                        {
+                          "estimatePartID": 334,
+                          "partBrand": "Samsung",
+                          "partNumber": "Part2",
+                          "description": "Desc2",
+                          "quantity": 1,
+                          "cost": 28.89,
+                          "extendedCost": 28.89,
+                          "requestedSupplier": "Encompass",
+                          "alreadyUsed": "N",
+                          "alreadyOrdered": "N",
+                          "approved": "Y",
+                          "createTimestamp": "2022-01-31 23:59:59"
+                        }
+                      ],
+                      "notes": [
+                        {
+                          "estimateNoteID": 444,
+                          "note": "This unit needs two parts",
+                          "userType": "NsaAdmin",
+                          "creator": "RJ",
+                          "createTimestamp": "2022-01-31 23:59:59"
+                        },
+                        {
+                          "estimateNoteID": 445,
+                          "note": "This is under the pre-auth. Please proceed",
+                          "userType": "thirdParty",
+                          "creator": "apiUser",
+                          "createTimestamp": "2022-01-31 23:59:59"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": [
+                  {
+                    "errorCode": "401",
+                    "errorMessage": "You are not authorized. Please validate your authentication details."
+                  }
+                ]
+              }
+            }
+          },
+          "5XX": {
+            "description": "Unexpected server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": [
+                  {
+                    "errorCode": "500",
+                    "errorMessage": "Unexpected server error"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "security": [{ "basicAuth": [] }]
+      }
+    },
+    "/estimates/process.php": {
+      "post": {
+        "tags": ["Estimates"],
+        "summary": "Process estimate",
+        "operationId": "processEstimate",
+        "description": "action values:\n  \n  * approve\n  * partiallyApproved\n  * estDeclined\n  * rejectWithResubmit\n  * partsUnAvail\n  * estimateHold\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EstimateProcessRequest"
+              },
+              "examples": {
+                "process": {
+                  "summary": "Full Approval",
+                  "value": {
+                    "estimateID": 1111,
+                    "action": "approve",
+                    "processedReference": "135a"
+                  }
+                },
+                "partialApproval": {
+                  "summary": "Parital Approval",
+                  "description": "Pass in only the part lines that are being approved",
+                  "value": {
+                    "estimateID": 1111,
+                    "action": "approve",
+                    "note": "Looks good to me",
+                    "processedReference": "135a",
+                    "partsApproved": [1111, 2222, 3333]
+                  }
+                },
+                "estimateDecline": {
+                  "summary": "Estimate Decline",
+                  "value": {
+                    "estimateID": 1111,
+                    "action": "estDeclined",
+                    "note": "Looks good to me",
+                    "processedReference": "135a"
+                  }
+                },
+                "rejectWithResubmit": {
+                  "summary": "Reject with Resubmit",
+                  "value": {
+                    "estimateID": 1111,
+                    "action": "rejectWithResubmit",
+                    "note": "Please provide the cause of failure",
+                    "processedReference": "135a"
+                  }
+                },
+                "partsUnAvail": {
+                  "summary": "Accept parts unavailable estimate",
+                  "value": {
+                    "estimateID": 1111,
+                    "action": "partsUnAvail",
+                    "note": "Please provide the cause of failure",
+                    "processedReference": "135a"
+                  }
+                },
+                "estimateHold": {
+                  "summary": "Put estimate on hold",
+                  "value": {
+                    "estimateID": 1111,
+                    "action": "estimateHold",
+                    "note": "Puting estimate on hold while waiting for response from customer",
+                    "processedReference": "135a"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Successful request.\n" },
+          "401": {
+            "description": "Authentication error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": [
+                  {
+                    "errorCode": "401",
+                    "errorMessage": "You are not authorized. Please validate your authentication details."
+                  }
+                ]
+              }
+            }
+          },
+          "5XX": {
+            "description": "Unexpected server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": [
+                  {
+                    "errorCode": "500",
+                    "errorMessage": "Unexpected server error"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "security": [{ "basicAuth": [] }]
+      }
+    },
+    "/status/status.php": {
+      "get": {
+        "parameters": [
+          {
+            "in": "query",
+            "name": "dispatchNumber",
+            "description": "NSA dispatchNumber",
+            "schema": { "type": "string" }
+          },
+          {
+            "in": "query",
+            "name": "caseNumber",
+            "description": "Client provided case number",
+            "schema": { "type": "string" }
+          }
+        ],
+        "tags": ["Status"],
+        "summary": "Provides status of dispatch by dispatchNumber or case number in the url",
+        "operationId": "getStatus",
+        "responses": {
+          "200": {
+            "description": "Current status of the dispatch",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/StatusResponse" },
+                "examples": {
+                  "json": {
+                    "value": "{\"clientCaseNumber\": \"CASE1111\",\"nsaDispatchNumber\": \"AAA2024011234567\",\"externalReference1\": \"REF1111\",\"status\": {\"clientCaseNumber\": \"CASE1111\",\"authorizationNumber\": \"AUTH1111\",\"customerNumber\": \"CUST1111\",\"claimNumber\": \"CLAIM111\",\"preAuthAmount\": \"300.00\",\"deductible\": \"50.00\",\"plan\": \"Clothes Dryer Plan\",\"exclusions\": \"Cosmetic Damage (Scratches, Dents, Chipping etc.), Damage to Clothing or Other Items, Dryer Fragrance/Humidity Center, Knobs-Dials-Buttons, Lint Screens, Maintenance, Product Accessibility Issues and Additional Fees, Venting\",\"createDate\": \"2024-01-30\",\"closeDate\": \"2024-02-06\",\"currentScheduleDate\": \"2024-02-06\",\"originalScheduleDate\": \"2024-02-02\",\"timeSlot\": \"08:00-17:00\",\"headerStatus\": \"closed\",\"subStatusCode\": \"CP\",\"subStatusDescription\": \"Completed\",\"maxPartOrderDate\": \"2024-02-01\",\"maxPartSupplierETADate\": \"2024-02-05\",\"maxPartDueDate\": \"2024-02-05\",\"servicerName\": \"ABC SERVICER\",\"servicerPhoneNumber\": \"(801) 269-0123\",\"servicerEmail\": \"test@test.com\",\"program\": \"serviceCallWithoutParts\",\"productType\": \"Clothes Dryer - Electric\",\"brand\": \"ELECTROLUX\",\"model\": \"EIED50LIW\",\"complaint\": \"Clothes Dryer - Electric - CLOTHES ARW NOT DRYING\",\"servicePerformed\": \"TECH ONSITE AND INSTALLED HEATER ELEMENT AND NOW UNIT IS WORKING\",\"cancelReason\": \"CANCEL1111\",\"partOrders\": [{\"orderNumber\": \"1111111\",\"orderDate\": \"2024-02-01\",\"poNumber\": \"NSA-CASE1111-ORD-01\",\"shipments\": [{\"shipmentDate\": \"2024-02-01\",\"trackingNumber\": \"270491167170\",\"shippingCompany\": \"fedex\"}]}],\"partShipToAddress\": {\"contact\": \"ABC SERVICER\",\"address1\": \"6762 South 1300 East\",\"address2\": \"Suite 1\",\"city\": \"Salt Lake City\",\"state\": \"UT\",\"zip\": \"84121\",\"countryCode\": \"US\",\"phone\": \"(801) 269-0123\",\"email\": \"test@test.com\"},\"shipments\": [{\"shipmentType\": \"inbound\",\"shippingCompany\": \"FEDEX\",\"trackingNumber\": \"111111\"}],\"estimates\": [{\"estimateID\": \"11111\",\"submissionStatusCode\": \"Submitted\",\"processedStatusCode\": \"Approved\",\"totalAmount\": \"454.81\",\"deductible\": \"50.00\",\"totalAmountLessDeductible\": \"404.81\",\"createTimestamp\": \"2024-02-01T15:31:21Z\",\"submissionTimestamp\": \"2024-02-01T22:31:22Z\",\"declineReason\": null,\"processedTimestamp\": \"2024-02-01T16:26:36Z\",\"lines\": [{\"coverageTypeCode\": \"Labor\",\"amount\": \"300.00\"},{\"coverageTypeCode\": \"Parts\",\"amount\": \"154.81\"}],\"parts\": [{\"estimatePartID\": \"410179\",\"brand\": \"ELECTROLUX\",\"partNumber\": \"134792700\",\"description\": \"HEATER,3 ELEMENT,5500W - 2024-02-05\",\"quantity\": \"1\",\"costEach\": \"154.81\",\"extendedCost\": \"154.81\",\"alreadyUsed\": false,\"alreadyOrdered\": false}],\"notes\": [{\"noteID\": \"111111\",\"note\": \"PER TECH: it is not heating. will need 134792700 heating element if labor is approved\",\"createdBy\": \"user_name_aaaa\",\"createUserEntity\": \"nsaadmin\",\"createTimestamp\": \"2024-02-01T16:26:36Z\"}],\"additionalQuestions\": [{\"questionCode\": \"unitAge\",\"answer\": \"5-10 Years\"},{\"questionCode\": \"causeOfFailure\",\"answer\": \"Normal wear and tear failure\"}]}],\"suspectedRecall\": \"0\",\"forceIceMakerCovered\": null},\"claims\": [{\"billingID\": \"111111\",\"billingType\": \"normal\",\"processedStatus\": \"Approved\",\"processedNotes\": null,\"previousProcessedNotes\": null,\"createTimestamp\": \"2024-02-07 08:10:17\",\"batchedTimestamp\": \"2024-02-07 08:10:17\",\"batchNumber\": \"1234\",\"totalAmount\": \"454.81\",\"deductible\": \"50.00\",\"totalAmountLessDeductible\": \"404.81\",\"lines\": [{\"coverageTypeCode\": \"Labor\",\"amount\": \"300.00\"},{\"coverageTypeCode\": \"Parts\",\"amount\": \"154.81\"}]}],\"events\": [{\"eventID\": \"111111\",\"eventTimestamp\": \"2024-01-30T22:53:09Z\",\"eventTypeID\": \"2\",\"eventTypeName\": \"SO Create\",\"eventDescription\": \"A dispatch was created. Dispatch number: ARW2024019057807\"},{\"eventID\": \"222222\",\"eventTimestamp\": \"2024-02-01T06:25:59Z\",\"eventTypeID\": \"25\",\"eventTypeName\": \"NsaAdmin Note\",\"eventDescription\": \"NSA UPDATE: 2024-01-31 16:25:59 (Mountain time)  --  test note\"}]}"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "User request error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": [
+                  {
+                    "errorCode": "401",
+                    "errorMessage": "You are not authorized. Please validate your authentication details."
+                  }
+                ]
+              }
+            }
+          },
+          "5XX": {
+            "description": "Unexpected server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": [
+                  {
+                    "errorCode": "500",
+                    "errorMessage": "Unexpected server error"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "security": [{ "basicAuth": [] }]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AvailabilityRequest": {
+        "type": "object",
+        "properties": {
+          "brand": { "type": "string" },
+          "productCategory": {
+            "type": "string",
+            "enum": [
+              "ADJUSTABLE BED BASE",
+              "AIR CONDITIONER",
+              "AIR HANDLER",
+              "AIR PURIFIER",
+              "ANTENNA",
+              "AUDIO",
+              "BASEBOARD HEATER",
+              "BOILER - ELECTRIC",
+              "BOILER - FUEL OIL",
+              "BOILER - GAS",
+              "BOILER - PROPANE",
+              "BUILT-IN GRILL",
+              "BUSINESS SERVER CHASSIS",
+              "CAMERA SYSTEM",
+              "CELL PHONE",
+              "CHAIR",
+              "CLOTHES DRYER - ELECTRIC",
+              "CLOTHES DRYER - GAS",
+              "CLOTHES WASHER",
+              "COOKTOP - ELECTRIC",
+              "COOKTOP - GAS",
+              "DEHUMIDIFER",
+              "DESKTOP",
+              "DISHWASHER",
+              "DUCTWORK",
+              "ELECTRICAL - BATTERIES",
+              "ELECTRICAL - DOORBELL",
+              "ELECTRICAL - INDOORS",
+              "ELECTRICAL - OUTDOORS",
+              "EVAPORATOR COIL",
+              "EXHAUST - HOOD",
+              "EXHAUST - TELESCOPING",
+              "FIREPLACE",
+              "FURNACE - ELECTRIC",
+              "FURNACE - FUEL OIL",
+              "FURNACE - GAS",
+              "FURNACE - PROPANE",
+              "GARAGE DOOR MECHANICAL",
+              "GARAGE DOOR OPENER",
+              "GLYCOL BOILER",
+              "HEAT PUMP",
+              "HEAT PUMP GEOTHERMAL",
+              "HUMIDIFER",
+              "HVAC",
+              "LAPTOP",
+              "MAJOR APPLIANCE",
+              "MICROWAVE",
+              "MINI SPLIT AC",
+              "MINI SPLIT AIR HANDLER",
+              "MINI SPLIT HP",
+              "NETWORKING CABLE",
+              "OTHER",
+              "PACKAGE AC",
+              "PACKAGE GE (GAS ELECTRIC)",
+              "PACKAGE HP (HEAT PUMP)",
+              "PHONE",
+              "PLUMBING - EXTERNAL SEWER LINES",
+              "PLUMBING - INDOOR LEAK",
+              "PLUMBING - INDOOR WATER LINES",
+              "PLUMBING - OUTDOOR WATER LINES",
+              "PLUMBING - STOPPAGE",
+              "PLUMBING - SUMP PUMP",
+              "PLUMBING - WATER FILTER",
+              "PLUMBING - WATER HEATER - ELECTRIC",
+              "PLUMBING - WATER HEATER - GAS",
+              "PLUMBING - WATER HEATER - PROPANE",
+              "PLUMBING - WATER HEATER - TANKLESS - ELECTRIC",
+              "PLUMBING - WATER HEATER - TANKLESS - GAS",
+              "PLUMBING - WATER HEATER - TANKLESS - PROPANE",
+              "PLUMBING - WELL PUMP",
+              "POOL",
+              "POOL HOTTUB COMBO",
+              "POOL VENTS",
+              "POWER ACCESSORIES",
+              "PTAC",
+              "PTAC - EXCHANGE",
+              "PTAC - SEALED SYSTEM",
+              "RANGE - ELECTRIC",
+              "RANGE - GAS",
+              "REFRIGERATOR",
+              "REFRIGERATOR - SEALED SYSTEM",
+              "REFRIGERATOR - SEALED SYSTEM - R134A",
+              "REFRIGERATOR - SEALED SYSTEM/R600",
+              "REFRIGERATORRV",
+              "SPA-HOTTUB",
+              "STAND ALONE FREEZER",
+              "TABLET",
+              "THERMOSTAT",
+              "TRASH COMPACTOR",
+              "TV",
+              "WALL OVEN - ELECTRIC",
+              "WALL OVEN - GAS",
+              "WINECOOLER",
+              "WOOD STOVE"
+            ]
+          },
+          "zipCode": { "type": "string" },
+          "serialNumber": {
+            "type": "string",
+            "description": "Populating serialNumber is optional. If present, it will allow for better servicer selection. We attempt to reassign the same unit to the same servicer that previously serviced it, if possible."
+          }
+        },
+        "required": ["brand", "productCategory", "zipCode"],
+        "example": {
+          "brand": "ERGOMOTION",
+          "productCategory": "Adjustable Bed Base",
+          "zipCode": 84121,
+          "serialNumber": "SERIAL111"
+        }
+      },
+      "AvailabilityVirtualTechRequest": {
+        "type": "object",
+        "properties": {
+          "productCategory": {
+            "type": "string",
+            "enum": [
+              "ADJUSTABLE BED BASE",
+              "AIR CONDITIONER",
+              "AIR HANDLER",
+              "AIR PURIFIER",
+              "ANTENNA",
+              "AUDIO",
+              "BASEBOARD HEATER",
+              "BOILER - ELECTRIC",
+              "BOILER - FUEL OIL",
+              "BOILER - GAS",
+              "BOILER - PROPANE",
+              "BUILT-IN GRILL",
+              "BUSINESS SERVER CHASSIS",
+              "CAMERA SYSTEM",
+              "CELL PHONE",
+              "CHAIR",
+              "CLOTHES DRYER - ELECTRIC",
+              "CLOTHES DRYER - GAS",
+              "CLOTHES WASHER",
+              "COOKTOP - ELECTRIC",
+              "COOKTOP - GAS",
+              "DEHUMIDIFER",
+              "DESKTOP",
+              "DISHWASHER",
+              "DUCTWORK",
+              "ELECTRICAL - BATTERIES",
+              "ELECTRICAL - DOORBELL",
+              "ELECTRICAL - INDOORS",
+              "ELECTRICAL - OUTDOORS",
+              "EVAPORATOR COIL",
+              "EXHAUST - HOOD",
+              "EXHAUST - TELESCOPING",
+              "FIREPLACE",
+              "FURNACE - ELECTRIC",
+              "FURNACE - FUEL OIL",
+              "FURNACE - GAS",
+              "FURNACE - PROPANE",
+              "GARAGE DOOR MECHANICAL",
+              "GARAGE DOOR OPENER",
+              "GLYCOL BOILER",
+              "HEAT PUMP",
+              "HEAT PUMP GEOTHERMAL",
+              "HUMIDIFER",
+              "HVAC",
+              "LAPTOP",
+              "MAJOR APPLIANCE",
+              "MICROWAVE",
+              "MINI SPLIT AC",
+              "MINI SPLIT AIR HANDLER",
+              "MINI SPLIT HP",
+              "NETWORKING CABLE",
+              "OTHER",
+              "PACKAGE AC",
+              "PACKAGE GE (GAS ELECTRIC)",
+              "PACKAGE HP (HEAT PUMP)",
+              "PHONE",
+              "PLUMBING - EXTERNAL SEWER LINES",
+              "PLUMBING - INDOOR LEAK",
+              "PLUMBING - INDOOR WATER LINES",
+              "PLUMBING - OUTDOOR WATER LINES",
+              "PLUMBING - STOPPAGE",
+              "PLUMBING - SUMP PUMP",
+              "PLUMBING - WATER FILTER",
+              "PLUMBING - WATER HEATER - ELECTRIC",
+              "PLUMBING - WATER HEATER - GAS",
+              "PLUMBING - WATER HEATER - PROPANE",
+              "PLUMBING - WATER HEATER - TANKLESS - ELECTRIC",
+              "PLUMBING - WATER HEATER - TANKLESS - GAS",
+              "PLUMBING - WATER HEATER - TANKLESS - PROPANE",
+              "PLUMBING - WELL PUMP",
+              "POOL",
+              "POOL HOTTUB COMBO",
+              "POOL VENTS",
+              "POWER ACCESSORIES",
+              "PTAC",
+              "PTAC - EXCHANGE",
+              "PTAC - SEALED SYSTEM",
+              "RANGE - ELECTRIC",
+              "RANGE - GAS",
+              "REFRIGERATOR",
+              "REFRIGERATOR - SEALED SYSTEM",
+              "REFRIGERATOR - SEALED SYSTEM - R134A",
+              "REFRIGERATOR - SEALED SYSTEM/R600",
+              "REFRIGERATORRV",
+              "SPA-HOTTUB",
+              "STAND ALONE FREEZER",
+              "TABLET",
+              "THERMOSTAT",
+              "TRASH COMPACTOR",
+              "TV",
+              "WALL OVEN - ELECTRIC",
+              "WALL OVEN - GAS",
+              "WINECOOLER",
+              "WOOD STOVE"
+            ]
+          },
+          "brand": { "type": "string" }
+        },
+        "required": ["productCategory"],
+        "example": { "brand": "SAMSUNG", "productCategory": "Clothes Washer" }
+      },
+      "AvailabilityVirutalTechResponse": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "date": { "type": "string" },
+            "slots": {
+              "type": "array",
+              "description": "Slots are in the following format: HHMM-HHMM. To provide the time slot of 1:00pm to 1:30 pm you would received 1300-1330",
+              "items": { "type": "string" }
+            }
+          }
+        }
+      },
+      "AvailabilityResponse": {
+        "type": "array",
+        "items": { "type": "string" }
+      },
+      "CoverageResponse": {
+        "type": "object",
+        "properties": { "hasConverage": { "type": "boolean" } }
+      },
+      "AvailabilityWithCODCostResponse": {
+        "type": "object",
+        "properties": {
+          "availability": { "type": "array", "items": { "type": "string" } },
+          "cost": {
+            "type": "object",
+            "properties": {
+              "rateType": {
+                "type": "string",
+                "enum": ["flateRate", "laborOnly"]
+              },
+              "areaType": { "type": "string", "enum": ["normal", "highCost"] },
+              "cost": { "type": "number" }
+            }
+          }
+        },
+        "required": ["availability"]
+      },
+      "CreateRequest": {
+        "type": "object",
+        "properties": {
+          "bookingDetails": {
+            "type": "object",
+            "properties": {
+              "caseNumber": {
+                "type": "string",
+                "description": "This is the clients unique case number"
+              },
+              "complaintCode": {
+                "type": "string",
+                "description": "Standardized codes for the complaint"
+              },
+              "complaint": {
+                "type": "string",
+                "description": "Explaination of the problem"
+              },
+              "specialInstruction": { "type": "string" },
+              "scheduleDate": {
+                "type": "string",
+                "description": "If left blank, it will be booked without a schedule date"
+              },
+              "timePreference": {
+                "type": "string",
+                "enum": ["A", "P", "E", "D"],
+                "description": "A=Morning \nP=Afternoon\nE=Evening\nD=All Day\n"
+              },
+              "preAuthorizationLimit": {
+                "type": "number",
+                "description": "Amount that is pre-approved for the repair (parts and labor) before requiring an estimate"
+              },
+              "limitOfLiabilityRemaining": {
+                "type": "number",
+                "description": "Amount of the limit of liability that is remaining on the contract."
+              },
+              "limitOfLiabilityTotal": {
+                "type": "number",
+                "description": "Amount of the limit of liability that began on the on the contract."
+              },
+              "deductibleAmount": {
+                "type": "number",
+                "description": "Some cirumstances require the consumer to pay a trip/deductible/service call fee directly to the service provider. That amount would be included here."
+              },
+              "planCode": {
+                "type": "string",
+                "description": "For contact work, the consumer is usually part of a specific plan that comes with certain terms and conditions"
+              },
+              "relationshipCode": {
+                "type": "string",
+                "description": "Allows NSA to associate this repair to an arbitrary group such as a source system or billing group."
+              },
+              "authorizationNumber": {
+                "type": "string",
+                "description": "Some clients require a special authorization number to be provided at billing time. Please provide if required."
+              },
+              "suspectedRecall": {
+                "type": "boolean",
+                "description": "If there is concern that this dispatch should be covered under the workmanship guarantee"
+              },
+              "exclusions": {
+                "type": "string",
+                "description": "Delimited list of things not covered by the contract"
+              },
+              "noPartsNeeded": {
+                "type": "boolean",
+                "description": "Used to indicate that there are not parts required for this repair and notification of the dispatch should not be delayed"
+              },
+              "isUrgent": {
+                "type": "boolean",
+                "description": "Is urgent if it is one of the following: extreme heat, extreme cold, flooding, medical emergency, no running water, no toilet access. If it is marked as urgent, an urgent reason must be provided"
+              },
+              "urgentReason": {
+                "type": "string",
+                "description": "this field is required if isUrgent=true",
+                "enum": [
+                  "notUrgent",
+                  "extremeHeatCold",
+                  "flooding",
+                  "medicalEmergency",
+                  "noRunningWater",
+                  "noToiletAccess",
+                  "other"
+                ]
+              }
+            },
+            "required": ["caseNumber", "complaint"],
+            "example": {
+              "caseNumber": "CASE111",
+              "complaint": "Bed will not raise or lower",
+              "specialInstruction": "please knock instead of ringing door bell",
+              "scheduleDate": "2021-12-10",
+              "timePreference": "A",
+              "preAuthorizationLimit": 249.99,
+              "deductibleAmount": 49.99,
+              "planCode": "Platinum",
+              "authorizationNumber": "Auth111",
+              "suspectedRecall": false,
+              "exclusions": "Gasket, Buttons, Power cord "
+            }
+          },
+          "customer": {
+            "type": "object",
+            "properties": {
+              "firstName": { "type": "string" },
+              "lastName": { "type": "string" },
+              "email": { "type": "string" },
+              "phone1": { "type": "string" },
+              "phone2": { "type": "string" },
+              "phone3": { "type": "string" },
+              "address1": { "type": "string" },
+              "address2": { "type": "string" },
+              "city": { "type": "string" },
+              "state": { "type": "string" },
+              "zip": { "type": "string" },
+              "customerNumber": {
+                "type": "string",
+                "description": "Some clients would like to have the customer identifier provided in reports. Please provide here if you would like to report on it later."
+              }
+            },
+            "required": [
+              "firstName",
+              "lastName",
+              "email",
+              "phone1",
+              "address1",
+              "city",
+              "state",
+              "zip"
+            ],
+            "example": {
+              "firstName": "John",
+              "lastName": "Doe",
+              "email": "test@test.com",
+              "phone1": "801-269-0123",
+              "phone2": "999-999-9999",
+              "phone3": "999-999-9999",
+              "address1": "6762 South 1300 East",
+              "address2": "STE 1",
+              "city": "Salt Lake City",
+              "state": "UT",
+              "zip": "84121",
+              "customerNumber": "CUST1111"
+            }
+          },
+          "product": {
+            "type": "object",
+            "properties": {
+              "dateOfPurchase": { "type": "string" },
+              "productType": {
+                "type": "string",
+                "enum": [
+                  "ADJUSTABLE BED BASE",
+                  "AIR CONDITIONER",
+                  "AIR HANDLER",
+                  "AIR PURIFIER",
+                  "ANTENNA",
+                  "AUDIO",
+                  "BASEBOARD HEATER",
+                  "BOILER - ELECTRIC",
+                  "BOILER - FUEL OIL",
+                  "BOILER - GAS",
+                  "BOILER - PROPANE",
+                  "BUILT-IN GRILL",
+                  "BUSINESS SERVER CHASSIS",
+                  "CAMERA SYSTEM",
+                  "CELL PHONE",
+                  "CHAIR",
+                  "CLOTHES DRYER - ELECTRIC",
+                  "CLOTHES DRYER - GAS",
+                  "CLOTHES WASHER",
+                  "COOKTOP - ELECTRIC",
+                  "COOKTOP - GAS",
+                  "DEHUMIDIFER",
+                  "DESKTOP",
+                  "DISHWASHER",
+                  "DUCTWORK",
+                  "ELECTRICAL - BATTERIES",
+                  "ELECTRICAL - DOORBELL",
+                  "ELECTRICAL - INDOORS",
+                  "ELECTRICAL - OUTDOORS",
+                  "EVAPORATOR COIL",
+                  "EXHAUST - HOOD",
+                  "EXHAUST - TELESCOPING",
+                  "FIREPLACE",
+                  "FURNACE - ELECTRIC",
+                  "FURNACE - FUEL OIL",
+                  "FURNACE - GAS",
+                  "FURNACE - PROPANE",
+                  "GARAGE DOOR MECHANICAL",
+                  "GARAGE DOOR OPENER",
+                  "GLYCOL BOILER",
+                  "HEAT PUMP",
+                  "HEAT PUMP GEOTHERMAL",
+                  "HUMIDIFER",
+                  "HVAC",
+                  "LAPTOP",
+                  "MAJOR APPLIANCE",
+                  "MICROWAVE",
+                  "MINI SPLIT AC",
+                  "MINI SPLIT AIR HANDLER",
+                  "MINI SPLIT HP",
+                  "NETWORKING CABLE",
+                  "OTHER",
+                  "PACKAGE AC",
+                  "PACKAGE GE (GAS ELECTRIC)",
+                  "PACKAGE HP (HEAT PUMP)",
+                  "PHONE",
+                  "PLUMBING - EXTERNAL SEWER LINES",
+                  "PLUMBING - INDOOR LEAK",
+                  "PLUMBING - INDOOR WATER LINES",
+                  "PLUMBING - OUTDOOR WATER LINES",
+                  "PLUMBING - STOPPAGE",
+                  "PLUMBING - SUMP PUMP",
+                  "PLUMBING - WATER FILTER",
+                  "PLUMBING - WATER HEATER - ELECTRIC",
+                  "PLUMBING - WATER HEATER - GAS",
+                  "PLUMBING - WATER HEATER - PROPANE",
+                  "PLUMBING - WATER HEATER - TANKLESS - ELECTRIC",
+                  "PLUMBING - WATER HEATER - TANKLESS - GAS",
+                  "PLUMBING - WATER HEATER - TANKLESS - PROPANE",
+                  "PLUMBING - WELL PUMP",
+                  "POOL",
+                  "POOL HOTTUB COMBO",
+                  "POOL VENTS",
+                  "POWER ACCESSORIES",
+                  "PTAC",
+                  "PTAC - EXCHANGE",
+                  "PTAC - SEALED SYSTEM",
+                  "RANGE - ELECTRIC",
+                  "RANGE - GAS",
+                  "REFRIGERATOR",
+                  "REFRIGERATOR - SEALED SYSTEM",
+                  "REFRIGERATOR - SEALED SYSTEM - R134A",
+                  "REFRIGERATOR - SEALED SYSTEM/R600",
+                  "REFRIGERATORRV",
+                  "SPA-HOTTUB",
+                  "STAND ALONE FREEZER",
+                  "TABLET",
+                  "THERMOSTAT",
+                  "TRASH COMPACTOR",
+                  "TV",
+                  "WALL OVEN - ELECTRIC",
+                  "WALL OVEN - GAS",
+                  "WINECOOLER",
+                  "WOOD STOVE"
+                ]
+              },
+              "brand": {
+                "type": "string",
+                "enum": [
+                  "ADMIRAL",
+                  "AKAI",
+                  "ALPINE",
+                  "AMANA",
+                  "APPLE",
+                  "ASKO",
+                  "AVANTI",
+                  "BERTAZZONI",
+                  "BLOMBERG",
+                  "BLUE STAR",
+                  "BOSCH",
+                  "BRITELITE",
+                  "BROAN",
+                  "BROOKSTONE",
+                  "BROTHER",
+                  "CROSLEY",
+                  "CROWN",
+                  "CUSTOMATIC",
+                  "DACOR",
+                  "DANBY",
+                  "DCS",
+                  "ELECTROLUX",
+                  "ELEMENT",
+                  "EMERSON TV",
+                  "ERGOMOTION",
+                  "ESTATE",
+                  "FISHER",
+                  "FISHER & PAYKEL",
+                  "FRIGIDAIRE",
+                  "FUNAI",
+                  "FURRION",
+                  "GAGGENAU",
+                  "GE",
+                  "GREE",
+                  "HAIER",
+                  "HISENSE",
+                  "HITACHI",
+                  "HORIZON FITNESS",
+                  "HOTPOINT",
+                  "HTC",
+                  "INSIGNIA",
+                  "JANOME",
+                  "JENN-AIR",
+                  "JENSEN",
+                  "JVC",
+                  "KATERRA",
+                  "KENMORE",
+                  "KENWOOD ELECTRONICS",
+                  "KITCHENAID",
+                  "KOVA",
+                  "LG ELECTRONICS",
+                  "LIEBHERR",
+                  "MAGICCHEF",
+                  "MAGNAVOX",
+                  "MARVEL",
+                  "MAYTAG",
+                  "MIDEA",
+                  "MIELE APPLIANCE",
+                  "MITSUBISHI",
+                  "MONOPRICE",
+                  "MOTOROLA",
+                  "NEC",
+                  "OCTANE FITNESS",
+                  "OLIVIA",
+                  "ONN",
+                  "OPAL",
+                  "OSIM",
+                  "OTHER",
+                  "PANASONIC",
+                  "PERLICK",
+                  "PHILIPS",
+                  "PIONEER",
+                  "POLAROID",
+                  "PROSCAN",
+                  "RCA",
+                  "ROPER",
+                  "SAMSUNG",
+                  "SANSUI",
+                  "SANYO",
+                  "SCEPTRE",
+                  "SCOTSMAN",
+                  "SEARS",
+                  "SHARP",
+                  "SONY",
+                  "SPEED QUEEN",
+                  "SPIRIT FITNESS",
+                  "SUBZERO",
+                  "SUPERIORE",
+                  "TAPPAN",
+                  "TCL",
+                  "THERMADOR",
+                  "THOMPSON",
+                  "TMGCORE",
+                  "TOSHIBA",
+                  "TRIANGLE TUBE",
+                  "U-LINE",
+                  "VIKING",
+                  "VIKING APPLIANCE",
+                  "VIZIO",
+                  "WESTINGHOUSE",
+                  "WHIRLPOOL",
+                  "WINE ENTHUSIAST",
+                  "WOLF RANGE",
+                  "ZENITH"
+                ]
+              },
+              "serialNumber": {
+                "type": "string",
+                "description": "If unknown, please use value VERIFY_SERIAL"
+              },
+              "serialNumber2": {
+                "type": "string",
+                "description": "Optional second serial number."
+              },
+              "modelNumber": {
+                "type": "string",
+                "description": "If unknown, please use value VERIFY_MODEL"
+              },
+              "modelVersion": { "type": "string" },
+              "sellingDealer": { "type": "string" }
+            },
+            "required": ["productType", "brand", "serialNumber", "modelNumber"],
+            "example": {
+              "dateOfPurchase": "2021-01-01",
+              "productType": "Adjustable Bed Base",
+              "brand": "ERGOMOTION",
+              "serialNumber": "SERIAL111",
+              "modelNumber": "MODEL111",
+              "modelVersion": "v2",
+              "sellingDealer": "Best Buy"
+            }
+          },
+          "parts": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "brand": {
+                  "type": "string",
+                  "description": "Brand of part manufacturer not the brand of the unit. Sometimes they are the same and sometimes they are different."
+                },
+                "partNumber": { "type": "string" },
+                "description": { "type": "string" },
+                "quantity": { "type": "integer" },
+                "costEach": { "type": "number" },
+                "hasCore": { "type": "boolean" },
+                "coreCostEach": { "type": "number" },
+                "supplier": { "type": "string" }
+              },
+              "required": [
+                "brand",
+                "partNumber",
+                "description",
+                "quantity",
+                "costEach",
+                "hasCore",
+                "coreCostEach",
+                "supplier"
+              ],
+              "example": [
+                {
+                  "brand": "Ergomotion",
+                  "partNumber": "PART111",
+                  "description": "DESC111",
+                  "quantity": 1,
+                  "costEach": 11.11,
+                  "hasCore": true,
+                  "coreCostEach": 150,
+                  "supplier": "Encompass"
+                },
+                {
+                  "brand": "Ergomotion",
+                  "partNumber": "PART222",
+                  "description": "DESC222",
+                  "quantity": 2,
+                  "costEach": 22.22,
+                  "hasCore": false,
+                  "coreCostEach": 0,
+                  "supplier": "Encompass"
+                }
+              ]
+            }
+          }
+        },
+        "required": ["bookingDetails", "customer", "product"]
+      },
+      "CreateVirtualTechRequest": {
+        "type": "object",
+        "properties": {
+          "bookingDetails": {
+            "type": "object",
+            "properties": {
+              "caseNumber": {
+                "type": "string",
+                "description": "This is the clients unique case number"
+              },
+              "complaintCode": {
+                "type": "string",
+                "description": "Standardized codes for the complaint"
+              },
+              "complaint": {
+                "type": "string",
+                "description": "Explaination of the problem"
+              },
+              "specialInstruction": { "type": "string" },
+              "scheduleDate": {
+                "type": "string",
+                "description": "Date provided from availabilityVirtualTech"
+              },
+              "slot": {
+                "type": "string",
+                "description": "Slot provided from availabilityVirtualTech"
+              },
+              "preAuthorizationLimit": {
+                "type": "number",
+                "description": "Amount that is pre-approved for the repair (parts and labor) before requiring an estimate"
+              },
+              "deductibleAmount": {
+                "type": "number",
+                "description": "Some cirumstances require the consumer to pay a trip/deductible/service call fee directly to the service provider. That amount would be included here."
+              },
+              "planCode": {
+                "type": "string",
+                "description": "For contact work, the consumer is usually part of a specific plan that comes with certain terms and conditions"
+              },
+              "authorizationNumber": {
+                "type": "string",
+                "description": "Some clients require a special authorization number to be provided at billing time. Please provide if required."
+              },
+              "suspectedRecall": {
+                "type": "boolean",
+                "description": "If there is concern that this dispatch should be covered under the workmanship guarantee"
+              },
+              "exclusions": {
+                "type": "string",
+                "description": "Delimited list of things not covered by the contract"
+              },
+              "virtualBookingType": {
+                "description": "Indicates virtual booking type. I not provided, it defaults to diagnosisOnly",
+                "type": "string",
+                "enum": ["diagnosisOnly", "diagnosisAndRepairWalkthrough"]
+              }
+            },
+            "required": ["caseNumber", "complaint", "slot", "scheduleDate"],
+            "example": {
+              "caseNumber": "CASE111",
+              "complaint": "Bed will not raise or lower",
+              "specialInstruction": "please knock instead of ringing door bell",
+              "scheduleDate": "2021-12-10",
+              "timePreference": "A",
+              "preAuthorizationLimit": 249.99,
+              "deductibleAmount": 49.99,
+              "planCode": "Platinum",
+              "authorizationNumber": "Auth111",
+              "suspectedRecall": false,
+              "exclusions": "Gasket, Buttons, Power cord "
+            }
+          },
+          "customer": {
+            "type": "object",
+            "properties": {
+              "firstName": { "type": "string" },
+              "lastName": { "type": "string" },
+              "email": { "type": "string" },
+              "phone1": { "type": "string" },
+              "phone2": { "type": "string" },
+              "phone3": { "type": "string" },
+              "address1": { "type": "string" },
+              "address2": { "type": "string" },
+              "city": { "type": "string" },
+              "state": { "type": "string" },
+              "zip": { "type": "string" },
+              "customerNumber": {
+                "type": "string",
+                "description": "Some clients would like to have the customer identifier provided in reports. Please provide here if you would like to report on it later."
+              }
+            },
+            "required": [
+              "firstName",
+              "lastName",
+              "email",
+              "phone1",
+              "address1",
+              "city",
+              "state",
+              "zip"
+            ],
+            "example": {
+              "firstName": "John",
+              "lastName": "Doe",
+              "email": "test@test.com",
+              "phone1": "801-269-0123",
+              "phone2": "999-999-9999",
+              "phone3": "999-999-9999",
+              "address1": "6762 South 1300 East",
+              "address2": "STE 1",
+              "city": "Salt Lake City",
+              "state": "UT",
+              "zip": "84121",
+              "customerNumber": "CUST1111"
+            }
+          },
+          "product": {
+            "type": "object",
+            "properties": {
+              "dateOfPurchase": { "type": "string" },
+              "productType": {
+                "type": "string",
+                "enum": [
+                  "ADJUSTABLE BED BASE",
+                  "AIR CONDITIONER",
+                  "AIR HANDLER",
+                  "AIR PURIFIER",
+                  "ANTENNA",
+                  "AUDIO",
+                  "BASEBOARD HEATER",
+                  "BOILER - ELECTRIC",
+                  "BOILER - FUEL OIL",
+                  "BOILER - GAS",
+                  "BOILER - PROPANE",
+                  "BUILT-IN GRILL",
+                  "BUSINESS SERVER CHASSIS",
+                  "CAMERA SYSTEM",
+                  "CELL PHONE",
+                  "CHAIR",
+                  "CLOTHES DRYER - ELECTRIC",
+                  "CLOTHES DRYER - GAS",
+                  "CLOTHES WASHER",
+                  "COOKTOP - ELECTRIC",
+                  "COOKTOP - GAS",
+                  "DEHUMIDIFER",
+                  "DESKTOP",
+                  "DISHWASHER",
+                  "DUCTWORK",
+                  "ELECTRICAL - BATTERIES",
+                  "ELECTRICAL - DOORBELL",
+                  "ELECTRICAL - INDOORS",
+                  "ELECTRICAL - OUTDOORS",
+                  "EVAPORATOR COIL",
+                  "EXHAUST - HOOD",
+                  "EXHAUST - TELESCOPING",
+                  "FIREPLACE",
+                  "FURNACE - ELECTRIC",
+                  "FURNACE - FUEL OIL",
+                  "FURNACE - GAS",
+                  "FURNACE - PROPANE",
+                  "GARAGE DOOR MECHANICAL",
+                  "GARAGE DOOR OPENER",
+                  "GLYCOL BOILER",
+                  "HEAT PUMP",
+                  "HEAT PUMP GEOTHERMAL",
+                  "HUMIDIFER",
+                  "HVAC",
+                  "LAPTOP",
+                  "MAJOR APPLIANCE",
+                  "MICROWAVE",
+                  "MINI SPLIT AC",
+                  "MINI SPLIT AIR HANDLER",
+                  "MINI SPLIT HP",
+                  "NETWORKING CABLE",
+                  "OTHER",
+                  "PACKAGE AC",
+                  "PACKAGE GE (GAS ELECTRIC)",
+                  "PACKAGE HP (HEAT PUMP)",
+                  "PHONE",
+                  "PLUMBING - EXTERNAL SEWER LINES",
+                  "PLUMBING - INDOOR LEAK",
+                  "PLUMBING - INDOOR WATER LINES",
+                  "PLUMBING - OUTDOOR WATER LINES",
+                  "PLUMBING - STOPPAGE",
+                  "PLUMBING - SUMP PUMP",
+                  "PLUMBING - WATER FILTER",
+                  "PLUMBING - WATER HEATER - ELECTRIC",
+                  "PLUMBING - WATER HEATER - GAS",
+                  "PLUMBING - WATER HEATER - PROPANE",
+                  "PLUMBING - WATER HEATER - TANKLESS - ELECTRIC",
+                  "PLUMBING - WATER HEATER - TANKLESS - GAS",
+                  "PLUMBING - WATER HEATER - TANKLESS - PROPANE",
+                  "PLUMBING - WELL PUMP",
+                  "POOL",
+                  "POOL HOTTUB COMBO",
+                  "POOL VENTS",
+                  "POWER ACCESSORIES",
+                  "PTAC",
+                  "PTAC - EXCHANGE",
+                  "PTAC - SEALED SYSTEM",
+                  "RANGE - ELECTRIC",
+                  "RANGE - GAS",
+                  "REFRIGERATOR",
+                  "REFRIGERATOR - SEALED SYSTEM",
+                  "REFRIGERATOR - SEALED SYSTEM - R134A",
+                  "REFRIGERATOR - SEALED SYSTEM/R600",
+                  "REFRIGERATORRV",
+                  "SPA-HOTTUB",
+                  "STAND ALONE FREEZER",
+                  "TABLET",
+                  "THERMOSTAT",
+                  "TRASH COMPACTOR",
+                  "TV",
+                  "WALL OVEN - ELECTRIC",
+                  "WALL OVEN - GAS",
+                  "WINECOOLER",
+                  "WOOD STOVE"
+                ]
+              },
+              "brand": {
+                "type": "string",
+                "enum": [
+                  "ADMIRAL",
+                  "AKAI",
+                  "ALPINE",
+                  "AMANA",
+                  "APPLE",
+                  "ASKO",
+                  "AVANTI",
+                  "BERTAZZONI",
+                  "BLOMBERG",
+                  "BLUE STAR",
+                  "BOSCH",
+                  "BRITELITE",
+                  "BROAN",
+                  "BROOKSTONE",
+                  "BROTHER",
+                  "CROSLEY",
+                  "CROWN",
+                  "CUSTOMATIC",
+                  "DACOR",
+                  "DANBY",
+                  "DCS",
+                  "ELECTROLUX",
+                  "ELEMENT",
+                  "EMERSON TV",
+                  "ERGOMOTION",
+                  "ESTATE",
+                  "FISHER",
+                  "FISHER & PAYKEL",
+                  "FRIGIDAIRE",
+                  "FUNAI",
+                  "FURRION",
+                  "GAGGENAU",
+                  "GE",
+                  "GREE",
+                  "HAIER",
+                  "HISENSE",
+                  "HITACHI",
+                  "HORIZON FITNESS",
+                  "HOTPOINT",
+                  "HTC",
+                  "INSIGNIA",
+                  "JANOME",
+                  "JENN-AIR",
+                  "JENSEN",
+                  "JVC",
+                  "KATERRA",
+                  "KENMORE",
+                  "KENWOOD ELECTRONICS",
+                  "KITCHENAID",
+                  "KOVA",
+                  "LG ELECTRONICS",
+                  "LIEBHERR",
+                  "MAGICCHEF",
+                  "MAGNAVOX",
+                  "MARVEL",
+                  "MAYTAG",
+                  "MIDEA",
+                  "MIELE APPLIANCE",
+                  "MITSUBISHI",
+                  "MONOPRICE",
+                  "MOTOROLA",
+                  "NEC",
+                  "OCTANE FITNESS",
+                  "OLIVIA",
+                  "ONN",
+                  "OPAL",
+                  "OSIM",
+                  "OTHER",
+                  "PANASONIC",
+                  "PERLICK",
+                  "PHILIPS",
+                  "PIONEER",
+                  "POLAROID",
+                  "PROSCAN",
+                  "RCA",
+                  "ROPER",
+                  "SAMSUNG",
+                  "SANSUI",
+                  "SANYO",
+                  "SCEPTRE",
+                  "SCOTSMAN",
+                  "SEARS",
+                  "SHARP",
+                  "SONY",
+                  "SPEED QUEEN",
+                  "SPIRIT FITNESS",
+                  "SUBZERO",
+                  "SUPERIORE",
+                  "TAPPAN",
+                  "TCL",
+                  "THERMADOR",
+                  "THOMPSON",
+                  "TMGCORE",
+                  "TOSHIBA",
+                  "TRIANGLE TUBE",
+                  "U-LINE",
+                  "VIKING",
+                  "VIKING APPLIANCE",
+                  "VIZIO",
+                  "WESTINGHOUSE",
+                  "WHIRLPOOL",
+                  "WINE ENTHUSIAST",
+                  "WOLF RANGE",
+                  "ZENITH"
+                ]
+              },
+              "serialNumber": {
+                "type": "string",
+                "description": "If unknown, please use value VERIFY_SERIAL"
+              },
+              "serialNumber2": {
+                "type": "string",
+                "description": "Optional second serial number."
+              },
+              "modelNumber": {
+                "type": "string",
+                "description": "If unknown, please use value VERIFY_MODEL"
+              },
+              "modelVersion": { "type": "string" },
+              "sellingDealer": { "type": "string" }
+            },
+            "required": ["productType", "brand", "serialNumber", "modelNumber"],
+            "example": {
+              "dateOfPurchase": "2021-01-01",
+              "productType": "Adjustable Bed Base",
+              "brand": "ERGOMOTION",
+              "serialNumber": "SERIAL111",
+              "modelNumber": "MODEL111",
+              "modelVersion": "v2",
+              "sellingDealer": "Best Buy"
+            }
+          },
+          "parts": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "brand": {
+                  "type": "string",
+                  "description": "Brand of part manufacturer not the brand of the unit. Sometimes they are the same and sometimes they are different."
+                },
+                "partNumber": { "type": "string" },
+                "description": { "type": "string" },
+                "quantity": { "type": "integer" },
+                "costEach": { "type": "number" },
+                "hasCore": { "type": "boolean" },
+                "coreCostEach": { "type": "number" },
+                "supplier": { "type": "string" }
+              },
+              "required": [
+                "brand",
+                "partNumber",
+                "description",
+                "quantity",
+                "costEach",
+                "hasCore",
+                "coreCostEach",
+                "supplier"
+              ],
+              "example": [
+                {
+                  "brand": "Ergomotion",
+                  "partNumber": "PART111",
+                  "description": "DESC111",
+                  "quantity": 1,
+                  "costEach": 11.11,
+                  "hasCore": true,
+                  "coreCostEach": 150,
+                  "supplier": "Encompass"
+                },
+                {
+                  "brand": "Ergomotion",
+                  "partNumber": "PART222",
+                  "description": "DESC222",
+                  "quantity": 2,
+                  "costEach": 22.22,
+                  "hasCore": false,
+                  "coreCostEach": 0,
+                  "supplier": "Encompass"
+                }
+              ]
+            }
+          }
+        },
+        "required": ["bookingDetails", "customer", "product"]
+      },
+      "CreateResponse": {
+        "type": "object",
+        "properties": {
+          "dispatchNumber": {
+            "type": "string",
+            "example": { "dispatchNumber": "DISPATCH111" }
+          },
+          "serviceProvider": {
+            "type": "object",
+            "properties": {
+              "depotName": { "type": "string" },
+              "serviceProviderName": { "type": "string" },
+              "phoneNumber": { "type": "string" },
+              "email": { "type": "string" },
+              "partsShippingAddress": {
+                "type": "object",
+                "properties": {
+                  "contact": { "type": "string" },
+                  "email": { "type": "string" },
+                  "phone": { "type": "string" },
+                  "address1": { "type": "string" },
+                  "address2": { "type": "string" },
+                  "city": { "type": "string" },
+                  "state": { "type": "string" },
+                  "zip": { "type": "string" }
+                },
+                "required": [
+                  "contact",
+                  "email",
+                  "phone",
+                  "address1",
+                  "city",
+                  "state",
+                  "zip"
+                ]
+              }
+            },
+            "required": [
+              "depotName",
+              "serviceProviderName",
+              "phoneNumber",
+              "email"
+            ]
+          }
+        },
+        "required": ["dispatchNumber"]
+      },
+      "ErrorResponse": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "errorCode": { "type": "string" },
+            "errorMessage": { "type": "string" }
+          },
+          "required": ["errorCode", "errorMessage"]
+        }
+      },
+      "CancelRequest": {
+        "type": "object",
+        "properties": {
+          "dispatchNumber": {
+            "type": "string",
+            "description": "This is NSA's unique reference id. It is returned as part of the create response body"
+          },
+          "cancelReason": {
+            "type": "string",
+            "enum": [
+              "Cancelled by Client",
+              "Cancelled by Customer",
+              "Cancelled by NSA"
+            ]
+          },
+          "notes": { "type": "string" }
+        },
+        "example": {
+          "dispatchNumber": "DISPATCH111",
+          "cancelReason": "Cancelled by Customer",
+          "notes": "The customer power cycled the unit and it sovled their problem"
+        },
+        "required": ["dispatchNumber", "cancelReason", "notes"]
+      },
+      "EstimateListResponse": {
+        "type": "array",
+        "items": { "$ref": "#/components/schemas/EstimateObject" }
+      },
+      "EstimateObject": {
+        "type": "object",
+        "properties": {
+          "estimateID": { "type": "integer" },
+          "dipatchNumber": { "type": "string" },
+          "caseNumber": { "type": "string" },
+          "estimateProcessedStatusCode": { "type": "string" },
+          "total": { "type": "number" },
+          "deductible": { "type": "number" },
+          "totalAmountLessDeductible": { "type": "number" },
+          "submissionTimestamp": { "type": "string", "format": "date-time" },
+          "processedTimestamp": { "type": "string", "format": "date-time" },
+          "rejectProcessingNeeded": { "type": "string", "format": "date-time" },
+          "unitAge": { "type": "string" },
+          "causeOfFailure": { "type": "string" },
+          "declineReason": { "type": "string" },
+          "lines": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "lineID": { "type": "integer" },
+                "amount": { "type": "number" },
+                "coverageTypeCode": { "type": "string" },
+                "procesesingReference": { "type": "string" },
+                "lineStatus": { "type": "string" },
+                "notes": { "type": "string" },
+                "createTimestamp": { "type": "string", "format": "date-time" },
+                "processedTimestamp": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              },
+              "required": [
+                "amount",
+                "coverageTypeCode",
+                "createTimestamp",
+                "lineID",
+                "lineStatus",
+                "notes",
+                "procesesingReference",
+                "processedTimestamp"
+              ]
+            }
+          },
+          "parts": {
+            "type": "array",
+            "items": {
+              "properties": {
+                "estimatePartID": { "type": "integer" },
+                "partBrand": { "type": "string" },
+                "partNumber": { "type": "string" },
+                "description": { "type": "string" },
+                "quantity": { "type": "integer" },
+                "cost": { "type": "number" },
+                "extendedCost": { "type": "number" },
+                "requestedSupplier": { "type": "string" },
+                "alreadyUsed": { "type": "string" },
+                "alreadyOrdered": { "type": "string" },
+                "approved": { "type": "string" },
+                "createTimestamp": { "type": "string", "format": "date-time" }
+              },
+              "required": [
+                "alreadyOrdered",
+                "alreadyUsed",
+                "approved",
+                "cost",
+                "createTimestamp",
+                "description",
+                "estimatePartID",
+                "extendedCost",
+                "partBrand",
+                "partNumber",
+                "quantity",
+                "requestedSupplier"
+              ]
+            }
+          },
+          "notes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "estimateNoteID": { "type": "integer" },
+                "note": { "type": "string" },
+                "userType": { "type": "string" },
+                "creator": { "type": "string" },
+                "createTimestamp": { "type": "string", "format": "date-time" }
+              },
+              "required": [
+                "createTimestamp",
+                "creator",
+                "estimateNoteID",
+                "note",
+                "userType"
+              ]
+            }
+          }
+        },
+        "required": [
+          "caseNumber",
+          "deductible",
+          "dipatchNumber",
+          "estimateID",
+          "estimateProcessedStatusCode",
+          "lines",
+          "notes",
+          "parts",
+          "processedTimestamp",
+          "rejectProcessingNeeded",
+          "submissionTimestamp",
+          "total",
+          "totalAmountLessDeductible"
+        ]
+      },
+      "EstimateProcessRequest": {
+        "type": "object",
+        "properties": {
+          "estimateID": { "type": "integer" },
+          "action": {
+            "type": "string",
+            "enum": [
+              "approve",
+              "partiallyApproved",
+              "estDeclined",
+              "rejectWithResubmit",
+              "partsUnAvail",
+              "estimateHold"
+            ]
+          },
+          "note": {
+            "type": "string",
+            "description": "Required if the following actions - rejectWithResubmit, partiallyApproved, estimateHold"
+          },
+          "processedReference": { "type": "string" },
+          "partsApproved": {
+            "type": "array",
+            "description": "Required if action = partiallyApproved",
+            "items": { "type": "integer" }
+          }
+        },
+        "required": ["action", "estimateID", "processedReference"]
+      },
+      "StatusResponse": {
+        "type": "object",
+        "properties": {
+          "clientCaseNumber": { "type": "string" },
+          "nsaDispatchNumber": { "type": "string" },
+          "externalReference1": { "type": "string" },
+          "status": {
+            "type": "object",
+            "properties": {
+              "clientCaseNumber": { "type": "string" },
+              "authorizationNumber": { "type": "string" },
+              "customerNumber": { "type": "string" },
+              "claimNumber": { "type": "string" },
+              "preAuthAmount": { "type": "string" },
+              "deductible": { "type": "string" },
+              "plan": { "type": "string" },
+              "exclusions": { "type": "string" },
+              "createDate": { "type": "string" },
+              "closeDate": { "type": "string" },
+              "currentScheduleDate": { "type": "string" },
+              "originalScheduleDate": { "type": "string" },
+              "timeSlot": { "type": "string" },
+              "headerStatus": { "type": "string" },
+              "subStatusCode": { "type": "string" },
+              "subStatusDescription": { "type": "string" },
+              "maxPartOrderDate": { "type": "string" },
+              "maxPartSupplierETADate": { "type": "string" },
+              "maxPartDueDate": { "type": "string" },
+              "servicerName": { "type": "string" },
+              "servicerPhoneNumber": { "type": "string" },
+              "servicerEmail": { "type": "string" },
+              "program": { "type": "string" },
+              "productType": { "type": "string" },
+              "brand": { "type": "string" },
+              "model": { "type": "string" },
+              "complaint": { "type": "string" },
+              "servicePerformed": { "type": "string" },
+              "cancelReason": { "type": "string" },
+              "partOrders": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "orderNumber": { "type": "string" },
+                    "orderDate": { "type": "string" },
+                    "poNumber": { "type": "string" },
+                    "shipments": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "shipmentDate": { "type": "string" },
+                          "trackingNumber": { "type": "string" },
+                          "shippingCompany": { "type": "string" }
+                        },
+                        "required": [
+                          "shipmentDate",
+                          "trackingNumber",
+                          "shippingCompany"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "orderNumber",
+                    "orderDate",
+                    "poNumber",
+                    "shipments"
+                  ]
+                }
+              },
+              "partShipToAddress": {
+                "type": "object",
+                "properties": {
+                  "contact": { "type": "string" },
+                  "address1": { "type": "string" },
+                  "address2": { "type": "string" },
+                  "city": { "type": "string" },
+                  "state": { "type": "string" },
+                  "zip": { "type": "string" },
+                  "countryCode": { "type": "string" },
+                  "phone": { "type": "string" },
+                  "email": { "type": "string" }
+                },
+                "required": [
+                  "contact",
+                  "address1",
+                  "address2",
+                  "city",
+                  "state",
+                  "zip",
+                  "countryCode",
+                  "phone",
+                  "email"
+                ]
+              },
+              "shipments": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "shipmentType": { "type": "string" },
+                    "shippingCompany": { "type": "string" },
+                    "trackingNumber": { "type": "string" }
+                  },
+                  "required": [
+                    "shipmentType",
+                    "shippingCompany",
+                    "trackingNumber"
+                  ]
+                }
+              },
+              "estimates": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "estimateID": { "type": "string" },
+                    "submissionStatusCode": { "type": "string" },
+                    "processedStatusCode": { "type": "string" },
+                    "totalAmount": { "type": "string" },
+                    "deductible": { "type": "string" },
+                    "totalAmountLessDeductible": { "type": "string" },
+                    "createTimestamp": { "type": "string" },
+                    "submissionTimestamp": { "type": "string" },
+                    "declineReason": { "type": "null" },
+                    "processedTimestamp": { "type": "string" },
+                    "lines": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "coverageTypeCode": {
+                            "type": "string",
+                            "enum": [
+                              "Labor",
+                              "Parts",
+                              "Other",
+                              "Mileage",
+                              "Tax",
+                              "AdminFee"
+                            ]
+                          },
+                          "amount": { "type": "string" }
+                        },
+                        "required": ["coverageTypeCode", "amount"]
+                      }
+                    },
+                    "parts": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "estimatePartID": { "type": "string" },
+                          "brand": { "type": "string" },
+                          "partNumber": { "type": "string" },
+                          "description": { "type": "string" },
+                          "quantity": { "type": "string" },
+                          "costEach": { "type": "string" },
+                          "extendedCost": { "type": "string" },
+                          "alreadyUsed": { "type": "boolean" },
+                          "alreadyOrdered": { "type": "boolean" }
+                        },
+                        "required": [
+                          "estimatePartID",
+                          "brand",
+                          "partNumber",
+                          "description",
+                          "quantity",
+                          "costEach",
+                          "extendedCost",
+                          "alreadyUsed",
+                          "alreadyOrdered"
+                        ]
+                      }
+                    },
+                    "notes": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "noteID": { "type": "string" },
+                          "note": { "type": "string" },
+                          "createdBy": { "type": "string" },
+                          "createUserEntity": { "type": "string" },
+                          "createTimestamp": { "type": "string" }
+                        },
+                        "required": [
+                          "noteID",
+                          "note",
+                          "createdBy",
+                          "createUserEntity",
+                          "createTimestamp"
+                        ]
+                      }
+                    },
+                    "additionalQuestions": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "questionCode": { "type": "string" },
+                          "answer": { "type": "string" }
+                        },
+                        "required": ["questionCode", "answer"]
+                      }
+                    }
+                  },
+                  "required": [
+                    "estimateID",
+                    "submissionStatusCode",
+                    "processedStatusCode",
+                    "totalAmount",
+                    "deductible",
+                    "totalAmountLessDeductible",
+                    "createTimestamp",
+                    "submissionTimestamp",
+                    "declineReason",
+                    "processedTimestamp",
+                    "lines",
+                    "parts",
+                    "notes",
+                    "additionalQuestions"
+                  ]
+                }
+              },
+              "suspectedRecall": { "type": "string" },
+              "forceIceMakerCovered": { "type": "null" }
+            },
+            "required": [
+              "clientCaseNumber",
+              "authorizationNumber",
+              "customerNumber",
+              "claimNumber",
+              "preAuthAmount",
+              "deductible",
+              "plan",
+              "exclusions",
+              "createDate",
+              "closeDate",
+              "currentScheduleDate",
+              "originalScheduleDate",
+              "timeSlot",
+              "headerStatus",
+              "subStatusCode",
+              "subStatusDescription",
+              "maxPartOrderDate",
+              "maxPartSupplierETADate",
+              "maxPartDueDate",
+              "servicerName",
+              "servicerPhoneNumber",
+              "servicerEmail",
+              "program",
+              "productType",
+              "brand",
+              "model",
+              "complaint",
+              "servicePerformed",
+              "cancelReason",
+              "partOrders",
+              "partShipToAddress",
+              "shipments",
+              "estimates",
+              "suspectedRecall",
+              "forceIceMakerCovered"
+            ]
+          },
+          "claims": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "billingID": { "type": "string" },
+                "billingType": { "type": "string" },
+                "processedStatus": { "type": "string" },
+                "processedNotes": { "type": "null" },
+                "previousProcessedNotes": { "type": "null" },
+                "createTimestamp": { "type": "string" },
+                "batchedTimestamp": { "type": "string" },
+                "batchNumber": { "type": "string" },
+                "totalAmount": { "type": "string" },
+                "deductible": { "type": "string" },
+                "totalAmountLessDeductible": { "type": "string" },
+                "lines": {
+                  "type": "array",
+                  "items": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "coverageTypeCode": { "type": "string" },
+                        "amount": { "type": "string" }
+                      },
+                      "required": ["coverageTypeCode", "amount"]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "coverageTypeCode": { "type": "string" },
+                        "amount": { "type": "string" }
+                      },
+                      "required": ["coverageTypeCode", "amount"]
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "billingID",
+                "billingType",
+                "processedStatus",
+                "processedNotes",
+                "previousProcessedNotes",
+                "createTimestamp",
+                "batchedTimestamp",
+                "batchNumber",
+                "totalAmount",
+                "deductible",
+                "totalAmountLessDeductible",
+                "lines"
+              ]
+            }
+          },
+          "events": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "eventID": { "type": "string" },
+                "eventTimestamp": { "type": "string" },
+                "eventTypeID": { "type": "string" },
+                "eventTypeName": { "type": "string" },
+                "eventDescription": { "type": "string" }
+              },
+              "required": [
+                "eventID",
+                "eventTimestamp",
+                "eventTypeID",
+                "eventTypeName",
+                "eventDescription"
+              ]
+            }
+          }
+        },
+        "required": [
+          "clientCaseNumber",
+          "nsaDispatchNumber",
+          "externalReference1",
+          "status",
+          "claims",
+          "events"
+        ]
+      }
+    },
+    "securitySchemes": { "basicAuth": { "type": "http", "scheme": "basic" } }
+  }
+}

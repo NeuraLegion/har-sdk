@@ -1,0 +1,146 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "description": "Retrieves Item Pricing for Customers",
+    "version": "1.0.0-oas3",
+    "title": "Rhino Racks Portalink: Item Pricing Web Service",
+    "contact": { "name": "Michael Sumulong" }
+  },
+  "servers": [
+    {
+      "url": "https://4073460-sb1.restlets.api.netsuite.com/app/site/hosting/restlet.nl?script=customscript_ms_rl_portalink_pricing_api&deploy=customdeploy1",
+      "description": "NetSuite Sandbox"
+    },
+    {
+      "url": "https://4073460.restlets.api.netsuite.com/app/site/hosting/restlet.nl?script=customscript_ms_rl_portalink_pricing_api&deploy=customdeploy1",
+      "description": "NetSuite Production"
+    }
+  ],
+  "paths": {
+    "/": {
+      "summary": "Retrieve Customer Item Pricing",
+      "get": {
+        "summary": "Retrieves Item Pricing Info for specific Item, Customer, Currency, and Quantity combination",
+        "operationId": "getItemPrice",
+        "parameters": [
+          {
+            "name": "customerId",
+            "in": "query",
+            "description": "Internal ID of NetSuite Customer",
+            "required": true,
+            "schema": { "type": "integer" }
+          },
+          {
+            "name": "itemId",
+            "in": "query",
+            "description": "Internal ID of NetSuite Item",
+            "required": true,
+            "schema": { "type": "integer" }
+          },
+          {
+            "name": "currencyId",
+            "in": "query",
+            "description": "Internal ID of NS currency",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "enum": [
+                "1 (AUD)",
+                "2 (USD)",
+                "3 (CAD)",
+                "4 (EUR)",
+                "5 (NZD)",
+                "6 (GBP)",
+                "7 (SGD)",
+                "8 (HKD)",
+                "9 (FJD)",
+                "10 (ZAR)",
+                "11 (SEK)",
+                "12 (AED)",
+                "13 (CLP)",
+                "14 (LKR)",
+                "15 (INR)",
+                "16 (CNY)"
+              ]
+            }
+          },
+          {
+            "name": "quantity",
+            "in": "query",
+            "description": "Item Quantity being ordered",
+            "required": true,
+            "schema": { "type": "float" }
+          }
+        ],
+        "responses": {
+          "200": { "$ref": "#/components/responses/ItemPriceResponse" },
+          "500": { "$ref": "#/components/responses/ServerErrorResponse" },
+          "400": { "$ref": "#/components/responses/ClientErrorResponse" }
+        }
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "ServerErrorResponse": {
+        "description": "Server Error Response",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": { "type": "string" },
+                "message": {
+                  "type": "string",
+                  "description": "Descriptive explanation of error"
+                }
+              }
+            },
+            "example": {
+              "code": "INVALID_LOGIN_ATTEMPT",
+              "message": "Invalid login attempt."
+            }
+          }
+        }
+      },
+      "ClientErrorResponse": {
+        "description": "Client Error Response",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": { "type": "string" },
+                "message": {
+                  "type": "string",
+                  "description": "Descriptive explanation of error"
+                }
+              }
+            },
+            "example": {
+              "code": "",
+              "message": "MISSING_FIELD: customerId is missing"
+            }
+          }
+        }
+      },
+      "ItemPriceResponse": {
+        "description": "Item Price Response",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "price": {
+                  "type": "float",
+                  "description": "Item price for the provided combination"
+                }
+              }
+            },
+            "example": { "price": 27.35 }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,1379 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Inventory Management System Rest API",
+    "description": "Welcome to the API documentation for the Inventory Management System API. This API provides a set of endpoints to efficiently track and manage inventory. The system focuses on four core resources: User, Address, Item, and Transaction.\n"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8000",
+      "description": "Local Development Server"
+    }
+  ],
+  "paths": {
+    "/users": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Create a new user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "name": { "type": "string" },
+                  "email": { "type": "string" },
+                  "password": { "type": "string" },
+                  "phone": { "type": "string" },
+                  "Role": { "type": "string" }
+                }
+              },
+              "example": {
+                "name": "Nada",
+                "email": "Nadaaboissa@gmail.com",
+                "password": "password123",
+                "phone": "0000000000",
+                "Role": "Administrator"
+              }
+            }
+          }
+        },
+        "responses": {
+          "100": {
+            "description": "The server has received the initial part of the request and requires the client to continue with the remainder of the request."
+          },
+          "200": {
+            "description": "The request was successful and the user was created.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "name": "Nada",
+                  "email": "Nadaaboissa@gmail.com",
+                  "password": "password123",
+                  "phone": "0000000000",
+                  "Role": "Administrator"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request body is missing or contains invalid parameters."
+          },
+          "403": {
+            "description": "The user is not authorized to perform the operation."
+          },
+          "404": {
+            "description": "The requested resource could not be found."
+          },
+          "500": {
+            "description": "An unexpected error occurred on the server."
+          }
+        }
+      },
+      "get": {
+        "tags": ["User"],
+        "summary": "Retrieve a list of all users",
+        "responses": {
+          "200": {
+            "description": "The request was successful and the users are returned.",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "id": 1,
+                    "name": "Nada",
+                    "email": "Nadaaboissa@gmail.com",
+                    "password": "password123",
+                    "phone": "0000000000",
+                    "Role": "Administrator"
+                  },
+                  {
+                    "id": 2,
+                    "name": "Jana",
+                    "email": "jana@example.com",
+                    "password": "password789",
+                    "phone": "4567891230",
+                    "Role": "Employee"
+                  }
+                ]
+              }
+            }
+          },
+          "400": { "description": "The request parameters are invalid." },
+          "403": {
+            "description": "The user is not authorized to perform the operation."
+          },
+          "404": {
+            "description": "The requested resource could not be found."
+          },
+          "500": {
+            "description": "An unexpected error occurred on the server."
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "put": {
+        "tags": ["User"],
+        "summary": "Update the details of a specific user by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the user to update",
+            "required": true,
+            "schema": { "type": "integer" },
+            "example": 2
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": { "type": "integer" },
+                  "name": { "type": "string" },
+                  "email": { "type": "string" },
+                  "password": { "type": "string" },
+                  "phone": { "type": "string" },
+                  "Role": { "type": "string" }
+                }
+              },
+              "example": {
+                "id": 1,
+                "name": "Nada",
+                "email": "Nadaaboissa@gmail.com",
+                "password": "password111",
+                "phone": "0590000000",
+                "Role": "Administrator"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The request was successful and the user details are updated.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "name": "Nada",
+                  "email": "Nadaaboissa@gmail.com",
+                  "password": "password111",
+                  "phone": "0590000000",
+                  "Role": "Administrator"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request parameters are invalid.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "The request contains invalid parameters. Please check the request and try again."
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The user is not authorized to perform the operation.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "You are not authorized to update user details. Please contact the administrator for assistance."
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The requested resource could not be found.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "The user with the specified ID was not found. Please verify the ID and try again."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An unexpected error occurred on the server.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "An internal server error occurred. Please try again later or contact the support team for assistance."
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["User"],
+        "summary": "Apply partial updates to a specific user by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the user to update",
+            "required": true,
+            "schema": { "type": "integer" },
+            "example": 2
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": { "phone": { "type": "string" } }
+              },
+              "example": { "phone": "9876543210" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The request was successful and the user details are updated.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 2,
+                  "name": "Jana",
+                  "email": "jana@example.com",
+                  "password": "password789",
+                  "phone": "9876543210",
+                  "Role": "Employee"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request parameters are invalid.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "The request contains invalid parameters. Please check the request and try again."
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The user is not authorized to perform the operation.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "You are not authorized to update user details. Please contact the administrator for assistance."
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The requested resource could not be found.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "The user with the specified ID was not found. Please verify the ID and try again."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An unexpected error occurred on the server.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "An internal server error occurred. Please try again later or contact the support team for assistance."
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["User"],
+        "summary": "Delete a specific user by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the user to delete",
+            "required": true,
+            "schema": { "type": "integer" },
+            "example": 2
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request was successful and the user is deleted."
+          },
+          "400": {
+            "description": "The request parameters are invalid.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "The request contains invalid parameters. Please check the request and try again."
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The user is not authorized to perform the operation.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "You are not authorized to delete this user. Please contact the administrator for assistance."
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The requested resource could not be found.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "The user with the specified ID was not found. Please verify the ID and try again."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An unexpected error occurred on the server.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "An internal server error occurred. Please try again later or contact the support team for assistance."
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["User"],
+        "summary": "Retrieve the details of a specific user by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the user to delete",
+            "required": true,
+            "schema": { "type": "integer" },
+            "example": 2
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request was successful and the user details are returned.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 2,
+                  "name": "Jana",
+                  "email": "jana@example.com",
+                  "password": "password789",
+                  "phone": "9876543210",
+                  "Role": "Employee"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request parameters are invalid.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "The request contains invalid parameters. Please check the request and try again."
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The user is not authorized to perform the operation.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "You are not authorized to access user details. Please contact the administrator for assistance."
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The requested resource could not be found.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "The user with the specified ID was not found. Please verify the ID and try again."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An unexpected error occurred on the server.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "An internal server error occurred. Please try again later or contact the support team for assistance."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/items": {
+      "post": {
+        "tags": ["Item"],
+        "summary": "Create an item",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string" },
+                  "description": { "type": "string" },
+                  "quantity": { "type": "integer", "minimum": 0 },
+                  "price": { "type": "number", "minimum": 0 },
+                  "barcode": { "type": "integer", "minimum": 0 }
+                }
+              },
+              "example": {
+                "name": "Table",
+                "description": "Wooden table",
+                "quantity": 1,
+                "price": 299.99,
+                "barcode": 123456789
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The item was successfully created.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "name": "Table",
+                  "description": "Wooden table",
+                  "quantity": 1,
+                  "price": 299.99,
+                  "barcode": 123456789
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request body is missing or contains invalid parameters.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "The request body is missing or contains invalid parameters. Please check the request and try again."
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The user is not authorized to perform the operation.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "You are not authorized to create an item. Please contact the administrator for assistance."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An unexpected error occurred on the server.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "An internal server error occurred. Please try again later or contact the support team for assistance."
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Item"],
+        "summary": "Retrieve all items",
+        "responses": {
+          "200": {
+            "description": "The request was successful.",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "id": 1,
+                    "name": "Table",
+                    "description": "Wooden dining table",
+                    "quantity": 1,
+                    "price": 299.99,
+                    "barcode": 123456789
+                  }
+                ]
+              }
+            }
+          },
+          "400": {
+            "description": "The request parameters are invalid.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "The request contains invalid parameters. Please check the request and try again."
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The user is not authorized to perform the operation.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "You are not authorized to retrieve items. Please contact the administrator for assistance."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An unexpected error occurred on the server.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "An internal server error occurred. Please try again later or contact the support team for assistance."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/items/{id}": {
+      "put": {
+        "tags": ["Item"],
+        "summary": "Update an item by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the item to update",
+            "required": true,
+            "schema": { "type": "integer" },
+            "example": 2
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string" },
+                  "description": { "type": "string" },
+                  "quantity": { "type": "integer", "minimum": 0 },
+                  "price": { "type": "number", "minimum": 0 },
+                  "barcode": { "type": "integer", "minimum": 0 }
+                }
+              },
+              "example": {
+                "name": "Table",
+                "description": "Updated dining table",
+                "quantity": 2,
+                "price": 399.99,
+                "barcode": 123456789
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The request was successful.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "name": "Table",
+                  "description": "Updated dining table",
+                  "quantity": 2,
+                  "price": 399.99,
+                  "barcode": 123456789
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request body is missing or contains invalid parameters.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "The request body is missing or contains invalid parameters. Please check the request and try again."
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The user is not authorized.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "You are not authorized to update items. Please contact the administrator for assistance."
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The requested item could not be found.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "The item with the specified ID was not found. Please verify the ID and try again."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An unexpected error occurred on the server.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "An internal server error occurred. Please try again later or contact the support team for assistance."
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Item"],
+        "summary": "Partially update an item by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the item to update",
+            "required": true,
+            "schema": { "type": "integer" },
+            "example": 2
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": { "price": { "type": "number", "minimum": 0 } }
+              },
+              "example": { "price": 349.99 }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The request was successful.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "name": "Table",
+                  "description": "Wooden dining table",
+                  "quantity": 1,
+                  "price": 349.99,
+                  "barcode": 123456789
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request body is missing or contains invalid parameters.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "The request body is missing or contains invalid parameters. Please check the request and try again."
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The user is not authorized.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "You are not authorized to update items. Please contact the administrator for assistance."
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The requested item could not be found.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "The item with the specified ID was not found. Please verify the ID and try again."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An unexpected error occurred on the server.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "An internal server error occurred. Please try again later or contact the support team for assistance."
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Item"],
+        "summary": "Delete an item by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the item to delete",
+            "required": true,
+            "schema": { "type": "integer" },
+            "example": 2
+          }
+        ],
+        "responses": {
+          "200": { "description": "The request was successful." },
+          "403": {
+            "description": "The user is not authorized.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "You are not authorized to delete items. Please contact the administrator for assistance."
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The requested item could not be found.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "The item with the specified ID was not found. Please verify the ID and try again."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An unexpected error occurred on the server.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "An internal server error occurred. Please try again later or contact the support team for assistance."
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Item"],
+        "summary": "Retrieve a specific item by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the item to retrieve",
+            "required": true,
+            "schema": { "type": "integer" },
+            "example": 2
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request was successful.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "name": "Table",
+                  "description": "Wooden dining table",
+                  "quantity": 1,
+                  "price": 299.99,
+                  "barcode": 123456789
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The requested item could not be found.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "The item with the specified ID was not found. Please verify the ID and try again."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/addresses": {
+      "post": {
+        "tags": ["Address"],
+        "summary": "Create a new address",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "street": { "type": "string" },
+                  "city": { "type": "string" },
+                  "state": { "type": "string" },
+                  "country": { "type": "string" }
+                }
+              },
+              "example": {
+                "street": "123 Main St",
+                "city": "Ramallah",
+                "state": "West Bank",
+                "country": "Palestine"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The address was successfully created.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "street": "123 Main St",
+                  "city": "Ramallah",
+                  "state": "West Bank",
+                  "country": "Palestine"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request body is missing or contains invalid parameters.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "The request body is missing or contains invalid parameters. Please check the request and try again."
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Address"],
+        "summary": "Retrieve all addresses",
+        "responses": {
+          "200": {
+            "description": "The request was successful.",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "id": 1,
+                    "street": "123 Main St",
+                    "city": "Ramallah",
+                    "state": "West Bank",
+                    "country": "Palestine"
+                  },
+                  {
+                    "id": 2,
+                    "street": "456 ABC",
+                    "city": "Nablus",
+                    "state": "West Bank",
+                    "country": "Palestine"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/addresses/{id}": {
+      "put": {
+        "tags": ["Address"],
+        "summary": "Update a specific address by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the address to update",
+            "required": true,
+            "schema": { "type": "integer" },
+            "example": 2
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "street": { "type": "string" },
+                  "city": { "type": "string" },
+                  "state": { "type": "string" },
+                  "country": { "type": "string" }
+                }
+              },
+              "example": {
+                "street": "456 ABC",
+                "city": "Nablus",
+                "state": "West Bank",
+                "country": "Palestine"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The request was successful.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "street": "456 ABC D",
+                  "city": "Nablus",
+                  "state": "West Bank",
+                  "country": "Palestine"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request body is missing or contains invalid parameters.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "The request body is missing or contains invalid parameters. Please check the request and try again."
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The requested address could not be found.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "The address with the specified ID was not found. Please verify the ID and try again."
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Address"],
+        "summary": "Partially update a specific address",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the address to update",
+            "required": true,
+            "schema": { "type": "integer" },
+            "example": 2
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": { "city": { "type": "string" } }
+              },
+              "example": { "city": "Bethlehem" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The request was successful.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "street": "123 Main St",
+                  "city": "Bethlehem",
+                  "state": "West Bank",
+                  "country": "Palestine"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request body is missing or contains invalid parameters.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "The request body is missing or contains invalid parameters. Please check the request and try again."
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The requested address could not be found.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "The address with the specified ID was not found. Please verify the ID and try again."
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Address"],
+        "summary": "Delete a specific address",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the address to delete",
+            "required": true,
+            "schema": { "type": "integer" },
+            "example": 2
+          }
+        ],
+        "responses": {
+          "200": { "description": "The request was successful." },
+          "404": { "description": "The requested address could not be found." }
+        }
+      },
+      "get": {
+        "tags": ["Address"],
+        "summary": "Retrieve a specific address",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the address to retrieve",
+            "required": true,
+            "schema": { "type": "integer" },
+            "example": 2
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request was successful.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "street": "123 Main St",
+                  "city": "Ramallah",
+                  "state": "West Bank",
+                  "country": "Palestine"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The requested address could not be found.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "The address with the specified ID was not found. Please verify the ID and try again."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transactions": {
+      "post": {
+        "tags": ["Transaction"],
+        "summary": "Create a new transaction",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_involved_id": { "type": "integer" },
+                  "item_affected_id": { "type": "integer" },
+                  "quantity": { "type": "integer" },
+                  "date": { "type": "string", "format": "date-time" },
+                  "address_id": { "type": "integer" }
+                }
+              },
+              "example": {
+                "user_involved_id": 1,
+                "item_affected_id": 2,
+                "quantity": 5,
+                "date": "2024-04-05T10:30:00Z",
+                "address_id": 3
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The transaction was successfully created.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "user_involved_id": 1,
+                  "item_affected_id": 2,
+                  "quantity": 5,
+                  "date": "2024-04-05T10:30:00Z",
+                  "address_id": 3
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request body is missing or contains invalid parameters.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "The request body is missing or contains invalid parameters. Please check the request and try again."
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Transaction"],
+        "summary": "Retrieve all transactions",
+        "responses": {
+          "200": {
+            "description": "The request was successful.",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "id": 1,
+                    "user_involved_id": 1,
+                    "item_affected_id": 2,
+                    "quantity": 5,
+                    "date": "2024-04-05T10:30:00Z",
+                    "address_id": 3
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transactions/{id}": {
+      "put": {
+        "tags": ["Transaction"],
+        "summary": "Update a specific transaction by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the transaction to update",
+            "required": true,
+            "schema": { "type": "integer" },
+            "example": 2
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_involved_id": { "type": "integer" },
+                  "item_affected_id": { "type": "integer" },
+                  "quantity": { "type": "integer" },
+                  "date": { "type": "string", "format": "date-time" },
+                  "address_id": { "type": "integer" }
+                }
+              },
+              "example": {
+                "user_involved_id": 1,
+                "item_affected_id": 2,
+                "quantity": 8,
+                "date": "2024-04-05T14:15:00Z",
+                "address_id": 3
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The request was successful.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "user_involved_id": 1,
+                  "item_affected_id": 2,
+                  "quantity": 8,
+                  "date": "2024-04-05T14:15:00Z",
+                  "address_id": 3
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request body is missing or contains invalid parameters.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "The request body is missing or contains invalid parameters. Please check the request and try again."
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The requested transaction could not be found.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "The transaction with the specified ID was not found. Please verify the ID and try again."
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Transaction"],
+        "summary": "Partially update a specific transaction by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the transaction to update",
+            "required": true,
+            "schema": { "type": "integer" },
+            "example": 2
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": { "quantity": { "type": "integer" } }
+              },
+              "example": { "quantity": 10 }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The request was successful.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "user_involved_id": 1,
+                  "item_affected_id": 2,
+                  "quantity": 10,
+                  "date": "2024-04-07T10:30:00Z",
+                  "address_id": 3
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The request body is missing or contains invalid parameters.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "The request body is missing or contains invalid parameters. Please check the request and try again."
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The requested transaction could not be found.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "The transaction with the specified ID was not found. Please verify the ID and try again."
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Transaction"],
+        "summary": "Delete a specific transaction",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the transaction to delete",
+            "required": true,
+            "schema": { "type": "integer" },
+            "example": 2
+          }
+        ],
+        "responses": {
+          "200": { "description": "The transaction was successfully deleted." },
+          "404": {
+            "description": "The requested transaction could not be found."
+          }
+        }
+      },
+      "get": {
+        "tags": ["Transaction"],
+        "summary": "Retrieve a specific transaction",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the transaction to retrieve",
+            "required": true,
+            "schema": { "type": "integer" },
+            "example": 2
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request was successful.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "id": 1,
+                  "user_involved_id": 1,
+                  "item_affected_id": 2,
+                  "quantity": 5,
+                  "date": "2024-04-05T10:30:00Z",
+                  "address_id": 3
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The requested transaction could not be found."
+          }
+        }
+      }
+    }
+  }
+}

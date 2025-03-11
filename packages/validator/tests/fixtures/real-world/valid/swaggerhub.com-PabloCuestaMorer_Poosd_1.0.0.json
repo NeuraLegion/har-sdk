@@ -1,0 +1,237 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "SLP-02-Small-Project",
+    "description": "COP4331 - Processes of Object Oriented Software Development",
+    "version": "1.0.0",
+    "contact": { "email": "SLP-02@ucf.edu" }
+  },
+  "servers": [
+    {
+      "url": "http://poosd.com/api/v1",
+      "description": "Main (production) server"
+    }
+  ],
+  "tags": [
+    { "name": "Contact", "description": "Operations related to contacts" },
+    { "name": "User", "description": "Operations related to users" }
+  ],
+  "paths": {
+    "/PHP/createContact.php": {
+      "post": {
+        "tags": ["Contact"],
+        "summary": "Create a new contact",
+        "description": "This endpoint allows for the creation of a new contact by providing the necessary details.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "The full name of the contact."
+                  },
+                  "email": {
+                    "type": "string",
+                    "description": "The email address of the contact."
+                  },
+                  "phone": {
+                    "type": "string",
+                    "description": "The phone number of the contact."
+                  },
+                  "userid": {
+                    "type": "integer",
+                    "description": "The user ID associated with the contact."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "The contact has been successfully created." }
+        }
+      }
+    },
+    "/PHP/deleteContact.php": {
+      "delete": {
+        "tags": ["Contact"],
+        "summary": "Delete a contact",
+        "description": "This endpoint allows for the deletion of a contact by providing the contact's ID.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "id",
+            "schema": { "type": "integer" },
+            "required": true,
+            "description": "The ID of the contact to be deleted."
+          }
+        ],
+        "responses": {
+          "200": { "description": "The contact has been successfully deleted." }
+        }
+      }
+    },
+    "/PHP/deleteUser.php": {
+      "delete": {
+        "tags": ["User"],
+        "summary": "Delete a user",
+        "description": "This endpoint allows for the deletion of a user by providing the user's ID.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "userid",
+            "schema": { "type": "integer" },
+            "required": true,
+            "description": "The ID of the user to be deleted."
+          }
+        ],
+        "responses": {
+          "200": { "description": "The user has been successfully deleted." }
+        }
+      }
+    },
+    "/PHP/loginUser.php": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Log in a user",
+        "description": "This endpoint allows users to log in by providing their login credentials.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "login": {
+                    "type": "string",
+                    "description": "The login name of the user."
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "The password of the user."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "The user has been successfully logged in." }
+        }
+      }
+    },
+    "/PHP/registerUser.php": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Register a new user",
+        "description": "This endpoint allows for the registration of a new user by providing the necessary details.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "type": "string",
+                    "description": "The first name of the user."
+                  },
+                  "lastName": {
+                    "type": "string",
+                    "description": "The last name of the user."
+                  },
+                  "login": {
+                    "type": "string",
+                    "description": "The login name of the user."
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "The password of the user."
+                  },
+                  "confirm_password": {
+                    "type": "string",
+                    "description": "The confirmation of the password."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "The user has been successfully registered." }
+        }
+      }
+    },
+    "/PHP/searchContact.php": {
+      "get": {
+        "tags": ["Contact"],
+        "summary": "Search for a contact",
+        "description": "This endpoint allows users to search for a contact by providing a search query and user ID.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "searchquery",
+            "schema": { "type": "string" },
+            "required": true,
+            "description": "The query used to search for the contact."
+          },
+          {
+            "in": "query",
+            "name": "userid",
+            "schema": { "type": "string" },
+            "required": true,
+            "description": "The user ID associated with the contact."
+          }
+        ],
+        "responses": {
+          "200": { "description": "The search results have been returned." }
+        }
+      }
+    },
+    "/PHP/updateContact.php": {
+      "put": {
+        "tags": ["Contact"],
+        "summary": "Update a contact",
+        "description": "This endpoint allows users to update the details of an existing contact by providing the new information.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "The ID of the contact to be updated."
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "The updated full name of the contact."
+                  },
+                  "phone": {
+                    "type": "string",
+                    "description": "The updated phone number of the contact."
+                  },
+                  "email": {
+                    "type": "string",
+                    "description": "The updated email address of the contact."
+                  },
+                  "userid": {
+                    "type": "string",
+                    "description": "The user ID associated with the contact."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "The contact has been successfully updated." }
+        }
+      }
+    }
+  }
+}

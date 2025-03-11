@@ -1,0 +1,280 @@
+{
+  "openapi": "3.1.0",
+  "info": { "title": "Unit Details API", "version": "1.0" },
+  "servers": [{ "url": "https://www.example.com" }],
+  "paths": {
+    "/unit/update": {
+      "post": {
+        "description": "Update details provided",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/property" }
+            }
+          }
+        },
+        "responses": {
+          "204": { "description": "OK - No content." },
+          "400": {
+            "description": "An error has occurred.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/error" }
+              }
+            }
+          },
+          "403": { "description": "API key is missing or invalid." },
+          "500": {
+            "description": "An error has occurred.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/error" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "property": {
+        "type": "object",
+        "required": [
+          "address",
+          "agent_ref",
+          "date_available",
+          "marketing_location",
+          "property_type",
+          "published",
+          "details",
+          "media",
+          "price_information"
+        ],
+        "description": "Information about the unit being sent",
+        "properties": {
+          "address": {
+            "type": "object",
+            "required": ["display_address", "postcode_1", "postcode_2", "town"],
+            "description": "Information about the address of the property being sent",
+            "properties": {
+              "display_address": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 120,
+                "description": "The address which should be displayed for the property being sent",
+                "examples": ["Enigma Square, Central Milton Keynes MK9"]
+              },
+              "postcode_1": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 4,
+                "description": "The first half of the post code for the property being sent",
+                "examples": ["MK9"]
+              },
+              "postcode_2": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 3,
+                "description": "The second half of the post code for the property being sent",
+                "examples": ["2FU"]
+              },
+              "town": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 60,
+                "description": "The town in which the property is located",
+                "examples": ["Milton Keynes"]
+              }
+            },
+            "additionalProperties": false
+          },
+          "agent_ref": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80,
+            "description": "Units unique reference",
+            "examples": ["a1G8d0000005rE3EAI"]
+          },
+          "date_available": {
+            "type": "string",
+            "description": "Date a rental property is available in the format: dd-MM-yyyy",
+            "examples": ["22-03-2024"]
+          },
+          "tag_override": {
+            "type": ["string", "null"],
+            "maxLength": 20,
+            "description": "Text to override any 'available from/now' tags with",
+            "examples": ["Just Launched"]
+          },
+          "marketing_location": {
+            "type": "string",
+            "description": "The location the property will appear in in the marketing site search",
+            "examples": ["East London"]
+          },
+          "property_type": {
+            "type": "integer",
+            "enum": [28, 26, 0, 48],
+            "description": "The type of the property being sent in this message: 0 Not Specified, 26 House (unspecified), 28 Apartment, 48 House share"
+          },
+          "published": {
+            "type": "boolean",
+            "description": "Defines whether this property should be visible on site"
+          },
+          "details": {
+            "type": "object",
+            "required": [
+              "bedrooms",
+              "bathrooms",
+              "size_sqft",
+              "size_sqm",
+              "description",
+              "features",
+              "furnished_type",
+              "sharers_considered",
+              "unique_selling_points",
+              "rental_type"
+            ],
+            "description": "The details about the property being sent",
+            "properties": {
+              "bedrooms": {
+                "type": "integer",
+                "minimum": 0,
+                "description": "The number of bedrooms for the property being sent",
+                "examples": [2]
+              },
+              "bathrooms": {
+                "type": "integer",
+                "minimum": 0,
+                "description": "The number of bathrooms for the property being sent",
+                "examples": [2]
+              },
+              "floor": {
+                "type": ["integer", "null"],
+                "description": "The floor level if applicable",
+                "examples": [7]
+              },
+              "size_sqft": {
+                "type": "integer",
+                "minimum": 0,
+                "description": "The square footage of the unit",
+                "examples": [350]
+              },
+              "size_sqm": {
+                "type": "integer",
+                "minimum": 0,
+                "description": "The square meterage of the unit",
+                "examples": [100]
+              },
+              "description": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 32000,
+                "description": "The full description of the property being sent",
+                "examples": ["<p>Lovely property<br />Amazing</p>"]
+              },
+              "features": {
+                "type": "array",
+                "uniqueItems": true,
+                "maxItems": 100,
+                "description": "Features of the property being sent",
+                "items": { "type": "string", "minLength": 1, "maxLength": 10 },
+                "examples": [["WIFI", "BIKE"]]
+              },
+              "furnished_type": {
+                "type": "integer",
+                "enum": [0, 1, 2],
+                "description": "Is furnishing included in the rental of the property being sent: 0 Furnished, 1 Part-furnished, 2 Unfurnished"
+              },
+              "sharers_considered": {
+                "type": "boolean",
+                "description": "Are sharers considered for the property being sent"
+              },
+              "unique_selling_points": {
+                "type": "array",
+                "uniqueItems": true,
+                "maxItems": 2,
+                "description": "Up to a couple of freetext points for differentiating this unit for other similar units",
+                "items": { "type": "string", "minLength": 1, "maxLength": 50 },
+                "examples": [["Corner unit"]]
+              },
+              "rental_type": {
+                "type": "string",
+                "enum": ["BTR", "PRS"],
+                "description": "The rental type of the unit. Options are PRS or BTR"
+              },
+              "development_id": {
+                "type": ["string", "null"],
+                "description": "The identifier for the development this unit is part of",
+                "examples": ["b1G8d0000005rE3EAI"]
+              },
+              "building_name": {
+                "type": ["string", "null"],
+                "description": "The name of the building that the unit is in",
+                "examples": ["Neon Building"]
+              }
+            },
+            "additionalProperties": false
+          },
+          "media": {
+            "type": "array",
+            "description": "The media for the property being sent",
+            "uniqueItems": true,
+            "maxItems": 999,
+            "items": {
+              "type": "object",
+              "required": ["media_type", "media_url"],
+              "properties": {
+                "media_type": {
+                  "type": "integer",
+                  "enum": [1, 2, 6],
+                  "description": "The type of media which is being sent: 1 Image, 2 Floorplan, 6 EPC"
+                },
+                "media_url": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 250,
+                  "description": "The URL to retrieve this piece of media from",
+                  "examples": ["https://www.example.com/images/image.jpg"]
+                },
+                "sort_order": {
+                  "type": ["integer", "null"],
+                  "minimum": 0,
+                  "description": "The display order for this piece of media",
+                  "examples": [1]
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "price_information": {
+            "type": "object",
+            "description": "Information about the price of the property being sent",
+            "required": ["price", "discount_rent_type"],
+            "properties": {
+              "price": {
+                "type": "number",
+                "minimum": 1,
+                "description": "The price of the property being sent",
+                "examples": [1515]
+              },
+              "discount_rent_type": {
+                "type": "string",
+                "enum": ["None", "DMR", "LLR"],
+                "description": "The possible discounted rent type. Options are None, DMR or LLR"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      },
+      "error": { "message": "Details of the error" }
+    },
+    "securitySchemes": {
+      "api_key": { "type": "apiKey", "name": "X-API-Key", "in": "header" }
+    }
+  },
+  "security": [{ "api_key": [] }]
+}

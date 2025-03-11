@@ -1,0 +1,177 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Essense Public API",
+    "termsOfService": "https://www.essense.io/terms-of-service",
+    "contact": {
+      "name": "Essense Team",
+      "url": "https://www.essense.io/",
+      "email": "hello@essense.io"
+    },
+    "version": "0.0.1"
+  },
+  "paths": {
+    "/projects": {
+      "post": {
+        "tags": ["projects"],
+        "summary": "Create Project",
+        "description": "Create a project.",
+        "operationId": "create_project_projects_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreateProjectSchema" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ProjectSchema" }
+              }
+            }
+          },
+          "401": { "description": "Invalid or expired token." }
+        },
+        "security": [{ "HTTPBearer": [] }]
+      }
+    },
+    "/projects/{project_id}/feedback": {
+      "post": {
+        "tags": ["feedback"],
+        "summary": "Import Feedback",
+        "description": "Import feedback for the project.",
+        "operationId": "import_feedback_projects__project_id__feedback_post",
+        "security": [{ "HTTPBearer": [] }],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Id of the project to import feedback.",
+              "title": "Project Id"
+            },
+            "description": "Id of the project to import feedback."
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/FeedbackSchema" },
+                "title": "Body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "401": { "description": "Invalid or expired token." }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CreateProjectSchema": {
+        "properties": {
+          "image": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Image",
+            "description": "Url of thumbnail for the project.",
+            "examples": ["https://example.com/example.jpg"]
+          },
+          "title": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Title",
+            "description": "Title of the project.",
+            "examples": ["Title"]
+          }
+        },
+        "type": "object",
+        "title": "CreateProjectSchema"
+      },
+      "FeedbackSchema": {
+        "properties": {
+          "date": {
+            "type": "integer",
+            "title": "Date",
+            "description": "Timestamp in milliseconds when the review was created.",
+            "examples": [1632944452000]
+          },
+          "comment": {
+            "type": "string",
+            "title": "Comment",
+            "description": "The review comment content.",
+            "examples": ["Excellent product!"]
+          },
+          "title": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Title",
+            "description": "Title of the review.",
+            "examples": ["Title"]
+          },
+          "user_id": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "User Id",
+            "description": "User name (could be anonymized) or id or email or something.",
+            "examples": ["1", "user@example.com", "userA"]
+          },
+          "metadata": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "anyOf": [{ "type": "string" }, { "type": "integer" }]
+                },
+                "type": "object"
+              },
+              { "type": "null" }
+            ],
+            "title": "Metadata",
+            "description": "Any additional data for the review, for example, rating of the product.",
+            "examples": [{ "color": "red", "rating": 5 }]
+          }
+        },
+        "type": "object",
+        "required": ["date", "comment"],
+        "title": "FeedbackSchema"
+      },
+      "ProjectSchema": {
+        "properties": {
+          "image": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Image",
+            "description": "Url of thumbnail for the project.",
+            "examples": ["https://example.com/example.jpg"]
+          },
+          "title": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Title",
+            "description": "Title of the project.",
+            "examples": ["Title"]
+          },
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "description": "Id of the project.",
+            "examples": ["project123"]
+          }
+        },
+        "type": "object",
+        "required": ["image", "title", "id"],
+        "title": "ProjectSchema"
+      }
+    },
+    "securitySchemes": { "HTTPBearer": { "type": "http", "scheme": "bearer" } }
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Zendrive Gamification Insights API",
+    "version": "1.0.0",
+    "description": "The Zendrive Gamification Platform serve a set of APIs that can be used by Zendrive's customers to gather useful insights about their users.\n"
+  },
+  "servers": [{ "url": "https://preprod-api.zendrive.com" }],
+  "paths": {
+    "/gamification/user/insights": {
+      "get": {
+        "summary": "Get user insights",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "query",
+            "description": "The user_id that the insights are to fetched for",
+            "required": true,
+            "explode": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "interval_type",
+            "in": "query",
+            "description": "Can be one of week/month to get insights grouped by that period",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "week",
+              "enum": ["week", "month"]
+            }
+          },
+          {
+            "name": "interval_data_points",
+            "in": "query",
+            "description": "The number of the week/month for which insights are fetched",
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": { "type": "object", "properties": null }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "UserInsight": {
+        "type": "object",
+        "properties": {
+          "kms_driven": {
+            "type": "integer",
+            "description": "Total kilometers driven by the driver"
+          },
+          "kms_driven_percentile": {
+            "type": "integer",
+            "description": "Percentile ranking of the driver based on their kms driven"
+          },
+          "trip_duration_percentile": {
+            "type": "integer",
+            "description": "Percentile ranking of the driver based on their total trip time"
+          },
+          "zendrive_score": {
+            "type": "integer",
+            "description": "Average zendrive score of the driver"
+          },
+          "zendrive_score_percentile": {
+            "type": "integer",
+            "description": "Percentile ranking of the driver based on their Zendrive score"
+          }
+        }
+      }
+    },
+    "securitySchemes": { "BearerAuth": { "type": "http", "scheme": "bearer" } }
+  }
+}

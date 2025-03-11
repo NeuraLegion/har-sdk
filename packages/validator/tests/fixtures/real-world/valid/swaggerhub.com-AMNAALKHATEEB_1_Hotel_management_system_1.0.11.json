@@ -1,0 +1,790 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Hotel Management System",
+    "description": "API documentation for the Hotel Management System based on the OpenAPI 3.1 specification.",
+    "version": "1.0.11"
+  },
+  "servers": [{ "url": "http://localhost:8080" }],
+  "tags": [
+    { "name": "Customer", "description": "Customer operations" },
+    { "name": "Employee", "description": "Employee operations" },
+    {
+      "name": "Reservation",
+      "description": "Reservation management operations"
+    },
+    { "name": "Room", "description": "Room management operations" },
+    { "name": "Billing", "description": "Billing operations" },
+    {
+      "name": "Housekeeping",
+      "description": "Housekeeping management operations"
+    }
+  ],
+  "paths": {
+    "/api/v1/Customer/register": {
+      "post": {
+        "tags": ["Customer"],
+        "summary": "Register a new customer",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Customer" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Customer registered successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Customer" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/Customer/login": {
+      "post": {
+        "tags": ["Customer"],
+        "summary": "Login a customer",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": { "type": "string" },
+                  "password": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Customer logged in successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Customer" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/Customer/{id}": {
+      "get": {
+        "tags": ["Customer"],
+        "summary": "Get customer profile",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Customer profile retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Customer" }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Customer"],
+        "summary": "Update customer profile",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Customer" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Customer profile updated successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Customer" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/Customer/{id}/update-password": {
+      "put": {
+        "tags": ["Customer"],
+        "summary": "Change customer password",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "oldPassword": { "type": "string" },
+                  "newPassword": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Customer password changed successfully" }
+        }
+      }
+    },
+    "/api/v1/Employee": {
+      "post": {
+        "tags": ["Employee"],
+        "summary": "Add a new employee",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Employee" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Employee added successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Employee" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/Employee/{id}": {
+      "put": {
+        "tags": ["Employee"],
+        "summary": "Update employee profile",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Employee" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Employee profile updated successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Employee" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Employee"],
+        "summary": "Delete employee",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Employee deleted successfully" }
+        }
+      }
+    },
+    "/api/v1/reservation/search": {
+      "get": {
+        "tags": ["Reservation"],
+        "summary": "Search reservations",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "customerName",
+            "schema": { "type": "string" }
+          },
+          {
+            "in": "query",
+            "name": "customerId",
+            "schema": { "type": "integer" }
+          },
+          {
+            "in": "query",
+            "name": "date",
+            "schema": { "type": "string", "format": "date" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Reservations retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Reservation" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/Customer/search": {
+      "get": {
+        "tags": ["Customer"],
+        "summary": "Search customers",
+        "parameters": [
+          { "in": "query", "name": "name", "schema": { "type": "string" } },
+          { "in": "query", "name": "id", "schema": { "type": "integer" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Customers retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Customer" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/room/search": {
+      "get": {
+        "tags": ["Room"],
+        "summary": "Search available rooms",
+        "parameters": [
+          { "in": "query", "name": "type", "schema": { "type": "string" } },
+          {
+            "in": "query",
+            "name": "availability",
+            "schema": { "type": "boolean" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Available rooms retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Room" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/reservation": {
+      "post": {
+        "tags": ["Reservation"],
+        "summary": "Book a room",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Reservation" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Reservation created successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Reservation" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/reservation/{id}": {
+      "put": {
+        "tags": ["Reservation"],
+        "summary": "Modify a reservation",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Reservation" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Reservation modified successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Reservation" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Reservation"],
+        "summary": "Cancel a reservation",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Reservation cancellation request submitted" }
+        }
+      }
+    },
+    "/api/v1/room": {
+      "post": {
+        "tags": ["Room"],
+        "summary": "Add a new room",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Room" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Room added successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Room" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/room/{id}": {
+      "put": {
+        "tags": ["Room"],
+        "summary": "Update room details",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Room" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Room details updated successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Room" }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Room"],
+        "summary": "Get room details",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Room details retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Room" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Room"],
+        "summary": "Delete room",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": { "200": { "description": "Room deleted successfully" } }
+      }
+    },
+    "/api/v1/reservation/checkin": {
+      "post": {
+        "tags": ["Reservation"],
+        "summary": "Customer check-in",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "reservationId": { "type": "integer" },
+                  "customerId": { "type": "integer" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Customer checked in successfully" }
+        }
+      }
+    },
+    "/api/v1/reservation/checkout": {
+      "post": {
+        "tags": ["Reservation"],
+        "summary": "Customer check-out",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "reservationId": { "type": "integer" },
+                  "customerId": { "type": "integer" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Customer checked out successfully" }
+        }
+      }
+    },
+    "/api/v1/housekeeping": {
+      "post": {
+        "tags": ["Housekeeping"],
+        "summary": "Schedule housekeeping task",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/HousekeepingTask" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Housekeeping task scheduled successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HousekeepingTask" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/housekeeping/{id}": {
+      "put": {
+        "tags": ["Housekeeping"],
+        "summary": "Update housekeeping task",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/HousekeepingTask" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Housekeeping task updated successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HousekeepingTask" }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Housekeeping"],
+        "summary": "Get housekeeping task",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Housekeeping task retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HousekeepingTask" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Housekeeping"],
+        "summary": "Delete housekeeping task",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Housekeeping task deleted successfully" }
+        }
+      }
+    },
+    "/api/billing": {
+      "post": {
+        "tags": ["Billing"],
+        "summary": "Generate billing",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Billing" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "billing generated successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Billing" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/billing/{id}": {
+      "get": {
+        "tags": ["Billing"],
+        "summary": "Get billing details",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "billing details retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Billing" }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Billing"],
+        "summary": "Update billing details",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Billing" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "billing details updated successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Billing" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Billing"],
+        "summary": "Delete billing",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "billing deleted successfully" }
+        }
+      }
+    }
+  },
+  "security": [{ "bearerAuth": [] }],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "Customer": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "name": { "type": "string" },
+          "email": { "type": "string" },
+          "password": { "type": "string" }
+        }
+      },
+      "Employee": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "name": { "type": "string" },
+          "password": { "type": "string" },
+          "email": { "type": "string" }
+        }
+      },
+      "Room": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "type": { "type": "string" },
+          "availability": { "type": "boolean" },
+          "price": { "type": "number" },
+          "facilities": { "type": "array", "items": { "type": "string" } },
+          "capacity": { "type": "integer" },
+          "size": { "type": "number" }
+        }
+      },
+      "Reservation": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "customerId": { "type": "integer" },
+          "roomId": { "type": "integer" },
+          "checkInDate": { "type": "string", "format": "date" },
+          "checkOutDate": { "type": "string", "format": "date" },
+          "numberOfchekers": { "type": "integer" }
+        }
+      },
+      "HousekeepingTask": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "roomId": { "type": "integer" },
+          "employeeId": { "type": "integer" },
+          "taskdescription": { "type": "string" },
+          "scheduleDate": { "type": "string", "format": "date" },
+          "taskStatus": { "type": "string" },
+          "completedDate": { "type": "string", "format": "date" }
+        }
+      },
+      "Billing": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "reservationId": { "type": "integer" },
+          "totalAmount": { "type": "number" },
+          "billingDate": { "type": "string", "format": "date" },
+          "item": { "type": "string" }
+        }
+      }
+    }
+  }
+}

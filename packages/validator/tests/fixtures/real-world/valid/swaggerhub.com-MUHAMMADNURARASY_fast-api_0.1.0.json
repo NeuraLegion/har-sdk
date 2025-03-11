@@ -1,0 +1,97 @@
+{
+  "openapi": "3.1.0",
+  "info": { "title": "FastAPI", "version": "0.1.0" },
+  "paths": {
+    "/predict": {
+      "post": {
+        "summary": "Predict Price",
+        "operationId": "predict_price_predict_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/RealEstateInput" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": { "$ref": "#/components/schemas/ValidationError" },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "RealEstateInput": {
+        "properties": {
+          "Property_Type": { "type": "string", "title": "Property Type" },
+          "Property_Size": { "type": "integer", "title": "Property Size" },
+          "Bedrooms": { "type": "integer", "title": "Bedrooms" },
+          "Bathrooms": { "type": "integer", "title": "Bathrooms" },
+          "Location": { "type": "string", "title": "Location" },
+          "Furnishing": { "type": "string", "title": "Furnishing" },
+          "Age_of_Property": {
+            "anyOf": [{ "type": "integer" }, { "type": "null" }],
+            "title": "Age Of Property"
+          },
+          "Amenities": { "type": "string", "title": "Amenities" },
+          "Proximity_to_Important_Locations": {
+            "anyOf": [{ "type": "number" }, { "type": "null" }],
+            "title": "Proximity To Important Locations"
+          },
+          "Floor_Level": { "type": "integer", "title": "Floor Level" },
+          "Property_Status": { "type": "string", "title": "Property Status" }
+        },
+        "type": "object",
+        "required": [
+          "Property_Type",
+          "Property_Size",
+          "Bedrooms",
+          "Bathrooms",
+          "Location",
+          "Furnishing",
+          "Amenities",
+          "Floor_Level",
+          "Property_Status"
+        ],
+        "title": "RealEstateInput"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": { "anyOf": [{ "type": "string" }, { "type": "integer" }] },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": { "type": "string", "title": "Message" },
+          "type": { "type": "string", "title": "Error Type" }
+        },
+        "type": "object",
+        "required": ["loc", "msg", "type"],
+        "title": "ValidationError"
+      }
+    }
+  }
+}

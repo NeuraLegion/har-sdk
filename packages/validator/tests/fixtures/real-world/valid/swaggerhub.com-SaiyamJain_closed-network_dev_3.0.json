@@ -1,0 +1,2256 @@
+{
+  "openapi": "3.1.0",
+  "info": { "title": "ClosedNetwork-DEV", "contact": {}, "version": "3.0" },
+  "servers": [
+    { "url": "http://localhost:5001/v1" },
+    { "url": "http://dev.closednetwork.services/api/v1" },
+    { "url": "http://dev.closednetwork.services/messaging/v1", "variables": {} }
+  ],
+  "paths": {
+    "/signin": {
+      "post": {
+        "tags": ["authRoutes"],
+        "summary": "signin",
+        "operationId": "signin",
+        "parameters": [
+          {
+            "name": "deviceID",
+            "in": "query",
+            "description": "",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  { "$ref": "#/components/schemas/signinrequest" },
+                  { "examples": [{ "phoneNumber": "" }] }
+                ],
+                "contentMediaType": "application/json"
+              },
+              "example": { "phoneNumber": "" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "headers": {
+              "X-Powered-By": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string",
+                      "contentMediaType": "text/plain"
+                    },
+                    "example": "Express"
+                  }
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string",
+                      "contentMediaType": "text/plain"
+                    },
+                    "example": "*"
+                  }
+                }
+              },
+              "Content-Length": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string",
+                      "contentMediaType": "text/plain"
+                    },
+                    "example": "819"
+                  }
+                }
+              },
+              "ETag": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string",
+                      "contentMediaType": "text/plain"
+                    },
+                    "example": "W/\"333-hYlmRC+wmUG6oGsZUnnj5Szjozw\""
+                  }
+                }
+              },
+              "Date": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string",
+                      "contentMediaType": "text/plain"
+                    },
+                    "example": "Fri, 01 Dec 2023 13:45:06 GMT"
+                  }
+                }
+              },
+              "Connection": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string",
+                      "contentMediaType": "text/plain"
+                    },
+                    "example": "keep-alive"
+                  }
+                }
+              },
+              "Keep-Alive": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string",
+                      "contentMediaType": "text/plain"
+                    },
+                    "example": "timeout=5"
+                  }
+                }
+              }
+            },
+            "content": {
+              "application/json; charset=utf-8": {
+                "example": {
+                  "user": {
+                    "_id": "6569e11cc4ed9edd5c3d9608",
+                    "name": "Saiyam Jain",
+                    "email": "saiyam.jain.mec21@itbhu.ac.in",
+                    "role": "student",
+                    "phoneNumber": "+917870658888",
+                    "college": "6569df55e17df8f8ab91b9c4",
+                    "imageUrl": null,
+                    "dateOfBirth": "2002-12-09T00:00:00.000Z",
+                    "gender": "male",
+                    "isActive": true,
+                    "createdAt": "2023-12-01T13:35:24.360Z",
+                    "updatedAt": "2023-12-01T13:35:24.360Z",
+                    "__v": 0
+                  },
+                  "refreshToken": "a3f69e1e8c2a36f1a214f614f1ce09d24d26d56f2f8dc41b9781fa9f9fd6d87ec84de6d63d57491600b07bc84839d99341912f27f5838ba00ccbadc5d845a934",
+                  "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NTY5ZTExY2M0ZWQ5ZWRkNWMzZDk2MDgiLCJuYW1lIjoiU2FpeWFtIEphaW4iLCJyb2xlIjoic3R1ZGVudCIsImNvbGxlZ2VJZCI6IjY1NjlkZjU1ZTE3ZGY4ZjhhYjkxYjljNCIsImltYWdlVXJsIjoiIiwiaWF0IjoxNzAxNDM4MzA2LCJleHAiOjE3MDE1MjQ3MDZ9.dygRfQ-9uzFzl3dU4lBTJJOVSevaeyh9LVVGxbZOC3I"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      },
+      "parameters": []
+    },
+    "/signup": {
+      "post": {
+        "tags": ["authRoutes"],
+        "summary": "signup",
+        "operationId": "signup",
+        "parameters": [
+          {
+            "name": "deviceID",
+            "in": "query",
+            "description": "",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [{ "$ref": "#/components/schemas/signuprequest" }],
+                "contentMediaType": "application/json"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "headers": {
+              "X-Powered-By": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string",
+                      "contentMediaType": "text/plain"
+                    },
+                    "example": "Express"
+                  }
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string",
+                      "contentMediaType": "text/plain"
+                    },
+                    "example": "*"
+                  }
+                }
+              },
+              "Content-Length": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string",
+                      "contentMediaType": "text/plain"
+                    },
+                    "example": "947"
+                  }
+                }
+              },
+              "ETag": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string",
+                      "contentMediaType": "text/plain"
+                    },
+                    "example": "W/\"3b3-BeRoMIaGhYjdRNuPYoPWlw/W8d0\""
+                  }
+                }
+              },
+              "Date": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string",
+                      "contentMediaType": "text/plain"
+                    },
+                    "example": "Thu, 21 Dec 2023 11:39:33 GMT"
+                  }
+                }
+              },
+              "Connection": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string",
+                      "contentMediaType": "text/plain"
+                    },
+                    "example": "keep-alive"
+                  }
+                }
+              },
+              "Keep-Alive": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string",
+                      "contentMediaType": "text/plain"
+                    },
+                    "example": "timeout=5"
+                  }
+                }
+              }
+            },
+            "content": {
+              "application/json; charset=utf-8": {
+                "example": {
+                  "message": "User registered successfully",
+                  "user": {
+                    "_id": "658423f4f87807e4bffd80e3",
+                    "name": "Saiyam Jain",
+                    "email": "saiyam.jain.mec21@itbhu.ac.in",
+                    "role": "student",
+                    "phoneNumber": "+917870658888",
+                    "college": {
+                      "_id": "6569df55e17df8f8ab91b9c4",
+                      "name": "Indian Institute of Technology (BHU), Varanasi",
+                      "domain": "itbhu.ac.in"
+                    },
+                    "imageUrl": null,
+                    "dateOfBirth": "2002-12-09T00:00:00.000Z",
+                    "gender": "male",
+                    "isActive": true,
+                    "createdAt": "2023-12-21T11:39:32.530Z",
+                    "updatedAt": "2023-12-21T11:39:32.530Z",
+                    "__v": 0
+                  },
+                  "refreshToken": "18a814827f61b874d2be27a8058fd73a18eb53cd16261316e5fe130f778da90439fce3dc13a680e08ccb3a08f655603f8c2cd1ad6f43439f3dbb00c4fc352c49",
+                  "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NTg0MjNmNGY4NzgwN2U0YmZmZDgwZTMiLCJuYW1lIjoiU2FpeWFtIEphaW4iLCJyb2xlIjoic3R1ZGVudCIsImNvbGxlZ2VJZCI6IjY1NjlkZjU1ZTE3ZGY4ZjhhYjkxYjljNCIsImltYWdlVXJsIjoiIiwiaWF0IjoxNzAzMTU4NzczLCJleHAiOjE3MDMyNDUxNzN9.OKnKIFcbvgOfYo0bqhHUW-A2AhvEB3SnFC0Qk5Hr66k"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      },
+      "parameters": []
+    },
+    "/get-access-token/user/{userid}": {
+      "post": {
+        "tags": ["authRoutes"],
+        "summary": "get-access-token",
+        "operationId": "get-access-token",
+        "parameters": [
+          {
+            "name": "userid",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  { "$ref": "#/components/schemas/get-access-token-request" },
+                  { "examples": [{ "refreshToken": "" }] }
+                ],
+                "contentMediaType": "application/json"
+              },
+              "example": { "refreshToken": "" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Powered-By": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string",
+                      "contentMediaType": "text/plain"
+                    },
+                    "example": "Express"
+                  }
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string",
+                      "contentMediaType": "text/plain"
+                    },
+                    "example": "*"
+                  }
+                }
+              },
+              "Content-Length": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string",
+                      "contentMediaType": "text/plain"
+                    },
+                    "example": "311"
+                  }
+                }
+              },
+              "ETag": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string",
+                      "contentMediaType": "text/plain"
+                    },
+                    "example": "W/\"137-7pY0Zrs3NZkWrRXAGbekHbvQSkM\""
+                  }
+                }
+              },
+              "Date": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string",
+                      "contentMediaType": "text/plain"
+                    },
+                    "example": "Fri, 01 Dec 2023 13:54:15 GMT"
+                  }
+                }
+              },
+              "Connection": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string",
+                      "contentMediaType": "text/plain"
+                    },
+                    "example": "keep-alive"
+                  }
+                }
+              },
+              "Keep-Alive": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string",
+                      "contentMediaType": "text/plain"
+                    },
+                    "example": "timeout=5"
+                  }
+                }
+              }
+            },
+            "content": {
+              "application/json; charset=utf-8": {
+                "example": {
+                  "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NTY5ZTExY2M0ZWQ5ZWRkNWMzZDk2MDgiLCJuYW1lIjoiU2FpeWFtIEphaW4iLCJyb2xlIjoic3R1ZGVudCIsImNvbGxlZ2VJZCI6IjY1NjlkZjU1ZTE3ZGY4ZjhhYjkxYjljNCIsImltYWdlVXJsIjoiIiwiaWF0IjoxNzAxNDM4ODU1LCJleHAiOjE3MDE1MjUyNTV9.MKAsKVC1yYhwm1e4a_iG-Bdtie4Lz2LscFz2Ra7WOmM"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      },
+      "parameters": []
+    },
+    "/verify-access-token/user/{userid}": {
+      "get": {
+        "tags": ["authRoutes"],
+        "summary": "verify-access-token",
+        "operationId": "verify-access-token",
+        "parameters": [
+          {
+            "name": "userid",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "schema": { "type": "string", "examples": ["<Your Access Token>"] }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Powered-By": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string",
+                      "contentMediaType": "text/plain"
+                    },
+                    "example": "Express"
+                  }
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string",
+                      "contentMediaType": "text/plain"
+                    },
+                    "example": "*"
+                  }
+                }
+              },
+              "Content-Length": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string",
+                      "contentMediaType": "text/plain"
+                    },
+                    "example": "35"
+                  }
+                }
+              },
+              "ETag": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string",
+                      "contentMediaType": "text/plain"
+                    },
+                    "example": "W/\"23-aS4pdR4/W3kuOVQtBh4pA7k28Fs\""
+                  }
+                }
+              },
+              "Date": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string",
+                      "contentMediaType": "text/plain"
+                    },
+                    "example": "Fri, 01 Dec 2023 14:02:52 GMT"
+                  }
+                }
+              },
+              "Connection": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string",
+                      "contentMediaType": "text/plain"
+                    },
+                    "example": "keep-alive"
+                  }
+                }
+              },
+              "Keep-Alive": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string",
+                      "contentMediaType": "text/plain"
+                    },
+                    "example": "timeout=5"
+                  }
+                }
+              }
+            },
+            "content": {
+              "application/json; charset=utf-8": {
+                "example": { "message": "Access token is valid" }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": []
+      },
+      "parameters": []
+    },
+    "/signout/{userid}": {
+      "post": {
+        "tags": ["authRoutes"],
+        "summary": "signout",
+        "operationId": "signout",
+        "parameters": [
+          {
+            "name": "deviceID",
+            "in": "query",
+            "description": "",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "userid",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "schema": { "type": "string", "examples": ["<Your Access Token>"] }
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "const": "application/json",
+              "type": "string",
+              "examples": ["application/json"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Powered-By": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string",
+                      "contentMediaType": "text/plain"
+                    },
+                    "example": "Express"
+                  }
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string",
+                      "contentMediaType": "text/plain"
+                    },
+                    "example": "*"
+                  }
+                }
+              },
+              "Content-Length": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string",
+                      "contentMediaType": "text/plain"
+                    },
+                    "example": "42"
+                  }
+                }
+              },
+              "ETag": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string",
+                      "contentMediaType": "text/plain"
+                    },
+                    "example": "W/\"2a-qSL1vQ2Ps2lwT/SYDK8BG0eWvlQ\""
+                  }
+                }
+              },
+              "Date": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string",
+                      "contentMediaType": "text/plain"
+                    },
+                    "example": "Fri, 01 Dec 2023 14:48:46 GMT"
+                  }
+                }
+              },
+              "Connection": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string",
+                      "contentMediaType": "text/plain"
+                    },
+                    "example": "keep-alive"
+                  }
+                }
+              },
+              "Keep-Alive": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string",
+                      "contentMediaType": "text/plain"
+                    },
+                    "example": "timeout=5"
+                  }
+                }
+              }
+            },
+            "content": {
+              "application/json; charset=utf-8": {
+                "example": { "message": "User signed out successfully" }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": []
+      },
+      "parameters": []
+    },
+    "/otp/send-email-otp": {
+      "post": {
+        "tags": ["otpRoutes"],
+        "summary": "send-email-otp",
+        "operationId": "send-email-otp",
+        "parameters": [],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  { "$ref": "#/components/schemas/send-email-otp-request" },
+                  { "examples": [{ "email": "biratbhattacharjee@gmail.com" }] }
+                ],
+                "contentMediaType": "application/json"
+              },
+              "example": { "email": "biratbhattacharjee@gmail.com" }
+            }
+          },
+          "required": true
+        },
+        "responses": { "200": { "description": "", "headers": {} } },
+        "deprecated": false
+      },
+      "parameters": []
+    },
+    "/otp/verify-email-otp": {
+      "post": {
+        "tags": ["otpRoutes"],
+        "summary": "verify-email-otp",
+        "operationId": "verify-email-otp",
+        "parameters": [],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  { "$ref": "#/components/schemas/verify-email-otp-request" },
+                  {
+                    "examples": [
+                      {
+                        "email": "biratbhattacharjee@gmail.com",
+                        "otp": "510457"
+                      }
+                    ]
+                  }
+                ],
+                "contentMediaType": "application/json"
+              },
+              "example": {
+                "email": "biratbhattacharjee@gmail.com",
+                "otp": "510457"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": { "200": { "description": "", "headers": {} } },
+        "deprecated": false
+      },
+      "parameters": []
+    },
+    "/otp/send-sms-otp": {
+      "post": {
+        "tags": ["otpRoutes"],
+        "summary": "send-sms-otp",
+        "operationId": "send-sms-otp",
+        "parameters": [],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  { "$ref": "#/components/schemas/send-sms-otp-request" },
+                  {
+                    "examples": [
+                      { "countryCode": "+91", "phoneNumber": "9566218564" }
+                    ]
+                  }
+                ],
+                "contentMediaType": "application/json"
+              },
+              "example": { "countryCode": "+91", "phoneNumber": "9566218564" }
+            }
+          },
+          "required": true
+        },
+        "responses": { "200": { "description": "", "headers": {} } },
+        "deprecated": false
+      },
+      "parameters": []
+    },
+    "/otp/verify-sms-otp": {
+      "post": {
+        "tags": ["otpRoutes"],
+        "summary": "verify-sms-otp",
+        "operationId": "verify-sms-otp",
+        "parameters": [],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  { "$ref": "#/components/schemas/verify-sms-otp-request" },
+                  {
+                    "examples": [
+                      {
+                        "countryCode": "+91",
+                        "phoneNumber": "9566218564",
+                        "otp": "457456"
+                      }
+                    ]
+                  }
+                ],
+                "contentMediaType": "application/json"
+              },
+              "example": {
+                "countryCode": "+91",
+                "phoneNumber": "9566218564",
+                "otp": "457456"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": { "200": { "description": "", "headers": {} } },
+        "deprecated": false
+      },
+      "parameters": []
+    },
+    "/storage/upload-image": {
+      "post": {
+        "tags": ["storageRoutes"],
+        "summary": "upload-image",
+        "operationId": "upload-image",
+        "parameters": [
+          {
+            "name": "type",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": ["storyImage", "storyVideo", "profilePicture"]
+            }
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "const": "multipart/form-data",
+              "type": "string",
+              "enum": ["multipart/form-data"]
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": ["image"],
+                "type": "object",
+                "properties": {
+                  "image": { "type": "string", "format": "binary" }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": { "200": { "description": "", "headers": {} } },
+        "deprecated": false
+      },
+      "parameters": []
+    },
+    "/storage/upload-video": {
+      "post": {
+        "tags": ["storageRoutes"],
+        "summary": "upload-video",
+        "operationId": "upload-video",
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "const": "multipart/form-data",
+              "type": "string",
+              "enum": ["multipart/form-data"]
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": ["video"],
+                "type": "object",
+                "properties": {
+                  "video": { "type": "string", "format": "binary" }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": { "200": { "description": "", "headers": {} } },
+        "deprecated": false
+      },
+      "parameters": []
+    },
+    "/profile/get-user-details/user/{userid}": {
+      "get": {
+        "tags": ["userRoutes"],
+        "summary": "get-user-details",
+        "operationId": "get-user-details",
+        "parameters": [
+          {
+            "name": "userid",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "schema": { "type": "string", "examples": ["<Your Access Token>"] }
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "const": "application/json",
+              "type": "string",
+              "examples": ["application/json"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Powered-By": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string",
+                      "contentMediaType": "text/plain"
+                    },
+                    "example": "Express"
+                  }
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string",
+                      "contentMediaType": "text/plain"
+                    },
+                    "example": "*"
+                  }
+                }
+              },
+              "Content-Length": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string",
+                      "contentMediaType": "text/plain"
+                    },
+                    "example": "450"
+                  }
+                }
+              },
+              "ETag": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string",
+                      "contentMediaType": "text/plain"
+                    },
+                    "example": "W/\"1c2-iDD7DAprzRh/i6j9WzFiIGyr6Bw\""
+                  }
+                }
+              },
+              "Date": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string",
+                      "contentMediaType": "text/plain"
+                    },
+                    "example": "Fri, 01 Dec 2023 14:03:46 GMT"
+                  }
+                }
+              },
+              "Connection": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string",
+                      "contentMediaType": "text/plain"
+                    },
+                    "example": "keep-alive"
+                  }
+                }
+              },
+              "Keep-Alive": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string",
+                      "contentMediaType": "text/plain"
+                    },
+                    "example": "timeout=5"
+                  }
+                }
+              }
+            },
+            "content": {
+              "application/json; charset=utf-8": {
+                "example": {
+                  "user": {
+                    "_id": "6569e11cc4ed9edd5c3d9608",
+                    "name": "Saiyam Jain",
+                    "email": "saiyam.jain.mec21@itbhu.ac.in",
+                    "role": "student",
+                    "phoneNumber": "+917870658888",
+                    "college": {
+                      "_id": "6569df55e17df8f8ab91b9c4",
+                      "name": "Indian Institute of Technology (BHU), Varanasi",
+                      "domain": "itbhu.ac.in"
+                    },
+                    "imageUrl": null,
+                    "dateOfBirth": "2002-12-09T00:00:00.000Z",
+                    "gender": "male",
+                    "isActive": true,
+                    "createdAt": "2023-12-01T13:35:24.360Z",
+                    "updatedAt": "2023-12-01T13:35:24.360Z",
+                    "__v": 0
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": []
+      },
+      "parameters": []
+    },
+    "/profile/deactivate-user/user/{userid}": {
+      "put": {
+        "tags": ["userRoutes"],
+        "summary": "deactivate-user",
+        "operationId": "deactivate-user",
+        "parameters": [
+          {
+            "name": "userid",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "schema": { "type": "string", "examples": ["<Your Access Token>"] }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Powered-By": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string",
+                      "contentMediaType": "text/plain"
+                    },
+                    "example": "Express"
+                  }
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string",
+                      "contentMediaType": "text/plain"
+                    },
+                    "example": "*"
+                  }
+                }
+              },
+              "Content-Length": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string",
+                      "contentMediaType": "text/plain"
+                    },
+                    "example": "406"
+                  }
+                }
+              },
+              "ETag": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string",
+                      "contentMediaType": "text/plain"
+                    },
+                    "example": "W/\"196-J6AvCViPG5Pd7I7CtmYy//aGwqQ\""
+                  }
+                }
+              },
+              "Date": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string",
+                      "contentMediaType": "text/plain"
+                    },
+                    "example": "Fri, 01 Dec 2023 14:51:52 GMT"
+                  }
+                }
+              },
+              "Connection": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string",
+                      "contentMediaType": "text/plain"
+                    },
+                    "example": "keep-alive"
+                  }
+                }
+              },
+              "Keep-Alive": {
+                "content": {
+                  "text/plain": {
+                    "schema": {
+                      "type": "string",
+                      "contentMediaType": "text/plain"
+                    },
+                    "example": "timeout=5"
+                  }
+                }
+              }
+            },
+            "content": {
+              "application/json; charset=utf-8": {
+                "example": {
+                  "message": "User deactivated successfully",
+                  "user": {
+                    "_id": "6569e11cc4ed9edd5c3d9608",
+                    "name": "Saiyam Jain",
+                    "email": "saiyam.jain.mec21@itbhu.ac.in",
+                    "role": "student",
+                    "phoneNumber": "+917870658888",
+                    "college": "6569df55e17df8f8ab91b9c4",
+                    "imageUrl": null,
+                    "dateOfBirth": "2002-12-09T00:00:00.000Z",
+                    "gender": "male",
+                    "isActive": false,
+                    "createdAt": "2023-12-01T13:35:24.360Z",
+                    "updatedAt": "2023-12-01T14:51:51.772Z",
+                    "__v": 0
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false,
+        "security": []
+      },
+      "parameters": []
+    },
+    "/profile/get-user-status/user/{userid}": {
+      "get": {
+        "tags": ["userRoutes"],
+        "summary": "get-user-status",
+        "parameters": [
+          {
+            "name": "userid",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "schema": { "type": "string", "examples": ["<Your Access Token>"] }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": { "application/json": {} }
+          }
+        }
+      }
+    },
+    "/profile/update-user-status/user/{userid}": {
+      "put": {
+        "tags": ["userRoutes"],
+        "summary": "update-user-status",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": { "status": "Hello Updated" }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userid",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "schema": { "type": "string", "examples": ["<Your Access Token>"] }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": { "application/json": {} }
+          }
+        }
+      }
+    },
+    "/profile/get-user-profile-picture/user/{userid}": {
+      "get": {
+        "tags": ["userRoutes"],
+        "summary": "get-user-profile-picture",
+        "parameters": [
+          {
+            "name": "userid",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "schema": { "type": "string", "examples": ["<Your Access Token>"] }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": { "application/json": {} }
+          }
+        }
+      }
+    },
+    "/profile/update-user-profile-picture/user/{userid}": {
+      "put": {
+        "tags": ["userRoutes"],
+        "summary": "update-user-profile-picture",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "imageUrl": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fkidlingoo.com%2Fflowers-name-in-english%2F&psig=AOvVaw1c-Wj6oVq6ln6uleVR0iOG&ust=1711049634547000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCODKhODKg4UDFQAAAAAdAAAAABAD"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userid",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "",
+            "required": true,
+            "style": "simple",
+            "schema": { "type": "string", "examples": ["<Your Access Token>"] }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": { "application/json": {} }
+          }
+        }
+      }
+    },
+    "/data/degree": {
+      "get": {
+        "tags": ["dataRoutes"],
+        "summary": "degree",
+        "operationId": "degree",
+        "parameters": [],
+        "responses": { "200": { "description": "", "headers": {} } },
+        "deprecated": false
+      },
+      "parameters": []
+    },
+    "/data/branch": {
+      "get": {
+        "tags": ["dataRoutes"],
+        "summary": "branch",
+        "operationId": "branch",
+        "parameters": [],
+        "responses": { "200": { "description": "", "headers": {} } },
+        "deprecated": false
+      },
+      "parameters": []
+    },
+    "/data/college": {
+      "get": {
+        "tags": ["dataRoutes"],
+        "summary": "college",
+        "operationId": "college",
+        "parameters": [],
+        "responses": { "200": { "description": "", "headers": {} } },
+        "deprecated": false
+      },
+      "parameters": []
+    },
+    "/tag/standard/user/{userid}": {
+      "get": {
+        "tags": ["tagRoutes"],
+        "summary": "standard",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "schema": { "type": "string" },
+            "example": "<Your Access Token>"
+          },
+          {
+            "name": "userid",
+            "in": "path",
+            "schema": { "type": "string" },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": { "application/json": {} }
+          }
+        }
+      }
+    },
+    "/tag/custom/user/{userid}": {
+      "get": {
+        "tags": ["tagRoutes"],
+        "summary": "custom",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "schema": { "type": "string" },
+            "example": "<Your Access Token>"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": { "type": "integer" },
+            "example": "1"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": { "type": "integer" },
+            "example": "1"
+          },
+          {
+            "name": "userid",
+            "in": "path",
+            "schema": { "type": "string" },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": { "application/json": {} }
+          }
+        }
+      }
+    },
+    "/tag/user/{userid}/search/{query}": {
+      "get": {
+        "tags": ["tagRoutes"],
+        "summary": "search",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "schema": { "type": "string" },
+            "example": "<Your Access Token>"
+          },
+          {
+            "name": "query",
+            "in": "path",
+            "schema": { "type": "string" },
+            "required": true
+          },
+          {
+            "name": "userid",
+            "in": "path",
+            "schema": { "type": "string" },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": { "application/json": {} }
+          }
+        }
+      }
+    },
+    "/tag/create/user/{userid}": {
+      "post": {
+        "tags": ["tagRoutes"],
+        "summary": "create",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": { "name": { "type": "string" } },
+                "examples": { "name": "<Name of Tag>" }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "schema": { "type": "string" },
+            "example": "<Your Access Token>"
+          },
+          {
+            "name": "userid",
+            "in": "path",
+            "schema": { "type": "string" },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": { "application/json": {} }
+          }
+        }
+      }
+    },
+    "/story/create-story/user/{userid}": {
+      "post": {
+        "tags": ["storyRoutes"],
+        "summary": "create-story",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  { "$ref": "#/components/schemas/createStoryRequest" }
+                ],
+                "contentMediaType": "application/json",
+                "type": "object",
+                "example": {
+                  "visibility": "Public",
+                  "contentType": "Image",
+                  "contentUrl": "https://cultree.in/cdn/shop/files/watermark.png?v=1703007776",
+                  "caption": "Testing Caption",
+                  "tags": [
+                    "65f6c4fc40c8fb90f1d56925",
+                    "65f6c41baebef4d2cd0011b6"
+                  ],
+                  "college": [
+                    "6569df55e17df8f8ab91b9c4",
+                    "6547d7ead3aafa2876ecdbc3"
+                  ],
+                  "expiresIn": 5
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "schema": { "type": "string" },
+            "example": "<Your Access Token>"
+          },
+          {
+            "name": "userid",
+            "in": "path",
+            "schema": { "type": "string" },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": { "application/json": {} }
+          }
+        }
+      }
+    },
+    "/story/get-college-story/user/{userid}/college/{collegeid}": {
+      "get": {
+        "tags": ["storyRoutes"],
+        "summary": "get-college-stories",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "schema": { "type": "string" },
+            "example": "<Your Access Token>"
+          },
+          { "name": "page", "in": "query", "schema": { "type": "integer" } },
+          { "name": "limit", "in": "query", "schema": { "type": "integer" } },
+          {
+            "name": "userid",
+            "in": "path",
+            "schema": { "type": "string" },
+            "required": true
+          },
+          {
+            "name": "collegeid",
+            "in": "path",
+            "schema": { "type": "string" },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": { "application/json": {} }
+          }
+        }
+      }
+    },
+    "/story/get-all-college-story/user/{userid}": {
+      "get": {
+        "tags": ["storyRoutes"],
+        "summary": "get-all-college-stories",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "schema": { "type": "string" },
+            "example": "<Your Access Token>"
+          },
+          { "name": "page", "in": "query", "schema": { "type": "integer" } },
+          { "name": "limit", "in": "query", "schema": { "type": "integer" } },
+          {
+            "name": "userid",
+            "in": "path",
+            "schema": { "type": "string" },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": { "application/json": {} }
+          }
+        }
+      }
+    },
+    "/story/get-tag-story/user/{userid}": {
+      "post": {
+        "tags": ["storyRoutes"],
+        "summary": "get-tag-stories",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "tag": { "type": "array", "items": { "type": "string" } }
+                },
+                "example": {
+                  "tag": [
+                    "65f6c4fc40c8fb90f1d56925",
+                    "65f6c41baebef4d2cd0011b6"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "schema": { "type": "string" },
+            "example": "<Your Access Token>"
+          },
+          { "name": "page", "in": "query", "schema": { "type": "integer" } },
+          { "name": "limit", "in": "query", "schema": { "type": "integer" } },
+          {
+            "name": "userid",
+            "in": "path",
+            "schema": { "type": "string" },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": { "application/json": {} }
+          }
+        }
+      }
+    },
+    "/story/get-user-story/user/{userid}": {
+      "get": {
+        "tags": ["storyRoutes"],
+        "summary": "get-user-story",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "schema": { "type": "string" },
+            "example": "<Your Access Token>"
+          },
+          { "name": "page", "in": "query", "schema": { "type": "integer" } },
+          { "name": "limit", "in": "query", "schema": { "type": "integer" } },
+          {
+            "name": "userid",
+            "in": "path",
+            "schema": { "type": "string" },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": { "application/json": {} }
+          }
+        }
+      }
+    },
+    "/story/add-view/user/{userid}/story/{storyid}": {
+      "get": {
+        "tags": ["storyRoutes"],
+        "summary": "add-view",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "schema": { "type": "string" },
+            "example": "<Your Access Token>"
+          },
+          {
+            "name": "userid",
+            "in": "path",
+            "schema": { "type": "string" },
+            "required": true
+          },
+          {
+            "name": "storyid",
+            "in": "path",
+            "schema": { "type": "string" },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": { "application/json": {} }
+          }
+        }
+      }
+    },
+    "/story/add-reaction/user/{userid}/story/{storyid}/reaction/{reaction}": {
+      "get": {
+        "tags": ["storyRoutes"],
+        "summary": "add-reaction",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "schema": { "type": "string" },
+            "example": "<Your Access Token>"
+          },
+          {
+            "name": "userid",
+            "in": "path",
+            "schema": { "type": "string" },
+            "required": true
+          },
+          {
+            "name": "storyid",
+            "in": "path",
+            "schema": { "type": "string" },
+            "required": true
+          },
+          {
+            "name": "reaction",
+            "in": "path",
+            "schema": { "type": "string" },
+            "required": true,
+            "example": "Like"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": { "application/json": {} }
+          }
+        }
+      }
+    },
+    "/story/delete-reaction/user/{userid}/story/{storyid}": {
+      "delete": {
+        "tags": ["storyRoutes"],
+        "summary": "delete-reaction",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "schema": { "type": "string" },
+            "example": "<Your Access Token>"
+          },
+          {
+            "name": "userid",
+            "in": "path",
+            "schema": { "type": "string" },
+            "required": true
+          },
+          {
+            "name": "storyid",
+            "in": "path",
+            "schema": { "type": "string" },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": { "application/json": {} }
+          }
+        }
+      }
+    },
+    "/story/delete-story/user/{userid}/story/{storyid}": {
+      "delete": {
+        "tags": ["storyRoutes"],
+        "summary": "delete-story",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "schema": { "type": "string" },
+            "example": "<Your Access Token>"
+          },
+          {
+            "name": "userid",
+            "in": "path",
+            "schema": { "type": "string" },
+            "required": true
+          },
+          {
+            "name": "storyid",
+            "in": "path",
+            "schema": { "type": "string" },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": { "application/json": {} }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "signinrequest": {
+        "title": "signinrequest",
+        "required": ["phoneNumber"],
+        "type": "object",
+        "properties": { "phoneNumber": { "type": "string" } },
+        "examples": [{ "phoneNumber": "" }]
+      },
+      "User": {
+        "title": "User",
+        "required": [
+          "_id",
+          "name",
+          "email",
+          "role",
+          "phoneNumber",
+          "college",
+          "imageUrl",
+          "dateOfBirth",
+          "gender",
+          "branch",
+          "status",
+          "educationLevel",
+          "graduationYear",
+          "isActive",
+          "createdAt",
+          "updatedAt",
+          "__v"
+        ],
+        "type": "object",
+        "properties": {
+          "_id": { "type": "string" },
+          "name": { "type": "string" },
+          "email": { "type": "string" },
+          "role": {
+            "type": "string",
+            "enum": ["student", "alumni", "professor"]
+          },
+          "phoneNumber": { "type": "string" },
+          "college": { "type": "string" },
+          "imageUrl": { "type": "string" },
+          "dateOfBirth": { "type": "string", "format": "date-time" },
+          "gender": { "type": "string", "enum": ["male", "female"] },
+          "branch": { "type": "string" },
+          "status": { "type": "string" },
+          "educationLevel": { "type": "string" },
+          "graduationYear": { "type": "integer", "contentEncoding": "int32" },
+          "isActive": { "type": "boolean" },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" },
+          "__v": { "type": "integer", "contentEncoding": "int32" }
+        },
+        "examples": [
+          {
+            "_id": "65fb2fc152e8dda660f8675e",
+            "name": "Saiyam Jain",
+            "email": "saiyam.jain.4.mec21@itbhu.ac.in",
+            "role": "student",
+            "phoneNumber": "+917870658999",
+            "college": "6569df55e17df8f8ab91b9c4",
+            "imageUrl": null,
+            "dateOfBirth": "2002-12-09T00:00:00.000Z",
+            "gender": "male",
+            "branch": "6586f9788ba268c209f2b8ba",
+            "status": "Hello",
+            "educationLevel": "6586fa128ba268c209f2b8bb",
+            "graduationYear": 2025,
+            "isActive": true,
+            "createdAt": "2023-12-01T13:35:24.360Z",
+            "updatedAt": "2023-12-01T13:35:24.360Z",
+            "__v": 0
+          }
+        ]
+      },
+      "signuprequest": {
+        "title": "signuprequest",
+        "required": [
+          "name",
+          "email",
+          "phoneNumber",
+          "dateOfBirth",
+          "gender",
+          "branch",
+          "educationLevel",
+          "graduationYear"
+        ],
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "email": { "type": "string" },
+          "phoneNumber": {
+            "type": "string",
+            "description": "Description :- Include +91"
+          },
+          "gender": { "type": "string", "enum": ["male", "female"] },
+          "dateOfBirth": { "type": "string", "format": "date-time" },
+          "branch": {
+            "type": "string",
+            "description": "Description :- Branch Object ID"
+          },
+          "educationLevel": {
+            "type": "string",
+            "description": "Description :- Degree Object ID"
+          },
+          "graduationYear": { "type": "integer", "contentEncoding": "int32" }
+        },
+        "examples": [
+          {
+            "name": "Saiyam Jain",
+            "email": "saiyam.jain.5.mec21@itbhu.ac.in",
+            "phoneNumber": "+917870659999",
+            "gender": "male",
+            "dateOfBirth": "2002-12-09T00:00:00.000Z",
+            "branch": "6586f9788ba268c209f2b8ba",
+            "educationLevel": "6586fa128ba268c209f2b8bb",
+            "graduationYear": 2025,
+            "status": "Hello"
+          }
+        ]
+      },
+      "get-access-token-request": {
+        "title": "get-access-token-request",
+        "required": ["refreshToken"],
+        "type": "object",
+        "properties": { "refreshToken": { "type": "string" } },
+        "examples": [{ "refreshToken": "" }]
+      },
+      "send-email-otp-request": {
+        "title": "send-email-otp-request",
+        "required": ["email"],
+        "type": "object",
+        "properties": { "email": { "type": "string" } },
+        "examples": [{ "email": "biratbhattacharjee@gmail.com" }]
+      },
+      "verify-email-otp-request": {
+        "title": "verify-email-otp-request",
+        "required": ["email", "otp"],
+        "type": "object",
+        "properties": {
+          "email": { "type": "string" },
+          "otp": { "type": "string" }
+        },
+        "examples": [
+          { "email": "biratbhattacharjee@gmail.com", "otp": "510457" }
+        ]
+      },
+      "send-sms-otp-request": {
+        "title": "send-sms-otp-request",
+        "required": ["countryCode", "phoneNumber"],
+        "type": "object",
+        "properties": {
+          "countryCode": { "type": "string" },
+          "phoneNumber": { "type": "string" }
+        },
+        "examples": [{ "countryCode": "+91", "phoneNumber": "9566218564" }]
+      },
+      "verify-sms-otp-request": {
+        "title": "verify-sms-otp-request",
+        "required": ["countryCode", "phoneNumber", "otp"],
+        "type": "object",
+        "properties": {
+          "countryCode": { "type": "string" },
+          "phoneNumber": { "type": "string" },
+          "otp": { "type": "string" }
+        },
+        "examples": [
+          { "countryCode": "+91", "phoneNumber": "9566218564", "otp": "457456" }
+        ]
+      },
+      "Branch": {
+        "title": "Branch",
+        "required": ["_id", "name"],
+        "type": "object",
+        "properties": {
+          "_id": { "type": "string" },
+          "name": { "type": "string" }
+        },
+        "examples": [
+          {
+            "_id": "6586f9788ba268c209f2b8ba",
+            "name": "Mechanical Engineering"
+          }
+        ]
+      },
+      "College": {
+        "title": "College",
+        "required": ["_id", "name", "domain"],
+        "type": "object",
+        "properties": {
+          "_id": { "type": "string" },
+          "name": { "type": "string" },
+          "domain": { "type": "string" }
+        },
+        "examples": [
+          {
+            "_id": "6569df55e17df8f8ab91b9c4",
+            "name": "Indian Institute of Technology (BHU), Varanasi",
+            "domain": "itbhu.ac.in"
+          }
+        ]
+      },
+      "Degree": {
+        "title": "Degree",
+        "required": ["_id", "name"],
+        "type": "object",
+        "properties": {
+          "_id": { "type": "string" },
+          "name": { "type": "string" }
+        },
+        "examples": [{ "_id": "6586fa128ba268c209f2b8bb", "name": "B.Tech" }]
+      },
+      "Story": {
+        "title": "Story",
+        "required": [
+          "_id",
+          "user",
+          "visibility",
+          "contentType",
+          "contentUrl",
+          "thubmnailUrl",
+          "tags",
+          "college",
+          "expiresAt",
+          "createdAt",
+          "updatedAt"
+        ],
+        "type": "object",
+        "properties": {
+          "_id": { "type": "string" },
+          "user": {
+            "anyOf": [
+              { "type": "string" },
+              { "$ref": "#/components/schemas/User" }
+            ]
+          },
+          "visibility": {
+            "type": "string",
+            "enum": ["Public", "Friends-Only"]
+          },
+          "contentType": { "type": "string", "enum": ["Image", "Video"] },
+          "contentUrl": { "type": "string" },
+          "thubmnailUrl": { "type": "string" },
+          "caption": { "type": "string" },
+          "tags": {
+            "type": "array",
+            "items": {
+              "anyOf": [
+                { "type": "string" },
+                { "$ref": "#/components/schemas/Tags" }
+              ]
+            }
+          },
+          "college": {
+            "type": "array",
+            "items": {
+              "anyOf": [
+                { "type": "string" },
+                { "$ref": "#/components/schemas/College" }
+              ]
+            }
+          },
+          "expiresAt": { "type": "integer", "format": "date-time" },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" },
+          "__v": { "type": "integer", "contentEncoding": "int32" }
+        }
+      },
+      "Viewers": {
+        "title": "Viewers",
+        "required": ["_id", "story", "user", "createdAt", "updatedAt", "__v"],
+        "type": "object",
+        "properties": {
+          "_id": { "type": "string" },
+          "story": {
+            "anyOf": [
+              { "type": "string" },
+              { "$ref": "#/components/schemas/Story" }
+            ]
+          },
+          "user": {
+            "anyOf": [
+              { "type": "string" },
+              { "$ref": "#/components/schemas/User" }
+            ]
+          },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" },
+          "__v": { "type": "integer", "contentEncoding": "int32" }
+        }
+      },
+      "Reactions": {
+        "title": "Reactions",
+        "required": [
+          "_id",
+          "story",
+          "user",
+          "reaction",
+          "createdAt",
+          "updatedAt",
+          "__v"
+        ],
+        "type": "object",
+        "properties": {
+          "_id": { "type": "string" },
+          "story": {
+            "anyOf": [
+              { "type": "string" },
+              { "$ref": "#/components/schemas/Story" }
+            ]
+          },
+          "user": {
+            "anyOf": [
+              { "type": "string" },
+              { "$ref": "#/components/schemas/User" }
+            ]
+          },
+          "reaction": {
+            "type": "string",
+            "enum": [
+              "Like",
+              "Celebrate",
+              "Support",
+              "Love",
+              "Insightful",
+              "Funny"
+            ]
+          },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" },
+          "__v": { "type": "integer", "contentEncoding": "int32" }
+        }
+      },
+      "createStoryRequest": {
+        "title": "createStoryRequest",
+        "required": [
+          "visibility",
+          "contentType",
+          "contentUrl",
+          "caption",
+          "tags",
+          "college",
+          "expiresIn"
+        ],
+        "type": "object",
+        "properties": {
+          "visibility": {
+            "type": "string",
+            "enum": ["Public", "Friends-Only"]
+          },
+          "contentType": { "type": "string", "enum": ["Image", "Video"] },
+          "contentUrl": { "type": "string" },
+          "caption": { "type": "string" },
+          "tags": {
+            "type": "array",
+            "description": "Description :- Array of Tag Ids",
+            "items": { "type": "string" }
+          },
+          "college": {
+            "type": "array",
+            "description": "Description :- Array of College Ids",
+            "items": { "type": "string" }
+          },
+          "expiresIn": {
+            "type": "integer",
+            "contentEncoding": "int32",
+            "description": "Description :- Number of Hours"
+          }
+        },
+        "examples": [
+          {
+            "visibility": "Public",
+            "contentType": "Image",
+            "contentUrl": "https://cultree.in/cdn/shop/files/watermark.png?v=1703007776",
+            "caption": "Testing Caption",
+            "tags": ["65f6c4fc40c8fb90f1d56925", "65f6c41baebef4d2cd0011b6"],
+            "college": ["6569df55e17df8f8ab91b9c4", "6547d7ead3aafa2876ecdbc3"],
+            "expiresIn": 5
+          }
+        ]
+      },
+      "StoryNotification": {
+        "title": "StoryNotification",
+        "required": [
+          "_id",
+          "story",
+          "storyOwner",
+          "reaction",
+          "content",
+          "createdAt",
+          "updatedAt",
+          "__v"
+        ],
+        "type": "object",
+        "properties": {
+          "_id": { "type": "string" },
+          "story": {
+            "anyOf": [
+              { "type": "string" },
+              { "$ref": "#/components/schemas/Story" }
+            ]
+          },
+          "storyOwner": {
+            "anyOf": [
+              { "type": "string" },
+              { "$ref": "#/components/schemas/User" }
+            ]
+          },
+          "reaction": {
+            "anyOf": [
+              { "type": "string" },
+              { "ref": "#/components/schemas/Reactions" }
+            ]
+          },
+          "content": { "type": "string" },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" },
+          "__v": { "type": "integer", "contentEncoding": "int32" }
+        }
+      },
+      "Tags": {
+        "title": "Tags",
+        "required": ["_id", "name", "weight", "type"],
+        "type": "object",
+        "properties": {
+          "_id": { "type": "string" },
+          "name": { "type": "string" },
+          "weight": { "type": "integer", "contentEncoding": "int32" },
+          "type": { "type": "string", "enum": ["Custom", "Standard"] }
+        }
+      }
+    }
+  },
+  "tags": [
+    { "name": "authRoutes" },
+    { "name": "otpRoutes" },
+    { "name": "storageRoutes" },
+    { "name": "userRoutes" },
+    { "name": "dataRoutes" },
+    { "name": "tagRoutes" },
+    { "name": "storyRoutes" }
+  ]
+}

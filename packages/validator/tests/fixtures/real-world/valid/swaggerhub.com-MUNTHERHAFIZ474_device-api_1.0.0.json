@@ -1,0 +1,190 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "VR-Training backend with pockebase (device api)",
+    "version": "1.0.0"
+  },
+  "servers": [{ "url": "http://localhost:3000" }],
+  "paths": {
+    "/devices/connect": {
+      "post": {
+        "summary": "link device",
+        "description": "used to link new device to client license",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "connect_code": {
+                    "type": "number",
+                    "description": "the code showing in the client admin panel"
+                  },
+                  "device_serial_number": {
+                    "type": "string",
+                    "description": "any unique string the device can provide"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "To test",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "device_id": { "type": "string" },
+                    "device_serial_number": { "type": "string" },
+                    "client_id": { "type": "string" },
+                    "connect_code": { "type": "string" },
+                    "ready": { "type": "boolean" },
+                    "running_scenario": { "type": "string" },
+                    "running_record": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/devices/auto_connect": {
+      "post": {
+        "summary": "auto link device",
+        "description": "used to link new device to client license when the device is launche",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "device_serial_number": {
+                    "type": "string",
+                    "description": "any unique string the device can provide"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "To test",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "device_id": { "type": "string" },
+                    "device_serial_number": { "type": "string" },
+                    "client_id": { "type": "string" },
+                    "connect_code": { "type": "string" },
+                    "ready": { "type": "boolean" },
+                    "running_scenario": { "type": "string" },
+                    "running_record": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/devices/start_game": {
+      "post": {
+        "summary": "start game",
+        "description": "used to start the game after the client presses the start session button",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "device_serial_number": {
+                    "type": "string",
+                    "description": "any unique string the device can provide"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "To test",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "device_id": { "type": "string" },
+                    "client_id": { "type": "string" },
+                    "scenario_id": { "type": "string" },
+                    "scenario_name": { "type": "string" },
+                    "record_id": { "type": "string" },
+                    "metrics_keys": { "type": "array" },
+                    "checklist_keys": { "type": "array" },
+                    "additional_info": { "type": "array" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/records/add": {
+      "post": {
+        "summary": "add playing recored",
+        "description": "used after finishing the game to record the player results in the database",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "client_id": { "type": "string" },
+                  "device_id": { "type": "string" },
+                  "device_serial_number": { "type": "string" },
+                  "record_id": { "type": "string" },
+                  "scenario_id": { "type": "string" },
+                  "metrics": { "type": "object" },
+                  "checklist": { "type": "object" },
+                  "additional_info": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "To test",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "device_id": { "type": "string" },
+                    "client_id": { "type": "string" },
+                    "scenario_id": { "type": "string" },
+                    "user_id": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {},
+  "tags": []
+}

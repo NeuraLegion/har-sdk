@@ -1,0 +1,143 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "DR.CASH API",
+    "description": "The documentation will help you set up your system, with examples of sending postbacks to the DR.CASH server.\n\n## URL\n**https://advertiser.drcash.sh/v1**",
+    "version": "1.0.0"
+  },
+  "servers": [{ "url": "https://advertiser.drcash.sh/v1" }],
+  "tags": [
+    { "name": "postback", "description": "Send lead information to DR.CASH" }
+  ],
+  "paths": {
+    "/postback": {
+      "get": {
+        "tags": ["postback"],
+        "summary": "Send lead information to DR.CASH using the GET method",
+        "description": "## Example full URL with QUERY parameters\n**https://advertiser.drcash.sh/v1/postback?access_token=yourToken&status=forExampleApproved&transaction_id=uniqueUuid&click_id=uniqueUuid&payout=1234**",
+        "operationId": "sendPostbackGet",
+        "parameters": [
+          {
+            "name": "access_token",
+            "in": "query",
+            "description": "Your token in DR.CASH. If you don't know, ask the manager at DR.CASH.",
+            "required": true,
+            "schema": { "type": "string", "example": "A1S2D3F4G5H6" }
+          },
+          {
+            "name": "transaction_id",
+            "in": "query",
+            "description": "Unique lead identifier in the DR.CASH system",
+            "required": true,
+            "schema": { "type": "string", "example": "q1w2e3-r4t5y6-u7i8o9" }
+          },
+          {
+            "name": "click_id",
+            "in": "query",
+            "description": "Unique lead identifier in the DR.CASH system",
+            "required": true,
+            "schema": { "type": "string", "example": "q1w2e3-r4t5y6-u7i8o9" }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Lead status",
+            "required": true,
+            "schema": { "type": "string", "example": "approve" }
+          },
+          {
+            "name": "payout",
+            "in": "query",
+            "description": "Payout per lead",
+            "required": false,
+            "schema": { "type": "number", "format": "double", "example": 2.3 }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostbackResponseSuccess"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["postback"],
+        "summary": "Send lead information to DR.CASH using the POST method",
+        "description": "## Example full URL with QUERY parameters\n**https://advertiser.drcash.sh/v1/postback?access_token=yourToken**",
+        "operationId": "sendPostbackPost",
+        "parameters": [
+          {
+            "name": "access_token",
+            "in": "query",
+            "description": "Your token in DR.CASH. If you don't know, ask the manager at DR.CASH.",
+            "required": true,
+            "schema": { "type": "string", "example": "A1S2D3F4G5H6" }
+          }
+        ],
+        "requestBody": {
+          "description": "Lead information",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Postback" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostbackResponseSuccess"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Postback": {
+        "type": "object",
+        "properties": {
+          "transaction_id": {
+            "type": "string",
+            "description": "Unique lead identifier in the DR.CASH system",
+            "example": "q1w2e3-r4t5y6-u7i8o9"
+          },
+          "click_id": {
+            "type": "string",
+            "description": "Unique lead identifier in the DR.CASH system",
+            "example": "q1w2e3-r4t5y6-u7i8o9"
+          },
+          "status": {
+            "type": "string",
+            "description": "Lead status",
+            "example": "approved"
+          },
+          "payout": {
+            "type": "number",
+            "format": "double",
+            "description": "Payout per lead",
+            "example": 2.3
+          }
+        }
+      },
+      "PostbackResponseSuccess": {
+        "type": "object",
+        "properties": {
+          "uuid": { "type": "string", "example": "q1w2e3-r4t5y6-u7i8o9" }
+        }
+      }
+    }
+  }
+}

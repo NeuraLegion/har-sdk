@@ -1,0 +1,1299 @@
+{
+  "swagger": "2.0",
+  "openapi": "3.1.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "DID Resolver",
+    "description": "DID resolver for Cardano project | Fuixlabs"
+  },
+  "schemes": ["http", "https"],
+  "tags": {
+    "tags": [
+      { "name": "DID document", "description": "API for DID document" },
+      { "name": "Wrapped document", "description": "API for wrapped document" },
+      { "name": "Credential", "description": "API for credential" },
+      { "name": "Others", "description": "API for :)" },
+      {
+        "name": "Access token",
+        "description": "Endpoints for authenticate. Run this endpoint before test the other."
+      }
+    ]
+  },
+  "components": {
+    "schemas": {
+      "didDocument": {
+        "type": "object",
+        "properties": {
+          "controller": { "type": "string", "description": "???" },
+          "id": {
+            "type": "string",
+            "description": "DID string of company or user. Syntax: did:method:companyName:publicKey"
+          },
+          "date": { "type": "string", "description": "???" }
+        },
+        "example": {
+          "controller": "1234abcd",
+          "id": "did:somes_tring:Kukulu:zaq12wsxcde34rfvbgt56yhnmkju8iko",
+          "date": "10-10-2000"
+        }
+      },
+      "wrappedDocument": {
+        "type": "object",
+        "required": ["data", "signature", "assetId", "policyId"],
+        "properties": {
+          "vesion": { "type": "string" },
+          "data": {
+            "type": "object",
+            "required": ["issuers"],
+            "properties": {
+              "name": { "type": "string" },
+              "issuers": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "identityProof": {
+                      "type": "object",
+                      "properties": {
+                        "type": { "type": "string" },
+                        "location": { "type": "string" }
+                      }
+                    },
+                    "did": { "type": "string" },
+                    "tokenRegistry": { "type": "string" },
+                    "address": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "signature": {
+            "type": "object",
+            "required": ["targetHash"],
+            "properties": {
+              "type": { "type": "string" },
+              "targetHash": { "type": "string" },
+              "proof": { "type": "array" },
+              "merkleRoot": { "type": "string" }
+            }
+          },
+          "assetId": { "type": "string" },
+          "policyId": { "type": "string" }
+        },
+        "example": {
+          "vesion": "https://schema.openattestation.com/2.0/schema.json",
+          "data": {
+            "name": "eb2ebfb2-62e6-4e89-b326-668f97d5f142:string:OpenCerts Certificate of Award",
+            "title": "978c3e0a-8335-4059-8653-998184adfc76:string:Test Title By Caps2",
+            "remarks": "9fd10ccf-5736-46b6-a62d-bc87533a03aa:string:Test Remarks By Caps",
+            "fileName": "d9a118d4-cd63-4a0d-8a2e-f04bdaa46c84:string:cover-letter",
+            "shippingInformation": {
+              "title": "8bd910c0-43cd-4617-9546-e40358e2e773:string:Name & Address of Shipping Agent/Freight Forwarder",
+              "countryName": "d5229dab-5e92-40f7-8a41-856e81b02c36:string:VIET NAM",
+              "stress": "2bb33202-2870-425f-8256-a18363d0bf18:string:SG Freight",
+              "address": "5a81e499-c348-4a91-952a-b86db2853f15:string:101 ORCHARD ROAD"
+            },
+            "customInformation": {
+              "title": "bb256376-2b5f-495a-a87d-d60629147976:string:Demo custom",
+              "additionalAddress": "a8a4d8e0-76b7-478f-8f0b-4a62d5eb9959:string:55 Newton Road",
+              "telephoneNumber": "80588748-8ce1-427e-bb54-4543f03b8706:string:+84988888888"
+            },
+            "declarationInformation": {
+              "title": "71b82cbd-1791-4552-9bd2-a29a00391ded:string:Declaration by Shipping Agent/Freight Forwarder",
+              "declarationName": "7ba2fe68-0a6d-4990-b357-1248c3cebc9b:string:PETER LEE",
+              "designation": "bdcf2607-698e-4778-b804-0dc50fa11f22:string:SHIPPING MANAGER",
+              "date": "73ef8807-7f67-48d3-8f62-f1f5ee36049f:string:12/07/2022"
+            },
+            "certification": {
+              "title": "af5126ab-1494-42f4-ac74-14b7bb05da26:string:Declaration by Shipping Agent/Freight Forwarder",
+              "certificationName": "174c25d4-a0af-4b78-8a5a-4392925f1caa:string:PETER LEE",
+              "designation": "8d74597b-8223-4787-8069-5ee8cddb9895:string:SHIPPING MANAGER",
+              "date": "8e31c7dd-3ddc-43a3-a705-5c7b2dad1e02:string:12/07/2022"
+            },
+            "companyName": "c173f71d-761f-45e5-b30e-9713eb8dc743:string:SAMPLE_COMPANY_NAME",
+            "intention": "87c3648b-f6a9-4ef2-bb0d-6aa920b38829:string:trade",
+            "did": "5e89e527-01e8-4b7e-8b8d-b3abf7d1d47d:string:did:fuixlabs:SAMPLE_COMPANY_NAME:cover-letter",
+            "issuers": [
+              {
+                "identityProofType": {
+                  "type": "360fb9cd-c072-4a5b-95e9-aa27c24f26fb:string:DID",
+                  "did": "4c6d4710-ca66-4052-b5c9-30841f12850f:string:did:fuixlabs:SAMPLE_COMPANY_NAME:0071fc0cc009dab1ec32a25ee2d242c9e269ae967b8ffe80d9ddfd4ecfe24b09415e7642ee02ff59f2aabc9f106cb49595ff2e04a11b4259e3"
+                },
+                "address": "434d4419-142b-4939-af21-cf035173eaa5:string:0071fc0cc009dab1ec32a25ee2d242c9e269ae967b8ffe80d9ddfd4ecfe24b09415e7642ee02ff59f2aabc9f106cb49595ff2e04a11b4259e3"
+              }
+            ]
+          },
+          "signature": {
+            "type": "SHA3MerkleRoot",
+            "targetHash": "string",
+            "proof": [],
+            "merkleRoot": "string"
+          },
+          "assetId": "",
+          "policyId": ""
+        }
+      },
+      "newWrappedDocument": {
+        "type": "object",
+        "required": ["data", "signature"],
+        "properties": {
+          "vesion": { "type": "string" },
+          "data": {
+            "type": "object",
+            "required": ["issuers"],
+            "properties": {
+              "name": { "type": "string" },
+              "issuers": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "identityProof": {
+                      "type": "object",
+                      "properties": {
+                        "type": { "type": "string" },
+                        "location": { "type": "string" }
+                      }
+                    },
+                    "did": { "type": "string" },
+                    "tokenRegistry": { "type": "string" },
+                    "address": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "signature": {
+            "type": "object",
+            "required": ["targetHash"],
+            "properties": {
+              "type": { "type": "string" },
+              "targetHash": { "type": "string" },
+              "proof": { "type": "array" },
+              "merkleRoot": { "type": "string" }
+            }
+          },
+          "assetId": { "type": "string" },
+          "policyId": { "type": "string" }
+        },
+        "example": {
+          "vesion": "https://schema.openattestation.com/2.0/schema.json",
+          "data": {
+            "name": "UUIDv4:string:...",
+            "issuers": [
+              {
+                "identityProof": {
+                  "type": "UUIDv4:string:...",
+                  "location": "UUIDv4:string:fuixlabx.com"
+                },
+                "did": "UUIDv4:string:...",
+                "tokenRegistry": "UUIDv4:string:...",
+                "address": "addr_test1qq53em6pdpswwc7mmeq50848emp4u7gmhp2dft4ud0lhar54000k46cgk82rmlfjysyxyvh9qkj7vtuc69ulgdypcnssjk3hur"
+              }
+            ]
+          },
+          "signature": {
+            "type": "SHA3MerkleRoot",
+            "targetHash": "string",
+            "proof": [],
+            "merkleRoot": "string"
+          }
+        }
+      },
+      "didDocumentOfWrappedDocument": {
+        "type": "object",
+        "required": ["did", "controller", "url", "owner", "holder"],
+        "properties": {
+          "controller": {
+            "type": ["array"],
+            "description": "Public keys of who can transfer the wrapped document.",
+            "nullable": true,
+            "items": {
+              "type": "string",
+              "description": "controller_public_key"
+            }
+          },
+          "did": {
+            "type": "string",
+            "description": "DID of DID document of wrapped document"
+          },
+          "owner": { "type": "string", "description": "Owner public key." },
+          "holder": { "type": "string", "description": "Holder public key." },
+          "url": { "type": "string", "description": "???" }
+        },
+        "example": {
+          "controller": ["owner_public_key", "holder_public_key"],
+          "did": "did:method:companyName:somthing",
+          "owner": "owner_public_key",
+          "holder": "holder_public_key",
+          "url": "document_name.document"
+        }
+      },
+      "credential": {
+        "type": "object",
+        "required": ["issuer", "credentialSubject", "signature"],
+        "properties": {
+          "issuer": {
+            "type": "string",
+            "description": "DID of who issues this credential."
+          },
+          "credentialSubject": {
+            "type": "object",
+            "description": "Claims",
+            "properties": {
+              "object": {
+                "type": "string",
+                "description": "DID of wrapped document."
+              },
+              "newOwner": {
+                "type": "string",
+                "description": "DID of the new owner who can access the document."
+              },
+              "newHolder": {
+                "type": "string",
+                "description": "DID of the new holder who can access the document."
+              },
+              "action": {
+                "type": "object",
+                "description": "Define the action subject can do with the document.",
+                "properties": {
+                  "code": { "type": "integer" },
+                  "value": { "type": "string" }
+                }
+              }
+            }
+          },
+          "signature": {
+            "type": "string",
+            "description": "Signature of issuer."
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Other data when create credential.",
+            "properties": { "dateCreated": { "type": "string" } }
+          },
+          "mintingNFTConfig": {
+            "type": "object",
+            "properties": {
+              "type": { "type": "string" },
+              "asset": { "type": "string" },
+              "policy": { "type": "object" }
+            }
+          }
+        },
+        "example": {
+          "issuer": "did:method:Kukulu:zaq12wsxcde34rfvbgt56yhnmju78iko9olp0",
+          "credentialSubject": {
+            "object": "did:method:Kukulu:file_name",
+            "newHolder": "did:method:Kukulu:0po9olki87ujmnhy65tgbvfr43edcxsw21qaz",
+            "action": { "code": 2, "value": "changeHoldership" }
+          },
+          "signature": "12345678986543234567qwertytwq231234567876543sdfghgfds",
+          "metadata": { "dateCreated": "22-06-2022", "status": "" },
+          "mintingNFTConfig": {
+            "type": "credentail",
+            "policy": {
+              "type": "Native",
+              "id": "ed9f068881fd29842e8b5267ae8220aca2c2953617ce07c7895cfd30",
+              "script": "8201828200581cd37dfe9485c993853d7ac3ea61145315c66bc3a79bc3ad2069a5aa2882051abfce4cf9",
+              "ttl": 3217968377,
+              "reuse": true
+            },
+            "asset": "ed9f068881fd29842e8b5267ae8220aca2c2953617ce07c7895cfd30127148bdcb294e220f0c9aef41a307be8e910157901d2bf349492e7919708208"
+          }
+        }
+      },
+      "notification": {
+        "type": "object",
+        "required": ["receiver", "sender", "content"],
+        "properties": {
+          "receiver": { "type": "string", "description": "DID of receiver" },
+          "sender": { "type": "string", "description": "DID of sender" },
+          "content": {
+            "type": "string",
+            "description": "Notification information"
+          }
+        },
+        "example": {
+          "receiver": "did:method:companyName:publicKey",
+          "sender": "did:method:companyName:publicKey",
+          "content": "Hi! I invite you to be the new owner of the document ABC."
+        }
+      },
+      "mintingNFTConfig": {
+        "type": "object",
+        "properties": {
+          "type": { "type": "string" },
+          "asset": { "type": "string" },
+          "policy": { "type": "object" }
+        },
+        "example": {
+          "type": "credentail",
+          "policy": {
+            "type": "Native",
+            "id": "ed9f068881fd29842e8b5267ae8220aca2c2953617ce07c7895cfd30",
+            "script": "8201828200581cd37dfe9485c993853d7ac3ea61145315c66bc3a79bc3ad2069a5aa2882051abfce4cf9",
+            "ttl": 3217968377,
+            "reuse": true
+          },
+          "asset": "ed9f068881fd29842e8b5267ae8220aca2c2953617ce07c7895cfd30127148bdcb294e220f0c9aef41a307be8e910157901d2bf349492e7919708208"
+        }
+      },
+      "error": {
+        "type": "object",
+        "required": ["error_code", "error_message"],
+        "properties": {
+          "error_code": { "type": "integer" },
+          "error_message": { "type": "string" },
+          "detail": { "type": "string" }
+        }
+      }
+    },
+    "examples": {
+      "errorMissingParameters": {
+        "value": {
+          "error_code": 400,
+          "error_message": "Bad request. Missing parameters.",
+          "detail": "Not found: did"
+        }
+      },
+      "errorInvalidInput": {
+        "value": {
+          "error_code": 400,
+          "error_message": "Bad request. Invalid input syntax.",
+          "detail": ""
+        }
+      },
+      "errorUnauthorized": {
+        "value": {
+          "error_code": 401,
+          "error_message": "Unauthorized. Access token is invalid."
+        }
+      },
+      "errorPermissionDenied": {
+        "value": {
+          "error_code": 403,
+          "error_message": "Forbidden. Permission denied."
+        }
+      },
+      "errorUnverifiedSignature": {
+        "value": {
+          "error_code": 403,
+          "error_message": "Forbidden. Signature is not verified."
+        }
+      },
+      "errorNotFound": {
+        "value": {
+          "error_code": 404,
+          "error_message": "Not found. Resource is not found."
+        }
+      },
+      "errorAlreadyExisted": {
+        "value": {
+          "error_code": 409,
+          "error_message": "Conflict. Resource already exsits."
+        }
+      },
+      "errorMintNFT": {
+        "value": {
+          "error_code": 500,
+          "error_message": "Error. Cannot mint NFT."
+        }
+      },
+      "errorFetchNFT": {
+        "value": {
+          "error_code": 400,
+          "error_message": "Bad request. Cannot fetch NFT metadata. Check your assetId or policyId."
+        }
+      }
+    },
+    "responses": {
+      "BadRequest": {
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/error" },
+            "examples": {
+              "Missing parameters": {
+                "$ref": "#/components/examples/errorMissingParameters"
+              },
+              "Invalid input": {
+                "$ref": "#/components/examples/errorInvalidInput"
+              }
+            }
+          }
+        }
+      },
+      "Unauthorized": {
+        "description": "Cannot verify user with the given access token.",
+        "content": {
+          "text/plain": {
+            "schema": { "type": "string", "example": "Unauthorized." }
+          }
+        }
+      },
+      "NotFound_DIDDocument": {
+        "description": "DID document or/and wrapped document are not found.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error_code": { "type": "integer" },
+                "error_message": { "type": "string" }
+              }
+            },
+            "examples": {
+              "No file": {
+                "value": {
+                  "error_code": 10004,
+                  "error_message": "File/Public Key with the given value cannot be found."
+                }
+              },
+              "No branch": {
+                "value": {
+                  "error_code": 10003,
+                  "error_message": "Company with the given name cannot be found."
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/": {
+      "post": {
+        "tags": ["Access token"],
+        "summary": "Set access_token",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "access_token",
+            "type": "string",
+            "require": true,
+            "descrption": "Access token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "Set Cookie Successfully."
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Access token"],
+        "summary": "Clear access_token",
+        "responses": {
+          "200": {
+            "descrption": "",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "Clear Cookie Successfully."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/public-key/": {
+      "get": {
+        "tags": ["Others"],
+        "summary": "Get pulic key from address of user",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "address",
+            "type": "string",
+            "require": true,
+            "description": "Address."
+          },
+          {
+            "in": "query",
+            "name": "user",
+            "type": "string",
+            "require": false,
+            "description": "User."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Public key of the given address",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": { "publicKey": "something", "user": "something" }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing parameters or invalid input",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/error" },
+                "examples": {
+                  "Missing parameters": {
+                    "$ref": "#/components/examples/errorMissingParameters"
+                  },
+                  "Invalid input": {
+                    "$ref": "#/components/examples/errorInvalidInput"
+                  }
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/did-document/": {
+      "get": {
+        "tags": ["DID document"],
+        "summary": "Resolve DID - Takes a DID of a company or user as input and produces a conforming DID document as output.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "did",
+            "type": "string",
+            "require": true,
+            "description": "DID string. Syntax: did:method:companyName:publicKey.",
+            "default": "did:method:Kukulu:public_key"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return a conforming DID document.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/didDocument" }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing parameters or invalid input.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/error" },
+                "examples": {
+                  "Missing parameters": {
+                    "$ref": "#/components/examples/errorMissingParameters"
+                  },
+                  "Invalid input": {
+                    "$ref": "#/components/examples/errorInvalidInput"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Cannot found DID document with a companyName and publicKey included in the given DID string.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error_code": 404,
+                  "message": "File/Public Key with the given value cannot be found."
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["DID document"],
+        "summary": "Create DID document for a given DID string of a company/user.",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "did": {
+                    "type": "string",
+                    "example": "did:method:Kukulu:public_key"
+                  },
+                  "didDocument": { "$ref": "#/components/schemas/didDocument" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "New DID document is successfully created.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "DID Document created."
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing parameters or invalid input",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/error" },
+                "examples": {
+                  "Missing parameters": {
+                    "$ref": "#/components/examples/errorMissingParameters"
+                  },
+                  "Invalid input": {
+                    "$ref": "#/components/examples/errorInvalidInput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/wrapped-document/": {
+      "get": {
+        "tags": ["Wrapped document"],
+        "summary": "Get wrapped document and/or its DID document by a given DID.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "did",
+            "type": "string",
+            "require": true,
+            "description": "DID string. Syntax: did:method:companyName:publicKey.",
+            "example": "did:method:Kukulu:file_name"
+          },
+          {
+            "in": "query",
+            "name": "only",
+            "type": "string",
+            "require": false,
+            "description": "Optional parameter to receive DID document and/or wrapped document.",
+            "examples": {
+              "empty": {
+                "value": "",
+                "summary": "'' or undefined for receiving both DID document and wrapped document"
+              },
+              "did": {
+                "value": "did",
+                "summary": "'did' for receiving DID document only."
+              },
+              "doc": {
+                "value": "doc",
+                "summary": "'doc' for receiving wrapped document only."
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return documents.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "didDoc": {
+                      "$ref": "#/components/schemas/didDocumentOfWrappedDocument"
+                    },
+                    "wrappedDoc": {
+                      "$ref": "#/components/schemas/wrappedDocument"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing parameters or invalid input",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/error" },
+                "examples": {
+                  "Missing parameters": {
+                    "$ref": "#/components/examples/errorMissingParameters"
+                  },
+                  "Invalid input": {
+                    "$ref": "#/components/examples/errorInvalidInput"
+                  }
+                }
+              }
+            }
+          },
+          "404": { "$ref": "#/components/responses/NotFound_DIDDocument" }
+        }
+      },
+      "post": {
+        "tags": ["Wrapped document"],
+        "summary": "Receive and valiate wrapped document from dApp and call services to hash and store data.",
+        "requestBody": {
+          "require": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "wrappedDocument": {
+                    "$ref": "#/components/schemas/wrappedDocument"
+                  },
+                  "issuerAddress": { "type": "string", "example": "???" },
+                  "mintingNFTConfig": {
+                    "$ref": "#/components/schemas/mintingNFTConfig"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "New wrapped document is successfully created.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/wrappedDocument" }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing parameters or invalid input",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/error" },
+                "examples": {
+                  "Missing parameters": {
+                    "$ref": "#/components/examples/errorMissingParameters"
+                  },
+                  "Invalid input": {
+                    "$ref": "#/components/examples/errorInvalidInput"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Cannot verify user with the given access token.",
+            "content": {
+              "text/plain": {
+                "schema": { "type": "string", "example": "Unauthorized." }
+              }
+            }
+          },
+          "403": {
+            "description": "User is not allow to create wrapped document.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/error" },
+                "examples": {
+                  "Permission denied": {
+                    "$ref": "#/components/examples/errorPermissionDenied"
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Wrapped document with the same name is created.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/error" },
+                "examples": {
+                  "Already existed": {
+                    "$ref": "#/components/examples/errorAlreadyExisted"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/wrapped-document/exist/": {
+      "get": {
+        "tags": ["Wrapped document"],
+        "summary": "Check existence of a given wrapped document of a company.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "fileName",
+            "type": "string",
+            "require": true,
+            "description": "Name of wrapped file.",
+            "example": "file_name"
+          },
+          {
+            "in": "header",
+            "name": "companyName",
+            "type": "string",
+            "require": true,
+            "description": "Name of company.",
+            "example": "Kukulu"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return true/false value representing the exsitence of the given wrapped document name in the given company storage.",
+            "content": { "text/plain": { "schema": { "type": "boolean" } } }
+          },
+          "400": {
+            "description": "Missing parameters or invalid input",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/error" },
+                "examples": {
+                  "Missing parameters": {
+                    "$ref": "#/components/examples/errorMissingParameters"
+                  },
+                  "Invalid input": {
+                    "$ref": "#/components/examples/errorInvalidInput"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/wrapped-document/valid/": {
+      "put": {
+        "tags": ["Wrapped document"],
+        "summary": "Valiate wrapped document.",
+        "requestBody": {
+          "require": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "wrappedDocument": {
+                    "$ref": "#/components/schemas/wrappedDocument"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "New wrapped document is successfully created.",
+            "content": {
+              "text/plain": { "schema": { "type": "boolean" } },
+              "application/json": {
+                "example": {
+                  "valid": false,
+                  "detail": [
+                    {
+                      "instancePath": "",
+                      "schemaPath": "#/required",
+                      "keyword": "required",
+                      "params": { "missingProperty": "signature" },
+                      "message": "must have required property 'signature'"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/wrapped-document/user": {
+      "get": {
+        "tags": ["Wrapped document"],
+        "summary": "Get all wrapped document of a user given user's DID.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "did",
+            "type": "string",
+            "require": true,
+            "description": "DID string. Syntax: did:method:companyName:publicKey.",
+            "example": "did:method:Kukulu:uuid:string:address"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return array containind all wrapped documents of users.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/wrappedDocument" }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing parameters or invalid input",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/error" },
+                "examples": {
+                  "Missing parameters": {
+                    "$ref": "#/components/examples/errorMissingParameters"
+                  },
+                  "Invalid input": {
+                    "$ref": "#/components/examples/errorInvalidInput"
+                  }
+                }
+              }
+            }
+          },
+          "404": { "$ref": "#/components/responses/NotFound_DIDDocument" }
+        }
+      }
+    },
+    "/wrapped-document/search": {
+      "get": {
+        "tags": ["Wrapped document"],
+        "summary": "Get all wrapped document of a user given user's DID.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "companyName",
+            "type": "string",
+            "require": true,
+            "description": "Company name.",
+            "example": "SAMPLE_COMPANY_NAME"
+          },
+          {
+            "in": "query",
+            "name": "searchString",
+            "type": "string",
+            "require": true,
+            "description": "Keyword to search.",
+            "example": "a"
+          },
+          {
+            "in": "query",
+            "name": "pageNumber",
+            "type": "integer",
+            "require": false,
+            "description": "Optional parameter. Default: 1."
+          },
+          {
+            "in": "query",
+            "name": "itemsPerPage",
+            "type": "integer",
+            "require": false,
+            "description": "Optional parameter. Default: 5."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return list of wrapped documents.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/wrappedDocument" }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Cannot verify user with the given access token.",
+            "content": {
+              "text/plain": {
+                "schema": { "type": "string", "example": "Unauthorized." }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/credential/": {
+      "post": {
+        "tags": ["Credential"],
+        "summary": "Create credential for endorsing/changing/nominating ownership or holdership.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "did": {
+                    "type": "string",
+                    "example": "did:method:Kukulu:file_name"
+                  },
+                  "credential": { "$ref": "#/components/schemas/credential" },
+                  "config": { "$ref": "#/components/schemas/mintingNFTConfig" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "New credential is successfully created.",
+            "content": {
+              "text/plain": {
+                "schema": { "type": "string", "example": "Credential created." }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing parameters or invalid input",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/error" },
+                "examples": {
+                  "Missing parameters": {
+                    "$ref": "#/components/examples/errorMissingParameters"
+                  },
+                  "Invalid input": {
+                    "$ref": "#/components/examples/errorInvalidInput"
+                  }
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": {
+            "description": "Signature cannot be verified",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/error" },
+                "examples": {
+                  "Unverified signature": {
+                    "$ref": "#/components/examples/errorUnverifiedSignature"
+                  }
+                }
+              }
+            }
+          },
+          "404": { "$ref": "#/components/responses/NotFound_DIDDocument" }
+        }
+      }
+    },
+    "/noti": {
+      "post": {
+        "tags": ["Others"],
+        "sumary": "Create a new notification when transfer document.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "notification": {
+                    "$ref": "#/components/schemas/notification"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "New notificaton is successfully created.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "Notification created."
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Cannot verify user with given access_token.",
+            "content": {
+              "text/plain": {
+                "schema": { "type": "string", "example": "Unauthorized." }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/nfts/": {
+      "get": {
+        "tags": ["Others"],
+        "summary": "",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "policyid",
+            "type": "string",
+            "require": true,
+            "description": "Policy Id",
+            "default": "1050dd64e77e671a0fee81f391080f5f57fefba2e26a816019aa5524"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "example": {
+                  "nfts": [
+                    {
+                      "unit": "199062e26a0ea1370249e71e6224c6541e7825a192fe42c57aa538c341616461476f6c64656e526566657272616c31363339303438343435",
+                      "quantity": 1
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/error" },
+                "examples": {
+                  "Missing parameters": {
+                    "$ref": "#/components/examples/errorMissingParameters"
+                  }
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/hash/verify/": {
+      "get": {
+        "tags": ["Others"],
+        "summary": "",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "hashOfDocument",
+            "type": "string",
+            "require": true,
+            "description": "Hash of document"
+          },
+          {
+            "in": "header",
+            "name": "policyId",
+            "type": "string",
+            "require": true,
+            "description": "Policy Id of document"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK. Return a conforming DID document.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": { "result": { "type": "boolean" } }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/error" },
+                "examples": {
+                  "Missing parameters": {
+                    "$ref": "#/components/examples/errorMissingParameters"
+                  }
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/signature/verify/": {
+      "get": {
+        "tags": ["Others"],
+        "summary": "",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "address",
+            "type": "string",
+            "require": true,
+            "description": ""
+          },
+          {
+            "in": "header",
+            "name": "payload",
+            "type": "string",
+            "require": true,
+            "description": ""
+          },
+          {
+            "in": "header",
+            "name": "signature",
+            "type": "string",
+            "require": true,
+            "description": ""
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "did": {
+                    "type": "string",
+                    "example": "did:method:Kukulu:public_key"
+                  },
+                  "didDocument": { "$ref": "#/components/schemas/didDocument" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": { "result": { "type": "boolean" } }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/error" },
+                "examples": {
+                  "Missing parameters": {
+                    "$ref": "#/components/examples/errorMissingParameters"
+                  }
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    }
+  }
+}

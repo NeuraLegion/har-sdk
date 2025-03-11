@@ -1,0 +1,402 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "version": "1.0.1",
+    "title": "Pet Owner Registry",
+    "description": "Registry for pets and their owners"
+  },
+  "tags": [
+    { "name": "owner", "description": "All APIs related to pet owners" },
+    { "name": "pet", "description": "All APIs related to pets" }
+  ],
+  "paths": {
+    "/owners": {
+      "post": {
+        "tags": ["owner"],
+        "description": "Register a new owner in the registry.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/OwnerRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Successfully registered the owner." }
+        }
+      },
+      "get": {
+        "tags": ["owner"],
+        "description": "List all owners by the given page number and page size. The page parameters such as `last` and `first` must be used to check\nthe data set boundtries when paginating the owners list. Using invalid values such as out of boundary values will result in\n`400` errors.\n",
+        "parameters": [
+          {
+            "name": "page",
+            "description": "The page number to fetch.",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "integer" }
+          },
+          {
+            "name": "size",
+            "description": "The page size to fetch.",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The current requested page of owners",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "last": {
+                      "description": "If this is the last page",
+                      "type": "boolean"
+                    },
+                    "first": {
+                      "description": "If this is the first page",
+                      "type": "boolean"
+                    },
+                    "content": {
+                      "description": "Content of the page",
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/Owner" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "If the page parameters are invalid, for example if the page number of out of boundary of maximum number of pages.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "description": "The error message describing what went wrong with the request."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/owners/{id}": {
+      "delete": {
+        "tags": ["owner"],
+        "description": "Unregister a owner will remove the connection with the current pets this owner has. All connected pets will\nconsidered as ophant.\n",
+        "parameters": [
+          {
+            "name": "id",
+            "description": "The owner id in the system.",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string",
+              "format": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Owner is successfully unregistered from the registry."
+          }
+        }
+      },
+      "get": {
+        "tags": ["owner"],
+        "description": "Get information about a single owner identified by the system id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The owner id in the system.",
+            "schema": {
+              "type": "string",
+              "format": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The owner for the given system id.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Owner" }
+              }
+            }
+          },
+          "404": {
+            "description": "A owner could not be identified by the given system id."
+          }
+        }
+      }
+    },
+    "/pets": {
+      "post": {
+        "tags": ["pet"],
+        "description": "Register a new pet in the registry.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/PetRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Successfully registered the pet." }
+        }
+      },
+      "get": {
+        "tags": ["pet"],
+        "description": "List all pets by the given page number and page size. The page parameters such as `last` and `first` must be used to check\nthe data set boundtries when paginating the pets list. Using invalid values such as out of boundary values will result in\n`400` errors.\n",
+        "parameters": [
+          {
+            "name": "page",
+            "description": "The page number to fetch.",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "integer" }
+          },
+          {
+            "name": "size",
+            "description": "The page size to fetch.",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The current requested page of pets",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "last": {
+                      "description": "If this is the last page",
+                      "type": "boolean"
+                    },
+                    "first": {
+                      "description": "If this is the first page",
+                      "type": "boolean"
+                    },
+                    "content": {
+                      "description": "Content of the page",
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/Pet" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "If the page parameters are invalid, for example if the page number of out of boundary of maximum number of pages.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "description": "The error message describing what went wrong with the request."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pets/{id}": {
+      "delete": {
+        "tags": ["pet"],
+        "description": "Unregister a pet incase of the pet is migrated or deceased.\n",
+        "parameters": [
+          {
+            "name": "id",
+            "description": "The pet id in the system.",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string",
+              "format": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pet is successfully unregistered from the registry."
+          }
+        }
+      },
+      "get": {
+        "tags": ["pet"],
+        "description": "Get information about a single pet identified by the system id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The pet id in the system.",
+            "schema": {
+              "type": "string",
+              "format": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The pet for the given system id.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Pet" }
+              }
+            }
+          },
+          "404": {
+            "description": "A pet could not be identified by the given system id."
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Address": {
+        "type": "object",
+        "description": "Address of a owner or a pet residence.",
+        "properties": {
+          "streetNumber": {
+            "type": "string",
+            "description": "The street number of the residence."
+          },
+          "street": {
+            "type": "string",
+            "description": "The street name of the residence."
+          },
+          "city": {
+            "type": "string",
+            "description": "The city where the residence belongs to."
+          }
+        }
+      },
+      "PetRequest": {
+        "type": "object",
+        "description": "Request for registering a new pet in the registry.",
+        "properties": {
+          "name": { "type": "string", "description": "The name of the pet" },
+          "breed": { "type": "string", "description": "Breed of the pet" },
+          "type": {
+            "description": "Simple type of the pet",
+            "type": "string",
+            "enum": ["dog", "cat", "bird"]
+          },
+          "gender": {
+            "description": "Gender of the pet",
+            "type": "string",
+            "enum": ["make", "female"]
+          },
+          "dateOfBirth": {
+            "description": "The date of birth of the pet",
+            "type": "string",
+            "format": "date"
+          },
+          "address": {
+            "description": "The address of the pet's current location, this could be the current owner's address or\nthe address of the store where the pet is current at.\n",
+            "type": "object",
+            "$ref": "#/components/schemas/Address"
+          }
+        }
+      },
+      "Pet": {
+        "type": "object",
+        "description": "Registration information of the pet",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
+            "description": "The id of the pet in the system which can be used to uniquely identify each pet.",
+            "readOnly": true
+          },
+          "name": { "type": "string", "description": "The name of the pet" },
+          "breed": { "type": "string", "description": "Breed of the pet" },
+          "type": {
+            "description": "Simple type of the pet",
+            "type": "string",
+            "enum": ["dog", "cat", "bird"]
+          },
+          "gender": {
+            "description": "Gender of the pet",
+            "type": "string",
+            "enum": ["make", "female"]
+          },
+          "dateOfBirth": {
+            "description": "The date of birth of the pet",
+            "type": "string",
+            "format": "date"
+          },
+          "address": {
+            "description": "The address of the pet's current location, this could be the current owner's address or\nthe address of the store where the pet is current at.\n",
+            "type": "object",
+            "$ref": "#/components/schemas/Address"
+          }
+        }
+      },
+      "OwnerRequest": {
+        "type": "object",
+        "description": "Request for registering a new pet owner in the registry.",
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "description": "The first name of the owner"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "The last name of the owner"
+          },
+          "nid": {
+            "type": "string",
+            "description": "The national ID of the owner. This could be the passport ID in case there is no\nnation ID for the owner.\n"
+          },
+          "address": {
+            "type": "object",
+            "description": "The address of the owner's residence where both owner and pet lives.",
+            "$ref": "#/components/schemas/Address"
+          }
+        }
+      },
+      "Owner": {
+        "type": "object",
+        "description": "Owner registration of the pets",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
+            "description": "The id of the owner in the system which can be used to uniquely identify each owner.",
+            "readOnly": true
+          },
+          "firstName": {
+            "type": "string",
+            "description": "The first name of the owner"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "The last name of the owner"
+          },
+          "nid": {
+            "type": "string",
+            "description": "The national ID of the owner. This could be the passport ID in case there is no\nnation ID for the owner.\n"
+          },
+          "address": {
+            "type": "object",
+            "description": "The address of the owner's residence where both owner and pet lives.",
+            "$ref": "#/components/schemas/Address"
+          }
+        }
+      }
+    }
+  }
+}

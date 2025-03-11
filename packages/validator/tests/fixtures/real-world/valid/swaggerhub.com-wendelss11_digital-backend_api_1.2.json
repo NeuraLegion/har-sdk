@@ -1,0 +1,2090 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Digital backend API",
+    "description": "Documentação sobre uma API backend dirigida pela empresa [CODATA](https://codata.pb.gov.br/). Aqui está anexado todas \nas funcionalidades e endereços da API de forma detalhada. Além disso, também contém \noutras informações sobre o projeto e sobre a empresa CODATA.\n- [Repositório back-end API](https://gitcodata.pb.gov.br/gedes/carta-de-servicos/portal/api)\n- [Repositório do projeto](https://gitcodata.pb.gov.br/gedes/carta-de-servicos/portal)",
+    "version": "1.2"
+  },
+  "tags": [
+    { "name": "Serviços", "description": "operações envolvendo Serviços" },
+    { "name": "Órgãos", "description": "operações envolvendo Órgãos" },
+    { "name": "Categorias", "description": "operações envolvendo Categorias" }
+  ],
+  "paths": {
+    "/digital/servicos": {
+      "get": {
+        "tags": ["Serviços"],
+        "summary": "Retorna todos os serviços",
+        "description": "Requisição para retornar todos os serviços cadastrados no banco de dados.",
+        "operationId": "getServicos",
+        "responses": {
+          "200": {
+            "description": "OK <br> <br> Exemplo retornando serviços do banco.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": ["4a66e03a-a7fa-437f-ab6a-8a45a25971b1"]
+                    },
+                    "nome": {
+                      "type": "string",
+                      "format": "text",
+                      "example": ["RELOCAÇÃO DE HIDRÔMETRO"]
+                    },
+                    "categoria_id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": ["4a66e03a-a7fa-437f-ab6a-8a45a25971b1"]
+                    },
+                    "tipo_taxa": {
+                      "type": "string",
+                      "format": "charfield",
+                      "example": ["GRATUITO", "SOB CONSULTA", "TAXA/TARIFA"]
+                    },
+                    "passivo_transformacao": {
+                      "type": "string",
+                      "format": "charfield",
+                      "example": ["SIM", "NAO"]
+                    },
+                    "o_que_e": {
+                      "type": "string",
+                      "format": "charfield",
+                      "example": [
+                        "Mudança do local de instalação do hidrômetro sem a mudança da conexão original na rede."
+                      ]
+                    },
+                    "quem_utiliza": {
+                      "type": "string",
+                      "format": "charfield",
+                      "example": [
+                        "Qualquer Pessoa Física, Jurídica ou Órgão Público"
+                      ]
+                    },
+                    "quanto_tempo_leva": {
+                      "type": "string",
+                      "format": "charfield",
+                      "example": ["Até 5 dias"]
+                    },
+                    "etapas": {
+                      "type": "array",
+                      "items": { "type": "string" },
+                      "example": [
+                        "1. Solicitação através dos canais de atendimento",
+                        "2. Execução da relocação"
+                      ]
+                    },
+                    "exigencias": {
+                      "type": "array",
+                      "items": { "type": "string" },
+                      "example": [
+                        "Ser o responsável legal imóvel perante a Cagepa",
+                        "Identidade/CPF (se for Pessoa Física)"
+                      ]
+                    },
+                    "informacoes_adicionais": {
+                      "type": "array",
+                      "items": { "type": "string" },
+                      "example": [
+                        "A Cagepa só realizará, salvo exceção de caráter técnico,  a  relocação da  caixa de proteção do hidrômetro  para o muro ou mureta, conforme o padrão atual."
+                      ]
+                    },
+                    "publico_alvo": {
+                      "type": "array",
+                      "items": { "type": "string" },
+                      "example": [
+                        "CIDADAO",
+                        "PRODUTOR_RURAL",
+                        "ORGAO_ENTIDADE_PUBLICA",
+                        "EMPRESA",
+                        "SERVIDOR_PUBLICO",
+                        "ENTIDADE_SEM_FINS_LUCRATIVOS"
+                      ]
+                    },
+                    "forma_prestacao": {
+                      "type": "array",
+                      "items": { "type": "string" },
+                      "example": ["PRESENCIAL", "PRESENCIAL_AGENDAMENTO"]
+                    },
+                    "dias_da_semana": {
+                      "type": "array",
+                      "items": { "type": "string" },
+                      "example": ["Segunda-feira", "Terça-feira"]
+                    },
+                    "horarios": {
+                      "type": "array",
+                      "items": { "type": "string" },
+                      "example": ["08:00 até 12:00", "13:00 até 17:00"]
+                    },
+                    "site": {
+                      "type": "string",
+                      "format": "text",
+                      "example": ["https://wa.me/5583981984495"]
+                    },
+                    "orgao": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": ["e0651a33-838f-4d66-ace1-7e20406b5ee9"]
+                    },
+                    "ativo": {
+                      "type": "boolean",
+                      "format": "boolean",
+                      "example": [true]
+                    },
+                    "contador_acesso": {
+                      "type": "integer",
+                      "format": "integer",
+                      "example": [1]
+                    }
+                  },
+                  "example": [
+                    {
+                      "id": "4a66e03a-a7fa-437f-ab6a-8a45a25971b1",
+                      "nome": "RELOCAÇÃO DE HIDRÔMETRO",
+                      "categoria_id": "4a66e03a-a7fa-437f-ab6a-8a45a25971b1",
+                      "tipo_taxa": "GRATUITO",
+                      "passivo_transformacao": "SIM",
+                      "o_que_e": "Mudança do local de instalação do hidrômetro sem a mudança da conexão original na rede.",
+                      "quem_utiliza": "Qualquer Pessoa Física, Jurídica ou Órgão Público",
+                      "quanto_tempo_leva": "Até 5 dias",
+                      "etapas": [
+                        "1. Solicitação através dos canais de atendimento",
+                        "2. Execução da relocação"
+                      ],
+                      "exigencias": [
+                        "Ser o responsável legal imóvel perante a Cagepa",
+                        "Identidade/CPF (se for Pessoa Física)"
+                      ],
+                      "informacoes_adicionais": [
+                        "A Cagepa só realizará, salvo exceção de caráter técnico, a relocação da caixa de proteção do hidrômetro para o muro ou mureta, conforme o padrão atual."
+                      ],
+                      "publico_alvo": [
+                        "CIDADAO",
+                        "PRODUTOR_RURAL",
+                        "ORGAO_ENTIDADE_PUBLICA",
+                        "EMPRESA",
+                        "SERVIDOR_PUBLICO",
+                        "ENTIDADE_SEM_FINS_LUCRATIVOS"
+                      ],
+                      "forma_prestacao": [
+                        "PRESENCIAL",
+                        "PRESENCIAL_AGENDAMENTO"
+                      ],
+                      "dias_da_semana": ["Segunda-feira", "Terça-feira"],
+                      "horarios": ["08:00 até 12:00", "13:00 até 17:00"],
+                      "site": "https://wa.me/5583981984495",
+                      "orgao": "e0651a33-838f-4d66-ace1-7e20406b5ee9",
+                      "ativo": true,
+                      "contador_acesso": 1
+                    },
+                    {
+                      "id": "5b77f04b-b7eb-48f9-a1a1-2c9f12345678",
+                      "nome": "INSTALAÇÃO DE NOVO HIDRÔMETRO",
+                      "categoria_id": "5b77f04b-b7eb-48f9-a1a1-2c9f12345678",
+                      "tipo_taxa": "SOB CONSULTA",
+                      "passivo_transformacao": "NAO",
+                      "o_que_e": "Instalação de um novo hidrômetro em uma nova conexão.",
+                      "quem_utiliza": "Pessoa Física ou Jurídica",
+                      "quanto_tempo_leva": "Até 10 dias",
+                      "etapas": [
+                        "1. Solicitação através dos canais de atendimento",
+                        "2. Execução da instalação"
+                      ],
+                      "exigencias": [
+                        "Contrato assinado",
+                        "Pagamento da taxa de instalação"
+                      ],
+                      "informacoes_adicionais": [
+                        "A instalação está sujeita à avaliação técnica."
+                      ],
+                      "publico_alvo": ["CIDADAO", "EMPRESA"],
+                      "forma_prestacao": ["PRESENCIAL"],
+                      "dias_da_semana": ["Quarta-feira", "Quinta-feira"],
+                      "horarios": ["09:00 até 13:00"],
+                      "site": "https://wa.me/5583981984496",
+                      "orgao": "f1762b44-949d-4efc-bce3-8c67b1a2d007",
+                      "ativo": true,
+                      "contador_acesso": 2
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Serviços"],
+        "summary": "Cadastra um novo serviço",
+        "description": "Cadastra um novo serviço no banco de dados.",
+        "operationId": "postServicos",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nome": {
+                    "type": "string",
+                    "format": "text",
+                    "example": ["RELOCAÇÃO DE HIDRÔMETRO"]
+                  },
+                  "categoria_id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": ["4a66e03a-a7fa-437f-ab6a-8a45a25971b1"]
+                  },
+                  "tipo_taxa": {
+                    "type": "string",
+                    "format": "charfield",
+                    "example": ["GRATUITO", "SOB CONSULTA", "TAXA/TARIFA"]
+                  },
+                  "passivo_transformacao": {
+                    "type": "string",
+                    "format": "charfield",
+                    "example": ["SIM", "NAO"]
+                  },
+                  "o_que_e": {
+                    "type": "string",
+                    "format": "charfield",
+                    "example": [
+                      "Mudança do local de instalação do hidrômetro sem a mudança da conexão original na rede."
+                    ]
+                  },
+                  "quem_utiliza": {
+                    "type": "string",
+                    "format": "charfield",
+                    "example": [
+                      "Qualquer Pessoa Física, Jurídica ou Órgão Público"
+                    ]
+                  },
+                  "quanto_tempo_leva": {
+                    "type": "string",
+                    "format": "charfield",
+                    "example": ["Até 5 dias"]
+                  },
+                  "etapas": {
+                    "type": "array",
+                    "items": { "type": "string" },
+                    "example": [
+                      "1. Solicitação através dos canais de atendimento",
+                      "2. Execução da relocação"
+                    ]
+                  },
+                  "exigencias": {
+                    "type": "array",
+                    "items": { "type": "string" },
+                    "example": [
+                      "Ser o responsável legal imóvel perante a Cagepa",
+                      "Identidade/CPF (se for Pessoa Física)"
+                    ]
+                  },
+                  "informacoes_adicionais": {
+                    "type": "array",
+                    "items": { "type": "string" },
+                    "example": [
+                      "A Cagepa só realizará, salvo exceção de caráter técnico,  a  relocação da  caixa de proteção do hidrômetro  para o muro ou mureta, conforme o padrão atual."
+                    ]
+                  },
+                  "publico_alvo": {
+                    "type": "array",
+                    "items": { "type": "string" },
+                    "example": [
+                      "CIDADAO",
+                      "PRODUTOR_RURAL",
+                      "ORGAO_ENTIDADE_PUBLICA",
+                      "EMPRESA",
+                      "SERVIDOR_PUBLICO",
+                      "ENTIDADE_SEM_FINS_LUCRATIVOS"
+                    ]
+                  },
+                  "forma_prestacao": {
+                    "type": "array",
+                    "items": { "type": "string" },
+                    "example": ["PRESENCIAL", "PRESENCIAL_AGENDAMENTO"]
+                  },
+                  "dias_da_semana": {
+                    "type": "array",
+                    "items": { "type": "string" },
+                    "example": ["Segunda-feira", "Terça-feira"]
+                  },
+                  "horarios": {
+                    "type": "array",
+                    "items": { "type": "string" },
+                    "example": ["08:00 até 12:00", "13:00 até 17:00"]
+                  },
+                  "site": {
+                    "type": "string",
+                    "format": "text",
+                    "example": ["https://wa.me/5583981984495"]
+                  },
+                  "orgao": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": ["e0651a33-838f-4d66-ace1-7e20406b5ee9"]
+                  },
+                  "ativo": {
+                    "type": "boolean",
+                    "format": "boolean",
+                    "example": [true]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created <br> <br>Modelo é recebido como resposta confirmação.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "examples": ["4a66e03a-a7fa-437f-ab6a-8a45a25971b1"]
+                    },
+                    "nome": {
+                      "type": "string",
+                      "format": "text",
+                      "examples": ["Segunda via"]
+                    },
+                    "categoria_id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "examples": ["4a66e03a-a7fa-437f-ab6a-8a45a25971b1"]
+                    },
+                    "tipo_taxa": {
+                      "type": "string",
+                      "format": "charfield",
+                      "examples": ["Gratuito", "Sob consulta", "Taxa/Tarifa"]
+                    },
+                    "passivo_transformacao": {
+                      "type": "string",
+                      "format": "charfield",
+                      "examples": ["Sim", "Não"]
+                    },
+                    "o_que_e": {
+                      "type": "string",
+                      "format": "charfield",
+                      "examples": [
+                        "Solicitação de segunda via do Certificado de Registro do Veículo (CRV) por motivo de dano, rasura, preenchimento incorreto, extravio, roubo ou furto do documento original de CRV/CRV-e."
+                      ]
+                    },
+                    "quem_utiliza": {
+                      "type": "string",
+                      "format": "charfield",
+                      "examples": ["Qualquer cidadão"]
+                    },
+                    "quanto_tempo_leva": {
+                      "type": "string",
+                      "format": "charfield",
+                      "examples": ["Até 5 dias"]
+                    },
+                    "etapas": {
+                      "type": "array",
+                      "items": { "type": "string" },
+                      "example": [
+                        "1. Abertura on-line do serviço ou comparecimento à unidade do Detran",
+                        "2. Apresentação da documentação necessária, com reconhecimento de firma em cartório",
+                        "3. Apresentar o laudo de vistoria e as taxas pagas",
+                        "4. Emitir o CRV"
+                      ]
+                    },
+                    "exigencias": {
+                      "type": "array",
+                      "items": { "type": "string" },
+                      "example": [
+                        "Ser proprietário de um veículo, de acordo com os casos previstos em lei"
+                      ]
+                    },
+                    "informacoes_adicionais": {
+                      "type": "array",
+                      "items": { "type": "string" },
+                      "example": ["Sem informações adicionais"]
+                    },
+                    "publico_alvo": {
+                      "type": "array",
+                      "items": { "type": "string" },
+                      "example": ["Cidadão"]
+                    },
+                    "forma_prestacao": {
+                      "type": "array",
+                      "items": { "type": "string" },
+                      "example": ["Presencial"]
+                    },
+                    "dias_da_semana": {
+                      "type": "array",
+                      "items": { "type": "string" },
+                      "example": ["Segunda-feira", "Terça-feira"]
+                    },
+                    "horarios": {
+                      "type": "array",
+                      "items": { "type": "string" },
+                      "example": ["08:00 até 12:00", "13:00 até 17:00"]
+                    },
+                    "site": {
+                      "type": "string",
+                      "format": "text",
+                      "examples": ["https://detran.pb.gov.br/"]
+                    },
+                    "orgao": {
+                      "type": "string",
+                      "format": "uuid",
+                      "examples": ["e0651a33-838f-4d66-ace1-7e20406b5ee9"]
+                    },
+                    "ativo": {
+                      "type": "boolean",
+                      "format": "boolean",
+                      "examples": [true]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Serviços"],
+        "summary": "Atualiza um serviço existente",
+        "description": "Atualiza um serviço existente no banco de dados.",
+        "operationId": "putServicos",
+        "requestBody": {
+          "description": "Nessa requisição, está sendo passado o uuid obrigatoriamente, e os campos desejáveis para efetuar uma alteração.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "4a66e03a-a7fa-437f-ab6a-8a45a25971b1"
+                  },
+                  "nome": {
+                    "type": "string",
+                    "example": "RELOCAÇÃO DE HIDRÔMETRO"
+                  },
+                  "tipo_taxa": { "type": "string", "example": "GRATUITO" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Accepted <br> <br>Modelo é recebido como resposta com as novas alterações.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": ["4a66e03a-a7fa-437f-ab6a-8a45a25971b1"]
+                    },
+                    "nome": {
+                      "type": "string",
+                      "format": "text",
+                      "example": ["RELOCAÇÃO DE HIDRÔMETRO"]
+                    },
+                    "categoria_id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": ["4a66e03a-a7fa-437f-ab6a-8a45a25971b1"]
+                    },
+                    "tipo_taxa": {
+                      "type": "string",
+                      "format": "charfield",
+                      "example": ["GRATUITO", "SOB CONSULTA", "TAXA/TARIFA"]
+                    },
+                    "passivo_transformacao": {
+                      "type": "string",
+                      "format": "charfield",
+                      "example": ["SIM", "NAO"]
+                    },
+                    "o_que_e": {
+                      "type": "string",
+                      "format": "charfield",
+                      "example": [
+                        "Mudança do local de instalação do hidrômetro sem a mudança da conexão original na rede."
+                      ]
+                    },
+                    "quem_utiliza": {
+                      "type": "string",
+                      "format": "charfield",
+                      "example": [
+                        "Qualquer Pessoa Física, Jurídica ou Órgão Público"
+                      ]
+                    },
+                    "quanto_tempo_leva": {
+                      "type": "string",
+                      "format": "charfield",
+                      "example": ["Até 5 dias"]
+                    },
+                    "etapas": {
+                      "type": "array",
+                      "items": { "type": "string" },
+                      "example": [
+                        "1. Solicitação através dos canais de atendimento",
+                        "2. Execução da relocação"
+                      ]
+                    },
+                    "exigencias": {
+                      "type": "array",
+                      "items": { "type": "string" },
+                      "example": [
+                        "Ser o responsável legal imóvel perante a Cagepa",
+                        "Identidade/CPF (se for Pessoa Física)"
+                      ]
+                    },
+                    "informacoes_adicionais": {
+                      "type": "array",
+                      "items": { "type": "string" },
+                      "example": [
+                        "A Cagepa só realizará, salvo exceção de caráter técnico,  a  relocação da  caixa de proteção do hidrômetro  para o muro ou mureta, conforme o padrão atual."
+                      ]
+                    },
+                    "publico_alvo": {
+                      "type": "array",
+                      "items": { "type": "string" },
+                      "example": [
+                        "CIDADAO",
+                        "PRODUTOR_RURAL",
+                        "ORGAO_ENTIDADE_PUBLICA",
+                        "EMPRESA",
+                        "SERVIDOR_PUBLICO",
+                        "ENTIDADE_SEM_FINS_LUCRATIVOS"
+                      ]
+                    },
+                    "forma_prestacao": {
+                      "type": "array",
+                      "items": { "type": "string" },
+                      "example": ["PRESENCIAL", "PRESENCIAL_AGENDAMENTO"]
+                    },
+                    "dias_da_semana": {
+                      "type": "array",
+                      "items": { "type": "string" },
+                      "example": ["Segunda-feira", "Terça-feira"]
+                    },
+                    "horarios": {
+                      "type": "array",
+                      "items": { "type": "string" },
+                      "example": ["08:00 até 12:00", "13:00 até 17:00"]
+                    },
+                    "site": {
+                      "type": "string",
+                      "format": "text",
+                      "example": ["https://wa.me/5583981984495"]
+                    },
+                    "orgao": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": ["e0651a33-838f-4d66-ace1-7e20406b5ee9"]
+                    },
+                    "ativo": {
+                      "type": "boolean",
+                      "format": "boolean",
+                      "example": [true]
+                    },
+                    "contador_acesso": {
+                      "type": "integer",
+                      "format": "integer",
+                      "example": [1]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Serviços"],
+        "summary": "Deleta um serviço",
+        "description": "Deleta um serviço no banco de dados.",
+        "operationId": "deleteServicos",
+        "requestBody": {
+          "description": "Nessa requisição, está sendo passado o uuid obrigatoriamente, para efetuar a exclusão do serviço.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "501c1fe9-a9f6-48ec-9d35-ee2bffad657c"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Accepted <br> <br>Modelo é deletado com sucesso."
+          }
+        }
+      }
+    },
+    "/digital/servicos/{uuid}": {
+      "get": {
+        "tags": ["Serviços"],
+        "summary": "Retorna serviço via uuid",
+        "description": "Requisição para retornar determinado serviço via uuid.",
+        "operationId": "getServicoById",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "description": "uuid do serviço para retornar o serviço.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "4a66e03a-a7fa-437f-ab6a-8a45a25971b1"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK <br> <br> O serviço do uuid correspondente é retornado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": ["4a66e03a-a7fa-437f-ab6a-8a45a25971b1"]
+                    },
+                    "nome": {
+                      "type": "string",
+                      "format": "text",
+                      "example": ["RELOCAÇÃO DE HIDRÔMETRO"]
+                    },
+                    "categoria_id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": ["4a66e03a-a7fa-437f-ab6a-8a45a25971b1"]
+                    },
+                    "tipo_taxa": {
+                      "type": "string",
+                      "format": "charfield",
+                      "example": ["GRATUITO", "SOB CONSULTA", "TAXA/TARIFA"]
+                    },
+                    "passivo_transformacao": {
+                      "type": "string",
+                      "format": "charfield",
+                      "example": ["SIM", "NAO"]
+                    },
+                    "o_que_e": {
+                      "type": "string",
+                      "format": "charfield",
+                      "example": [
+                        "Mudança do local de instalação do hidrômetro sem a mudança da conexão original na rede."
+                      ]
+                    },
+                    "quem_utiliza": {
+                      "type": "string",
+                      "format": "charfield",
+                      "example": [
+                        "Qualquer Pessoa Física, Jurídica ou Órgão Público"
+                      ]
+                    },
+                    "quanto_tempo_leva": {
+                      "type": "string",
+                      "format": "charfield",
+                      "example": ["Até 5 dias"]
+                    },
+                    "etapas": {
+                      "type": "array",
+                      "items": { "type": "string" },
+                      "example": [
+                        "1. Solicitação através dos canais de atendimento",
+                        "2. Execução da relocação"
+                      ]
+                    },
+                    "exigencias": {
+                      "type": "array",
+                      "items": { "type": "string" },
+                      "example": [
+                        "Ser o responsável legal imóvel perante a Cagepa",
+                        "Identidade/CPF (se for Pessoa Física)"
+                      ]
+                    },
+                    "informacoes_adicionais": {
+                      "type": "array",
+                      "items": { "type": "string" },
+                      "example": [
+                        "A Cagepa só realizará, salvo exceção de caráter técnico,  a  relocação da  caixa de proteção do hidrômetro  para o muro ou mureta, conforme o padrão atual."
+                      ]
+                    },
+                    "publico_alvo": {
+                      "type": "array",
+                      "items": { "type": "string" },
+                      "example": [
+                        "CIDADAO",
+                        "PRODUTOR_RURAL",
+                        "ORGAO_ENTIDADE_PUBLICA",
+                        "EMPRESA",
+                        "SERVIDOR_PUBLICO",
+                        "ENTIDADE_SEM_FINS_LUCRATIVOS"
+                      ]
+                    },
+                    "forma_prestacao": {
+                      "type": "array",
+                      "items": { "type": "string" },
+                      "example": ["PRESENCIAL", "PRESENCIAL_AGENDAMENTO"]
+                    },
+                    "dias_da_semana": {
+                      "type": "array",
+                      "items": { "type": "string" },
+                      "example": ["Segunda-feira", "Terça-feira"]
+                    },
+                    "horarios": {
+                      "type": "array",
+                      "items": { "type": "string" },
+                      "example": ["08:00 até 12:00", "13:00 até 17:00"]
+                    },
+                    "site": {
+                      "type": "string",
+                      "format": "text",
+                      "example": ["https://wa.me/5583981984495"]
+                    },
+                    "orgao": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": ["e0651a33-838f-4d66-ace1-7e20406b5ee9"]
+                    },
+                    "ativo": {
+                      "type": "boolean",
+                      "format": "boolean",
+                      "example": [true]
+                    },
+                    "contador_acesso": {
+                      "type": "integer",
+                      "format": "integer",
+                      "example": [1]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/digital/servicos/for_list/": {
+      "get": {
+        "tags": ["Serviços"],
+        "summary": "Lista serviços com campos específicos",
+        "description": "Lista serviços com os campos id, nome, forma_prestacao, publico_alvo, o_que_e, orgao e categoria.",
+        "operationId": "getServicosList",
+        "responses": {
+          "200": {
+            "description": "OK <br> <br> A lista de serviços com campos específicos é retornada.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": ["4a66e03a-a7fa-437f-ab6a-8a45a25971b1"]
+                    },
+                    "nome": {
+                      "type": "string",
+                      "format": "text",
+                      "example": ["RELOCAÇÃO DE HIDRÔMETRO"]
+                    },
+                    "o_que_e": {
+                      "type": "string",
+                      "format": "charfield",
+                      "example": [
+                        "Mudança do local de instalação do hidrômetro sem a mudança da conexão original na rede."
+                      ]
+                    },
+                    "publico_alvo": {
+                      "type": "array",
+                      "items": { "type": "string" },
+                      "example": [
+                        "CIDADAO",
+                        "PRODUTOR_RURAL",
+                        "ORGAO_ENTIDADE_PUBLICA",
+                        "EMPRESA",
+                        "SERVIDOR_PUBLICO",
+                        "ENTIDADE_SEM_FINS_LUCRATIVOS"
+                      ]
+                    },
+                    "forma_prestacao": {
+                      "type": "array",
+                      "items": { "type": "string" },
+                      "example": ["PRESENCIAL", "PRESENCIAL_AGENDAMENTO"]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/digital/servicos/mais-acessados": {
+      "get": {
+        "tags": ["Serviços"],
+        "summary": "Lista os 5 serviços mais acessados",
+        "description": "Lista todos os serviços mais acessados depois seleciona os 5 primeiros.",
+        "operationId": "servicosMaisAcessados",
+        "responses": {
+          "200": {
+            "description": "OK <br> <br> A lista dos 5 serviços mais acessados é retornada.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": ["4a66e03a-a7fa-437f-ab6a-8a45a25971b1"]
+                    },
+                    "nome": {
+                      "type": "string",
+                      "format": "text",
+                      "example": ["RELOCAÇÃO DE HIDRÔMETRO"]
+                    },
+                    "categoria_id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": ["4a66e03a-a7fa-437f-ab6a-8a45a25971b1"]
+                    },
+                    "tipo_taxa": {
+                      "type": "string",
+                      "format": "charfield",
+                      "example": ["GRATUITO", "SOB CONSULTA", "TAXA/TARIFA"]
+                    },
+                    "passivo_transformacao": {
+                      "type": "string",
+                      "format": "charfield",
+                      "example": ["SIM", "NAO"]
+                    },
+                    "o_que_e": {
+                      "type": "string",
+                      "format": "charfield",
+                      "example": [
+                        "Mudança do local de instalação do hidrômetro sem a mudança da conexão original na rede."
+                      ]
+                    },
+                    "quem_utiliza": {
+                      "type": "string",
+                      "format": "charfield",
+                      "example": [
+                        "Qualquer Pessoa Física, Jurídica ou Órgão Público"
+                      ]
+                    },
+                    "quanto_tempo_leva": {
+                      "type": "string",
+                      "format": "charfield",
+                      "example": ["Até 5 dias"]
+                    },
+                    "etapas": {
+                      "type": "array",
+                      "items": { "type": "string" },
+                      "example": [
+                        "1. Solicitação através dos canais de atendimento",
+                        "2. Execução da relocação"
+                      ]
+                    },
+                    "exigencias": {
+                      "type": "array",
+                      "items": { "type": "string" },
+                      "example": [
+                        "Ser o responsável legal imóvel perante a Cagepa",
+                        "Identidade/CPF (se for Pessoa Física)"
+                      ]
+                    },
+                    "informacoes_adicionais": {
+                      "type": "array",
+                      "items": { "type": "string" },
+                      "example": [
+                        "CIDADAO",
+                        "PRODUTOR_RURAL",
+                        "ORGAO_ENTIDADE_PUBLICA",
+                        "EMPRESA",
+                        "SERVIDOR_PUBLICO",
+                        "ENTIDADE_SEM_FINS_LUCRATIVOS"
+                      ]
+                    },
+                    "forma_prestacao": {
+                      "type": "array",
+                      "items": { "type": "string" },
+                      "example": ["PRESENCIAL", "PRESENCIAL_AGENDAMENTO"]
+                    },
+                    "dias_da_semana": {
+                      "type": "array",
+                      "items": { "type": "string" },
+                      "example": ["Segunda-feira", "Terça-feira"]
+                    },
+                    "horarios": {
+                      "type": "array",
+                      "items": { "type": "string" },
+                      "example": ["08:00 até 12:00", "13:00 até 17:00"]
+                    },
+                    "site": {
+                      "type": "string",
+                      "format": "text",
+                      "example": ["https://wa.me/5583981984495"]
+                    },
+                    "orgao": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": ["e0651a33-838f-4d66-ace1-7e20406b5ee9"]
+                    },
+                    "ativo": {
+                      "type": "boolean",
+                      "format": "boolean",
+                      "example": [true]
+                    },
+                    "contador_acesso": {
+                      "type": "integer",
+                      "format": "integer",
+                      "example": [1]
+                    }
+                  },
+                  "example": [
+                    {
+                      "id": "4a66e03a-a7fa-437f-ab6a-8a45a25971b1",
+                      "nome": "RELOCAÇÃO DE HIDRÔMETRO",
+                      "categoria_id": "4a66e03a-a7fa-437f-ab6a-8a45a25971b1",
+                      "tipo_taxa": "GRATUITO",
+                      "passivo_transformacao": "SIM",
+                      "o_que_e": "Mudança do local de instalação do hidrômetro sem a mudança da conexão original na rede.",
+                      "quem_utiliza": "Qualquer Pessoa Física, Jurídica ou Órgão Público",
+                      "quanto_tempo_leva": "Até 5 dias",
+                      "etapas": [
+                        "1. Solicitação através dos canais de atendimento",
+                        "2. Execução da relocação"
+                      ],
+                      "exigencias": [
+                        "Ser o responsável legal imóvel perante a Cagepa",
+                        "Identidade/CPF (se for Pessoa Física)"
+                      ],
+                      "informacoes_adicionais": [
+                        "A Cagepa só realizará, salvo exceção de caráter técnico, a relocação da caixa de proteção do hidrômetro para o muro ou mureta, conforme o padrão atual."
+                      ],
+                      "publico_alvo": [
+                        "CIDADAO",
+                        "PRODUTOR_RURAL",
+                        "ORGAO_ENTIDADE_PUBLICA",
+                        "EMPRESA",
+                        "SERVIDOR_PUBLICO",
+                        "ENTIDADE_SEM_FINS_LUCRATIVOS"
+                      ],
+                      "forma_prestacao": [
+                        "PRESENCIAL",
+                        "PRESENCIAL_AGENDAMENTO"
+                      ],
+                      "dias_da_semana": ["Segunda-feira", "Terça-feira"],
+                      "horarios": ["08:00 até 12:00", "13:00 até 17:00"],
+                      "site": "https://wa.me/5583981984495",
+                      "orgao": "e0651a33-838f-4d66-ace1-7e20406b5ee9",
+                      "ativo": true,
+                      "contador_acesso": 1
+                    },
+                    {
+                      "id": "5b77f04b-b7eb-48f9-a1a1-2c9f12345678",
+                      "nome": "INSTALAÇÃO DE NOVO HIDRÔMETRO",
+                      "categoria_id": "5b77f04b-b7eb-48f9-a1a1-2c9f12345678",
+                      "tipo_taxa": "SOB CONSULTA",
+                      "passivo_transformacao": "NAO",
+                      "o_que_e": "Instalação de um novo hidrômetro em uma nova conexão.",
+                      "quem_utiliza": "Pessoa Física ou Jurídica",
+                      "quanto_tempo_leva": "Até 10 dias",
+                      "etapas": [
+                        "1. Solicitação através dos canais de atendimento",
+                        "2. Execução da instalação"
+                      ],
+                      "exigencias": [
+                        "Contrato assinado",
+                        "Pagamento da taxa de instalação"
+                      ],
+                      "informacoes_adicionais": [
+                        "A instalação está sujeita à avaliação técnica."
+                      ],
+                      "publico_alvo": ["CIDADAO", "EMPRESA"],
+                      "forma_prestacao": ["PRESENCIAL"],
+                      "dias_da_semana": ["Quarta-feira", "Quinta-feira"],
+                      "horarios": ["09:00 até 13:00"],
+                      "site": "https://wa.me/5583981984496",
+                      "orgao": "f1762b44-949d-4efc-bce3-8c67b1a2d007",
+                      "ativo": true,
+                      "contador_acesso": 2
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/digital/servicos/indicadores/": {
+      "get": {
+        "tags": ["Serviços"],
+        "summary": "Retorna informações de serviços e quais públicos estão associados",
+        "description": "Requisição que retorna o total de serviços, quantos são digitais e quantos serviços cada público tem.",
+        "operationId": "informacoesContagem",
+        "responses": {
+          "200": {
+            "description": "OK <br> <br> Exemplo de retorno das informações.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "total": { "type": "integer", "example": 10 },
+                    "digital": { "type": "integer", "example": 0 },
+                    "servicos_personalizados": {
+                      "type": "object",
+                      "properties": {
+                        "cidadao": { "type": "integer", "example": 5 },
+                        "servidor_publico": { "type": "integer", "example": 5 },
+                        "orgao_entidade_publica": {
+                          "type": "integer",
+                          "example": 4
+                        },
+                        "empresa": { "type": "integer", "example": 5 },
+                        "entidade_sem_fins_lucrativos": {
+                          "type": "integer",
+                          "example": 3
+                        },
+                        "produtor_rural": { "type": "integer", "example": 7 }
+                      }
+                    }
+                  },
+                  "example": {
+                    "total": 10,
+                    "digital": 0,
+                    "servicos_personalizados": {
+                      "cidadao": 5,
+                      "servidor_publico": 5,
+                      "orgao_entidade_publica": 4,
+                      "empresa": 5,
+                      "entidade_sem_fins_lucrativos": 3,
+                      "produtor_rural": 7
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/digital/informacoes/contagem": {
+      "get": {
+        "tags": ["Serviços"],
+        "summary": "Retorna a quantidade de serviços, órgãos, categorias e serviços digitais",
+        "description": "Requisição que retorna o total de serviços, órgãos, categorias, e quantos desses serviços são digitais.",
+        "operationId": "indicadores_servicos",
+        "responses": {
+          "200": {
+            "description": "OK <br> <br> Exemplo de retorno das informações.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "servicos": { "type": "integer", "example": 10 },
+                    "orgaos": { "type": "integer", "example": 15 },
+                    "categorias": { "type": "integer", "example": 5 },
+                    "servicos_digitais": { "type": "integer", "example": 0 }
+                  },
+                  "example": {
+                    "servicos": 10,
+                    "orgaos": 15,
+                    "categorias": 5,
+                    "servicos_digitais": 0
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/digital/user-info/": {
+      "get": {
+        "tags": ["Usuário"],
+        "summary": "retorna informações sobre o perfil e autorização do usuário",
+        "description": "Requisição que verifica se o usuário está autorizado e retorna seu perfil, como 'admin' ou 'servidor', além de informações adicionais se for servidor.",
+        "operationId": "user_info",
+        "responses": {
+          "202": {
+            "description": "Accepted <br> <br> Exemplo de retorno das informações do usuário.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "authorized": { "type": "boolean", "example": true },
+                    "perfil": { "type": "string", "example": "admin" },
+                    "orgao": { "type": "integer", "example": 123 }
+                  },
+                  "required": ["authorized"],
+                  "example": { "authorized": true, "perfil": "admin" },
+                  "exampleAlternative": {
+                    "authorized": true,
+                    "perfil": "servidor",
+                    "orgao": 123
+                  },
+                  "exampleUnauthorized": { "authorized": false }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/digital/orgaos": {
+      "get": {
+        "tags": ["Órgãos"],
+        "summary": "retorna todos os órgãos",
+        "description": "Requisição para retornar todos os órgãos cadastrados no banco de dados.",
+        "operationId": "getOrgaos",
+        "responses": {
+          "200": {
+            "description": "OK <br> <br> Exemplo retornando órgãos do banco.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "examples": ["e0651a33-838f-4d66-ace1-7e20406b5ee9"]
+                    },
+                    "sigla": {
+                      "type": "string",
+                      "format": "charfield",
+                      "examples": ["DETRAN"]
+                    },
+                    "cep": {
+                      "type": "string",
+                      "format": "charfield",
+                      "examples": ["58058280"]
+                    },
+                    "bairro": {
+                      "type": "string",
+                      "format": "charfield",
+                      "examples": ["Mangabeira VII"]
+                    },
+                    "logradouro": {
+                      "type": "string",
+                      "format": "charfield",
+                      "examples": ["Rua Emília Batista Celane"]
+                    },
+                    "numero": {
+                      "type": "string",
+                      "format": "charfield",
+                      "examples": ["S/N"]
+                    },
+                    "municipio": {
+                      "type": "string",
+                      "format": "charfield",
+                      "examples": ["João Pessoa"]
+                    },
+                    "tipo_administracao": {
+                      "type": "string",
+                      "format": "charfield",
+                      "examples": ["Direta"]
+                    },
+                    "site": {
+                      "type": "string",
+                      "format": "charfield",
+                      "examples": ["https://detran.pb.gov.br/"]
+                    },
+                    "ativo": {
+                      "type": "boolean",
+                      "format": "boolean",
+                      "examples": [true]
+                    }
+                  },
+                  "example": [
+                    {
+                      "id": "e0651a33-838f-4d66-ace1-7e20406b5ee9",
+                      "sigla": "DETRAN",
+                      "cep": "58058280",
+                      "bairro": "Mangabeira VII",
+                      "logradouro": "Rua Emília Batista Celane",
+                      "numero": "S/N",
+                      "municipio": "João Pessoa",
+                      "tipo_administracao": "Direta",
+                      "site": "https://detran.pb.gov.br/",
+                      "ativo": true
+                    },
+                    {
+                      "id": "ba672af2-98f1-423a-81a3-a5189f5e2da4",
+                      "sigla": "AGEVISA",
+                      "cep": "58000000",
+                      "bairro": "Centro",
+                      "logradouro": "Rua Principal",
+                      "numero": "1",
+                      "municipio": "João Pessoa",
+                      "tipo_administracao": "Direta",
+                      "site": "https://agevisa.pb.gov.br/",
+                      "ativo": true
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Órgãos"],
+        "summary": "cadastra um novo orgão",
+        "description": "Cadastra um novo orgão no banco de dados.",
+        "operationId": "postOrgaos",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "sigla": { "type": "string", "example": "DETRAN" },
+                  "cep": { "type": "string", "example": "58058280" },
+                  "bairro": { "type": "string", "example": "Mangabeira VII" },
+                  "logradouro": {
+                    "type": "string",
+                    "example": "Rua Emília Batista Celane"
+                  },
+                  "numero": { "type": "string", "example": "S/N" },
+                  "municipio": { "type": "string", "example": "João Pessoa" },
+                  "tipo_administracao": {
+                    "type": "string",
+                    "example": "Direta"
+                  },
+                  "site": {
+                    "type": "string",
+                    "example": "https://detran.pb.gov.br/"
+                  },
+                  "ativo": { "type": "boolean", "example": true }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created <br> <br> Modelo é recebido como resposta confirmação.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "examples": ["e0651a33-838f-4d66-ace1-7e20406b5ee9"]
+                    },
+                    "sigla": {
+                      "type": "string",
+                      "format": "charfield",
+                      "examples": ["DETRAN"]
+                    },
+                    "cep": {
+                      "type": "string",
+                      "format": "charfield",
+                      "examples": ["58058280"]
+                    },
+                    "bairro": {
+                      "type": "string",
+                      "format": "charfield",
+                      "examples": ["Mangabeira VII"]
+                    },
+                    "logradouro": {
+                      "type": "string",
+                      "format": "charfield",
+                      "examples": ["Rua Emília Batista Celane"]
+                    },
+                    "numero": {
+                      "type": "string",
+                      "format": "charfield",
+                      "examples": ["S/N"]
+                    },
+                    "municipio": {
+                      "type": "string",
+                      "format": "charfield",
+                      "examples": ["João Pessoa"]
+                    },
+                    "tipo_administracao": {
+                      "type": "string",
+                      "format": "charfield",
+                      "examples": ["Direta"]
+                    },
+                    "site": {
+                      "type": "string",
+                      "format": "charfield",
+                      "examples": ["https://detran.pb.gov.br/"]
+                    },
+                    "ativo": {
+                      "type": "boolean",
+                      "format": "boolean",
+                      "examples": [true]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Órgãos"],
+        "summary": "atualiza um orgão existente",
+        "description": "Atualiza um orgão existente no banco de dados.",
+        "operationId": "putOrgaos",
+        "requestBody": {
+          "description": "Nessa requisição, está sendo passado o uuid obrigatoriamente, e os campos desejáveis para efetuar uma alteração.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "e0651a33-838f-4d66-ace1-7e20406b5ee9"
+                  },
+                  "nome": { "type": "string", "example": "Detran" },
+                  "descricao": {
+                    "type": "string",
+                    "example": "Departamento Estadual de Trânsito"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Accepted <br> <br>Modelo é recebido como resposta com as novas alterações.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "examples": ["e0651a33-838f-4d66-ace1-7e20406b5ee9"]
+                    },
+                    "sigla": {
+                      "type": "string",
+                      "format": "charfield",
+                      "examples": ["DETRAN"]
+                    },
+                    "cep": {
+                      "type": "string",
+                      "format": "charfield",
+                      "examples": ["58058280"]
+                    },
+                    "bairro": {
+                      "type": "string",
+                      "format": "charfield",
+                      "examples": ["Mangabeira VII"]
+                    },
+                    "logradouro": {
+                      "type": "string",
+                      "format": "charfield",
+                      "examples": ["Rua Emília Batista Celane"]
+                    },
+                    "numero": {
+                      "type": "string",
+                      "format": "charfield",
+                      "examples": ["S/N"]
+                    },
+                    "municipio": {
+                      "type": "string",
+                      "format": "charfield",
+                      "examples": ["João Pessoa"]
+                    },
+                    "tipo_administracao": {
+                      "type": "string",
+                      "format": "charfield",
+                      "examples": ["Direta"]
+                    },
+                    "site": {
+                      "type": "string",
+                      "format": "charfield",
+                      "examples": ["https://detran.pb.gov.br/"]
+                    },
+                    "ativo": {
+                      "type": "boolean",
+                      "format": "boolean",
+                      "examples": [true]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Órgãos"],
+        "summary": "deleta um orgão",
+        "description": "Deleta um orgão no banco de dados.",
+        "operationId": "deleteOrgaos",
+        "requestBody": {
+          "description": "Nessa requisição, está sendo passado o uuid obrigatoriamente, para efetuar a exclusão do orgão.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "e0651a33-838f-4d66-ace1-7e20406b5ee9"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Accepted <br> <br> Modelo é deletado com sucesso."
+          }
+        }
+      }
+    },
+    "/digital/orgaos/{uuid}": {
+      "get": {
+        "tags": ["Órgãos"],
+        "summary": "retorna órgão via uuid",
+        "description": "Requisição para retornar determinado órgão via uuid.",
+        "operationId": "getOrgaoById",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "description": "uuid do órgão para retornar o órgão.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "4a66e03a-a7fa-437f-ab6a-8a45a25971b1"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK <br> <br> O órgão do uuid correspondente é retornado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "examples": ["94b1b679-1c11-4735-ae48-fa26a59a2c7e"]
+                    },
+                    "sigla": {
+                      "type": "string",
+                      "format": "text",
+                      "examples": ["DETRAN"]
+                    },
+                    "nome": {
+                      "type": "string",
+                      "format": "text",
+                      "examples": ["Departamento Estadual de Trânsito"]
+                    },
+                    "cep": {
+                      "type": "string",
+                      "format": "text",
+                      "examples": ["000000000"]
+                    },
+                    "bairro": {
+                      "type": "string",
+                      "format": "text",
+                      "examples": ["Centro"]
+                    },
+                    "logradouro": {
+                      "type": "string",
+                      "format": "text",
+                      "examples": ["Rua Emília Batista Celane"]
+                    },
+                    "numero": {
+                      "type": "string",
+                      "format": "text",
+                      "examples": ["S/N"]
+                    },
+                    "municipio": {
+                      "type": "string",
+                      "format": "text",
+                      "examples": ["João Pessoa"]
+                    },
+                    "tipo_administracao": {
+                      "type": "string",
+                      "format": "text",
+                      "examples": ["Direta"]
+                    },
+                    "site": {
+                      "type": "string",
+                      "format": "text",
+                      "examples": ["https://detran.pb.gov.br/"]
+                    },
+                    "ativo": {
+                      "type": "boolean",
+                      "format": "boolean",
+                      "examples": [true]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/digital/categorias": {
+      "get": {
+        "tags": ["Categorias"],
+        "summary": "retorna todas as categorias",
+        "description": "Requisição para retornar todas as categorias cadastradas no banco de dados.",
+        "operationId": "getCategorias",
+        "responses": {
+          "200": {
+            "description": "OK <br> <br> Exemplo retornando as categorias do banco.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "examples": ["c5e1e32f-3d5e-4e5f-91ff-4a0bdbfa7909"]
+                    },
+                    "nome": {
+                      "type": "string",
+                      "format": "text",
+                      "examples": ["Documentação"]
+                    },
+                    "descricao": {
+                      "type": "string",
+                      "format": "text",
+                      "examples": ["Serviços relacionados a documentos"]
+                    },
+                    "ativo": {
+                      "type": "boolean",
+                      "format": "boolean",
+                      "examples": [true]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Categorias"],
+        "summary": "cadastra uma nova categoria",
+        "description": "Cadastra uma nova categoria no banco de dados.",
+        "operationId": "postCategorias",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nome": { "type": "string", "example": "Documentação" },
+                  "descricao": {
+                    "type": "string",
+                    "example": "Serviços relacionados a documentos"
+                  },
+                  "ativo": { "type": "boolean", "example": true }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created <br> <br> Modelo é recebido como resposta confirmação.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "examples": ["c5e1e32f-3d5e-4e5f-91ff-4a0bdbfa7909"]
+                    },
+                    "nome": {
+                      "type": "string",
+                      "format": "text",
+                      "examples": ["Documentação"]
+                    },
+                    "descricao": {
+                      "type": "string",
+                      "format": "text",
+                      "examples": ["Serviços relacionados a documentos"]
+                    },
+                    "ativo": {
+                      "type": "boolean",
+                      "format": "boolean",
+                      "examples": [true]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Categorias"],
+        "summary": "atualiza uma categoria existente",
+        "description": "Atualiza uma categoria existente no banco de dados.",
+        "operationId": "putCategorias",
+        "requestBody": {
+          "description": "Nessa requisição, está sendo passado o uuid obrigatoriamente, e os campos desejáveis para efetuar uma alteração.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "c5e1e32f-3d5e-4e5f-91ff-4a0bdbfa7909"
+                  },
+                  "nome": { "type": "string", "example": "Documentação" },
+                  "descricao": {
+                    "type": "string",
+                    "example": "Serviços relacionados a documentos"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Accepted <br> <br>Modelo é recebido como resposta com as novas alterações.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "examples": ["c5e1e32f-3d5e-4e5f-91ff-4a0bdbfa7909"]
+                    },
+                    "nome": {
+                      "type": "string",
+                      "format": "text",
+                      "examples": ["Documentação"]
+                    },
+                    "descricao": {
+                      "type": "string",
+                      "format": "text",
+                      "examples": ["Serviços relacionados a documentos"]
+                    },
+                    "ativo": {
+                      "type": "boolean",
+                      "format": "boolean",
+                      "examples": [true]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Categorias"],
+        "summary": "deleta uma categoria",
+        "description": "Deleta uma categoria no banco de dados.",
+        "operationId": "deleteCategorias",
+        "requestBody": {
+          "description": "Nessa requisição, está sendo passado o uuid obrigatoriamente, para efetuar a exclusão da categoria.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "c5e1e32f-3d5e-4e5f-91ff-4a0bdbfa7909"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Accepted <br> <br> Modelo é deletado com sucesso."
+          }
+        }
+      }
+    },
+    "/digital/categorias/{uuid}": {
+      "get": {
+        "tags": ["Categorias"],
+        "summary": "retorna categoria via uuid",
+        "description": "Requisição para retornar as informação via uuid de determinada categoria.",
+        "operationId": "getCategoriaById",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "description": "uuid da categoria para retornar as informações dela.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "c5e1e32f-3d5e-4e5f-91ff-4a0bdbfa7909"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK <br> <br> A categoria do uuid correspondente é retornado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "examples": ["4a66e03a-a7fa-437f-ab6a-8a45a25971b1"]
+                    },
+                    "nome": {
+                      "type": "string",
+                      "format": "text",
+                      "examples": ["Segunda via"]
+                    },
+                    "categoria_id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "examples": ["4a66e03a-a7fa-437f-ab6a-8a45a25971b1"]
+                    },
+                    "tipo_taxa": {
+                      "type": "string",
+                      "format": "charfield",
+                      "examples": ["Gratuito", "Sob consulta", "Taxa/Tarifa"]
+                    },
+                    "passivo_transformacao": {
+                      "type": "string",
+                      "format": "charfield",
+                      "examples": ["Sim", "Não"]
+                    },
+                    "o_que_e": {
+                      "type": "string",
+                      "format": "charfield",
+                      "examples": [
+                        "Solicitação de segunda via do Certificado de Registro do Veículo (CRV) por motivo de dano, rasura, preenchimento incorreto, extravio, roubo ou furto do documento original de CRV/CRV-e."
+                      ]
+                    },
+                    "quem_utiliza": {
+                      "type": "string",
+                      "format": "charfield",
+                      "examples": ["Qualquer cidadão"]
+                    },
+                    "quanto_tempo_leva": {
+                      "type": "string",
+                      "format": "charfield",
+                      "examples": ["Até 5 dias"]
+                    },
+                    "etapas": {
+                      "type": "array",
+                      "items": { "type": "string" },
+                      "example": [
+                        "1. Abertura on-line do serviço ou comparecimento à unidade do Detran",
+                        "2. Apresentação da documentação necessária, com reconhecimento de firma em cartório",
+                        "3. Apresentar o laudo de vistoria e as taxas pagas",
+                        "4. Emitir o CRV"
+                      ]
+                    },
+                    "exigencias": {
+                      "type": "array",
+                      "items": { "type": "string" },
+                      "example": [
+                        "Ser proprietário de um veículo, de acordo com os casos previstos em lei"
+                      ]
+                    },
+                    "informacoes_adicionais": {
+                      "type": "array",
+                      "items": { "type": "string" },
+                      "example": ["Sem informações adicionais"]
+                    },
+                    "publico_alvo": {
+                      "type": "array",
+                      "items": { "type": "string" },
+                      "example": ["Cidadão"]
+                    },
+                    "forma_prestacao": {
+                      "type": "array",
+                      "items": { "type": "string" },
+                      "example": ["Presencial"]
+                    },
+                    "dias_da_semana": {
+                      "type": "array",
+                      "items": { "type": "string" },
+                      "example": ["Segunda-feira", "Terça-feira"]
+                    },
+                    "horarios": {
+                      "type": "array",
+                      "items": { "type": "string" },
+                      "example": ["08:00 até 12:00", "13:00 até 17:00"]
+                    },
+                    "site": {
+                      "type": "string",
+                      "format": "text",
+                      "examples": ["https://detran.pb.gov.br/"]
+                    },
+                    "orgao": {
+                      "type": "string",
+                      "format": "uuid",
+                      "examples": ["e0651a33-838f-4d66-ace1-7e20406b5ee9"]
+                    },
+                    "ativo": {
+                      "type": "boolean",
+                      "format": "boolean",
+                      "examples": [true]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Servico": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": ["4a66e03a-a7fa-437f-ab6a-8a45a25971b1"]
+          },
+          "nome": {
+            "type": "string",
+            "format": "text",
+            "example": ["RELOCAÇÃO DE HIDRÔMETRO"]
+          },
+          "categoria_id": {
+            "type": "string",
+            "format": "uuid",
+            "example": ["4a66e03a-a7fa-437f-ab6a-8a45a25971b1"]
+          },
+          "tipo_taxa": {
+            "type": "string",
+            "format": "charfield",
+            "example": ["GRATUITO", "SOB CONSULTA", "TAXA/TARIFA"]
+          },
+          "passivo_transformacao": {
+            "type": "string",
+            "format": "charfield",
+            "example": ["SIM", "NAO"]
+          },
+          "o_que_e": {
+            "type": "string",
+            "format": "charfield",
+            "example": [
+              "Mudança do local de instalação do hidrômetro sem a mudança da conexão original na rede."
+            ]
+          },
+          "quem_utiliza": {
+            "type": "string",
+            "format": "charfield",
+            "example": ["Qualquer Pessoa Física, Jurídica ou Órgão Público"]
+          },
+          "quanto_tempo_leva": {
+            "type": "string",
+            "format": "charfield",
+            "example": ["Até 5 dias"]
+          },
+          "etapas": {
+            "type": "array",
+            "items": { "type": "string" },
+            "example": [
+              "1. Solicitação através dos canais de atendimento",
+              "2. Execução da relocação"
+            ]
+          },
+          "exigencias": {
+            "type": "array",
+            "items": { "type": "string" },
+            "example": [
+              "Ser o responsável legal imóvel perante a Cagepa",
+              "Identidade/CPF (se for Pessoa Física)"
+            ]
+          },
+          "informacoes_adicionais": {
+            "type": "array",
+            "items": { "type": "string" },
+            "example": [
+              "A Cagepa só realizará, salvo exceção de caráter técnico,  a  relocação da  caixa de proteção do hidrômetro  para o muro ou mureta, conforme o padrão atual."
+            ]
+          },
+          "publico_alvo": {
+            "type": "array",
+            "items": { "type": "string" },
+            "example": [
+              "CIDADAO",
+              "PRODUTOR_RURAL",
+              "ORGAO_ENTIDADE_PUBLICA",
+              "EMPRESA",
+              "SERVIDOR_PUBLICO",
+              "ENTIDADE_SEM_FINS_LUCRATIVOS"
+            ]
+          },
+          "forma_prestacao": {
+            "type": "array",
+            "items": { "type": "string" },
+            "example": ["PRESENCIAL", "PRESENCIAL_AGENDAMENTO"]
+          },
+          "dias_da_semana": {
+            "type": "array",
+            "items": { "type": "string" },
+            "example": ["Segunda-feira", "Terça-feira"]
+          },
+          "horarios": {
+            "type": "array",
+            "items": { "type": "string" },
+            "example": ["08:00 até 12:00", "13:00 até 17:00"]
+          },
+          "site": {
+            "type": "string",
+            "format": "text",
+            "example": ["https://wa.me/5583981984495"]
+          },
+          "orgao": {
+            "type": "string",
+            "format": "uuid",
+            "example": ["e0651a33-838f-4d66-ace1-7e20406b5ee9"]
+          },
+          "ativo": {
+            "type": "boolean",
+            "format": "boolean",
+            "example": [true]
+          },
+          "contador_acesso": {
+            "type": "integer",
+            "format": "integer",
+            "example": [1]
+          }
+        }
+      },
+      "Orgao": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": ["e065ca33-838f-44k66-ace1-7e22406b5ef9"]
+          },
+          "sigla": {
+            "type": "string",
+            "format": "charfield",
+            "example": ["CAGEPA"]
+          },
+          "nome": {
+            "type": "string",
+            "format": "charfield",
+            "example": ["Companhia de Água e Esgotos da Paraíba"]
+          },
+          "cep": {
+            "type": "string",
+            "format": "charfield",
+            "example": ["58015570"]
+          },
+          "bairro": {
+            "type": "string",
+            "format": "charfield",
+            "example": ["Jaguaribe"]
+          },
+          "logradouro": {
+            "type": "string",
+            "format": "charfield",
+            "example": ["Av. Feliciano Cirne"]
+          },
+          "numero": {
+            "type": "string",
+            "format": "charfield",
+            "example": ["220"]
+          },
+          "municipio": {
+            "type": "string",
+            "format": "charfield",
+            "example": ["João Pessoa"]
+          },
+          "tipo_administracao": {
+            "type": "string",
+            "format": "charfield",
+            "example": ["DIRETA"]
+          },
+          "site": {
+            "type": "string",
+            "format": "charfield",
+            "example": ["https://www.cagepa.pb.gov.br/"]
+          },
+          "ativo": { "type": "boolean", "format": "boolean", "example": [true] }
+        }
+      },
+      "Categoria": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": ["c5e1e32f-3d5e-4e5f-91ff-4a0bdbfa7909"]
+          },
+          "nome": {
+            "type": "string",
+            "format": "text",
+            "example": ["Água e saneamento"]
+          },
+          "descricao": {
+            "type": "string",
+            "format": "text",
+            "example": ["Serviços relacionados a documentos"]
+          },
+          "ativo": { "type": "boolean", "format": "boolean", "example": [true] }
+        }
+      }
+    }
+  }
+}

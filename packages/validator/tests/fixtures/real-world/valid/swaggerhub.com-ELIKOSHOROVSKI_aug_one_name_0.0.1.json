@@ -1,0 +1,45 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "version": "0.0.1",
+    "title": "aug_one_title",
+    "description": "aug_one_description"
+  },
+  "servers": [{ "url": "https://api.example.com/v1" }],
+  "paths": {
+    "/users/{userId}": {
+      "get": {
+        "summary": "Returns a user by ID",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the user to return",
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "integer" },
+                    "name": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The specified user ID is invalid (e.g. not a number)"
+          },
+          "404": { "description": "A user with the specified ID was not found" }
+        }
+      }
+    }
+  }
+}

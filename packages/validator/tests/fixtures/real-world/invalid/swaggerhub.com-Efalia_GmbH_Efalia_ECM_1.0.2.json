@@ -1,0 +1,2420 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Efalia ECM REST API",
+    "description": "This documentation is based on server version 4.1.0.30",
+    "version": "1.0.2"
+  },
+  "servers": [{ "url": "https://ecm-trial.efalia.net/filedirector/rest/v1" }],
+  "security": [{ "bearerAuth": [] }],
+  "paths": {
+    "/login": {
+      "post": {
+        "summary": "Log in to Efalia ECM",
+        "security": [],
+        "tags": ["Account and Log-in/-out"],
+        "description": "Log in to Efalia ECM using the following REST command. Required if token-based authentication is intended.\n",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/LoginParams" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful login",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/LoginResult" }
+              }
+            }
+          },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" }
+        }
+      }
+    },
+    "/logout": {
+      "get": {
+        "summary": "Log out of Efalia ECM",
+        "security": [],
+        "tags": ["Account and Log-in/-out"],
+        "description": "Log out of Efalia ECM using the following REST command.",
+        "responses": {
+          "204": { "description": "Successful logout" },
+          "400": { "description": "Bad Request" }
+        }
+      }
+    },
+    "/accounts": {
+      "get": {
+        "summary": "Retrieve information about accounts and groups",
+        "tags": ["Account and Log-in/-out"],
+        "description": "Returns general information about the accounts and groups assigned for the specified cabinet in Users and Groups.\n",
+        "parameters": [
+          {
+            "name": "cabId",
+            "in": "query",
+            "description": "Cabinet ID (string)",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "infoLevel",
+            "in": "query",
+            "description": "Information level",
+            "schema": { "$ref": "#/components/schemas/AccountsInfoLevel" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Account" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{cabId}/accounts": {
+      "get": {
+        "summary": "Retrieve information about accounts and groups for a specific cabinet",
+        "tags": ["Account and Log-in/-out"],
+        "description": "Returns general information about the accounts\nand groups assigned for the specified cabinet in Users and Groups.\n",
+        "parameters": [
+          {
+            "name": "cabId",
+            "in": "path",
+            "required": true,
+            "description": "Cabinet ID",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Account" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/account": {
+      "get": {
+        "summary": "Retrieve general information for the logged in account",
+        "tags": ["Account and Log-in/-out"],
+        "description": "Returns general information for the account\nassociated with the provided token.\n",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Account" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/account/{id}": {
+      "get": {
+        "summary": "Retrieve general information for a specific account",
+        "tags": ["Account and Log-in/-out"],
+        "description": "Returns general information for the account\nspecified by the unique account ID.\n",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Unique account ID",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Account" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" }
+        }
+      }
+    },
+    "/account/info": {
+      "get": {
+        "summary": "Retrieve detailed information for the logged in account",
+        "tags": ["Account and Log-in/-out"],
+        "description": "Returns more detailed information, such as group membership and\naccount type for the account whose token was used for the command.\n",
+        "parameters": [
+          {
+            "name": "allSettings",
+            "in": "query",
+            "description": "Include all settings",
+            "schema": { "type": "boolean" }
+          },
+          {
+            "name": "includeUserDetails",
+            "in": "query",
+            "description": "Include user details",
+            "schema": { "type": "boolean" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AccountInfo" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" }
+        }
+      }
+    },
+    "/{cabId}/search": {
+      "post": {
+        "summary": "Search documents in a specific cabinet",
+        "tags": ["Search"],
+        "description": "Search documents in a specific cabinet. The Search is performed as an Advanced Search if no Document type is defined for DocTypeIds.\n",
+        "parameters": [
+          {
+            "name": "cabId",
+            "in": "path",
+            "description": "Cabinet ID",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/SearchParams" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful search",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Hitlist" }
+              }
+            }
+          },
+          "400": { "description": "Bad request" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not found" },
+          "409": { "description": "Conflict" },
+          "410": { "description": "Gone" }
+        }
+      }
+    },
+    "/{cabId}/searchFulltext/{text}": {
+      "post": {
+        "summary": "Runs a full text search on a specified cabinet.",
+        "tags": ["Search"],
+        "description": "Runs a full text search on a specific cabinet. <br> Important: The system must be licensed with a valid Efalia ECM OCR Server licence. <br> The full text functionality must also be configured in the cabinet's database.\n",
+        "parameters": [
+          {
+            "name": "cabId",
+            "in": "path",
+            "description": "Cabinet ID",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "text",
+            "in": "path",
+            "description": "Value to be searched for in the full text catalogue.",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful search",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Hitlist" }
+              }
+            }
+          },
+          "400": { "description": "Bad request" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not found" },
+          "409": { "description": "Conflict" },
+          "410": { "description": "Gone" }
+        }
+      }
+    },
+    "/{cabId}/{docGuid}/downloadInfo/{revision}": {
+      "get": {
+        "summary": "Get download information for a document",
+        "tags": ["Document"],
+        "description": "Retrieve information for downloading a specific document in a cabinet.\n",
+        "parameters": [
+          {
+            "name": "cabId",
+            "in": "path",
+            "description": "Cabinet ID",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "docGuid",
+            "in": "path",
+            "description": "Document GUID",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "revision",
+            "in": "path",
+            "description": "Revision number",
+            "required": true,
+            "schema": { "type": "integer", "examples": [1] }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful download information retrieval",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentDownloadInfoResult"
+                }
+              }
+            }
+          },
+          "400": { "description": "Bad request" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not found" },
+          "409": { "description": "Conflict" },
+          "410": { "description": "Gone" }
+        }
+      }
+    },
+    "/{cabId}/{docGuid}/downloadFileStreamed/{pos}": {
+      "get": {
+        "summary": "Download a file",
+        "tags": ["Document"],
+        "parameters": [
+          {
+            "name": "cabId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "Cabinet ID"
+          },
+          {
+            "name": "docGuid",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "Document GUID"
+          },
+          {
+            "name": "pos",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" },
+            "description": "Position parameter"
+          },
+          {
+            "name": "revisionNumber",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer" },
+            "description": "Revision of the document"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": { "application/octet-stream": {} }
+          },
+          "400": { "description": "Bad request" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" },
+          "409": { "description": "Conflict" },
+          "410": { "description": "Gone" }
+        }
+      }
+    },
+    "/{cabId}/{docGuid}/downloadFileStreamed": {
+      "post": {
+        "summary": "Download a file in blocks",
+        "tags": ["Document"],
+        "parameters": [
+          {
+            "name": "cabId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "Cabinet ID"
+          },
+          {
+            "name": "docGuid",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "Document GUID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/DownloadFileParams" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": { "schema": { "type": "object" } }
+            }
+          },
+          "400": { "description": "Bad request" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" },
+          "409": { "description": "Conflict" },
+          "410": { "description": "Gone" }
+        }
+      }
+    },
+    "/{cabId}/createDocument": {
+      "post": {
+        "summary": "Create a document",
+        "tags": ["Document"],
+        "parameters": [
+          {
+            "name": "cabId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "Cabinet ID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/DocumentCreateParams" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateDocumentResult"
+                }
+              }
+            }
+          },
+          "400": { "description": "Bad request" }
+        }
+      }
+    },
+    "/{cabId}/{docGuid}/updateIndexFields": {
+      "post": {
+        "summary": "Update index fields",
+        "tags": ["Document"],
+        "parameters": [
+          {
+            "name": "cabId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "Cabinet ID"
+          },
+          {
+            "name": "docGuid",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "Document GUID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DocumentUpdateIndexFieldsParams"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Successful response" },
+          "400": { "description": "Bad request" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not found" },
+          "409": { "description": "Conflict" },
+          "410": { "description": "Gone" }
+        }
+      }
+    },
+    "/{cabId}/{docGuid}/addFile": {
+      "post": {
+        "summary": "Add a file to a document",
+        "tags": ["Document"],
+        "parameters": [
+          {
+            "name": "cabId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "Cabinet ID"
+          },
+          {
+            "name": "docGuid",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "Document GUID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": { "$ref": "#/components/schemas/DocumentAddFileParams" }
+            }
+          }
+        },
+        "responses": {
+          "202": { "description": "Accepted" },
+          "400": { "description": "Bad request" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not found" },
+          "409": { "description": "Conflict" },
+          "410": { "description": "Gone" }
+        }
+      }
+    },
+    "/{cabId}/{docGuid}/checkIn": {
+      "post": {
+        "summary": "Check in a specific document",
+        "tags": ["Document"],
+        "parameters": [
+          {
+            "name": "cabId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "Cabinet ID"
+          },
+          {
+            "name": "docGuid",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "Document GUID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/DocumentCheckInParams" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentCheckInResult"
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "Accepted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentCheckInResult"
+                }
+              }
+            }
+          },
+          "400": { "description": "Bad request" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not found" },
+          "409": { "description": "Conflict" }
+        }
+      }
+    },
+    "/{cabId}/{docGuid}/checkOut": {
+      "get": {
+        "summary": "Check out a specific document",
+        "tags": ["Document"],
+        "parameters": [
+          {
+            "name": "cabId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "Cabinet ID"
+          },
+          {
+            "name": "docGuid",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "Document GUID"
+          }
+        ],
+        "responses": {
+          "200": { "description": "Successful checked out" },
+          "400": { "description": "Bad request" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not found" },
+          "409": {
+            "description": "The response inherits the user who checked out the document or the state of the document",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/DocStates" }
+              }
+            }
+          },
+          "410": { "description": "Gone" }
+        }
+      }
+    },
+    "/{cabId}/{docGuid}/undoCheckOut": {
+      "get": {
+        "summary": "Check a document back in without changes",
+        "tags": ["Document"],
+        "description": "No new revision is created for the corresponding document and the document is checked in without any changes.\n",
+        "parameters": [
+          {
+            "name": "cabId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "Cabinet ID"
+          },
+          {
+            "name": "docGuid",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "Document GUID"
+          }
+        ],
+        "responses": {
+          "200": { "description": "Successful" },
+          "400": { "description": "Bad request" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not found" },
+          "409": { "description": "Conflict" }
+        }
+      }
+    },
+    "/{cabId}/{docGuid}/updatefileposition/{storageRev}/{storageRevPos}/{newPos}": {
+      "get": {
+        "summary": "Change the position of a single file within a document or optionally remove it",
+        "tags": ["Document"],
+        "description": "Changes the position of a file within a document or optionally removes it.\n",
+        "parameters": [
+          {
+            "name": "cabId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "Cabinet ID"
+          },
+          {
+            "name": "docGuid",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "Document GUID"
+          },
+          {
+            "name": "storageRev",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int32" },
+            "description": "Revision of document where the file is stored"
+          },
+          {
+            "name": "storageRevPos",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int32" },
+            "description": "Position of the file in the revision where it is stored"
+          },
+          {
+            "name": "newPos",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int32" },
+            "description": "New position for the file <br> Use -1 to delete the file"
+          }
+        ],
+        "responses": {
+          "200": { "description": "Successful" },
+          "400": { "description": "Bad request" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not found" },
+          "409": { "description": "Conflict" },
+          "410": { "description": "Gone" }
+        }
+      }
+    },
+    "/{cabId}/{docGuid}/updatefilepositions": {
+      "post": {
+        "summary": "Change the position of multiple files or optionally remove these files",
+        "tags": ["Document"],
+        "description": "Changes the position of multiple files in a document or removes files from a document.\n",
+        "parameters": [
+          {
+            "name": "cabId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "Cabinet ID"
+          },
+          {
+            "name": "docGuid",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "Document GUID"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DocumentUpdateFilePositionParams"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Successful" },
+          "400": { "description": "Bad request" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not found" },
+          "409": { "description": "Conflict" },
+          "410": { "description": "Gone" }
+        }
+      }
+    },
+    "/{cabId}/{docGuid}/revisions": {
+      "get": {
+        "summary": "Retrieve revisions of a specific document",
+        "tags": ["Document"],
+        "parameters": [
+          {
+            "name": "cabId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "Cabinet ID"
+          },
+          {
+            "name": "docGuid",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "Unique ID of document"
+          },
+          {
+            "name": "includeMetaData",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "boolean" },
+            "description": "Include metadata in the response. Default is false."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return the document revision information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/DocumentRevision" }
+                }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" },
+          "409": { "description": "Conflict" },
+          "410": { "description": "Gone" }
+        }
+      }
+    },
+    "/{cabId}/{docGuid}": {
+      "delete": {
+        "summary": "Deletes a document",
+        "tags": ["Document"],
+        "parameters": [
+          {
+            "name": "cabId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "Unique cabinet ID"
+          },
+          {
+            "name": "docGuid",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "Unique ID of document"
+          }
+        ],
+        "responses": {
+          "200": { "description": "Successful" },
+          "400": { "description": "Bad request" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not found" },
+          "409": { "description": "Conflict" },
+          "410": { "description": "Gone" }
+        }
+      }
+    },
+    "/{cabId}": {
+      "get": {
+        "summary": "List the information of the specified cabinet",
+        "description": "Lists the information of the specified cabinet.",
+        "tags": ["Cabinets"],
+        "parameters": [
+          {
+            "name": "cabId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "Cabinet ID"
+          },
+          {
+            "name": "includeLogo",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "boolean" },
+            "description": "Include cabinet logo in the response"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Cabinet" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "404": { "description": "Cabinet cannot be found" }
+        }
+      }
+    },
+    "/cabinets": {
+      "get": {
+        "summary": "List of accessible cabinets",
+        "description": "Returns a list of all cabinets the logged in user has access to.",
+        "tags": ["Cabinets"],
+        "parameters": [
+          {
+            "name": "includeLogo",
+            "in": "query",
+            "schema": { "type": "boolean" },
+            "description": "Include cabinet logos in the response"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Cabinet" }
+                }
+              }
+            }
+          },
+          "400": { "description": "Bad request" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" }
+        }
+      }
+    },
+    "/{cabId}/schema": {
+      "get": {
+        "summary": "Retrieve information about the schema of a cabinet.",
+        "description": "Retrieve information about the structure of a cabinet.",
+        "tags": ["Schema"],
+        "parameters": [
+          {
+            "name": "cabId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "Cabinet ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Schema" }
+              }
+            }
+          },
+          "204": { "description": "No content available" },
+          "400": { "description": "Bad request" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" }
+        }
+      }
+    },
+    "/{cabId}/keywords/{keywordListId}": {
+      "get": {
+        "summary": "Retrieve keyword list entries",
+        "description": "Retrieve the entries of a keyword list for a specified cabinet",
+        "tags": ["Lists"],
+        "parameters": [
+          {
+            "name": "cabId",
+            "in": "path",
+            "description": "Cabinet ID",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "keywordListId",
+            "in": "path",
+            "description": "Keyword list ID",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Keyword" }
+                }
+              }
+            }
+          },
+          "400": { "description": "Bad request" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not found" },
+          "409": { "description": "Conflict" },
+          "410": { "description": "Gone" }
+        }
+      }
+    },
+    "/{cabid}/documentlist/{fieldViewId}": {
+      "get": {
+        "summary": "Retrieve document list",
+        "description": "Retrieve the document list for a specified cabinet and field view.",
+        "tags": ["Lists"],
+        "parameters": [
+          {
+            "name": "cabid",
+            "in": "path",
+            "description": "Cabinet ID",
+            "required": true,
+            "schema": { "type": "string", "pattern": "^[A-Fa-f0-9]{8}$" }
+          },
+          {
+            "name": "fieldViewId",
+            "in": "path",
+            "description": "Field view ID",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/DocumentListEntry" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{cabId}/{docGuid}/ocrtext/{pos}": {
+      "get": {
+        "summary": "Retrieve OCR recognition result",
+        "description": "Retrieve the OCR recognition result of a particular file.",
+        "tags": ["OCR"],
+        "parameters": [
+          {
+            "name": "cabId",
+            "in": "path",
+            "description": "Cabinet ID",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "docGuid",
+            "in": "path",
+            "description": "Document GUID",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "pos",
+            "in": "path",
+            "description": "Position of a file within a document",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "description": "OCR text recognition"
+                }
+              }
+            }
+          },
+          "400": { "description": "Bad request" }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Account and Log-in/-out",
+      "description": "The following section describes commands available for logging in, logging out and retrieving account information accordingly."
+    },
+    {
+      "name": "Search",
+      "description": "The following section describes commands available for search operations."
+    },
+    {
+      "name": "Document",
+      "description": "The following section describes commands that are available for creating and editing documents."
+    },
+    {
+      "name": "Cabinets",
+      "description": "The following section describes the commands available to obtain information about a cabinet."
+    },
+    {
+      "name": "Schema",
+      "description": "The following section describes the commands available to obtain schema information."
+    },
+    {
+      "name": "Lists",
+      "description": "The following section describes the commands available to obtain lists"
+    },
+    {
+      "name": "OCR",
+      "description": "The following section describes the commands to obtain OCR information"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "in": "header"
+      }
+    },
+    "schemas": {
+      "LoginParams": {
+        "type": "object",
+        "properties": {
+          "NameOrMail": {
+            "type": "string",
+            "description": "Efalia ECM user name (e.g. domain\\user)"
+          },
+          "Password": {
+            "type": "string",
+            "description": "Corresponding password"
+          },
+          "RememberMe": {
+            "type": "boolean",
+            "description": "Remember log-in credentials"
+          }
+        }
+      },
+      "LoginResult": {
+        "type": "object",
+        "properties": {
+          "Token": {
+            "type": "string",
+            "description": "Bearer token for authentication"
+          },
+          "SiteId": {
+            "type": "string",
+            "description": "Bearer token for authentication"
+          },
+          "Auth2FAPng": {
+            "type": "string",
+            "format": "byte",
+            "description": "QR code when 2FA registration is required"
+          },
+          "Status": { "$ref": "#/components/schemas/AuthenticationResults" }
+        }
+      },
+      "AuthenticationResults": {
+        "type": "string",
+        "enum": [
+          "OK",
+          "PasswordInvalid",
+          "Expired",
+          "Disabled",
+          "PasswordExpired",
+          "Invalid",
+          "NoCredentials",
+          "Blacklisted",
+          "TimeDifference",
+          "NotPaired",
+          "Need2FA",
+          "NotAnFDUser"
+        ]
+      },
+      "AccountsInfoLevel": {
+        "type": "integer",
+        "enum": ["Minimal", "JobRelated"]
+      },
+      "Account": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "string",
+            "description": "Unique identifier of the account"
+          },
+          "IdentityName": {
+            "type": "string",
+            "description": "The identity name of the account"
+          },
+          "FullName": {
+            "type": "string",
+            "description": "Associated entry under full name of the account"
+          },
+          "IsGroup": {
+            "type": "boolean",
+            "description": "Indicates whether it is an account or group"
+          },
+          "Position": {
+            "type": "string",
+            "description": "Associated entry under position of the account"
+          },
+          "Company": {
+            "type": "string",
+            "description": "Associated entry under company of the account"
+          },
+          "Department": {
+            "type": "string",
+            "description": "Associated entry under department of the account"
+          },
+          "EMailAddress": {
+            "type": "string",
+            "description": "Associated entry under email address of the account"
+          },
+          "Tel1": {
+            "type": "string",
+            "description": "Associated entry under telephone number of the account"
+          }
+        }
+      },
+      "AccountInfo": {
+        "type": "object",
+        "properties": {
+          "UserName": {
+            "type": "string",
+            "description": "The username associated with an account"
+          },
+          "UserFullName": {
+            "type": "string",
+            "description": "The full name of the account user"
+          },
+          "UserEmail": {
+            "type": "string",
+            "description": "The email address associated with the account"
+          },
+          "UserMemberOf": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "An array of groups to which the user belongs"
+          },
+          "UserId": {
+            "type": "string",
+            "description": "Unique identifier for the user"
+          },
+          "UserType": {
+            "$ref": "#/components/schemas/UserTypes",
+            "description": "The type of user, referencing the 'UserTypes' schema."
+          },
+          "ServerMode": {
+            "$ref": "#/components/schemas/ServerModes",
+            "description": "The server mode, referencing the 'ServerModes' schema"
+          },
+          "IsUpToDate": {
+            "type": "boolean",
+            "description": "Indicates whether the account information is up to date"
+          },
+          "MaxBlockSize": {
+            "type": "integer",
+            "description": "The maximum block size associated with the account"
+          },
+          "ServerVersion": {
+            "type": "string",
+            "description": "The version of the Efalia ECM server"
+          },
+          "ServerUtc": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The Coordinated Universal Time (UTC) of the server."
+          },
+          "HasProcessManagement": {
+            "type": "boolean",
+            "description": "Indicates whether the account has process management capabilities"
+          },
+          "HasFullText": {
+            "type": "boolean",
+            "description": "Indicates whether the account supports full text capabilities"
+          },
+          "AutoCapture": {
+            "type": "integer",
+            "description": "The Efalia ECM AutoCapture setting for the account"
+          },
+          "AutoCaptureCounter": {
+            "type": "integer",
+            "description": "The counter for Efalia ECM AutoCapture events"
+          },
+          "Settings": {
+            "type": "object",
+            "description": "Additional settings associated with the account"
+          },
+          "Details": {
+            "$ref": "#/components/schemas/AccountInfoDetails",
+            "description": "Additional details about the account, referencing the 'AccountInfoDetails' schema"
+          },
+          "PasswordExpression": {
+            "type": "string",
+            "description": "The password expression associated with the account"
+          }
+        }
+      },
+      "UserTypes": {
+        "type": "integer",
+        "enum": [
+          { "0": "NotApplicable" },
+          { "1": "Admin" },
+          { "2": "Normal" },
+          { "4": "Retrieval" },
+          { "8": "SubAdmin" },
+          { "16": "Web" }
+        ],
+        "description": "Different types of users"
+      },
+      "ServerModes": {
+        "type": "integer",
+        "enum": [
+          { "0": "Enterprise" },
+          { "1": "SBE" },
+          { "2": "Express" },
+          { "3": "ScanFile" }
+        ],
+        "description": "Different types of the server modes"
+      },
+      "AccountInfoDetails": {
+        "type": "object",
+        "properties": {
+          "Description": {
+            "type": "string",
+            "description": "A description of the user account"
+          },
+          "AbsentFrom": {
+            "type": "string",
+            "format": "date",
+            "description": "Start date of a user's absence"
+          },
+          "AbsentTo": {
+            "type": "string",
+            "format": "date",
+            "description": "End date of a user's absence"
+          },
+          "Assistants": {
+            "type": "string",
+            "description": "Names or identifiers of representatives during absence associated with the user"
+          },
+          "Title": {
+            "type": "string",
+            "description": "Title or salutation of the user (e.g., Mr., Ms., Dr.)"
+          },
+          "FirstName": {
+            "type": "string",
+            "description": "First name of the user"
+          },
+          "LastName": {
+            "type": "string",
+            "description": "Last name or surname of the user"
+          },
+          "ZIP": {
+            "type": "string",
+            "description": "ZIP or postal code associated with the user's address"
+          },
+          "City": {
+            "type": "string",
+            "description": "City or locality of the user's address"
+          },
+          "Address1": { "type": "string", "description": "First address." },
+          "Address2": { "type": "string", "description": "Second address." },
+          "Position": {
+            "type": "string",
+            "description": "Job position or role of the user."
+          },
+          "Company": {
+            "type": "string",
+            "description": "Name of the company associated with the user"
+          },
+          "Agency": {
+            "type": "string",
+            "description": "Name of the branch associated with the user"
+          },
+          "Department": {
+            "type": "string",
+            "description": "Department or division within the organization"
+          },
+          "Tel1": {
+            "type": "string",
+            "description": "First telephone number of the user"
+          },
+          "Tel2": {
+            "type": "string",
+            "description": "Second telephone number of the user"
+          },
+          "Tel3": {
+            "type": "string",
+            "description": "Third telephone number of the user"
+          },
+          "Mobile": {
+            "type": "string",
+            "description": "Mobile or cell phone number of the user"
+          },
+          "Fax": {
+            "type": "string",
+            "description": "Fax number associated with the user"
+          },
+          "WebSite": {
+            "type": "string",
+            "description": "The website URL associated with the user"
+          }
+        }
+      },
+      "SearchParams": {
+        "type": "object",
+        "properties": {
+          "DocTypeIds": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "Document type IDs"
+          },
+          "SkipCount": {
+            "type": "integer",
+            "description": "Number of items to skip in the result set"
+          },
+          "MaxRows": {
+            "type": "integer",
+            "description": "Defines the maximum number of hits to be returned",
+            "default": 1000
+          },
+          "Search": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/SearchItem" }
+          },
+          "Fulltext": {
+            "type": "string",
+            "description": "This optional parameter is only used in full text queries"
+          }
+        }
+      },
+      "SearchItem": {
+        "type": "object",
+        "properties": {
+          "Mode": {
+            "$ref": "#/components/schemas/SearchModes",
+            "description": "Search items concatenation"
+          },
+          "FieldID": {
+            "type": "string",
+            "description": "ID of the field to search in"
+          },
+          "MetaField": {
+            "$ref": "#/components/schemas/SearchMetaFields",
+            "description": "Enum for MetaField"
+          },
+          "MetaFieldStatus": {
+            "$ref": "#/components/schemas/MetaFieldStatus",
+            "description": "Enum for MetaFieldStatus"
+          },
+          "Operator": {
+            "$ref": "#/components/schemas/SearchOperators",
+            "description": "Search operator used to search for the specific value"
+          },
+          "StartValue": {
+            "type": "string",
+            "description": "Value to search for"
+          },
+          "EndValue": {
+            "type": "string",
+            "description": "Value to search for. (Only to be set in case of range search)"
+          },
+          "Bracket": {
+            "$ref": "#/components/schemas/SearchBrackets",
+            "description": "Grouping search items"
+          }
+        }
+      },
+      "SearchModes": {
+        "type": "integer",
+        "enum": ["AND", "OR"],
+        "description": "Search items concatenation"
+      },
+      "SearchMetaFields": {
+        "type": "integer",
+        "enum": [
+          "None",
+          "CreatedBy",
+          "CreatedOn",
+          "ModifiedBy",
+          "ModifiedOn",
+          "CheckedOutBy",
+          "CheckedOutOn",
+          "State",
+          "Pages",
+          "DocumentId",
+          "ArchivedOn",
+          "DocumentRefId"
+        ],
+        "description": "Enum for MetaField"
+      },
+      "MetaFieldStatus": {
+        "type": "integer",
+        "enum": ["CheckedIn", "CheckedOut", "Deleted"],
+        "description": "Enum for MetaFieldStatus"
+      },
+      "SearchOperators": {
+        "type": "integer",
+        "enum": [
+          "Equal",
+          "NotEqual",
+          "Like",
+          "NotLike",
+          "Less",
+          "LessOrEqual",
+          "Greater",
+          "GreaterOrEqual",
+          "Between",
+          "Empty",
+          "NotEmpty"
+        ],
+        "description": "Search operator used to search for the specific value"
+      },
+      "SearchBrackets": {
+        "type": "integer",
+        "enum": ["None", "Open", "Close"],
+        "description": "Grouping search items"
+      },
+      "Hitlist": {
+        "description": "Hitlist result of the search request",
+        "type": "object",
+        "properties": {
+          "DocumentTypes": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/DocumentType" }
+          }
+        }
+      },
+      "DocumentType": {
+        "description": "Document type that inherits all documents of the associated search request",
+        "type": "object",
+        "properties": {
+          "Id": { "type": "string" },
+          "Docs": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Doc" }
+          }
+        }
+      },
+      "Doc": {
+        "type": "object",
+        "properties": {
+          "Guid": {
+            "type": "string",
+            "description": "Unique identifier for the document"
+          },
+          "RefGuid": {
+            "type": "string",
+            "description": "Reference identifier associated with the document"
+          },
+          "State": {
+            "$ref": "#/components/schemas/DocStatesEnum",
+            "description": "State of the document, referencing the 'DocStatesEnum' schema"
+          },
+          "ActRevision": {
+            "type": "integer",
+            "description": "Active revision number of the document"
+          },
+          "Pos": {
+            "type": "integer",
+            "description": "Position of the document"
+          },
+          "Rank": { "type": "integer", "description": "Rank of the document" },
+          "Files": {
+            "type": "integer",
+            "description": "Number of files associated with the document"
+          },
+          "Size": {
+            "type": "integer",
+            "description": "Size of the document in bytes"
+          },
+          "CreatedOn": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp indicating when the document was created"
+          },
+          "ArchivedOn": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp indicating when the document was archived"
+          },
+          "LastModifiedOn": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp indicating when the document was last modified"
+          },
+          "CheckedOutOn": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp indicating when the document was checked out"
+          },
+          "CreatedBy": {
+            "type": "string",
+            "description": "User who created the document"
+          },
+          "LastModifiedBy": {
+            "type": "string",
+            "description": "User who last modified the document"
+          },
+          "CheckedOutBy": {
+            "type": "string",
+            "description": "User who currently has the document checked out"
+          },
+          "Values": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Cell" },
+            "description": "An array of cell values associated with the document"
+          }
+        }
+      },
+      "DocStatesEnum": {
+        "type": "integer",
+        "enum": [
+          "NewDocument",
+          "CheckedOut",
+          "CheckedIn",
+          "CheckedOutByOtherUser",
+          "Uploading",
+          "Deleted"
+        ],
+        "description": "Different states of a document"
+      },
+      "Cell": {
+        "description": "Inherits information of an index field and its values associated with a document",
+        "type": "object",
+        "properties": {
+          "Id": { "type": "string" },
+          "Value": { "type": "object" },
+          "DocGuid": { "type": "string" }
+        }
+      },
+      "DocumentDownloadInfoResult": {
+        "type": "object",
+        "properties": {
+          "Document": { "$ref": "#/components/schemas/Doc" },
+          "Files": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/DownloadFileInfo" }
+          }
+        }
+      },
+      "DownloadFileInfo": {
+        "type": "object",
+        "properties": {
+          "Pos": {
+            "type": "integer",
+            "description": "Position of the file in the document."
+          },
+          "StorageRev": {
+            "type": "integer",
+            "description": "Revision of document where the file is stored"
+          },
+          "StorageRevPos": {
+            "type": "integer",
+            "description": "Position of the file in the revision where it is stored"
+          },
+          "FileName": { "type": "string", "description": "Name of the file" },
+          "Size": {
+            "type": "integer",
+            "description": "Size of the file in bytes"
+          },
+          "Hash": {
+            "type": "array",
+            "format": "binary",
+            "description": "A byte array containing hash values associated with the file."
+          },
+          "HashType": {
+            "type": "string",
+            "description": "Type of hash algorithm used for the file's hash values."
+          }
+        }
+      },
+      "DownloadFileParams": {
+        "type": "object",
+        "properties": {
+          "StorageRev": {
+            "type": "integer",
+            "description": "Revision of document where the file is stored"
+          },
+          "StorageRevPos": {
+            "type": "integer",
+            "description": "Position of the file in the revision where it is stored"
+          },
+          "FileName": {
+            "type": "string",
+            "description": "Name of the file at Pos"
+          },
+          "Offset": {
+            "type": "integer",
+            "format": "int64",
+            "default": 0,
+            "description": "Offset of the file data block"
+          },
+          "ConvertTo": {
+            "type": "string",
+            "description": "Conversion type (optional)"
+          }
+        }
+      },
+      "DocumentCreateParams": {
+        "description": "Information required when creating a document",
+        "type": "object",
+        "properties": {
+          "DocTypeId": {
+            "type": "string",
+            "description": "Specifies the document type, the document is created in"
+          },
+          "IndexFields": {
+            "description": "Index field information belongs to the document being created",
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/FieldItem" }
+          }
+        }
+      },
+      "FieldItem": {
+        "description": "Index field information for document creation",
+        "type": "object",
+        "properties": {
+          "Id": { "type": "string", "description": "Unique field id" },
+          "Value": {
+            "type": "object",
+            "description": "Value of corrosponding field"
+          }
+        }
+      },
+      "CreateDocumentResult": {
+        "description": "Document creation result",
+        "type": "object",
+        "properties": {
+          "DocGuid": {
+            "type": "string",
+            "description": "Unique identifier of the document"
+          },
+          "Success": {
+            "type": "boolean",
+            "description": "Document created successfully or not"
+          },
+          "Message": {
+            "type": "string",
+            "description": "If the creation fails, the corresponding error message"
+          },
+          "AutoFilledFields": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/FieldItem" }
+          }
+        }
+      },
+      "DocumentUpdateIndexFieldsParams": {
+        "description": "Inherits information for updating a document",
+        "type": "object",
+        "properties": {
+          "DocTypeId": {
+            "type": "string",
+            "description": "Specifies the document type in which the document is stored"
+          },
+          "CheckInConfirmed": { "type": "boolean" },
+          "IndexFields": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/FieldItem" }
+          }
+        }
+      },
+      "DocumentAddFileParams": {
+        "description": "Inherits information about adding a file to a document",
+        "type": "object",
+        "properties": {
+          "AddFileParams": {
+            "$ref": "#/components/schemas/AddDocumentParams",
+            "description": "Interactively you can use a base64-encoded string for hash"
+          },
+          "FileData": {
+            "type": "string",
+            "format": "binary",
+            "description": "Binary content of the file to be added to the document"
+          }
+        }
+      },
+      "AddDocumentParams": {
+        "type": "object",
+        "properties": {
+          "DocTypeId": {
+            "type": "string",
+            "description": "Unique document type ID"
+          },
+          "HashType": {
+            "type": "string",
+            "description": "Hash algorithm used for hash computation"
+          },
+          "Hash": {
+            "type": "string",
+            "format": "byte",
+            "description": "Computed hash over file data"
+          },
+          "Offset": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Offset, in bytes, of file data block. E.g. 2MB file in 1MB block size. First Offset is 0 second Offset is 1048577 (1MB + 1 Byte)",
+            "default": 0
+          },
+          "TotalLength": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Total length of file in bytes",
+            "default": 0
+          },
+          "Position": {
+            "$ref": "#/components/schemas/AddFilePositions",
+            "default": 2
+          },
+          "InsertOrReplacePosition": {
+            "type": "integer",
+            "description": "Defines the position of the file in case of an insert or replace action"
+          }
+        }
+      },
+      "AddFilePositions": {
+        "description": "Available positions where a document can be added",
+        "type": "integer",
+        "enum": ["Last", "First", "Insert", "Replace"]
+      },
+      "DocumentCheckInParams": {
+        "description": "Information for checking in a document",
+        "type": "object",
+        "properties": {
+          "DocTypeId": {
+            "type": "string",
+            "description": "Unique document type ID"
+          },
+          "AutoActionConfirmed": {
+            "type": "boolean",
+            "description": "Set to true if users have confirmed field action"
+          }
+        }
+      },
+      "DocumentCheckInResult": {
+        "description": "Result of check-in request",
+        "type": "object",
+        "properties": {
+          "DocGuid": {
+            "type": "string",
+            "description": "Unique ID of document"
+          },
+          "ConfirmationRequired": {
+            "$ref": "#/components/schemas/CheckInConfirmations",
+            "description": "Confirmation required"
+          },
+          "Success": {
+            "type": "boolean",
+            "description": "Document checked in successfully or not"
+          },
+          "Message": {
+            "type": "string",
+            "description": "If check in fails, the corresponding error message"
+          }
+        }
+      },
+      "CheckInConfirmations": {
+        "description": "Action that must be confirmed by the user",
+        "type": "integer",
+        "enum": [0, 10, 11, 12, 13, 14, 15, 16]
+      },
+      "DocStates": {
+        "type": "integer",
+        "enum": [
+          { "0": "NewDocument" },
+          { "1": "CheckedOut" },
+          { "2": "CheckedIn" },
+          { "3": "CheckedOutByOtherUser" },
+          { "4": "Uploading" },
+          { "5": "Deleted" },
+          { "6": "CheckedInAppended" },
+          { "7": "Rejected" },
+          { "8": "CheckInConfirmAppend" },
+          { "9": "CheckedInReplaced" },
+          { "10": "CheckInConfirmReplace" },
+          { "11": "CheckInAppendOrNew" },
+          { "12": "CheckInReplaceOrNew" },
+          { "13": "NewAfterConfirm" },
+          { "14": "CheckedInPrepended" },
+          { "15": "CheckInConfirmPrepend" },
+          { "16": "CheckInPrependOrNew" },
+          { "17": "InternalUnknown" },
+          { "18": "CheckOutOnHomeSiteNotPossible" },
+          { "19": "AlreadyCheckedInWithDifferences" },
+          { "20": "UpdateRevisionsFromeHomeServerAfterCheckOut" }
+        ],
+        "description": "Enumeration representing different document states."
+      },
+      "DocumentUpdateFilePositionParams": {
+        "description": "Information to update the position of a file within a document",
+        "type": "object",
+        "properties": {
+          "DocTypeId": { "type": "string", "description": "Document Type ID" },
+          "FilePositions": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/FilePosition" }
+          }
+        },
+        "required": ["DocTypeId", "FilePositions"]
+      },
+      "FilePosition": {
+        "description": "Inherits information to update the file position of a file within a document",
+        "type": "object",
+        "properties": {
+          "StorageRev": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Revision of document where the file is stored"
+          },
+          "StorageRevPos": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Position of the file in the revision where it is stored"
+          },
+          "NewPos": {
+            "type": "integer",
+            "format": "int32",
+            "description": "New position for the file. To delete, use -1"
+          }
+        }
+      },
+      "DocumentRevision": {
+        "description": "Inherits information about the revision of a document",
+        "type": "object",
+        "properties": {
+          "Revision": { "type": "integer", "description": "Revision number" },
+          "DocTypeId": {
+            "type": "string",
+            "description": "Unique document type ID"
+          },
+          "Files": { "type": "integer", "description": "Number of files" },
+          "Size": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Size of the document"
+          },
+          "CreatedBy": {
+            "type": "string",
+            "description": "Creator of the document"
+          },
+          "CreatedOn": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Date and time of creation"
+          },
+          "Reason": { "$ref": "#/components/schemas/ChangeReasons" },
+          "Values": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Cell" }
+          }
+        }
+      },
+      "ChangeReasons": {
+        "description": "The reason why the revision was created",
+        "type": "integer",
+        "enum": [
+          { "0": "New" },
+          { "1": "ModifiedPages" },
+          { "2": "EditedFields" },
+          { "4": "AnnoChanged" },
+          { "128": "ChangedByScheduler" },
+          { "256": "ChangedByPlugIn" },
+          { "512": "ChangedByProcess" }
+        ]
+      },
+      "Cabinet": {
+        "description": "Inherits the information of a cabinet",
+        "type": "object",
+        "properties": {
+          "Id": { "type": "string", "description": "Unique cabinet Id" },
+          "Name": { "type": "string", "description": "Cabinet name" },
+          "Description": {
+            "type": "string",
+            "description": "Cabinet description"
+          },
+          "Size": { "type": "integer", "description": "Cabinet size" },
+          "SizeText": {
+            "type": "string",
+            "description": "Cabinet size in text format"
+          },
+          "Logo": {
+            "type": "string",
+            "format": "binary",
+            "description": "Cabinet logo in binary format"
+          },
+          "StructureChangedOn": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Date and time when the cabinet structure was last changed"
+          },
+          "Rights": {
+            "type": "array",
+            "format": "binary",
+            "items": { "$ref": "#/components/schemas/RightStates" }
+          }
+        }
+      },
+      "RightStates": {
+        "description": "Different rights states",
+        "type": "integer",
+        "enum": [
+          { "0": "NotSet" },
+          { "1": "Allow" },
+          { "2": "AllowInherited" },
+          { "3": "Deny" },
+          { "4": "DenyInherited" }
+        ]
+      },
+      "Schema": {
+        "description": "Inherits information of a cabinet",
+        "type": "object",
+        "properties": {
+          "Cabinet": { "$ref": "#/components/schemas/Cabinet" },
+          "DocTypes": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/DocType" }
+          },
+          "DocTypesFields": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/DocTypeField" }
+          },
+          "Settings": { "$ref": "#/components/schemas/Settings" }
+        }
+      },
+      "DocType": {
+        "description": "Inherits information of an document type",
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "string",
+            "description": "The unique identifier for the document type"
+          },
+          "Pos": {
+            "type": "integer",
+            "description": "Position the document type"
+          },
+          "Name": {
+            "type": "string",
+            "description": "Name of the document type"
+          },
+          "Description": {
+            "type": "string",
+            "description": "Additional information or description about the document type"
+          },
+          "Size": {
+            "type": "integer",
+            "description": "Size of the document type"
+          },
+          "SizeText": {
+            "type": "string",
+            "description": "A text representation of the size of the document type"
+          },
+          "Usage": {
+            "$ref": "#/components/schemas/DocTypeUsage",
+            "description": "Indicates where the document type is used"
+          },
+          "FullTextEnabled": {
+            "type": "boolean",
+            "description": "Indicates whether full text search is enabled for this document type"
+          },
+          "UseRevisions": {
+            "type": "boolean",
+            "description": "Indicates whether document type uses revisions"
+          },
+          "NeedSignature": {
+            "type": "boolean",
+            "description": "Indicates whether signatures are required for documents of this type"
+          },
+          "HidePagesInSearch": {
+            "type": "boolean",
+            "description": "Indicates whether pages associated with this document type are hidden in search results"
+          },
+          "HidePagesInModify": {
+            "type": "boolean",
+            "description": "Indicates whether pages associated with this document type are hidden during modification"
+          },
+          "Rights": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/RightStates" },
+            "description": "An array of right states associated with the document type."
+          }
+        }
+      },
+      "DocTypeUsage": {
+        "description": "Indicates where the document type is used",
+        "type": "integer",
+        "enum": [
+          { "0": "General" },
+          { "1": "MailsIn" },
+          { "2": "MailsOut" },
+          { "3": "AutoCaptureIn" },
+          { "4": "AutoCaptureOut" }
+        ]
+      },
+      "DocTypeField": {
+        "description": "Inherits index field information within document type",
+        "type": "object",
+        "properties": {
+          "DocTypeId": {
+            "type": "string",
+            "description": "Unique identifier of the associated document type"
+          },
+          "Pos": {
+            "type": "integer",
+            "description": "Position or order of the index field within the document type"
+          },
+          "FieldId": {
+            "type": "string",
+            "description": "Unique identifier for the index field"
+          },
+          "Name": {
+            "type": "string",
+            "description": "Name of the index field"
+          },
+          "Length": {
+            "type": "integer",
+            "description": "Length or size of the index field"
+          },
+          "ContentType": {
+            "$ref": "#/components/schemas/Content",
+            "description": "Content type of the index field"
+          },
+          "AltContentType": {
+            "$ref": "#/components/schemas/AltContent",
+            "description": "An alternative content type of the index field"
+          },
+          "Description": {
+            "type": "string",
+            "description": "Additional information or description about the index field"
+          },
+          "AutoAction": {
+            "$ref": "#/components/schemas/AutoAction",
+            "description": "Auto-action associated with the index field"
+          },
+          "AutoActionsDays": {
+            "type": "integer",
+            "description": "Number of days for auto-actions related to the index field"
+          },
+          "ContentVerification": {
+            "$ref": "#/components/schemas/Verification",
+            "description": "Content verification settings for the index field"
+          },
+          "DuplicateAction": {
+            "$ref": "#/components/schemas/DupAction",
+            "description": "Duplicate action settings for the index field"
+          },
+          "Protection": {
+            "$ref": "#/components/schemas/Protection",
+            "description": "Protection settings for the index field"
+          },
+          "Mask": {
+            "type": "string",
+            "description": "The mask associated with the index field"
+          },
+          "MaskType": {
+            "$ref": "#/components/schemas/MaskType",
+            "description": "Mask type for the index field"
+          },
+          "KeywordListsId": {
+            "type": "string",
+            "description": "Unique identifier of associated keyword lists"
+          },
+          "KeywordEditable": {
+            "type": "boolean",
+            "description": "Indicates whether keywords associated with the index field are editable"
+          },
+          "KeywordMultiSelect": {
+            "type": "boolean",
+            "description": "Indicates whether multiple keywords can be selected for the index field"
+          },
+          "KeywordAsTree": {
+            "type": "boolean",
+            "description": "Indicates whether keywords are displayed in a tree structure for the index field"
+          },
+          "KeywordAction": {
+            "type": "integer",
+            "description": "Action associated with keywords for the index field"
+          },
+          "ODBCLinkId": {
+            "type": "string",
+            "description": "Unique identifier of the associated ODBC link"
+          },
+          "FieldViewId": {
+            "type": "string",
+            "description": "Unique identifier of the associated index field view"
+          },
+          "IsPrimary": {
+            "type": "boolean",
+            "description": "Indicates whether the field is the primary inex field"
+          },
+          "OverlayId": {
+            "type": "string",
+            "description": "Unique identifier of the associated overlay"
+          },
+          "UseIndexPos": {
+            "type": "boolean",
+            "description": "Indicates whether to use index position for the index field"
+          },
+          "IsSeparator": {
+            "type": "boolean",
+            "description": "Indicates whether the index field is a separator"
+          },
+          "Separator": {
+            "$ref": "#/components/schemas/Separator",
+            "description": "Separator settings"
+          },
+          "SearchIndexPos": {
+            "type": "integer",
+            "description": "Position of the index field in the search index"
+          },
+          "SearchIndexValue": {
+            "type": "string",
+            "description": "Value associated with the index field in the search index"
+          },
+          "SearchHitlistPos": {
+            "type": "integer",
+            "description": "Position of the index field in the search hitlist"
+          },
+          "ModifyIndexPos": {
+            "type": "integer",
+            "description": "Position of the index field in the modify index"
+          },
+          "ModifyIndexValue": {
+            "type": "string",
+            "description": "Value associated with the index field in the modify index"
+          },
+          "ModifyHitlistPos": {
+            "type": "integer",
+            "description": "Position of the index field in the modify hitlist"
+          }
+        }
+      },
+      "Content": {
+        "description": "Defines the content type of an index field",
+        "type": "integer",
+        "enum": [
+          { "0": "AnyCharacter" },
+          { "1": "Numbers" },
+          { "2": "NumbersPlus" },
+          { "3": "ShortDate" },
+          { "4": "CustomTemplate" },
+          { "5": "Keyword" },
+          { "6": "Memo" },
+          { "7": "Time" },
+          { "8": "ShortDateTime" },
+          { "9": "DocumentLink" },
+          { "99": "Extended" },
+          { "100": "EMAILFrom" },
+          { "101": "EMAILTo" },
+          { "102": "EMAILCC" },
+          { "103": "EMAILBCC" },
+          { "104": "EMAILSubject" },
+          { "105": "EMAILBody" },
+          { "106": "EMAILReceivedOn" },
+          { "107": "EMAILSentOn" },
+          { "108": "FileName" },
+          { "109": "FileNameNoExtension" },
+          { "110": "FileCreatedTime" },
+          { "111": "FileModifiedTime" },
+          { "112": "FileAccessedTime" },
+          { "113": "EMAILSubjectOrFileName" },
+          { "114": "EMAILSubjectOrFileNameNoExtension" },
+          { "115": "Hyperlink" },
+          { "116": "GPS" },
+          { "199": "AutoCapture" },
+          { "200": "InvoiceNo" },
+          { "201": "InvoiceDate" },
+          { "202": "OrderNo" },
+          { "203": "OrderDate" },
+          { "204": "Net1Amount" },
+          { "205": "Net2Amount" },
+          { "206": "Tax1Amount" },
+          { "207": "Tax2Amount" },
+          { "208": "GrossAmount" },
+          { "209": "DiscountAmount" },
+          { "210": "AdvancePayment" },
+          { "211": "HandlingCosts" },
+          { "212": "ShippingCosts" },
+          { "213": "WorkReference" },
+          { "214": "Custom1" },
+          { "215": "Custom2" },
+          { "216": "LineItems" },
+          { "217": "DueDate" },
+          { "218": "DiscountDate" },
+          { "299": "Contact" },
+          { "300": "ContactId" },
+          { "301": "Name" },
+          { "302": "Address1" },
+          { "303": "Address2" },
+          { "304": "Zip" },
+          { "305": "City" },
+          { "306": "State" },
+          { "307": "Country" },
+          { "308": "Phone" },
+          { "309": "Fax" },
+          { "310": "Email" },
+          { "311": "Website" },
+          { "312": "VatId" },
+          { "313": "TaxNo" },
+          { "314": "BankName" },
+          { "315": "BankCode" },
+          { "316": "AccountNo" }
+        ]
+      },
+      "AltContent": {
+        "description": "Defines the alternative content type of an index field",
+        "type": "integer",
+        "enum": [{ "0": "None" }, { "1": "NepaliDate" }]
+      },
+      "AutoAction": {
+        "description": "Defines the different options for an automatic action",
+        "type": "integer",
+        "enum": [
+          { "0": "None" },
+          { "1": "Duplicate" },
+          { "2": "Increment" },
+          { "3": "Decrement" },
+          { "4": "SystemDate" },
+          { "5": "SystemTime" },
+          { "6": "SystemDateTime" },
+          { "7": "UserName" },
+          { "8": "UserNameShort" },
+          { "9": "MachineName" },
+          { "10": "IncrementPage" },
+          { "11": "DecrementPage" },
+          { "12": "Year" },
+          { "13": "Week" },
+          { "14": "YearWeek" },
+          { "15": "SystemDateOffset" },
+          { "16": "IncrementGlobal" },
+          { "17": "DecrementGlobal" },
+          { "18": "IncrementOnCheckout" },
+          { "19": "IncrementOnPageModification" },
+          { "20": "PrintedBy" },
+          { "21": "PrintedOn" },
+          { "22": "UserNameFull" }
+        ]
+      },
+      "Verification": {
+        "description": "Defines the verfication condition of an index field",
+        "type": "integer",
+        "enum": [
+          { "0": "None" },
+          { "1": "NotEmpty" },
+          { "2": "MustBeFull" },
+          { "3": "Mod2" },
+          { "4": "Mod10" },
+          { "5": "Mod11" },
+          { "6": "Mod11_1" },
+          { "7": "Mod11_2" },
+          { "8": "Mod11Check" },
+          { "9": "ISBN" },
+          { "10": "Date" },
+          { "11": "EAN13" },
+          { "12": "CPF" },
+          { "13": "CNPJ" },
+          { "14": "IBAN" },
+          { "15": "DateNotInFuture" },
+          { "16": "Mod11_3" }
+        ]
+      },
+      "DupAction": {
+        "type": "integer",
+        "enum": [
+          { "0": "None" },
+          { "1": "Append" },
+          { "2": "AppendAfterConfirmation" },
+          { "3": "Replace" },
+          { "4": "ReplaceAfterConfimation" },
+          { "5": "AppendOrNewDocument" },
+          { "6": "ReplaceOrNewDocument" },
+          { "7": "NewAfterConfirmation" },
+          { "8": "Prepend" },
+          { "9": "PrependAfterConfirmation" },
+          { "10": "PrependOrNewDocument" },
+          { "11": "Reject" },
+          { "12": "AppendIfNotEmpty" },
+          { "13": "AppendIfNotEmptyAfterConfirmation" },
+          { "14": "ReplaceIfNotEmpty" },
+          { "15": "ReplaceIfNotEmptyAfterConfimation" },
+          { "16": "AppendIfNotEmptyOrNewDocument" },
+          { "17": "ReplaceIfNotEmptyOrNewDocument" },
+          { "18": "NewIfNotEmptyAfterConfirmation" },
+          { "19": "PrependIfNotEmpty" },
+          { "20": "PrependIfNotEmptyAfterConfirmation" },
+          { "21": "PrependIfNotEmptyOrNewDocument" },
+          { "22": "RejectIfNotEmpty" }
+        ]
+      },
+      "Protection": {
+        "type": "integer",
+        "enum": [
+          { "0": "None" },
+          { "1": "InRevisions" },
+          { "2": "Always" },
+          { "3": "IfNotEmpty" }
+        ]
+      },
+      "MaskType": {
+        "type": "integer",
+        "enum": [{ "0": "None" }, { "1": "Simple" }, { "2": "Regular" }]
+      },
+      "Separator": {
+        "description": "Defines the possible separator types for an index field",
+        "type": "integer",
+        "enum": [{ "0": "None" }, { "1": "Simple" }, { "2": "Group" }]
+      },
+      "Settings": {
+        "descrition": "Inherits schema information settings",
+        "type": "object",
+        "properties": {
+          "DocTypeAlias": { "type": "string" },
+          "LocalDocumentsAlias": { "type": "string" },
+          "ShowTree": { "type": "boolean" }
+        }
+      },
+      "Keyword": {
+        "description": "Information about a keyword within a keyword list",
+        "type": "object",
+        "properties": {
+          "Name": {
+            "type": "string",
+            "description": "Keyword name (must be unique)"
+          },
+          "ShortCut": { "type": "string", "description": "Keyword shortcut" },
+          "Description": {
+            "type": "string",
+            "description": "Description of the keyword"
+          },
+          "Pos": {
+            "type": "integer",
+            "description": "Position of the keyword within the keyword list"
+          },
+          "DepFieldIds": {
+            "type": "array",
+            "description": "Field IDs of linked fields",
+            "items": { "type": "string" }
+          },
+          "DepKeywordListIds": {
+            "type": "array",
+            "description": "Keyword list IDs of linked keyword lists",
+            "items": { "type": "string" }
+          }
+        }
+      },
+      "DocumentListEntry": {
+        "type": "object",
+        "properties": {
+          "DocGUID": {
+            "type": "string",
+            "description": "Unique ID of document"
+          },
+          "Value": { "type": "string" }
+        }
+      }
+    }
+  }
+}

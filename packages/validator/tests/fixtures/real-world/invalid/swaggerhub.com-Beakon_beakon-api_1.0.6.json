@@ -1,0 +1,389 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Beakon API",
+    "description": "Access the Beakon incident feed.",
+    "termsOfService": "https://beakon.com/acceptable-use-policy",
+    "contact": { "email": "apiteam@beakon.com" },
+    "version": "1.0.6"
+  },
+  "externalDocs": {
+    "description": "Find out more about Beakon",
+    "url": "https://beakon.com"
+  },
+  "servers": [{ "url": "https://api.beakon.com" }],
+  "tags": [
+    {
+      "name": "incident",
+      "description": "Incident management",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "https://beakon.com"
+      }
+    }
+  ],
+  "paths": {
+    "/incidents": {
+      "get": {
+        "tags": ["incident"],
+        "summary": "Finds Incidents",
+        "description": "Finds all incidents after applying filters. Returns results in reverse chronological order.",
+        "parameters": [
+          {
+            "name": "tags",
+            "in": "query",
+            "description": "Tag values that need to be considered for filter",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": { "$ref": "#/components/schemas/Tag" }
+            }
+          },
+          {
+            "name": "startTimestamp",
+            "in": "query",
+            "description": "Restrict incidents to those containing an alert after startTimestamp, which is a UNIX timestamp (seconds since the January 1, 1970).",
+            "required": false,
+            "examples": {
+              "October 1, 2023 00:00:00 PT": { "value": 1696143600 }
+            },
+            "schema": { "type": "integer" }
+          },
+          {
+            "name": "endTimestamp",
+            "in": "query",
+            "description": "Restrict incidents to those containing an alert before endTimestamp, which is a UNIX timestamp (seconds since the January 1, 1970).",
+            "required": false,
+            "examples": {
+              "October 1, 2023 00:02:00 PT": { "value": 1696143720 }
+            },
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Incident" }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameter value",
+            "content": {
+              "application/json": { "schema": { "type": "object" } }
+            }
+          },
+          "403": {
+            "description": "Missing or invalid authentication token",
+            "content": {
+              "application/json": { "schema": { "type": "object" } }
+            }
+          }
+        },
+        "security": [{ "api_key": ["read:incidents"] }]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ErrorModel": {
+        "type": "object",
+        "required": ["message", "code"],
+        "properties": {
+          "message": { "type": "string" },
+          "code": { "type": "integer", "minimum": 100, "maximum": 600 }
+        }
+      },
+      "Tag": {
+        "type": "string",
+        "enum": [
+          "deadlyassault",
+          "bomb",
+          "hostage",
+          "robbery",
+          "shots",
+          "shooting",
+          "stabbing",
+          "suspicious",
+          "threat",
+          "trespass",
+          "vandalism",
+          "explosion",
+          "hazmat",
+          "outdoorfire",
+          "rescue",
+          "structurefire",
+          "collision",
+          "hazard",
+          "closure",
+          "transit",
+          "looting",
+          "peacefulassembly",
+          "dangerousassembly",
+          "gas",
+          "power",
+          "utilitydamage",
+          "deadly",
+          "hate",
+          "injury",
+          "massinjury",
+          "officerinvolved",
+          "correction"
+        ]
+      },
+      "Alert": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "654586faf440a71db02490bc",
+            "description": "UUID"
+          },
+          "tags": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Tag" }
+          },
+          "dateCreated": { "type": "string", "format": "date" },
+          "location": {
+            "type": "string",
+            "example": "748 Junipero Serra Boulevard, San Francisco, CA, USA"
+          },
+          "geometry": {
+            "schema": { "$ref": "#/components/schemas/Geometry" },
+            "example": {
+              "type": "Point",
+              "coordinates": [-122.4727518, 37.7251401]
+            }
+          },
+          "title": {
+            "type": "string",
+            "example": "Vehicle Collision With Injuries"
+          },
+          "description": {
+            "type": "string",
+            "example": "Firefighters have received a 911 report of a vehicle collision with injuries."
+          },
+          "certainty": {
+            "type": "string",
+            "enum": ["reported", "responded", "debunked"],
+            "example": "reported"
+          },
+          "urgency": {
+            "type": "string",
+            "enum": ["active"],
+            "example": "active"
+          },
+          "severity": {
+            "type": "string",
+            "enum": ["low", "medium", "high"],
+            "example": "medium"
+          }
+        }
+      },
+      "Incident": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "654586faf440a71db02490bd",
+            "description": "UUID"
+          },
+          "alerts": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Alert" }
+          }
+        }
+      },
+      "Geometry": {
+        "type": "object",
+        "description": "GeoJSon geometry",
+        "discriminator": "type",
+        "required": ["type"],
+        "externalDocs": {
+          "url": "http://geojson.org/geojson-spec.html#geometry-objects"
+        },
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "Point",
+              "LineString",
+              "Polygon",
+              "MultiPoint",
+              "MultiLineString",
+              "MultiPolygon"
+            ],
+            "description": "the geometry type"
+          }
+        }
+      },
+      "Point3D": {
+        "type": "array",
+        "description": "Point in 3D space",
+        "externalDocs": { "url": "http://geojson.org/geojson-spec.html#id2" },
+        "minItems": 2,
+        "maxItems": 3,
+        "items": { "type": "number" }
+      },
+      "Point": {
+        "type": "object",
+        "description": "GeoJSon geometry",
+        "externalDocs": { "url": "http://geojson.org/geojson-spec.html#id2" },
+        "allOf": [
+          { "$ref": "#/components/schemas/Geometry" },
+          {
+            "properties": {
+              "coordinates": { "$ref": "#/components/schemas/Point3D" }
+            }
+          }
+        ]
+      },
+      "LineString": {
+        "type": "object",
+        "description": "GeoJSon geometry",
+        "externalDocs": { "url": "http://geojson.org/geojson-spec.html#id3" },
+        "allOf": [
+          { "$ref": "#/components/schemas/Geometry" },
+          {
+            "properties": {
+              "coordinates": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/Point3D" }
+              }
+            }
+          }
+        ]
+      },
+      "Polygon": {
+        "type": "object",
+        "description": "GeoJSon geometry",
+        "externalDocs": { "url": "http://geojson.org/geojson-spec.html#id4" },
+        "allOf": [
+          { "$ref": "#/components/schemas/Geometry" },
+          {
+            "properties": {
+              "coordinates": {
+                "type": "array",
+                "items": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Point3D" }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "MultiPoint": {
+        "type": "object",
+        "description": "GeoJSon geometry",
+        "externalDocs": { "url": "http://geojson.org/geojson-spec.html#id5" },
+        "allOf": [
+          { "$ref": "#/components/schemas/Geometry" },
+          {
+            "properties": {
+              "coordinates": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/Point3D" }
+              }
+            }
+          }
+        ]
+      },
+      "MultiLineString": {
+        "type": "object",
+        "description": "GeoJSon geometry",
+        "externalDocs": { "url": "http://geojson.org/geojson-spec.html#id6" },
+        "allOf": [
+          { "$ref": "#/components/schemas/Geometry" },
+          {
+            "properties": {
+              "coordinates": {
+                "type": "array",
+                "items": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Point3D" }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "MultiPolygon": {
+        "type": "object",
+        "description": "GeoJSon geometry",
+        "externalDocs": { "url": "http://geojson.org/geojson-spec.html#id6" },
+        "allOf": [
+          { "$ref": "#/components/schemas/Geometry" },
+          {
+            "properties": {
+              "coordinates": {
+                "type": "array",
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": { "$ref": "#/components/schemas/Point3D" }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "GeometryCollection": {
+        "type": "object",
+        "description": "GeoJSon geometry collection",
+        "required": ["type", "geometries"],
+        "externalDocs": {
+          "url": "http://geojson.org/geojson-spec.html#geometrycollection"
+        },
+        "properties": {
+          "type": { "type": "string", "enum": ["GeometryCollection"] },
+          "geometries": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Geometry" }
+          }
+        }
+      },
+      "Feature": {
+        "type": "object",
+        "description": "GeoJSon Feature",
+        "required": ["type", "id", "geometry"],
+        "externalDocs": {
+          "url": "https://tools.ietf.org/html/rfc7946#section-3.2"
+        },
+        "properties": {
+          "type": { "type": "string", "enum": ["Feature"] },
+          "id": { "type": "integer" },
+          "geometry": { "$ref": "#/components/schemas/GeometryCollection" },
+          "properties": { "type": "object" }
+        }
+      },
+      "FeatureCollection": {
+        "type": "object",
+        "description": "GeoJSon Feature collection",
+        "required": ["type", "features"],
+        "externalDocs": {
+          "url": "https://tools.ietf.org/html/rfc7946#section-3.3"
+        },
+        "properties": {
+          "type": { "type": "string", "enum": ["FeatureCollection"] },
+          "features": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Feature" }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "api_key": { "type": "apiKey", "name": "x-api-key", "in": "header" }
+    }
+  }
+}

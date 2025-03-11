@@ -1,0 +1,2660 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "SSL.com CLM API",
+    "version": "1.0.9",
+    "description": "Welcome to the documentation for the SSL.com CLM API. This API enables seamless integration and automation for your certificate lifecycle management needs, allowing you to interact with SSL.com's services programmatically. Whether you are managing certificates, \ncreating new requests, or monitoring certificate statuses, our API provides the necessary endpoints and functionality to handle these tasks efficiently.\n\n### **Authentication**\n\nAuthentication is crucial to ensure secure access to our API. It is performed by verifying the Bearer token embedded in the Authorization header of each request. To authenticate your requests, include the Authorization header with the following format:\n\n`Authorization: Bearer XXXX`\n\nReplace `XXXX` with your API Token. This token is unique to your account and must be kept confidential.\n\n<br>\n\n### **Filtering and Ordering**\n\nOur API supports advanced filtering and ordering capabilities to provide precise and customizable data retrieval. By using these features, you can tailor your queries to match specific criteria and sort the results as needed.\n\n#### Filtering\n\nTo apply filters, include the `filters` parameter in your request. The `filters` parameter should be a comma-separated list of filter conditions. Each condition follows the format `field:operator:value`.\n\n  **Operators**:\n  \n  - **lt**: Less than\n  - **lte**: Less than or equal to\n  - **gt**: Greater than\n  - **gte**: Greater than or equal to\n  - **eq**: Equal to\n  - **neq**: Not equal to\n\n  **Examples**:\n\n  - `filters=age:gte:30,age:lt:50,status:eq:active`\n\nThis example filters the results to include only records where age is greater than or equal to 30 and less than 50, and status is equal to \"active\".\n\n#### Ordering\n\nTo apply ordering, include the `order` parameter in your request. The `order` parameter should be a comma-separated list of fields to order by, each followed by an optional direction (`asc` for ascending, `desc` for descending). If no direction is specified, the default is ascending.\n\n  **Examples**:\n\n  - `age:desc,name:asc`\n\nThis example orders the results by age in descending order and then by name in ascending order.\n\n<br>\n\n### **Pagination**\n\nAll of our listing (index) endpoints support pagination to ensure efficient data retrieval and manageable response sizes. By using pagination, you can navigate through large datasets seamlessly. To fetch a paginated response, set the `page` and `per_page` parameters as follows:\n\n- **page**: Specifies the page number of the results to retrieve.\n\n- **per_page**: Specifies the number of results per page. The maximum value is 100, and the default is 25.\n\nEach paginated response includes a `Links` header containing a comma-separated list of links to the `previous`, `next`, `first`, and `last` pages. These links facilitate easy navigation and help in constructing queries to fetch multiple pages in succession.\n\n<br>\n\n### **Versioning Policy**\n\nOur API adheres to a structured versioning policy designed to ensure stability and predictability, facilitating seamless integration for developers. By following this versioning policy, we aim to provide a predictable and \nstable API environment, allowing you to plan and execute your integration efforts with confidence. Always refer to the release notes for detailed information on any changes introduced in each version update.\n\n- **Major Version Updates (v1.0.0 to v2.0.0)**\n\n  Major version updates occur when there are substantial changes or refactoring to the API. These updates may introduce significant modifications that could potentially break existing integrations. Examples include:\n\n  - Overhauling the API's core functionality\n  - Changing the overall structure of endpoints\n  - Removing or renaming key endpoints or functionalities\n\n  Such updates necessitate careful review and potential reworking of your integration to maintain compatibility.\n\n<br>\n\n- **Minor Version Updates (v1.1.0 to v1.2.0)**\n\n  Minor version updates occur when there are breaking changes that require attention but do not constitute a complete overhaul of the API. These changes might include:\n\n  - Deprecation or removal of specific endpoints\n  - Alteration or removal of data within response objects\n\n  These updates may require adjustments to your existing integration. It is crucial to review the release notes associated with minor version updates to understand the implications and necessary changes for your integration.\n\n<br>\n\n- **Patch Version Updates (v1.0.0 to v1.0.1)**\n\n  Patch version updates occur when there are non-breaking changes that enhance the API's functionality while maintaining backward compatibility. These updates include:\n\n  - Addition of new endpoints\n  - Inclusion of new data elements in response objects\n\n  While these updates should not disrupt your current integration, it is advisable to ensure your integration can gracefully handle additional data elements in response payloads to maintain robustness.\n"
+  },
+  "servers": [
+    {
+      "url": "https://api.staging.ssl.com/api/v1",
+      "description": "Staging Server"
+    },
+    { "url": "https://api.ssl.com/api/v1", "description": "Production Server" }
+  ],
+  "paths": {
+    "/status": {
+      "get": {
+        "tags": ["Status"],
+        "responses": {
+          "200": {
+            "description": "Status successfully retrieved.",
+            "headers": {
+              "X-Request-ID": { "$ref": "#/components/headers/X-Request-ID" }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "Current status of the system."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": { "$ref": "#/components/responses/500" },
+          "503": { "$ref": "#/components/responses/503" }
+        }
+      }
+    },
+    "/teams": {
+      "get": {
+        "description": "## Retrieve a list of teams, with support for pagination.\n\n#### Fields available for filtering & ordering:\n\n  - created_at\n  - updated_at\n",
+        "tags": ["Authentication / Teams"],
+        "parameters": [
+          { "$ref": "#/components/parameters/page_param" },
+          { "$ref": "#/components/parameters/per_page_param" }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of teams successfully retrieved.",
+            "headers": {
+              "X-Request-ID": { "$ref": "#/components/headers/X-Request-ID" }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Team" }
+                }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/400" },
+          "401": { "$ref": "#/components/responses/401" },
+          "403": { "$ref": "#/components/responses/403" },
+          "500": { "$ref": "#/components/responses/500" },
+          "503": { "$ref": "#/components/responses/503" }
+        }
+      },
+      "post": {
+        "description": "## Create a new team.\n",
+        "tags": ["Authentication / Teams"],
+        "requestBody": { "$ref": "#/components/requestBodies/TeamCreate" },
+        "responses": {
+          "201": {
+            "description": "Team successfully created.",
+            "headers": {
+              "X-Request-ID": { "$ref": "#/components/headers/X-Request-ID" }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Team" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/400" },
+          "401": { "$ref": "#/components/responses/401" },
+          "403": { "$ref": "#/components/responses/403" },
+          "500": { "$ref": "#/components/responses/500" },
+          "503": { "$ref": "#/components/responses/503" }
+        }
+      }
+    },
+    "/teams/{id}": {
+      "get": {
+        "description": "## Retrieve details of a specific team.\n",
+        "tags": ["Authentication / Teams"],
+        "parameters": [{ "$ref": "#/components/parameters/id_param" }],
+        "responses": {
+          "200": {
+            "description": "Team details successfully retrieved.",
+            "headers": {
+              "X-Request-ID": { "$ref": "#/components/headers/X-Request-ID" }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Team" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/400" },
+          "401": { "$ref": "#/components/responses/401" },
+          "403": { "$ref": "#/components/responses/403" },
+          "404": { "$ref": "#/components/responses/404" },
+          "500": { "$ref": "#/components/responses/500" },
+          "503": { "$ref": "#/components/responses/503" }
+        }
+      },
+      "put": {
+        "description": "## Update details of a specific team.\n",
+        "tags": ["Authentication / Teams"],
+        "parameters": [{ "$ref": "#/components/parameters/id_param" }],
+        "requestBody": { "$ref": "#/components/requestBodies/TeamUpdate" },
+        "responses": {
+          "200": {
+            "description": "Team successfully updated.",
+            "headers": {
+              "X-Request-ID": { "$ref": "#/components/headers/X-Request-ID" }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Team" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/400" },
+          "401": { "$ref": "#/components/responses/401" },
+          "403": { "$ref": "#/components/responses/403" },
+          "404": { "$ref": "#/components/responses/404" },
+          "422": { "$ref": "#/components/responses/422" },
+          "500": { "$ref": "#/components/responses/500" },
+          "503": { "$ref": "#/components/responses/503" }
+        }
+      },
+      "delete": {
+        "description": "## Delete a specific team.\n",
+        "tags": ["Authentication / Teams"],
+        "parameters": [{ "$ref": "#/components/parameters/id_param" }],
+        "responses": {
+          "204": {
+            "description": "Team successfully deleted. No content returned.",
+            "headers": {
+              "X-Request-ID": { "$ref": "#/components/headers/X-Request-ID" }
+            }
+          },
+          "400": { "$ref": "#/components/responses/400" },
+          "401": { "$ref": "#/components/responses/401" },
+          "403": { "$ref": "#/components/responses/403" },
+          "404": { "$ref": "#/components/responses/404" },
+          "500": { "$ref": "#/components/responses/500" },
+          "503": { "$ref": "#/components/responses/503" }
+        }
+      }
+    },
+    "/teams/{team_id}/certificates": {
+      "get": {
+        "description": "Retrieve a list of certificates associated with a specific team, with support for pagination.",
+        "tags": ["Certificate Manager / Certificates"],
+        "parameters": [
+          { "$ref": "#/components/parameters/team_id_param" },
+          { "$ref": "#/components/parameters/page_param" },
+          { "$ref": "#/components/parameters/per_page_param" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved a list of certificates associated with the specified team.",
+            "headers": {
+              "X-Request-ID": { "$ref": "#/components/headers/X-Request-ID" }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Certificate" }
+                }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/400" },
+          "401": { "$ref": "#/components/responses/401" },
+          "403": { "$ref": "#/components/responses/403" },
+          "404": { "$ref": "#/components/responses/404" },
+          "500": { "$ref": "#/components/responses/500" },
+          "503": { "$ref": "#/components/responses/503" }
+        }
+      }
+    },
+    "/teams/{team_id}/certificates/{id}": {
+      "get": {
+        "description": "Retrieve the details of a specific certificate associated with a team.",
+        "tags": ["Certificate Manager / Certificates"],
+        "parameters": [
+          { "$ref": "#/components/parameters/team_id_param" },
+          { "$ref": "#/components/parameters/id_param" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved the details of the specified certificate.",
+            "headers": {
+              "X-Request-ID": { "$ref": "#/components/headers/X-Request-ID" }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Certificate" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/400" },
+          "401": { "$ref": "#/components/responses/401" },
+          "403": { "$ref": "#/components/responses/403" },
+          "404": { "$ref": "#/components/responses/404" },
+          "500": { "$ref": "#/components/responses/500" },
+          "503": { "$ref": "#/components/responses/503" }
+        }
+      },
+      "delete": {
+        "description": "Delete a specific certificate associated with a team.",
+        "tags": ["Certificate Manager / Certificates"],
+        "parameters": [
+          { "$ref": "#/components/parameters/team_id_param" },
+          { "$ref": "#/components/parameters/id_param" }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successfully deleted the specified certificate. No content is returned.",
+            "headers": {
+              "X-Request-ID": { "$ref": "#/components/headers/X-Request-ID" }
+            }
+          },
+          "400": { "$ref": "#/components/responses/400" },
+          "401": { "$ref": "#/components/responses/401" },
+          "403": { "$ref": "#/components/responses/403" },
+          "404": { "$ref": "#/components/responses/404" },
+          "500": { "$ref": "#/components/responses/500" },
+          "503": { "$ref": "#/components/responses/503" }
+        }
+      }
+    },
+    "/teams/{team_id}/certificate-requests": {
+      "get": {
+        "description": "Retrieve a list of certificate requests associated with a specific team, with support for pagination.",
+        "tags": ["Certificate Manager / Certificate Requests"],
+        "parameters": [
+          { "$ref": "#/components/parameters/team_id_param" },
+          { "$ref": "#/components/parameters/page_param" },
+          { "$ref": "#/components/parameters/per_page_param" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved a list of certificate requests for the specified team.",
+            "headers": {
+              "X-Request-ID": { "$ref": "#/components/headers/X-Request-ID" }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/CertificateRequest" }
+                }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/400" },
+          "401": { "$ref": "#/components/responses/401" },
+          "403": { "$ref": "#/components/responses/403" },
+          "404": { "$ref": "#/components/responses/404" },
+          "500": { "$ref": "#/components/responses/500" },
+          "503": { "$ref": "#/components/responses/503" }
+        }
+      },
+      "post": {
+        "description": "Create a new certificate request associated with a specific team.",
+        "tags": ["Certificate Manager / Certificate Requests"],
+        "parameters": [
+          { "$ref": "#/components/parameters/team_id_param" },
+          { "$ref": "#/components/parameters/synchronous_param" }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/CertificateRequestCreate"
+        },
+        "responses": {
+          "201": {
+            "description": "Certificate request successfully created.",
+            "headers": {
+              "X-Request-ID": { "$ref": "#/components/headers/X-Request-ID" }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/CertificateRequest" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/400" },
+          "401": { "$ref": "#/components/responses/401" },
+          "403": { "$ref": "#/components/responses/403" },
+          "404": { "$ref": "#/components/responses/404" },
+          "422": { "$ref": "#/components/responses/422" },
+          "500": { "$ref": "#/components/responses/500" },
+          "503": { "$ref": "#/components/responses/503" }
+        }
+      }
+    },
+    "/teams/{team_id}/certificate-requests/{id}": {
+      "get": {
+        "description": "Retrieve the details of a specific certificate request associated with a team.",
+        "tags": ["Certificate Manager / Certificate Requests"],
+        "parameters": [
+          { "$ref": "#/components/parameters/team_id_param" },
+          { "$ref": "#/components/parameters/id_param" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Certificate request details successfully retrieved.",
+            "headers": {
+              "X-Request-ID": { "$ref": "#/components/headers/X-Request-ID" }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/CertificateRequest" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/400" },
+          "401": { "$ref": "#/components/responses/401" },
+          "403": { "$ref": "#/components/responses/403" },
+          "404": { "$ref": "#/components/responses/404" },
+          "500": { "$ref": "#/components/responses/500" },
+          "503": { "$ref": "#/components/responses/503" }
+        }
+      },
+      "put": {
+        "description": "Update the details of a specific certificate request associated with a team.",
+        "tags": ["Certificate Manager / Certificate Requests"],
+        "parameters": [
+          { "$ref": "#/components/parameters/team_id_param" },
+          { "$ref": "#/components/parameters/id_param" },
+          { "$ref": "#/components/parameters/synchronous_param" }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/CertificateRequestUpdate"
+        },
+        "responses": {
+          "200": {
+            "description": "Certificate request successfully updated.",
+            "headers": {
+              "X-Request-ID": { "$ref": "#/components/headers/X-Request-ID" }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/CertificateRequest" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/400" },
+          "401": { "$ref": "#/components/responses/401" },
+          "403": { "$ref": "#/components/responses/403" },
+          "404": { "$ref": "#/components/responses/404" },
+          "422": { "$ref": "#/components/responses/422" },
+          "500": { "$ref": "#/components/responses/500" },
+          "503": { "$ref": "#/components/responses/503" }
+        }
+      },
+      "delete": {
+        "description": "Delete a specific certificate request associated with a team.",
+        "tags": ["Certificate Manager / Certificate Requests"],
+        "parameters": [
+          { "$ref": "#/components/parameters/team_id_param" },
+          { "$ref": "#/components/parameters/id_param" }
+        ],
+        "responses": {
+          "204": {
+            "description": "Certificate request successfully deleted. No content returned.",
+            "headers": {
+              "X-Request-ID": { "$ref": "#/components/headers/X-Request-ID" }
+            }
+          },
+          "400": { "$ref": "#/components/responses/400" },
+          "401": { "$ref": "#/components/responses/401" },
+          "403": { "$ref": "#/components/responses/403" },
+          "404": { "$ref": "#/components/responses/404" },
+          "500": { "$ref": "#/components/responses/500" },
+          "503": { "$ref": "#/components/responses/503" }
+        }
+      }
+    },
+    "/teams/{team_id}/domains": {
+      "get": {
+        "description": "## Retrieve a list of domains associated with a specific team, with support for pagination.\n\n#### Fields available for filtering & ordering:\n\n- subject\n- created_at\n- updated_at\n",
+        "tags": ["Validation / Domains"],
+        "parameters": [
+          { "$ref": "#/components/parameters/team_id_param" },
+          { "$ref": "#/components/parameters/page_param" },
+          { "$ref": "#/components/parameters/per_page_param" }
+        ],
+        "responses": {
+          "200": {
+            "description": "## A list of domains successfully retrieved.\n",
+            "headers": {
+              "X-Request-ID": { "$ref": "#/components/headers/X-Request-ID" }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Domain" }
+                }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/400" },
+          "401": { "$ref": "#/components/responses/401" },
+          "403": { "$ref": "#/components/responses/403" },
+          "404": { "$ref": "#/components/responses/404" },
+          "500": { "$ref": "#/components/responses/500" },
+          "503": { "$ref": "#/components/responses/503" }
+        }
+      },
+      "post": {
+        "description": "## Create a new domain associated with a specific team.\n\n#### Important Notes:\n\n- This will automatically create a new validation unless the domain validation is fullfilled by an active endorsement.\n",
+        "tags": ["Validation / Domains"],
+        "parameters": [{ "$ref": "#/components/parameters/team_id_param" }],
+        "requestBody": { "$ref": "#/components/requestBodies/DomainCreate" },
+        "responses": {
+          "201": {
+            "description": "Domain successfully created.",
+            "headers": {
+              "X-Request-ID": { "$ref": "#/components/headers/X-Request-ID" }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Domain" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/400" },
+          "401": { "$ref": "#/components/responses/401" },
+          "403": { "$ref": "#/components/responses/403" },
+          "404": { "$ref": "#/components/responses/404" },
+          "500": { "$ref": "#/components/responses/500" },
+          "503": { "$ref": "#/components/responses/503" }
+        }
+      }
+    },
+    "/teams/{team_id}/domains/validation-candidates": {
+      "get": {
+        "description": "## Return a list of validation candidate email addresses.\n",
+        "tags": ["Validation / Domains"],
+        "parameters": [{ "$ref": "#/components/parameters/domain_param" }],
+        "responses": {
+          "200": {
+            "description": "Candidates successfully retrieved.",
+            "headers": {
+              "X-Request-ID": { "$ref": "#/components/headers/X-Request-ID" }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DomainVerificationCandidate"
+                  }
+                }
+              }
+            }
+          },
+          "404": { "$ref": "#/components/responses/404" },
+          "500": { "$ref": "#/components/responses/500" },
+          "503": { "$ref": "#/components/responses/503" }
+        }
+      }
+    },
+    "/teams/{team_id}/domains/{id}/retry": {
+      "get": {
+        "description": "## Force a domain to retry the verification procedure.\n\n#### Important Notes:\n\n- This will force the API to \"manualy\" retry the validation for the domain.\n",
+        "tags": ["Validation / Domains"],
+        "parameters": [
+          { "$ref": "#/components/parameters/team_id_param" },
+          { "$ref": "#/components/parameters/id_param" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Domain successfully updated.",
+            "headers": {
+              "X-Request-ID": { "$ref": "#/components/headers/X-Request-ID" }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Domain" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/400" },
+          "401": { "$ref": "#/components/responses/401" },
+          "403": { "$ref": "#/components/responses/403" },
+          "404": { "$ref": "#/components/responses/404" },
+          "422": { "$ref": "#/components/responses/422" },
+          "500": { "$ref": "#/components/responses/500" },
+          "503": { "$ref": "#/components/responses/503" }
+        }
+      }
+    },
+    "/teams/{team_id}/domains/{id}/validate": {
+      "post": {
+        "description": "## Creates a new validation for this domain.\n\n#### Important Notes:\n\n- This will reset the random value and cancel the current validation if it is in progress.\n- You can only have a single validation in progress at any time.\n",
+        "tags": ["Validation / Domains"],
+        "parameters": [
+          { "$ref": "#/components/parameters/team_id_param" },
+          { "$ref": "#/components/parameters/id_param" }
+        ],
+        "requestBody": { "$ref": "#/components/requestBodies/DomainUpdate" },
+        "responses": {
+          "200": {
+            "description": "Domain successfully updated.",
+            "headers": {
+              "X-Request-ID": { "$ref": "#/components/headers/X-Request-ID" }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Domain" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/400" },
+          "401": { "$ref": "#/components/responses/401" },
+          "403": { "$ref": "#/components/responses/403" },
+          "404": { "$ref": "#/components/responses/404" },
+          "422": { "$ref": "#/components/responses/422" },
+          "500": { "$ref": "#/components/responses/500" },
+          "503": { "$ref": "#/components/responses/503" }
+        }
+      }
+    },
+    "/teams/{team_id}/domains/{id}/verify": {
+      "post": {
+        "description": "## Verify domain control by random value sent via email.\n",
+        "tags": ["Validation / Domains"],
+        "parameters": [
+          { "$ref": "#/components/parameters/team_id_param" },
+          { "$ref": "#/components/parameters/id_param" }
+        ],
+        "requestBody": { "$ref": "#/components/requestBodies/DomainVerify" },
+        "responses": {
+          "200": {
+            "description": "Domain successfully verified.",
+            "headers": {
+              "X-Request-ID": { "$ref": "#/components/headers/X-Request-ID" }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Domain" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/400" },
+          "401": { "$ref": "#/components/responses/401" },
+          "403": { "$ref": "#/components/responses/403" },
+          "404": { "$ref": "#/components/responses/404" },
+          "422": { "$ref": "#/components/responses/422" },
+          "500": { "$ref": "#/components/responses/500" },
+          "503": { "$ref": "#/components/responses/503" }
+        }
+      }
+    },
+    "/teams/{team_id}/domains/{id}": {
+      "get": {
+        "description": "## Retrieve details of a specific domain associated with a team.\n",
+        "tags": ["Validation / Domains"],
+        "parameters": [
+          { "$ref": "#/components/parameters/team_id_param" },
+          { "$ref": "#/components/parameters/id_param" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Domain details successfully retrieved.",
+            "headers": {
+              "X-Request-ID": { "$ref": "#/components/headers/X-Request-ID" }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Domain" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/400" },
+          "401": { "$ref": "#/components/responses/401" },
+          "403": { "$ref": "#/components/responses/403" },
+          "404": { "$ref": "#/components/responses/404" },
+          "500": { "$ref": "#/components/responses/500" },
+          "503": { "$ref": "#/components/responses/503" }
+        }
+      },
+      "put": {
+        "description": "## Update details of a specific domain associated with a team.\n",
+        "tags": ["Validation / Domains"],
+        "parameters": [
+          { "$ref": "#/components/parameters/team_id_param" },
+          { "$ref": "#/components/parameters/id_param" }
+        ],
+        "requestBody": { "$ref": "#/components/requestBodies/DomainUpdate" },
+        "responses": {
+          "200": {
+            "description": "Domain successfully updated.",
+            "headers": {
+              "X-Request-ID": { "$ref": "#/components/headers/X-Request-ID" }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Domain" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/400" },
+          "401": { "$ref": "#/components/responses/401" },
+          "403": { "$ref": "#/components/responses/403" },
+          "404": { "$ref": "#/components/responses/404" },
+          "422": { "$ref": "#/components/responses/422" },
+          "500": { "$ref": "#/components/responses/500" },
+          "503": { "$ref": "#/components/responses/503" }
+        }
+      },
+      "delete": {
+        "description": "## Delete a specific domain associated with a team.\n",
+        "tags": ["Validation / Domains"],
+        "parameters": [
+          { "$ref": "#/components/parameters/team_id_param" },
+          { "$ref": "#/components/parameters/id_param" }
+        ],
+        "responses": {
+          "204": {
+            "description": "Domain successfully deleted. No content returned.",
+            "headers": {
+              "X-Request-ID": { "$ref": "#/components/headers/X-Request-ID" }
+            }
+          },
+          "400": { "$ref": "#/components/responses/400" },
+          "401": { "$ref": "#/components/responses/401" },
+          "403": { "$ref": "#/components/responses/403" },
+          "404": { "$ref": "#/components/responses/404" },
+          "500": { "$ref": "#/components/responses/500" },
+          "503": { "$ref": "#/components/responses/503" }
+        }
+      }
+    },
+    "/teams/{team_id}/organizations": {
+      "get": {
+        "description": "Retrieve a list of organizations associated with a specific team, with support for pagination.",
+        "tags": ["Validation / Organizations"],
+        "parameters": [
+          { "$ref": "#/components/parameters/team_id_param" },
+          { "$ref": "#/components/parameters/page_param" },
+          { "$ref": "#/components/parameters/per_page_param" }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of organizations successfully retrieved.",
+            "headers": {
+              "X-Request-ID": { "$ref": "#/components/headers/X-Request-ID" }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Organization" }
+                }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/400" },
+          "401": { "$ref": "#/components/responses/401" },
+          "403": { "$ref": "#/components/responses/403" },
+          "404": { "$ref": "#/components/responses/404" },
+          "500": { "$ref": "#/components/responses/500" },
+          "503": { "$ref": "#/components/responses/503" }
+        }
+      },
+      "post": {
+        "description": "Create a new organization associated with a specific team.",
+        "tags": ["Validation / Organizations"],
+        "parameters": [{ "$ref": "#/components/parameters/team_id_param" }],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/OrganizationCreate"
+        },
+        "responses": {
+          "201": {
+            "description": "Organization successfully created.",
+            "headers": {
+              "X-Request-ID": { "$ref": "#/components/headers/X-Request-ID" }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Organization" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/400" },
+          "401": { "$ref": "#/components/responses/401" },
+          "403": { "$ref": "#/components/responses/403" },
+          "404": { "$ref": "#/components/responses/404" },
+          "500": { "$ref": "#/components/responses/500" },
+          "503": { "$ref": "#/components/responses/503" }
+        }
+      }
+    },
+    "/teams/{team_id}/organizations/{id}": {
+      "get": {
+        "description": "Retrieve details of a specific organization associated with a team.",
+        "tags": ["Validation / Organizations"],
+        "parameters": [
+          { "$ref": "#/components/parameters/team_id_param" },
+          { "$ref": "#/components/parameters/id_param" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Organization details successfully retrieved.",
+            "headers": {
+              "X-Request-ID": { "$ref": "#/components/headers/X-Request-ID" }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Organization" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/400" },
+          "401": { "$ref": "#/components/responses/401" },
+          "403": { "$ref": "#/components/responses/403" },
+          "404": { "$ref": "#/components/responses/404" },
+          "500": { "$ref": "#/components/responses/500" },
+          "503": { "$ref": "#/components/responses/503" }
+        }
+      },
+      "put": {
+        "description": "Update details of a specific organization associated with a team.",
+        "tags": ["Validation / Organizations"],
+        "parameters": [
+          { "$ref": "#/components/parameters/team_id_param" },
+          { "$ref": "#/components/parameters/id_param" }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/OrganizationUpdate"
+        },
+        "responses": {
+          "200": {
+            "description": "Organization successfully updated.",
+            "headers": {
+              "X-Request-ID": { "$ref": "#/components/headers/X-Request-ID" }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Organization" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/400" },
+          "401": { "$ref": "#/components/responses/401" },
+          "403": { "$ref": "#/components/responses/403" },
+          "404": { "$ref": "#/components/responses/404" },
+          "422": { "$ref": "#/components/responses/422" },
+          "500": { "$ref": "#/components/responses/500" },
+          "503": { "$ref": "#/components/responses/503" }
+        }
+      },
+      "delete": {
+        "description": "Delete a specific organization associated with a team.",
+        "tags": ["Validation / Organizations"],
+        "parameters": [
+          { "$ref": "#/components/parameters/team_id_param" },
+          { "$ref": "#/components/parameters/id_param" }
+        ],
+        "responses": {
+          "204": {
+            "description": "Organization successfully deleted. No content returned.",
+            "headers": {
+              "X-Request-ID": { "$ref": "#/components/headers/X-Request-ID" }
+            }
+          },
+          "400": { "$ref": "#/components/responses/400" },
+          "401": { "$ref": "#/components/responses/401" },
+          "403": { "$ref": "#/components/responses/403" },
+          "404": { "$ref": "#/components/responses/404" },
+          "500": { "$ref": "#/components/responses/500" },
+          "503": { "$ref": "#/components/responses/503" }
+        }
+      }
+    },
+    "/teams/{team_id}/organizations/{id}/endorse": {
+      "post": {
+        "description": "## Endorse an organization.\n\n**Important Notes:**\n\nThis is only available for specific use cases and must be explicitly enabled by SSL.com prior to use.\n\nFor OV Endorsements the followng fields are required:\n\n- name\n- city\n- state\n- country\n\nFor EV Endorsements the followng fields are required:\n\n- name\n- city\n- state\n- country\n- business_category\n- company_number\n- incorporation_city\n- incorporation_state\n- incorporation_country\n- qualified_information_sources\n",
+        "tags": ["Validation / Organizations"],
+        "parameters": [
+          { "$ref": "#/components/parameters/team_id_param" },
+          { "$ref": "#/components/parameters/id_param" }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/OrganizationEndorsement"
+        },
+        "responses": {
+          "200": {
+            "description": "Organization successfully endorsed.",
+            "headers": {
+              "X-Request-ID": { "$ref": "#/components/headers/X-Request-ID" }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Organization" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/400" },
+          "401": { "$ref": "#/components/responses/401" },
+          "403": { "$ref": "#/components/responses/403" },
+          "404": { "$ref": "#/components/responses/404" },
+          "422": { "$ref": "#/components/responses/422" },
+          "500": { "$ref": "#/components/responses/500" },
+          "503": { "$ref": "#/components/responses/503" }
+        }
+      }
+    },
+    "/certificate-profiles": {
+      "get": {
+        "description": "Retrieves a list of certificate profiles, with support for pagination.",
+        "tags": ["Certificate Manager / Certificate Profiles"],
+        "parameters": [
+          { "$ref": "#/components/parameters/page_param" },
+          { "$ref": "#/components/parameters/per_page_param" }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of certificate profiles was successfully retrieved.",
+            "headers": {
+              "X-Request-ID": { "$ref": "#/components/headers/X-Request-ID" }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/CertificateProfile" }
+                }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/400" },
+          "401": { "$ref": "#/components/responses/401" },
+          "403": { "$ref": "#/components/responses/403" },
+          "500": { "$ref": "#/components/responses/500" },
+          "503": { "$ref": "#/components/responses/503" }
+        }
+      }
+    },
+    "/certificate-profiles/{id}": {
+      "get": {
+        "description": "Retrieves the details of a specific certificate profile.",
+        "tags": ["Certificate Manager / Certificate Profiles"],
+        "parameters": [{ "$ref": "#/components/parameters/id_param" }],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved the certificate profile details.",
+            "headers": {
+              "X-Request-ID": { "$ref": "#/components/headers/X-Request-ID" }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/CertificateProfile" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/400" },
+          "401": { "$ref": "#/components/responses/401" },
+          "403": { "$ref": "#/components/responses/403" },
+          "404": { "$ref": "#/components/responses/404" },
+          "500": { "$ref": "#/components/responses/500" },
+          "503": { "$ref": "#/components/responses/503" }
+        }
+      }
+    },
+    "/information-sources": {
+      "get": {
+        "description": "Retrieves a list of information sources, with support for pagination.",
+        "tags": ["Validation / Utility"],
+        "parameters": [
+          { "$ref": "#/components/parameters/page_param" },
+          { "$ref": "#/components/parameters/per_page_param" }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of information sources was successfully retrieved.",
+            "headers": {
+              "X-Request-ID": { "$ref": "#/components/headers/X-Request-ID" }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/InformationSource" }
+                }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/400" },
+          "401": { "$ref": "#/components/responses/401" },
+          "403": { "$ref": "#/components/responses/403" },
+          "500": { "$ref": "#/components/responses/500" },
+          "503": { "$ref": "#/components/responses/503" }
+        }
+      }
+    },
+    "/information-sources/{id}": {
+      "get": {
+        "description": "Retrieves the details of a specific information source.",
+        "tags": ["Validation / Utility"],
+        "parameters": [{ "$ref": "#/components/parameters/id_param" }],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved the information source details.",
+            "headers": {
+              "X-Request-ID": { "$ref": "#/components/headers/X-Request-ID" }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/InformationSource" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/400" },
+          "401": { "$ref": "#/components/responses/401" },
+          "403": { "$ref": "#/components/responses/403" },
+          "404": { "$ref": "#/components/responses/404" },
+          "500": { "$ref": "#/components/responses/500" },
+          "503": { "$ref": "#/components/responses/503" }
+        }
+      }
+    }
+  },
+  "components": {
+    "headers": {
+      "X-Request-ID": {
+        "description": "The Request UUID for tracking API operation",
+        "schema": { "type": "string" }
+      }
+    },
+    "parameters": {
+      "page_param": {
+        "name": "page",
+        "in": "query",
+        "description": "The page number for the request.",
+        "required": false,
+        "schema": { "type": "integer", "default": 1 }
+      },
+      "per_page_param": {
+        "name": "per_page",
+        "in": "query",
+        "description": "The number of items per page for the request.",
+        "required": false,
+        "schema": { "type": "integer", "default": 10 }
+      },
+      "id_param": {
+        "name": "id",
+        "in": "path",
+        "description": "The unique identifier of the resource.",
+        "required": true,
+        "schema": { "type": "string" }
+      },
+      "team_id_param": {
+        "name": "team_id",
+        "in": "path",
+        "description": "The unique identifier of the team.",
+        "required": true,
+        "schema": { "type": "string" }
+      },
+      "synchronous_param": {
+        "name": "synchronous",
+        "in": "query",
+        "description": "Synchronously issue the certificate if certificate request is valid and validated.",
+        "required": false,
+        "schema": { "type": "boolean", "default": false }
+      },
+      "domain_param": {
+        "name": "domain",
+        "in": "query",
+        "description": "The domain name.",
+        "required": true,
+        "schema": { "type": "string" }
+      }
+    },
+    "requestBodies": {
+      "CertificateRequestCreate": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "certificate_signing_request": {
+                  "type": "string",
+                  "description": "The PEM-encoded certificate signing request (CSR).",
+                  "example": "-----BEGIN CERTIFICATE REQUEST-----\\n-----END CERTIFICATE REQUEST-----\\n"
+                },
+                "certificate_profile_id": {
+                  "type": "string",
+                  "description": "Unique identifier for the certificate profile.",
+                  "example": "00000000-0000-0000-0000-000000000000"
+                },
+                "organization_id": {
+                  "type": "string",
+                  "description": "Unique identifier for the organization.",
+                  "example": "00000000-0000-0000-0000-000000000000"
+                },
+                "domain_ids": {
+                  "type": "array",
+                  "description": "List of domain ids included in the certificate request.",
+                  "items": {
+                    "type": "string",
+                    "description": "ID of the domain"
+                  },
+                  "example": [
+                    "00000000-0000-0000-0000-000000000000",
+                    "00000000-0000-0000-0000-000000000000"
+                  ]
+                }
+              },
+              "required": [
+                "certificate_signing_request",
+                "certificate_profile_id",
+                "organization_id",
+                "domain_ids"
+              ]
+            }
+          }
+        }
+      },
+      "CertificateRequestUpdate": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "certificate_signing_request": {
+                  "type": "string",
+                  "description": "The PEM-encoded certificate signing request (CSR).",
+                  "example": "-----BEGIN CERTIFICATE REQUEST-----\\n-----END CERTIFICATE REQUEST-----\\n"
+                },
+                "certificate_profile_id": {
+                  "type": "string",
+                  "description": "Unique identifier for the certificate profile.",
+                  "example": "00000000-0000-0000-0000-000000000000"
+                },
+                "organization_id": {
+                  "type": "string",
+                  "description": "Unique identifier for the organization.",
+                  "example": "00000000-0000-0000-0000-000000000000"
+                },
+                "domain_ids": {
+                  "type": "array",
+                  "description": "List of domain ids included in the certificate request.",
+                  "items": {
+                    "type": "string",
+                    "description": "ID of the domain"
+                  },
+                  "example": [
+                    "00000000-0000-0000-0000-000000000000",
+                    "00000000-0000-0000-0000-000000000000"
+                  ]
+                }
+              },
+              "required": []
+            }
+          }
+        }
+      },
+      "DomainCreate": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "subject": {
+                  "type": "string",
+                  "description": "The subject of the domain.",
+                  "example": "www.demo.com"
+                },
+                "validation_method": {
+                  "$ref": "#/components/schemas/ValidationMethod"
+                },
+                "validation_candidate": {
+                  "type": "string",
+                  "description": "The validation candidate for the domain.",
+                  "example": "_pki-validation.demo.com"
+                },
+                "validation_protocol": {
+                  "$ref": "#/components/schemas/Protocol"
+                },
+                "account_key_hash": {
+                  "type": "string",
+                  "description": "The account key hash for ACME.",
+                  "example": "2d3c96b6ea343d8b2327cfed4e4b487aa55c488cc"
+                }
+              },
+              "required": ["subject"]
+            }
+          }
+        }
+      },
+      "DomainUpdate": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "validation_method": {
+                  "$ref": "#/components/schemas/ValidationMethod"
+                },
+                "validation_candidate": {
+                  "type": "string",
+                  "description": "The validation candidate for the domain.",
+                  "example": "_pki-validation.demo.com"
+                },
+                "validation_protocol": {
+                  "$ref": "#/components/schemas/Protocol"
+                },
+                "account_key_hash": {
+                  "type": "string",
+                  "description": "The account key hash for ACME.",
+                  "example": "2d3c96b6ea343d8b2327cfed4e4b487aa55c488cc"
+                }
+              },
+              "required": []
+            }
+          }
+        }
+      },
+      "DomainVerify": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "token": {
+                  "type": "string",
+                  "description": "The token sent in the verification email.",
+                  "example": "2d3c96b6ea343d8b2327cfed4e4b487aa55c488cc"
+                }
+              },
+              "required": ["token"]
+            }
+          }
+        }
+      },
+      "OrganizationCreate": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Name of the organization. (This maps to the O field in the certificate)",
+                  "example": "Organization A"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "Description of the organization.",
+                  "example": "Organization A Description"
+                },
+                "assumed_name": {
+                  "type": "string",
+                  "description": "Alternate or assumed name of the organization. (This overides the O field in the certificate, if approved)",
+                  "example": "Org A"
+                },
+                "business_category": {
+                  "type": "string",
+                  "description": "Category of the organization. (This maps to the 2.5.4.15 field in the certificate)",
+                  "example": "Business Entity",
+                  "enum": [
+                    "Private Organization",
+                    "Government Entity",
+                    "Business Entity",
+                    "Non-Commercial Entity"
+                  ]
+                },
+                "address_1": {
+                  "type": "string",
+                  "description": "Primary address of the organization.",
+                  "example": "123 Main St"
+                },
+                "address_2": {
+                  "type": "string",
+                  "description": "Secondary address of the organization (if applicable).",
+                  "example": "Suite 456"
+                },
+                "city": {
+                  "type": "string",
+                  "description": "City where the organization is located. (This maps to the L field in the certificate)",
+                  "example": "San Francisco"
+                },
+                "state": {
+                  "type": "string",
+                  "description": "State or province where the organization is located. (This maps to the ST field in the certificate)",
+                  "example": "CA"
+                },
+                "zip": {
+                  "type": "string",
+                  "description": "ZIP or postal code of the organization's location.",
+                  "example": 94105
+                },
+                "country": {
+                  "type": "string",
+                  "description": "Country where the organization is located (ISO 3166-1 alpha-2 code). (This maps to the C field in the certificate)",
+                  "example": "US"
+                },
+                "phone_number": {
+                  "type": "string",
+                  "description": "Contact phone number of the organization.",
+                  "example": "+1-123-456-7890"
+                },
+                "company_number": {
+                  "type": "string",
+                  "description": "Official company registration number. (This maps to the serialNumber field in the certificate)",
+                  "example": 12345678
+                },
+                "incorporation_city": {
+                  "type": "string",
+                  "description": "City where the organization is incorporated. (This maps to the 1.3.6.1.4.1.311.60.2.1.1 field in the certificate)",
+                  "example": "Wilmington"
+                },
+                "incorporation_state": {
+                  "type": "string",
+                  "description": "State or province where the organization is incorporated. (This maps to the 1.3.6.1.4.1.311.60.2.1.2 field in the certificate)",
+                  "example": "DE"
+                },
+                "incorporation_country": {
+                  "type": "string",
+                  "description": "Country where the organization is incorporated (ISO 3166-1 alpha-2 code). (This maps to the 1.3.6.1.4.1.311.60.2.1.3 field in the certificate)",
+                  "example": "US"
+                },
+                "organization_identifier": {
+                  "type": "string",
+                  "description": null,
+                  "example": null
+                }
+              },
+              "required": ["name", "city", "state", "country"]
+            }
+          }
+        }
+      },
+      "OrganizationEndorsement": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "validation_level": {
+                  "type": "string",
+                  "description": "Validation level of the organization endorsement. OV or EV",
+                  "example": "OV",
+                  "enum": ["OV", "EV"]
+                },
+                "name": {
+                  "type": "string",
+                  "description": "Name of the organization. (This maps to the O field in the certificate)",
+                  "example": "Organization A"
+                },
+                "assumed_name": {
+                  "type": "string",
+                  "description": "Alternate or assumed name of the organization. (This overides the O field in the certificate, if approved)",
+                  "example": "Org A"
+                },
+                "business_category": {
+                  "type": "string",
+                  "description": "Category of the organization. (This maps to the 2.5.4.15 field in the certificate)",
+                  "example": "Business Entity",
+                  "enum": [
+                    "Private Organization",
+                    "Government Entity",
+                    "Business Entity",
+                    "Non-Commercial Entity"
+                  ]
+                },
+                "city": {
+                  "type": "string",
+                  "description": "City where the organization is located. (This maps to the L field in the certificate)",
+                  "example": "San Francisco"
+                },
+                "state": {
+                  "type": "string",
+                  "description": "State or province where the organization is located. (This maps to the ST field in the certificate)",
+                  "example": "CA"
+                },
+                "country": {
+                  "type": "string",
+                  "description": "Country where the organization is located (ISO 3166-1 alpha-2 code). (This maps to the C field in the certificate)"
+                },
+                "company_number": {
+                  "type": "string",
+                  "description": "Official company registration number. (This maps to the serialNumber field in the certificate)",
+                  "example": 12345678
+                },
+                "incorporation_city": {
+                  "type": "string",
+                  "description": "City where the organization is incorporated. (This maps to the 1.3.6.1.4.1.311.60.2.1.1 field in the certificate)",
+                  "example": "Wilmington"
+                },
+                "incorporation_state": {
+                  "type": "string",
+                  "description": "State or province where the organization is incorporated. (This maps to the 1.3.6.1.4.1.311.60.2.1.2 field in the certificate)",
+                  "example": "DE"
+                },
+                "incorporation_country": {
+                  "type": "string",
+                  "description": "Country where the organization is incorporated (ISO 3166-1 alpha-2 code). (This maps to the 1.3.6.1.4.1.311.60.2.1.3 field in the certificate)",
+                  "example": "US"
+                },
+                "expires_at": {
+                  "type": "string",
+                  "description": "The expiry date and time for the endorsement.",
+                  "example": "2025-07-23 22:47:08 UTC",
+                  "format": "date-time"
+                },
+                "information_sources": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "description": "ID of the information source"
+                  },
+                  "example": [
+                    "00000000-0000-0000-0000-000000000000",
+                    "00000000-0000-0000-0000-000000000000"
+                  ]
+                }
+              },
+              "required": [
+                "validation_level",
+                "name",
+                "city",
+                "state",
+                "country",
+                "expires_at"
+              ]
+            },
+            "examples": {
+              "OV Endorsement": {
+                "summary": "OV Endorsement Example",
+                "value": {
+                  "validation_level": "OV",
+                  "name": "Organization A",
+                  "assumed_name": "Org A",
+                  "city": "San Francisco",
+                  "state": "CA",
+                  "country": "US",
+                  "expires_at": "2025-07-23 22:47:08 UTC",
+                  "qualified_information_sources": [
+                    "00000000-0000-0000-0000-000000000000",
+                    "00000000-0000-0000-0000-000000000000"
+                  ]
+                }
+              },
+              "EV Endorsement": {
+                "summary": "EV Endorsement Example",
+                "value": {
+                  "validation_level": "EV",
+                  "name": "Organization A",
+                  "assumed_name": "Org A",
+                  "business_category": "Business Entity",
+                  "city": "San Francisco",
+                  "state": "CA",
+                  "country": "US",
+                  "company_number": "12345678",
+                  "incorporation_city": "Wilmington",
+                  "incorporation_state": "DE",
+                  "incorporation_country": "US",
+                  "expires_at": "2025-07-23 22:47:08 UTC",
+                  "qualified_information_sources": [
+                    "00000000-0000-0000-0000-000000000000",
+                    "00000000-0000-0000-0000-000000000000"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "OrganizationUpdate": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Name of the organization. (This maps to the O field in the certificate)",
+                  "example": "Organization A"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "Description of the organization.",
+                  "example": "Organization A Description"
+                },
+                "assumed_name": {
+                  "type": "string",
+                  "description": "Alternate or assumed name of the organization. (This overides the O field in the certificate, if approved)",
+                  "example": "Org A"
+                },
+                "business_category": {
+                  "type": "string",
+                  "description": "Category of the organization. (This maps to the 2.5.4.15 field in the certificate)",
+                  "example": "Business Entity",
+                  "enum": [
+                    "Private Organization",
+                    "Government Entity",
+                    "Business Entity",
+                    "Non-Commercial Entity"
+                  ]
+                },
+                "address_1": {
+                  "type": "string",
+                  "description": "Primary address of the organization.",
+                  "example": "123 Main St"
+                },
+                "address_2": {
+                  "type": "string",
+                  "description": "Secondary address of the organization (if applicable).",
+                  "example": "Suite 456"
+                },
+                "city": {
+                  "type": "string",
+                  "description": "City where the organization is located. (This maps to the L field in the certificate)",
+                  "example": "San Francisco"
+                },
+                "state": {
+                  "type": "string",
+                  "description": "State or province where the organization is located. (This maps to the ST field in the certificate)",
+                  "example": "CA"
+                },
+                "zip": {
+                  "type": "string",
+                  "description": "ZIP or postal code of the organization's location.",
+                  "example": 94105
+                },
+                "country": {
+                  "type": "string",
+                  "description": "Country where the organization is located (ISO 3166-1 alpha-2 code). (This maps to the C field in the certificate)",
+                  "example": "US"
+                },
+                "phone_number": {
+                  "type": "string",
+                  "description": "Contact phone number of the organization.",
+                  "example": "+1-123-456-7890"
+                },
+                "company_number": {
+                  "type": "string",
+                  "description": "Official company registration number. (This maps to the serialNumber field in the certificate)",
+                  "example": 12345678
+                },
+                "incorporation_city": {
+                  "type": "string",
+                  "description": "City where the organization is incorporated. (This maps to the 1.3.6.1.4.1.311.60.2.1.1 field in the certificate)",
+                  "example": "Wilmington"
+                },
+                "incorporation_state": {
+                  "type": "string",
+                  "description": "State or province where the organization is incorporated. (This maps to the 1.3.6.1.4.1.311.60.2.1.2 field in the certificate)",
+                  "example": "DE"
+                },
+                "incorporation_country": {
+                  "type": "string",
+                  "description": "Country where the organization is incorporated (ISO 3166-1 alpha-2 code). (This maps to the 1.3.6.1.4.1.311.60.2.1.3 field in the certificate)",
+                  "example": "US"
+                },
+                "organization_identifier": {
+                  "type": "string",
+                  "description": null,
+                  "example": null
+                }
+              },
+              "required": []
+            }
+          }
+        }
+      },
+      "TeamCreate": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "The name of the team.",
+                  "example": "Team A"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "A brief description of the team.",
+                  "example": "Team A description."
+                }
+              },
+              "required": ["name"]
+            }
+          }
+        }
+      },
+      "TeamUpdate": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "The name of the team.",
+                  "example": "Team A"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "A brief description of the team.",
+                  "example": "Team A description."
+                }
+              },
+              "required": []
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "400": {
+        "description": "Bad Request - The request could not be understood or was missing required parameters.",
+        "headers": {
+          "X-Request-ID": { "$ref": "#/components/headers/X-Request-ID" }
+        },
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/RequestError" },
+            "examples": {
+              "default": {
+                "summary": "A default example of a 400 error response.",
+                "value": {
+                  "code": "BAD_REQUEST",
+                  "message": "The request could not be understood or was missing required parameters.",
+                  "errors": []
+                }
+              }
+            }
+          }
+        }
+      },
+      "401": {
+        "description": "Unauthorized - The request requires authentication or the provided authentication credentials are invalid.",
+        "headers": {
+          "X-Request-ID": { "$ref": "#/components/headers/X-Request-ID" }
+        },
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/RequestError" },
+            "examples": {
+              "default": {
+                "summary": "A default example of a 401 error response.",
+                "value": {
+                  "code": "UNAUTHORIZED",
+                  "message": "The request requires authentication or the provided authentication credentials are invalid.",
+                  "errors": []
+                }
+              }
+            }
+          }
+        }
+      },
+      "403": {
+        "description": "Forbidden - Access is denied due to insufficient permissions.",
+        "headers": {
+          "X-Request-ID": { "$ref": "#/components/headers/X-Request-ID" }
+        },
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/RequestError" },
+            "examples": {
+              "default": {
+                "summary": "A default example of a 403 error response.",
+                "value": {
+                  "code": "FORBIDDEN",
+                  "message": "Access is denied due to insufficient permissions.",
+                  "errors": []
+                }
+              }
+            }
+          }
+        }
+      },
+      "404": {
+        "description": "Not Found - The requested resource could not be found.",
+        "headers": {
+          "X-Request-ID": { "$ref": "#/components/headers/X-Request-ID" }
+        },
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/RequestError" },
+            "examples": {
+              "default": {
+                "summary": "A default example of a 404 error response.",
+                "value": {
+                  "code": "NOT_FOUND",
+                  "message": "The requested resource could not be found.",
+                  "errors": []
+                }
+              }
+            }
+          }
+        }
+      },
+      "422": {
+        "description": "Unprocessable Content - The request was well-formed but was unable to be followed due to semantic errors.",
+        "headers": {
+          "X-Request-ID": { "$ref": "#/components/headers/X-Request-ID" }
+        },
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/RequestError" },
+            "examples": {
+              "default": {
+                "summary": "A default example of a 422 error response.",
+                "value": {
+                  "code": "UNPROCESSABLE_CONTENT",
+                  "message": "The request was well-formed but was unable to be processed due to errors.",
+                  "errors": []
+                }
+              }
+            }
+          }
+        }
+      },
+      "500": {
+        "description": "Internal Server Error - An error occurred on the server.",
+        "headers": {
+          "X-Request-ID": { "$ref": "#/components/headers/X-Request-ID" }
+        },
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/RequestError" },
+            "examples": {
+              "default": {
+                "summary": "A default example of a 500 error response.",
+                "value": {
+                  "code": "INTERNAL_SERVER_ERROR",
+                  "message": "An error occurred on the server.",
+                  "errors": []
+                }
+              }
+            }
+          }
+        }
+      },
+      "503": {
+        "description": "Service Unavailable - The server is currently unable to handle the request due to temporary overload or scheduled maintenance.",
+        "headers": {
+          "X-Request-ID": { "$ref": "#/components/headers/X-Request-ID" }
+        },
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/RequestError" },
+            "examples": {
+              "default": {
+                "summary": "A default example of a 503 error response.",
+                "value": {
+                  "code": "SERVICE_UNAVAILABLE",
+                  "message": "The server is currently unable to handle the request due to temporary overload or scheduled maintenance.",
+                  "errors": []
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "ValidationMethod": {
+        "type": "string",
+        "description": "The validation method used for the object.",
+        "example": "3.2.2.4.7",
+        "enum": [
+          "3.2.2.4.2",
+          "3.2.2.4.4",
+          "3.2.2.4.7",
+          "3.2.2.4.14",
+          "3.2.2.4.18",
+          "3.2.2.5.1"
+        ]
+      },
+      "Protocol": {
+        "type": "string",
+        "description": "The protocol used for the object.",
+        "example": "TXT",
+        "enum": ["EMAIL", "HTTP", "HTTPS", "CNAME", "TXT"]
+      },
+      "Certificate": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the certificate.",
+            "example": "00000000-0000-0000-0000-000000000000"
+          },
+          "body": {
+            "type": "string",
+            "description": "The PEM-encoded certificate body.",
+            "example": "-----BEGIN CERTIFICATE-----\\n-----END CERTIFICATE-----\\n"
+          },
+          "chain": {
+            "type": "string",
+            "description": "The PEM-encoded certificate chain.",
+            "example": "-----BEGIN CERTIFICATE-----\\n-----END CERTIFICATE-----\\n-----BEGIN CERTIFICATE-----\\n-----END CERTIFICATE-----\\n"
+          },
+          "issued_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The date and time when the certificate was issued.",
+            "example": "2024-07-23 22:37:35 UTC"
+          }
+        },
+        "required": ["id", "body", "chain", "issued_at"]
+      },
+      "CertificateProfile": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the certificate profile.",
+            "example": "00000000-0000-0000-0000-000000000000"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the certificate profile.",
+            "example": "DV TLS - RSA"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the certificate profile.",
+            "example": "DV TLS - RSA Description"
+          }
+        },
+        "required": ["id", "name", "description"]
+      },
+      "CertificateRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the certificate request.",
+            "example": "00000000-0000-0000-0000-000000000000"
+          },
+          "certificate_signing_request": {
+            "type": "string",
+            "description": "The PEM-encoded certificate signing request (CSR).",
+            "example": "-----BEGIN CERTIFICATE REQUEST-----\\n-----END CERTIFICATE REQUEST-----\\n"
+          },
+          "status": {
+            "type": "string",
+            "description": "The status of the certificate request.",
+            "example": "active"
+          },
+          "certificate": { "$ref": "#/components/schemas/Certificate" },
+          "certificate_profile": {
+            "$ref": "#/components/schemas/CertificateProfile"
+          },
+          "organization": { "$ref": "#/components/schemas/Organization" },
+          "domains": {
+            "type": "array",
+            "description": "List of domains included in the certificate request.",
+            "items": { "$ref": "#/components/schemas/Domain" }
+          }
+        },
+        "required": [
+          "id",
+          "certificate_signing_request",
+          "status",
+          "certificate",
+          "certificate_profile",
+          "organization",
+          "domains"
+        ]
+      },
+      "Domain": {
+        "description": "## Important Notes:\n\n- If validation is fullfilled by an active endorsement when the domain is created, there will not be a validation object present. (IE: Domain Validation Reuse)\n",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the domain.",
+            "example": "00000000-0000-0000-0000-000000000000"
+          },
+          "subject": {
+            "type": "string",
+            "description": "The subject of the domain.",
+            "example": "www.demo.com"
+          },
+          "second_level_domain": {
+            "type": "string",
+            "description": "The second-level domain.",
+            "example": "demo"
+          },
+          "top_level_domain": {
+            "type": "string",
+            "description": "The top-level domain.",
+            "example": "com"
+          },
+          "transit_routing_domain": {
+            "type": "string",
+            "description": "The transit routing domain.",
+            "example": "www"
+          },
+          "account_key_hash": {
+            "type": "string",
+            "description": "The account key hash for ACME.",
+            "example": "2d3c96b6ea343d8b2327cfed4e4b487aa55c488cc"
+          },
+          "endorsed": {
+            "type": "boolean",
+            "description": "Whether the domain is endorsed.",
+            "example": true
+          },
+          "expires_at": {
+            "type": "string",
+            "description": "The expiry date and time for the active endorsement. This will be null if the domain is not endorsed.",
+            "example": "2025-07-23 22:47:08 UTC",
+            "format": "date-time"
+          },
+          "status": {
+            "type": "string",
+            "description": "Status of the domain. Only active domains may be included in a certificate request.",
+            "example": null,
+            "enum": ["inactive", "active", "pending_highrisk_review"]
+          },
+          "validation": {
+            "description": "The validation object for this domain.",
+            "$ref": "#/components/schemas/DomainValidation"
+          },
+          "endorsements": {
+            "type": "array",
+            "description": "The list of endorsements for the domain.",
+            "items": { "$ref": "#/components/schemas/DomainEndorsement" }
+          }
+        },
+        "required": [
+          "id",
+          "subject",
+          "second_level_domain",
+          "top_level_domain",
+          "transit_routing_domain",
+          "endorsed",
+          "expires_at",
+          "endorsements"
+        ]
+      },
+      "DomainEndorsement": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the domain endorsement.",
+            "example": "00000000-0000-0000-0000-000000000000"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the domain endorsement.",
+            "example": "demo.com"
+          },
+          "validation_method": {
+            "$ref": "#/components/schemas/ValidationMethod"
+          },
+          "validation_level": {
+            "type": "string",
+            "description": "The validation level of the endorsement.",
+            "example": "DV",
+            "enum": ["DV"]
+          },
+          "protocol": { "$ref": "#/components/schemas/Protocol" },
+          "expires_at": {
+            "type": "string",
+            "description": "The expiry date and time for the endorsement. (This date is calculated by adding 397 days to the date of verification)",
+            "example": "2025-07-23 22:47:08 UTC",
+            "format": "date-time"
+          },
+          "created_at": {
+            "type": "string",
+            "description": "The creation date and time of the endorsement.",
+            "example": "2024-07-23 22:47:08 UTC",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "validation_method",
+          "validation_level",
+          "protocol",
+          "expires_at",
+          "created_at"
+        ]
+      },
+      "DomainValidation": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the domain validation.",
+            "example": "00000000-0000-0000-0000-000000000000"
+          },
+          "validation_method": {
+            "$ref": "#/components/schemas/ValidationMethod"
+          },
+          "candidate": {
+            "type": "string",
+            "description": "The validation candidate for the domain.",
+            "example": "_pki-validation.demo.com"
+          },
+          "protocol": { "$ref": "#/components/schemas/Protocol" },
+          "status": {
+            "type": "string",
+            "description": "The status of the validation",
+            "example": "pending",
+            "enum": [
+              "pending",
+              "in_progress",
+              "verified",
+              "expired",
+              "cancelled",
+              "failed"
+            ]
+          },
+          "domain_validation_options": {
+            "type": "array",
+            "description": "The list of domain validation options.",
+            "items": { "$ref": "#/components/schemas/DomainValidationOption" }
+          }
+        },
+        "required": [
+          "id",
+          "validation_method",
+          "candidate",
+          "protocol",
+          "domain_validation_options"
+        ]
+      },
+      "DomainValidationOption": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the domain validation option.",
+            "example": "00000000-0000-0000-0000-000000000000"
+          },
+          "candidate": {
+            "type": "string",
+            "description": "The candidate for domain validation.",
+            "example": "_pki-validation.demo.com"
+          },
+          "protocol": { "$ref": "#/components/schemas/Protocol" },
+          "expires_at": {
+            "type": "string",
+            "description": "The expiry date and time for the validation option.",
+            "example": "2024-08-22 22:45:00 UTC",
+            "format": "date-time"
+          },
+          "verification_value": {
+            "type": "string",
+            "description": "The verification value for the validation option.",
+            "example": "8cad546caaa24524b7b6607cf277a032"
+          },
+          "validation_method": {
+            "$ref": "#/components/schemas/ValidationMethod"
+          }
+        },
+        "required": [
+          "id",
+          "candidate",
+          "protocol",
+          "expires_at",
+          "verification_value",
+          "validation_method"
+        ]
+      },
+      "DomainVerificationCandidate": {
+        "type": "object",
+        "properties": {
+          "validation_method": {
+            "$ref": "#/components/schemas/ValidationMethod"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the validation method.",
+            "example": "Validation via E-Mail to Domain Contact (WHOIS)"
+          },
+          "protocol": { "$ref": "#/components/schemas/Protocol" },
+          "candidates": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "The email address of the candidate.",
+              "example": "email@example.com"
+            }
+          }
+        },
+        "required": ["validation_method", "name", "protocol", "candidates"]
+      },
+      "InformationSource": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the information source.",
+            "example": "00000000-0000-0000-0000-000000000000"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the information source.",
+            "example": "Information source A"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the information source.",
+            "example": "Information source A Description"
+          },
+          "url": {
+            "type": "string",
+            "description": "URL for the information source.",
+            "example": "https://www.sos.state.tx.us/corp/sosda/index.shtml"
+          },
+          "city": {
+            "type": "string",
+            "description": "City for the information source.",
+            "example": "Houston"
+          },
+          "state": {
+            "type": "string",
+            "description": "State for the information source.",
+            "example": "Texas"
+          },
+          "country": {
+            "type": "string",
+            "description": "Country for the information source (Format ISO 3166-Alpha-2).",
+            "example": "US"
+          },
+          "notes": {
+            "type": "string",
+            "description": "Additional notes for the information source.",
+            "example": "Examples notes"
+          }
+        },
+        "required": ["id", "name", "url", "country"]
+      },
+      "Organization": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the organization.",
+            "example": "00000000-0000-0000-0000-000000000000"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the organization. (This maps to the O field in the certificate)",
+            "example": "Organization A"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the organization.",
+            "example": "Organization A Description"
+          },
+          "assumed_name": {
+            "type": "string",
+            "description": "Alternate or assumed name of the organization. (This overides the O field in the certificate, if approved)",
+            "example": "Org A"
+          },
+          "business_category": {
+            "type": "string",
+            "description": "Category of the organization. (This maps to the 2.5.4.15 field in the certificate)",
+            "example": "Business Entity",
+            "enum": [
+              "Private Organization",
+              "Government Entity",
+              "Business Entity",
+              "Non-Commercial Entity"
+            ]
+          },
+          "address_1": {
+            "type": "string",
+            "description": "Primary address of the organization.",
+            "example": "123 Main St"
+          },
+          "address_2": {
+            "type": "string",
+            "description": "Secondary address of the organization (if applicable).",
+            "example": "Suite 456"
+          },
+          "city": {
+            "type": "string",
+            "description": "City where the organization is located. (This maps to the L field in the certificate)",
+            "example": "San Francisco"
+          },
+          "state": {
+            "type": "string",
+            "description": "State or province where the organization is located. (This maps to the ST field in the certificate)",
+            "example": "CA"
+          },
+          "zip": {
+            "type": "string",
+            "description": "ZIP or postal code of the organization's location.",
+            "example": 94105
+          },
+          "country": {
+            "type": "string",
+            "description": "Country where the organization is located (ISO 3166-1 alpha-2 code). (This maps to the C field in the certificate)",
+            "example": "US"
+          },
+          "phone_number": {
+            "type": "string",
+            "description": "Contact phone number of the organization.",
+            "example": "+1-123-456-7890"
+          },
+          "company_number": {
+            "type": "string",
+            "description": "Official company registration number. (This maps to the serialNumber field in the certificate)",
+            "example": 12345678
+          },
+          "incorporation_city": {
+            "type": "string",
+            "description": "City where the organization is incorporated. (This maps to the 1.3.6.1.4.1.311.60.2.1.1 field in the certificate)",
+            "example": "Wilmington"
+          },
+          "incorporation_state": {
+            "type": "string",
+            "description": "State or province where the organization is incorporated. (This maps to the 1.3.6.1.4.1.311.60.2.1.2 field in the certificate)",
+            "example": "DE"
+          },
+          "incorporation_country": {
+            "type": "string",
+            "description": "Country where the organization is incorporated (ISO 3166-1 alpha-2 code). (This maps to the 1.3.6.1.4.1.311.60.2.1.3 field in the certificate)",
+            "example": "US"
+          },
+          "organization_identifier": {
+            "type": "string",
+            "description": null,
+            "example": null
+          },
+          "endorsements": {
+            "type": "array",
+            "description": "The list of endorsements for the organization. There will only 1 endorsement for each validation type.",
+            "items": { "$ref": "#/components/schemas/OrganizationEndorsement" }
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "address_1",
+          "city",
+          "state",
+          "zip",
+          "country",
+          "phone_number",
+          "endorsements"
+        ]
+      },
+      "OrganizationEndorsement": {
+        "type": "object",
+        "properties": {
+          "validation_level": {
+            "type": "string",
+            "description": "Validation level of the organization endorsement. OV or EV",
+            "example": "OV",
+            "enum": ["OV", "EV"]
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the organization. (This maps to the O field in the certificate)",
+            "example": "Organization A"
+          },
+          "assumed_name": {
+            "type": "string",
+            "description": "Alternate or assumed name of the organization. (This overides the O field in the certificate, if approved)",
+            "example": "Org A"
+          },
+          "business_category": {
+            "type": "string",
+            "description": "Category of the organization. (This maps to the 2.5.4.15 field in the certificate)",
+            "example": "Business Entity",
+            "enum": [
+              "Private Organization",
+              "Government Entity",
+              "Business Entity",
+              "Non-Commercial Entity"
+            ]
+          },
+          "city": {
+            "type": "string",
+            "description": "City where the organization is located. (This maps to the L field in the certificate)",
+            "example": "San Francisco"
+          },
+          "state": {
+            "type": "string",
+            "description": "State or province where the organization is located. (This maps to the ST field in the certificate)",
+            "example": "CA"
+          },
+          "country": {
+            "type": "string",
+            "description": "Country where the organization is located (ISO 3166-1 alpha-2 code). (This maps to the C field in the certificate)"
+          },
+          "company_number": {
+            "type": "string",
+            "description": "Official company registration number. (This maps to the serialNumber field in the certificate)",
+            "example": 12345678
+          },
+          "incorporation_city": {
+            "type": "string",
+            "description": "City where the organization is incorporated. (This maps to the 1.3.6.1.4.1.311.60.2.1.1 field in the certificate)",
+            "example": "Wilmington"
+          },
+          "incorporation_state": {
+            "type": "string",
+            "description": "State or province where the organization is incorporated. (This maps to the 1.3.6.1.4.1.311.60.2.1.2 field in the certificate)",
+            "example": "DE"
+          },
+          "incorporation_country": {
+            "type": "string",
+            "description": "Country where the organization is incorporated (ISO 3166-1 alpha-2 code). (This maps to the 1.3.6.1.4.1.311.60.2.1.3 field in the certificate)",
+            "example": "US"
+          },
+          "expires_at": {
+            "type": "string",
+            "description": "The expiry date and time for the endorsement.",
+            "example": "2025-07-23 22:47:08 UTC",
+            "format": "date-time"
+          },
+          "created_at": {
+            "type": "string",
+            "description": "The creation date and time of the endorsement.",
+            "example": "2024-07-23 22:47:08 UTC",
+            "format": "date-time"
+          },
+          "information_sources": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "ID of the information source"
+            },
+            "example": [
+              "00000000-0000-0000-0000-000000000000",
+              "00000000-0000-0000-0000-000000000000"
+            ]
+          }
+        },
+        "required": [
+          "validation_level",
+          "name",
+          "assumed_name",
+          "business_category",
+          "city",
+          "state",
+          "country",
+          "company_number",
+          "incorporation_city",
+          "incorporation_state",
+          "incorporation_country",
+          "expires_at",
+          "created_at",
+          "information_sources"
+        ]
+      },
+      "Team": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the team.",
+            "example": "00000000-0000-0000-0000-000000000000"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the team.",
+            "example": "Team A"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the team.",
+            "example": "Team A Description"
+          }
+        },
+        "required": ["id", "name", "description"]
+      },
+      "RequestError": {
+        "type": "object",
+        "properties": {
+          "code": { "type": "string", "description": "The error code." },
+          "message": { "type": "string", "description": "The error message." },
+          "details": {
+            "type": "array",
+            "description": "List of specific details relating to the error.",
+            "items": { "type": "string" }
+          }
+        },
+        "required": ["code", "message", "details"]
+      },
+      "WebhookEvent": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the webhook event."
+          },
+          "event": { "type": "string", "description": "The event type." },
+          "payload": {
+            "type": "string",
+            "description": "The payload of the webhook event."
+          }
+        },
+        "required": ["id", "event", "payload"]
+      }
+    },
+    "securitySchemes": { "token": { "type": "http", "scheme": "bearer" } }
+  },
+  "security": [{ "token": [] }],
+  "tags": [
+    { "name": "Status" },
+    { "name": "Authentication / Teams" },
+    { "name": "Certificate Manager / Certificates" },
+    { "name": "Certificate Manager / Certificate Profiles" },
+    { "name": "Certificate Manager / Certificate Requests" },
+    { "name": "Validation / Domains" },
+    { "name": "Validation / Organizations" }
+  ],
+  "webhooks": {
+    "certificate.create": {
+      "post": {
+        "description": "Sent when a new certificate is created.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Certificate" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully received the certificate creation event."
+          }
+        }
+      }
+    },
+    "certificate.update": {
+      "post": {
+        "description": "Sent when an existing certificate is updated.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Certificate" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully received the certificate update event."
+          }
+        }
+      }
+    },
+    "certificate.delete": {
+      "post": {
+        "description": "Sent when a certificate is deleted.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Certificate" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully received the certificate deletion event."
+          }
+        }
+      }
+    },
+    "certificate-profile.create": {
+      "post": {
+        "description": "Sent when a new certificate profile is created.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CertificateProfile" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully received the certificate profile creation event."
+          }
+        }
+      }
+    },
+    "certificate-profile.update": {
+      "post": {
+        "description": "Sent when an existing certificate profile is updated.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CertificateProfile" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully received the certificate profile update event."
+          }
+        }
+      }
+    },
+    "certificate-profile.delete": {
+      "post": {
+        "description": "Sent when a certificate profile is deleted.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CertificateProfile" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully received the certificate profile deletion event."
+          }
+        }
+      }
+    },
+    "certificate-request.create": {
+      "post": {
+        "description": "Sent when a new certificate request is created.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CertificateRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully received the certificate request creation event."
+          }
+        }
+      }
+    },
+    "certificate-request.update": {
+      "post": {
+        "description": "Sent when an existing certificate request is updated.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CertificateRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully received the certificate request update event."
+          }
+        }
+      }
+    },
+    "certificate-request.delete": {
+      "post": {
+        "description": "Sent when a certificate request is deleted.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CertificateRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully received the certificate request deletion event."
+          }
+        }
+      }
+    },
+    "domain.create": {
+      "post": {
+        "description": "Sent when a new domain is created.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Domain" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully received the domain creation event."
+          }
+        }
+      }
+    },
+    "domain.update": {
+      "post": {
+        "description": "Sent when an existing domain is updated.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Domain" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully received the domain update event."
+          }
+        }
+      }
+    },
+    "domain.delete": {
+      "post": {
+        "description": "Sent when a domain is deleted.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Domain" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully received the domain deletion event."
+          }
+        }
+      }
+    },
+    "organization.create": {
+      "post": {
+        "description": "Sent when a new organization is created.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Organization" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully received the organization creation event."
+          }
+        }
+      }
+    },
+    "organization.update": {
+      "post": {
+        "description": "Sent when an existing organization is updated.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Organization" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully received the organization update event."
+          }
+        }
+      }
+    },
+    "organization.delete": {
+      "post": {
+        "description": "Sent when an organization is deleted.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Organization" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully received the organization deletion event."
+          }
+        }
+      }
+    },
+    "team.create": {
+      "post": {
+        "description": "Sent when a new team is created.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Team" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully received the team creation event."
+          }
+        }
+      }
+    },
+    "team.update": {
+      "post": {
+        "description": "Sent when an existing team is updated.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Team" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully received the team update event."
+          }
+        }
+      }
+    },
+    "team.delete": {
+      "post": {
+        "description": "Sent when a team is deleted.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Team" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully received the team deletion event."
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,196 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "MGM - API v2",
+    "description": "Endpoints for MGM v2 API",
+    "contact": { "email": "ygor@secco.tech" }
+  },
+  "tags": [
+    { "name": "dash", "description": "Dashboard Endpoints" },
+    { "name": "schedule", "description": "Schedule Endpoints" }
+  ],
+  "paths": {
+    "/dash/group_summary": {
+      "post": {
+        "tags": ["dash"],
+        "summary": "Fetches dashboard data for specific group",
+        "description": "Fetches dashboard data for specific group",
+        "operationId": "group_summary",
+        "requestBody": {
+          "description": "Create a new pet in the store",
+          "required": true
+        },
+        "parameters": [
+          {
+            "name": "chat_id",
+            "in": "query",
+            "description": "ID of group",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "required": true,
+            "description": "Initial Date on the Interval",
+            "schema": { "type": "datetime" }
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "required": true,
+            "description": "Final Date on the Interval",
+            "schema": { "type": "datetime" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Successful operation" },
+          "400": { "description": "Missing Parameters" }
+        }
+      }
+    },
+    "/dash/user_summary": {
+      "post": {
+        "tags": ["dash"],
+        "summary": "Fetches dashboard data for specific user",
+        "description": "Fetches dashboard data for specific user",
+        "operationId": "user_summary",
+        "requestBody": {
+          "description": "Create a new pet in the store",
+          "required": true
+        },
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "query",
+            "description": "ID of user",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "required": true,
+            "description": "Initial Date on the Interval",
+            "schema": { "type": "datetime" }
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "required": true,
+            "description": "Final Date on the Interval",
+            "schema": { "type": "datetime" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Successful operation" },
+          "400": { "description": "Missing Parameters" }
+        }
+      }
+    },
+    "/dash/ranking": {
+      "post": {
+        "tags": ["dash"],
+        "summary": "Fetches dashboard ranking for specific group",
+        "description": "Fetches dashboard data for specific group",
+        "operationId": "user_summary",
+        "requestBody": {
+          "description": "Create a new pet in the store",
+          "required": true
+        },
+        "parameters": [
+          {
+            "name": "chat_id",
+            "in": "query",
+            "description": "ID of group",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "description": "Initial Date on the Interval",
+            "required": true,
+            "schema": { "type": "datetime" }
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "description": "Final Date on the Interval",
+            "required": true,
+            "schema": { "type": "datetime" }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": true,
+            "description": "Count of users to be ranked",
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Successful operation" },
+          "400": { "description": "Missing Parameters" }
+        }
+      }
+    },
+    "/schedule/saveschedule_batch": {
+      "post": {
+        "tags": ["schedule"],
+        "summary": "Schedules Messages for groups in batch",
+        "description": "Schedules the same message or routine to many groups at the same time based on an array",
+        "operationId": "group_summary",
+        "requestBody": {
+          "description": "Create a new pet in the store",
+          "required": true
+        },
+        "parameters": [
+          {
+            "name": "chat_id_list",
+            "in": "query",
+            "description": "Array of group ids",
+            "required": true,
+            "schema": { "type": "array", "format": "int64" }
+          },
+          {
+            "name": "send_date",
+            "in": "query",
+            "description": "Fixed Date for the schedule",
+            "schema": { "type": "datetime" }
+          },
+          {
+            "name": "days_of_week",
+            "in": "query",
+            "description": "Array of days of the week to for the schedule",
+            "schema": { "type": "array" }
+          },
+          {
+            "name": "days_of_week.*",
+            "in": "query",
+            "required": true,
+            "description": "Days of the week",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "time",
+            "in": "query",
+            "required": true,
+            "description": "Time",
+            "schema": { "type": "datetime" }
+          },
+          {
+            "name": "text",
+            "in": "query",
+            "required": true,
+            "description": "Text to be sent",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Successful operation" },
+          "400": { "description": "Missing Parameters" }
+        }
+      }
+    }
+  }
+}

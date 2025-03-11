@@ -1,37 +1,55 @@
-import { BaseValidator } from './BaseValidator';
-import schemaV2 from '../schemas/openapi/v2.0.0.json';
-import schemaV3 from '../schemas/openapi/v3.0.0.json';
-import { OpenAPI, OpenAPIV2 } from '@har-sdk/core';
+import { Validator } from './Validator';
+import { SwaggerValidator } from './SwaggerValidator';
+import { OAS3Validator } from './OAS3Validator';
+import { OAS3_1Validator } from './OAS3_1Validator';
 import semver from 'semver';
+import { OpenAPI, OpenAPIV2, OpenAPIV3, OpenAPIV3_1 } from '@har-sdk/core';
+import { ErrorObject } from 'ajv';
 
-export class OASValidator extends BaseValidator<OpenAPI.Document> {
-  private readonly MIN_ALLOWED_VERSION = '2.0.0';
+export class OASValidator implements Validator<OpenAPI.Document> {
+  private readonly validators: ReadonlyMap<
+    string,
+    Validator<OpenAPI.Document>
+  > = new Map(
+    Object.entries({
+      '2.x.x': new SwaggerValidator(),
+      '3.0.x': new OAS3Validator(),
+      '3.1.x': new OAS3_1Validator()
+    })
+  );
 
-  private readonly VERSION_SCHEMA_MAP: Readonly<Record<2 | 3, string>> = {
-    2: 'http://swagger.io/v2/schema.json#',
-    3: 'https://spec.openapis.org/oas/3.0/schema/2021-09-28'
-  };
+  public async verify(document: OpenAPI.Document): Promise<ErrorObject[]> {
+    const version = this.extractSpecVersion(document);
+    const validator = this.getValidator(version);
 
-  constructor() {
-    super([schemaV2, schemaV3]);
+    if (!validator) {
+      throw new Error('Unsupported or invalid specification version');
+    }
+
+    return validator.verify(document);
   }
 
-  protected getSchemaId(document: OpenAPI.Document): string {
-    let version = (
+  private extractSpecVersion(
+    document: OpenAPIV2.Document | OpenAPIV3.Document | OpenAPIV3_1.Document
+  ): string {
+    const version = (
       'openapi' in document
         ? document.openapi
         : (document as OpenAPIV2.Document).swagger || ''
     ).trim();
 
-    if (
-      !semver.valid(version) &&
-      this.MIN_ALLOWED_VERSION.startsWith(version)
-    ) {
-      version = this.MIN_ALLOWED_VERSION;
-    }
+    return semver.coerce(version)?.format() ?? '';
+  }
 
-    const major = semver.valid(version) && semver.major(version);
+  private getValidator(
+    version: string
+  ): Validator<OpenAPI.Document> | undefined {
+    const [, validator]: [string?, Validator<OpenAPI.Document>?] =
+      [...this.validators].find(
+        ([range, v]: [string, Validator<OpenAPI.Document>]) =>
+          semver.satisfies(version, range) ? v : undefined
+      ) ?? [];
 
-    return (major && this.VERSION_SCHEMA_MAP[major]) || '';
+    return validator;
   }
 }

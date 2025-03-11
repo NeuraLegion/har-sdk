@@ -44,12 +44,12 @@ export class OASValidator implements Validator<OpenAPI.Document> {
   private getValidator(
     version: string
   ): Validator<OpenAPI.Document> | undefined {
-    const [, schema]: [string?, Validator<OpenAPI.Document>?] =
+    const [, validator]: [string?, Validator<OpenAPI.Document>?] =
       [...this.validators].find(
-        ([range, validator]: [string, Validator<OpenAPI.Document>]) =>
-          semver.satisfies(version, range) ? validator : undefined
+        ([range, v]: [string, Validator<OpenAPI.Document>]) =>
+          semver.satisfies(version, range) ? v : undefined
       ) ?? [];
 
-    return schema;
+    return validator;
   }
 }

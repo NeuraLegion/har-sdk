@@ -26,9 +26,9 @@ components:
         items:
           type: array
           items:
-            dynamicRef: '#ListItem'
+            $dynamicRef: '#ListItem'
     ListItem:
-      dynamicAnchor: 'ListItem'
+      $dynamicAnchor: 'ListItem'
       type: object
       required:
         - id

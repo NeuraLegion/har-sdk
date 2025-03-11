@@ -81,7 +81,7 @@ describe('OASValidator', () => {
       }
     );
 
-    it('should successfully validate when when validation happens concurrently', async () => {
+    it('should successfully validate when validation happens concurrently', async () => {
       const input1: OpenAPIV3.Document = yaml.load(
         await promisify(readFile)(
           resolve(__dirname, './fixtures/oas3.1.petstore.yaml'),

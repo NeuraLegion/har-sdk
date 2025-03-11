@@ -13,7 +13,7 @@ info:
     You can download reports programmatically by making an HTTP GET request, or manually from your [Balance Platform Customer Area](https://balanceplatform-test.adyen.com/balanceplatform).
   termsOfService: https://www.adyen.com/legal/terms-and-conditions
   title: Report webhooks
-  version: "1"
+  version: '1'
   x-apisguru-categories:
     - payment
   x-logo:
@@ -21,7 +21,7 @@ info:
   x-origin:
     - format: openapi
       url: https://raw.githubusercontent.com/Adyen/adyen-openapi/main/json/BalancePlatformReportNotification-v1.json
-      version: "3.1"
+      version: '3.1'
   x-providerName: adyen.com
   x-publicVersion: true
   x-serviceName: BalancePlatformReportNotification-v1
@@ -31,7 +31,7 @@ components:
   examples:
     WebhookAck:
       summary: Acknowledge Webhook
-      value: "[accepted]"
+      value: '[accepted]'
     post-balancePlatform.report.created-balancePlatform.report.created:
       description: Example webhook when a report was generated and is ready to be downloaded
       summary: Report created
@@ -58,10 +58,10 @@ components:
     ReportNotificationData:
       properties:
         accountHolder:
-          $ref: "#/components/schemas/ResourceReference"
+          $ref: '#/components/schemas/ResourceReference'
           description: The account holder related to the report.
         balanceAccount:
-          $ref: "#/components/schemas/ResourceReference"
+          $ref: '#/components/schemas/ResourceReference'
           description: The balance account related to the report.
         balancePlatform:
           description: The unique identifier of the balance platform.
@@ -87,7 +87,7 @@ components:
     ReportNotificationRequest:
       properties:
         data:
-          $ref: "#/components/schemas/ReportNotificationData"
+          $ref: '#/components/schemas/ReportNotificationData'
           description: Contains event details.
         environment:
           description: |-
@@ -151,18 +151,18 @@ webhooks:
           application/json:
             examples:
               balancePlatform.report.created:
-                $ref: "#/components/examples/post-balancePlatform.report.created-balancePlatform.report.created"
+                $ref: '#/components/examples/post-balancePlatform.report.created-balancePlatform.report.created'
             schema:
-              $ref: "#/components/schemas/ReportNotificationRequest"
+              $ref: '#/components/schemas/ReportNotificationRequest'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
                 balancePlatform.report.created:
-                  $ref: "#/components/examples/WebhookAck"
+                  $ref: '#/components/examples/WebhookAck'
               schema:
-                $ref: "#/components/schemas/BalancePlatformNotificationResponse"
+                $ref: '#/components/schemas/BalancePlatformNotificationResponse'
           description: OK - the request has succeeded.
       security:
         - ApiKeyAuth: []

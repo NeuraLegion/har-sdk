@@ -12,7 +12,7 @@ info:
   x-origin:
     - format: openapi
       url: https://www.urlbox.io/.well-known/open-api.yaml
-      version: "3.1"
+      version: '3.1'
   x-providerName: urlbox.io
 paths:
   /v1/render/sync:
@@ -22,14 +22,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/RenderRequest"
+              $ref: '#/components/schemas/RenderRequest'
         required: true
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/RenderResponse"
+                $ref: '#/components/schemas/RenderResponse'
           description: Successful operation
           headers:
             x-renders-allowed:
@@ -64,14 +64,14 @@ paths:
               description: The request ID assigned by URLBox
               schema:
                 type: string
-        "307":
+        '307':
           content:
             application/json:
               example:
                 location: https://api.urlbox.io/v1/redirect/BQxxwO98uwkSsuJf/1dca9bae-c49d-42d3-8282-89450afb7e73/1
                 message: Please follow the redirect to continue your long running request
               schema:
-                $ref: "#/components/schemas/RedirectResponse"
+                $ref: '#/components/schemas/RedirectResponse'
           description: Temporary Redirect
           headers:
             Location:
@@ -79,7 +79,7 @@ paths:
                 description: The URL to follow for the long running request
                 format: uri
                 type: string
-        "400":
+        '400':
           content:
             application/json:
               example:
@@ -87,14 +87,14 @@ paths:
                   code: ApiKeyNotFound
                   message: Api Key does not exist
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
           description: Bad request
           headers:
             x-urlbox-error-message:
               description: An error message describing the reason the request failed
               schema:
                 type: string
-        "401":
+        '401':
           content:
             application/json:
               example:
@@ -102,14 +102,14 @@ paths:
                   code: ApiKeyNotFound
                   message: Api Key does not exist
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
           description: Unauthorized
           headers:
             x-urlbox-error-message:
               description: An error message describing the reason the request failed
               schema:
                 type: string
-        "500":
+        '500':
           content:
             application/json:
               example:
@@ -117,7 +117,7 @@ paths:
                   code: ApiKeyNotFound
                   message: Something went wrong rendering that
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                $ref: '#/components/schemas/ErrorResponse'
           description: Internal server error
           headers:
             x-urlbox-error-message:

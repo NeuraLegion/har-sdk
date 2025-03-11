@@ -31,7 +31,7 @@ info:
     ```
   termsOfService: https://www.adyen.com/legal/terms-and-conditions
   title: Adyen Balance Control API
-  version: "1"
+  version: '1'
   x-apisguru-categories:
     - payment
   x-logo:
@@ -39,7 +39,7 @@ info:
   x-origin:
     - format: openapi
       url: https://raw.githubusercontent.com/Adyen/adyen-openapi/main/json/BalanceControlService-v1.json
-      version: "3.1"
+      version: '3.1'
   x-providerName: adyen.com
   x-publicVersion: true
   x-serviceName: BalanceControlService
@@ -65,18 +65,18 @@ paths:
           application/json:
             examples:
               post-balance-transfer:
-                $ref: "#/components/examples/post-balanceTransfer-post-balance-transfer"
+                $ref: '#/components/examples/post-balanceTransfer-post-balance-transfer'
             schema:
-              $ref: "#/components/schemas/BalanceTransferRequest"
+              $ref: '#/components/schemas/BalanceTransferRequest'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
                 post-balance-transfer:
-                  $ref: "#/components/examples/post-balanceTransfer-post-balance-transfer-200"
+                  $ref: '#/components/examples/post-balanceTransfer-post-balance-transfer-200'
               schema:
-                $ref: "#/components/schemas/BalanceTransferResponse"
+                $ref: '#/components/schemas/BalanceTransferResponse'
           description: OK - the request has succeeded.
       security:
         - BasicAuth: []
@@ -110,7 +110,7 @@ components:
         createdAt: 2022-01-24T14:59:11+01:00
         description: Your description for the transfer
         fromMerchant: MerchantAccount_NL
-        pspReference: "8816080397613514"
+        pspReference: '8816080397613514'
         reference: Unique reference for the transfer
         status: transferred
         toMerchant: MerchantAccount_DE
@@ -134,7 +134,7 @@ components:
     BalanceTransferRequest:
       properties:
         amount:
-          $ref: "#/components/schemas/Amount"
+          $ref: '#/components/schemas/Amount'
           description: The amount of the transfer in [minor units](https://docs.adyen.com/development-resources/currency-codes).
         description:
           description: A human-readable description for the transfer. You can use alphanumeric characters and hyphens. We recommend sending a maximum of 140 characters, otherwise the description may be truncated.
@@ -153,7 +153,7 @@ components:
           description: The unique identifier of the destination merchant account from which funds are transferred.
           type: string
         type:
-          description: "The type of balance transfer. Possible values: **tax**, **fee**, **terminalSale**, **credit**, **debit**, and **adjustment**."
+          description: 'The type of balance transfer. Possible values: **tax**, **fee**, **terminalSale**, **credit**, **debit**, and **adjustment**.'
           enum:
             - tax
             - fee
@@ -171,7 +171,7 @@ components:
     BalanceTransferResponse:
       properties:
         amount:
-          $ref: "#/components/schemas/Amount"
+          $ref: '#/components/schemas/Amount'
           description: The amount of the transfer in [minor units](https://docs.adyen.com/development-resources/currency-codes).
         createdAt:
           description: The date when the balance transfer was requested.
@@ -194,7 +194,7 @@ components:
           maxLength: 80
           type: string
         status:
-          description: "The status of the balance transfer. Possible values: **transferred**, **failed**, **error**, and **notEnoughBalance**."
+          description: 'The status of the balance transfer. Possible values: **transferred**, **failed**, **error**, and **notEnoughBalance**.'
           enum:
             - error
             - failed
@@ -205,7 +205,7 @@ components:
           description: The unique identifier of the destination merchant account from which funds are transferred.
           type: string
         type:
-          description: "The type of balance transfer. Possible values: **tax**, **fee**, **terminalSale**, **credit**, **debit**, and **adjustment**."
+          description: 'The type of balance transfer. Possible values: **tax**, **fee**, **terminalSale**, **credit**, **debit**, and **adjustment**.'
           enum:
             - tax
             - fee

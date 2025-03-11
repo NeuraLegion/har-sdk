@@ -75,14 +75,14 @@ info:
   x-origin:
     - format: openapi
       url: http://docs.discourse.org/openapi.json
-      version: "3.1"
+      version: '3.1'
   x-providerName: discourse.local
 paths:
   /admin/backups.json:
     get:
       operationId: getBackups
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -120,7 +120,7 @@ paths:
               required:
                 - with_uploads
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -136,7 +136,7 @@ paths:
       summary: Create backup
       tags:
         - Backups
-  "/admin/backups/{filename}":
+  '/admin/backups/{filename}':
     get:
       operationId: downloadBackup
       parameters:
@@ -151,7 +151,7 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           description: success response
       summary: Download backup
       tags:
@@ -165,7 +165,7 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           description: success response
       summary: Send download backup email
       tags:
@@ -174,7 +174,7 @@ paths:
     get:
       operationId: adminListBadges
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -229,7 +229,7 @@ paths:
                         description:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         id:
                           type: integer
                         name:
@@ -283,7 +283,7 @@ paths:
                         i18n_name:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         icon:
                           type: string
                         id:
@@ -291,7 +291,7 @@ paths:
                         image_url:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         listable:
                           type: boolean
                         long_description:
@@ -305,7 +305,7 @@ paths:
                         query:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         show_posts:
                           type: boolean
                         slug:
@@ -317,7 +317,7 @@ paths:
                         trigger:
                           type:
                             - integer
-                            - "null"
+                            - 'null'
                       required:
                         - id
                         - name
@@ -372,7 +372,7 @@ paths:
                 - name
                 - badge_type_id
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -402,7 +402,7 @@ paths:
                       image_url:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       listable:
                         type: boolean
                       long_description:
@@ -416,7 +416,7 @@ paths:
                       query:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       show_posts:
                         type: boolean
                       slug:
@@ -428,7 +428,7 @@ paths:
                       trigger:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                     required:
                       - id
                       - name
@@ -475,7 +475,7 @@ paths:
       summary: Create badge
       tags:
         - Badges
-  "/admin/badges/{id}.json":
+  '/admin/badges/{id}.json':
     delete:
       operationId: deleteBadge
       parameters:
@@ -485,7 +485,7 @@ paths:
           schema:
             type: integer
       responses:
-        "200":
+        '200':
           description: success response
       summary: Delete badge
       tags:
@@ -516,7 +516,7 @@ paths:
                 - name
                 - badge_type_id
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -546,7 +546,7 @@ paths:
                       image_url:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       listable:
                         type: boolean
                       long_description:
@@ -560,7 +560,7 @@ paths:
                       query:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       show_posts:
                         type: boolean
                       slug:
@@ -572,7 +572,7 @@ paths:
                       trigger:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                     required:
                       - id
                       - name
@@ -690,7 +690,7 @@ paths:
               required:
                 - group
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -706,15 +706,15 @@ paths:
                       bio_cooked:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       bio_excerpt:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       bio_raw:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       can_admin_group:
                         type: boolean
                       can_edit_group:
@@ -726,23 +726,23 @@ paths:
                       flair_bg_color:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       flair_color:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       flair_url:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       full_name:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       grant_trust_level:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       has_messages:
                         type: boolean
                       id:
@@ -750,13 +750,13 @@ paths:
                       incoming_email:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       members_visibility_level:
                         type: integer
                       membership_request_template:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       mentionable_level:
                         type: integer
                       messageable_level:
@@ -774,7 +774,7 @@ paths:
                       title:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       user_count:
                         type: integer
                       visibility_level:
@@ -815,7 +815,7 @@ paths:
       summary: Create a group
       tags:
         - Groups
-  "/admin/groups/{id}.json":
+  '/admin/groups/{id}.json':
     delete:
       operationId: deleteGroup
       parameters:
@@ -825,7 +825,7 @@ paths:
           schema:
             type: integer
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -841,7 +841,7 @@ paths:
       summary: Delete a group
       tags:
         - Groups
-  "/admin/users/list/{flag}.json":
+  '/admin/users/list/{flag}.json':
     get:
       operationId: adminListUsers
       parameters:
@@ -877,7 +877,7 @@ paths:
           name: asc
           schema:
             enum:
-              - "true"
+              - 'true'
             type: string
         - in: query
           name: page
@@ -888,7 +888,7 @@ paths:
           schema:
             type: boolean
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -905,7 +905,7 @@ paths:
                     created_at_age:
                       type:
                         - number
-                        - "null"
+                        - 'null'
                     days_visited:
                       type: integer
                     email:
@@ -917,29 +917,29 @@ paths:
                     last_emailed_age:
                       type:
                         - number
-                        - "null"
+                        - 'null'
                     last_emailed_at:
                       type:
                         - string
-                        - "null"
+                        - 'null'
                     last_seen_age:
                       type:
                         - number
-                        - "null"
+                        - 'null'
                     last_seen_at:
                       type:
                         - string
-                        - "null"
+                        - 'null'
                     manual_locked_trust_level:
                       type:
                         - string
-                        - "null"
+                        - 'null'
                     moderator:
                       type: boolean
                     name:
                       type:
                         - string
-                        - "null"
+                        - 'null'
                     post_count:
                       type: integer
                     posts_read_count:
@@ -954,7 +954,7 @@ paths:
                     title:
                       type:
                         - string
-                        - "null"
+                        - 'null'
                     topics_entered:
                       type: integer
                     trust_level:
@@ -994,7 +994,7 @@ paths:
       tags:
         - Users
         - Admin
-  "/admin/users/{id}.json":
+  '/admin/users/{id}.json':
     delete:
       operationId: deleteUser
       parameters:
@@ -1018,7 +1018,7 @@ paths:
                 delete_posts:
                   type: boolean
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -1042,7 +1042,7 @@ paths:
           schema:
             type: integer
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -1072,7 +1072,7 @@ paths:
                       - avatar_template
                     type:
                       - object
-                      - "null"
+                      - 'null'
                   associated_accounts:
                     items: {}
                     type: array
@@ -1083,7 +1083,7 @@ paths:
                   bounce_score:
                     type:
                       - integer
-                      - "null"
+                      - 'null'
                   can_activate:
                     type: boolean
                   can_be_anonymized:
@@ -1119,7 +1119,7 @@ paths:
                   created_at_age:
                     type:
                       - number
-                      - "null"
+                      - 'null'
                   days_visited:
                     type: integer
                   external_ids:
@@ -1133,7 +1133,7 @@ paths:
                   full_suspend_reason:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   groups:
                     items:
                       additionalProperties: false
@@ -1145,15 +1145,15 @@ paths:
                         bio_cooked:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         bio_excerpt:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         bio_raw:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         can_admin_group:
                           type: boolean
                         can_see_members:
@@ -1165,23 +1165,23 @@ paths:
                         flair_bg_color:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         flair_color:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         flair_url:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         full_name:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         grant_trust_level:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         has_messages:
                           type: boolean
                         id:
@@ -1189,13 +1189,13 @@ paths:
                         incoming_email:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         members_visibility_level:
                           type: integer
                         membership_request_template:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         mentionable_level:
                           type: integer
                         messageable_level:
@@ -1213,7 +1213,7 @@ paths:
                         title:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         user_count:
                           type: integer
                         visibility_level:
@@ -1257,19 +1257,19 @@ paths:
                   last_emailed_age:
                     type:
                       - number
-                      - "null"
+                      - 'null'
                   last_emailed_at:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   last_seen_age:
                     type:
                       - number
-                      - "null"
+                      - 'null'
                   last_seen_at:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   like_count:
                     type: integer
                   like_given_count:
@@ -1277,13 +1277,13 @@ paths:
                   manual_locked_trust_level:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   moderator:
                     type: boolean
                   name:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   next_penalty:
                     type: string
                   penalty_counts:
@@ -1302,47 +1302,47 @@ paths:
                   post_edits_count:
                     type:
                       - integer
-                      - "null"
+                      - 'null'
                   posts_read_count:
                     type: integer
                   primary_group_id:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   private_topics_count:
                     type: integer
                   registration_ip_address:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   reset_bounce_score_after:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   silence_reason:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   silenced_by:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   single_sign_on_record:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   staged:
                     type: boolean
                   suspended_by:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   time_read:
                     type: integer
                   title:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   tl3_requirements:
                     additionalProperties: false
                     properties:
@@ -1526,7 +1526,7 @@ paths:
       tags:
         - Users
         - Admin
-  "/admin/users/{id}/anonymize.json":
+  '/admin/users/{id}/anonymize.json':
     put:
       operationId: anonymizeUser
       parameters:
@@ -1536,7 +1536,7 @@ paths:
           schema:
             type: integer
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -1554,7 +1554,7 @@ paths:
       tags:
         - Users
         - Admin
-  "/admin/users/{id}/log_out.json":
+  '/admin/users/{id}/log_out.json':
     post:
       operationId: logOutUser
       parameters:
@@ -1564,7 +1564,7 @@ paths:
           schema:
             type: integer
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -1581,7 +1581,7 @@ paths:
       tags:
         - Users
         - Admin
-  "/admin/users/{id}/silence.json":
+  '/admin/users/{id}/silence.json':
     put:
       operationId: silenceUser
       parameters:
@@ -1610,7 +1610,7 @@ paths:
                     - 2022-06-01T08:00:00.000Z
                   type: string
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -1658,7 +1658,7 @@ paths:
       tags:
         - Users
         - Admin
-  "/admin/users/{id}/suspend.json":
+  '/admin/users/{id}/suspend.json':
     put:
       operationId: suspendUser
       parameters:
@@ -1690,7 +1690,7 @@ paths:
                 - suspend_until
                 - reason
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -1738,7 +1738,7 @@ paths:
       tags:
         - Users
         - Admin
-  "/c/{id}/show.json":
+  '/c/{id}/show.json':
     get:
       operationId: getCategory
       parameters:
@@ -1748,7 +1748,7 @@ paths:
           schema:
             type: integer
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -1776,7 +1776,7 @@ paths:
                       auto_close_hours:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       available_groups:
                         items: {}
                         type: array
@@ -1795,29 +1795,29 @@ paths:
                       default_slow_mode_seconds:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       default_top_period:
                         type: string
                       default_view:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       description:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       description_excerpt:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       description_text:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       email_in:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       email_in_allow_strangers:
                         type: boolean
                       form_template_ids:
@@ -1839,7 +1839,7 @@ paths:
                       has_children:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       id:
                         type: integer
                       mailinglist_mirror:
@@ -1857,7 +1857,7 @@ paths:
                       permission:
                         type:
                           - integer
-                          - "null"
+                          - 'null'
                       position:
                         type: integer
                       post_count:
@@ -1865,7 +1865,7 @@ paths:
                       read_only_banner:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       read_restricted:
                         type: boolean
                       required_tag_groups:
@@ -1890,11 +1890,11 @@ paths:
                       sort_ascending:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       sort_order:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       subcategory_list_style:
                         type: string
                       text_color:
@@ -1906,23 +1906,23 @@ paths:
                       topic_template:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       topic_url:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       uploaded_background:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       uploaded_logo:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       uploaded_logo_dark:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                     required:
                       - id
                       - name
@@ -1979,7 +1979,7 @@ paths:
       summary: Show category
       tags:
         - Categories
-  "/c/{slug}/{id}.json":
+  '/c/{slug}/{id}.json':
     get:
       operationId: listCategoryTopics
       parameters:
@@ -1994,7 +1994,7 @@ paths:
           schema:
             type: integer
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -2024,7 +2024,7 @@ paths:
                             bookmarked:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             bumped:
                               type: boolean
                             bumped_at:
@@ -2042,7 +2042,7 @@ paths:
                             featured_link:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             has_summary:
                               type: boolean
                             highest_post_number:
@@ -2052,7 +2052,7 @@ paths:
                             image_url:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             last_posted_at:
                               type: string
                             last_poster_username:
@@ -2062,7 +2062,7 @@ paths:
                             liked:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             pinned:
                               type: boolean
                             pinned_globally:
@@ -2078,7 +2078,7 @@ paths:
                                   primary_group_id:
                                     type:
                                       - string
-                                      - "null"
+                                      - 'null'
                                   user_id:
                                     type: integer
                                 required:
@@ -2099,7 +2099,7 @@ paths:
                             unpinned:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             unseen:
                               type: boolean
                             views:
@@ -2180,7 +2180,7 @@ paths:
               - true
             type: boolean
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -2208,19 +2208,19 @@ paths:
                             default_view:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             description:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             description_excerpt:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             description_text:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             has_children:
                               type: boolean
                             id:
@@ -2252,11 +2252,11 @@ paths:
                             sort_ascending:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             sort_order:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             subcategory_ids:
                               items: {}
                               type: array
@@ -2264,7 +2264,7 @@ paths:
                               items: {}
                               type:
                                 - array
-                                - "null"
+                                - 'null'
                             subcategory_list_style:
                               type: string
                             text_color:
@@ -2274,11 +2274,11 @@ paths:
                             topic_template:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             topic_url:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             topics_all_time:
                               type: integer
                             topics_day:
@@ -2292,15 +2292,15 @@ paths:
                             uploaded_background:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             uploaded_logo:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             uploaded_logo_dark:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                           required:
                             - id
                             - name
@@ -2397,7 +2397,7 @@ paths:
               required:
                 - name
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -2425,7 +2425,7 @@ paths:
                       auto_close_hours:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       available_groups:
                         items: {}
                         type: array
@@ -2444,29 +2444,29 @@ paths:
                       default_slow_mode_seconds:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       default_top_period:
                         type: string
                       default_view:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       description:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       description_excerpt:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       description_text:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       email_in:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       email_in_allow_strangers:
                         type: boolean
                       form_template_ids:
@@ -2488,7 +2488,7 @@ paths:
                       has_children:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       id:
                         type: integer
                       mailinglist_mirror:
@@ -2506,7 +2506,7 @@ paths:
                       permission:
                         type:
                           - integer
-                          - "null"
+                          - 'null'
                       position:
                         type: integer
                       post_count:
@@ -2514,7 +2514,7 @@ paths:
                       read_only_banner:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       read_restricted:
                         type: boolean
                       required_tag_groups:
@@ -2539,11 +2539,11 @@ paths:
                       sort_ascending:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       sort_order:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       subcategory_list_style:
                         type: string
                       text_color:
@@ -2555,23 +2555,23 @@ paths:
                       topic_template:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       topic_url:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       uploaded_background:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       uploaded_logo:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       uploaded_logo_dark:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                     required:
                       - id
                       - name
@@ -2628,7 +2628,7 @@ paths:
       summary: Creates a category
       tags:
         - Categories
-  "/categories/{id}.json":
+  '/categories/{id}.json':
     put:
       operationId: updateCategory
       parameters:
@@ -2679,7 +2679,7 @@ paths:
               required:
                 - name
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -2707,7 +2707,7 @@ paths:
                       auto_close_hours:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       available_groups:
                         items: {}
                         type: array
@@ -2726,29 +2726,29 @@ paths:
                       default_slow_mode_seconds:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       default_top_period:
                         type: string
                       default_view:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       description:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       description_excerpt:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       description_text:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       email_in:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       email_in_allow_strangers:
                         type: boolean
                       form_template_ids:
@@ -2770,7 +2770,7 @@ paths:
                       has_children:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       id:
                         type: integer
                       mailinglist_mirror:
@@ -2788,7 +2788,7 @@ paths:
                       permission:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       position:
                         type: integer
                       post_count:
@@ -2796,7 +2796,7 @@ paths:
                       read_only_banner:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       read_restricted:
                         type: boolean
                       required_tag_groups:
@@ -2821,11 +2821,11 @@ paths:
                       sort_ascending:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       sort_order:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       subcategory_list_style:
                         type: string
                       text_color:
@@ -2837,23 +2837,23 @@ paths:
                       topic_template:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       topic_url:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       uploaded_background:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       uploaded_logo:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       uploaded_logo_dark:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                     required:
                       - id
                       - name
@@ -2947,14 +2947,14 @@ paths:
           name: asc
           schema:
             enum:
-              - "true"
+              - 'true'
             type: string
         - in: query
           name: page
           schema:
             type: integer
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -2990,11 +2990,11 @@ paths:
                             name:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             title:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             username:
                               type: string
                           required:
@@ -3022,7 +3022,7 @@ paths:
                       last_updated_at:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       load_more_directory_items:
                         type: string
                       total_rows_directory_items:
@@ -3043,7 +3043,7 @@ paths:
     get:
       operationId: listGroups
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -3069,15 +3069,15 @@ paths:
                         bio_cooked:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         bio_excerpt:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         bio_raw:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         can_admin_group:
                           type: boolean
                         can_edit_group:
@@ -3091,23 +3091,23 @@ paths:
                         flair_bg_color:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         flair_color:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         flair_url:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         full_name:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         grant_trust_level:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         has_messages:
                           type: boolean
                         id:
@@ -3115,7 +3115,7 @@ paths:
                         incoming_email:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         is_group_owner:
                           type: boolean
                         is_group_user:
@@ -3125,7 +3125,7 @@ paths:
                         membership_request_template:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         mentionable_level:
                           type: integer
                         messageable_level:
@@ -3143,7 +3143,7 @@ paths:
                         title:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         user_count:
                           type: integer
                         visibility_level:
@@ -3193,7 +3193,7 @@ paths:
       summary: List groups
       tags:
         - Groups
-  "/groups/{id}.json":
+  '/groups/{id}.json':
     get:
       operationId: getGroup
       parameters:
@@ -3205,7 +3205,7 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -3235,19 +3235,19 @@ paths:
                       automatic_membership_email_domains:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       bio_cooked:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       bio_excerpt:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       bio_raw:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       can_admin_group:
                         type: boolean
                       can_edit_group:
@@ -3259,35 +3259,35 @@ paths:
                       email_from_alias:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       email_password:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       email_username:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       flair_bg_color:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       flair_color:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       flair_url:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       full_name:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       grant_trust_level:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       has_messages:
                         type: boolean
                       id:
@@ -3297,7 +3297,7 @@ paths:
                       imap_last_error:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       imap_mailbox_name:
                         type: string
                       imap_mailboxes:
@@ -3306,35 +3306,35 @@ paths:
                       imap_new_emails:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       imap_old_emails:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       imap_port:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       imap_server:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       imap_ssl:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       imap_updated_at:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       imap_updated_by:
                         type:
                           - object
-                          - "null"
+                          - 'null'
                       incoming_email:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       is_group_owner_display:
                         type: boolean
                       is_group_user:
@@ -3344,7 +3344,7 @@ paths:
                       membership_request_template:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       mentionable:
                         type: boolean
                       mentionable_level:
@@ -3382,27 +3382,27 @@ paths:
                       smtp_port:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       smtp_server:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       smtp_ssl:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       smtp_updated_at:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       smtp_updated_by:
                         type:
                           - object
-                          - "null"
+                          - 'null'
                       title:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       tracking_category_ids:
                         items: {}
                         type: array
@@ -3562,7 +3562,7 @@ paths:
               required:
                 - group
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -3576,7 +3576,7 @@ paths:
       summary: Update a group
       tags:
         - Groups
-  "/groups/{id}/members.json":
+  '/groups/{id}/members.json':
     delete:
       operationId: removeGroupMembers
       parameters:
@@ -3597,7 +3597,7 @@ paths:
                     - username1,username2
                   type: string
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -3630,7 +3630,7 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -3653,13 +3653,13 @@ paths:
                         name:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         timezone:
                           type: string
                         title:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         username:
                           type: string
                       required:
@@ -3705,13 +3705,13 @@ paths:
                         name:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         timezone:
                           type: string
                         title:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         username:
                           type: string
                       required:
@@ -3754,7 +3754,7 @@ paths:
                     - username1,username2
                   type: string
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -3827,7 +3827,7 @@ paths:
                   type: integer
               type: object
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -3841,7 +3841,7 @@ paths:
                       - Hello world!
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   email:
                     examples:
                       - not-a-user-yet@example.com
@@ -3912,7 +3912,7 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -3927,7 +3927,7 @@ paths:
                       draft:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       draft_key:
                         type: string
                       draft_sequence:
@@ -3958,7 +3958,7 @@ paths:
                             featured_link:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             has_summary:
                               type: boolean
                             highest_post_number:
@@ -3995,7 +3995,7 @@ paths:
                                   primary_group_id:
                                     type:
                                       - string
-                                      - "null"
+                                      - 'null'
                                   user_id:
                                     type: integer
                                 type: object
@@ -4011,7 +4011,7 @@ paths:
                             unpinned:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             unread_posts:
                               type: integer
                             unseen:
@@ -4033,7 +4033,7 @@ paths:
                         name:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         username:
                           type: string
                       type: object
@@ -4047,7 +4047,7 @@ paths:
     get:
       operationId: getNotifications
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -4079,17 +4079,17 @@ paths:
                         post_number:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         read:
                           type: boolean
                         slug:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         topic_id:
                           type:
                             - integer
-                            - "null"
+                            - 'null'
                         user_id:
                           type: integer
                       type: object
@@ -4119,7 +4119,7 @@ paths:
                   type: integer
               type: object
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -4161,7 +4161,7 @@ paths:
                 - post_action_type_id
               type: object
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -4200,29 +4200,29 @@ paths:
                   deleted_at:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   display_username:
                     type: string
                   edit_reason:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   flair_bg_color:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   flair_color:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   flair_name:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   flair_url:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   hidden:
                     type: boolean
                   id:
@@ -4242,7 +4242,7 @@ paths:
                   primary_group_name:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   quote_count:
                     type: integer
                   readers_count:
@@ -4254,11 +4254,11 @@ paths:
                   reply_to_post_number:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   reviewable_id:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   reviewable_score_count:
                     type: integer
                   reviewable_score_pending_count:
@@ -4282,7 +4282,7 @@ paths:
                   user_title:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   username:
                     type: string
                   version:
@@ -4317,7 +4317,7 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -4357,29 +4357,29 @@ paths:
                         deleted_at:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         display_username:
                           type: string
                         edit_reason:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         flair_bg_color:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         flair_color:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         flair_name:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         flair_url:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         hidden:
                           type: boolean
                         id:
@@ -4397,7 +4397,7 @@ paths:
                         primary_group_name:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         quote_count:
                           type: integer
                         raw:
@@ -4411,11 +4411,11 @@ paths:
                         reply_to_post_number:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         reviewable_id:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         reviewable_score_count:
                           type: integer
                         reviewable_score_pending_count:
@@ -4443,7 +4443,7 @@ paths:
                         user_title:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         username:
                           type: string
                         version:
@@ -4511,7 +4511,7 @@ paths:
               required:
                 - raw
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -4553,33 +4553,33 @@ paths:
                   deleted_at:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   display_username:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   draft_sequence:
                     type: integer
                   edit_reason:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   flair_bg_color:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   flair_color:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   flair_name:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   flair_url:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   hidden:
                     type: boolean
                   id:
@@ -4594,7 +4594,7 @@ paths:
                   name:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   post_number:
                     type: integer
                   post_type:
@@ -4602,7 +4602,7 @@ paths:
                   primary_group_name:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   quote_count:
                     type: integer
                   raw:
@@ -4616,11 +4616,11 @@ paths:
                   reply_to_post_number:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   reviewable_id:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   reviewable_score_count:
                     type: integer
                   reviewable_score_pending_count:
@@ -4644,7 +4644,7 @@ paths:
                   user_title:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   username:
                     type: string
                   version:
@@ -4708,7 +4708,7 @@ paths:
         - Posts
         - Topics
         - Private Messages
-  "/posts/{id}.json":
+  '/posts/{id}.json':
     delete:
       operationId: deletePost
       parameters:
@@ -4734,7 +4734,7 @@ paths:
                     - true
                   type: boolean
       responses:
-        "200":
+        '200':
           description: success response
       summary: delete a single post
       tags:
@@ -4758,7 +4758,7 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -4793,31 +4793,31 @@ paths:
                   deleted_at:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   display_username:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   edit_reason:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   flair_bg_color:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   flair_color:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   flair_name:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   flair_url:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   hidden:
                     type: boolean
                   id:
@@ -4829,7 +4829,7 @@ paths:
                   name:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   post_number:
                     type: integer
                   post_type:
@@ -4837,7 +4837,7 @@ paths:
                   primary_group_name:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   quote_count:
                     type: integer
                   raw:
@@ -4851,11 +4851,11 @@ paths:
                   reply_to_post_number:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   reviewable_id:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   reviewable_score_count:
                     type: integer
                   reviewable_score_pending_count:
@@ -4879,7 +4879,7 @@ paths:
                   user_title:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   username:
                     type: string
                   version:
@@ -4927,7 +4927,7 @@ paths:
                   type: object
               type: object
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -4964,29 +4964,29 @@ paths:
                       deleted_at:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       display_username:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       draft_sequence:
                         type: integer
                       edit_reason:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       flair_bg_color:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       flair_color:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       flair_url:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       hidden:
                         type: boolean
                       id:
@@ -4998,7 +4998,7 @@ paths:
                       name:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       post_number:
                         type: integer
                       post_type:
@@ -5006,7 +5006,7 @@ paths:
                       primary_group_name:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       quote_count:
                         type: integer
                       readers_count:
@@ -5018,11 +5018,11 @@ paths:
                       reply_to_post_number:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       reviewable_id:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       reviewable_score_count:
                         type: integer
                       reviewable_score_pending_count:
@@ -5046,7 +5046,7 @@ paths:
                       user_title:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       username:
                         type: string
                       version:
@@ -5061,7 +5061,7 @@ paths:
       summary: Update a single post
       tags:
         - Posts
-  "/posts/{id}/locked.json":
+  '/posts/{id}/locked.json':
     put:
       operationId: lockPost
       parameters:
@@ -5091,7 +5091,7 @@ paths:
                 - locked
               type: object
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -5103,7 +5103,7 @@ paths:
       summary: Lock a post from being edited
       tags:
         - Posts
-  "/posts/{id}/replies.json":
+  '/posts/{id}/replies.json':
     get:
       operationId: postReplies
       parameters:
@@ -5113,7 +5113,7 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -5155,31 +5155,31 @@ paths:
                     deleted_at:
                       type:
                         - string
-                        - "null"
+                        - 'null'
                     display_username:
                       type:
                         - string
-                        - "null"
+                        - 'null'
                     edit_reason:
                       type:
                         - string
-                        - "null"
+                        - 'null'
                     flair_bg_color:
                       type:
                         - string
-                        - "null"
+                        - 'null'
                     flair_color:
                       type:
                         - string
-                        - "null"
+                        - 'null'
                     flair_name:
                       type:
                         - string
-                        - "null"
+                        - 'null'
                     flair_url:
                       type:
                         - string
-                        - "null"
+                        - 'null'
                     hidden:
                       type: boolean
                     id:
@@ -5191,7 +5191,7 @@ paths:
                     name:
                       type:
                         - string
-                        - "null"
+                        - 'null'
                     post_number:
                       type: integer
                     post_type:
@@ -5199,7 +5199,7 @@ paths:
                     primary_group_name:
                       type:
                         - string
-                        - "null"
+                        - 'null'
                     quote_count:
                       type: integer
                     readers_count:
@@ -5226,7 +5226,7 @@ paths:
                     reviewable_id:
                       type:
                         - string
-                        - "null"
+                        - 'null'
                     reviewable_score_count:
                       type: integer
                     reviewable_score_pending_count:
@@ -5250,7 +5250,7 @@ paths:
                     user_title:
                       type:
                         - string
-                        - "null"
+                        - 'null'
                     username:
                       type: string
                     version:
@@ -5359,7 +5359,7 @@ paths:
           schema:
             type: integer
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -5379,26 +5379,26 @@ paths:
                       error:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       group_ids:
                         items: {}
                         type: array
                       more_categories:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       more_full_page_results:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       more_posts:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       more_users:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       post_ids:
                         items: {}
                         type: array
@@ -5465,7 +5465,7 @@ paths:
               required:
                 - login
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -5487,7 +5487,7 @@ paths:
       description: Can be used to fetch all categories and subcategories
       operationId: getSite
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -5544,7 +5544,7 @@ paths:
                           additionalProperties: true
                           type:
                             - object
-                            - "null"
+                            - 'null'
                         default_list_filter:
                           type: string
                         default_top_period:
@@ -5552,19 +5552,19 @@ paths:
                         default_view:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         description:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         description_excerpt:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         description_text:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         form_template_ids:
                           items: {}
                           type: array
@@ -5593,7 +5593,7 @@ paths:
                         read_only_banner:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         read_restricted:
                           type: boolean
                         required_tag_groups:
@@ -5616,11 +5616,11 @@ paths:
                         sort_ascending:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         sort_order:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         subcategory_list_style:
                           type: string
                         text_color:
@@ -5630,21 +5630,21 @@ paths:
                         topic_template:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         topic_url:
                           type: string
                         uploaded_background:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         uploaded_logo:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         uploaded_logo_dark:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                       required:
                         - id
                         - name
@@ -5694,7 +5694,7 @@ paths:
                   default_dark_color_scheme:
                     type:
                       - object
-                      - "null"
+                      - 'null'
                   displayed_about_plugin_stat_groups:
                     type: array
                   filters:
@@ -5707,15 +5707,15 @@ paths:
                         flair_bg_color:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         flair_color:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         flair_url:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         id:
                           type: integer
                         name:
@@ -5866,7 +5866,7 @@ paths:
                         id:
                           type:
                             - integer
-                            - "null"
+                            - 'null'
                         is_custom_flag:
                           type: boolean
                         is_flag:
@@ -5876,7 +5876,7 @@ paths:
                         name_key:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         short_description:
                           type: string
                       required:
@@ -5928,7 +5928,7 @@ paths:
                         id:
                           type:
                             - integer
-                            - "null"
+                            - 'null'
                         is_custom_flag:
                           type: boolean
                         is_flag:
@@ -5938,7 +5938,7 @@ paths:
                         name_key:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         short_description:
                           type: string
                       required:
@@ -6001,7 +6001,7 @@ paths:
                         color_scheme_id:
                           type:
                             - integer
-                            - "null"
+                            - 'null'
                         default:
                           type: boolean
                         name:
@@ -6018,11 +6018,11 @@ paths:
                   watched_words_link:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   watched_words_replace:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   whispers_allowed_groups_names:
                     type: array
                   wizard_required:
@@ -6063,7 +6063,7 @@ paths:
       tags:
         - Site
         - Categories
-  "/t/-/{id}.json":
+  '/t/-/{id}.json':
     put:
       operationId: updateTopic
       parameters:
@@ -6096,7 +6096,7 @@ paths:
                   type: object
               type: object
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -6119,7 +6119,7 @@ paths:
       summary: Update a topic
       tags:
         - Topics
-  "/t/external_id/{external_id}.json":
+  '/t/external_id/{external_id}.json':
     get:
       operationId: getTopicByExternalId
       parameters:
@@ -6129,12 +6129,12 @@ paths:
           schema:
             type: string
       responses:
-        "301":
+        '301':
           description: redirects to /t/{topic_id}.json
       summary: Get topic by external_id
       tags:
         - Topics
-  "/t/{id}.json":
+  '/t/{id}.json':
     delete:
       operationId: removeTopic
       parameters:
@@ -6154,7 +6154,7 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           description: specific posts
       summary: Remove a topic
       tags:
@@ -6178,7 +6178,7 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -6225,11 +6225,11 @@ paths:
                   deleted_at:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   deleted_by:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   details:
                     additionalProperties: false
                     properties:
@@ -6318,19 +6318,19 @@ paths:
                             flair_bg_color:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             flair_color:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             flair_name:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             flair_url:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             id:
                               type: integer
                             moderator:
@@ -6342,7 +6342,7 @@ paths:
                             primary_group_name:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             trust_level:
                               type: integer
                             username:
@@ -6387,7 +6387,7 @@ paths:
                   draft:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   draft_key:
                     type: string
                   draft_sequence:
@@ -6397,7 +6397,7 @@ paths:
                   featured_link:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   has_deleted:
                     type: boolean
                   has_summary:
@@ -6405,17 +6405,17 @@ paths:
                   highest_post_number:
                     type:
                       - integer
-                      - "null"
+                      - 'null'
                   id:
                     type: integer
                   image_url:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   last_posted_at:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   like_count:
                     type: integer
                   message_bus_last_id:
@@ -6427,13 +6427,13 @@ paths:
                   pinned_at:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   pinned_globally:
                     type: boolean
                   pinned_until:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   post_stream:
                     additionalProperties: false
                     properties:
@@ -6477,29 +6477,29 @@ paths:
                             deleted_at:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             display_username:
                               type: string
                             edit_reason:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             flair_bg_color:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             flair_color:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             flair_name:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             flair_url:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             hidden:
                               type: boolean
                             id:
@@ -6539,7 +6539,7 @@ paths:
                             primary_group_name:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             quote_count:
                               type: integer
                             read:
@@ -6553,7 +6553,7 @@ paths:
                             reply_to_post_number:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             reviewable_id:
                               type: integer
                             reviewable_score_count:
@@ -6579,7 +6579,7 @@ paths:
                             user_title:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             username:
                               type: string
                             version:
@@ -6656,7 +6656,7 @@ paths:
                   slow_mode_enabled_until:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   slow_mode_seconds:
                     type: integer
                   slug:
@@ -6672,7 +6672,7 @@ paths:
                         bookmarked:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         bumped:
                           type: boolean
                         bumped_at:
@@ -6690,7 +6690,7 @@ paths:
                         featured_link:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         highest_post_number:
                           type: integer
                         id:
@@ -6698,17 +6698,17 @@ paths:
                         image_url:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         last_posted_at:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         like_count:
                           type: integer
                         liked:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         pinned:
                           type: boolean
                         posters:
@@ -6760,7 +6760,7 @@ paths:
                         unpinned:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         unseen:
                           type: boolean
                         views:
@@ -6809,7 +6809,7 @@ paths:
                   thumbnails:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   timeline_lookup:
                     items: {}
                     type: array
@@ -6818,11 +6818,11 @@ paths:
                   topic_timer:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   unpinned:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   user_id:
                     type: integer
                   views:
@@ -6832,7 +6832,7 @@ paths:
                   word_count:
                     type:
                       - integer
-                      - "null"
+                      - 'null'
                 required:
                   - post_stream
                   - timeline_lookup
@@ -6887,7 +6887,7 @@ paths:
       summary: Get a single topic
       tags:
         - Topics
-  "/t/{id}/bookmark.json":
+  '/t/{id}/bookmark.json':
     put:
       operationId: bookmarkTopic
       parameters:
@@ -6907,12 +6907,12 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           description: topic updated
       summary: Bookmark topic
       tags:
         - Topics
-  "/t/{id}/change-timestamp.json":
+  '/t/{id}/change-timestamp.json':
     put:
       operationId: updateTopicTimestamp
       parameters:
@@ -6938,13 +6938,13 @@ paths:
               properties:
                 timestamp:
                   examples:
-                    - "1594291380"
+                    - '1594291380'
                   type: string
               required:
                 - timestamp
               type: object
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -6958,7 +6958,7 @@ paths:
       summary: Update topic timestamp
       tags:
         - Topics
-  "/t/{id}/invite.json":
+  '/t/{id}/invite.json':
     post:
       operationId: inviteToTopic
       parameters:
@@ -6988,7 +6988,7 @@ paths:
                   type: string
               type: object
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -7010,7 +7010,7 @@ paths:
       tags:
         - Topics
         - Invites
-  "/t/{id}/notifications.json":
+  '/t/{id}/notifications.json':
     post:
       operationId: setNotificationLevel
       parameters:
@@ -7036,16 +7036,16 @@ paths:
               properties:
                 notification_level:
                   enum:
-                    - "0"
-                    - "1"
-                    - "2"
-                    - "3"
+                    - '0'
+                    - '1'
+                    - '2'
+                    - '3'
                   type: string
               required:
                 - notification_level
               type: object
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -7059,7 +7059,7 @@ paths:
       summary: Set notification level
       tags:
         - Topics
-  "/t/{id}/posts.json":
+  '/t/{id}/posts.json':
     get:
       operationId: getSpecificPostsFromTopic
       parameters:
@@ -7083,13 +7083,13 @@ paths:
           application/json:
             schema:
               properties:
-                "post_ids[]":
+                'post_ids[]':
                   type: integer
               required:
                 - post_ids[]
               type: object
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -7131,31 +7131,31 @@ paths:
                             deleted_at:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             display_username:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             edit_reason:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             flair_bg_color:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             flair_color:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             flair_name:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             flair_url:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             hidden:
                               type: boolean
                             id:
@@ -7167,7 +7167,7 @@ paths:
                             name:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             post_number:
                               type: integer
                             post_type:
@@ -7175,7 +7175,7 @@ paths:
                             primary_group_name:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             quote_count:
                               type: integer
                             read:
@@ -7189,7 +7189,7 @@ paths:
                             reply_to_post_number:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             reviewable_id:
                               type: integer
                             reviewable_score_count:
@@ -7215,7 +7215,7 @@ paths:
                             user_title:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             username:
                               type: string
                             version:
@@ -7232,7 +7232,7 @@ paths:
       summary: Get specific posts from a topic
       tags:
         - Topics
-  "/t/{id}/status.json":
+  '/t/{id}/status.json':
     put:
       operationId: updateTopicStatus
       parameters:
@@ -7258,8 +7258,8 @@ paths:
               properties:
                 enabled:
                   enum:
-                    - "true"
-                    - "false"
+                    - 'true'
+                    - 'false'
                   type: string
                 status:
                   enum:
@@ -7279,7 +7279,7 @@ paths:
                 - enabled
               type: object
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -7291,13 +7291,13 @@ paths:
                   topic_status_update:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                 type: object
           description: topic updated
       summary: Update the status of a topic
       tags:
         - Topics
-  "/t/{id}/timer.json":
+  '/t/{id}/timer.json':
     post:
       operationId: createTopicTimer
       parameters:
@@ -7329,11 +7329,11 @@ paths:
                   type: string
                 time:
                   examples:
-                    - ""
+                    - ''
                   type: string
               type: object
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -7343,13 +7343,13 @@ paths:
                   category_id:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   closed:
                     type: boolean
                   duration:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   execute_at:
                     type: string
                   success:
@@ -7361,7 +7361,7 @@ paths:
       summary: Create topic timer
       tags:
         - Topics
-  "/tag/{name}.json":
+  '/tag/{name}.json':
     get:
       operationId: getTag
       parameters:
@@ -7371,7 +7371,7 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -7386,7 +7386,7 @@ paths:
                       draft:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       draft_key:
                         type: string
                       draft_sequence:
@@ -7430,7 +7430,7 @@ paths:
                             featured_link:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             has_summary:
                               type: boolean
                             highest_post_number:
@@ -7440,7 +7440,7 @@ paths:
                             image_url:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             last_posted_at:
                               type: string
                             last_poster_username:
@@ -7467,7 +7467,7 @@ paths:
                                   primary_group_id:
                                     type:
                                       - string
-                                      - "null"
+                                      - 'null'
                                   user_id:
                                     type: integer
                                 type: object
@@ -7486,7 +7486,7 @@ paths:
                             unpinned:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             unread_posts:
                               type: integer
                             unseen:
@@ -7508,7 +7508,7 @@ paths:
                         name:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         username:
                           type: string
                       type: object
@@ -7522,7 +7522,7 @@ paths:
     get:
       operationId: listTagGroups
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -7569,7 +7569,7 @@ paths:
                 - name
               type: object
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -7606,7 +7606,7 @@ paths:
       summary: Creates a tag group
       tags:
         - Tags
-  "/tag_groups/{id}.json":
+  '/tag_groups/{id}.json':
     get:
       operationId: getTagGroup
       parameters:
@@ -7616,7 +7616,7 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -7663,7 +7663,7 @@ paths:
                   type: string
               type: object
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -7699,7 +7699,7 @@ paths:
     get:
       operationId: listTags
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -7722,7 +7722,7 @@ paths:
                         target_tag:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         text:
                           type: string
                       type: object
@@ -7746,13 +7746,13 @@ paths:
           required: true
           schema:
             type: string
-        - description: "Enum: `all`, `yearly`, `quarterly`, `monthly`, `weekly`, `daily`"
+        - description: 'Enum: `all`, `yearly`, `quarterly`, `monthly`, `weekly`, `daily`'
           in: query
           name: period
           schema:
             type: string
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -7767,7 +7767,7 @@ paths:
                       draft:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       draft_key:
                         type: string
                       draft_sequence:
@@ -7800,7 +7800,7 @@ paths:
                             featured_link:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             has_summary:
                               type: boolean
                             highest_post_number:
@@ -7810,7 +7810,7 @@ paths:
                             image_url:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             last_posted_at:
                               type: string
                             last_poster_username:
@@ -7837,11 +7837,11 @@ paths:
                                   extras:
                                     type:
                                       - string
-                                      - "null"
+                                      - 'null'
                                   primary_group_id:
                                     type:
                                       - string
-                                      - "null"
+                                      - 'null'
                                   user_id:
                                     type: integer
                                 type: object
@@ -7885,7 +7885,7 @@ paths:
       summary: Get the top topics filtered by period
       tags:
         - Topics
-  "/topics/private-messages-sent/{username}.json":
+  '/topics/private-messages-sent/{username}.json':
     get:
       operationId: getUserSentPrivateMessages
       parameters:
@@ -7895,7 +7895,7 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -7910,7 +7910,7 @@ paths:
                       draft:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       draft_key:
                         type: string
                       draft_sequence:
@@ -7935,7 +7935,7 @@ paths:
                             category_id:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             closed:
                               type: boolean
                             created_at:
@@ -7945,7 +7945,7 @@ paths:
                             featured_link:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             has_summary:
                               type: boolean
                             highest_post_number:
@@ -7955,7 +7955,7 @@ paths:
                             image_url:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             last_posted_at:
                               type: string
                             last_poster_username:
@@ -7985,7 +7985,7 @@ paths:
                                   primary_group_id:
                                     type:
                                       - string
-                                      - "null"
+                                      - 'null'
                                   user_id:
                                     type: integer
                                 type: object
@@ -8001,7 +8001,7 @@ paths:
                             unpinned:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             unread_posts:
                               type: integer
                             unseen:
@@ -8023,7 +8023,7 @@ paths:
                         name:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         username:
                           type: string
                       type: object
@@ -8033,7 +8033,7 @@ paths:
       summary: Get a list of private messages sent for a user
       tags:
         - Private Messages
-  "/topics/private-messages/{username}.json":
+  '/topics/private-messages/{username}.json':
     get:
       operationId: listUserPrivateMessages
       parameters:
@@ -8043,7 +8043,7 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -8058,7 +8058,7 @@ paths:
                       draft:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       draft_key:
                         type: string
                       draft_sequence:
@@ -8083,7 +8083,7 @@ paths:
                             category_id:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             closed:
                               type: boolean
                             created_at:
@@ -8093,7 +8093,7 @@ paths:
                             featured_link:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             has_summary:
                               type: boolean
                             highest_post_number:
@@ -8103,7 +8103,7 @@ paths:
                             image_url:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             last_posted_at:
                               type: string
                             last_poster_username:
@@ -8122,13 +8122,13 @@ paths:
                                   description:
                                     type:
                                       - string
-                                      - "null"
+                                      - 'null'
                                   extras:
                                     type: string
                                   primary_group_id:
                                     type:
                                       - string
-                                      - "null"
+                                      - 'null'
                                   user_id:
                                     type: integer
                                 type: object
@@ -8147,7 +8147,7 @@ paths:
                                   primary_group_id:
                                     type:
                                       - string
-                                      - "null"
+                                      - 'null'
                                   user_id:
                                     type: integer
                                 type: object
@@ -8163,7 +8163,7 @@ paths:
                             unpinned:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             unread_posts:
                               type: integer
                             unseen:
@@ -8193,7 +8193,7 @@ paths:
       summary: Get a list of private messages for a user
       tags:
         - Private Messages
-  "/u/by-external/{external_id}.json":
+  '/u/by-external/{external_id}.json':
     get:
       operationId: getUserExternalId
       parameters:
@@ -8213,7 +8213,7 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -8271,35 +8271,35 @@ paths:
                           first_name:
                             type:
                               - string
-                              - "null"
+                              - 'null'
                         type: object
                       featured_topic:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       featured_user_badge_ids:
                         items: {}
                         type: array
                       flair_bg_color:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       flair_color:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       flair_group_id:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       flair_name:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       flair_url:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       group_users:
                         items:
                           additionalProperties: false
@@ -8329,15 +8329,15 @@ paths:
                             bio_cooked:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             bio_excerpt:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             bio_raw:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             can_admin_group:
                               type: boolean
                             can_see_members:
@@ -8349,23 +8349,23 @@ paths:
                             flair_bg_color:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             flair_color:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             flair_url:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             full_name:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             grant_trust_level:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             has_messages:
                               type: boolean
                             id:
@@ -8373,13 +8373,13 @@ paths:
                             incoming_email:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             members_visibility_level:
                               type: integer
                             membership_request_template:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             mentionable_level:
                               type: integer
                             messageable_level:
@@ -8397,7 +8397,7 @@ paths:
                             title:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             user_count:
                               type: integer
                             visibility_level:
@@ -8446,19 +8446,19 @@ paths:
                       invited_by:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       last_posted_at:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       last_seen_at:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       locale:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       mailing_list_posts_per_day:
                         type: integer
                       moderator:
@@ -8485,11 +8485,11 @@ paths:
                       primary_group_id:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       primary_group_name:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       profile_view_count:
                         type: integer
                       recent_time_read:
@@ -8508,13 +8508,13 @@ paths:
                       system_avatar_upload_id:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       time_read:
                         type: integer
                       title:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       tracked_category_ids:
                         items: {}
                         type: array
@@ -8526,13 +8526,13 @@ paths:
                       uploaded_avatar_id:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       use_logo_small_as_avatar:
                         type: boolean
                       user_api_keys:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       user_auth_tokens:
                         items:
                           additionalProperties: false
@@ -8573,17 +8573,17 @@ paths:
                       user_fields:
                         additionalProperties: false
                         properties:
-                          "1":
+                          '1':
                             type:
                               - string
-                              - "null"
-                          "2":
+                              - 'null'
+                          '2':
                             type:
                               - string
-                              - "null"
+                              - 'null'
                         required:
-                          - "1"
-                          - "2"
+                          - '1'
+                          - '2'
                         type: object
                       user_notification_schedule:
                         additionalProperties: false
@@ -8649,11 +8649,11 @@ paths:
                           color_scheme_id:
                             type:
                               - string
-                              - "null"
+                              - 'null'
                           dark_scheme_id:
                             type:
                               - string
-                              - "null"
+                              - 'null'
                           default_calendar:
                             type: string
                           digest_after_minutes:
@@ -8683,7 +8683,7 @@ paths:
                           homepage_id:
                             type:
                               - string
-                              - "null"
+                              - 'null'
                           include_tl0_in_digests:
                             type: boolean
                           like_notification_frequency:
@@ -8699,11 +8699,11 @@ paths:
                           oldest_search_log_date:
                             type:
                               - string
-                              - "null"
+                              - 'null'
                           seen_popups:
                             type:
                               - array
-                              - "null"
+                              - 'null'
                           sidebar_list_destination:
                             type: string
                           skip_new_user_tips:
@@ -8720,7 +8720,7 @@ paths:
                           timezone:
                             type:
                               - string
-                              - "null"
+                              - 'null'
                           title_count_mode:
                             type: string
                           user_id:
@@ -8858,7 +8858,7 @@ paths:
       summary: Get a user by external_id
       tags:
         - Users
-  "/u/by-external/{provider}/{external_id}.json":
+  '/u/by-external/{provider}/{external_id}.json':
     get:
       operationId: getUserIdentiyProviderExternalId
       parameters:
@@ -8886,7 +8886,7 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -8944,35 +8944,35 @@ paths:
                           first_name:
                             type:
                               - string
-                              - "null"
+                              - 'null'
                         type: object
                       featured_topic:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       featured_user_badge_ids:
                         items: {}
                         type: array
                       flair_bg_color:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       flair_color:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       flair_group_id:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       flair_name:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       flair_url:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       group_users:
                         items:
                           additionalProperties: false
@@ -9002,15 +9002,15 @@ paths:
                             bio_cooked:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             bio_excerpt:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             bio_raw:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             can_admin_group:
                               type: boolean
                             can_see_members:
@@ -9022,23 +9022,23 @@ paths:
                             flair_bg_color:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             flair_color:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             flair_url:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             full_name:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             grant_trust_level:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             has_messages:
                               type: boolean
                             id:
@@ -9046,13 +9046,13 @@ paths:
                             incoming_email:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             members_visibility_level:
                               type: integer
                             membership_request_template:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             mentionable_level:
                               type: integer
                             messageable_level:
@@ -9070,7 +9070,7 @@ paths:
                             title:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             user_count:
                               type: integer
                             visibility_level:
@@ -9119,19 +9119,19 @@ paths:
                       invited_by:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       last_posted_at:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       last_seen_at:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       locale:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       mailing_list_posts_per_day:
                         type: integer
                       moderator:
@@ -9158,11 +9158,11 @@ paths:
                       primary_group_id:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       primary_group_name:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       profile_view_count:
                         type: integer
                       recent_time_read:
@@ -9181,13 +9181,13 @@ paths:
                       system_avatar_upload_id:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       time_read:
                         type: integer
                       title:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       tracked_category_ids:
                         items: {}
                         type: array
@@ -9199,13 +9199,13 @@ paths:
                       uploaded_avatar_id:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       use_logo_small_as_avatar:
                         type: boolean
                       user_api_keys:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       user_auth_tokens:
                         items:
                           additionalProperties: false
@@ -9246,17 +9246,17 @@ paths:
                       user_fields:
                         additionalProperties: false
                         properties:
-                          "1":
+                          '1':
                             type:
                               - string
-                              - "null"
-                          "2":
+                              - 'null'
+                          '2':
                             type:
                               - string
-                              - "null"
+                              - 'null'
                         required:
-                          - "1"
-                          - "2"
+                          - '1'
+                          - '2'
                         type: object
                       user_notification_schedule:
                         additionalProperties: false
@@ -9322,11 +9322,11 @@ paths:
                           color_scheme_id:
                             type:
                               - string
-                              - "null"
+                              - 'null'
                           dark_scheme_id:
                             type:
                               - string
-                              - "null"
+                              - 'null'
                           default_calendar:
                             type: string
                           digest_after_minutes:
@@ -9356,7 +9356,7 @@ paths:
                           homepage_id:
                             type:
                               - string
-                              - "null"
+                              - 'null'
                           include_tl0_in_digests:
                             type: boolean
                           like_notification_frequency:
@@ -9372,11 +9372,11 @@ paths:
                           oldest_search_log_date:
                             type:
                               - string
-                              - "null"
+                              - 'null'
                           seen_popups:
                             type:
                               - array
-                              - "null"
+                              - 'null'
                           sidebar_list_destination:
                             type: string
                           skip_new_user_tips:
@@ -9393,7 +9393,7 @@ paths:
                           timezone:
                             type:
                               - string
-                              - "null"
+                              - 'null'
                           title_count_mode:
                             type: string
                           user_id:
@@ -9531,7 +9531,7 @@ paths:
       summary: Get a user by identity provider external ID
       tags:
         - Users
-  "/u/{username}.json":
+  '/u/{username}.json':
     get:
       operationId: getUser
       parameters:
@@ -9551,7 +9551,7 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -9609,35 +9609,35 @@ paths:
                           first_name:
                             type:
                               - string
-                              - "null"
+                              - 'null'
                         type: object
                       featured_topic:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       featured_user_badge_ids:
                         items: {}
                         type: array
                       flair_bg_color:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       flair_color:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       flair_group_id:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       flair_name:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       flair_url:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       group_users:
                         items:
                           additionalProperties: false
@@ -9667,15 +9667,15 @@ paths:
                             bio_cooked:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             bio_excerpt:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             bio_raw:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             can_admin_group:
                               type: boolean
                             can_see_members:
@@ -9687,23 +9687,23 @@ paths:
                             flair_bg_color:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             flair_color:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             flair_url:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             full_name:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             grant_trust_level:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             has_messages:
                               type: boolean
                             id:
@@ -9711,13 +9711,13 @@ paths:
                             incoming_email:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             members_visibility_level:
                               type: integer
                             membership_request_template:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             mentionable_level:
                               type: integer
                             messageable_level:
@@ -9735,7 +9735,7 @@ paths:
                             title:
                               type:
                                 - string
-                                - "null"
+                                - 'null'
                             user_count:
                               type: integer
                             visibility_level:
@@ -9784,19 +9784,19 @@ paths:
                       invited_by:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       last_posted_at:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       last_seen_at:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       locale:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       mailing_list_posts_per_day:
                         type: integer
                       moderator:
@@ -9823,11 +9823,11 @@ paths:
                       primary_group_id:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       primary_group_name:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       profile_view_count:
                         type: integer
                       recent_time_read:
@@ -9846,13 +9846,13 @@ paths:
                       system_avatar_upload_id:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       time_read:
                         type: integer
                       title:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       tracked_category_ids:
                         items: {}
                         type: array
@@ -9864,13 +9864,13 @@ paths:
                       uploaded_avatar_id:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       use_logo_small_as_avatar:
                         type: boolean
                       user_api_keys:
                         type:
                           - string
-                          - "null"
+                          - 'null'
                       user_auth_tokens:
                         items:
                           additionalProperties: false
@@ -9911,17 +9911,17 @@ paths:
                       user_fields:
                         additionalProperties: false
                         properties:
-                          "1":
+                          '1':
                             type:
                               - string
-                              - "null"
-                          "2":
+                              - 'null'
+                          '2':
                             type:
                               - string
-                              - "null"
+                              - 'null'
                         required:
-                          - "1"
-                          - "2"
+                          - '1'
+                          - '2'
                         type: object
                       user_notification_schedule:
                         additionalProperties: false
@@ -9987,11 +9987,11 @@ paths:
                           color_scheme_id:
                             type:
                               - string
-                              - "null"
+                              - 'null'
                           dark_scheme_id:
                             type:
                               - string
-                              - "null"
+                              - 'null'
                           default_calendar:
                             type: string
                           digest_after_minutes:
@@ -10021,7 +10021,7 @@ paths:
                           homepage_id:
                             type:
                               - string
-                              - "null"
+                              - 'null'
                           include_tl0_in_digests:
                             type: boolean
                           like_notification_frequency:
@@ -10037,11 +10037,11 @@ paths:
                           oldest_search_log_date:
                             type:
                               - string
-                              - "null"
+                              - 'null'
                           seen_popups:
                             type:
                               - array
-                              - "null"
+                              - 'null'
                           sidebar_list_destination:
                             type: string
                           skip_new_user_tips:
@@ -10058,7 +10058,7 @@ paths:
                           timezone:
                             type:
                               - string
-                              - "null"
+                              - 'null'
                           title_count_mode:
                             type: string
                           user_id:
@@ -10229,7 +10229,7 @@ paths:
                 password:
                   type: string
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -10246,7 +10246,7 @@ paths:
       summary: Update a user
       tags:
         - Users
-  "/u/{username}/emails.json":
+  '/u/{username}/emails.json':
     get:
       operationId: getUserEmails
       parameters:
@@ -10256,7 +10256,7 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -10282,7 +10282,7 @@ paths:
       summary: Get email addresses belonging to a user
       tags:
         - Users
-  "/u/{username}/preferences/avatar/pick.json":
+  '/u/{username}/preferences/avatar/pick.json':
     put:
       operationId: updateAvatar
       parameters:
@@ -10310,7 +10310,7 @@ paths:
                 - upload_id
                 - type
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -10326,7 +10326,7 @@ paths:
       summary: Update avatar
       tags:
         - Users
-  "/u/{username}/preferences/email.json":
+  '/u/{username}/preferences/email.json':
     put:
       operationId: updateEmail
       parameters:
@@ -10347,12 +10347,12 @@ paths:
               required:
                 - email
       responses:
-        "200":
+        '200':
           description: email updated
       summary: Update email
       tags:
         - Users
-  "/u/{username}/preferences/username.json":
+  '/u/{username}/preferences/username.json':
     put:
       operationId: updateUsername
       parameters:
@@ -10372,7 +10372,7 @@ paths:
               required:
                 - new_username
       responses:
-        "200":
+        '200':
           description: username updated
       summary: Update username
       tags:
@@ -10405,7 +10405,7 @@ paths:
               required:
                 - type
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -10414,7 +10414,7 @@ paths:
                   dominant_color:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   extension:
                     type: string
                   filesize:
@@ -10430,7 +10430,7 @@ paths:
                   retain_hours:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   short_path:
                     type: string
                   short_url:
@@ -10494,7 +10494,7 @@ paths:
               required:
                 - external_upload_identifier
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -10562,7 +10562,7 @@ paths:
                 - part_numbers
                 - unique_identifier
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -10573,7 +10573,7 @@ paths:
                       The presigned URLs for each part number, which has
                       the part numbers as keys.
                     examples:
-                      - "1": https://discourse-martin-uploads-test.s3.us-east-2.amazonaws.com/temp/uploads/default/123abc/123abc.jpg?partNumber=1&uploadId=123456abcd&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=test&X-Amz-Date=20211222T012336Z&X-Amz-Expires=600&X-Amz-SignedHeaders=host&X-Amz-Signature=abc123
+                      - '1': https://discourse-martin-uploads-test.s3.us-east-2.amazonaws.com/temp/uploads/default/123abc/123abc.jpg?partNumber=1&uploadId=123456abcd&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=test&X-Amz-Date=20211222T012336Z&X-Amz-Expires=600&X-Amz-SignedHeaders=host&X-Amz-Signature=abc123
                     type: object
                 required:
                   - presigned_urls
@@ -10614,21 +10614,21 @@ paths:
                     Optionally set this to true if the upload is for a
                     private message.
                   examples:
-                    - "true"
+                    - 'true'
                   type: string
                 for_site_setting:
                   description: |-
                     Optionally set this to true if the upload is for a
                     site setting.
                   examples:
-                    - "true"
+                    - 'true'
                   type: string
                 pasted:
                   description: |-
                     Optionally set this to true if the upload was pasted
                     into the upload area. This will convert PNG files to JPEG.
                   examples:
-                    - "true"
+                    - 'true'
                   type: string
                 unique_identifier:
                   description: |-
@@ -10640,7 +10640,7 @@ paths:
               required:
                 - unique_identifier
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -10649,7 +10649,7 @@ paths:
                   dominant_color:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   extension:
                     type: string
                   filesize:
@@ -10665,7 +10665,7 @@ paths:
                   retain_hours:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   short_path:
                     type: string
                   short_url:
@@ -10742,7 +10742,7 @@ paths:
                 - unique_identifier
                 - parts
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -10751,7 +10751,7 @@ paths:
                   dominant_color:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   extension:
                     type: string
                   filesize:
@@ -10767,7 +10767,7 @@ paths:
                   retain_hours:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   short_path:
                     type: string
                   short_url:
@@ -10852,7 +10852,7 @@ paths:
                 - file_name
                 - file_size
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -10951,7 +10951,7 @@ paths:
                 - file_name
                 - file_size
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -10983,7 +10983,7 @@ paths:
       summary: Initiates a direct external upload
       tags:
         - Uploads
-  "/user-badges/{username}.json":
+  '/user-badges/{username}.json':
     get:
       operationId: listUserBadges
       parameters:
@@ -10993,7 +10993,7 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -11038,7 +11038,7 @@ paths:
                         image_url:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         listable:
                           type: boolean
                         manually_grantable:
@@ -11080,7 +11080,7 @@ paths:
                         flair_name:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         id:
                           type: integer
                         moderator:
@@ -11121,7 +11121,7 @@ paths:
                         is_favorite:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                       required:
                         - id
                         - granted_at
@@ -11159,7 +11159,7 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -11174,7 +11174,7 @@ paths:
                         acting_name:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         acting_user_id:
                           type: integer
                         acting_username:
@@ -11182,7 +11182,7 @@ paths:
                         action_code:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         action_type:
                           type: integer
                         archived:
@@ -11202,27 +11202,27 @@ paths:
                         hidden:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         name:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         post_id:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         post_number:
                           type: integer
                         post_type:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         slug:
                           type: string
                         target_name:
                           type:
                             - string
-                            - "null"
+                            - 'null'
                         target_user_id:
                           type: integer
                         target_username:
@@ -11270,7 +11270,7 @@ paths:
       summary: Get a list of user actions
       tags:
         - Users
-  "/user_avatar/{username}/refresh_gravatar.json":
+  '/user_avatar/{username}/refresh_gravatar.json':
     post:
       operationId: refreshGravatar
       parameters:
@@ -11280,7 +11280,7 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -11289,11 +11289,11 @@ paths:
                   gravatar_avatar_template:
                     type:
                       - string
-                      - "null"
+                      - 'null'
                   gravatar_upload_id:
                     type:
                       - integer
-                      - "null"
+                      - 'null'
                 required:
                   - gravatar_upload_id
                   - gravatar_avatar_template
@@ -11337,7 +11337,7 @@ paths:
                   type: string
                 password:
                   type: string
-                "user_fields[1]":
+                'user_fields[1]':
                   type: boolean
                 username:
                   type: string
@@ -11347,7 +11347,7 @@ paths:
                 - password
                 - username
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
@@ -11369,7 +11369,7 @@ paths:
       summary: Creates a user
       tags:
         - Users
-  "/users/password-reset/{token}.json":
+  '/users/password-reset/{token}.json':
     put:
       operationId: changePassword
       parameters:
@@ -11392,7 +11392,7 @@ paths:
                 - username
                 - password
       responses:
-        "200":
+        '200':
           description: success response
       summary: Change password
       tags:

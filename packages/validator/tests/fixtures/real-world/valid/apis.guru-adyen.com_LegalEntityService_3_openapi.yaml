@@ -32,7 +32,7 @@ info:
 
   termsOfService: https://www.adyen.com/legal/terms-and-conditions
   title: Legal Entity Management API
-  version: "3"
+  version: '3'
   x-apisguru-categories:
     - payment
   x-logo:
@@ -40,7 +40,7 @@ info:
   x-origin:
     - format: openapi
       url: https://raw.githubusercontent.com/Adyen/adyen-openapi/main/json/LegalEntityService-v3.json
-      version: "3.1"
+      version: '3.1'
   x-preferred: true
   x-providerName: adyen.com
   x-publicVersion: true
@@ -67,52 +67,52 @@ paths:
           application/json:
             examples:
               createBusinessLines-businessAccounts:
-                $ref: "#/components/examples/post-businessLines-createBusinessLines-businessAccounts"
+                $ref: '#/components/examples/post-businessLines-createBusinessLines-businessAccounts'
               createBusinessLines-receive:
-                $ref: "#/components/examples/post-businessLines-createBusinessLines-receive"
+                $ref: '#/components/examples/post-businessLines-createBusinessLines-receive'
             schema:
-              $ref: "#/components/schemas/BusinessLineInfo"
+              $ref: '#/components/schemas/BusinessLineInfo'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
                 createBusinessLines-businessAccounts:
-                  $ref: "#/components/examples/post-businessLines-createBusinessLines-businessAccounts-200"
+                  $ref: '#/components/examples/post-businessLines-createBusinessLines-businessAccounts-200'
                 createBusinessLines-receive:
-                  $ref: "#/components/examples/post-businessLines-createBusinessLines-receive-200"
+                  $ref: '#/components/examples/post-businessLines-createBusinessLines-receive-200'
               schema:
-                $ref: "#/components/schemas/BusinessLine"
+                $ref: '#/components/schemas/BusinessLine'
           description: OK - the request has succeeded.
-        "400":
+        '400':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -120,11 +120,11 @@ paths:
       summary: Create a business line
       tags:
         - Business lines
-      x-addedInVersion: "1"
+      x-addedInVersion: '1'
       x-groupName: Business lines
       x-methodName: createBusinessLine
       x-sortIndex: 12
-  "/businessLines/{id}":
+  '/businessLines/{id}':
     delete:
       description: |-
         Deletes a business line.
@@ -139,37 +139,37 @@ paths:
           schema:
             type: string
       responses:
-        "204":
+        '204':
           description: No Content - the request has been successfully processed, but there is no additional content.
-        "400":
+        '400':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -177,7 +177,7 @@ paths:
       summary: Delete a business line
       tags:
         - Business lines
-      x-addedInVersion: "1"
+      x-addedInVersion: '1'
       x-groupName: Business lines
       x-methodName: deleteBusinessLine
       x-sortIndex: 14
@@ -192,44 +192,44 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
                 success:
-                  $ref: "#/components/examples/get-businessLines-id-success-200"
+                  $ref: '#/components/examples/get-businessLines-id-success-200'
               schema:
-                $ref: "#/components/schemas/BusinessLine"
+                $ref: '#/components/schemas/BusinessLine'
           description: OK - the request has succeeded.
-        "400":
+        '400':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -237,7 +237,7 @@ paths:
       summary: Get a business line
       tags:
         - Business lines
-      x-addedInVersion: "1"
+      x-addedInVersion: '1'
       x-groupName: Business lines
       x-methodName: getBusinessLine
       x-sortIndex: 13
@@ -256,48 +256,48 @@ paths:
           application/json:
             examples:
               updateBusinessLine:
-                $ref: "#/components/examples/patch-businessLines-id-updateBusinessLine"
+                $ref: '#/components/examples/patch-businessLines-id-updateBusinessLine'
             schema:
-              $ref: "#/components/schemas/BusinessLineInfoUpdate"
+              $ref: '#/components/schemas/BusinessLineInfoUpdate'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
                 updateBusinessLine:
-                  $ref: "#/components/examples/patch-businessLines-id-updateBusinessLine-200"
+                  $ref: '#/components/examples/patch-businessLines-id-updateBusinessLine-200'
               schema:
-                $ref: "#/components/schemas/BusinessLine"
+                $ref: '#/components/schemas/BusinessLine'
           description: OK - the request has succeeded.
-        "400":
+        '400':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -305,7 +305,7 @@ paths:
       summary: Update a business line
       tags:
         - Business lines
-      x-addedInVersion: "2"
+      x-addedInVersion: '2'
       x-groupName: Business lines
       x-methodName: updateBusinessLine
       x-sortIndex: 15
@@ -316,55 +316,55 @@ paths:
 
          Adyen uses the information from the [legal entity](https://docs.adyen.com/api-explorer/#/legalentity/latest/post/legalEntities) to run automated verification checks. If these checks fail, you will be notified to provide additional documents.
 
-         You should only upload documents when Adyen requests additional information for the legal entity. 
+         You should only upload documents when Adyen requests additional information for the legal entity.
       operationId: post-documents
       requestBody:
         content:
           application/json:
             examples:
               uploadDocument:
-                $ref: "#/components/examples/post-documents-uploadDocument"
+                $ref: '#/components/examples/post-documents-uploadDocument'
             schema:
-              $ref: "#/components/schemas/Document"
+              $ref: '#/components/schemas/Document'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
                 uploadDocument:
-                  $ref: "#/components/examples/post-documents-uploadDocument-200"
+                  $ref: '#/components/examples/post-documents-uploadDocument-200'
               schema:
-                $ref: "#/components/schemas/Document"
+                $ref: '#/components/schemas/Document'
           description: OK - the request has succeeded.
-        "400":
+        '400':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -372,11 +372,11 @@ paths:
       summary: Upload a document for verification checks
       tags:
         - Documents
-      x-addedInVersion: "1"
+      x-addedInVersion: '1'
       x-groupName: Documents
       x-methodName: uploadDocumentForVerificationChecks
       x-sortIndex: 4
-  "/documents/{id}":
+  '/documents/{id}':
     delete:
       description: Deletes a document.
       operationId: delete-documents-id
@@ -388,41 +388,41 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/VoidResponse"
+                $ref: '#/components/schemas/VoidResponse'
           description: OK - the request has succeeded.
-        "400":
+        '400':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -430,7 +430,7 @@ paths:
       summary: Delete a document
       tags:
         - Documents
-      x-addedInVersion: "1"
+      x-addedInVersion: '1'
       x-groupName: Documents
       x-methodName: deleteDocument
       x-sortIndex: 7
@@ -445,44 +445,44 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
                 success:
-                  $ref: "#/components/examples/get-documents-id-success-200"
+                  $ref: '#/components/examples/get-documents-id-success-200'
               schema:
-                $ref: "#/components/schemas/Document"
+                $ref: '#/components/schemas/Document'
           description: OK - the request has succeeded.
-        "400":
+        '400':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -490,7 +490,7 @@ paths:
       summary: Get a document
       tags:
         - Documents
-      x-addedInVersion: "1"
+      x-addedInVersion: '1'
       x-groupName: Documents
       x-methodName: getDocument
       x-sortIndex: 5
@@ -509,48 +509,48 @@ paths:
           application/json:
             examples:
               updateDocument:
-                $ref: "#/components/examples/patch-documents-id-updateDocument"
+                $ref: '#/components/examples/patch-documents-id-updateDocument'
             schema:
-              $ref: "#/components/schemas/Document"
+              $ref: '#/components/schemas/Document'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
                 updateDocument:
-                  $ref: "#/components/examples/patch-documents-id-updateDocument-200"
+                  $ref: '#/components/examples/patch-documents-id-updateDocument-200'
               schema:
-                $ref: "#/components/schemas/Document"
+                $ref: '#/components/schemas/Document'
           description: OK - the request has succeeded.
-        "400":
+        '400':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -558,7 +558,7 @@ paths:
       summary: Update a document
       tags:
         - Documents
-      x-addedInVersion: "1"
+      x-addedInVersion: '1'
       x-groupName: Documents
       x-methodName: updateDocument
       x-sortIndex: 6
@@ -575,68 +575,68 @@ paths:
           application/json:
             examples:
               createLegalEntityIndividualNL:
-                $ref: "#/components/examples/post-legalEntities-createLegalEntityIndividualNL"
+                $ref: '#/components/examples/post-legalEntities-createLegalEntityIndividualNL'
               createLegalEntityIndividualUS:
-                $ref: "#/components/examples/post-legalEntities-createLegalEntityIndividualUS"
+                $ref: '#/components/examples/post-legalEntities-createLegalEntityIndividualUS'
               createLegalEntityOrganizationNL:
-                $ref: "#/components/examples/post-legalEntities-createLegalEntityOrganizationNL"
+                $ref: '#/components/examples/post-legalEntities-createLegalEntityOrganizationNL'
               createLegalEntityOrganizationUS:
-                $ref: "#/components/examples/post-legalEntities-createLegalEntityOrganizationUS"
+                $ref: '#/components/examples/post-legalEntities-createLegalEntityOrganizationUS'
               createLegalEntitySolePropNL:
-                $ref: "#/components/examples/post-legalEntities-createLegalEntitySolePropNL"
+                $ref: '#/components/examples/post-legalEntities-createLegalEntitySolePropNL'
               createLegalEntitySolePropUS:
-                $ref: "#/components/examples/post-legalEntities-createLegalEntitySolePropUS"
+                $ref: '#/components/examples/post-legalEntities-createLegalEntitySolePropUS'
             schema:
-              $ref: "#/components/schemas/LegalEntityInfoRequiredType"
+              $ref: '#/components/schemas/LegalEntityInfoRequiredType'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
                 createLegalEntityIndividualNL:
-                  $ref: "#/components/examples/post-legalEntities-createLegalEntityIndividualNL-200"
+                  $ref: '#/components/examples/post-legalEntities-createLegalEntityIndividualNL-200'
                 createLegalEntityIndividualUS:
-                  $ref: "#/components/examples/post-legalEntities-createLegalEntityIndividualUS-200"
+                  $ref: '#/components/examples/post-legalEntities-createLegalEntityIndividualUS-200'
                 createLegalEntityOrganizationNL:
-                  $ref: "#/components/examples/post-legalEntities-createLegalEntityOrganizationNL-200"
+                  $ref: '#/components/examples/post-legalEntities-createLegalEntityOrganizationNL-200'
                 createLegalEntityOrganizationUS:
-                  $ref: "#/components/examples/post-legalEntities-createLegalEntityOrganizationUS-200"
+                  $ref: '#/components/examples/post-legalEntities-createLegalEntityOrganizationUS-200'
                 createLegalEntitySolePropNL:
-                  $ref: "#/components/examples/post-legalEntities-createLegalEntitySolePropNL-200"
+                  $ref: '#/components/examples/post-legalEntities-createLegalEntitySolePropNL-200'
                 createLegalEntitySolePropUS:
-                  $ref: "#/components/examples/post-legalEntities-createLegalEntitySolePropUS-200"
+                  $ref: '#/components/examples/post-legalEntities-createLegalEntitySolePropUS-200'
               schema:
-                $ref: "#/components/schemas/LegalEntity"
+                $ref: '#/components/schemas/LegalEntity'
           description: OK - the request has succeeded.
-        "400":
+        '400':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -644,11 +644,11 @@ paths:
       summary: Create a legal entity
       tags:
         - Legal entities
-      x-addedInVersion: "1"
+      x-addedInVersion: '1'
       x-groupName: Legal entities
       x-methodName: createLegalEntity
       x-sortIndex: 1
-  "/legalEntities/{id}":
+  '/legalEntities/{id}':
     get:
       description: Returns a legal entity.
       operationId: get-legalEntities-id
@@ -660,44 +660,44 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
                 success:
-                  $ref: "#/components/examples/get-legalEntities-id-success-200"
+                  $ref: '#/components/examples/get-legalEntities-id-success-200'
               schema:
-                $ref: "#/components/schemas/LegalEntity"
+                $ref: '#/components/schemas/LegalEntity'
           description: OK - the request has succeeded.
-        "400":
+        '400':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -705,7 +705,7 @@ paths:
       summary: Get a legal entity
       tags:
         - Legal entities
-      x-addedInVersion: "1"
+      x-addedInVersion: '1'
       x-groupName: Legal entities
       x-methodName: getLegalEntity
       x-sortIndex: 2
@@ -727,56 +727,56 @@ paths:
           application/json:
             examples:
               changeLegalEntityType:
-                $ref: "#/components/examples/patch-legalEntities-id-changeLegalEntityType"
+                $ref: '#/components/examples/patch-legalEntities-id-changeLegalEntityType'
               updateLegalEntityOrganization:
-                $ref: "#/components/examples/patch-legalEntities-id-updateLegalEntityOrganization"
+                $ref: '#/components/examples/patch-legalEntities-id-updateLegalEntityOrganization'
               updateLegalEntitySoleProp:
-                $ref: "#/components/examples/patch-legalEntities-id-updateLegalEntitySoleProp"
+                $ref: '#/components/examples/patch-legalEntities-id-updateLegalEntitySoleProp'
             schema:
-              $ref: "#/components/schemas/LegalEntityInfo"
+              $ref: '#/components/schemas/LegalEntityInfo'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
                 changeLegalEntityType:
-                  $ref: "#/components/examples/patch-legalEntities-id-changeLegalEntityType-200"
+                  $ref: '#/components/examples/patch-legalEntities-id-changeLegalEntityType-200'
                 updateLegalEntityOrganization:
-                  $ref: "#/components/examples/patch-legalEntities-id-updateLegalEntityOrganization-200"
+                  $ref: '#/components/examples/patch-legalEntities-id-updateLegalEntityOrganization-200'
                 updateLegalEntitySoleProp:
-                  $ref: "#/components/examples/patch-legalEntities-id-updateLegalEntitySoleProp-200"
+                  $ref: '#/components/examples/patch-legalEntities-id-updateLegalEntitySoleProp-200'
               schema:
-                $ref: "#/components/schemas/LegalEntity"
+                $ref: '#/components/schemas/LegalEntity'
           description: OK - the request has succeeded.
-        "400":
+        '400':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -784,11 +784,11 @@ paths:
       summary: Update a legal entity
       tags:
         - Legal entities
-      x-addedInVersion: "1"
+      x-addedInVersion: '1'
       x-groupName: Legal entities
       x-methodName: updateLegalEntity
       x-sortIndex: 3
-  "/legalEntities/{id}/businessLines":
+  '/legalEntities/{id}/businessLines':
     get:
       description: Returns the business lines owned by a legal entity.
       operationId: get-legalEntities-id-businessLines
@@ -800,44 +800,44 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
                 success:
-                  $ref: "#/components/examples/get-legalEntities-id-businessLines-success-200"
+                  $ref: '#/components/examples/get-legalEntities-id-businessLines-success-200'
               schema:
-                $ref: "#/components/schemas/BusinessLines"
+                $ref: '#/components/schemas/BusinessLines'
           description: OK - the request has succeeded.
-        "400":
+        '400':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -845,11 +845,11 @@ paths:
       summary: Get all business lines under a legal entity
       tags:
         - Legal entities
-      x-addedInVersion: "1"
+      x-addedInVersion: '1'
       x-groupName: Legal entities
       x-methodName: getAllBusinessLinesUnderLegalEntity
       x-sortIndex: 4
-  "/legalEntities/{id}/checkVerificationErrors":
+  '/legalEntities/{id}/checkVerificationErrors':
     post:
       description: Returns the verification errors for a legal entity and its supporting entities.
       operationId: post-legalEntities-id-checkVerificationErrors
@@ -861,44 +861,44 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
                 checkVerificationErrors:
-                  $ref: "#/components/examples/post-legalEntities-id-checkVerificationErrors-checkVerificationErrors-200"
+                  $ref: '#/components/examples/post-legalEntities-id-checkVerificationErrors-checkVerificationErrors-200'
               schema:
-                $ref: "#/components/schemas/VerificationErrors"
+                $ref: '#/components/schemas/VerificationErrors'
           description: OK - the request has succeeded.
-        "400":
+        '400':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -906,11 +906,11 @@ paths:
       summary: Check a legal entity's verification errors
       tags:
         - Legal entities
-      x-addedInVersion: "3"
+      x-addedInVersion: '3'
       x-groupName: Legal entities
       x-methodName: checkLegalEntitysVerificationErrors
       x-sortIndex: 2
-  "/legalEntities/{id}/onboardingLinks":
+  '/legalEntities/{id}/onboardingLinks':
     post:
       description: Returns a link to an Adyen-hosted onboarding page where you need to redirect your user.
       operationId: post-legalEntities-id-onboardingLinks
@@ -926,48 +926,48 @@ paths:
           application/json:
             examples:
               createOnboardingLink:
-                $ref: "#/components/examples/post-legalEntities-id-onboardingLinks-createOnboardingLink"
+                $ref: '#/components/examples/post-legalEntities-id-onboardingLinks-createOnboardingLink'
             schema:
-              $ref: "#/components/schemas/OnboardingLinkInfo"
+              $ref: '#/components/schemas/OnboardingLinkInfo'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
                 createOnboardingLink:
-                  $ref: "#/components/examples/post-legalEntities-id-onboardingLinks-createOnboardingLink-200"
+                  $ref: '#/components/examples/post-legalEntities-id-onboardingLinks-createOnboardingLink-200'
               schema:
-                $ref: "#/components/schemas/OnboardingLink"
+                $ref: '#/components/schemas/OnboardingLink'
           description: OK - the request has succeeded.
-        "400":
+        '400':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -975,11 +975,11 @@ paths:
       summary: Get a link to an Adyen-hosted onboarding page
       tags:
         - Hosted Onboarding
-      x-addedInVersion: "1"
+      x-addedInVersion: '1'
       x-groupName: Hosted Onboarding
       x-methodName: getLinkToAdyenhostedOnboardingPage
       x-sortIndex: 1
-  "/legalEntities/{id}/pciQuestionnaires":
+  '/legalEntities/{id}/pciQuestionnaires':
     get:
       description: Get a list of signed PCI questionnaires.
       operationId: get-legalEntities-id-pciQuestionnaires
@@ -991,44 +991,44 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
                 success:
-                  $ref: "#/components/examples/get-legalEntities-id-pciQuestionnaires-success-200"
+                  $ref: '#/components/examples/get-legalEntities-id-pciQuestionnaires-success-200'
               schema:
-                $ref: "#/components/schemas/GetPciQuestionnaireInfosResponse"
+                $ref: '#/components/schemas/GetPciQuestionnaireInfosResponse'
           description: OK - the request has succeeded.
-        "400":
+        '400':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -1036,11 +1036,11 @@ paths:
       summary: Get PCI questionnaire details
       tags:
         - PCI questionnaires
-      x-addedInVersion: "1"
+      x-addedInVersion: '1'
       x-groupName: PCI questionnaires
       x-methodName: getPciQuestionnaireDetails
       x-sortIndex: 3
-  "/legalEntities/{id}/pciQuestionnaires/generatePciTemplates":
+  '/legalEntities/{id}/pciQuestionnaires/generatePciTemplates':
     post:
       description: Generates the required PCI questionnaire based on the user's [salesChannel](https://docs.adyen.com/api-explorer/#/legalentity/latest/post/businessLines__reqParam_salesChannels). If multiple questionnaires are required, this request creates a single consodilated document to be signed.
       operationId: post-legalEntities-id-pciQuestionnaires-generatePciTemplates
@@ -1056,48 +1056,48 @@ paths:
           application/json:
             examples:
               createPciQuestionnaire:
-                $ref: "#/components/examples/post-legalEntities-id-pciQuestionnaires-generatePciTemplates-createPciQuestionnaire"
+                $ref: '#/components/examples/post-legalEntities-id-pciQuestionnaires-generatePciTemplates-createPciQuestionnaire'
             schema:
-              $ref: "#/components/schemas/GeneratePciDescriptionRequest"
+              $ref: '#/components/schemas/GeneratePciDescriptionRequest'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
                 createPciQuestionnaire:
-                  $ref: "#/components/examples/post-legalEntities-id-pciQuestionnaires-generatePciTemplates-createPciQuestionnaire-200"
+                  $ref: '#/components/examples/post-legalEntities-id-pciQuestionnaires-generatePciTemplates-createPciQuestionnaire-200'
               schema:
-                $ref: "#/components/schemas/GeneratePciDescriptionResponse"
+                $ref: '#/components/schemas/GeneratePciDescriptionResponse'
           description: OK - the request has succeeded.
-        "400":
+        '400':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -1105,11 +1105,11 @@ paths:
       summary: Generate PCI questionnaire
       tags:
         - PCI questionnaires
-      x-addedInVersion: "1"
+      x-addedInVersion: '1'
       x-groupName: PCI questionnaires
       x-methodName: generatePciQuestionnaire
       x-sortIndex: 1
-  "/legalEntities/{id}/pciQuestionnaires/signPciTemplates":
+  '/legalEntities/{id}/pciQuestionnaires/signPciTemplates':
     post:
       description: Signs the required PCI questionnaire.
       operationId: post-legalEntities-id-pciQuestionnaires-signPciTemplates
@@ -1125,48 +1125,48 @@ paths:
           application/json:
             examples:
               signPciQuestionnaire:
-                $ref: "#/components/examples/post-legalEntities-id-pciQuestionnaires-signPciTemplates-signPciQuestionnaire"
+                $ref: '#/components/examples/post-legalEntities-id-pciQuestionnaires-signPciTemplates-signPciQuestionnaire'
             schema:
-              $ref: "#/components/schemas/PciSigningRequest"
+              $ref: '#/components/schemas/PciSigningRequest'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
                 signPciQuestionnaire:
-                  $ref: "#/components/examples/post-legalEntities-id-pciQuestionnaires-signPciTemplates-signPciQuestionnaire-200"
+                  $ref: '#/components/examples/post-legalEntities-id-pciQuestionnaires-signPciTemplates-signPciQuestionnaire-200'
               schema:
-                $ref: "#/components/schemas/PciSigningResponse"
+                $ref: '#/components/schemas/PciSigningResponse'
           description: OK - the request has succeeded.
-        "400":
+        '400':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -1174,11 +1174,11 @@ paths:
       summary: Sign PCI questionnaire
       tags:
         - PCI questionnaires
-      x-addedInVersion: "1"
+      x-addedInVersion: '1'
       x-groupName: PCI questionnaires
       x-methodName: signPciQuestionnaire
       x-sortIndex: 2
-  "/legalEntities/{id}/pciQuestionnaires/{pciid}":
+  '/legalEntities/{id}/pciQuestionnaires/{pciid}':
     get:
       description: Returns the signed PCI questionnaire.
       operationId: get-legalEntities-id-pciQuestionnaires-pciid
@@ -1196,44 +1196,44 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
                 success:
-                  $ref: "#/components/examples/get-legalEntities-id-pciQuestionnaires-pciid-success-200"
+                  $ref: '#/components/examples/get-legalEntities-id-pciQuestionnaires-pciid-success-200'
               schema:
-                $ref: "#/components/schemas/GetPciQuestionnaireResponse"
+                $ref: '#/components/schemas/GetPciQuestionnaireResponse'
           description: OK - the request has succeeded.
-        "400":
+        '400':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -1241,11 +1241,11 @@ paths:
       summary: Get PCI questionnaire
       tags:
         - PCI questionnaires
-      x-addedInVersion: "1"
+      x-addedInVersion: '1'
       x-groupName: PCI questionnaires
       x-methodName: getPciQuestionnaire
       x-sortIndex: 4
-  "/legalEntities/{id}/termsOfService":
+  '/legalEntities/{id}/termsOfService':
     post:
       description: Returns the Terms of Service document for a legal entity.
       operationId: post-legalEntities-id-termsOfService
@@ -1261,48 +1261,48 @@ paths:
           application/json:
             examples:
               createTermsofService:
-                $ref: "#/components/examples/post-legalEntities-id-termsOfService-createTermsofService"
+                $ref: '#/components/examples/post-legalEntities-id-termsOfService-createTermsofService'
             schema:
-              $ref: "#/components/schemas/GetTermsOfServiceDocumentRequest"
+              $ref: '#/components/schemas/GetTermsOfServiceDocumentRequest'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
                 createTermsofService:
-                  $ref: "#/components/examples/post-legalEntities-id-termsOfService-createTermsofService-200"
+                  $ref: '#/components/examples/post-legalEntities-id-termsOfService-createTermsofService-200'
               schema:
-                $ref: "#/components/schemas/GetTermsOfServiceDocumentResponse"
+                $ref: '#/components/schemas/GetTermsOfServiceDocumentResponse'
           description: OK - the request has succeeded.
-        "400":
+        '400':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -1310,11 +1310,11 @@ paths:
       summary: Get Terms of Service document
       tags:
         - Terms of Service
-      x-addedInVersion: "1"
+      x-addedInVersion: '1'
       x-groupName: Terms of Service
       x-methodName: getTermsOfServiceDocument
       x-sortIndex: 1
-  "/legalEntities/{id}/termsOfService/{termsofservicedocumentid}":
+  '/legalEntities/{id}/termsOfService/{termsofservicedocumentid}':
     patch:
       description: Accepts Terms of Service.
       operationId: patch-legalEntities-id-termsOfService-termsofservicedocumentid
@@ -1335,43 +1335,43 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/AcceptTermsOfServiceRequest"
+              $ref: '#/components/schemas/AcceptTermsOfServiceRequest'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/AcceptTermsOfServiceResponse"
+                $ref: '#/components/schemas/AcceptTermsOfServiceResponse'
           description: OK - the request has succeeded.
-        "400":
+        '400':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -1379,11 +1379,11 @@ paths:
       summary: Accept Terms of Service
       tags:
         - Terms of Service
-      x-addedInVersion: "1"
+      x-addedInVersion: '1'
       x-groupName: Terms of Service
       x-methodName: acceptTermsOfService
       x-sortIndex: 2
-  "/legalEntities/{id}/termsOfServiceAcceptanceInfos":
+  '/legalEntities/{id}/termsOfServiceAcceptanceInfos':
     get:
       description: Returns Terms of Service information for a legal entity.
       operationId: get-legalEntities-id-termsOfServiceAcceptanceInfos
@@ -1395,44 +1395,44 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
                 success:
-                  $ref: "#/components/examples/get-legalEntities-id-termsOfServiceAcceptanceInfos-success-200"
+                  $ref: '#/components/examples/get-legalEntities-id-termsOfServiceAcceptanceInfos-success-200'
               schema:
-                $ref: "#/components/schemas/GetTermsOfServiceAcceptanceInfosResponse"
+                $ref: '#/components/schemas/GetTermsOfServiceAcceptanceInfosResponse'
           description: OK - the request has succeeded.
-        "400":
+        '400':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -1440,7 +1440,7 @@ paths:
       summary: Get Terms of Service information for a legal entity
       tags:
         - Terms of Service
-      x-addedInVersion: "1"
+      x-addedInVersion: '1'
       x-groupName: Terms of Service
       x-methodName: getTermsOfServiceInformationForLegalEntity
       x-sortIndex: 3
@@ -1449,44 +1449,44 @@ paths:
       description: Returns a list of hosted onboarding page themes.
       operationId: get-themes
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
                 success:
-                  $ref: "#/components/examples/get-themes-success-200"
+                  $ref: '#/components/examples/get-themes-success-200'
               schema:
-                $ref: "#/components/schemas/OnboardingThemes"
+                $ref: '#/components/schemas/OnboardingThemes'
           description: OK - the request has succeeded.
-        "400":
+        '400':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -1494,11 +1494,11 @@ paths:
       summary: Get a list of hosted onboarding page themes
       tags:
         - Hosted Onboarding
-      x-addedInVersion: "1"
+      x-addedInVersion: '1'
       x-groupName: Hosted Onboarding
       x-methodName: listHostedOnboardingPageThemes
       x-sortIndex: 2
-  "/themes/{id}":
+  '/themes/{id}':
     get:
       description: Returns the details of the theme identified in the path.
       operationId: get-themes-id
@@ -1510,44 +1510,44 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
                 success:
-                  $ref: "#/components/examples/get-themes-id-success-200"
+                  $ref: '#/components/examples/get-themes-id-success-200'
               schema:
-                $ref: "#/components/schemas/OnboardingTheme"
+                $ref: '#/components/schemas/OnboardingTheme'
           description: OK - the request has succeeded.
-        "400":
+        '400':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -1555,7 +1555,7 @@ paths:
       summary: Get an onboarding link theme
       tags:
         - Hosted Onboarding
-      x-addedInVersion: "1"
+      x-addedInVersion: '1'
       x-groupName: Hosted Onboarding
       x-methodName: getOnboardingLinkTheme
       x-sortIndex: 4
@@ -1573,52 +1573,52 @@ paths:
           application/json:
             examples:
               createTransferInstrumentEUR:
-                $ref: "#/components/examples/post-transferInstruments-createTransferInstrumentEUR"
+                $ref: '#/components/examples/post-transferInstruments-createTransferInstrumentEUR'
               createTransferInstrumentUSD:
-                $ref: "#/components/examples/post-transferInstruments-createTransferInstrumentUSD"
+                $ref: '#/components/examples/post-transferInstruments-createTransferInstrumentUSD'
             schema:
-              $ref: "#/components/schemas/TransferInstrumentInfo"
+              $ref: '#/components/schemas/TransferInstrumentInfo'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
                 createTransferInstrumentEUR:
-                  $ref: "#/components/examples/post-transferInstruments-createTransferInstrumentEUR-200"
+                  $ref: '#/components/examples/post-transferInstruments-createTransferInstrumentEUR-200'
                 createTransferInstrumentUSD:
-                  $ref: "#/components/examples/post-transferInstruments-createTransferInstrumentUSD-200"
+                  $ref: '#/components/examples/post-transferInstruments-createTransferInstrumentUSD-200'
               schema:
-                $ref: "#/components/schemas/TransferInstrument"
+                $ref: '#/components/schemas/TransferInstrument'
           description: OK - the request has succeeded.
-        "400":
+        '400':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -1626,11 +1626,11 @@ paths:
       summary: Create a transfer instrument
       tags:
         - Transfer instruments
-      x-addedInVersion: "1"
+      x-addedInVersion: '1'
       x-groupName: Transfer instruments
       x-methodName: createTransferInstrument
       x-sortIndex: 8
-  "/transferInstruments/{id}":
+  '/transferInstruments/{id}':
     delete:
       description: Deletes a transfer instrument.
       operationId: delete-transferInstruments-id
@@ -1642,37 +1642,37 @@ paths:
           schema:
             type: string
       responses:
-        "204":
+        '204':
           description: No Content - the request has been successfully processed, but there is no additional content.
-        "400":
+        '400':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -1680,7 +1680,7 @@ paths:
       summary: Delete a transfer instrument
       tags:
         - Transfer instruments
-      x-addedInVersion: "1"
+      x-addedInVersion: '1'
       x-groupName: Transfer instruments
       x-methodName: deleteTransferInstrument
       x-sortIndex: 11
@@ -1695,44 +1695,44 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
                 success:
-                  $ref: "#/components/examples/get-transferInstruments-id-success-200"
+                  $ref: '#/components/examples/get-transferInstruments-id-success-200'
               schema:
-                $ref: "#/components/schemas/TransferInstrument"
+                $ref: '#/components/schemas/TransferInstrument'
           description: OK - the request has succeeded.
-        "400":
+        '400':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -1740,7 +1740,7 @@ paths:
       summary: Get a transfer instrument
       tags:
         - Transfer instruments
-      x-addedInVersion: "1"
+      x-addedInVersion: '1'
       x-groupName: Transfer instruments
       x-methodName: getTransferInstrument
       x-sortIndex: 9
@@ -1758,43 +1758,43 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/TransferInstrumentInfo"
+              $ref: '#/components/schemas/TransferInstrumentInfo'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/TransferInstrument"
+                $ref: '#/components/schemas/TransferInstrument'
           description: OK - the request has succeeded.
-        "400":
+        '400':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -1802,7 +1802,7 @@ paths:
       summary: Update a transfer instrument
       tags:
         - Transfer instruments
-      x-addedInVersion: "1"
+      x-addedInVersion: '1'
       x-groupName: Transfer instruments
       x-methodName: updateTransferInstrument
       x-sortIndex: 10
@@ -1813,7 +1813,7 @@ components:
       summary: Details of a business line
       value:
         id: SE322KH223222F5GV2SQ924F6
-        industryCode: "4531"
+        industryCode: '4531'
         legalEntityId: YOUR_LEGAL_ENTITY
         service: banking
         sourceOfFunds:
@@ -1842,7 +1842,7 @@ components:
       value:
         businessLines:
           - id: SE322JV223222F5GVGMLNB83F
-            industryCode: "55"
+            industryCode: '55'
             legalEntityId: YOUR_LEGAL_ENTITY
             service: banking
             sourceOfFunds:
@@ -1919,7 +1919,7 @@ components:
             country: NL
             postalCode: 1011DJ
             street: Simon Carmiggeltstraat 6 - 50
-            street2: "274"
+            street2: '274'
         type: individual
     get-legalEntities-id-termsOfServiceAcceptanceInfos-success-200:
       description: Example response when getting Terms of Service information for a legal entity
@@ -1939,7 +1939,7 @@ components:
         description: Light colors theme
         id: ONBT422KH223222D5G82M968PB46HR
         properties:
-          backgroundColor: "#FFFFFF"
+          backgroundColor: '#FFFFFF'
           backgroundImage: ONBA422JV223222D5G82M96F6P2VTV
           faqPage: https://docs.adyen.com/hosted-onboarding-faqs
           logo: ONBA422JV223222D5FWC4TK25S3DQW
@@ -1957,7 +1957,7 @@ components:
             description: Dark colors theme
             id: ONBT422JV223222D5FGJ77B9C52WNN
             properties:
-              backgroundColor: "#000000"
+              backgroundColor: '#000000'
               backgroundImage: ONBA422KH223222D5G8VG2TG9S5ZBH
               faqPage: https://docs.adyen.com/hosted-onboarding-faqs
               logo: ONBA422JV223222D5G8VG2T8JV39GV
@@ -1969,7 +1969,7 @@ components:
             description: Light colors theme
             id: ONBT422KH223222D5G82M968PB46HR
             properties:
-              backgroundColor: "#FFFFFF"
+              backgroundColor: '#FFFFFF'
               backgroundImage: ONBA422JV223222D5G82M96F6P2VTV
               faqPage: https://docs.adyen.com/hosted-onboarding-faqs
               logo: ONBA422JV223222D5FWC4TK25S3DQW
@@ -1994,7 +1994,7 @@ components:
       description: Example request for updating the industry code of a business line
       summary: Update a business line
       value:
-        industryCode: "55"
+        industryCode: '55'
         webData:
           - webAddress: https://www.example.com
     patch-businessLines-id-updateBusinessLine-200:
@@ -2002,7 +2002,7 @@ components:
       summary: Business line updated
       value:
         id: SE322JV223222F5GVGMLNB83F
-        industryCode: "55"
+        industryCode: '55'
         legalEntityId: YOUR_LEGAL_ENTITY
         service: banking
         sourceOfFunds:
@@ -2075,7 +2075,7 @@ components:
           legalName: Adyen BV
           phone:
             countryCode: NL
-            number: "646467363"
+            number: '646467363'
             type: mobile
           registeredAddress:
             city: AMS
@@ -2083,7 +2083,7 @@ components:
             postalCode: 1234EE
             stateOrProvince: NH
             street: Simon Carmiggeltstraat 6 - 50
-          registrationNumber: ""
+          registrationNumber: ''
           stockData:
             marketIdentifier: ADYN
             stockNumber: NL012345ABC4
@@ -2125,7 +2125,7 @@ components:
       description: Example request for creating a business line for a business account
       summary: Create a business line for a business account
       value:
-        industryCode: "4531"
+        industryCode: '4531'
         legalEntityId: YOUR_LEGAL_ENTITY
         service: banking
         sourceOfFunds:
@@ -2139,7 +2139,7 @@ components:
       summary: Business line created
       value:
         id: SE322KT223222D5FJ7TJN2986
-        industryCode: "4531"
+        industryCode: '4531'
         legalEntityId: YOUR_LEGAL_ENTITY
         service: banking
         sourceOfFunds:
@@ -2246,12 +2246,12 @@ components:
             firstName: Shelly
             lastName: Eller
           phone:
-            number: "+14153671502"
+            number: '+14153671502'
             type: mobile
           residentialAddress:
             city: New York
             country: US
-            postalCode: "10003"
+            postalCode: '10003'
             stateOrProvince: NY
             street: 71 5th Avenue
             street2: 11th floor
@@ -2269,12 +2269,12 @@ components:
             firstName: Shelly
             lastName: Eller
           phone:
-            number: "+14153671502"
+            number: '+14153671502'
             type: mobile
           residentialAddress:
             city: New York
             country: US
-            postalCode: "10003"
+            postalCode: '10003'
             stateOrProvince: NY
             street: 71 5th Avenue
             street2: 11th floor
@@ -2296,7 +2296,7 @@ components:
             country: NL
             postalCode: 1011DJ
             street: Simon Carmiggeltstraat 6 - 50
-          registrationNumber: "34179503"
+          registrationNumber: '34179503'
           type: privateCompany
         type: organization
     post-legalEntities-createLegalEntityOrganizationNL-200:
@@ -2320,7 +2320,7 @@ components:
             country: NL
             postalCode: 1011DJ
             street: Simon Carmiggeltstraat 6 - 50
-          registrationNumber: "34179503"
+          registrationNumber: '34179503'
           type: privateCompany
         type: organization
     post-legalEntities-createLegalEntityOrganizationUS:
@@ -2332,11 +2332,11 @@ components:
           registeredAddress:
             city: New York
             country: US
-            postalCode: "10003"
+            postalCode: '10003'
             stateOrProvince: NY
             street: 71 5th Avenue
             street2: 11th floor
-          registrationNumber: "101002749"
+          registrationNumber: '101002749'
           type: privateCompany
         type: organization
     post-legalEntities-createLegalEntityOrganizationUS-200:
@@ -2349,11 +2349,11 @@ components:
           registeredAddress:
             city: New York
             country: US
-            postalCode: "10003"
+            postalCode: '10003'
             stateOrProvince: NY
             street: 71 5th Avenue
             street2: 11th floor
-          registrationNumber: "101002749"
+          registrationNumber: '101002749'
           taxExempt: false
           type: privateCompany
         type: organization
@@ -2394,7 +2394,7 @@ components:
           registeredAddress:
             city: New York
             country: US
-            postalCode: "10003"
+            postalCode: '10003'
             stateOrProvince: NY
             street: 71 5th Avenue
             street2: 11th floor
@@ -2410,7 +2410,7 @@ components:
           registeredAddress:
             city: New York
             country: US
-            postalCode: "10003"
+            postalCode: '10003'
             stateOrProvince: NY
             street: 71 5th Avenue
             street2: 11th floor
@@ -2605,8 +2605,8 @@ components:
       value:
         bankAccount:
           accountIdentification:
-            accountNumber: "0000000123"
-            routingNumber: "121202211"
+            accountNumber: '0000000123'
+            routingNumber: '121202211'
             type: usLocal
         legalEntityId: YOUR_LEGAL_ENTITY
         type: bankAccount
@@ -2616,9 +2616,9 @@ components:
       value:
         bankAccount:
           accountIdentification:
-            accountNumber: "0000000123"
+            accountNumber: '0000000123'
             accountType: checking
-            routingNumber: "121202211"
+            routingNumber: '121202211'
             type: usLocal
           countryCode: US
         id: SE322JV223222F5GJVKHH8DTC
@@ -2640,7 +2640,7 @@ components:
           type: string
         type:
           default: auLocal
-          description: "**auLocal**"
+          description: '**auLocal**'
           enum:
             - auLocal
           type: string
@@ -2755,18 +2755,18 @@ components:
           description: |-
             The file format.
 
-             Possible values: **application/pdf**, **image/jpg**, **image/jpeg**, **image/png**. 
+             Possible values: **application/pdf**, **image/jpg**, **image/jpeg**, **image/png**.
           type: string
-          x-deprecatedInVersion: "1"
+          x-deprecatedInVersion: '1'
         filename:
           deprecated: true
           description: The name of the file including the file extension.
           type: string
-          x-deprecatedInVersion: "1"
+          x-deprecatedInVersion: '1'
         pageName:
           description: The name of the file including the file extension.
           type: string
-          x-addedInVersion: "2"
+          x-addedInVersion: '2'
         pageType:
           description: |-
             Specifies which side of the ID card is uploaded.
@@ -2783,24 +2783,24 @@ components:
         accountIdentification:
           description: Identification of the bank account.
           oneOf:
-            - $ref: "#/components/schemas/AULocalAccountIdentification"
-            - $ref: "#/components/schemas/CALocalAccountIdentification"
-            - $ref: "#/components/schemas/CZLocalAccountIdentification"
-            - $ref: "#/components/schemas/DKLocalAccountIdentification"
-            - $ref: "#/components/schemas/HULocalAccountIdentification"
-            - $ref: "#/components/schemas/IbanAccountIdentification"
-            - $ref: "#/components/schemas/NOLocalAccountIdentification"
-            - $ref: "#/components/schemas/NumberAndBicAccountIdentification"
-            - $ref: "#/components/schemas/PLLocalAccountIdentification"
-            - $ref: "#/components/schemas/SELocalAccountIdentification"
-            - $ref: "#/components/schemas/UKLocalAccountIdentification"
-            - $ref: "#/components/schemas/USLocalAccountIdentification"
-          x-addedInVersion: "3"
+            - $ref: '#/components/schemas/AULocalAccountIdentification'
+            - $ref: '#/components/schemas/CALocalAccountIdentification'
+            - $ref: '#/components/schemas/CZLocalAccountIdentification'
+            - $ref: '#/components/schemas/DKLocalAccountIdentification'
+            - $ref: '#/components/schemas/HULocalAccountIdentification'
+            - $ref: '#/components/schemas/IbanAccountIdentification'
+            - $ref: '#/components/schemas/NOLocalAccountIdentification'
+            - $ref: '#/components/schemas/NumberAndBicAccountIdentification'
+            - $ref: '#/components/schemas/PLLocalAccountIdentification'
+            - $ref: '#/components/schemas/SELocalAccountIdentification'
+            - $ref: '#/components/schemas/UKLocalAccountIdentification'
+            - $ref: '#/components/schemas/USLocalAccountIdentification'
+          x-addedInVersion: '3'
         accountType:
           deprecated: true
           description: The type of bank account.
           type: string
-          x-deprecatedInVersion: "2"
+          x-deprecatedInVersion: '2'
         countryCode:
           description: The two-character [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) country code where the bank account is registered. For example, **NL**.
           type: string
@@ -2817,7 +2817,7 @@ components:
           deprecated: true
           description: The capability for which you are creating the business line. For example, **receivePayments**.
           type: string
-          x-deprecatedInVersion: "3"
+          x-deprecatedInVersion: '3'
           x-deprecatedMessage: Use `service` instead.
         id:
           description: The unique identifier of the business line.
@@ -2832,9 +2832,9 @@ components:
         problems:
           description: List of the verification errors from capabilities for this supporting entity.
           items:
-            $ref: "#/components/schemas/CapabilityProblem"
+            $ref: '#/components/schemas/CapabilityProblem'
           type: array
-          x-addedInVersion: "3"
+          x-addedInVersion: '3'
         salesChannels:
           description: |-
             A list of channels where goods or services are sold.
@@ -2855,17 +2855,17 @@ components:
             - issuing
             - banking
           type: string
-          x-addedInVersion: "3"
+          x-addedInVersion: '3'
         sourceOfFunds:
-          $ref: "#/components/schemas/SourceOfFunds"
+          $ref: '#/components/schemas/SourceOfFunds'
           description: Contains information about the source of your user's funds. Required only for the `service` **banking**.
         webData:
           description: List of website URLs where your user's goods or services are sold. When this is required for a service but your user does not have an online presence, provide the reason in the `webDataExemption` object.
           items:
-            $ref: "#/components/schemas/WebData"
+            $ref: '#/components/schemas/WebData'
           type: array
         webDataExemption:
-          $ref: "#/components/schemas/WebDataExemption"
+          $ref: '#/components/schemas/WebDataExemption'
           description: The reason why the web data is not provided.
       required:
         - service
@@ -2879,7 +2879,7 @@ components:
           deprecated: true
           description: The capability for which you are creating the business line. For example, **receivePayments**.
           type: string
-          x-deprecatedInVersion: "3"
+          x-deprecatedInVersion: '3'
           x-deprecatedMessage: Use `service` instead.
         industryCode:
           description: A code that represents the industry of the legal entity. For example, **4431A** for computer software stores.
@@ -2907,17 +2907,17 @@ components:
             - issuing
             - banking
           type: string
-          x-addedInVersion: "3"
+          x-addedInVersion: '3'
         sourceOfFunds:
-          $ref: "#/components/schemas/SourceOfFunds"
+          $ref: '#/components/schemas/SourceOfFunds'
           description: Contains information about the source of your user's funds. Required only for the `service` **banking**.
         webData:
           description: List of website URLs where your user's goods or services are sold. When this is required for a service but your user does not have an online presence, provide the reason in the `webDataExemption` object.
           items:
-            $ref: "#/components/schemas/WebData"
+            $ref: '#/components/schemas/WebData'
           type: array
         webDataExemption:
-          $ref: "#/components/schemas/WebDataExemption"
+          $ref: '#/components/schemas/WebDataExemption'
           description: The reason why the web data is not provided.
       required:
         - service
@@ -2930,7 +2930,7 @@ components:
           deprecated: true
           description: The capability for which you are creating the business line. For example, **receivePayments**.
           type: string
-          x-deprecatedInVersion: "3"
+          x-deprecatedInVersion: '3'
           x-deprecatedMessage: Use `service` instead.
         industryCode:
           description: A code that represents the industry of your legal entity. For example, **4431A** for computer software stores.
@@ -2958,17 +2958,17 @@ components:
             - issuing
             - banking
           type: string
-          x-addedInVersion: "3"
+          x-addedInVersion: '3'
         sourceOfFunds:
-          $ref: "#/components/schemas/SourceOfFunds"
+          $ref: '#/components/schemas/SourceOfFunds'
           description: Contains information about the source of your user's funds. Required only for the `service` **banking**.
         webData:
           description: List of website URLs where your user's goods or services are sold. When this is required for a service but your user does not have an online presence, provide the reason in the `webDataExemption` object.
           items:
-            $ref: "#/components/schemas/WebData"
+            $ref: '#/components/schemas/WebData'
           type: array
         webDataExemption:
-          $ref: "#/components/schemas/WebDataExemption"
+          $ref: '#/components/schemas/WebDataExemption'
           description: The reason why the web data is not provided.
       required:
         - service
@@ -2978,7 +2978,7 @@ components:
         businessLines:
           description: List of business lines.
           items:
-            $ref: "#/components/schemas/BusinessLine"
+            $ref: '#/components/schemas/BusinessLine'
           type: array
       required:
         - businessLines
@@ -3013,7 +3013,7 @@ components:
           type: string
         type:
           default: caLocal
-          description: "**caLocal**"
+          description: '**caLocal**'
           enum:
             - caLocal
           type: string
@@ -3053,7 +3053,7 @@ components:
           type: string
         type:
           default: czLocal
-          description: "**czLocal**"
+          description: '**czLocal**'
           enum:
             - czLocal
           type: string
@@ -3065,10 +3065,10 @@ components:
     CapabilityProblem:
       properties:
         entity:
-          $ref: "#/components/schemas/CapabilityProblemEntity"
+          $ref: '#/components/schemas/CapabilityProblemEntity'
         verificationErrors:
           items:
-            $ref: "#/components/schemas/VerificationError"
+            $ref: '#/components/schemas/VerificationError'
           type: array
       type: object
     CapabilityProblemEntity:
@@ -3080,7 +3080,7 @@ components:
         id:
           type: string
         owner:
-          $ref: "#/components/schemas/CapabilityProblemEntity-recursive"
+          $ref: '#/components/schemas/CapabilityProblemEntity-recursive'
         type:
           enum:
             - BankAccount
@@ -3107,7 +3107,7 @@ components:
       properties:
         amountPerIndustry:
           additionalProperties:
-            $ref: "#/components/schemas/Amount"
+            $ref: '#/components/schemas/Amount'
           description: The maximum amount a card holder can spend per industry.
           type: object
         authorizedCardUsers:
@@ -3130,7 +3130,7 @@ components:
             - weekly
           type: string
         maxAmount:
-          $ref: "#/components/schemas/Amount"
+          $ref: '#/components/schemas/Amount'
           description: The maximum amount a card holder can withdraw per day.
       type: object
     DKLocalAccountIdentification:
@@ -3148,7 +3148,7 @@ components:
           type: string
         type:
           default: dkLocal
-          description: "**dkLocal**"
+          description: '**dkLocal**'
           enum:
             - dkLocal
           type: string
@@ -3160,15 +3160,15 @@ components:
     Document:
       properties:
         attachment:
-          $ref: "#/components/schemas/Attachment"
+          $ref: '#/components/schemas/Attachment'
           deprecated: true
           description: Object that contains the document.
-          x-deprecatedInVersion: "1"
+          x-deprecatedInVersion: '1'
           x-deprecatedMessage: Use the `attachments` array instead.
         attachments:
           description: Array that contains the document. The array supports multiple attachments for uploading different sides or pages of a document.
           items:
-            $ref: "#/components/schemas/Attachment"
+            $ref: '#/components/schemas/Attachment'
           type: array
         creationDate:
           description: The creation date of the document.
@@ -3182,7 +3182,7 @@ components:
           deprecated: true
           description: The expiry date of the document, in YYYY-MM-DD format.
           type: string
-          x-deprecatedInVersion: "1"
+          x-deprecatedInVersion: '1'
         fileName:
           description: The filename of the document.
           type: string
@@ -3194,12 +3194,12 @@ components:
           deprecated: true
           description: The two-character [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) country code where the document was issued. For example, **US**.
           type: string
-          x-deprecatedInVersion: "1"
+          x-deprecatedInVersion: '1'
         issuerState:
           deprecated: true
           description: The state or province where the document was issued (AU only).
           type: string
-          x-deprecatedInVersion: "1"
+          x-deprecatedInVersion: '1'
         modificationDate:
           description: The modification date of the document.
           format: date-time
@@ -3209,7 +3209,7 @@ components:
           description: The number in the document.
           type: string
         owner:
-          $ref: "#/components/schemas/OwnerEntity"
+          $ref: '#/components/schemas/OwnerEntity'
           description: Contains information about the resource that owns the document.
         type:
           description: |-
@@ -3304,7 +3304,7 @@ components:
         data:
           description: Information about the signed PCI questionnaires.
           items:
-            $ref: "#/components/schemas/PciDocumentInfo"
+            $ref: '#/components/schemas/PciDocumentInfo'
           type: array
       type: object
     GetPciQuestionnaireResponse:
@@ -3330,7 +3330,7 @@ components:
         data:
           description: The Terms of Service acceptance information.
           items:
-            $ref: "#/components/schemas/TermsOfServiceAcceptanceInfo"
+            $ref: '#/components/schemas/TermsOfServiceAcceptanceInfo'
           type: array
       type: object
     GetTermsOfServiceDocumentRequest:
@@ -3387,7 +3387,7 @@ components:
           type: string
         type:
           default: huLocal
-          description: "**huLocal**"
+          description: '**huLocal**'
           enum:
             - huLocal
           type: string
@@ -3403,7 +3403,7 @@ components:
           type: string
         type:
           default: iban
-          description: "**iban**"
+          description: '**iban**'
           enum:
             - iban
           type: string
@@ -3420,12 +3420,12 @@ components:
           deprecated: true
           description: The expiry date of the document, in YYYY-MM-DD format.
           type: string
-          x-deprecatedInVersion: "1"
+          x-deprecatedInVersion: '1'
         issuerCountry:
           deprecated: true
           description: The two-character [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) country code where the document was issued. For example, **US**.
           type: string
-          x-deprecatedInVersion: "1"
+          x-deprecatedInVersion: '1'
         issuerState:
           description: The state or province where the document was issued (AU only).
           type: string
@@ -3474,37 +3474,37 @@ components:
     Individual:
       properties:
         birthData:
-          $ref: "#/components/schemas/BirthData"
+          $ref: '#/components/schemas/BirthData'
           description: The individual's birth information.
         email:
           description: The email address of the legal entity.
           type: string
         identificationData:
-          $ref: "#/components/schemas/IdentificationData"
+          $ref: '#/components/schemas/IdentificationData'
           description: Information about the individual's identification document.
         name:
-          $ref: "#/components/schemas/Name"
+          $ref: '#/components/schemas/Name'
           description: The individual's name.
         nationality:
           description: The individual's nationality.
           type: string
         phone:
-          $ref: "#/components/schemas/PhoneNumber"
+          $ref: '#/components/schemas/PhoneNumber'
           description: The phone number of the legal entity.
         residentialAddress:
-          $ref: "#/components/schemas/Address"
+          $ref: '#/components/schemas/Address'
           description: The residential address of the individual.
         taxInformation:
           description: The tax information of the individual.
           items:
-            $ref: "#/components/schemas/TaxInformation"
+            $ref: '#/components/schemas/TaxInformation'
           type: array
-          x-addedInVersion: "2"
+          x-addedInVersion: '2'
         webData:
-          $ref: "#/components/schemas/WebData"
+          $ref: '#/components/schemas/WebData'
           deprecated: true
           description: The website and app URL of the legal entity.
-          x-deprecatedInVersion: "1"
+          x-deprecatedInVersion: '1'
       required:
         - name
         - residentialAddress
@@ -3513,59 +3513,59 @@ components:
       properties:
         capabilities:
           additionalProperties:
-            $ref: "#/components/schemas/LegalEntityCapability"
+            $ref: '#/components/schemas/LegalEntityCapability'
           description: Contains key-value pairs that specify the actions that the legal entity can do in your platform.The key is a capability required for your integration. For example, **issueCard** for Issuing.The value is an object containing the settings for the capability.
           readOnly: true
           type: object
         documentDetails:
           description: List of documents uploaded for the legal entity.
           items:
-            $ref: "#/components/schemas/DocumentReference"
+            $ref: '#/components/schemas/DocumentReference'
           type: array
-          x-addedInVersion: "2"
+          x-addedInVersion: '2'
         documents:
           deprecated: true
           description: List of documents uploaded for the legal entity.
           items:
-            $ref: "#/components/schemas/EntityReference"
+            $ref: '#/components/schemas/EntityReference'
           type: array
-          x-deprecatedInVersion: "1"
+          x-deprecatedInVersion: '1'
           x-deprecatedMessage: Use the `documentDetails` array instead.
         entityAssociations:
           description: |-
             List of legal entities associated with the current legal entity.
             For example, ultimate beneficial owners associated with an organization through ownership or control, or as signatories.
           items:
-            $ref: "#/components/schemas/LegalEntityAssociation"
+            $ref: '#/components/schemas/LegalEntityAssociation'
           type: array
         id:
           description: The unique identifier of the legal entity.
           readOnly: true
           type: string
         individual:
-          $ref: "#/components/schemas/Individual"
+          $ref: '#/components/schemas/Individual'
           description: Information about the individual. Required if `type` is **individual**.
         organization:
-          $ref: "#/components/schemas/Organization"
+          $ref: '#/components/schemas/Organization'
           description: Information about the organization. Required if `type` is **organization**.
         problems:
           description: List of the verification errors from capabilities for the legal entity.
           items:
-            $ref: "#/components/schemas/CapabilityProblem"
+            $ref: '#/components/schemas/CapabilityProblem'
           type: array
-          x-addedInVersion: "3"
+          x-addedInVersion: '3'
         reference:
           description: Your reference for the legal entity, maximum 150 characters.
           maxLength: 150
           type: string
         soleProprietorship:
-          $ref: "#/components/schemas/SoleProprietorship"
+          $ref: '#/components/schemas/SoleProprietorship'
           description: Information about the sole proprietorship. Required if `type` is **soleProprietorship**.
-          x-addedInVersion: "2"
+          x-addedInVersion: '2'
         transferInstruments:
           description: List of transfer instruments that the legal entity owns.
           items:
-            $ref: "#/components/schemas/TransferInstrumentReference"
+            $ref: '#/components/schemas/TransferInstrumentReference'
           readOnly: true
           type: array
         type:
@@ -3593,7 +3593,7 @@ components:
           description: |-
             The legal entity type of associated legal entity. 
 
-            For example, **organization**, **soleProprietorship** or **individual**. 
+            For example, **organization**, **soleProprietorship** or **individual**.
           readOnly: true
           type: string
         jobTitle:
@@ -3617,7 +3617,7 @@ components:
 
             Possible values for organizations: **uboThroughOwnership**, **uboThroughControl**, **signatory**, or **ultimateParentCompany**. 
 
-            Possible values for sole proprietorships: **soleProprietorship**. 
+            Possible values for sole proprietorships: **soleProprietorship**.
           enum:
             - pciSignatory
             - signatory
@@ -3633,7 +3633,7 @@ components:
     LegalEntityCapability:
       properties:
         allowed:
-          description: "Indicates whether the capability is allowed. Adyen sets this to **true** if the verification is successful "
+          description: 'Indicates whether the capability is allowed. Adyen sets this to **true** if the verification is successful '
           readOnly: true
           type: boolean
         allowedLevel:
@@ -3649,11 +3649,11 @@ components:
           readOnly: true
           type: string
         allowedSettings:
-          $ref: "#/components/schemas/CapabilitySettings"
+          $ref: '#/components/schemas/CapabilitySettings'
           description: The settings that were allowed for the Legal Entity.
           readOnly: true
         requested:
-          description: "Indicates whether the capability is requested. To check whether the Legal Entity is permitted to use the capability, "
+          description: 'Indicates whether the capability is requested. To check whether the Legal Entity is permitted to use the capability, '
           readOnly: true
           type: boolean
         requestedLevel:
@@ -3669,13 +3669,13 @@ components:
           readOnly: true
           type: string
         requestedSettings:
-          $ref: "#/components/schemas/CapabilitySettings"
+          $ref: '#/components/schemas/CapabilitySettings'
           description: The settings that are requested for the Legal Entity.
           readOnly: true
         transferInstruments:
           description: Capability status for transfer instruments associated with legal entity
           items:
-            $ref: "#/components/schemas/SupportingEntityCapability"
+            $ref: '#/components/schemas/SupportingEntityCapability'
           readOnly: true
           type: array
         verificationStatus:
@@ -3698,7 +3698,7 @@ components:
       properties:
         capabilities:
           additionalProperties:
-            $ref: "#/components/schemas/LegalEntityCapability"
+            $ref: '#/components/schemas/LegalEntityCapability'
           description: Contains key-value pairs that specify the actions that the legal entity can do in your platform.The key is a capability required for your integration. For example, **issueCard** for Issuing.The value is an object containing the settings for the capability.
           readOnly: true
           type: object
@@ -3707,22 +3707,22 @@ components:
             List of legal entities associated with the current legal entity.
             For example, ultimate beneficial owners associated with an organization through ownership or control, or as signatories.
           items:
-            $ref: "#/components/schemas/LegalEntityAssociation"
+            $ref: '#/components/schemas/LegalEntityAssociation'
           type: array
         individual:
-          $ref: "#/components/schemas/Individual"
+          $ref: '#/components/schemas/Individual'
           description: Information about the individual. Required if `type` is **individual**.
         organization:
-          $ref: "#/components/schemas/Organization"
+          $ref: '#/components/schemas/Organization'
           description: Information about the organization. Required if `type` is **organization**.
         reference:
           description: Your reference for the legal entity, maximum 150 characters.
           maxLength: 150
           type: string
         soleProprietorship:
-          $ref: "#/components/schemas/SoleProprietorship"
+          $ref: '#/components/schemas/SoleProprietorship'
           description: Information about the sole proprietorship. Required if `type` is **soleProprietorship**.
-          x-addedInVersion: "2"
+          x-addedInVersion: '2'
         type:
           description: |-
             The type of legal entity.
@@ -3740,7 +3740,7 @@ components:
       properties:
         capabilities:
           additionalProperties:
-            $ref: "#/components/schemas/LegalEntityCapability"
+            $ref: '#/components/schemas/LegalEntityCapability'
           description: Contains key-value pairs that specify the actions that the legal entity can do in your platform.The key is a capability required for your integration. For example, **issueCard** for Issuing.The value is an object containing the settings for the capability.
           readOnly: true
           type: object
@@ -3749,22 +3749,22 @@ components:
             List of legal entities associated with the current legal entity.
             For example, ultimate beneficial owners associated with an organization through ownership or control, or as signatories.
           items:
-            $ref: "#/components/schemas/LegalEntityAssociation"
+            $ref: '#/components/schemas/LegalEntityAssociation'
           type: array
         individual:
-          $ref: "#/components/schemas/Individual"
+          $ref: '#/components/schemas/Individual'
           description: Information about the individual. Required if `type` is **individual**.
         organization:
-          $ref: "#/components/schemas/Organization"
+          $ref: '#/components/schemas/Organization'
           description: Information about the organization. Required if `type` is **organization**.
         reference:
           description: Your reference for the legal entity, maximum 150 characters.
           maxLength: 150
           type: string
         soleProprietorship:
-          $ref: "#/components/schemas/SoleProprietorship"
+          $ref: '#/components/schemas/SoleProprietorship'
           description: Information about the sole proprietorship. Required if `type` is **soleProprietorship**.
-          x-addedInVersion: "2"
+          x-addedInVersion: '2'
         type:
           description: |-
             The type of legal entity.
@@ -3790,7 +3790,7 @@ components:
           type: string
         type:
           default: noLocal
-          description: "**noLocal**"
+          description: '**noLocal**'
           enum:
             - noLocal
           type: string
@@ -3821,7 +3821,7 @@ components:
           maxLength: 34
           type: string
         additionalBankIdentification:
-          $ref: "#/components/schemas/AdditionalBankIdentification"
+          $ref: '#/components/schemas/AdditionalBankIdentification'
           description: Additional identification codes of the bank. Some banks may require these identifiers for cross-border transfers.
         bic:
           description: The bank's 8- or 11-character BIC or SWIFT code.
@@ -3830,7 +3830,7 @@ components:
           type: string
         type:
           default: numberAndBic
-          description: "**numberAndBic**"
+          description: '**numberAndBic**'
           enum:
             - numberAndBic
           type: string
@@ -3913,7 +3913,7 @@ components:
         themes:
           description: List of onboarding themes.
           items:
-            $ref: "#/components/schemas/OnboardingTheme"
+            $ref: '#/components/schemas/OnboardingTheme'
           type: array
       required:
         - themes
@@ -3923,7 +3923,7 @@ components:
         dateOfIncorporation:
           description: The date when the organization was incorporated in YYYY-MM-DD format.
           type: string
-          x-addedInVersion: "2"
+          x-addedInVersion: '2'
         description:
           description: Your description for the organization.
           type: string
@@ -3937,30 +3937,30 @@ components:
           description: The organization's legal name.
           type: string
         phone:
-          $ref: "#/components/schemas/PhoneNumber"
+          $ref: '#/components/schemas/PhoneNumber'
           description: The phone number of the legal entity.
         principalPlaceOfBusiness:
-          $ref: "#/components/schemas/Address"
+          $ref: '#/components/schemas/Address'
           description: The address where the organization operates from. Provide this if the principal place of business is different from the `registeredAddress`.
         registeredAddress:
-          $ref: "#/components/schemas/Address"
+          $ref: '#/components/schemas/Address'
           description: The address of the organization registered at their registrar (such as the Chamber of Commerce).
         registrationNumber:
           description: The organization's registration number.
           type: string
         stockData:
-          $ref: "#/components/schemas/StockData"
+          $ref: '#/components/schemas/StockData'
           description: Information about the organization's publicly traded stock. Provide this object only if `type` is **listedPublicCompany**.
         taxInformation:
           description: The tax information of the organization.
           items:
-            $ref: "#/components/schemas/TaxInformation"
+            $ref: '#/components/schemas/TaxInformation'
           type: array
-          x-addedInVersion: "2"
+          x-addedInVersion: '2'
         taxReportingClassification:
-          $ref: "#/components/schemas/TaxReportingClassification"
+          $ref: '#/components/schemas/TaxReportingClassification'
           description: The tax reporting classification (FATCA/CRS self-certification) of the organization.
-          x-addedInVersion: "2"
+          x-addedInVersion: '2'
         type:
           description: |-
             Type of organization. 
@@ -3983,16 +3983,16 @@ components:
             - industryExemption
             - belowTaxThreshold
           type: string
-          x-addedInVersion: "2"
+          x-addedInVersion: '2'
         vatNumber:
           description: The organization's VAT number.
           type: string
-          x-addedInVersion: "2"
+          x-addedInVersion: '2'
         webData:
-          $ref: "#/components/schemas/WebData"
+          $ref: '#/components/schemas/WebData'
           deprecated: true
           description: The website and app URL of the legal entity.
-          x-deprecatedInVersion: "1"
+          x-deprecatedInVersion: '1'
       required:
         - legalName
         - registeredAddress
@@ -4022,7 +4022,7 @@ components:
           type: string
         type:
           default: plLocal
-          description: "**plLocal**"
+          description: '**plLocal**'
           enum:
             - plLocal
           type: string
@@ -4077,7 +4077,7 @@ components:
         type:
           description: |-
             The type of phone number.
-             Possible values: **mobile**, **landline**, **sip**, **fax.** 
+             Possible values: **mobile**, **landline**, **sip**, **fax.**
           type: string
       required:
         - number
@@ -4104,7 +4104,7 @@ components:
           type: string
         type:
           default: seLocal
-          description: "**seLocal**"
+          description: '**seLocal**'
           enum:
             - seLocal
           type: string
@@ -4140,7 +4140,7 @@ components:
         dateOfIncorporation:
           description: The date when the legal arrangement was incorporated in YYYY-MM-DD format.
           type: string
-          x-addedInVersion: "2"
+          x-addedInVersion: '2'
         doingBusinessAs:
           description: The registered name, if different from the `name`.
           type: string
@@ -4148,10 +4148,10 @@ components:
           description: The legal name.
           type: string
         principalPlaceOfBusiness:
-          $ref: "#/components/schemas/Address"
+          $ref: '#/components/schemas/Address'
           description: The business address. Required if the principal place of business is different from the `registeredAddress`.
         registeredAddress:
-          $ref: "#/components/schemas/Address"
+          $ref: '#/components/schemas/Address'
           description: The address registered at the registrar, such as the Chamber of Commerce.
         registrationNumber:
           description: The registration number.
@@ -4179,7 +4179,7 @@ components:
           deprecated: true
           description: The unique identifier of the business line that will be the source of funds.This must be a business line for a **receivePayments** or **receiveFromPlatformPayments** capability.
           type: string
-          x-deprecatedInVersion: "3"
+          x-deprecatedInVersion: '3'
           x-deprecatedMessage: This field will be removed in v4.
         adyenProcessedFunds:
           description: Indicates whether the funds are coming from transactions processed by Adyen. If **false**, a `description` is required.
@@ -4188,7 +4188,7 @@ components:
           description: Text describing the source of funds. For example, for `type` **business**, provide a description of where the business transactions come from, such as payments through bank transfer. Required when `adyenProcessedFunds` is **false**.
           type: string
         type:
-          description: "The type of the source of funds. Possible value: **business**."
+          description: 'The type of the source of funds. Possible value: **business**.'
           enum:
             - business
           type: string
@@ -4217,11 +4217,11 @@ components:
           readOnly: true
           type: boolean
         id:
-          description: "Supporting entity reference "
+          description: 'Supporting entity reference '
           readOnly: true
           type: string
         requested:
-          description: "Indicates whether the supporting entity capability is requested. "
+          description: 'Indicates whether the supporting entity capability is requested. '
           readOnly: true
           type: boolean
         verificationStatus:
@@ -4326,20 +4326,20 @@ components:
     TransferInstrument:
       properties:
         bankAccount:
-          $ref: "#/components/schemas/BankAccountInfo"
+          $ref: '#/components/schemas/BankAccountInfo'
           description: Contains information about the legal entity's bank account.
         capabilities:
           additionalProperties:
-            $ref: "#/components/schemas/SupportingEntityCapability"
+            $ref: '#/components/schemas/SupportingEntityCapability'
           description: List of capabilities for this supporting entity.
           type: object
-          x-addedInVersion: "3"
+          x-addedInVersion: '3'
         documentDetails:
           description: List of documents uploaded for the transfer instrument.
           items:
-            $ref: "#/components/schemas/DocumentReference"
+            $ref: '#/components/schemas/DocumentReference'
           type: array
-          x-addedInVersion: "2"
+          x-addedInVersion: '2'
         id:
           description: The unique identifier of the transfer instrument.
           readOnly: true
@@ -4350,9 +4350,9 @@ components:
         problems:
           description: List of the verification errors from capabilities for this supporting entity.
           items:
-            $ref: "#/components/schemas/CapabilityProblem"
+            $ref: '#/components/schemas/CapabilityProblem'
           type: array
-          x-addedInVersion: "3"
+          x-addedInVersion: '3'
         type:
           description: |-
             The type of transfer instrument.
@@ -4371,7 +4371,7 @@ components:
     TransferInstrumentInfo:
       properties:
         bankAccount:
-          $ref: "#/components/schemas/BankAccountInfo"
+          $ref: '#/components/schemas/BankAccountInfo'
           description: Contains information about the legal entity's bank account.
         legalEntityId:
           description: The unique identifier of the [legal entity](https://docs.adyen.com/api-explorer/legalentity/latest/post/legalEntities#responses-200-id) that owns the transfer instrument.
@@ -4420,7 +4420,7 @@ components:
           type: string
         type:
           default: ukLocal
-          description: "**ukLocal**"
+          description: '**ukLocal**'
           enum:
             - ukLocal
           type: string
@@ -4454,7 +4454,7 @@ components:
           type: string
         type:
           default: usLocal
-          description: "**usLocal**"
+          description: '**usLocal**'
           enum:
             - usLocal
           type: string
@@ -4530,12 +4530,12 @@ components:
         remediatingActions:
           description: An object containing possible solutions to fix a verification error.
           items:
-            $ref: "#/components/schemas/RemediatingAction"
+            $ref: '#/components/schemas/RemediatingAction'
           type: array
         subErrors:
           description: An array containing more granular information about the cause of the verification error.
           items:
-            $ref: "#/components/schemas/VerificationError-recursive"
+            $ref: '#/components/schemas/VerificationError-recursive'
           type: array
         type:
           description: The type of error.
@@ -4612,7 +4612,7 @@ components:
         remediatingActions:
           description: An object containing possible solutions to fix a verification error.
           items:
-            $ref: "#/components/schemas/RemediatingAction"
+            $ref: '#/components/schemas/RemediatingAction'
           type: array
         type:
           description: The type of error.
@@ -4627,9 +4627,9 @@ components:
         problems:
           description: List of the verification errors.
           items:
-            $ref: "#/components/schemas/CapabilityProblem"
+            $ref: '#/components/schemas/CapabilityProblem'
           type: array
-          x-addedInVersion: "2"
+          x-addedInVersion: '2'
       type: object
     Void:
       type: object
@@ -4648,7 +4648,7 @@ components:
     WebDataExemption:
       properties:
         reason:
-          description: "The reason why the web data was not provided. Possible value: **noOnlinePresence**."
+          description: 'The reason why the web data was not provided. Possible value: **noOnlinePresence**.'
           enum:
             - noOnlinePresence
           type: string

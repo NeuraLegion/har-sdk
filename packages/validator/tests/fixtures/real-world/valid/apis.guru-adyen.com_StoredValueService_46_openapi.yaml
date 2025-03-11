@@ -10,7 +10,7 @@ info:
   description: A set of API endpoints to manage stored value products.
   termsOfService: https://www.adyen.com/legal/terms-and-conditions
   title: Adyen Stored Value API
-  version: "46"
+  version: '46'
   x-apisguru-categories:
     - payment
   x-logo:
@@ -18,7 +18,7 @@ info:
   x-origin:
     - format: openapi
       url: https://raw.githubusercontent.com/Adyen/adyen-openapi/main/json/StoredValueService-v46.json
-      version: "3.1"
+      version: '3.1'
   x-providerName: adyen.com
   x-publicVersion: true
   x-serviceName: StoredValueService
@@ -34,37 +34,37 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/StoredValueStatusChangeRequest"
+              $ref: '#/components/schemas/StoredValueStatusChangeRequest'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/StoredValueStatusChangeResponse"
+                $ref: '#/components/schemas/StoredValueStatusChangeResponse'
           description: OK - the request has succeeded.
-        "400":
+        '400':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -83,37 +83,37 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/StoredValueBalanceCheckRequest"
+              $ref: '#/components/schemas/StoredValueBalanceCheckRequest'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/StoredValueBalanceCheckResponse"
+                $ref: '#/components/schemas/StoredValueBalanceCheckResponse'
           description: OK - the request has succeeded.
-        "400":
+        '400':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -132,37 +132,37 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/StoredValueIssueRequest"
+              $ref: '#/components/schemas/StoredValueIssueRequest'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/StoredValueIssueResponse"
+                $ref: '#/components/schemas/StoredValueIssueResponse'
           description: OK - the request has succeeded.
-        "400":
+        '400':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -181,37 +181,37 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/StoredValueLoadRequest"
+              $ref: '#/components/schemas/StoredValueLoadRequest'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/StoredValueLoadResponse"
+                $ref: '#/components/schemas/StoredValueLoadResponse'
           description: OK - the request has succeeded.
-        "400":
+        '400':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -230,37 +230,37 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/StoredValueBalanceMergeRequest"
+              $ref: '#/components/schemas/StoredValueBalanceMergeRequest'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/StoredValueBalanceMergeResponse"
+                $ref: '#/components/schemas/StoredValueBalanceMergeResponse'
           description: OK - the request has succeeded.
-        "400":
+        '400':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -279,37 +279,37 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/StoredValueVoidRequest"
+              $ref: '#/components/schemas/StoredValueVoidRequest'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/StoredValueVoidResponse"
+                $ref: '#/components/schemas/StoredValueVoidResponse'
           description: OK - the request has succeeded.
-        "400":
+        '400':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -345,7 +345,7 @@ components:
             type: string
           description: Contains additional information about the payment. Some data fields are included only if you select them first. Go to **Customer Area** > **Developers** > **Additional data**.
           type: object
-          x-addedInVersion: "46"
+          x-addedInVersion: '46'
         errorCode:
           description: The error code mapped to the error message.
           type: string
@@ -366,7 +366,7 @@ components:
     StoredValueBalanceCheckRequest:
       properties:
         amount:
-          $ref: "#/components/schemas/Amount"
+          $ref: '#/components/schemas/Amount'
           description: The amount information for the transaction.
         merchantAccount:
           description: The merchant account identifier, with which you want to process the transaction.
@@ -415,7 +415,7 @@ components:
     StoredValueBalanceCheckResponse:
       properties:
         currentBalance:
-          $ref: "#/components/schemas/Amount"
+          $ref: '#/components/schemas/Amount'
           description: The balance currently on the payment method.
         pspReference:
           description: Adyen's 16-character string reference associated with the transaction/request. This value is globally unique; quote it when communicating with us about this request.
@@ -433,7 +433,7 @@ components:
             * **Success** – The operation has been completed successfully. 
             * **Refused** – The operation was refused. The reason is given in the `refusalReason` field. 
             * **Error** – There was an error when the operation was processed. The reason is given in the `refusalReason` field. 
-            * **NotEnoughBalance** – The amount on the payment method is lower than the amount given in the request. Only applicable to balance checks. 
+            * **NotEnoughBalance** – The amount on the payment method is lower than the amount given in the request. Only applicable to balance checks.
           enum:
             - Success
             - Refused
@@ -447,7 +447,7 @@ components:
     StoredValueBalanceMergeRequest:
       properties:
         amount:
-          $ref: "#/components/schemas/Amount"
+          $ref: '#/components/schemas/Amount'
           description: The amount information for the transaction.
         merchantAccount:
           description: The merchant account identifier, with which you want to process the transaction.
@@ -508,7 +508,7 @@ components:
             * When the payment is not authorised, this field is empty.
           type: string
         currentBalance:
-          $ref: "#/components/schemas/Amount"
+          $ref: '#/components/schemas/Amount'
           description: The balance currently on the payment method.
         pspReference:
           description: Adyen's 16-character string reference associated with the transaction/request. This value is globally unique; quote it when communicating with us about this request.
@@ -526,7 +526,7 @@ components:
             * **Success** – The operation has been completed successfully. 
             * **Refused** – The operation was refused. The reason is given in the `refusalReason` field. 
             * **Error** – There was an error when the operation was processed. The reason is given in the `refusalReason` field. 
-            * **NotEnoughBalance** – The amount on the payment method is lower than the amount given in the request. Only applicable to balance checks. 
+            * **NotEnoughBalance** – The amount on the payment method is lower than the amount given in the request. Only applicable to balance checks.
           enum:
             - Success
             - Refused
@@ -540,7 +540,7 @@ components:
     StoredValueIssueRequest:
       properties:
         amount:
-          $ref: "#/components/schemas/Amount"
+          $ref: '#/components/schemas/Amount'
           description: The amount information for the transaction.
         merchantAccount:
           description: The merchant account identifier, with which you want to process the transaction.
@@ -595,7 +595,7 @@ components:
             * When the payment is not authorised, this field is empty.
           type: string
         currentBalance:
-          $ref: "#/components/schemas/Amount"
+          $ref: '#/components/schemas/Amount'
           description: The balance currently on the payment method.
         paymentMethod:
           additionalProperties:
@@ -618,7 +618,7 @@ components:
             * **Success** – The operation has been completed successfully. 
             * **Refused** – The operation was refused. The reason is given in the `refusalReason` field. 
             * **Error** – There was an error when the operation was processed. The reason is given in the `refusalReason` field. 
-            * **NotEnoughBalance** – The amount on the payment method is lower than the amount given in the request. Only applicable to balance checks. 
+            * **NotEnoughBalance** – The amount on the payment method is lower than the amount given in the request. Only applicable to balance checks.
           enum:
             - Success
             - Refused
@@ -632,7 +632,7 @@ components:
     StoredValueLoadRequest:
       properties:
         amount:
-          $ref: "#/components/schemas/Amount"
+          $ref: '#/components/schemas/Amount'
           description: The amount information for the transaction.
         loadType:
           description: The type of load you are trying to do, when absent we default to 'Load'
@@ -694,7 +694,7 @@ components:
             * When the payment is not authorised, this field is empty.
           type: string
         currentBalance:
-          $ref: "#/components/schemas/Amount"
+          $ref: '#/components/schemas/Amount'
           description: The balance currently on the payment method.
         pspReference:
           description: Adyen's 16-character string reference associated with the transaction/request. This value is globally unique; quote it when communicating with us about this request.
@@ -712,7 +712,7 @@ components:
             * **Success** – The operation has been completed successfully. 
             * **Refused** – The operation was refused. The reason is given in the `refusalReason` field. 
             * **Error** – There was an error when the operation was processed. The reason is given in the `refusalReason` field. 
-            * **NotEnoughBalance** – The amount on the payment method is lower than the amount given in the request. Only applicable to balance checks. 
+            * **NotEnoughBalance** – The amount on the payment method is lower than the amount given in the request. Only applicable to balance checks.
           enum:
             - Success
             - Refused
@@ -726,7 +726,7 @@ components:
     StoredValueStatusChangeRequest:
       properties:
         amount:
-          $ref: "#/components/schemas/Amount"
+          $ref: '#/components/schemas/Amount'
           description: The amount information for the transaction.
         merchantAccount:
           description: The merchant account identifier, with which you want to process the transaction.
@@ -788,7 +788,7 @@ components:
             * When the payment is not authorised, this field is empty.
           type: string
         currentBalance:
-          $ref: "#/components/schemas/Amount"
+          $ref: '#/components/schemas/Amount'
           description: The balance currently on the payment method.
         pspReference:
           description: Adyen's 16-character string reference associated with the transaction/request. This value is globally unique; quote it when communicating with us about this request.
@@ -806,7 +806,7 @@ components:
             * **Success** – The operation has been completed successfully. 
             * **Refused** – The operation was refused. The reason is given in the `refusalReason` field. 
             * **Error** – There was an error when the operation was processed. The reason is given in the `refusalReason` field. 
-            * **NotEnoughBalance** – The amount on the payment method is lower than the amount given in the request. Only applicable to balance checks. 
+            * **NotEnoughBalance** – The amount on the payment method is lower than the amount given in the request. Only applicable to balance checks.
           enum:
             - Success
             - Refused
@@ -848,7 +848,7 @@ components:
     StoredValueVoidResponse:
       properties:
         currentBalance:
-          $ref: "#/components/schemas/Amount"
+          $ref: '#/components/schemas/Amount'
           description: The balance currently on the payment method.
         pspReference:
           description: Adyen's 16-character string reference associated with the transaction/request. This value is globally unique; quote it when communicating with us about this request.
@@ -866,7 +866,7 @@ components:
             * **Success** – The operation has been completed successfully. 
             * **Refused** – The operation was refused. The reason is given in the `refusalReason` field. 
             * **Error** – There was an error when the operation was processed. The reason is given in the `refusalReason` field. 
-            * **NotEnoughBalance** – The amount on the payment method is lower than the amount given in the request. Only applicable to balance checks. 
+            * **NotEnoughBalance** – The amount on the payment method is lower than the amount given in the request. Only applicable to balance checks.
           enum:
             - Success
             - Refused

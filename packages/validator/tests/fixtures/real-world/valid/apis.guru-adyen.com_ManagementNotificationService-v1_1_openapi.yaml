@@ -15,7 +15,7 @@ info:
     See [Webhooks](https://docs.adyen.com/development-resources/webhooks) for more information.
   termsOfService: https://www.adyen.com/legal/terms-and-conditions
   title: Management Webhooks
-  version: "1"
+  version: '1'
   x-apisguru-categories:
     - payment
   x-logo:
@@ -23,7 +23,7 @@ info:
   x-origin:
     - format: openapi
       url: https://raw.githubusercontent.com/Adyen/adyen-openapi/main/json/ManagementNotificationService-v1.json
-      version: "3.1"
+      version: '3.1'
   x-providerName: adyen.com
   x-publicVersion: true
   x-serviceName: ManagementNotificationService-v1
@@ -33,7 +33,7 @@ components:
   examples:
     WebhookAck:
       summary: Acknowledge Webhook
-      value: "[accepted]"
+      value: '[accepted]'
     post-merchant.created-merchant.created:
       description: Example webhook when a merchant account was created
       summary: Merchant account created
@@ -128,7 +128,7 @@ components:
           description: Indicates whether the capability is allowed. Adyen sets this to **true** if the verification is successful.
           type: boolean
         allowedLevel:
-          description: "The allowed level of the capability. Some capabilities have different levels which correspond to thresholds. Higher levels may require additional checks and increased monitoring.Possible values: **notApplicable**, **low**, **medium**, **high**."
+          description: 'The allowed level of the capability. Some capabilities have different levels which correspond to thresholds. Higher levels may require additional checks and increased monitoring.Possible values: **notApplicable**, **low**, **medium**, **high**.'
           type: string
         capability:
           description: The name of the capability. For example, **sendToTransferInstrument**.
@@ -136,13 +136,13 @@ components:
         problems:
           description: List of entities that has problems with verification. The information includes the details of the errors and the actions that you can take to resolve them.
           items:
-            $ref: "#/components/schemas/CapabilityProblem"
+            $ref: '#/components/schemas/CapabilityProblem'
           type: array
         requested:
           description: Indicates whether you requested the capability.
           type: boolean
         requestedLevel:
-          description: "The level that you requested for the capability. Some capabilities have different levels which correspond to thresholds. Higher levels may require additional checks and increased monitoring.Possible values: **notApplicable**, **low**, **medium**, **high**."
+          description: 'The level that you requested for the capability. Some capabilities have different levels which correspond to thresholds. Higher levels may require additional checks and increased monitoring.Possible values: **notApplicable**, **low**, **medium**, **high**.'
           type: string
         verificationStatus:
           description: |
@@ -166,7 +166,7 @@ components:
       properties:
         capabilities:
           additionalProperties:
-            $ref: "#/components/schemas/AccountCapabilityData"
+            $ref: '#/components/schemas/AccountCapabilityData'
           description: Key-value pairs that specify the actions that the merchant account can do and its settings. The key is a capability. For example, the **sendToTransferInstrument** is the capability required before you can pay out funds to the bank account. The value is an object containing the settings for the capability.
           type: object
         companyId:
@@ -206,7 +206,7 @@ components:
       properties:
         capabilities:
           additionalProperties:
-            $ref: "#/components/schemas/AccountCapabilityData"
+            $ref: '#/components/schemas/AccountCapabilityData'
           description: Key-value pairs that specify what you can do with the merchant account and its settings. The key is a capability. For example, the **sendToTransferInstrument** is the capability required before you can pay out the funds of a merchant account to a [bank account](https://docs.adyen.com/api-explorer/legalentity/latest/post/transferInstruments). The value is an object containing the settings for the capability.
           type: object
         legalEntityId:
@@ -235,12 +235,12 @@ components:
     CapabilityProblem:
       properties:
         entity:
-          $ref: "#/components/schemas/CapabilityProblemEntity"
+          $ref: '#/components/schemas/CapabilityProblemEntity'
           description: The ID and the type of entity that has verification errors.
         verificationErrors:
           description: List of verification errors.
           items:
-            $ref: "#/components/schemas/VerificationError"
+            $ref: '#/components/schemas/VerificationError'
           type: array
       type: object
     CapabilityProblemEntity:
@@ -249,7 +249,7 @@ components:
           description: The ID of the entity.
           type: string
         owner:
-          $ref: "#/components/schemas/CapabilityProblemEntity-recursive"
+          $ref: '#/components/schemas/CapabilityProblemEntity-recursive'
           description: The owner of the entity that has an error. For example, if the `entity.type` is **BankAccount**, then the `owner` contains the details of the legal entity that owns the bank account.
         type:
           description: |-
@@ -333,7 +333,7 @@ components:
           format: date-time
           type: string
         data:
-          $ref: "#/components/schemas/AccountCreateNotificationData"
+          $ref: '#/components/schemas/AccountCreateNotificationData'
           description: Contains event details.
         environment:
           description: |-
@@ -357,7 +357,7 @@ components:
           format: date-time
           type: string
         data:
-          $ref: "#/components/schemas/AccountUpdateNotificationData"
+          $ref: '#/components/schemas/AccountUpdateNotificationData'
           description: Contains event details.
         environment:
           description: |-
@@ -381,7 +381,7 @@ components:
           format: date-time
           type: string
         data:
-          $ref: "#/components/schemas/MidServiceNotificationData"
+          $ref: '#/components/schemas/MidServiceNotificationData'
           description: Contains event details.
         environment:
           description: |-
@@ -424,12 +424,12 @@ components:
         remediatingActions:
           description: The actions that you can take to resolve the verification error.
           items:
-            $ref: "#/components/schemas/RemediatingAction"
+            $ref: '#/components/schemas/RemediatingAction'
           type: array
         subErrors:
           description: More granular information about the verification error.
           items:
-            $ref: "#/components/schemas/VerificationError-recursive"
+            $ref: '#/components/schemas/VerificationError-recursive'
           type: array
         type:
           description: |-
@@ -453,7 +453,7 @@ components:
         remediatingActions:
           description: The actions that you can take to resolve the verification error.
           items:
-            $ref: "#/components/schemas/RemediatingAction"
+            $ref: '#/components/schemas/RemediatingAction'
           type: array
         type:
           description: |-
@@ -484,25 +484,25 @@ webhooks:
           application/json:
             examples:
               merchant.created:
-                $ref: "#/components/examples/post-merchant.created-merchant.created"
+                $ref: '#/components/examples/post-merchant.created-merchant.created'
             schema:
-              $ref: "#/components/schemas/NotificationDataMessage"
+              $ref: '#/components/schemas/NotificationDataMessage'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
                 merchant.created:
-                  $ref: "#/components/examples/WebhookAck"
+                  $ref: '#/components/examples/WebhookAck'
               schema:
-                $ref: "#/components/schemas/AccountNotificationResponse"
+                $ref: '#/components/schemas/AccountNotificationResponse'
           description: OK - the request has succeeded.
       security:
         - ApiKeyAuth: []
       summary: Merchant account created
       tags:
         - Merchant account
-      x-addedInVersion: "1"
+      x-addedInVersion: '1'
       x-groupName: Merchant account
       x-methodName: merchantAccountCreated
       x-sortIndex: 1
@@ -515,29 +515,29 @@ webhooks:
           application/json:
             examples:
               merchant-updated-valid:
-                $ref: "#/components/examples/post-merchant.updated-merchant-updated-valid"
+                $ref: '#/components/examples/post-merchant.updated-merchant-updated-valid'
               merchant-updated-with-errors:
-                $ref: "#/components/examples/post-merchant.updated-merchant-updated-with-errors"
+                $ref: '#/components/examples/post-merchant.updated-merchant-updated-with-errors'
             schema:
-              $ref: "#/components/schemas/NotificationDataMessage-type2"
+              $ref: '#/components/schemas/NotificationDataMessage-type2'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
                 merchant-updated-valid:
-                  $ref: "#/components/examples/WebhookAck"
+                  $ref: '#/components/examples/WebhookAck'
                 merchant-updated-with-errors:
-                  $ref: "#/components/examples/WebhookAck"
+                  $ref: '#/components/examples/WebhookAck'
               schema:
-                $ref: "#/components/schemas/AccountNotificationResponse"
+                $ref: '#/components/schemas/AccountNotificationResponse'
           description: OK - the request has succeeded.
       security:
         - ApiKeyAuth: []
       summary: Merchant account capability updated
       tags:
         - Merchant account
-      x-addedInVersion: "1"
+      x-addedInVersion: '1'
       x-groupName: Merchant account
       x-methodName: merchantAccountCapabilityUpdated
       x-sortIndex: 2
@@ -550,25 +550,25 @@ webhooks:
           application/json:
             examples:
               paymentMethod.created:
-                $ref: "#/components/examples/post-paymentMethod.created-paymentMethod.created"
+                $ref: '#/components/examples/post-paymentMethod.created-paymentMethod.created'
             schema:
-              $ref: "#/components/schemas/NotificationDataMessage-type3"
+              $ref: '#/components/schemas/NotificationDataMessage-type3'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
                 paymentMethod.created:
-                  $ref: "#/components/examples/WebhookAck"
+                  $ref: '#/components/examples/WebhookAck'
               schema:
-                $ref: "#/components/schemas/PaymentMethodNotificationResponse"
+                $ref: '#/components/schemas/PaymentMethodNotificationResponse'
           description: OK - the request has succeeded.
       security:
         - ApiKeyAuth: []
       summary: Payment method created
       tags:
         - Payment method
-      x-addedInVersion: "1"
+      x-addedInVersion: '1'
       x-groupName: Payment method
       x-methodName: paymentMethodCreated
       x-sortIndex: 1

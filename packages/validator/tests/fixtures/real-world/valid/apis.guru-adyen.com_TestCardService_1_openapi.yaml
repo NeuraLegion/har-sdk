@@ -10,7 +10,7 @@ info:
   description: The Test Cards API provides endpoints for generating custom test card numbers. For more information, refer to [Custom test cards](https://docs.adyen.com/development-resources/testing/create-test-cards) documentation.
   termsOfService: https://www.adyen.com/legal/terms-and-conditions
   title: Adyen Test Cards API
-  version: "1"
+  version: '1'
   x-apisguru-categories:
     - payment
   x-logo:
@@ -18,7 +18,7 @@ info:
   x-origin:
     - format: openapi
       url: https://raw.githubusercontent.com/Adyen/adyen-openapi/main/json/TestCardService-v1.json
-      version: "3.1"
+      version: '3.1'
   x-providerName: adyen.com
   x-publicVersion: true
   x-serviceName: TestCardService
@@ -34,43 +34,43 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreateTestCardRangesRequest"
+              $ref: '#/components/schemas/CreateTestCardRangesRequest'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CreateTestCardRangesResult"
+                $ref: '#/components/schemas/CreateTestCardRangesResult'
           description: OK - the request has succeeded.
-        "400":
+        '400':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -116,7 +116,7 @@ components:
         testCardRanges:
           description: A list of test card ranges to create.
           items:
-            $ref: "#/components/schemas/TestCardRange"
+            $ref: '#/components/schemas/TestCardRange'
           type: array
       required:
         - accountTypeCode
@@ -127,7 +127,7 @@ components:
         rangeCreationResults:
           description: The results of the test card creation.
           items:
-            $ref: "#/components/schemas/TestCardRangeCreationResult"
+            $ref: '#/components/schemas/TestCardRangeCreationResult'
           type: array
       required:
         - rangeCreationResults
@@ -152,7 +152,7 @@ components:
     TestCardRange:
       properties:
         address:
-          $ref: "#/components/schemas/AvsAddress"
+          $ref: '#/components/schemas/AvsAddress'
           description: Contains the billing address of the card holder. The address details need to be AVS-compliant, which means that you need to provide at least street address.
         cardHolderName:
           description: The name of the card holder, as it appears on the card, for the test card range.

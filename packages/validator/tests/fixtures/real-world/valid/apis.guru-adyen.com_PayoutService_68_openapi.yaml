@@ -44,7 +44,7 @@ info:
     Get your `{PREFIX}` from your live Customer Area under **Developers** > **API URLs** > **Prefix**.
   termsOfService: https://www.adyen.com/legal/terms-and-conditions
   title: Adyen Payout API
-  version: "68"
+  version: '68'
   x-apisguru-categories:
     - payment
   x-logo:
@@ -52,7 +52,7 @@ info:
   x-origin:
     - format: openapi
       url: https://raw.githubusercontent.com/Adyen/adyen-openapi/main/json/PayoutService-v68.json
-      version: "3.1"
+      version: '3.1'
   x-preferred: true
   x-providerName: adyen.com
   x-publicVersion: true
@@ -75,51 +75,51 @@ paths:
           application/json:
             examples:
               confirmThirdParty:
-                $ref: "#/components/examples/post-confirmThirdParty-confirmThirdParty"
+                $ref: '#/components/examples/post-confirmThirdParty-confirmThirdParty'
             schema:
-              $ref: "#/components/schemas/ModifyRequest"
+              $ref: '#/components/schemas/ModifyRequest'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
                 confirmThirdParty:
-                  $ref: "#/components/examples/post-confirmThirdParty-confirmThirdParty-200"
+                  $ref: '#/components/examples/post-confirmThirdParty-confirmThirdParty-200'
               schema:
-                $ref: "#/components/schemas/ModifyResponse"
+                $ref: '#/components/schemas/ModifyResponse'
           description: OK - the request has succeeded.
-        "400":
+        '400':
           content:
             application/json:
               examples:
                 generic:
-                  $ref: "#/components/examples/generic-400"
+                  $ref: '#/components/examples/generic-400'
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -127,7 +127,7 @@ paths:
       summary: Confirm a payout
       tags:
         - Reviewing
-      x-addedInVersion: "10"
+      x-addedInVersion: '10'
       x-groupName: Reviewing
       x-methodName: confirmThirdParty
       x-sortIndex: 1
@@ -143,51 +143,51 @@ paths:
           application/json:
             examples:
               declineThirdParty:
-                $ref: "#/components/examples/post-declineThirdParty-declineThirdParty"
+                $ref: '#/components/examples/post-declineThirdParty-declineThirdParty'
             schema:
-              $ref: "#/components/schemas/ModifyRequest"
+              $ref: '#/components/schemas/ModifyRequest'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
                 declineThirdParty:
-                  $ref: "#/components/examples/post-declineThirdParty-declineThirdParty-200"
+                  $ref: '#/components/examples/post-declineThirdParty-declineThirdParty-200'
               schema:
-                $ref: "#/components/schemas/ModifyResponse"
+                $ref: '#/components/schemas/ModifyResponse'
           description: OK - the request has succeeded.
-        "400":
+        '400':
           content:
             application/json:
               examples:
                 generic:
-                  $ref: "#/components/examples/generic-400"
+                  $ref: '#/components/examples/generic-400'
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -195,7 +195,7 @@ paths:
       summary: Cancel a payout
       tags:
         - Reviewing
-      x-addedInVersion: "10"
+      x-addedInVersion: '10'
       x-groupName: Reviewing
       x-methodName: declineThirdParty
       x-sortIndex: 2
@@ -208,50 +208,50 @@ paths:
           application/json:
             examples:
               payout-b2c:
-                $ref: "#/components/examples/post-payout-payout-b2c"
+                $ref: '#/components/examples/post-payout-payout-b2c'
               payout-p2p:
-                $ref: "#/components/examples/post-payout-payout-p2p"
+                $ref: '#/components/examples/post-payout-payout-p2p'
             schema:
-              $ref: "#/components/schemas/PayoutRequest"
+              $ref: '#/components/schemas/PayoutRequest'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PayoutResponse"
+                $ref: '#/components/schemas/PayoutResponse'
           description: OK - the request has succeeded.
-        "400":
+        '400':
           content:
             application/json:
               examples:
                 generic:
-                  $ref: "#/components/examples/generic-400"
+                  $ref: '#/components/examples/generic-400'
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -259,7 +259,7 @@ paths:
       summary: Make an instant card payout
       tags:
         - Instant payouts
-      x-addedInVersion: "11"
+      x-addedInVersion: '11'
       x-groupName: Instant payouts
       x-methodName: payout
       x-sortIndex: 1
@@ -272,51 +272,51 @@ paths:
           application/json:
             examples:
               storeDetail:
-                $ref: "#/components/examples/post-storeDetail-storeDetail"
+                $ref: '#/components/examples/post-storeDetail-storeDetail'
             schema:
-              $ref: "#/components/schemas/StoreDetailRequest"
+              $ref: '#/components/schemas/StoreDetailRequest'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
                 storeDetail:
-                  $ref: "#/components/examples/post-storeDetail-storeDetail-200"
+                  $ref: '#/components/examples/post-storeDetail-storeDetail-200'
               schema:
-                $ref: "#/components/schemas/StoreDetailResponse"
+                $ref: '#/components/schemas/StoreDetailResponse'
           description: OK - the request has succeeded.
-        "400":
+        '400':
           content:
             application/json:
               examples:
                 generic:
-                  $ref: "#/components/examples/generic-400"
+                  $ref: '#/components/examples/generic-400'
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -339,56 +339,56 @@ paths:
           application/json:
             examples:
               storeDetailAndSubmitThirdParty:
-                $ref: "#/components/examples/post-storeDetailAndSubmitThirdParty-storeDetailAndSubmitThirdParty"
+                $ref: '#/components/examples/post-storeDetailAndSubmitThirdParty-storeDetailAndSubmitThirdParty'
               storeDetailAndSubmitThirdParty-Neteller:
-                $ref: "#/components/examples/post-storeDetailAndSubmitThirdParty-storeDetailAndSubmitThirdParty-Neteller"
+                $ref: '#/components/examples/post-storeDetailAndSubmitThirdParty-storeDetailAndSubmitThirdParty-Neteller'
               storeDetailAndSubmitThirdParty-PayPal:
-                $ref: "#/components/examples/post-storeDetailAndSubmitThirdParty-storeDetailAndSubmitThirdParty-PayPal"
+                $ref: '#/components/examples/post-storeDetailAndSubmitThirdParty-storeDetailAndSubmitThirdParty-PayPal'
               storeDetailAndSubmitThirdParty-Paysafecard:
-                $ref: "#/components/examples/post-storeDetailAndSubmitThirdParty-storeDetailAndSubmitThirdParty-Paysafecard"
+                $ref: '#/components/examples/post-storeDetailAndSubmitThirdParty-storeDetailAndSubmitThirdParty-Paysafecard'
               storeDetailAndSubmitThirdParty-Skrill:
-                $ref: "#/components/examples/post-storeDetailAndSubmitThirdParty-storeDetailAndSubmitThirdParty-Skrill"
+                $ref: '#/components/examples/post-storeDetailAndSubmitThirdParty-storeDetailAndSubmitThirdParty-Skrill'
             schema:
-              $ref: "#/components/schemas/StoreDetailAndSubmitRequest"
+              $ref: '#/components/schemas/StoreDetailAndSubmitRequest'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/StoreDetailAndSubmitResponse"
+                $ref: '#/components/schemas/StoreDetailAndSubmitResponse'
           description: OK - the request has succeeded.
-        "400":
+        '400':
           content:
             application/json:
               examples:
                 generic:
-                  $ref: "#/components/examples/generic-400"
+                  $ref: '#/components/examples/generic-400'
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -396,7 +396,7 @@ paths:
       summary: Store details and submit a payout
       tags:
         - Initialization
-      x-addedInVersion: "10"
+      x-addedInVersion: '10'
       x-groupName: Initialization
       x-methodName: storeDetailAndSubmitThirdParty
       x-sortIndex: 1
@@ -412,48 +412,48 @@ paths:
           application/json:
             examples:
               submitThirdParty:
-                $ref: "#/components/examples/post-submitThirdParty-submitThirdParty"
+                $ref: '#/components/examples/post-submitThirdParty-submitThirdParty'
             schema:
-              $ref: "#/components/schemas/SubmitRequest"
+              $ref: '#/components/schemas/SubmitRequest'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SubmitResponse"
+                $ref: '#/components/schemas/SubmitResponse'
           description: OK - the request has succeeded.
-        "400":
+        '400':
           content:
             application/json:
               examples:
                 generic:
-                  $ref: "#/components/examples/generic-400"
+                  $ref: '#/components/examples/generic-400'
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -461,7 +461,7 @@ paths:
       summary: Submit a payout
       tags:
         - Initialization
-      x-addedInVersion: "10"
+      x-addedInVersion: '10'
       x-groupName: Initialization
       x-methodName: submitThirdParty
       x-sortIndex: 3
@@ -470,32 +470,32 @@ components:
     generic-400:
       summary: Response code 400. Bad Request.
       value:
-        errorCode: "702"
+        errorCode: '702'
         errorType: validation
-        message: "Unexpected input: I"
+        message: 'Unexpected input: I'
         status: 400
     post-confirmThirdParty-confirmThirdParty:
       description: Confirm a previously submitted payout
       summary: Confirm a payout
       value:
         merchantAccount: YOUR_MERCHANT_ACCOUNT
-        originalReference: "9913140798220028"
+        originalReference: '9913140798220028'
     post-confirmThirdParty-confirmThirdParty-200:
       summary: Example response for request 'confirmThirdParty'
       value:
         pspReference: 991617894325358C
-        response: "[payout-confirm-received]"
+        response: '[payout-confirm-received]'
     post-declineThirdParty-declineThirdParty:
       description: Cancel a previously submitted payout
       summary: Cancel a payout
       value:
         merchantAccount: YOUR_MERCHANT_ACCOUNT
-        originalReference: "9913140798220028"
+        originalReference: '9913140798220028'
     post-declineThirdParty-declineThirdParty-200:
       summary: Example response for request 'declineThirdParty'
       value:
         pspReference: 991617894325360J
-        response: "[payout-decline-received]"
+        response: '[payout-decline-received]'
     post-payout-payout-b2c:
       description: Pay out to your sellers, customers, freelancers, etc
       summary: Instant card payout (B2C)
@@ -506,15 +506,15 @@ components:
         billingAddress:
           city: Beverly Hills
           country: US
-          houseNumberOrName: "121"
-          postalCode: "90210"
+          houseNumberOrName: '121'
+          postalCode: '90210'
           stateOrProvince: CA
           street: Brannan Street
         card:
-          expiryMonth: "03"
-          expiryYear: "2030"
+          expiryMonth: '03'
+          expiryYear: '2030'
           holderName: John Smith
-          number: "4111111111111111"
+          number: '4111111111111111'
         dateOfBirth: 1990-01-01
         merchantAccount: YOUR_MERCHANT_ACCOUNT
         nationality: NL
@@ -532,15 +532,15 @@ components:
         billingAddress:
           city: Beverly Hills
           country: US
-          houseNumberOrName: "121"
-          postalCode: "90210"
+          houseNumberOrName: '121'
+          postalCode: '90210'
           stateOrProvince: CA
           street: Brannan Street
         card:
-          expiryMonth: "03"
-          expiryYear: "2030"
+          expiryMonth: '03'
+          expiryYear: '2030'
           holderName: John Smith
-          number: "4111111111111111"
+          number: '4111111111111111'
         dateOfBirth: 1990-01-01
         fundSource:
           additionalData:
@@ -548,15 +548,15 @@ components:
           billingAddress:
             city: Beverly Hills
             country: US
-            houseNumberOrName: "121"
-            postalCode: "90210"
+            houseNumberOrName: '121'
+            postalCode: '90210'
             stateOrProvince: CA
             street: Brannan Street
           card:
-            expiryMonth: "03"
-            expiryYear: "2030"
+            expiryMonth: '03'
+            expiryYear: '2030'
             holderName: Payer Name
-            number: "4400000000000008"
+            number: '4400000000000008'
           shopperName:
             firstName: Payer
             lastName: Name
@@ -582,8 +582,8 @@ components:
         billingAddress:
           city: Amsterdam
           country: US
-          houseNumberOrName: "17"
-          postalCode: "12345"
+          houseNumberOrName: '17'
+          postalCode: '12345'
           stateOrProvince: NY
           street: Teststreet 1
         dateOfBirth: 1990-01-01
@@ -602,7 +602,7 @@ components:
       summary: Example response for request 'storeDetail'
       value:
         pspReference: 991617894326362D
-        recurringDetailReference: "9916178936754752"
+        recurringDetailReference: '9916178936754752'
         resultCode: Success
     post-storeDetailAndSubmitThirdParty-storeDetailAndSubmitThirdParty:
       description: Submit a payout and stores its details for subsequent payouts
@@ -752,7 +752,7 @@ components:
     Address:
       properties:
         city:
-          description: "The name of the city. Maximum length: 3000 characters."
+          description: 'The name of the city. Maximum length: 3000 characters.'
           maxLength: 3000
           type: string
         country:
@@ -761,7 +761,7 @@ components:
             > If you don't know the country or are not collecting the country from the shopper, provide `country` as `ZZ`.
           type: string
         houseNumberOrName:
-          description: "The number or name of the house. Maximum length: 3000 characters."
+          description: 'The number or name of the house. Maximum length: 3000 characters.'
           maxLength: 3000
           type: string
         postalCode:
@@ -808,7 +808,7 @@ components:
         bankCity:
           description: The bank city.
           type: string
-          x-addedInVersion: "18"
+          x-addedInVersion: '18'
         bankLocationId:
           description: The location id of the bank. The field value is `nil` in most cases.
           type: string
@@ -844,7 +844,7 @@ components:
         taxId:
           description: The bank account holder's tax ID.
           type: string
-          x-addedInVersion: "18"
+          x-addedInVersion: '18'
       type: object
     Card:
       properties:
@@ -924,7 +924,7 @@ components:
     FraudCheckResultWrapper:
       properties:
         FraudCheckResult:
-          $ref: "#/components/schemas/FraudCheckResult"
+          $ref: '#/components/schemas/FraudCheckResult'
     FraudResult:
       properties:
         accountScore:
@@ -934,7 +934,7 @@ components:
         results:
           description: The result of the individual risk checks.
           items:
-            $ref: "#/components/schemas/FraudCheckResultWrapper"
+            $ref: '#/components/schemas/FraudCheckResultWrapper'
           type: array
       required:
         - accountScore
@@ -947,10 +947,10 @@ components:
           description: A map of name-value pairs for passing additional or industry-specific data.
           type: object
         billingAddress:
-          $ref: "#/components/schemas/Address"
+          $ref: '#/components/schemas/Address'
           description: The address where to send the invoice.
         card:
-          $ref: "#/components/schemas/Card"
+          $ref: '#/components/schemas/Card'
           description: |-
             Credit card data.
 
@@ -959,7 +959,7 @@ components:
           description: Email address of the person.
           type: string
         shopperName:
-          $ref: "#/components/schemas/Name"
+          $ref: '#/components/schemas/Name'
           description: Name of the person.
         telephoneNumber:
           description: Phone number of the person
@@ -1017,18 +1017,18 @@ components:
     PayoutRequest:
       properties:
         amount:
-          $ref: "#/components/schemas/Amount"
+          $ref: '#/components/schemas/Amount'
           description: The amount information for the transaction (in [minor units](https://docs.adyen.com/development-resources/currency-codes)). For [BIN or card verification](https://docs.adyen.com/payment-methods/cards/bin-data-and-card-verification) requests, set amount to 0 (zero).
         billingAddress:
-          $ref: "#/components/schemas/Address"
+          $ref: '#/components/schemas/Address'
           description: |-
             The address where to send the invoice.
             > The `billingAddress` object is required in the following scenarios. Include all of the fields within this object.
             >* For 3D Secure 2 transactions in all browser-based and mobile implementations.
             >* For cross-border payouts to and from Canada.
-          x-addedInVersion: "4"
+          x-addedInVersion: '4'
         card:
-          $ref: "#/components/schemas/Card"
+          $ref: '#/components/schemas/Card'
           description: |-
             A container for card data.
             > Either `bankAccount` or `card` field must be provided in a payment request.
@@ -1037,14 +1037,14 @@ components:
           format: int32
           type: integer
         fundSource:
-          $ref: "#/components/schemas/FundSource"
+          $ref: '#/components/schemas/FundSource'
           description: The person or entity funding the money.
-          x-addedInVersion: "64"
+          x-addedInVersion: '64'
         merchantAccount:
           description: The merchant account identifier, with which you want to process the transaction.
           type: string
         recurring:
-          $ref: "#/components/schemas/Recurring"
+          $ref: '#/components/schemas/Recurring'
           description: The recurring settings for the payment. Use this property when you want to enable [recurring payments](https://docs.adyen.com/classic-integration/recurring-payments).
         reference:
           description: |-
@@ -1077,9 +1077,9 @@ components:
             - POS
           type: string
         shopperName:
-          $ref: "#/components/schemas/Name"
+          $ref: '#/components/schemas/Name'
           description: The shopper's full name.
-          x-addedInVersion: "7"
+          x-addedInVersion: '7'
         shopperReference:
           description: |-
             Required for recurring payments. 
@@ -1089,7 +1089,7 @@ components:
         telephoneNumber:
           description: The shopper's telephone number.
           type: string
-          x-addedInVersion: "7"
+          x-addedInVersion: '7'
       required:
         - merchantAccount
         - reference
@@ -1101,15 +1101,15 @@ components:
           additionalProperties:
             type: string
           anyOf:
-            - $ref: "#/components/schemas/ResponseAdditionalData3DSecure"
-            - $ref: "#/components/schemas/ResponseAdditionalDataBillingAddress"
-            - $ref: "#/components/schemas/ResponseAdditionalDataCard"
-            - $ref: "#/components/schemas/ResponseAdditionalDataCommon"
-            - $ref: "#/components/schemas/ResponseAdditionalDataInstallments"
-            - $ref: "#/components/schemas/ResponseAdditionalDataNetworkTokens"
-            - $ref: "#/components/schemas/ResponseAdditionalDataOpi"
-            - $ref: "#/components/schemas/ResponseAdditionalDataSepa"
-          description: "Contains additional information about the payment. Some data fields are included only if you select them first: Go to **Customer Area** > **Developers** > **Additional data**."
+            - $ref: '#/components/schemas/ResponseAdditionalData3DSecure'
+            - $ref: '#/components/schemas/ResponseAdditionalDataBillingAddress'
+            - $ref: '#/components/schemas/ResponseAdditionalDataCard'
+            - $ref: '#/components/schemas/ResponseAdditionalDataCommon'
+            - $ref: '#/components/schemas/ResponseAdditionalDataInstallments'
+            - $ref: '#/components/schemas/ResponseAdditionalDataNetworkTokens'
+            - $ref: '#/components/schemas/ResponseAdditionalDataOpi'
+            - $ref: '#/components/schemas/ResponseAdditionalDataSepa'
+          description: 'Contains additional information about the payment. Some data fields are included only if you select them first: Go to **Customer Area** > **Developers** > **Additional data**.'
           type: object
         authCode:
           description: |-
@@ -1118,7 +1118,7 @@ components:
             * When the payment is not authorised, this field is empty.
           type: string
         dccAmount:
-          $ref: "#/components/schemas/Amount"
+          $ref: '#/components/schemas/Amount'
           description: |-
             Includes the currency of the conversion and the value of the transaction.
             > This value only applies if you have implemented Dynamic Currency Conversion. For more information, [contact Support](https://www.adyen.help/hc/en-us/requests/new).
@@ -1128,7 +1128,7 @@ components:
             > This value only applies if you have implemented Dynamic Currency Conversion. For more information, [contact Support](https://www.adyen.help/hc/en-us/requests/new).
           type: string
         fraudResult:
-          $ref: "#/components/schemas/FraudResult"
+          $ref: '#/components/schemas/FraudResult'
           description: The fraud result properties of the payment.
         issuerUrl:
           description: |-
@@ -1210,23 +1210,23 @@ components:
           description: Date after which no further authorisations shall be performed. Only for 3D Secure 2.
           format: date-time
           type: string
-          x-addedInVersion: "40"
+          x-addedInVersion: '40'
         recurringFrequency:
           description: Minimum number of days between authorisations. Only for 3D Secure 2.
           type: string
-          x-addedInVersion: "40"
+          x-addedInVersion: '40'
         tokenService:
           description: The name of the token service.
           enum:
             - VISATOKENSERVICE
             - MCTOKENSERVICE
           type: string
-          x-addedInVersion: "25"
+          x-addedInVersion: '25'
       type: object
     ResponseAdditionalData3DSecure:
       properties:
         cardHolderInfo:
-          description: "Information provided by the issuer to the cardholder. If this field is present, you need to display this information to the cardholder. "
+          description: 'Information provided by the issuer to the cardholder. If this field is present, you need to display this information to the cardholder. '
           type: string
         cavv:
           description: The Cardholder Authentication Verification Value (CAVV) for the 3D Secure authentication session, as a Base64-encoded 20-byte array.
@@ -1242,7 +1242,7 @@ components:
             * **lowValue** 
             * **secureCorporate** 
             * **trustedBeneficiary** 
-            * **transactionRiskAnalysis** 
+            * **transactionRiskAnalysis**
           type: string
         threeds2.cardEnrolled:
           description: Indicates whether a card is enrolled for 3D Secure 2.
@@ -1440,7 +1440,7 @@ components:
         extraCostsValue:
           description: The value of the extra amount charged due to additional amounts set in the skin used in the HPP payment request. The amount is in minor units.
           type: string
-        "fraudCheck-[itemNr]-[FraudCheckname]":
+        'fraudCheck-[itemNr]-[FraudCheckname]':
           description: The fraud score due to a particular fraud check. The fraud check name is found in the key of the key-value pair.
           type: string
         fraudManualReview:
@@ -1584,7 +1584,7 @@ components:
         recurring.contractTypes:
           description: The recurring contract types applicable to the transaction.
           type: string
-          x-addedInVersion: "40"
+          x-addedInVersion: '40'
         recurring.firstPspReference:
           description: |-
             The `pspReference`, of the first recurring payment that created the recurring detail.
@@ -1597,7 +1597,7 @@ components:
         recurring.shopperReference:
           description: The provided reference of the shopper for a recurring transaction.
           type: string
-          x-addedInVersion: "40"
+          x-addedInVersion: '40'
         recurringProcessingModel:
           description: The processing model used for the recurring transaction.
           enum:
@@ -1605,7 +1605,7 @@ components:
             - Subscription
             - UnscheduledCardOnFile
           type: string
-          x-addedInVersion: "40"
+          x-addedInVersion: '40'
         referred:
           description: |-
             If the payment is referred, this field is set to true.
@@ -1689,31 +1689,31 @@ components:
         installmentPaymentData.installmentType:
           description: Type of installment. The value of `installmentType` should be **IssuerFinanced**.
           type: string
-        "installmentPaymentData.option[itemNr].annualPercentageRate":
+        'installmentPaymentData.option[itemNr].annualPercentageRate':
           description: Annual interest rate.
           type: string
-        "installmentPaymentData.option[itemNr].firstInstallmentAmount":
+        'installmentPaymentData.option[itemNr].firstInstallmentAmount':
           description: First Installment Amount in minor units.
           type: string
-        "installmentPaymentData.option[itemNr].installmentFee":
+        'installmentPaymentData.option[itemNr].installmentFee':
           description: Installment fee amount in minor units.
           type: string
-        "installmentPaymentData.option[itemNr].interestRate":
+        'installmentPaymentData.option[itemNr].interestRate':
           description: Interest rate for the installment period.
           type: string
-        "installmentPaymentData.option[itemNr].maximumNumberOfInstallments":
+        'installmentPaymentData.option[itemNr].maximumNumberOfInstallments':
           description: Maximum number of installments possible for this payment.
           type: string
-        "installmentPaymentData.option[itemNr].minimumNumberOfInstallments":
+        'installmentPaymentData.option[itemNr].minimumNumberOfInstallments':
           description: Minimum number of installments possible for this payment.
           type: string
-        "installmentPaymentData.option[itemNr].numberOfInstallments":
+        'installmentPaymentData.option[itemNr].numberOfInstallments':
           description: Total number of installments possible for this payment.
           type: string
-        "installmentPaymentData.option[itemNr].subsequentInstallmentAmount":
+        'installmentPaymentData.option[itemNr].subsequentInstallmentAmount':
           description: Subsequent Installment Amount in minor units.
           type: string
-        "installmentPaymentData.option[itemNr].totalAmountDue":
+        'installmentPaymentData.option[itemNr].totalAmountDue':
           description: Total amount in minor units.
           type: string
         installmentPaymentData.paymentOptions:
@@ -1746,7 +1746,7 @@ components:
     ResponseAdditionalDataOpi:
       properties:
         opi.transToken:
-          description: "Returned in the response if you included `opi.includeTransToken: true` in an ecommerce payment request. This contains an Oracle Payment Interface token that you can store in your Oracle Opera database to identify tokenized ecommerce transactions. For more information and required settings, see [Oracle Opera](https://docs.adyen.com/plugins/oracle-opera#opi-token-ecommerce)."
+          description: 'Returned in the response if you included `opi.includeTransToken: true` in an ecommerce payment request. This contains an Oracle Payment Interface token that you can store in your Oracle Opera database to identify tokenized ecommerce transactions. For more information and required settings, see [Oracle Opera](https://docs.adyen.com/plugins/oracle-opera#opi-token-ecommerce).'
           type: string
       type: object
     ResponseAdditionalDataSepa:
@@ -1779,7 +1779,7 @@ components:
             type: string
           description: Contains additional information about the payment. Some data fields are included only if you select them first. Go to **Customer Area** > **Developers** > **Additional data**.
           type: object
-          x-addedInVersion: "46"
+          x-addedInVersion: '46'
         errorCode:
           description: The error code mapped to the error message.
           type: string
@@ -1805,22 +1805,22 @@ components:
           description: This field contains additional data, which may be required for a particular request.
           type: object
         amount:
-          $ref: "#/components/schemas/Amount"
+          $ref: '#/components/schemas/Amount'
           description: A container object for the payable amount information of the transaction.
         bank:
-          $ref: "#/components/schemas/BankAccount"
+          $ref: '#/components/schemas/BankAccount'
           description: |-
             A container for bank account data.
             > This field is mandatory if `card` is not provided.
         billingAddress:
-          $ref: "#/components/schemas/Address"
+          $ref: '#/components/schemas/Address'
           description: |-
             The billing address.
 
             > The `billingAddress` object is required for cross-border payouts to and from Canada. Include all of the fields within this object.
-          x-addedInVersion: "18"
+          x-addedInVersion: '18'
         card:
-          $ref: "#/components/schemas/Card"
+          $ref: '#/components/schemas/Card'
           description: |-
             A container for card data.
             > This field is mandatory if `bank` is not provided.
@@ -1832,14 +1832,14 @@ components:
             > This field is mandatory for natural persons.
           format: date
           type: string
-          x-addedInVersion: "24"
+          x-addedInVersion: '24'
         entityType:
           description: The type of the entity the payout is processed for.
           enum:
             - NaturalPerson
             - Company
           type: string
-          x-addedInVersion: "24"
+          x-addedInVersion: '24'
         fraudOffset:
           description: An integer value that is added to the normal fraud score. The value can be either positive or negative.
           format: int32
@@ -1854,9 +1854,9 @@ components:
             A valid value is an ISO 2-character country code (e.g. 'NL').
           maxLength: 2
           type: string
-          x-addedInVersion: "24"
+          x-addedInVersion: '24'
         recurring:
-          $ref: "#/components/schemas/Recurring"
+          $ref: '#/components/schemas/Recurring'
           description: |-
             A container for the type of recurring contract to be retrieved.
 
@@ -1870,32 +1870,32 @@ components:
 
             For Paysafecard it must be set to `paysafecard`.
           type: string
-          x-addedInVersion: "24"
+          x-addedInVersion: '24'
         shopperEmail:
           description: The shopper's email address.
           type: string
         shopperName:
-          $ref: "#/components/schemas/Name"
+          $ref: '#/components/schemas/Name'
           description: |-
             The shopper's name.
 
             When the `entityType` is `Company`, the `shopperName.lastName` must contain the company name.
-          x-addedInVersion: "24"
+          x-addedInVersion: '24'
         shopperReference:
           description: The shopper's reference for the payment transaction.
           type: string
         shopperStatement:
           description: The description of this payout. This description is shown on the bank statement of the shopper (if this is supported by the chosen payment method).
           type: string
-          x-addedInVersion: "2"
+          x-addedInVersion: '2'
         socialSecurityNumber:
           description: The shopper's social security number.
           type: string
-          x-addedInVersion: "24"
+          x-addedInVersion: '24'
         telephoneNumber:
           description: The shopper's phone number.
           type: string
-          x-addedInVersion: "52"
+          x-addedInVersion: '52'
       required:
         - merchantAccount
         - shopperEmail
@@ -1939,19 +1939,19 @@ components:
           description: This field contains additional data, which may be required for a particular request.
           type: object
         bank:
-          $ref: "#/components/schemas/BankAccount"
+          $ref: '#/components/schemas/BankAccount'
           description: |-
             A container for bank account data.
             > This field is mandatory if `card` is not provided.
         billingAddress:
-          $ref: "#/components/schemas/Address"
+          $ref: '#/components/schemas/Address'
           description: |-
             The billing address.
 
             > The `billingAddress` object is required for cross-border payouts to and from Canada. Include all of the fields within this object.
-          x-addedInVersion: "18"
+          x-addedInVersion: '18'
         card:
-          $ref: "#/components/schemas/Card"
+          $ref: '#/components/schemas/Card'
           description: |-
             A container for card data.
             > This field is mandatory if `bank` is not provided.
@@ -1963,14 +1963,14 @@ components:
             > This field is mandatory for natural persons.
           format: date
           type: string
-          x-addedInVersion: "24"
+          x-addedInVersion: '24'
         entityType:
           description: The type of the entity the payout is processed for.
           enum:
             - NaturalPerson
             - Company
           type: string
-          x-addedInVersion: "24"
+          x-addedInVersion: '24'
         fraudOffset:
           description: An integer value that is added to the normal fraud score. The value can be either positive or negative.
           format: int32
@@ -1985,9 +1985,9 @@ components:
             A valid value is an ISO 2-character country code (e.g. 'NL').
           maxLength: 2
           type: string
-          x-addedInVersion: "24"
+          x-addedInVersion: '24'
         recurring:
-          $ref: "#/components/schemas/Recurring"
+          $ref: '#/components/schemas/Recurring'
           description: |-
             A container for the type of recurring contract to be retrieved.
 
@@ -1998,28 +1998,28 @@ components:
 
             For Paysafecard it must be set to `paysafecard`.
           type: string
-          x-addedInVersion: "24"
+          x-addedInVersion: '24'
         shopperEmail:
           description: The shopper's email address.
           type: string
         shopperName:
-          $ref: "#/components/schemas/Name"
+          $ref: '#/components/schemas/Name'
           description: |-
             The shopper's name.
 
             When the `entityType` is `Company`, the `shopperName.lastName` must contain the company name.
-          x-addedInVersion: "24"
+          x-addedInVersion: '24'
         shopperReference:
           description: The shopper's reference for the payment transaction.
           type: string
         socialSecurityNumber:
           description: The shopper's social security number.
           type: string
-          x-addedInVersion: "24"
+          x-addedInVersion: '24'
         telephoneNumber:
           description: The shopper's phone number.
           type: string
-          x-addedInVersion: "52"
+          x-addedInVersion: '52'
       required:
         - merchantAccount
         - shopperEmail
@@ -2058,7 +2058,7 @@ components:
           description: This field contains additional data, which may be required for a particular request.
           type: object
         amount:
-          $ref: "#/components/schemas/Amount"
+          $ref: '#/components/schemas/Amount'
           description: A container object for the payable amount information of the transaction.
         dateOfBirth:
           description: |-
@@ -2071,7 +2071,7 @@ components:
             > This field is required to update the existing `dateOfBirth` that is associated with this recurring contract.
           format: date
           type: string
-          x-addedInVersion: "24"
+          x-addedInVersion: '24'
         entityType:
           description: |-
             The type of the entity the payout is processed for.
@@ -2084,7 +2084,7 @@ components:
             - NaturalPerson
             - Company
           type: string
-          x-addedInVersion: "24"
+          x-addedInVersion: '24'
         fraudOffset:
           description: An integer value that is added to the normal fraud score. The value can be either positive or negative.
           format: int32
@@ -2100,9 +2100,9 @@ components:
 
             > This field is required to update the existing nationality that is associated with this recurring contract.
           type: string
-          x-addedInVersion: "24"
+          x-addedInVersion: '24'
         recurring:
-          $ref: "#/components/schemas/Recurring"
+          $ref: '#/components/schemas/Recurring'
           description: |-
             A container for the type of recurring contract to be retrieved.
 
@@ -2120,25 +2120,25 @@ components:
           description: The shopper's email address.
           type: string
         shopperName:
-          $ref: "#/components/schemas/Name"
+          $ref: '#/components/schemas/Name'
           description: |-
             The shopper's name.
 
             In case the `entityType` is `Company`, the `shopperName.lastName` must contain the company name.
 
             > This field is required to update the existing `shopperName` associated with a recurring contract.
-          x-addedInVersion: "24"
+          x-addedInVersion: '24'
         shopperReference:
           description: The shopper's reference for the payout transaction.
           type: string
         shopperStatement:
           description: The description of this payout. This description is shown on the bank statement of the shopper (if this is supported by the chosen payment method).
           type: string
-          x-addedInVersion: "2"
+          x-addedInVersion: '2'
         socialSecurityNumber:
           description: The shopper's social security number.
           type: string
-          x-addedInVersion: "24"
+          x-addedInVersion: '24'
       required:
         - merchantAccount
         - reference

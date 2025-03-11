@@ -42,7 +42,7 @@ info:
     ```
   termsOfService: https://www.adyen.com/legal/terms-and-conditions
   title: Notification Configuration API
-  version: "6"
+  version: '6'
   x-apisguru-categories:
     - payment
   x-logo:
@@ -50,7 +50,7 @@ info:
   x-origin:
     - format: openapi
       url: https://raw.githubusercontent.com/Adyen/adyen-openapi/main/json/NotificationConfigurationService-v6.json
-      version: "3.1"
+      version: '3.1'
   x-preferred: true
   x-providerName: adyen.com
   x-publicVersion: true
@@ -68,48 +68,48 @@ paths:
           application/json:
             examples:
               basic:
-                $ref: "#/components/examples/post-createNotificationConfiguration-basic"
+                $ref: '#/components/examples/post-createNotificationConfiguration-basic'
             schema:
-              $ref: "#/components/schemas/CreateNotificationConfigurationRequest"
+              $ref: '#/components/schemas/CreateNotificationConfigurationRequest'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
                 basic:
-                  $ref: "#/components/examples/post-createNotificationConfiguration-basic-200"
+                  $ref: '#/components/examples/post-createNotificationConfiguration-basic-200'
               schema:
-                $ref: "#/components/schemas/GetNotificationConfigurationResponse"
+                $ref: '#/components/schemas/GetNotificationConfigurationResponse'
           description: OK - the request has succeeded.
-        "400":
+        '400':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -129,48 +129,48 @@ paths:
           application/json:
             examples:
               basic:
-                $ref: "#/components/examples/post-deleteNotificationConfigurations-basic"
+                $ref: '#/components/examples/post-deleteNotificationConfigurations-basic'
             schema:
-              $ref: "#/components/schemas/DeleteNotificationConfigurationRequest"
+              $ref: '#/components/schemas/DeleteNotificationConfigurationRequest'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
                 basic:
-                  $ref: "#/components/examples/post-deleteNotificationConfigurations-basic-200"
+                  $ref: '#/components/examples/post-deleteNotificationConfigurations-basic-200'
               schema:
-                $ref: "#/components/schemas/GenericResponse"
+                $ref: '#/components/schemas/GenericResponse'
           description: OK - the request has succeeded.
-        "400":
+        '400':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -190,48 +190,48 @@ paths:
           application/json:
             examples:
               basic:
-                $ref: "#/components/examples/post-getNotificationConfiguration-basic"
+                $ref: '#/components/examples/post-getNotificationConfiguration-basic'
             schema:
-              $ref: "#/components/schemas/GetNotificationConfigurationRequest"
+              $ref: '#/components/schemas/GetNotificationConfigurationRequest'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
                 basic:
-                  $ref: "#/components/examples/post-getNotificationConfiguration-basic-200"
+                  $ref: '#/components/examples/post-getNotificationConfiguration-basic-200'
               schema:
-                $ref: "#/components/schemas/GetNotificationConfigurationResponse"
+                $ref: '#/components/schemas/GetNotificationConfigurationResponse'
           description: OK - the request has succeeded.
-        "400":
+        '400':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -251,48 +251,48 @@ paths:
           application/json:
             examples:
               basic:
-                $ref: "#/components/examples/post-getNotificationConfigurationList-basic"
+                $ref: '#/components/examples/post-getNotificationConfigurationList-basic'
             schema:
-              $ref: "#/components/schemas/EmptyRequest"
+              $ref: '#/components/schemas/EmptyRequest'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
                 basic:
-                  $ref: "#/components/examples/post-getNotificationConfigurationList-basic-200"
+                  $ref: '#/components/examples/post-getNotificationConfigurationList-basic-200'
               schema:
-                $ref: "#/components/schemas/GetNotificationConfigurationListResponse"
+                $ref: '#/components/schemas/GetNotificationConfigurationListResponse'
           description: OK - the request has succeeded.
-        "400":
+        '400':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -312,48 +312,48 @@ paths:
           application/json:
             examples:
               basic:
-                $ref: "#/components/examples/post-testNotificationConfiguration-basic"
+                $ref: '#/components/examples/post-testNotificationConfiguration-basic'
             schema:
-              $ref: "#/components/schemas/TestNotificationConfigurationRequest"
+              $ref: '#/components/schemas/TestNotificationConfigurationRequest'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
                 basic:
-                  $ref: "#/components/examples/post-testNotificationConfiguration-basic-200"
+                  $ref: '#/components/examples/post-testNotificationConfiguration-basic-200'
               schema:
-                $ref: "#/components/schemas/TestNotificationConfigurationResponse"
+                $ref: '#/components/schemas/TestNotificationConfigurationResponse'
           description: OK - the request has succeeded.
-        "400":
+        '400':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -373,48 +373,48 @@ paths:
           application/json:
             examples:
               basic:
-                $ref: "#/components/examples/post-updateNotificationConfiguration-basic"
+                $ref: '#/components/examples/post-updateNotificationConfiguration-basic'
             schema:
-              $ref: "#/components/schemas/UpdateNotificationConfigurationRequest"
+              $ref: '#/components/schemas/UpdateNotificationConfigurationRequest'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
                 basic:
-                  $ref: "#/components/examples/post-updateNotificationConfiguration-basic-200"
+                  $ref: '#/components/examples/post-updateNotificationConfiguration-basic-200'
               schema:
-                $ref: "#/components/schemas/GetNotificationConfigurationResponse"
+                $ref: '#/components/schemas/GetNotificationConfigurationResponse'
           description: OK - the request has succeeded.
-        "400":
+        '400':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -452,7 +452,7 @@ components:
           notificationId: 28468
           notifyURL: https://www.adyen.com/notification-handler
           sslProtocol: TLSv13
-        pspReference: "8516178952380553"
+        pspReference: '8516178952380553'
     post-deleteNotificationConfigurations-basic:
       description: Deletes an existing notification subscription configuration
       summary: Delete a notification configuration
@@ -463,7 +463,7 @@ components:
       description: Example response of deleting a notification configuration
       summary: Delete a notification configuration
       value:
-        pspReference: "8516480472498802"
+        pspReference: '8516480472498802'
     post-getNotificationConfiguration-basic:
       description: Returns the details of the configuration of a notification subscription
       summary: Get a notification configuration
@@ -483,7 +483,7 @@ components:
           notificationId: 50054
           notifyURL: https://www.adyen.com/notification-handler
           sslProtocol: TLSv13
-        pspReference: "8616480378704419"
+        pspReference: '8616480378704419'
     post-getNotificationConfigurationList-basic:
       description: Returns the details of the configurations of all of the notification subscriptions in the platform of the executing user.
       summary: Get a list of configurations
@@ -509,7 +509,7 @@ components:
             notificationId: 25032
             notifyURL: https://www.adyen.com/notification-handler
             sslProtocol: TLSv13
-        pspReference: "8516480437185726"
+        pspReference: '8516480437185726'
     post-testNotificationConfiguration-basic:
       description: Returns the test result for a notification subscription
       summary: Test a notification configuration
@@ -527,15 +527,15 @@ components:
           - ACCOUNT_HOLDER_VERIFICATION
         exchangeMessages:
           - messageCode: Number
-            messageDescription: "1"
+            messageDescription: '1'
           - messageCode: Title
-            messageDescription: "Test 1: 8616480452462678"
+            messageDescription: 'Test 1: 8616480452462678'
         notificationId: 25032
         okMessages:
           - ...
-          - "ResponseTime_ms: 262"
-          - "ResponseCode: 404"
-        pspReference: "8616480452462678"
+          - 'ResponseTime_ms: 262'
+          - 'ResponseCode: 404'
+        pspReference: '8616480452462678'
     post-updateNotificationConfiguration-basic:
       summary: Update notification configurations
       value:
@@ -566,12 +566,12 @@ components:
           notificationId: 21259
           notifyURL: https://www.adyen.com/notification-handler
           sslProtocol: TLSv13
-        pspReference: "8516178952580574"
+        pspReference: '8516178952580574'
   schemas:
     CreateNotificationConfigurationRequest:
       properties:
         configurationDetails:
-          $ref: "#/components/schemas/NotificationConfigurationDetails"
+          $ref: '#/components/schemas/NotificationConfigurationDetails'
           description: Details of the prospective notification subscription configuration.
       required:
         - configurationDetails
@@ -599,7 +599,7 @@ components:
           description: A description of the validation error.
           type: string
         fieldType:
-          $ref: "#/components/schemas/FieldType"
+          $ref: '#/components/schemas/FieldType'
           description: The type of error field.
       type: object
     ExchangeMessage:
@@ -788,9 +788,9 @@ components:
         invalidFields:
           description: Contains field validation errors that would prevent requests from being processed.
           items:
-            $ref: "#/components/schemas/ErrorFieldType"
+            $ref: '#/components/schemas/ErrorFieldType'
           type: array
-          x-addedInVersion: "5"
+          x-addedInVersion: '5'
         pspReference:
           description: The reference of a request. Can be used to uniquely identify the request.
           type: string
@@ -803,14 +803,14 @@ components:
         configurations:
           description: Details of the notification subscription configurations.
           items:
-            $ref: "#/components/schemas/NotificationConfigurationDetails"
+            $ref: '#/components/schemas/NotificationConfigurationDetails'
           type: array
         invalidFields:
           description: Contains field validation errors that would prevent requests from being processed.
           items:
-            $ref: "#/components/schemas/ErrorFieldType"
+            $ref: '#/components/schemas/ErrorFieldType'
           type: array
-          x-addedInVersion: "5"
+          x-addedInVersion: '5'
         pspReference:
           description: The reference of a request. Can be used to uniquely identify the request.
           type: string
@@ -830,14 +830,14 @@ components:
     GetNotificationConfigurationResponse:
       properties:
         configurationDetails:
-          $ref: "#/components/schemas/NotificationConfigurationDetails"
+          $ref: '#/components/schemas/NotificationConfigurationDetails'
           description: Details of the notification subscription configuration.
         invalidFields:
           description: Contains field validation errors that would prevent requests from being processed.
           items:
-            $ref: "#/components/schemas/ErrorFieldType"
+            $ref: '#/components/schemas/ErrorFieldType'
           type: array
-          x-addedInVersion: "5"
+          x-addedInVersion: '5'
         pspReference:
           description: The reference of a request. Can be used to uniquely identify the request.
           type: string
@@ -862,7 +862,7 @@ components:
         eventConfigs:
           description: Contains objects that define event types and their subscription settings.
           items:
-            $ref: "#/components/schemas/NotificationEventConfiguration"
+            $ref: '#/components/schemas/NotificationEventConfiguration'
           type: array
         hmacSignatureKey:
           description: |-
@@ -872,7 +872,7 @@ components:
 
             The omission of this field will preclude the provision of the `HmacSignature` and `Protocol` headers in notification(s).
           type: string
-          x-addedInVersion: "5"
+          x-addedInVersion: '5'
         notificationId:
           description: Adyen-generated ID for the entry, returned in the response when you create a notification configuration. Required when updating an existing configuration using [`/updateNotificationConfiguration`](https://docs.adyen.com/api-explorer/#/NotificationConfigurationService/latest/post/updateNotificationConfiguration).
           format: int64
@@ -1047,14 +1047,14 @@ components:
         exchangeMessages:
           description: The notification message and related response messages.
           items:
-            $ref: "#/components/schemas/ExchangeMessage"
+            $ref: '#/components/schemas/ExchangeMessage'
           type: array
         invalidFields:
           description: Contains field validation errors that would prevent requests from being processed.
           items:
-            $ref: "#/components/schemas/ErrorFieldType"
+            $ref: '#/components/schemas/ErrorFieldType'
           type: array
-          x-addedInVersion: "5"
+          x-addedInVersion: '5'
         notificationId:
           description: The ID of the notification subscription configuration.
           format: int64
@@ -1076,7 +1076,7 @@ components:
     UpdateNotificationConfigurationRequest:
       properties:
         configurationDetails:
-          $ref: "#/components/schemas/NotificationConfigurationDetails"
+          $ref: '#/components/schemas/NotificationConfigurationDetails'
           description: Details of the notification subscription configuration to be updated.
       required:
         - configurationDetails

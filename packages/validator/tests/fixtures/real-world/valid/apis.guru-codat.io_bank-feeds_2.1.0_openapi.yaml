@@ -13,7 +13,7 @@ info:
 
     [Read more...](https://docs.codat.io/bank-feeds-api/overview)
 
-    [See our OpenAPI spec](https://github.com/codatio/oas) 
+    [See our OpenAPI spec](https://github.com/codatio/oas)
   termsOfService: https://www.codat.io/legals/
   title: Bank Feeds API
   version: 2.1.0
@@ -24,7 +24,7 @@ info:
   x-origin:
     - format: openapi
       url: https://raw.githubusercontent.com/codatio/oas/main/json/Codat-Bank-Feeds.json
-      version: "3.1"
+      version: '3.1'
   x-providerName: codat.io
   x-serviceName: bank-feeds
 security:
@@ -35,19 +35,19 @@ tags:
   - description: Bank feed bank accounts
     name: Bank account transactions
 paths:
-  "/companies/{companyId}/connections/{connectionId}/connectionInfo/bankFeedAccounts":
+  '/companies/{companyId}/connections/{connectionId}/connectionInfo/bankFeedAccounts':
     get:
       description: Get BankFeed BankAccounts for a single data source connected to a single company.
       operationId: get-bank-feeds
       parameters:
-        - $ref: "#/components/parameters/companyId"
-        - $ref: "#/components/parameters/connectionId"
+        - $ref: '#/components/parameters/companyId'
+        - $ref: '#/components/parameters/connectionId'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/BankFeedAccounts"
+                $ref: '#/components/schemas/BankFeedAccounts'
           description: Success
       summary: List bank feed bank accounts
       tags:
@@ -56,89 +56,89 @@ paths:
       description: Put BankFeed BankAccounts for a single data source connected to a single company.
       operationId: create-bank-feed
       parameters:
-        - $ref: "#/components/parameters/companyId"
-        - $ref: "#/components/parameters/connectionId"
+        - $ref: '#/components/parameters/companyId'
+        - $ref: '#/components/parameters/connectionId'
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/BankFeedAccounts"
+              $ref: '#/components/schemas/BankFeedAccounts'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/BankFeedAccounts"
+                $ref: '#/components/schemas/BankFeedAccounts'
           description: Success
       summary: Create bank feed bank accounts
       tags:
         - Bank feed accounts
-  "/companies/{companyId}/connections/{connectionId}/connectionInfo/bankFeedAccounts/{accountId}":
+  '/companies/{companyId}/connections/{connectionId}/connectionInfo/bankFeedAccounts/{accountId}':
     patch:
       description: Update a single BankFeed BankAccount for a single data source connected to a single company.
       operationId: update-bank-feed
       parameters:
-        - $ref: "#/components/parameters/companyId"
-        - $ref: "#/components/parameters/connectionId"
-        - $ref: "#/components/parameters/accountId"
+        - $ref: '#/components/parameters/companyId'
+        - $ref: '#/components/parameters/connectionId'
+        - $ref: '#/components/parameters/accountId'
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/BankFeedAccount"
+              $ref: '#/components/schemas/BankFeedAccount'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/BankFeedAccount"
+                $ref: '#/components/schemas/BankFeedAccount'
               x-speakeasy-usage-example: true
           description: Success
       summary: Update bank feed bank account
       tags:
         - Bank feed accounts
-  "/companies/{companyId}/connections/{connectionId}/data/bankAccounts/{accountId}/bankTransactions":
+  '/companies/{companyId}/connections/{connectionId}/data/bankAccounts/{accountId}/bankTransactions':
     get:
       description: Gets bank transactions for a given bank account ID
       operationId: list-bank-account-transactions
       parameters:
-        - $ref: "#/components/parameters/companyId"
-        - $ref: "#/components/parameters/connectionId"
-        - $ref: "#/components/parameters/accountId"
-        - $ref: "#/components/parameters/page"
-        - $ref: "#/components/parameters/pageSize"
-        - $ref: "#/components/parameters/query"
-        - $ref: "#/components/parameters/orderBy"
+        - $ref: '#/components/parameters/companyId'
+        - $ref: '#/components/parameters/connectionId'
+        - $ref: '#/components/parameters/accountId'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/query'
+        - $ref: '#/components/parameters/orderBy'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/BankTransactionsResponse"
+                $ref: '#/components/schemas/BankTransactionsResponse'
           description: Success
       summary: List bank transactions for bank account
       tags:
         - Bank account transactions
-  "/companies/{companyId}/connections/{connectionId}/options/bankAccounts/{accountId}/bankTransactions":
+  '/companies/{companyId}/connections/{connectionId}/options/bankAccounts/{accountId}/bankTransactions':
     get:
       description: Gets the options of pushing bank account transactions.
       operationId: get-create-bank-account-model
       parameters:
-        - $ref: "#/components/parameters/companyId"
-        - $ref: "#/components/parameters/connectionId"
-        - $ref: "#/components/parameters/accountId"
+        - $ref: '#/components/parameters/companyId'
+        - $ref: '#/components/parameters/connectionId'
+        - $ref: '#/components/parameters/accountId'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PushOption"
+                $ref: '#/components/schemas/PushOption'
           description: Success
       summary: List push options for bank account bank transactions
       tags:
         - Bank account transactions
       x-extension-1: null
-  "/companies/{companyId}/connections/{connectionId}/push/bankAccounts/{accountId}/bankTransactions":
+  '/companies/{companyId}/connections/{connectionId}/push/bankAccounts/{accountId}/bankTransactions':
     post:
       description: |-
         Posts bank transactions to the accounting package for a given company.
@@ -148,9 +148,9 @@ paths:
         > Check out our [Knowledge UI](https://knowledge.codat.io/supported-features/accounting?view=tab-by-data-type&dataType=bankTransactions) for integrations that support POST methods.
       operationId: create-bank-transactions
       parameters:
-        - $ref: "#/components/parameters/companyId"
-        - $ref: "#/components/parameters/connectionId"
-        - $ref: "#/components/parameters/accountId"
+        - $ref: '#/components/parameters/companyId'
+        - $ref: '#/components/parameters/connectionId'
+        - $ref: '#/components/parameters/accountId'
         - in: query
           name: allowSyncOnPushComplete
           schema:
@@ -169,13 +169,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/BankTransactions"
+              $ref: '#/components/schemas/BankTransactions'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CreateBankTransactionsResponse"
+                $ref: '#/components/schemas/CreateBankTransactionsResponse'
           description: Success
       summary: Create bank transactions
       tags:
@@ -260,22 +260,22 @@ components:
       description: The target bank account in a supported accounting package for ingestion into a bank feed.
       examples:
         - accountName: account-081
-          accountNumber: "12345670"
+          accountNumber: '12345670'
           accountType: Credit
           balance: 99.99
           currency: GBP
           id: acc-002
           modifiedDate: 2023-01-09T14:14:14.1057478Z
-          sortCode: "123456"
+          sortCode: '123456'
           status: pending
         - accountName: account-095
-          accountNumber: "12345671"
+          accountNumber: '12345671'
           accountType: Credit
           balance: 0
           currency: USD
           id: acc-003
           modifiedDate: 2023-01-09T14:14:14.1057478Z
-          sortCode: "123456"
+          sortCode: '123456'
           status: pending
       properties:
         accountName:
@@ -299,13 +299,13 @@ components:
           nullable: true
           type: string
         feedStartDate:
-          $ref: "#/components/schemas/DateTime"
+          $ref: '#/components/schemas/DateTime'
           nullable: true
         id:
           description: Unique ID for the bank feed account
           type: string
         modifiedDate:
-          $ref: "#/components/schemas/DateTime"
+          $ref: '#/components/schemas/DateTime'
           description: The last date the bank account was modified
           nullable: true
         sortCode:
@@ -321,7 +321,7 @@ components:
       type: object
     BankFeedAccounts:
       items:
-        $ref: "#/components/schemas/BankFeedAccount"
+        $ref: '#/components/schemas/BankFeedAccount'
       type: array
       x-internal: true
     BankTransactions:
@@ -334,7 +334,7 @@ components:
                 balance:
                   type: number
                 clearedOnDate:
-                  $ref: "#/components/schemas/DateTime"
+                  $ref: '#/components/schemas/DateTime'
                 counterparty:
                   nullable: true
                   type: string
@@ -349,19 +349,19 @@ components:
                   nullable: true
                   type: string
                 transactionType:
-                  $ref: "#/components/schemas/BankTransactions/definitions/bankTransactionType"
+                  $ref: '#/components/schemas/BankTransactions/definitions/bankTransactionType'
               type: object
             - allOf:
                 - properties:
                     modifiedDate:
-                      $ref: "#/components/schemas/DateTime"
+                      $ref: '#/components/schemas/DateTime'
                       description: The date on which this record was last modified in Codat.
                   title: ModifiedDate
                   type: object
                   x-internal: true
                 - properties:
                     sourceModifiedDate:
-                      $ref: "#/components/schemas/DateTime"
+                      $ref: '#/components/schemas/DateTime'
                       description: The date on which this record was last modified in the originating system
                   title: Source Modified Date
                   type: object
@@ -421,7 +421,7 @@ components:
           type: string
         transactions:
           items:
-            $ref: "#/components/schemas/BankTransactions/definitions/bankTransactionLine"
+            $ref: '#/components/schemas/BankTransactions/definitions/bankTransactionLine'
           nullable: true
           type: array
       title: Bank account transactions
@@ -431,7 +431,7 @@ components:
         - properties:
             results:
               items:
-                $ref: "#/components/schemas/BankTransactions"
+                $ref: '#/components/schemas/BankTransactions'
               type: array
           type: object
         - examples:
@@ -445,7 +445,7 @@ components:
                 totalResults: 1
           properties:
             _links:
-              $ref: "#/components/schemas/Links"
+              $ref: '#/components/schemas/Links'
             pageNumber:
               type: integer
             pageSize:
@@ -464,9 +464,9 @@ components:
       allOf:
         - properties:
             data:
-              $ref: "#/components/schemas/BankTransactions"
+              $ref: '#/components/schemas/BankTransactions'
           type: object
-        - $ref: "#/components/schemas/PushOperation"
+        - $ref: '#/components/schemas/PushOperation'
       x-internal: true
     DataType:
       description: Available Data types
@@ -556,13 +556,13 @@ components:
             href: /companies/{id}/data/{dataType}
       properties:
         current:
-          $ref: "#/components/schemas/HRef"
+          $ref: '#/components/schemas/HRef'
         next:
-          $ref: "#/components/schemas/HRef"
+          $ref: '#/components/schemas/HRef'
         previous:
-          $ref: "#/components/schemas/HRef"
+          $ref: '#/components/schemas/HRef'
         self:
-          $ref: "#/components/schemas/HRef"
+          $ref: '#/components/schemas/HRef'
       required:
         - self
         - current
@@ -585,15 +585,15 @@ components:
               nullable: true
               type: string
             recordRef:
-              $ref: "#/components/schemas/PushOperation/definitions/pushOperationRef"
+              $ref: '#/components/schemas/PushOperation/definitions/pushOperationRef'
             type:
-              $ref: "#/components/schemas/PushOperation/definitions/pushChangeType"
+              $ref: '#/components/schemas/PushOperation/definitions/pushChangeType'
           type: object
         pushOperationRef:
           additionalProperties: false
           properties:
             dataType:
-              $ref: "#/components/schemas/DataType"
+              $ref: '#/components/schemas/DataType'
               nullable: true
             id:
               type: string
@@ -614,12 +614,12 @@ components:
           properties:
             errors:
               items:
-                $ref: "#/components/schemas/PushOperation/definitions/validationItem"
+                $ref: '#/components/schemas/PushOperation/definitions/validationItem'
               nullable: true
               type: array
             warnings:
               items:
-                $ref: "#/components/schemas/PushOperation/definitions/validationItem"
+                $ref: '#/components/schemas/PushOperation/definitions/validationItem'
               nullable: true
               type: array
           title: Validation
@@ -641,18 +641,18 @@ components:
       properties:
         changes:
           items:
-            $ref: "#/components/schemas/PushOperation/definitions/pushOperationChange"
+            $ref: '#/components/schemas/PushOperation/definitions/pushOperationChange'
           nullable: true
           type: array
         companyId:
-          $ref: "#/components/parameters/companyId/schema"
+          $ref: '#/components/parameters/companyId/schema'
         completedOnUtc:
-          $ref: "#/components/schemas/DateTime"
+          $ref: '#/components/schemas/DateTime'
           description: The datetime when the push was completed, null if Pending.
         dataConnectionKey:
-          $ref: "#/components/parameters/connectionId/schema"
+          $ref: '#/components/parameters/connectionId/schema'
         dataType:
-          $ref: "#/components/schemas/DataType"
+          $ref: '#/components/schemas/DataType'
           description: The type of data being pushed, eg invoices, customers.
           nullable: true
         errorMessage:
@@ -663,10 +663,10 @@ components:
           format: uuid
           type: string
         requestedOnUtc:
-          $ref: "#/components/schemas/DateTime"
+          $ref: '#/components/schemas/DateTime'
           description: The datetime when the push was requested.
         status:
-          $ref: "#/components/schemas/PushOperation/definitions/pushOperationStatus"
+          $ref: '#/components/schemas/PushOperation/definitions/pushOperationStatus'
         statusCode:
           type: integer
         timeoutInMinutes:
@@ -679,7 +679,7 @@ components:
           nullable: true
           type: integer
         validation:
-          $ref: "#/components/schemas/PushOperation/definitions/validation"
+          $ref: '#/components/schemas/PushOperation/definitions/validation'
       required:
         - companyId
         - pushOperationKey
@@ -716,7 +716,7 @@ components:
             required:
               type: boolean
             type:
-              $ref: "#/components/schemas/PushOption/definitions/pushOptionType"
+              $ref: '#/components/schemas/PushOption/definitions/pushOptionType'
             value:
               description: Allowed value for field.
               minLength: 1
@@ -733,20 +733,20 @@ components:
               type: string
             options:
               items:
-                $ref: "#/components/schemas/PushOption/definitions/pushOptionChoice"
+                $ref: '#/components/schemas/PushOption/definitions/pushOptionChoice'
               nullable: true
               type: array
             properties:
               additionalProperties:
-                $ref: "#/components/schemas/PushOption/definitions/pushOptionProperty"
+                $ref: '#/components/schemas/PushOption/definitions/pushOptionProperty'
               nullable: true
               type: object
             required:
               type: boolean
             type:
-              $ref: "#/components/schemas/PushOption/definitions/pushOptionType"
+              $ref: '#/components/schemas/PushOption/definitions/pushOptionType'
             validation:
-              $ref: "#/components/schemas/PushOption/definitions/pushValidationInfo"
+              $ref: '#/components/schemas/PushOption/definitions/pushValidationInfo'
           required:
             - description
             - displayName
@@ -771,12 +771,12 @@ components:
           properties:
             information:
               items:
-                $ref: "#/components/schemas/PushOption/definitions/pushFieldValidation"
+                $ref: '#/components/schemas/PushOption/definitions/pushFieldValidation'
               nullable: true
               type: array
             warnings:
               items:
-                $ref: "#/components/schemas/PushOption/definitions/pushFieldValidation"
+                $ref: '#/components/schemas/PushOption/definitions/pushFieldValidation'
               nullable: true
               type: array
           title: Push validation info
@@ -789,20 +789,20 @@ components:
           type: string
         options:
           items:
-            $ref: "#/components/schemas/PushOption/definitions/pushOptionChoice"
+            $ref: '#/components/schemas/PushOption/definitions/pushOptionChoice'
           nullable: true
           type: array
         properties:
           additionalProperties:
-            $ref: "#/components/schemas/PushOption/definitions/pushOptionProperty"
+            $ref: '#/components/schemas/PushOption/definitions/pushOptionProperty'
           nullable: true
           type: object
         required:
           type: boolean
         type:
-          $ref: "#/components/schemas/PushOption/definitions/pushOptionType"
+          $ref: '#/components/schemas/PushOption/definitions/pushOptionType'
         validation:
-          $ref: "#/components/schemas/PushOption/definitions/pushValidationInfo"
+          $ref: '#/components/schemas/PushOption/definitions/pushValidationInfo'
           nullable: true
       required:
         - displayName

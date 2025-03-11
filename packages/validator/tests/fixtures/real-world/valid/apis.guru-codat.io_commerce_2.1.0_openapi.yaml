@@ -13,7 +13,7 @@ info:
 
     [Read more...](https://docs.codat.io/commerce-api/overview)
 
-    [See our OpenAPI spec](https://github.com/codatio/oas) 
+    [See our OpenAPI spec](https://github.com/codatio/oas)
   summary: "Codat's standardized API for accessing commerce data "
   termsOfService: https://www.codat.io/legals/
   title: Commerce API
@@ -25,7 +25,7 @@ info:
   x-origin:
     - format: openapi
       url: https://raw.githubusercontent.com/codatio/oas/main/json/Codat-Commerce.json
-      version: "3.1"
+      version: '3.1'
   x-providerName: codat.io
   x-serviceName: commerce
 security:
@@ -50,17 +50,17 @@ tags:
   - description: Retrieve standardized data from linked commerce platforms.
     name: Transactions
 paths:
-  "/companies/{companyId}/connections/{connectionId}/data/commerce-customers":
+  '/companies/{companyId}/connections/{connectionId}/data/commerce-customers':
     get:
       description: List all commerce customers for the given company and data connection
       operationId: list-customers
       parameters:
-        - $ref: "#/components/parameters/page"
-        - $ref: "#/components/parameters/pageSize"
-        - $ref: "#/components/parameters/query"
-        - $ref: "#/components/parameters/orderBy"
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/query'
+        - $ref: '#/components/parameters/orderBy'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
@@ -92,25 +92,25 @@ paths:
                         status: Pending
                     totalResults: 0
               schema:
-                $ref: "#/components/schemas/Customers"
+                $ref: '#/components/schemas/Customers'
           description: OK
       summary: List customers
       tags:
         - Customers
     parameters:
-      - $ref: "#/components/parameters/companyId"
-      - $ref: "#/components/parameters/connectionId"
-  "/companies/{companyId}/connections/{connectionId}/data/commerce-disputes":
+      - $ref: '#/components/parameters/companyId'
+      - $ref: '#/components/parameters/connectionId'
+  '/companies/{companyId}/connections/{connectionId}/data/commerce-disputes':
     get:
       description: List commerce disputes
       operationId: list-disputes
       parameters:
-        - $ref: "#/components/parameters/page"
-        - $ref: "#/components/parameters/pageSize"
-        - $ref: "#/components/parameters/query"
-        - $ref: "#/components/parameters/orderBy"
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/query'
+        - $ref: '#/components/parameters/orderBy'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
@@ -142,15 +142,15 @@ paths:
                         totalAmount: 194.12
                     totalResults: 0
               schema:
-                $ref: "#/components/schemas/Disputes"
+                $ref: '#/components/schemas/Disputes'
           description: OK
       summary: List disputes
       tags:
         - Disputes
     parameters:
-      - $ref: "#/components/parameters/companyId"
-      - $ref: "#/components/parameters/connectionId"
-  "/companies/{companyId}/connections/{connectionId}/data/commerce-info":
+      - $ref: '#/components/parameters/companyId'
+      - $ref: '#/components/parameters/connectionId'
+  '/companies/{companyId}/connections/{connectionId}/data/commerce-info':
     get:
       description: |-
         Retrieve information about the company, as seen in the commerce platform.
@@ -158,19 +158,19 @@ paths:
         This may include information like addresses, tax registration details and social media or website information.
       operationId: get-company-info
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CompanyInfo"
+                $ref: '#/components/schemas/CompanyInfo'
           description: OK
       summary: Get company info
       tags:
         - Company info
     parameters:
-      - $ref: "#/components/parameters/companyId"
-      - $ref: "#/components/parameters/connectionId"
-  "/companies/{companyId}/connections/{connectionId}/data/commerce-locations":
+      - $ref: '#/components/parameters/companyId'
+      - $ref: '#/components/parameters/connectionId'
+  '/companies/{companyId}/connections/{connectionId}/data/commerce-locations':
     get:
       description: |-
         Retrieve a list of locations as seen in the commerce platform.
@@ -178,7 +178,7 @@ paths:
         A `location` is a geographic place at which stocks of products may be held, or from where orders were placed.
       operationId: list-locations
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
@@ -210,131 +210,131 @@ paths:
                         sourceModifiedDate: 2019-08-24T14:15:22Z
                     totalResults: 0
               schema:
-                $ref: "#/components/schemas/LocationsResponse"
+                $ref: '#/components/schemas/LocationsResponse'
           description: OK
       summary: List locations
       tags:
         - Locations
     parameters:
-      - $ref: "#/components/parameters/companyId"
-      - $ref: "#/components/parameters/connectionId"
-  "/companies/{companyId}/connections/{connectionId}/data/commerce-orders":
+      - $ref: '#/components/parameters/companyId'
+      - $ref: '#/components/parameters/connectionId'
+  '/companies/{companyId}/connections/{connectionId}/data/commerce-orders':
     get:
       description: Get a list of orders placed or held on the linked commerce platform
       operationId: list-orders
       parameters:
-        - $ref: "#/components/parameters/page"
-        - $ref: "#/components/parameters/pageSize"
-        - $ref: "#/components/parameters/query"
-        - $ref: "#/components/parameters/orderBy"
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/query'
+        - $ref: '#/components/parameters/orderBy'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Orders"
+                $ref: '#/components/schemas/Orders'
               x-speakeasy-usage-example: true
           description: OK
       summary: List orders
       tags:
         - Orders
     parameters:
-      - $ref: "#/components/parameters/companyId"
-      - $ref: "#/components/parameters/connectionId"
-  "/companies/{companyId}/connections/{connectionId}/data/commerce-paymentMethods":
+      - $ref: '#/components/parameters/companyId'
+      - $ref: '#/components/parameters/connectionId'
+  '/companies/{companyId}/connections/{connectionId}/data/commerce-paymentMethods':
     get:
       description: Retrieve a list of payment methods, such as card, cash or other online payment methods, as held in the linked commerce platform.
       operationId: list-payment-methods
       parameters:
-        - $ref: "#/components/parameters/page"
-        - $ref: "#/components/parameters/pageSize"
-        - $ref: "#/components/parameters/query"
-        - $ref: "#/components/parameters/orderBy"
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/query'
+        - $ref: '#/components/parameters/orderBy'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PaymentMethods"
+                $ref: '#/components/schemas/PaymentMethods'
           description: OK
       summary: List payment methods
       tags:
         - Payments
     parameters:
-      - $ref: "#/components/parameters/companyId"
-      - $ref: "#/components/parameters/connectionId"
-  "/companies/{companyId}/connections/{connectionId}/data/commerce-payments":
+      - $ref: '#/components/parameters/companyId'
+      - $ref: '#/components/parameters/connectionId'
+  '/companies/{companyId}/connections/{connectionId}/data/commerce-payments':
     get:
       description: List commerce payments for the given company & data connection.
       operationId: list-payments
       parameters:
-        - $ref: "#/components/parameters/page"
-        - $ref: "#/components/parameters/pageSize"
-        - $ref: "#/components/parameters/query"
-        - $ref: "#/components/parameters/orderBy"
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/query'
+        - $ref: '#/components/parameters/orderBy'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Payments"
+                $ref: '#/components/schemas/Payments'
           description: OK
       summary: List payments
       tags:
         - Payments
     parameters:
-      - $ref: "#/components/parameters/companyId"
-      - $ref: "#/components/parameters/connectionId"
-  "/companies/{companyId}/connections/{connectionId}/data/commerce-productCategories":
+      - $ref: '#/components/parameters/companyId'
+      - $ref: '#/components/parameters/connectionId'
+  '/companies/{companyId}/connections/{connectionId}/data/commerce-productCategories':
     get:
       description: Product categories are used to classify a group of products together, either by type (eg "Furniture"), or sometimes by tax profile.
       operationId: list-product-categories
       parameters:
-        - $ref: "#/components/parameters/page"
-        - $ref: "#/components/parameters/pageSize"
-        - $ref: "#/components/parameters/query"
-        - $ref: "#/components/parameters/orderBy"
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/query'
+        - $ref: '#/components/parameters/orderBy'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ProductCategories"
+                $ref: '#/components/schemas/ProductCategories'
           description: OK
       summary: List product categories
       tags:
         - Products
     parameters:
-      - $ref: "#/components/parameters/companyId"
-      - $ref: "#/components/parameters/connectionId"
-  "/companies/{companyId}/connections/{connectionId}/data/commerce-products":
+      - $ref: '#/components/parameters/companyId'
+      - $ref: '#/components/parameters/connectionId'
+  '/companies/{companyId}/connections/{connectionId}/data/commerce-products':
     get:
       description: The Products data type provides the company's product inventory, and includes the price and quantity of all products, and product variants, available for sale.
       operationId: list-products
       parameters:
-        - $ref: "#/components/parameters/page"
-        - $ref: "#/components/parameters/pageSize"
-        - $ref: "#/components/parameters/query"
-        - $ref: "#/components/parameters/orderBy"
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/query'
+        - $ref: '#/components/parameters/orderBy'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Products"
+                $ref: '#/components/schemas/Products'
           description: OK
       summary: List products
       tags:
         - Products
     parameters:
-      - $ref: "#/components/parameters/companyId"
-      - $ref: "#/components/parameters/connectionId"
-  "/companies/{companyId}/connections/{connectionId}/data/commerce-taxComponents":
+      - $ref: '#/components/parameters/companyId'
+      - $ref: '#/components/parameters/connectionId'
+  '/companies/{companyId}/connections/{connectionId}/data/commerce-taxComponents':
     get:
       description: This endpoint returns a lits of tax rates from the commerce platform, including tax rate names and values. This supports the mapping of tax rates from the commerce platform to the accounting platform.
       operationId: get-tax-components
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
@@ -354,36 +354,36 @@ paths:
                         rate: 0.15
                         sourceModifiedDate: 2022-04-25T02:45:27
               schema:
-                $ref: "#/components/schemas/TaxComponents"
+                $ref: '#/components/schemas/TaxComponents'
           description: OK
       summary: List tax components
       tags:
         - Tax components
     parameters:
-      - $ref: "#/components/parameters/companyId"
-      - $ref: "#/components/parameters/connectionId"
-  "/companies/{companyId}/connections/{connectionId}/data/commerce-transactions":
+      - $ref: '#/components/parameters/companyId'
+      - $ref: '#/components/parameters/connectionId'
+  '/companies/{companyId}/connections/{connectionId}/data/commerce-transactions':
     get:
       description: Details of all financial transactions recorded in the commerce or point of sale system are added to the Transactions data type. For example, payments, service charges, and fees.
       operationId: list-transactions
       parameters:
-        - $ref: "#/components/parameters/page"
-        - $ref: "#/components/parameters/pageSize"
-        - $ref: "#/components/parameters/query"
-        - $ref: "#/components/parameters/orderBy"
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/query'
+        - $ref: '#/components/parameters/orderBy'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Transactions"
+                $ref: '#/components/schemas/Transactions'
           description: OK
       summary: List transactions
       tags:
         - Transactions
     parameters:
-      - $ref: "#/components/parameters/companyId"
-      - $ref: "#/components/parameters/connectionId"
+      - $ref: '#/components/parameters/companyId'
+      - $ref: '#/components/parameters/connectionId'
 components:
   parameters:
     companyId:
@@ -481,7 +481,7 @@ components:
           description: The fourth line of the address, or region
           type: string
         type:
-          $ref: "#/components/schemas/Address/definitions/addressType"
+          $ref: '#/components/schemas/Address/definitions/addressType'
       title: Address
       type: object
       x-internal: true
@@ -491,15 +491,15 @@ components:
             accountBalances:
               description: The available and current cash balances for the company's accounts
               items:
-                $ref: "#/components/schemas/CompanyInfo/definitions/accountBalance"
+                $ref: '#/components/schemas/CompanyInfo/definitions/accountBalance'
               type: array
             addresses:
               description: Addresses associated with the company
               items:
-                $ref: "#/components/schemas/Address"
+                $ref: '#/components/schemas/Address'
               type: array
             baseCurrency:
-              $ref: "#/components/schemas/Transaction/allOf/1/properties/currency"
+              $ref: '#/components/schemas/Transaction/allOf/1/properties/currency'
             commercePlatformRef:
               description: Identifier or reference for the company in the commerce platform
               type: string
@@ -514,7 +514,7 @@ components:
             phoneNumbers:
               description: Phone numbers associated with the company
               items:
-                $ref: "#/components/schemas/PhoneNumber"
+                $ref: '#/components/schemas/PhoneNumber'
               type: array
             registrationNumber:
               description: The registration number of the company
@@ -552,8 +552,8 @@ components:
                 type: object
               type: array
           type: object
-        - $ref: "#/components/schemas/CreatedDate"
-        - $ref: "#/components/schemas/ModifiedDates"
+        - $ref: '#/components/schemas/CreatedDate'
+        - $ref: '#/components/schemas/ModifiedDates'
       definitions:
         accountBalance:
           properties:
@@ -563,7 +563,7 @@ components:
               type: number
             currency:
               allOf:
-                - $ref: "#/components/schemas/Transaction/allOf/1/properties/currency"
+                - $ref: '#/components/schemas/Transaction/allOf/1/properties/currency'
               description: The currency of the account
             pending:
               description: Funds that are not yet available in the balance
@@ -586,18 +586,18 @@ components:
     CreatedDate:
       properties:
         createdDate:
-          $ref: "#/components/schemas/DateTime"
+          $ref: '#/components/schemas/DateTime'
           description: The date the entity was created.
       type: object
       x-internal: true
     Customer:
       allOf:
-        - $ref: "#/components/schemas/Order/allOf/0"
+        - $ref: '#/components/schemas/Order/allOf/0'
         - properties:
             addresses:
               description: Addresses of the customer
               items:
-                $ref: "#/components/schemas/Address"
+                $ref: '#/components/schemas/Address'
               type: array
             customerName:
               description: Name of the customer
@@ -608,7 +608,7 @@ components:
                 - description: |
                     Default currency of any transactional data for the customer, 
                     for example, orders or payments
-                - $ref: "#/components/schemas/Transaction/allOf/1/properties/currency"
+                - $ref: '#/components/schemas/Transaction/allOf/1/properties/currency'
             emailAddress:
               description: Email address of the customer
               example: fred.smith@myCompany.com
@@ -617,10 +617,10 @@ components:
               description: Any additional information about the customer
               type: string
             phone:
-              $ref: "#/components/schemas/PhoneNumber/properties/number"
+              $ref: '#/components/schemas/PhoneNumber/properties/number'
           type: object
-        - $ref: "#/components/schemas/CreatedDate"
-        - $ref: "#/components/schemas/ModifiedDates"
+        - $ref: '#/components/schemas/CreatedDate'
+        - $ref: '#/components/schemas/ModifiedDates'
       definitions:
         customerRef:
           description: Reference to the customer that placed the order.
@@ -665,7 +665,7 @@ components:
               customerName: Daffy Duck
               defaultCurrency: GBP
               emailAddress: d.duck@warnerbros.com
-              id: "15"
+              id: '15'
               modifiedDate: null
               note: Regular customer
               phone: (877) 492-8687
@@ -682,7 +682,7 @@ components:
               customerName: Tasmanian Devil
               defaultCurrency: GBP
               emailAddress: t.devil@warnerbros.com
-              id: "18"
+              id: '18'
               modifiedDate: null
               note: Handle with care
               phone: +1-202-555-0181
@@ -709,7 +709,7 @@ components:
               id: a99f5e0c-a4db-452f-8d2c-8fd15482b384
               modifiedDate: null
               note: Regular customer
-              phone: ""
+              phone: ''
               sourceModifiedDate: 2020-08-12T14:37:37
       title: Customer
       type: object
@@ -718,10 +718,10 @@ components:
         - properties:
             results:
               items:
-                $ref: "#/components/schemas/Customer"
+                $ref: '#/components/schemas/Customer'
               type: array
           type: object
-        - $ref: "#/components/schemas/PagingInfo"
+        - $ref: '#/components/schemas/PagingInfo'
       x-internal: true
     DateTime:
       description: |-
@@ -749,16 +749,16 @@ components:
       type: string
     Dispute:
       allOf:
-        - $ref: "#/components/schemas/Order/allOf/0"
+        - $ref: '#/components/schemas/Order/allOf/0'
         - properties:
             currency:
-              $ref: "#/components/schemas/Transaction/allOf/1/properties/currency"
+              $ref: '#/components/schemas/Transaction/allOf/1/properties/currency'
               description: Currency of the disputed transaction.
             disputedTransactions:
-              $ref: "#/components/schemas/Transaction/definitions/transactionSourceRef"
+              $ref: '#/components/schemas/Transaction/definitions/transactionSourceRef'
               description: Link to the source event which triggered this transaction.
             dueDate:
-              $ref: "#/components/schemas/DateTime"
+              $ref: '#/components/schemas/DateTime'
               description: Date when the next action in the dispute resolution is due
             reason:
               description: Reason for the dispute
@@ -766,7 +766,7 @@ components:
                 - Unhappy with product
               type: string
             status:
-              $ref: "#/components/schemas/Dispute/definitions/disputeStatus"
+              $ref: '#/components/schemas/Dispute/definitions/disputeStatus'
             totalAmount:
               description: Total transaction amount that is under dispute.
               examples:
@@ -777,8 +777,8 @@ components:
           required:
             - currency
           type: object
-        - $ref: "#/components/schemas/CreatedDate"
-        - $ref: "#/components/schemas/ModifiedDates"
+        - $ref: '#/components/schemas/CreatedDate'
+        - $ref: '#/components/schemas/ModifiedDates'
       definitions:
         disputeStatus:
           description: Current status of the dispute
@@ -826,10 +826,10 @@ components:
         - properties:
             results:
               items:
-                $ref: "#/components/schemas/Dispute"
+                $ref: '#/components/schemas/Dispute'
               type: array
           type: object
-        - $ref: "#/components/schemas/PagingInfo"
+        - $ref: '#/components/schemas/PagingInfo'
       x-internal: true
     HRef:
       properties:
@@ -847,13 +847,13 @@ components:
             href: /companies/{id}/data/{dataType}
       properties:
         current:
-          $ref: "#/components/schemas/HRef"
+          $ref: '#/components/schemas/HRef'
         next:
-          $ref: "#/components/schemas/HRef"
+          $ref: '#/components/schemas/HRef'
         previous:
-          $ref: "#/components/schemas/HRef"
+          $ref: '#/components/schemas/HRef'
         self:
-          $ref: "#/components/schemas/HRef"
+          $ref: '#/components/schemas/HRef'
       required:
         - self
         - current
@@ -861,16 +861,16 @@ components:
       x-internal: true
     Locations:
       allOf:
-        - $ref: "#/components/schemas/Order/allOf/0"
+        - $ref: '#/components/schemas/Order/allOf/0'
         - properties:
             address:
-              $ref: "#/components/schemas/Address"
+              $ref: '#/components/schemas/Address'
               description: Address associated with the location
             name:
               description: Name of this location
               type: string
           type: object
-        - $ref: "#/components/schemas/ModifiedDates"
+        - $ref: '#/components/schemas/ModifiedDates'
       definitions:
         locationRef:
           description: Reference to the geographic location where the order was placed.
@@ -903,9 +903,9 @@ components:
             line1: Warner House
             line2: 98 Theobald's Road
             postalCode: WC1X 8WB
-            region: ""
+            region: ''
             type: Inventory
-          id: "15"
+          id: '15'
           modifiedDate: 2020-08-12T14:37:37
           name: London Warehouse
           sourceModifiedDate: 2020-08-12T14:37:37
@@ -916,23 +916,23 @@ components:
         - properties:
             results:
               items:
-                $ref: "#/components/schemas/Locations"
+                $ref: '#/components/schemas/Locations'
               type: array
           type: object
-        - $ref: "#/components/schemas/PagingInfo"
+        - $ref: '#/components/schemas/PagingInfo'
       x-internal: true
     ModifiedDates:
       allOf:
         - properties:
             modifiedDate:
-              $ref: "#/components/schemas/DateTime"
+              $ref: '#/components/schemas/DateTime'
               description: The date on which this record was last modified in Codat.
           title: ModifiedDate
           type: object
           x-internal: true
         - properties:
             sourceModifiedDate:
-              $ref: "#/components/schemas/DateTime"
+              $ref: '#/components/schemas/DateTime'
               description: The date on which this record was last modified in the originating system
           title: Source Modified Date
           type: object
@@ -958,7 +958,7 @@ components:
             id: 516bf0ecc4907
         - properties:
             closedDate:
-              $ref: "#/components/schemas/DateTime"
+              $ref: '#/components/schemas/DateTime'
               description: Date on which order was closed after the product was shipped, paid for, and any refund period had elapsed.
             country:
               description: |-
@@ -975,26 +975,26 @@ components:
               type: string
             currency:
               allOf:
-                - $ref: "#/components/schemas/Transaction/allOf/1/properties/currency"
+                - $ref: '#/components/schemas/Transaction/allOf/1/properties/currency'
                 - description: Currency in which the order was placed.
             customerRef:
-              $ref: "#/components/schemas/Customer/definitions/customerRef"
+              $ref: '#/components/schemas/Customer/definitions/customerRef'
             locationRef:
-              $ref: "#/components/schemas/Locations/definitions/locationRef"
+              $ref: '#/components/schemas/Locations/definitions/locationRef'
             orderLineItems:
               items:
-                $ref: "#/components/schemas/Order/definitions/orderLineItem"
+                $ref: '#/components/schemas/Order/definitions/orderLineItem'
               type: array
             orderNumber:
               description: Friendly reference for the order in the commerce or point of sale platform.
               type: string
             payments:
               items:
-                $ref: "#/components/schemas/Payment/definitions/paymentRef"
+                $ref: '#/components/schemas/Payment/definitions/paymentRef'
               type: array
             serviceCharges:
               items:
-                $ref: "#/components/schemas/Order/definitions/serviceCharge"
+                $ref: '#/components/schemas/Order/definitions/serviceCharge'
               type: array
             totalAmount:
               description: Total amount of the order, including tax, net of any discounts and refunds.
@@ -1012,8 +1012,8 @@ components:
               description: Total amount of tax applied to the order.
               type: number
           type: object
-        - $ref: "#/components/schemas/CreatedDate"
-        - $ref: "#/components/schemas/ModifiedDates"
+        - $ref: '#/components/schemas/CreatedDate'
+        - $ref: '#/components/schemas/ModifiedDates'
       definitions:
         orderDiscountAllocation:
           properties:
@@ -1029,16 +1029,16 @@ components:
           x-internal: true
         orderLineItem:
           allOf:
-            - $ref: "#/components/schemas/Order/allOf/0"
+            - $ref: '#/components/schemas/Order/allOf/0'
             - properties:
                 discountAllocations:
                   items:
-                    $ref: "#/components/schemas/Order/definitions/orderDiscountAllocation"
+                    $ref: '#/components/schemas/Order/definitions/orderDiscountAllocation'
                   type: array
                 productRef:
-                  $ref: "#/components/schemas/Product/definitions/productRef"
+                  $ref: '#/components/schemas/Product/definitions/productRef'
                 productVariantRef:
-                  $ref: "#/components/schemas/Product/definitions/productVariantRef"
+                  $ref: '#/components/schemas/Product/definitions/productVariantRef'
                 quantity:
                   description: |
                     Number of units of the product sold.
@@ -1049,12 +1049,12 @@ components:
                   examples:
                     - 0
                     - 12.5
-                    - "45.00"
+                    - '45.00'
                   type: number
                 taxes:
                   description: Taxes breakdown as applied to order lines.
                   items:
-                    $ref: "#/components/schemas/TaxComponent/definitions/taxComponentAllocation"
+                    $ref: '#/components/schemas/TaxComponent/definitions/taxComponentAllocation'
                   type: array
                 totalAmount:
                   description: Total price of the line item, including discounts, tax and minus any refunds.
@@ -1096,7 +1096,7 @@ components:
             taxes:
               description: Taxes breakdown as applied to service charges.
               items:
-                $ref: "#/components/schemas/TaxComponent/definitions/taxComponentAllocation"
+                $ref: '#/components/schemas/TaxComponent/definitions/taxComponentAllocation'
               type: array
             totalAmount:
               description: Total service charge, including taxes.
@@ -1106,7 +1106,7 @@ components:
                 - 45
               type: number
             type:
-              $ref: "#/components/schemas/Order/definitions/serviceChargeType"
+              $ref: '#/components/schemas/Order/definitions/serviceChargeType'
           type: object
           x-internal: null
         serviceChargeType:
@@ -1146,18 +1146,18 @@ components:
               quantity: 1
               taxPercentage: 20
               taxes:
-                - taxAmount: ""
+                - taxAmount: ''
                   taxComponentRef:
-                    id: "72"
+                    id: '72'
                     name: Sales Tax
-                - taxAmount: ""
+                - taxAmount: ''
                   taxComponentRef:
-                    id: "72"
+                    id: '72'
                     name: City Tax
               totalAmount: 12
               totalTaxAmount: 2
               unitPrice: 10
-          orderNumber: "99123956"
+          orderNumber: '99123956'
           payments:
             - amount: 12
               createdDate: 2021-03-28T03:00:14
@@ -1173,9 +1173,9 @@ components:
               taxAmount: 0.2
               taxPercentage: 20
               taxes:
-                - taxAmount: ""
+                - taxAmount: ''
                   taxComponentRef:
-                    id: "72"
+                    id: '72'
                     name: Service Tax
               totalAmount: 1.2
               type: Generic
@@ -1192,10 +1192,10 @@ components:
         - properties:
             results:
               items:
-                $ref: "#/components/schemas/Order"
+                $ref: '#/components/schemas/Order'
               type: array
           type: object
-        - $ref: "#/components/schemas/PagingInfo"
+        - $ref: '#/components/schemas/PagingInfo'
       x-internal: true
     PagingInfo:
       examples:
@@ -1209,7 +1209,7 @@ components:
             totalResults: 1
       properties:
         _links:
-          $ref: "#/components/schemas/Links"
+          $ref: '#/components/schemas/Links'
         pageNumber:
           type: integer
         pageSize:
@@ -1225,7 +1225,7 @@ components:
       x-internal: true
     Payment:
       allOf:
-        - $ref: "#/components/schemas/Order/allOf/0"
+        - $ref: '#/components/schemas/Order/allOf/0'
         - properties:
             amount:
               description: Payment Amount (including gratuity)
@@ -1235,13 +1235,13 @@ components:
                 - 0
               type: number
             currency:
-              $ref: "#/components/schemas/Transaction/allOf/1/properties/currency"
+              $ref: '#/components/schemas/Transaction/allOf/1/properties/currency'
               description: Currency in which the payment was made
             dueDate:
-              $ref: "#/components/schemas/DateTime"
+              $ref: '#/components/schemas/DateTime'
               description: Date by which payment must be made
             paymentMethodRef:
-              $ref: "#/components/schemas/PaymentMethod/definitions/paymentMethodRef"
+              $ref: '#/components/schemas/PaymentMethod/definitions/paymentMethodRef'
             paymentProvider:
               description: Service provider of the payment, if applicable.
               examples:
@@ -1250,14 +1250,14 @@ components:
                 - SagePay
               type: string
             status:
-              $ref: "#/components/schemas/Payment/definitions/paymentStatus"
+              $ref: '#/components/schemas/Payment/definitions/paymentStatus'
           type: object
-        - $ref: "#/components/schemas/CreatedDate"
-        - $ref: "#/components/schemas/ModifiedDates"
+        - $ref: '#/components/schemas/CreatedDate'
+        - $ref: '#/components/schemas/ModifiedDates'
       definitions:
         paymentRef:
           allOf:
-            - $ref: "#/components/schemas/Order/allOf/0"
+            - $ref: '#/components/schemas/Order/allOf/0'
             - properties:
                 amount:
                   description: Payment Amount (including gratuity).
@@ -1268,10 +1268,10 @@ components:
                   nullable: true
                   type: number
                 currency:
-                  $ref: "#/components/schemas/Transaction/allOf/1/properties/currency"
+                  $ref: '#/components/schemas/Transaction/allOf/1/properties/currency'
                   description: Currency in which the payment was made.
                 dueDate:
-                  $ref: "#/components/schemas/DateTime"
+                  $ref: '#/components/schemas/DateTime'
                   description: Date by which payment must be made
                 paymentProvider:
                   description: Service provider of the payment, if applicable.
@@ -1281,12 +1281,12 @@ components:
                     - SagePay
                   type: string
                 status:
-                  $ref: "#/components/schemas/Payment/definitions/paymentStatus"
+                  $ref: '#/components/schemas/Payment/definitions/paymentStatus'
                 type:
-                  $ref: "#/components/schemas/Payment/definitions/paymentType"
+                  $ref: '#/components/schemas/Payment/definitions/paymentType'
               type: object
-            - $ref: "#/components/schemas/CreatedDate"
-            - $ref: "#/components/schemas/ModifiedDates"
+            - $ref: '#/components/schemas/CreatedDate'
+            - $ref: '#/components/schemas/ModifiedDates'
           x-internal: true
         paymentStatus:
           description: Status of the payment
@@ -1330,16 +1330,16 @@ components:
       type: object
     PaymentMethod:
       allOf:
-        - $ref: "#/components/schemas/Order/allOf/0"
+        - $ref: '#/components/schemas/Order/allOf/0'
         - properties:
             name:
               description: The name of the PaymentMethod
               example: Alipay
               type: string
             status:
-              $ref: "#/components/schemas/PaymentMethod/definitions/paymentMethodStatus"
+              $ref: '#/components/schemas/PaymentMethod/definitions/paymentMethodStatus'
           type: object
-        - $ref: "#/components/schemas/ModifiedDates"
+        - $ref: '#/components/schemas/ModifiedDates'
       definitions:
         paymentMethodRef:
           description: The payment method the payment is linked to in the commerce platform.
@@ -1376,20 +1376,20 @@ components:
         - properties:
             results:
               items:
-                $ref: "#/components/schemas/PaymentMethod"
+                $ref: '#/components/schemas/PaymentMethod'
               type: array
           type: object
-        - $ref: "#/components/schemas/PagingInfo"
+        - $ref: '#/components/schemas/PagingInfo'
       x-internal: true
     Payments:
       allOf:
         - properties:
             results:
               items:
-                $ref: "#/components/schemas/Payment"
+                $ref: '#/components/schemas/Payment'
               type: array
           type: object
-        - $ref: "#/components/schemas/PagingInfo"
+        - $ref: '#/components/schemas/PagingInfo'
       x-internal: true
     PhoneNumber:
       definitions:
@@ -1412,7 +1412,7 @@ components:
           nullable: true
           type: string
         type:
-          $ref: "#/components/schemas/PhoneNumber/definitions/phoneNumberType"
+          $ref: '#/components/schemas/PhoneNumber/definitions/phoneNumberType'
       required:
         - number
         - type
@@ -1421,7 +1421,7 @@ components:
       x-internal: true
     Product:
       allOf:
-        - $ref: "#/components/schemas/Order/allOf/0"
+        - $ref: '#/components/schemas/Order/allOf/0'
         - properties:
             categorization:
               description: Retail category that the product is assigned to
@@ -1451,7 +1451,7 @@ components:
               type: string
             variants:
               items:
-                $ref: "#/components/schemas/Product/definitions/productVariant"
+                $ref: '#/components/schemas/Product/definitions/productVariant'
               type: array
           type: object
       definitions:
@@ -1459,7 +1459,7 @@ components:
           properties:
             locations:
               items:
-                $ref: "#/components/schemas/Product/definitions/productInventoryLocation"
+                $ref: '#/components/schemas/Product/definitions/productInventoryLocation'
               type: array
             totalQuantity:
               nullable: true
@@ -1470,7 +1470,7 @@ components:
         productInventoryLocation:
           properties:
             locationRef:
-              $ref: "#/components/schemas/Locations/definitions/locationRef"
+              $ref: '#/components/schemas/Locations/definitions/locationRef'
             quantity:
               type: number
           title: Product Inventory Location
@@ -1479,7 +1479,7 @@ components:
         productPrice:
           properties:
             currency:
-              $ref: "#/components/schemas/Transaction/allOf/1/properties/currency"
+              $ref: '#/components/schemas/Transaction/allOf/1/properties/currency'
               nullable: true
             unitPrice:
               type: number
@@ -1506,19 +1506,19 @@ components:
           type: object
         productVariant:
           allOf:
-            - $ref: "#/components/schemas/Order/allOf/0"
+            - $ref: '#/components/schemas/Order/allOf/0'
               description: Identifier of the product variant, unique to the company.
             - properties:
                 barcode:
                   description: Unique product number of the variant. This might be a barcode, UPC, ISBN, etc.
                   examples:
-                    - "564158468416486458646886484"
+                    - '564158468416486458646886484'
                     - CSE370
                   type: string
                 inventory:
                   description: Information about the total inventory as well as the locations inventory is in.
                   items:
-                    $ref: "#/components/schemas/Product/definitions/productInventory"
+                    $ref: '#/components/schemas/Product/definitions/productInventory'
                   type: array
                 isTaxEnabled:
                   description: Whether sales taxes are enabled for this product variant.
@@ -1533,7 +1533,7 @@ components:
                 prices:
                   description: Prices for the product variants in different currencies.
                   items:
-                    $ref: "#/components/schemas/Product/definitions/productPrice"
+                    $ref: '#/components/schemas/Product/definitions/productPrice'
                   type: array
                 shippingRequired:
                   description: Indicates whether or not the product requires physical delivery.
@@ -1547,7 +1547,7 @@ components:
                     - A725BA2
                   type: string
                 status:
-                  $ref: "#/components/schemas/Product/definitions/productVariantStatus"
+                  $ref: '#/components/schemas/Product/definitions/productVariantStatus'
                 unitOfMeasure:
                   description: Unit of measure for the variant, such as `kg` or `meters`.
                   examples:
@@ -1562,8 +1562,8 @@ components:
                     - 0
                     - 20
                   type: number
-            - $ref: "#/components/schemas/CreatedDate"
-            - $ref: "#/components/schemas/ModifiedDates"
+            - $ref: '#/components/schemas/CreatedDate'
+            - $ref: '#/components/schemas/ModifiedDates'
           description: |
             Represents a variation of a product available for sale, for example an item of clothing that may be available for sale in multiple sizes and colors.
           title: Product Variant
@@ -1605,10 +1605,10 @@ components:
         - properties:
             results:
               items:
-                $ref: "#/components/schemas/ProductCategory"
+                $ref: '#/components/schemas/ProductCategory'
               type: array
           type: object
-        - $ref: "#/components/schemas/PagingInfo"
+        - $ref: '#/components/schemas/PagingInfo'
       x-internal: true
     ProductCategory:
       allOf:
@@ -1616,7 +1616,7 @@ components:
             ancestorRefs:
               description: A collection of parent product categories implicitly ordered with the immediate parent last in the list.
               items:
-                $ref: "#/components/schemas/RecordRef"
+                $ref: '#/components/schemas/RecordRef'
               type: array
             hasChildren:
               description: A boolean indicating whether there are other product categories beneath this one in the hierarchy.
@@ -1630,7 +1630,7 @@ components:
               example: Entertainment
               type: string
           type: object
-        - $ref: "#/components/schemas/ModifiedDates"
+        - $ref: '#/components/schemas/ModifiedDates'
       description: |-
         Product categories are used to classify a group of products together, either by type (e.g. "Furniture"), or sometimes by tax profile.
 
@@ -1639,25 +1639,25 @@ components:
         - productCategories:
             - ancestorRefs: []
               hasChildren: true
-              id: "100"
+              id: '100'
               modifiedDate: 2022-01-01T12:00:00Z
               name: Entertainment
               sourceModifiedDate: 2021-10-01T12:53:21Z
             - ancestorRefs:
-                - id: "100"
+                - id: '100'
                   name: Entertainment
               hasChildren: true
-              id: "101"
+              id: '101'
               modifiedDate: 2022-01-01T12:00:00Z
               name: Cinema
               sourceModifiedDate: 2021-10-01T12:55:02Z
             - ancestorRefs:
-                - id: "100"
+                - id: '100'
                   name: Entertainment
-                - id: "101"
+                - id: '101'
                   name: Cinema
               hasChildren: false
-              id: "102"
+              id: '102'
               modifiedDate: 2022-01-01T12:00:00Z
               name: Movie
               sourceModifiedDate: 2021-12-25T12:00:00Z
@@ -1668,13 +1668,13 @@ components:
         - properties:
             results:
               items:
-                $ref: "#/components/schemas/Product"
+                $ref: '#/components/schemas/Product'
               type: array
           type: object
-        - $ref: "#/components/schemas/PagingInfo"
+        - $ref: '#/components/schemas/PagingInfo'
       x-internal: true
     RecordRef:
-      description: ""
+      description: ''
       properties:
         id:
           description: The unique identitifer of the record being referenced
@@ -1695,7 +1695,7 @@ components:
       x-internal: true
     TaxComponent:
       allOf:
-        - $ref: "#/components/schemas/Order/allOf/0"
+        - $ref: '#/components/schemas/Order/allOf/0'
         - properties:
             isCompound:
               description: The Boolean flag to indicate when a Tax Rate Component compounds on a sale.
@@ -1715,7 +1715,7 @@ components:
               format: float
               type: number
           type: object
-        - $ref: "#/components/schemas/ModifiedDates"
+        - $ref: '#/components/schemas/ModifiedDates'
           required:
             - name
       definitions:
@@ -1726,7 +1726,7 @@ components:
               nullable: true
               type: number
             taxComponentRef:
-              $ref: "#/components/schemas/TaxComponent/definitions/taxComponentRef"
+              $ref: '#/components/schemas/TaxComponent/definitions/taxComponentRef'
           title: Tax Component Allocation
           type: object
         taxComponentRef:
@@ -1764,13 +1764,13 @@ components:
       properties:
         taxComponents:
           items:
-            $ref: "#/components/schemas/TaxComponent"
+            $ref: '#/components/schemas/TaxComponent'
           type: array
       type: object
       x-internal: true
     Transaction:
       allOf:
-        - $ref: "#/components/schemas/Order/allOf/0"
+        - $ref: '#/components/schemas/Order/allOf/0'
         - properties:
             currency:
               description: |-
@@ -1804,17 +1804,17 @@ components:
               type: number
             transactionSourceRef:
               allOf:
-                - $ref: "#/components/schemas/Transaction/definitions/transactionSourceRef"
+                - $ref: '#/components/schemas/Transaction/definitions/transactionSourceRef'
               description: Link to the source event which triggered this transaction
             type:
-              $ref: "#/components/schemas/Transaction/definitions/transactionType"
+              $ref: '#/components/schemas/Transaction/definitions/transactionType'
           type: object
         - allOf:
             - allOf:
-                - $ref: "#/components/schemas/CreatedDate"
+                - $ref: '#/components/schemas/CreatedDate'
                 - properties:
                     sourceCreatedDate:
-                      $ref: "#/components/schemas/DateTime"
+                      $ref: '#/components/schemas/DateTime'
                       description: The date on which this record was created in the originating system
                   type: object
                   x-stoplight:
@@ -1822,16 +1822,16 @@ components:
               type: object
               x-stoplight:
                 id: c590b4405180f
-            - $ref: "#/components/schemas/ModifiedDates"
+            - $ref: '#/components/schemas/ModifiedDates'
           x-stoplight:
             id: 9e815c1766554
       definitions:
         transactionSourceRef:
           allOf:
-            - $ref: "#/components/schemas/RecordRef"
+            - $ref: '#/components/schemas/RecordRef'
             - properties:
                 type:
-                  $ref: "#/components/schemas/Transaction/definitions/transactionSourceType"
+                  $ref: '#/components/schemas/Transaction/definitions/transactionSourceType'
               type: object
           title: Transaction Source Reference
           x-internal: true
@@ -1854,7 +1854,7 @@ components:
             - `PaymentFeeRefund` — Payment provider's fee that has been refunded to the seller.  
             - `Payout` — Transfer of funds from the seller's merchant account to their bank account.  
             - `Refund` — Refunds to a customer's credit or debit card.  
-            - `Transfer` — Secure transfer of funds to the seller's bank account.  
+            - `Transfer` — Secure transfer of funds to the seller's bank account.
           enum:
             - Payment
             - Refund
@@ -1885,10 +1885,10 @@ components:
         - properties:
             results:
               items:
-                $ref: "#/components/schemas/Transaction"
+                $ref: '#/components/schemas/Transaction'
               type: array
           type: object
-        - $ref: "#/components/schemas/PagingInfo"
+        - $ref: '#/components/schemas/PagingInfo'
       x-internal: true
   securitySchemes:
     auth_header:

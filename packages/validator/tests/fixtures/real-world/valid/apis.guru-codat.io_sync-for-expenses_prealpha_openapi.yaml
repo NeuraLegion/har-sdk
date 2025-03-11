@@ -23,7 +23,7 @@ info:
   x-origin:
     - format: openapi
       url: https://raw.githubusercontent.com/codatio/oas/main/json/Codat-Expenses.json
-      version: "3.1"
+      version: '3.1'
   x-providerName: codat.io
   x-serviceName: sync-for-expenses
 security:
@@ -44,69 +44,69 @@ tags:
   - description: Retrieve the status of transactions within a sync.
     name: Transaction status
 paths:
-  "/companies/{companyId}/sync/expenses/config":
+  '/companies/{companyId}/sync/expenses/config':
     get:
       description: Gets a companies expense sync configuration
       operationId: get-company-configuration
       parameters:
-        - $ref: "#/paths/~1companies~1%7BcompanyId%7D~1sync~1expenses~1syncs/parameters/0"
+        - $ref: '#/paths/~1companies~1%7BcompanyId%7D~1sync~1expenses~1syncs/parameters/0'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CompanyConfiguration"
+                $ref: '#/components/schemas/CompanyConfiguration'
           description: Success
       summary: Get company configuration
       tags:
         - Configuration
     parameters:
-      - $ref: "#/paths/~1companies~1%7BcompanyId%7D~1sync~1expenses~1syncs/parameters/0"
+      - $ref: '#/paths/~1companies~1%7BcompanyId%7D~1sync~1expenses~1syncs/parameters/0'
     post:
       description: Sets a companies expense sync configuration
       operationId: save-company-configuration
       parameters:
-        - $ref: "#/paths/~1companies~1%7BcompanyId%7D~1sync~1expenses~1syncs/parameters/0"
+        - $ref: '#/paths/~1companies~1%7BcompanyId%7D~1sync~1expenses~1syncs/parameters/0'
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CompanyConfiguration"
+              $ref: '#/components/schemas/CompanyConfiguration'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CompanyConfiguration"
+                $ref: '#/components/schemas/CompanyConfiguration'
           description: Success
-        "400":
+        '400':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CodatErrorMessage"
+                $ref: '#/components/schemas/CodatErrorMessage'
           description: Bad Request
       summary: Set company configuration
       tags:
         - Configuration
-  "/companies/{companyId}/sync/expenses/connections/partnerExpense":
+  '/companies/{companyId}/sync/expenses/connections/partnerExpense':
     post:
       description: Creates a Partner Expense data connection
       operationId: create-partner-expense-connection
       parameters:
-        - $ref: "#/paths/~1companies~1%7BcompanyId%7D~1sync~1expenses~1syncs/parameters/0"
+        - $ref: '#/paths/~1companies~1%7BcompanyId%7D~1sync~1expenses~1syncs/parameters/0'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/DataConnection"
+                $ref: '#/components/schemas/DataConnection'
           description: Success
       summary: Create Partner Expense connection
       tags:
         - Connections
-  "/companies/{companyId}/sync/expenses/data/expense-transactions":
+  '/companies/{companyId}/sync/expenses/data/expense-transactions':
     parameters:
-      - $ref: "#/paths/~1companies~1%7BcompanyId%7D~1sync~1expenses~1syncs/parameters/0"
+      - $ref: '#/paths/~1companies~1%7BcompanyId%7D~1sync~1expenses~1syncs/parameters/0'
     post:
       description: Create an expense transaction
       operationId: create-expense-dataset
@@ -131,7 +131,7 @@ paths:
                           trackingRefs:
                             - id: dde5b35f-5d33-40bd-a34f-ee529f4c785c
                       merchantName: Amazon UK
-                      notes: "APPLE.COM/BILL - 09001077498 - Card Ending: 4590"
+                      notes: 'APPLE.COM/BILL - 09001077498 - Card Ending: 4590'
                       type: Payment
               Refund:
                 value:
@@ -141,7 +141,7 @@ paths:
                       issueDate: 2023-02-17T00:00:00+00:00
                       lines:
                         - accountRef:
-                            id: "42"
+                            id: '42'
                           netAmount: 110.42
                           taxAmount: 14.43
                           taxRateRef:
@@ -149,7 +149,7 @@ paths:
                           trackingRefs:
                             - id: DEPARTMENT_6
                       merchantName: Amazon UK
-                      notes: "APPLE.COM/BILL - 09001077498 - Card Ending: 4590"
+                      notes: 'APPLE.COM/BILL - 09001077498 - Card Ending: 4590'
                       type: Refund
               Transfer:
                 value:
@@ -165,10 +165,10 @@ paths:
                       notes: Credit Card Payment
                       type: TransferIn
             schema:
-              $ref: "#/components/schemas/CreateExpenseRequest"
-        description: ""
+              $ref: '#/components/schemas/CreateExpenseRequest'
+        description: ''
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
@@ -176,31 +176,31 @@ paths:
                   value:
                     datasetId: cd937d46-8e41-43a9-9477-a79158ffd98a
               schema:
-                $ref: "#/components/schemas/CreateExpenseResponse"
+                $ref: '#/components/schemas/CreateExpenseResponse'
               x-speakeasy-usage-example: true
           description: OK
       summary: Create expense-transactions
       tags:
         - Expenses
-  "/companies/{companyId}/sync/expenses/mappingOptions":
+  '/companies/{companyId}/sync/expenses/mappingOptions':
     get:
       description: Gets the expense mapping options for a companies accounting software
       operationId: get-mapping-options
       parameters:
-        - $ref: "#/paths/~1companies~1%7BcompanyId%7D~1sync~1expenses~1syncs/parameters/0"
+        - $ref: '#/paths/~1companies~1%7BcompanyId%7D~1sync~1expenses~1syncs/parameters/0'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/MappingOptions"
+                $ref: '#/components/schemas/MappingOptions'
           description: Success
       summary: Mapping options
       tags:
         - Mapping options
     parameters:
-      - $ref: "#/paths/~1companies~1%7BcompanyId%7D~1sync~1expenses~1syncs/parameters/0"
-  "/companies/{companyId}/sync/expenses/syncs":
+      - $ref: '#/paths/~1companies~1%7BcompanyId%7D~1sync~1expenses~1syncs/parameters/0'
+  '/companies/{companyId}/sync/expenses/syncs':
     parameters:
       - in: path
         name: companyId
@@ -214,123 +214,123 @@ paths:
       description: Initiate sync of pending transactions.
       operationId: intiate-sync
       parameters:
-        - $ref: "#/paths/~1companies~1%7BcompanyId%7D~1sync~1expenses~1syncs/parameters/0"
+        - $ref: '#/paths/~1companies~1%7BcompanyId%7D~1sync~1expenses~1syncs/parameters/0'
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/PostSync"
+              $ref: '#/components/schemas/PostSync'
       responses:
-        "202":
+        '202':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SyncInitiated"
+                $ref: '#/components/schemas/SyncInitiated'
           description: Returns the newly created SyncId
-        "400":
+        '400':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CodatErrorMessage"
+                $ref: '#/components/schemas/CodatErrorMessage'
           description: If model is incorrect
-        "404":
+        '404':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CodatErrorMessage"
+                $ref: '#/components/schemas/CodatErrorMessage'
           description: If company not found
-        "422":
+        '422':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CodatErrorMessage"
+                $ref: '#/components/schemas/CodatErrorMessage'
           description: If the specified company does not have a valid set of DataConnections setup
       summary: Initiate sync
       tags:
         - Sync
-  "/companies/{companyId}/sync/expenses/syncs/lastSuccessful/status":
+  '/companies/{companyId}/sync/expenses/syncs/lastSuccessful/status':
     get:
       description: Gets the status of the last successfull sync
       operationId: get-last-successful-sync
       parameters:
-        - $ref: "#/paths/~1companies~1%7BcompanyId%7D~1sync~1expenses~1syncs/parameters/0"
+        - $ref: '#/paths/~1companies~1%7BcompanyId%7D~1sync~1expenses~1syncs/parameters/0'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CompanySyncStatus"
+                $ref: '#/components/schemas/CompanySyncStatus'
           description: Success
       summary: Last successful sync
       tags:
         - Sync status
     parameters:
-      - $ref: "#/paths/~1companies~1%7BcompanyId%7D~1sync~1expenses~1syncs/parameters/0"
-  "/companies/{companyId}/sync/expenses/syncs/latest/status":
+      - $ref: '#/paths/~1companies~1%7BcompanyId%7D~1sync~1expenses~1syncs/parameters/0'
+  '/companies/{companyId}/sync/expenses/syncs/latest/status':
     get:
       description: Gets the latest sync status
       operationId: get-latest-sync
       parameters:
-        - $ref: "#/paths/~1companies~1%7BcompanyId%7D~1sync~1expenses~1syncs/parameters/0"
+        - $ref: '#/paths/~1companies~1%7BcompanyId%7D~1sync~1expenses~1syncs/parameters/0'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CompanySyncStatus"
+                $ref: '#/components/schemas/CompanySyncStatus'
           description: Success
       summary: Latest sync status
       tags:
         - Sync status
     parameters:
-      - $ref: "#/paths/~1companies~1%7BcompanyId%7D~1sync~1expenses~1syncs/parameters/0"
-  "/companies/{companyId}/sync/expenses/syncs/list/status":
+      - $ref: '#/paths/~1companies~1%7BcompanyId%7D~1sync~1expenses~1syncs/parameters/0'
+  '/companies/{companyId}/sync/expenses/syncs/list/status':
     get:
       description: Gets a list of sync statuses
       operationId: list-syncs
       parameters:
-        - $ref: "#/paths/~1companies~1%7BcompanyId%7D~1sync~1expenses~1syncs/parameters/0"
+        - $ref: '#/paths/~1companies~1%7BcompanyId%7D~1sync~1expenses~1syncs/parameters/0'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
                 items:
-                  $ref: "#/components/schemas/CompanySyncStatus"
+                  $ref: '#/components/schemas/CompanySyncStatus'
                 type: array
           description: Success
       summary: List sync statuses
       tags:
         - Sync status
     parameters:
-      - $ref: "#/paths/~1companies~1%7BcompanyId%7D~1sync~1expenses~1syncs/parameters/0"
-  "/companies/{companyId}/sync/expenses/syncs/{syncId}/status":
+      - $ref: '#/paths/~1companies~1%7BcompanyId%7D~1sync~1expenses~1syncs/parameters/0'
+  '/companies/{companyId}/sync/expenses/syncs/{syncId}/status':
     get:
       description: Get the sync status for a specified sync
       operationId: get-sync-by-id
       parameters:
-        - $ref: "#/paths/~1companies~1%7BcompanyId%7D~1sync~1expenses~1syncs/parameters/0"
-        - $ref: "#/components/parameters/syncId"
+        - $ref: '#/paths/~1companies~1%7BcompanyId%7D~1sync~1expenses~1syncs/parameters/0'
+        - $ref: '#/components/parameters/syncId'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CompanySyncStatus"
+                $ref: '#/components/schemas/CompanySyncStatus'
           description: Success
       summary: Get Sync status
       tags:
         - Sync status
     parameters:
-      - $ref: "#/paths/~1companies~1%7BcompanyId%7D~1sync~1expenses~1syncs/parameters/0"
-      - $ref: "#/components/parameters/syncId"
-  "/companies/{companyId}/sync/expenses/syncs/{syncId}/transactions":
+      - $ref: '#/paths/~1companies~1%7BcompanyId%7D~1sync~1expenses~1syncs/parameters/0'
+      - $ref: '#/components/parameters/syncId'
+  '/companies/{companyId}/sync/expenses/syncs/{syncId}/transactions':
     get:
       description: Get's the transactions and status for a sync
       operationId: list-sync-transactions
       parameters:
-        - $ref: "#/paths/~1companies~1%7BcompanyId%7D~1sync~1expenses~1syncs/parameters/0"
-        - $ref: "#/components/parameters/syncId"
+        - $ref: '#/paths/~1companies~1%7BcompanyId%7D~1sync~1expenses~1syncs/parameters/0'
+        - $ref: '#/components/parameters/syncId'
         - description: Page number. [Read more](https://docs.codat.io/using-the-api/paging).
           in: query
           name: page
@@ -356,47 +356,47 @@ paths:
           x-stoplight:
             id: s2ika6rltk5y6
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/TransactionMetadataList"
+                $ref: '#/components/schemas/TransactionMetadataList'
           description: Success
       summary: Get Sync transactions
       tags:
         - Transaction status
     parameters:
-      - $ref: "#/paths/~1companies~1%7BcompanyId%7D~1sync~1expenses~1syncs/parameters/0"
-      - $ref: "#/components/parameters/syncId"
-  "/companies/{companyId}/sync/expenses/syncs/{syncId}/transactions/{transactionId}":
+      - $ref: '#/paths/~1companies~1%7BcompanyId%7D~1sync~1expenses~1syncs/parameters/0'
+      - $ref: '#/components/parameters/syncId'
+  '/companies/{companyId}/sync/expenses/syncs/{syncId}/transactions/{transactionId}':
     get:
       description: Gets the status of a transaction for a sync
       operationId: get-sync-transaction
       parameters:
-        - $ref: "#/paths/~1companies~1%7BcompanyId%7D~1sync~1expenses~1syncs/parameters/0"
-        - $ref: "#/components/parameters/syncId"
-        - $ref: "#/components/parameters/transactionId"
+        - $ref: '#/paths/~1companies~1%7BcompanyId%7D~1sync~1expenses~1syncs/parameters/0'
+        - $ref: '#/components/parameters/syncId'
+        - $ref: '#/components/parameters/transactionId'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
                 items:
-                  $ref: "#/components/schemas/TransactionMetadata"
+                  $ref: '#/components/schemas/TransactionMetadata'
                 type: array
           description: Success
       summary: Get Sync Transaction
       tags:
         - Transaction status
     parameters:
-      - $ref: "#/paths/~1companies~1%7BcompanyId%7D~1sync~1expenses~1syncs/parameters/0"
-      - $ref: "#/components/parameters/syncId"
-      - $ref: "#/components/parameters/transactionId"
-  "/companies/{companyId}/sync/expenses/syncs/{syncId}/transactions/{transactionId}/attachments":
+      - $ref: '#/paths/~1companies~1%7BcompanyId%7D~1sync~1expenses~1syncs/parameters/0'
+      - $ref: '#/components/parameters/syncId'
+      - $ref: '#/components/parameters/transactionId'
+  '/companies/{companyId}/sync/expenses/syncs/{syncId}/transactions/{transactionId}/attachments':
     parameters:
-      - $ref: "#/paths/~1companies~1%7BcompanyId%7D~1sync~1expenses~1syncs/parameters/0"
-      - $ref: "#/components/parameters/transactionId"
-      - $ref: "#/components/parameters/syncId"
+      - $ref: '#/paths/~1companies~1%7BcompanyId%7D~1sync~1expenses~1syncs/parameters/0'
+      - $ref: '#/components/parameters/transactionId'
+      - $ref: '#/components/parameters/syncId'
     post:
       description: Creates an attachment in the accounting software against the given transactionId
       operationId: upload-attachment
@@ -407,11 +407,11 @@ paths:
               format: binary
               type: string
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Attachment"
+                $ref: '#/components/schemas/Attachment'
           description: OK
       summary: Upload attachment
       tags:
@@ -458,7 +458,7 @@ components:
           type: string
         id:
           description: Unique identifier of account.
-          example: "6"
+          example: '6'
           nullable: true
           type: string
         name:
@@ -514,13 +514,13 @@ components:
       x-examples:
         Attachment Example:
           companyId: bf1e0242-5b7a-418b-a307-9e09dbf9f39a
-          id: "1400000000122699154"
+          id: '1400000000122699154'
           transactionId: f8f00edd-ddb0-4ca5-b36b-8f932e6b5160
     BankAccount:
       properties:
         id:
           description: The id of the account from which purchases are made
-          example: "32"
+          example: '32'
           type: string
       type: object
       x-internal: true
@@ -607,7 +607,7 @@ components:
             warnings: []
         Not Found:
           canBeRetried: Unknown
-          correlationId: ""
+          correlationId: ''
           detailedErrorCode: 0
           error: NotFound
           service: ExpenseSyncApi
@@ -615,21 +615,21 @@ components:
     CompanyConfiguration:
       properties:
         bankAccount:
-          $ref: "#/components/schemas/BankAccount"
+          $ref: '#/components/schemas/BankAccount'
         customer:
-          $ref: "#/components/schemas/Customer"
+          $ref: '#/components/schemas/Customer'
         supplier:
-          $ref: "#/components/schemas/Supplier"
+          $ref: '#/components/schemas/Supplier'
       title: Company configuration
       type: object
       x-examples:
         Config Example:
           bankAccount:
-            id: "89"
+            id: '89'
           customer:
-            id: "140"
+            id: '140'
           supplier:
-            id: "124"
+            id: '124'
     CompanySyncStatus:
       additionalProperties: false
       properties:
@@ -665,7 +665,7 @@ components:
           format: int32
           type: integer
         syncUtc:
-          $ref: "#/components/schemas/DataConnection/properties/created"
+          $ref: '#/components/schemas/DataConnection/properties/created'
           description: Datetime of the sync.
           nullable: true
       title: Company sync status
@@ -674,8 +674,8 @@ components:
         Success Data Pushed:
           companyId: 20803807-4e9a-4cb7-b67b-9f889a3916e1
           dataPushed: true
-          errorMessage: ""
-          syncExceptionMessage: ""
+          errorMessage: ''
+          syncExceptionMessage: ''
           syncId: aa4c9dfd-e945-4424-9628-9e724f14c267
           syncStatus: Complete
           syncStatusCode: 2000
@@ -683,8 +683,8 @@ components:
         Success No Data Pushed:
           companyId: 20803807-4e9a-4cb7-b67b-9f889a3916e1
           dataPushed: false
-          errorMessage: ""
-          syncExceptionMessage: ""
+          errorMessage: ''
+          syncExceptionMessage: ''
           syncId: aa4c9dfd-e945-4424-9628-9e724f14c267
           syncStatus: Complete
           syncStatusCode: 2040
@@ -693,7 +693,7 @@ components:
       properties:
         items:
           items:
-            $ref: "#/components/schemas/ExpenseTransaction"
+            $ref: '#/components/schemas/ExpenseTransaction'
           maxItems: 50
           minItems: 1
           type: array
@@ -712,7 +712,7 @@ components:
       properties:
         id:
           description: id of the customer for all income related activities to be associated to.
-          example: "142"
+          example: '142'
           type: string
       type: object
       x-internal: true
@@ -723,7 +723,7 @@ components:
             errorMessage:
               type: string
             erroredOnUtc:
-              $ref: "#/components/schemas/DataConnection/properties/created"
+              $ref: '#/components/schemas/DataConnection/properties/created'
             statusCode:
               type: string
             statusText:
@@ -794,7 +794,7 @@ components:
           type: string
         dataConnectionErrors:
           items:
-            $ref: "#/components/schemas/DataConnection/definitions/dataConnectionError"
+            $ref: '#/components/schemas/DataConnection/definitions/dataConnectionError'
           type: array
         id:
           description: Unique identifier for a company's data connection.
@@ -810,7 +810,7 @@ components:
           description: A unique four-character ID that identifies the platform of the company's data connection. This ensures continuity if the platform changes its name in the future.
           type: string
         lastSync:
-          $ref: "#/components/schemas/DataConnection/properties/created"
+          $ref: '#/components/schemas/DataConnection/properties/created'
         linkUrl:
           example: https://link-api.codat.io/companies/86bd88cb-44ab-4dfb-b32f-87b19b14287f/connections/2e2eb431-c1fa-4dc9-93fa-d29781c12bcd/start
           format: uri
@@ -835,7 +835,7 @@ components:
           type: string
           x-internal: true
         status:
-          $ref: "#/components/schemas/DataConnection/definitions/dataConnectionStatus"
+          $ref: '#/components/schemas/DataConnection/definitions/dataConnectionStatus'
       required:
         - id
         - integrationId
@@ -888,12 +888,12 @@ components:
           format: uuid
           type: string
         issueDate:
-          $ref: "#/components/schemas/DataConnection/properties/created"
+          $ref: '#/components/schemas/DataConnection/properties/created'
           description: Date of the transaction was recorded.
         lines:
           description: Array of transaction lines.
           items:
-            $ref: "#/components/schemas/ExpenseTransactionLine"
+            $ref: '#/components/schemas/ExpenseTransactionLine'
           maxItems: 100
           minItems: 1
           type: array
@@ -903,7 +903,7 @@ components:
           type: string
         notes:
           description: Any private, company notes about the transaction.
-          example: "APPLE.COM/BILL - 09001077498 - Card Ending: 4590"
+          example: 'APPLE.COM/BILL - 09001077498 - Card Ending: 4590'
           type: string
         type:
           description: The type of transaction.
@@ -946,7 +946,7 @@ components:
     ExpenseTransactionLine:
       properties:
         accountRef:
-          $ref: "#/components/schemas/RecordRef"
+          $ref: '#/components/schemas/RecordRef'
         netAmount:
           description: Amount of the line, exclusive of tax.
           example: 110.42
@@ -956,10 +956,10 @@ components:
           example: 14.43
           type: number
         taxRateRef:
-          $ref: "#/components/schemas/RecordRef"
+          $ref: '#/components/schemas/RecordRef'
         trackingRefs:
           items:
-            $ref: "#/components/schemas/RecordRef"
+            $ref: '#/components/schemas/RecordRef'
           maxItems: 10
           minItems: 1
           type: array
@@ -1004,7 +1004,7 @@ components:
         accounts:
           description: Array of available accounts for mapping.
           items:
-            $ref: "#/components/schemas/AccountMappingInfo"
+            $ref: '#/components/schemas/AccountMappingInfo'
           nullable: true
           type: array
         expenseProvider:
@@ -1015,13 +1015,13 @@ components:
         taxRates:
           description: Array of available tax rates for mapping.
           items:
-            $ref: "#/components/schemas/TaxRateMappingInfo"
+            $ref: '#/components/schemas/TaxRateMappingInfo'
           nullable: true
           type: array
         trackingCategories:
           description: Array of available tracking categories for mapping.
           items:
-            $ref: "#/components/schemas/TrackingCategoryMappingInfo"
+            $ref: '#/components/schemas/TrackingCategoryMappingInfo'
           nullable: true
           type: array
       title: Mapping options
@@ -1046,13 +1046,13 @@ components:
                 href: /companies/{id}/data/{dataType}
           properties:
             current:
-              $ref: "#/components/schemas/HalLink"
+              $ref: '#/components/schemas/HalLink'
             next:
-              $ref: "#/components/schemas/HalLink"
+              $ref: '#/components/schemas/HalLink'
             previous:
-              $ref: "#/components/schemas/HalLink"
+              $ref: '#/components/schemas/HalLink'
             self:
-              $ref: "#/components/schemas/HalLink"
+              $ref: '#/components/schemas/HalLink'
           required:
             - self
             - current
@@ -1096,7 +1096,7 @@ components:
       properties:
         id:
           description: id of the supplier for all purchases to be associated to
-          example: "124"
+          example: '124'
           type: string
       type: object
       x-internal: true
@@ -1176,7 +1176,7 @@ components:
           nullable: true
           type: string
         modifiedDate:
-          $ref: "#/components/schemas/DataConnection/properties/created"
+          $ref: '#/components/schemas/DataConnection/properties/created'
           description: Datetime when the tracking category was last modified.
           nullable: true
         name:
@@ -1207,13 +1207,13 @@ components:
       additionalProperties: false
       properties:
         integrationType:
-          $ref: "#/components/schemas/IntegrationType"
+          $ref: '#/components/schemas/IntegrationType'
         message:
           description: Metadata such as validation errors or the resulting record created in the accounting software.
           nullable: true
           type: string
         status:
-          $ref: "#/components/schemas/TransactionStatus"
+          $ref: '#/components/schemas/TransactionStatus'
         transactionId:
           description: Your unique idenfier of the transaction.
           example: aa02271d-ed5f-47f5-be76-778d5905225a
@@ -1237,10 +1237,10 @@ components:
         - properties:
             results:
               items:
-                $ref: "#/components/schemas/TransactionMetadata"
+                $ref: '#/components/schemas/TransactionMetadata'
               type: array
           type: object
-        - $ref: "#/components/schemas/PagingInfo"
+        - $ref: '#/components/schemas/PagingInfo'
       x-examples:
         Example 1:
           links:

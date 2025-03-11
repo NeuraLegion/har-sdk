@@ -50,7 +50,7 @@ info:
     Get your `{PREFIX}` from your live Customer Area under **Developers** > **API URLs** > **Prefix**.
   termsOfService: https://www.adyen.com/legal/terms-and-conditions
   title: Adyen BinLookup API
-  version: "54"
+  version: '54'
   x-apisguru-categories:
     - payment
   x-logo:
@@ -58,7 +58,7 @@ info:
   x-origin:
     - format: openapi
       url: https://raw.githubusercontent.com/Adyen/adyen-openapi/main/json/BinLookupService-v54.json
-      version: "3.1"
+      version: '3.1'
   x-preferred: true
   x-providerName: adyen.com
   x-publicVersion: true
@@ -79,51 +79,51 @@ paths:
           application/json:
             examples:
               get3dsAvailability:
-                $ref: "#/components/examples/post-get3dsAvailability-get3dsAvailability"
+                $ref: '#/components/examples/post-get3dsAvailability-get3dsAvailability'
             schema:
-              $ref: "#/components/schemas/ThreeDSAvailabilityRequest"
+              $ref: '#/components/schemas/ThreeDSAvailabilityRequest'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
                 get3dsAvailability:
-                  $ref: "#/components/examples/post-get3dsAvailability-get3dsAvailability-200"
+                  $ref: '#/components/examples/post-get3dsAvailability-get3dsAvailability-200'
               schema:
-                $ref: "#/components/schemas/ThreeDSAvailabilityResponse"
+                $ref: '#/components/schemas/ThreeDSAvailabilityResponse'
           description: OK - the request has succeeded.
-        "400":
+        '400':
           content:
             application/json:
               examples:
                 generic:
-                  $ref: "#/components/examples/generic-400"
+                  $ref: '#/components/examples/generic-400'
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -131,7 +131,7 @@ paths:
       summary: Check if 3D Secure is available
       tags:
         - General
-      x-addedInVersion: "1"
+      x-addedInVersion: '1'
       x-groupName: General
       x-methodName: get3dsAvailability
       x-sortIndex: 0
@@ -151,65 +151,65 @@ paths:
           application/json:
             examples:
               getCostEstimate:
-                $ref: "#/components/examples/post-getCostEstimate-getCostEstimate"
+                $ref: '#/components/examples/post-getCostEstimate-getCostEstimate'
               getCostEstimateEncryptedCard:
-                $ref: "#/components/examples/post-getCostEstimate-getCostEstimateEncryptedCard"
+                $ref: '#/components/examples/post-getCostEstimate-getCostEstimateEncryptedCard'
               getCostEstimateMinimal:
-                $ref: "#/components/examples/post-getCostEstimate-getCostEstimateMinimal"
+                $ref: '#/components/examples/post-getCostEstimate-getCostEstimateMinimal'
               getCostEstimateMinimal3DS:
-                $ref: "#/components/examples/post-getCostEstimate-getCostEstimateMinimal3DS"
+                $ref: '#/components/examples/post-getCostEstimate-getCostEstimateMinimal3DS'
               getCostEstimateRecurringContract:
-                $ref: "#/components/examples/post-getCostEstimate-getCostEstimateRecurringContract"
+                $ref: '#/components/examples/post-getCostEstimate-getCostEstimateRecurringContract'
             schema:
-              $ref: "#/components/schemas/CostEstimateRequest"
+              $ref: '#/components/schemas/CostEstimateRequest'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
                 getCostEstimate:
-                  $ref: "#/components/examples/post-getCostEstimate-getCostEstimate-200"
+                  $ref: '#/components/examples/post-getCostEstimate-getCostEstimate-200'
                 getCostEstimateEncryptedCard:
-                  $ref: "#/components/examples/post-getCostEstimate-getCostEstimateEncryptedCard-200"
+                  $ref: '#/components/examples/post-getCostEstimate-getCostEstimateEncryptedCard-200'
                 getCostEstimateMinimal:
-                  $ref: "#/components/examples/post-getCostEstimate-getCostEstimateMinimal-200"
+                  $ref: '#/components/examples/post-getCostEstimate-getCostEstimateMinimal-200'
                 getCostEstimateMinimal3DS:
-                  $ref: "#/components/examples/post-getCostEstimate-getCostEstimateMinimal3DS-200"
+                  $ref: '#/components/examples/post-getCostEstimate-getCostEstimateMinimal3DS-200'
               schema:
-                $ref: "#/components/schemas/CostEstimateResponse"
+                $ref: '#/components/schemas/CostEstimateResponse'
           description: OK - the request has succeeded.
-        "400":
+        '400':
           content:
             application/json:
               examples:
                 generic:
-                  $ref: "#/components/examples/generic-400"
+                  $ref: '#/components/examples/generic-400'
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -225,15 +225,15 @@ components:
     generic-400:
       summary: Response code 400. Bad Request.
       value:
-        errorCode: "702"
+        errorCode: '702'
         errorType: validation
-        message: "Unexpected input: I"
+        message: 'Unexpected input: I'
         status: 400
     post-get3dsAvailability-get3dsAvailability:
       description: Example request to check 3D Secure availability
       summary: Get 3D Secure availability
       value:
-        cardNumber: "4111111111111111"
+        cardNumber: '4111111111111111'
         merchantAccount: YOUR_MERCHANT_ACCOUNT
     post-get3dsAvailability-get3dsAvailability-200:
       summary: Example response for request 'get3dsAvailability'
@@ -251,12 +251,12 @@ components:
         assumptions:
           assume3DSecureAuthenticated: true
           assumeLevel3Data: true
-        cardNumber: "5101180000000007"
+        cardNumber: '5101180000000007'
         merchantAccount: YOUR_MERCHANT_ACCOUNT
         merchantDetails:
           countryCode: NL
           enrolledIn3DSecure: true
-          mcc: "7411"
+          mcc: '7411'
         shopperInteraction: Ecommerce
     post-getCostEstimate-getCostEstimate-200:
       summary: Example response for request 'getCostEstimate'
@@ -281,7 +281,7 @@ components:
         merchantDetails:
           countryCode: NL
           enrolledIn3DSecure: true
-          mcc: "7411"
+          mcc: '7411'
         shopperInteraction: Ecommerce
     post-getCostEstimate-getCostEstimateEncryptedCard-200:
       summary: Example response for request 'getCostEstimateEncryptedCard'
@@ -298,7 +298,7 @@ components:
         amount:
           currency: EUR
           value: 1234
-        cardNumber: "5101180000000007"
+        cardNumber: '5101180000000007'
         merchantAccount: YOUR_MERCHANT_ACCOUNT
     post-getCostEstimate-getCostEstimateMinimal-200:
       summary: Example response for request 'getCostEstimateMinimal'
@@ -318,7 +318,7 @@ components:
         assumptions:
           assume3DSecureAuthenticated: true
           assumeLevel3Data: true
-        cardNumber: "5101180000000007"
+        cardNumber: '5101180000000007'
         merchantAccount: YOUR_MERCHANT_ACCOUNT
     post-getCostEstimate-getCostEstimateMinimal3DS-200:
       summary: Example response for request 'getCostEstimateMinimal3DS'
@@ -342,10 +342,10 @@ components:
         merchantDetails:
           countryCode: NL
           enrolledIn3DSecure: true
-          mcc: "7411"
-        selectedRecurringDetailReference: "1234567890123456"
+          mcc: '7411'
+        selectedRecurringDetailReference: '1234567890123456'
         shopperInteraction: Ecommerce
-        shopperReference: "123456"
+        shopperReference: '123456'
   schemas:
     Amount:
       properties:
@@ -404,7 +404,7 @@ components:
         issuerBin:
           description: The first 8 digit of the card number. Enable this field via merchant account settings.
           type: string
-          x-addedInVersion: "54"
+          x-addedInVersion: '54'
         issuingBank:
           description: The issuing bank of the card.
           type: string
@@ -452,10 +452,10 @@ components:
     CostEstimateRequest:
       properties:
         amount:
-          $ref: "#/components/schemas/Amount"
+          $ref: '#/components/schemas/Amount'
           description: The transaction amount used as a base for the cost estimation.
         assumptions:
-          $ref: "#/components/schemas/CostEstimateAssumptions"
+          $ref: '#/components/schemas/CostEstimateAssumptions'
           description: Assumptions made for the expected characteristics of the transaction, for which the charges are being estimated.
         cardNumber:
           description: |-
@@ -475,10 +475,10 @@ components:
           description: The merchant account identifier you want to process the (transaction) request with.
           type: string
         merchantDetails:
-          $ref: "#/components/schemas/MerchantDetails"
+          $ref: '#/components/schemas/MerchantDetails'
           description: Additional data for merchants who don't use Adyen as the payment authorisation gateway.
         recurring:
-          $ref: "#/components/schemas/Recurring"
+          $ref: '#/components/schemas/Recurring'
           description: The recurring settings for the payment. Use this property when you want to enable [recurring payments](https://docs.adyen.com/online-payments/tokenization).
         selectedRecurringDetailReference:
           description: The `recurringDetailReference` you want to use for this cost estimate. The value `LATEST` can be used to select the most recently stored recurring detail.
@@ -512,15 +512,15 @@ components:
     CostEstimateResponse:
       properties:
         cardBin:
-          $ref: "#/components/schemas/CardBin"
+          $ref: '#/components/schemas/CardBin'
           description: Card BIN details.
         costEstimateAmount:
-          $ref: "#/components/schemas/Amount"
+          $ref: '#/components/schemas/Amount'
           description: The estimated cost (scheme fee + interchange) in the settlement currency. If the settlement currency cannot be determined, the fee in EUR is returned.
         costEstimateReference:
           description: Adyen's 16-character reference associated with the request.
           type: string
-          x-addedInVersion: "52"
+          x-addedInVersion: '52'
         resultCode:
           description: The result of the cost estimation.
           type: string
@@ -589,18 +589,18 @@ components:
           description: Date after which no further authorisations shall be performed. Only for 3D Secure 2.
           format: date-time
           type: string
-          x-addedInVersion: "40"
+          x-addedInVersion: '40'
         recurringFrequency:
           description: Minimum number of days between authorisations. Only for 3D Secure 2.
           type: string
-          x-addedInVersion: "40"
+          x-addedInVersion: '40'
         tokenService:
           description: The name of the token service.
           enum:
             - VISATOKENSERVICE
             - MCTOKENSERVICE
           type: string
-          x-addedInVersion: "25"
+          x-addedInVersion: '25'
       type: object
     ServiceError:
       properties:
@@ -609,7 +609,7 @@ components:
             type: string
           description: Contains additional information about the payment. Some data fields are included only if you select them first. Go to **Customer Area** > **Developers** > **Additional data**.
           type: object
-          x-addedInVersion: "46"
+          x-addedInVersion: '46'
         errorCode:
           description: The error code mapped to the error message.
           type: string
@@ -640,7 +640,7 @@ components:
           items:
             type: string
           type: array
-          x-addedInVersion: "51"
+          x-addedInVersion: '51'
         brandCode:
           description: Card brand.
           type: string
@@ -655,7 +655,7 @@ components:
           items:
             type: string
           type: array
-          x-addedInVersion: "53"
+          x-addedInVersion: '53'
         threeDSMethodURL:
           description: In a 3D Secure 2 browser-based flow, this is the URL where you should send the device fingerprint to.
           type: string
@@ -693,13 +693,13 @@ components:
     ThreeDSAvailabilityResponse:
       properties:
         binDetails:
-          $ref: "#/components/schemas/BinDetail"
+          $ref: '#/components/schemas/BinDetail'
           description: Bin Group Details
-          x-addedInVersion: "50"
+          x-addedInVersion: '50'
         dsPublicKeys:
           description: List of Directory Server (DS) public keys.
           items:
-            $ref: "#/components/schemas/DSPublicKeyDetail"
+            $ref: '#/components/schemas/DSPublicKeyDetail'
           type: array
         threeDS1Supported:
           description: Indicator if 3D Secure 1 is supported.
@@ -707,7 +707,7 @@ components:
         threeDS2CardRangeDetails:
           description: List of brand and card range pairs.
           items:
-            $ref: "#/components/schemas/ThreeDS2CardRangeDetail"
+            $ref: '#/components/schemas/ThreeDS2CardRangeDetail'
           type: array
         threeDS2supported:
           description: Indicator if 3D Secure 2 is supported.

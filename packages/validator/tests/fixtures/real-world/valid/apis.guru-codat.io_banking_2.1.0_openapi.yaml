@@ -13,7 +13,7 @@ info:
 
     [Read more...](https://docs.codat.io/banking-api/overview)
 
-    [See our OpenAPI spec](https://github.com/codatio/oas) 
+    [See our OpenAPI spec](https://github.com/codatio/oas)
   summary: Codat's standardized API for accessing banking data.
   termsOfService: https://www.codat.io/legals/
   title: Banking API
@@ -25,7 +25,7 @@ info:
   x-origin:
     - format: openapi
       url: https://raw.githubusercontent.com/codatio/oas/main/json/Codat-Banking.json
-      version: "3.1"
+      version: '3.1'
   x-providerName: codat.io
   x-serviceName: banking
 security:
@@ -40,56 +40,56 @@ tags:
   - description: Hierarchical categories associated with a transaction for greater contextual meaning to transaction activity.
     name: Transaction categories
 paths:
-  "/companies/{companyId}/connections/{connectionId}/data/banking-accountBalances":
+  '/companies/{companyId}/connections/{connectionId}/data/banking-accountBalances':
     get:
       description: Gets a list of balances for a bank account including end-of-day batch balance or running balances per transaction.
       operationId: list-account-balances
       parameters:
-        - $ref: "#/components/parameters/companyId"
-        - $ref: "#/components/parameters/connectionId"
-        - $ref: "#/components/parameters/page"
-        - $ref: "#/components/parameters/pageSize"
-        - $ref: "#/components/parameters/query"
-        - $ref: "#/components/parameters/orderBy"
+        - $ref: '#/components/parameters/companyId'
+        - $ref: '#/components/parameters/connectionId'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/query'
+        - $ref: '#/components/parameters/orderBy'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/AccountBalances"
+                $ref: '#/components/schemas/AccountBalances'
           description: Success
       summary: List account balances
       tags:
         - Account balances
-  "/companies/{companyId}/connections/{connectionId}/data/banking-accounts":
+  '/companies/{companyId}/connections/{connectionId}/data/banking-accounts':
     get:
       description: Gets a list of all bank accounts of the SMB, with rich data like balances, account numbers and institutions holdingthe accounts.
       operationId: list-accounts
       parameters:
-        - $ref: "#/components/parameters/companyId"
-        - $ref: "#/components/parameters/connectionId"
-        - $ref: "#/components/parameters/page"
-        - $ref: "#/components/parameters/pageSize"
-        - $ref: "#/components/parameters/query"
-        - $ref: "#/components/parameters/orderBy"
+        - $ref: '#/components/parameters/companyId'
+        - $ref: '#/components/parameters/connectionId'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/query'
+        - $ref: '#/components/parameters/orderBy'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Accounts"
+                $ref: '#/components/schemas/Accounts'
           description: Success
       summary: List accounts
       tags:
         - Accounts
-  "/companies/{companyId}/connections/{connectionId}/data/banking-accounts/{accountId}":
+  '/companies/{companyId}/connections/{connectionId}/data/banking-accounts/{accountId}':
     get:
       deprecated: true
       description: Gets a specified bank account for a given company
       operationId: get-account
       parameters:
-        - $ref: "#/components/parameters/companyId"
-        - $ref: "#/components/parameters/connectionId"
+        - $ref: '#/components/parameters/companyId'
+        - $ref: '#/components/parameters/connectionId'
         - description: Unique identifier for an account
           in: path
           name: accountId
@@ -99,132 +99,132 @@ paths:
             format: uuid
             type: string
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Account"
+                $ref: '#/components/schemas/Account'
           description: Success
       summary: Get account
       tags:
         - Accounts
       x-internal: true
-  "/companies/{companyId}/connections/{connectionId}/data/banking-transactionCategories":
+  '/companies/{companyId}/connections/{connectionId}/data/banking-transactionCategories':
     get:
       description: Gets a list of hierarchical categories associated with a transaction for greater contextual meaning to transactionactivity.
       operationId: list-transaction-categories
       parameters:
-        - $ref: "#/components/parameters/page"
-        - $ref: "#/components/parameters/pageSize"
-        - $ref: "#/components/parameters/query"
-        - $ref: "#/components/parameters/orderBy"
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/query'
+        - $ref: '#/components/parameters/orderBy'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/TransactionCategories"
+                $ref: '#/components/schemas/TransactionCategories'
           description: Success
       summary: List all transaction categories
       tags:
         - Transaction categories
     parameters:
-      - $ref: "#/components/parameters/companyId"
-      - $ref: "#/components/parameters/connectionId"
-  "/companies/{companyId}/connections/{connectionId}/data/banking-transactionCategories/{transactionCategoryId}":
+      - $ref: '#/components/parameters/companyId'
+      - $ref: '#/components/parameters/connectionId'
+  '/companies/{companyId}/connections/{connectionId}/data/banking-transactionCategories/{transactionCategoryId}':
     get:
       deprecated: true
       description: Gets a specified bank transaction category for a given company
       operationId: get-transaction-category
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/TransactionCategory"
+                $ref: '#/components/schemas/TransactionCategory'
           description: Success
       summary: Get transaction category
       tags:
         - Transaction categories
       x-internal: true
     parameters:
-      - $ref: "#/components/parameters/companyId"
-      - $ref: "#/components/parameters/connectionId"
+      - $ref: '#/components/parameters/companyId'
+      - $ref: '#/components/parameters/connectionId'
       - description: The unique identifier for a banking transaction category
         in: path
         name: transactionCategoryId
         required: true
         schema:
           type: string
-  "/companies/{companyId}/connections/{connectionId}/data/banking-transactions":
+  '/companies/{companyId}/connections/{connectionId}/data/banking-transactions':
     get:
       description: Gets a list of transactions incurred by a bank account.
       operationId: list-transactions
       parameters:
-        - $ref: "#/components/parameters/page"
-        - $ref: "#/components/parameters/pageSize"
-        - $ref: "#/components/parameters/query"
-        - $ref: "#/components/parameters/orderBy"
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/query'
+        - $ref: '#/components/parameters/orderBy'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Transactions"
+                $ref: '#/components/schemas/Transactions'
               x-speakeasy-usage-example: true
           description: Success
       summary: List transactions
       tags:
         - Transactions
     parameters:
-      - $ref: "#/components/parameters/companyId"
-      - $ref: "#/components/parameters/connectionId"
-  "/companies/{companyId}/connections/{connectionId}/data/banking-transactions/{transactionId}":
+      - $ref: '#/components/parameters/companyId'
+      - $ref: '#/components/parameters/connectionId'
+  '/companies/{companyId}/connections/{connectionId}/data/banking-transactions/{transactionId}':
     get:
       deprecated: true
       description: Gets a specified bank transaction for a given company
       operationId: get-transaction
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Transaction"
+                $ref: '#/components/schemas/Transaction'
           description: Success
       summary: Get bank transaction
       tags:
         - Transactions
       x-internal: true
     parameters:
-      - $ref: "#/components/parameters/companyId"
+      - $ref: '#/components/parameters/companyId'
       - description: The unique identifier for a transaction
         in: path
         name: transactionId
         required: true
         schema:
           type: string
-      - $ref: "#/components/parameters/connectionId"
-  "/companies/{companyId}/data/banking-transactions":
+      - $ref: '#/components/parameters/connectionId'
+  '/companies/{companyId}/data/banking-transactions':
     get:
       description: Gets a list of transactions incurred by a company across all bank accounts.
       operationId: list-bank-transactions
       parameters:
-        - $ref: "#/components/parameters/page"
-        - $ref: "#/components/parameters/pageSize"
-        - $ref: "#/components/parameters/query"
-        - $ref: "#/components/parameters/orderBy"
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/query'
+        - $ref: '#/components/parameters/orderBy'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Transactions"
+                $ref: '#/components/schemas/Transactions'
           description: Success
       summary: List banking transactions
       tags:
         - Transactions
     parameters:
-      - $ref: "#/components/parameters/companyId"
+      - $ref: '#/components/parameters/companyId'
 components:
   parameters:
     companyId:
@@ -295,7 +295,7 @@ components:
       allOf:
         - properties:
             balance:
-              $ref: "#/components/schemas/AccountBalance/definitions/accountBalanceAmounts"
+              $ref: '#/components/schemas/AccountBalance/definitions/accountBalanceAmounts'
               description: An object containing bank balance data.
             currency:
               description: The currency code for the account.
@@ -310,21 +310,21 @@ components:
               minLength: 1
               type: string
             identifiers:
-              $ref: "#/components/schemas/Account/definitions/accountIdentifiers"
+              $ref: '#/components/schemas/Account/definitions/accountIdentifiers'
             informalName:
               description: The friendly name of the account, chosen by the holder. This may not have been set by the account holder and therefore is not always available.
               nullable: true
               type: string
             institution:
-              $ref: "#/components/schemas/Account/definitions/accountInstitution"
+              $ref: '#/components/schemas/Account/definitions/accountInstitution'
             name:
               description: The name of the account according to the provider.
               minLength: 1
               type: string
             type:
-              $ref: "#/components/schemas/AccountType"
+              $ref: '#/components/schemas/AccountType'
           type: object
-        - $ref: "#/components/schemas/ModifiedDates"
+        - $ref: '#/components/schemas/ModifiedDates'
       definitions:
         accountIdentifierType:
           description: Type of account
@@ -373,7 +373,7 @@ components:
               nullable: true
               type: string
             type:
-              $ref: "#/components/schemas/Account/definitions/accountIdentifierType"
+              $ref: '#/components/schemas/Account/definitions/accountIdentifierType'
           required:
             - type
           title: Account Identifiers
@@ -408,11 +408,11 @@ components:
               holder: Codat Ltd
               id: 1703194f-7805-4da8-bac0-2ba5da4a4216
               identifiers:
-                bankCode: "009911"
+                bankCode: '009911'
                 bic: LOYDGB21006
                 iban: GB29 LOYD 4773 2346 7626 29
                 maskedAccountNumber: LOYDGB21006
-                number: "46762629"
+                number: '46762629'
                 subtype: checking
                 type: Depository
               informalName: Codat
@@ -441,12 +441,12 @@ components:
               minLength: 1
               type: string
             balance:
-              $ref: "#/components/schemas/AccountBalance/definitions/accountBalanceAmounts"
+              $ref: '#/components/schemas/AccountBalance/definitions/accountBalanceAmounts'
             date:
-              $ref: "#/components/schemas/DateTime"
+              $ref: '#/components/schemas/DateTime'
               description: Date of the balance.
           type: object
-        - $ref: "#/components/schemas/ModifiedDates"
+        - $ref: '#/components/schemas/ModifiedDates'
       definitions:
         accountBalanceAmounts:
           additionalProperties: false
@@ -513,10 +513,10 @@ components:
         - properties:
             results:
               items:
-                $ref: "#/components/schemas/AccountBalance"
+                $ref: '#/components/schemas/AccountBalance'
               type: array
           type: object
-        - $ref: "#/components/schemas/PagingInfo"
+        - $ref: '#/components/schemas/PagingInfo'
       x-internal: true
     AccountType:
       description: |-
@@ -535,10 +535,10 @@ components:
         - properties:
             results:
               items:
-                $ref: "#/components/schemas/Account"
+                $ref: '#/components/schemas/Account'
               type: array
           type: object
-        - $ref: "#/components/schemas/PagingInfo"
+        - $ref: '#/components/schemas/PagingInfo'
       x-internal: true
     DateTime:
       description: |-
@@ -580,13 +580,13 @@ components:
             href: /companies/{id}/data/{dataType}
       properties:
         current:
-          $ref: "#/components/schemas/HRef"
+          $ref: '#/components/schemas/HRef'
         next:
-          $ref: "#/components/schemas/HRef"
+          $ref: '#/components/schemas/HRef'
         previous:
-          $ref: "#/components/schemas/HRef"
+          $ref: '#/components/schemas/HRef'
         self:
-          $ref: "#/components/schemas/HRef"
+          $ref: '#/components/schemas/HRef'
       required:
         - self
         - current
@@ -595,15 +595,15 @@ components:
     ModifiedDate:
       properties:
         modifiedDate:
-          $ref: "#/components/schemas/DateTime"
+          $ref: '#/components/schemas/DateTime'
           description: The date on which this record was last modified in Codat.
       title: ModifiedDate
       type: object
       x-internal: true
     ModifiedDates:
       allOf:
-        - $ref: "#/components/schemas/ModifiedDate"
-        - $ref: "#/components/schemas/SourceModifiedDate"
+        - $ref: '#/components/schemas/ModifiedDate'
+        - $ref: '#/components/schemas/SourceModifiedDate'
       x-internal: true
     PagingInfo:
       examples:
@@ -617,7 +617,7 @@ components:
             totalResults: 1
       properties:
         _links:
-          $ref: "#/components/schemas/Links"
+          $ref: '#/components/schemas/Links'
         pageNumber:
           type: integer
         pageSize:
@@ -634,7 +634,7 @@ components:
     SourceModifiedDate:
       properties:
         sourceModifiedDate:
-          $ref: "#/components/schemas/DateTime"
+          $ref: '#/components/schemas/DateTime'
           description: The date on which this record was last modified in the originating system
       title: Source Modified Date
       type: object
@@ -650,10 +650,10 @@ components:
               description: The amount of the bank transaction.
               type: number
             authorizedDate:
-              $ref: "#/components/schemas/DateTime"
+              $ref: '#/components/schemas/DateTime'
               description: The date the bank transaction was authorized.
             code:
-              $ref: "#/components/schemas/Transaction/definitions/transactionCode"
+              $ref: '#/components/schemas/Transaction/definitions/transactionCode'
             currency:
               description: The currency of the bank transaction.
               minLength: 1
@@ -671,12 +671,12 @@ components:
               nullable: true
               type: string
             postedDate:
-              $ref: "#/components/schemas/DateTime"
+              $ref: '#/components/schemas/DateTime'
               description: The date the bank transaction was cleared.
             transactionCategoryRef:
-              $ref: "#/components/schemas/TransactionCategory/definitions/transactionCategoryRef"
+              $ref: '#/components/schemas/TransactionCategory/definitions/transactionCategoryRef'
           type: object
-        - $ref: "#/components/schemas/ModifiedDates"
+        - $ref: '#/components/schemas/ModifiedDates'
       definitions:
         transactionCode:
           description: Code to identify the underlying transaction.
@@ -728,10 +728,10 @@ components:
         - properties:
             results:
               items:
-                $ref: "#/components/schemas/TransactionCategory"
+                $ref: '#/components/schemas/TransactionCategory'
               type: array
           type: object
-        - $ref: "#/components/schemas/PagingInfo"
+        - $ref: '#/components/schemas/PagingInfo'
       x-internal: true
     TransactionCategory:
       allOf:
@@ -753,9 +753,9 @@ components:
               nullable: true
               type: string
             status:
-              $ref: "#/components/schemas/TransactionCategory/definitions/transactionCategoryStatus"
+              $ref: '#/components/schemas/TransactionCategory/definitions/transactionCategoryStatus'
           type: object
-        - $ref: "#/components/schemas/ModifiedDates"
+        - $ref: '#/components/schemas/ModifiedDates'
       definitions:
         transactionCategoryRef:
           description: An object of bank transaction category reference data.
@@ -800,10 +800,10 @@ components:
         - properties:
             results:
               items:
-                $ref: "#/components/schemas/Transaction"
+                $ref: '#/components/schemas/Transaction'
               type: array
           type: object
-        - $ref: "#/components/schemas/PagingInfo"
+        - $ref: '#/components/schemas/PagingInfo'
       x-internal: true
   securitySchemes:
     auth_header:

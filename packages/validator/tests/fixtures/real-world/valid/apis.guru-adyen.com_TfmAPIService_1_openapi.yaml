@@ -34,7 +34,7 @@ info:
     If you omit the version from the endpoint URL, Boolean response values are returned like this: `true` or `false`.
   termsOfService: https://www.adyen.com/legal/terms-and-conditions
   title: POS Terminal Management API
-  version: "1"
+  version: '1'
   x-apisguru-categories:
     - payment
   x-logo:
@@ -42,7 +42,7 @@ info:
   x-origin:
     - format: openapi
       url: https://raw.githubusercontent.com/Adyen/adyen-openapi/main/json/TfmAPIService-v1.json
-      version: "3.1"
+      version: '3.1'
   x-providerName: adyen.com
   x-publicVersion: true
   x-serviceName: TfmAPIService
@@ -59,68 +59,68 @@ paths:
           application/json:
             examples:
               assignTerminalCompany:
-                $ref: "#/components/examples/post-assignTerminals-assignTerminalCompany"
+                $ref: '#/components/examples/post-assignTerminals-assignTerminalCompany'
               assignTerminalMerchant:
-                $ref: "#/components/examples/post-assignTerminals-assignTerminalMerchant"
+                $ref: '#/components/examples/post-assignTerminals-assignTerminalMerchant'
               assignTerminalStore:
-                $ref: "#/components/examples/post-assignTerminals-assignTerminalStore"
+                $ref: '#/components/examples/post-assignTerminals-assignTerminalStore'
             schema:
-              $ref: "#/components/schemas/AssignTerminalsRequest"
+              $ref: '#/components/schemas/AssignTerminalsRequest'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
                 assignTerminalCompany:
-                  $ref: "#/components/examples/post-assignTerminals-assignTerminalCompany-200"
+                  $ref: '#/components/examples/post-assignTerminals-assignTerminalCompany-200'
                 assignTerminalMerchant:
-                  $ref: "#/components/examples/post-assignTerminals-assignTerminalMerchant-200"
+                  $ref: '#/components/examples/post-assignTerminals-assignTerminalMerchant-200'
                 assignTerminalStore:
-                  $ref: "#/components/examples/post-assignTerminals-assignTerminalStore-200"
+                  $ref: '#/components/examples/post-assignTerminals-assignTerminalStore-200'
               schema:
-                $ref: "#/components/schemas/AssignTerminalsResponse"
+                $ref: '#/components/schemas/AssignTerminalsResponse'
           description: OK - the request has succeeded.
-        "400":
+        '400':
           content:
             application/json:
               examples:
                 generic:
-                  $ref: "#/components/examples/generic-400"
+                  $ref: '#/components/examples/generic-400'
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               examples:
                 generic:
-                  $ref: "#/components/examples/generic-403"
+                  $ref: '#/components/examples/generic-403'
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               examples:
                 generic:
-                  $ref: "#/components/examples/generic-422"
+                  $ref: '#/components/examples/generic-422'
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               examples:
                 generic:
-                  $ref: "#/components/examples/generic-500"
+                  $ref: '#/components/examples/generic-500'
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - ApiKeyAuth: []
@@ -139,60 +139,60 @@ paths:
           application/json:
             examples:
               findTerminal:
-                $ref: "#/components/examples/post-findTerminal-findTerminal"
+                $ref: '#/components/examples/post-findTerminal-findTerminal'
             schema:
-              $ref: "#/components/schemas/FindTerminalRequest"
+              $ref: '#/components/schemas/FindTerminalRequest'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
                 findTerminal:
-                  $ref: "#/components/examples/post-findTerminal-findTerminal-200"
+                  $ref: '#/components/examples/post-findTerminal-findTerminal-200'
               schema:
-                $ref: "#/components/schemas/FindTerminalResponse"
+                $ref: '#/components/schemas/FindTerminalResponse'
           description: OK - the request has succeeded.
-        "400":
+        '400':
           content:
             application/json:
               examples:
                 generic:
-                  $ref: "#/components/examples/generic-400"
+                  $ref: '#/components/examples/generic-400'
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               examples:
                 generic:
-                  $ref: "#/components/examples/generic-403"
+                  $ref: '#/components/examples/generic-403'
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               examples:
                 generic:
-                  $ref: "#/components/examples/generic-422"
+                  $ref: '#/components/examples/generic-422'
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               examples:
                 generic:
-                  $ref: "#/components/examples/generic-500"
+                  $ref: '#/components/examples/generic-500'
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - ApiKeyAuth: []
@@ -211,64 +211,64 @@ paths:
           application/json:
             examples:
               getStoresCompany:
-                $ref: "#/components/examples/post-getStoresUnderAccount-getStoresCompany"
+                $ref: '#/components/examples/post-getStoresUnderAccount-getStoresCompany'
               getStoresMerchant:
-                $ref: "#/components/examples/post-getStoresUnderAccount-getStoresMerchant"
+                $ref: '#/components/examples/post-getStoresUnderAccount-getStoresMerchant'
             schema:
-              $ref: "#/components/schemas/GetStoresUnderAccountRequest"
+              $ref: '#/components/schemas/GetStoresUnderAccountRequest'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
                 getStoresCompany:
-                  $ref: "#/components/examples/post-getStoresUnderAccount-getStoresCompany-200"
+                  $ref: '#/components/examples/post-getStoresUnderAccount-getStoresCompany-200'
                 getStoresMerchant:
-                  $ref: "#/components/examples/post-getStoresUnderAccount-getStoresMerchant-200"
+                  $ref: '#/components/examples/post-getStoresUnderAccount-getStoresMerchant-200'
               schema:
-                $ref: "#/components/schemas/GetStoresUnderAccountResponse"
+                $ref: '#/components/schemas/GetStoresUnderAccountResponse'
           description: OK - the request has succeeded.
-        "400":
+        '400':
           content:
             application/json:
               examples:
                 generic:
-                  $ref: "#/components/examples/generic-400"
+                  $ref: '#/components/examples/generic-400'
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               examples:
                 generic:
-                  $ref: "#/components/examples/generic-403"
+                  $ref: '#/components/examples/generic-403'
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               examples:
                 generic:
-                  $ref: "#/components/examples/generic-422"
+                  $ref: '#/components/examples/generic-422'
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               examples:
                 generic:
-                  $ref: "#/components/examples/generic-500"
+                  $ref: '#/components/examples/generic-500'
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - ApiKeyAuth: []
@@ -287,60 +287,60 @@ paths:
           application/json:
             examples:
               getTerminalDetails:
-                $ref: "#/components/examples/post-getTerminalDetails-getTerminalDetails"
+                $ref: '#/components/examples/post-getTerminalDetails-getTerminalDetails'
             schema:
-              $ref: "#/components/schemas/GetTerminalDetailsRequest"
+              $ref: '#/components/schemas/GetTerminalDetailsRequest'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
                 getTerminalDetails:
-                  $ref: "#/components/examples/post-getTerminalDetails-getTerminalDetails-200"
+                  $ref: '#/components/examples/post-getTerminalDetails-getTerminalDetails-200'
               schema:
-                $ref: "#/components/schemas/GetTerminalDetailsResponse"
+                $ref: '#/components/schemas/GetTerminalDetailsResponse'
           description: OK - the request has succeeded.
-        "400":
+        '400':
           content:
             application/json:
               examples:
                 generic:
-                  $ref: "#/components/examples/generic-400"
+                  $ref: '#/components/examples/generic-400'
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               examples:
                 generic:
-                  $ref: "#/components/examples/generic-403"
+                  $ref: '#/components/examples/generic-403'
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               examples:
                 generic:
-                  $ref: "#/components/examples/generic-422"
+                  $ref: '#/components/examples/generic-422'
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               examples:
                 generic:
-                  $ref: "#/components/examples/generic-500"
+                  $ref: '#/components/examples/generic-500'
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - ApiKeyAuth: []
@@ -359,68 +359,68 @@ paths:
           application/json:
             examples:
               getTerminalsCompany:
-                $ref: "#/components/examples/post-getTerminalsUnderAccount-getTerminalsCompany"
+                $ref: '#/components/examples/post-getTerminalsUnderAccount-getTerminalsCompany'
               getTerminalsMerchant:
-                $ref: "#/components/examples/post-getTerminalsUnderAccount-getTerminalsMerchant"
+                $ref: '#/components/examples/post-getTerminalsUnderAccount-getTerminalsMerchant'
               getTerminalsStore:
-                $ref: "#/components/examples/post-getTerminalsUnderAccount-getTerminalsStore"
+                $ref: '#/components/examples/post-getTerminalsUnderAccount-getTerminalsStore'
             schema:
-              $ref: "#/components/schemas/GetTerminalsUnderAccountRequest"
+              $ref: '#/components/schemas/GetTerminalsUnderAccountRequest'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
                 getTerminalsCompany:
-                  $ref: "#/components/examples/post-getTerminalsUnderAccount-getTerminalsCompany-200"
+                  $ref: '#/components/examples/post-getTerminalsUnderAccount-getTerminalsCompany-200'
                 getTerminalsMerchant:
-                  $ref: "#/components/examples/post-getTerminalsUnderAccount-getTerminalsMerchant-200"
+                  $ref: '#/components/examples/post-getTerminalsUnderAccount-getTerminalsMerchant-200'
                 getTerminalsStore:
-                  $ref: "#/components/examples/post-getTerminalsUnderAccount-getTerminalsStore-200"
+                  $ref: '#/components/examples/post-getTerminalsUnderAccount-getTerminalsStore-200'
               schema:
-                $ref: "#/components/schemas/GetTerminalsUnderAccountResponse"
+                $ref: '#/components/schemas/GetTerminalsUnderAccountResponse'
           description: OK - the request has succeeded.
-        "400":
+        '400':
           content:
             application/json:
               examples:
                 generic:
-                  $ref: "#/components/examples/generic-400"
+                  $ref: '#/components/examples/generic-400'
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               examples:
                 generic:
-                  $ref: "#/components/examples/generic-403"
+                  $ref: '#/components/examples/generic-403'
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               examples:
                 generic:
-                  $ref: "#/components/examples/generic-422"
+                  $ref: '#/components/examples/generic-422'
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               examples:
                 generic:
-                  $ref: "#/components/examples/generic-500"
+                  $ref: '#/components/examples/generic-500'
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - ApiKeyAuth: []
@@ -435,28 +435,28 @@ components:
     generic-400:
       summary: Response code 400. Bad request.
       value:
-        errorCode: "702"
+        errorCode: '702'
         errorType: validation
         message: Problem reading or understanding the request.
         status: 400
     generic-403:
       summary: Response code 403. Forbidden.
       value:
-        errorCode: "010"
+        errorCode: '010'
         errorType: security
         message: Insufficient permissions to process the request.
         status: 403
     generic-422:
       summary: Response code 422. Unprocessable entity.
       value:
-        errorCode: "901"
+        errorCode: '901'
         errorType: validation
         message: Request validation error.
         status: 422
     generic-500:
       summary: Response code 500. Internal server error.
       value:
-        errorCode: "000"
+        errorCode: '000'
         errorType: internal
         message: The server could not process the request.
         status: 500
@@ -525,7 +525,7 @@ components:
           - address:
               city: The City
               countryCode: NL
-              postalCode: "1234"
+              postalCode: '1234'
               streetAddress: The Street
             description: YOUR_STORE
             merchantAccountCode: YOUR_MERCHANT_ACCOUNT
@@ -544,7 +544,7 @@ components:
           - address:
               city: The City
               countryCode: NL
-              postalCode: "1234"
+              postalCode: '1234'
               streetAddress: The Street
             description: YOUR_STORE
             merchantAccountCode: YOUR_MERCHANT_ACCOUNT
@@ -567,14 +567,14 @@ components:
         firmwareVersion: Verifone_VOS 1.57.6
         merchantAccount: YOUR_MERCHANT_ACCOUNT
         merchantInventory: false
-        permanentTerminalId: "88912016"
+        permanentTerminalId: '88912016'
         serialNumber: 401-972-715
         store: YOUR_STORE
         storeDetails:
           address:
             city: The City
             countryCode: NL
-            postalCode: "1234"
+            postalCode: '1234'
             streetAddress: The Street
           description: TestStore
           store: YOUR_STORE
@@ -697,7 +697,7 @@ components:
 
              - `RemoveConfigScheduled`: The terminal was previously assigned and boarded. Wait for the terminal to synchronize with the Adyen platform. For more information, refer to [Reassigning boarded terminals](https://docs.adyen.com/point-of-sale/managing-terminals/assign-terminals#reassign-boarded-terminals).
 
-             - `Error`: There was an error when assigning the terminal. 
+             - `Error`: There was an error when assigning the terminal.
           type: object
       required:
         - results
@@ -755,7 +755,7 @@ components:
         stores:
           description: Array that returns a list of all stores for the specified merchant account, or for all merchant accounts under the company account.
           items:
-            $ref: "#/components/schemas/Store"
+            $ref: '#/components/schemas/Store'
           type: array
       type: object
     GetTerminalDetailsRequest:
@@ -838,13 +838,13 @@ components:
           description: The serial number of the terminal.
           type: string
         simStatus:
-          description: "On a terminal that supports 3G or 4G connectivity, indicates the status of the SIM card in the terminal: ACTIVE or INVENTORY."
+          description: 'On a terminal that supports 3G or 4G connectivity, indicates the status of the SIM card in the terminal: ACTIVE or INVENTORY.'
           type: string
         store:
           description: The store code of the store that the terminal is assigned to.
           type: string
         storeDetails:
-          $ref: "#/components/schemas/Store"
+          $ref: '#/components/schemas/Store'
           description: The store that the terminal is assigned to.
         terminal:
           description: The unique terminal ID.
@@ -909,7 +909,7 @@ components:
         merchantAccounts:
           description: Array that returns a list of all merchant accounts belonging to the company account.
           items:
-            $ref: "#/components/schemas/MerchantAccount"
+            $ref: '#/components/schemas/MerchantAccount'
           type: array
       required:
         - companyAccount
@@ -932,7 +932,7 @@ components:
         stores:
           description: Array of stores under this merchant account.
           items:
-            $ref: "#/components/schemas/Store"
+            $ref: '#/components/schemas/Store'
           type: array
       required:
         - merchantAccount
@@ -959,7 +959,7 @@ components:
     Store:
       properties:
         address:
-          $ref: "#/components/schemas/Address"
+          $ref: '#/components/schemas/Address'
           description: The address of the store.
         description:
           description: The description of the store.
@@ -984,7 +984,7 @@ components:
 
             - `InactiveWithModifications`: the store is currently not active, but payment modifications such as refunds are possible. 
 
-            - `Closed`: the store has been closed. 
+            - `Closed`: the store has been closed.
           type: string
         store:
           description: The code of the store.

@@ -14,7 +14,7 @@ info:
     You can use these webhooks to build your implementation. For example, you can use this information to update internal statuses when the status of a capability is changed.
   termsOfService: https://www.adyen.com/legal/terms-and-conditions
   title: Configuration webhooks
-  version: "1"
+  version: '1'
   x-apisguru-categories:
     - payment
   x-logo:
@@ -22,7 +22,7 @@ info:
   x-origin:
     - format: openapi
       url: https://raw.githubusercontent.com/Adyen/adyen-openapi/main/json/BalancePlatformConfigurationNotification-v1.json
-      version: "3.1"
+      version: '3.1'
   x-providerName: adyen.com
   x-publicVersion: true
   x-serviceName: BalancePlatformConfigurationNotification-v1
@@ -32,7 +32,7 @@ components:
   examples:
     WebhookAck:
       summary: Acknowledge Webhook
-      value: "[accepted]"
+      value: '[accepted]'
     post-balancePlatform.accountHolder.created-balancePlatform-accountHolder-created:
       description: Example webhook when an account holder was created
       summary: Account holder created
@@ -69,12 +69,12 @@ components:
               address:
                 city: Amsterdam
                 country: NL
-                houseNumberOrName: "23"
-                postalCode: "12345"
+                houseNumberOrName: '23'
+                postalCode: '12345'
                 street: Teststreet 1
               email: test@adyen.com
               phone:
-                number: "0612345678"
+                number: '0612345678'
                 type: Mobile
             description: Shelly Eller
             id: AH32272223222B5CZW6QZ2V34
@@ -223,16 +223,16 @@ components:
           paymentInstrument:
             balanceAccountId: BA3227C223222B5CZW72VCC75
             card:
-              bin: "555544"
+              bin: '555544'
               brand: mc
               brandVariant: mc
               cardholderName: Carl Holden
               expiration:
-                month: "04"
-                year: "2024"
+                month: '04'
+                year: '2024'
               formFactor: virtual
-              lastFour: "2732"
-              number: "4010100000000000000"
+              lastFour: '2732'
+              number: '4010100000000000000'
             description: C. Holden - card
             id: PI32272223222B5CZW7BQ2V3T
             issuingCountryCode: GB
@@ -249,16 +249,16 @@ components:
           paymentInstrument:
             balanceAccountId: BA3227C223222B5CZW72VCC75
             card:
-              bin: "555544"
+              bin: '555544'
               brand: mc
               brandVariant: mc
               cardholderName: Carl Holden
               expiration:
-                month: "04"
-                year: "2024"
+                month: '04'
+                year: '2024'
               formFactor: virtual
-              lastFour: "2732"
-              number: "4010100000000000000"
+              lastFour: '2732'
+              number: '4010100000000000000'
             description: C. Holden - card
             id: PI32272223222B5CZW7BQ2V3T
             issuingCountryCode: GB
@@ -274,11 +274,11 @@ components:
           type: string
         capabilities:
           additionalProperties:
-            $ref: "#/components/schemas/AccountHolderCapability"
+            $ref: '#/components/schemas/AccountHolderCapability'
           description: Contains key-value pairs that specify the actions that an account holder can do in your platform. The key is a capability required for your integration. For example, **issueCard** for Issuing. The value is an object containing the settings for the capability.
           type: object
         contactDetails:
-          $ref: "#/components/schemas/ContactDetails"
+          $ref: '#/components/schemas/ContactDetails'
           deprecated: true
           description: Contact details of the account holder.
         description:
@@ -343,7 +343,7 @@ components:
             - notApplicable
           type: string
         allowedSettings:
-          $ref: "#/components/schemas/JSONObject"
+          $ref: '#/components/schemas/JSONObject'
           description: A JSON object containing the settings that are allowed for the account holder.
         enabled:
           description: Indicates whether the capability is enabled. If **false**, the capability is temporarily disabled for the account holder.
@@ -351,7 +351,7 @@ components:
         problems:
           description: Contains verification errors and the actions that you can take to resolve them.
           items:
-            $ref: "#/components/schemas/CapabilityProblem"
+            $ref: '#/components/schemas/CapabilityProblem'
           type: array
         requested:
           description: Indicates whether the capability is requested. To check whether the account holder is permitted to use the capability, refer to the `allowed` field.
@@ -368,12 +368,12 @@ components:
             - notApplicable
           type: string
         requestedSettings:
-          $ref: "#/components/schemas/JSONObject"
+          $ref: '#/components/schemas/JSONObject'
           description: A JSON object containing the settings that were requested for the account holder.
         transferInstruments:
-          description: "Contains the status of the transfer instruments associated with this capability. "
+          description: 'Contains the status of the transfer instruments associated with this capability. '
           items:
-            $ref: "#/components/schemas/AccountSupportingEntityCapability"
+            $ref: '#/components/schemas/AccountSupportingEntityCapability'
           type: array
         verificationStatus:
           description: |
@@ -398,7 +398,7 @@ components:
     AccountHolderNotificationData:
       properties:
         accountHolder:
-          $ref: "#/components/schemas/AccountHolder"
+          $ref: '#/components/schemas/AccountHolder'
           description: Contains information about the account holder resource that triggered the event.
         balancePlatform:
           description: The unique identifier of the balance platform.
@@ -407,7 +407,7 @@ components:
     AccountHolderNotificationRequest:
       properties:
         data:
-          $ref: "#/components/schemas/AccountHolderNotificationData"
+          $ref: '#/components/schemas/AccountHolderNotificationData'
           description: Contains event details.
         environment:
           description: |-
@@ -485,7 +485,7 @@ components:
     Address:
       properties:
         city:
-          description: "The name of the city. Maximum length: 3000 characters."
+          description: 'The name of the city. Maximum length: 3000 characters.'
           maxLength: 3000
           type: string
         country:
@@ -494,7 +494,7 @@ components:
             > If you don't know the country or are not collecting the country from the shopper, provide `country` as `ZZ`.
           type: string
         houseNumberOrName:
-          description: "The number or name of the house. Maximum length: 3000 characters."
+          description: 'The number or name of the house. Maximum length: 3000 characters.'
           maxLength: 3000
           type: string
         postalCode:
@@ -549,7 +549,7 @@ components:
           minLength: 1
           type: string
         phone:
-          $ref: "#/components/schemas/Phone"
+          $ref: '#/components/schemas/Phone'
           description: |-
             The phone number where the one-time password (OTP) is sent.
 
@@ -594,7 +594,7 @@ components:
         balances:
           description: List of balances with the amount and currency.
           items:
-            $ref: "#/components/schemas/Balance"
+            $ref: '#/components/schemas/Balance'
           type: array
         defaultCurrencyCode:
           description: |-
@@ -611,7 +611,7 @@ components:
         paymentInstruments:
           description: List of [payment instruments](https://docs.adyen.com/api-explorer/#/balanceplatform/latest/post/paymentInstruments) associated with the balance account.
           items:
-            $ref: "#/components/schemas/PaymentInstrumentReference"
+            $ref: '#/components/schemas/PaymentInstrumentReference'
           type: array
         reference:
           description: Your reference for the balance account, maximum 150 characters.
@@ -619,7 +619,7 @@ components:
           type: string
         status:
           description: |
-            The status of the balance account, set to **Active** by default. 
+            The status of the balance account, set to **Active** by default.
           enum:
             - Active
             - Closed
@@ -628,7 +628,7 @@ components:
           type: string
         sweepConfigurations:
           additionalProperties:
-            $ref: "#/components/schemas/SweepConfiguration"
+            $ref: '#/components/schemas/SweepConfiguration'
           description: |-
             Contains key-value pairs that specify configurations for balance sweeps per currency code. A sweep pulls in or pushes out funds based on a defined schedule, amount, and a source (for pulling funds) or a destination (for pushing funds).
 
@@ -646,7 +646,7 @@ components:
     BalanceAccountNotificationData:
       properties:
         balanceAccount:
-          $ref: "#/components/schemas/BalanceAccount"
+          $ref: '#/components/schemas/BalanceAccount'
         balancePlatform:
           description: The unique identifier of the balance platform.
           type: string
@@ -654,7 +654,7 @@ components:
     BalanceAccountNotificationRequest:
       properties:
         data:
-          $ref: "#/components/schemas/BalanceAccountNotificationData"
+          $ref: '#/components/schemas/BalanceAccountNotificationData'
           description: Contains event details.
         environment:
           description: |-
@@ -726,7 +726,7 @@ components:
     Card:
       properties:
         authentication:
-          $ref: "#/components/schemas/Authentication"
+          $ref: '#/components/schemas/Authentication'
           description: Contains the card user's password and mobile phone number. This is required when you issue cards that can be used to make online payments within the EEA and the UK, or can be added to digital wallets. Refer to [3D Secure and digital wallets](https://docs.adyen.com/issuing/3d-secure-and-wallets) for more information.
         bin:
           description: The bank identification number (BIN) of the card number.
@@ -748,7 +748,7 @@ components:
           maxLength: 26
           type: string
         configuration:
-          $ref: "#/components/schemas/CardConfiguration"
+          $ref: '#/components/schemas/CardConfiguration'
           description: |-
             Settings required when creating a physical or a virtual card. 
 
@@ -759,10 +759,10 @@ components:
             > The CVC2 is not sent by default. This is only returned in the `POST` response for single-use virtual cards.
           type: string
         deliveryContact:
-          $ref: "#/components/schemas/Contact"
+          $ref: '#/components/schemas/Contact'
           description: The delivery contact (name and address) for physical card delivery.
         expiration:
-          $ref: "#/components/schemas/Expiry"
+          $ref: '#/components/schemas/Expiry'
           description: The expiration date of the card.
         formFactor:
           description: |-
@@ -801,7 +801,7 @@ components:
           maxLength: 255
           type: string
         bulkAddress:
-          $ref: "#/components/schemas/BulkAddress"
+          $ref: '#/components/schemas/BulkAddress'
           description: Overrides the shipment bulk address defined in the `configurationProfileId`.
         cardImageId:
           description: The ID of the card image. This is the image that will be printed on the full front of the card.
@@ -822,7 +822,7 @@ components:
           description: The three-letter [ISO-4217](https://en.wikipedia.org/wiki/ISO_4217) currency code of the card. For example, **EUR**.
           type: string
         envelope:
-          description: "Overrides the envelope design ID defined in the `configurationProfileId`. "
+          description: 'Overrides the envelope design ID defined in the `configurationProfileId`. '
           type: string
         insert:
           description: Overrides the insert design ID defined in the `configurationProfileId`. An insert is any additional material, such as marketing materials, that are shipped together with the card.
@@ -848,7 +848,7 @@ components:
           description: The unique identifier of the balance platform.
           type: string
         card:
-          $ref: "#/components/schemas/CardOrderItemDeliveryStatus"
+          $ref: '#/components/schemas/CardOrderItemDeliveryStatus'
           description: Card delivery status.
         cardOrderItemReference:
           description: The unique identifier of the card order.
@@ -864,7 +864,7 @@ components:
           description: The unique identifier of the payment instrument related to the card order.
           type: string
         pin:
-          $ref: "#/components/schemas/CardOrderItemDeliveryStatus"
+          $ref: '#/components/schemas/CardOrderItemDeliveryStatus'
           description: PIN delivery status.
         shippingMethod:
           description: Shipping method used to deliver the card or the PIN.
@@ -896,7 +896,7 @@ components:
     CardOrderNotificationRequest:
       properties:
         data:
-          $ref: "#/components/schemas/CardOrderItem"
+          $ref: '#/components/schemas/CardOrderItem'
           description: Contains event details.
         environment:
           description: |-
@@ -918,7 +918,7 @@ components:
     Contact:
       properties:
         address:
-          $ref: "#/components/schemas/Address"
+          $ref: '#/components/schemas/Address'
           description: The address of the contact.
         email:
           description: The e-mail address of the contact.
@@ -929,13 +929,13 @@ components:
             **Examples:** "0031 6 11 22 33 44", "+316/1122-3344", "(0031) 611223344"
           type: string
         name:
-          $ref: "#/components/schemas/Name"
+          $ref: '#/components/schemas/Name'
           description: The name of the contact.
         personalData:
-          $ref: "#/components/schemas/PersonalData"
+          $ref: '#/components/schemas/PersonalData'
           description: Personal data of the contact.
         phoneNumber:
-          $ref: "#/components/schemas/PhoneNumber"
+          $ref: '#/components/schemas/PhoneNumber'
           description: The phone number of the contact.
         webAddress:
           description: The URL of the website of the contact.
@@ -944,13 +944,13 @@ components:
     ContactDetails:
       properties:
         address:
-          $ref: "#/components/schemas/Address"
+          $ref: '#/components/schemas/Address'
           description: The address of the account holder.
         email:
           description: The email address of the account holder.
           type: string
         phone:
-          $ref: "#/components/schemas/Phone"
+          $ref: '#/components/schemas/Phone'
           description: The phone number of the account holder.
         webAddress:
           description: The URL of the account holder's website.
@@ -1023,7 +1023,7 @@ components:
           type: string
         type:
           default: iban
-          description: "**iban**"
+          description: '**iban**'
           enum:
             - iban
           type: string
@@ -1035,10 +1035,10 @@ components:
       properties:
         paths:
           items:
-            $ref: "#/components/schemas/JSONPath"
+            $ref: '#/components/schemas/JSONPath'
           type: array
         rootPath:
-          $ref: "#/components/schemas/JSONPath"
+          $ref: '#/components/schemas/JSONPath'
       type: object
     JSONPath:
       properties:
@@ -1067,10 +1067,10 @@ components:
         bankAccount:
           description: Contains the business account details. Returned when you create a payment instrument with `type` **bankAccount**.
           oneOf:
-            - $ref: "#/components/schemas/IbanAccountIdentification"
-            - $ref: "#/components/schemas/USLocalAccountIdentification"
+            - $ref: '#/components/schemas/IbanAccountIdentification'
+            - $ref: '#/components/schemas/USLocalAccountIdentification'
         card:
-          $ref: "#/components/schemas/Card"
+          $ref: '#/components/schemas/Card'
           description: Contains information about the card payment instrument. Returned when you create a payment instrument with `type` **card**.
         description:
           description: Your description for the payment instrument, maximum 300 characters.
@@ -1090,28 +1090,29 @@ components:
           maxLength: 150
           type: string
         status:
-          description: "The status of the payment instrument. If a status is not specified when creating a payment instrument, it is set to **Active** by default. However, there can be exceptions for cards based on the `card.formFactor` and the `issuingCountryCode`. For example, when issuing physical cards in the US, the default status is **Requested**.
+          description:
+            "The status of the payment instrument. If a status is not specified when creating a payment instrument, it is set to **Active** by default. However, there can be exceptions for cards based on the `card.formFactor` and the `issuingCountryCode`. For example, when issuing physical cards in the US, the default status is **Requested**.
 
 
-            Possible values:\ 
+            Possible values:\
 
 
-            \ * **Active**:  The payment instrument is active and can be used to make payments.\ 
+            \ * **Active**:  The payment instrument is active and can be used to make payments.\
 
 
-            \ * **Requested**: The payment instrument has been requested. This state is applicable for physical cards.\ 
+            \ * **Requested**: The payment instrument has been requested. This state is applicable for physical cards.\
 
 
-            * **Inactive**: The payment instrument is inactive and cannot be used to make payments.\ 
+            * **Inactive**: The payment instrument is inactive and cannot be used to make payments.\
 
 
-            \ * **Suspended**: The payment instrument is temporarily suspended and cannot be used to make payments.\ 
+            \ * **Suspended**: The payment instrument is temporarily suspended and cannot be used to make payments.\
 
 
-            \ * **Closed**: The payment instrument is permanently closed. This action cannot be undone.\ 
+            \ * **Closed**: The payment instrument is permanently closed. This action cannot be undone.\
 
 
-            * **Stolen**\ 
+            * **Stolen**\
 
 
             \ * **Lost**
@@ -1148,7 +1149,7 @@ components:
           description: |-
             Type of payment instrument.
 
-            Possible value: **card**, **bankAccount**. 
+            Possible value: **card**, **bankAccount**.
           enum:
             - bankAccount
             - card
@@ -1165,7 +1166,7 @@ components:
           description: The unique identifier of the balance platform.
           type: string
         paymentInstrument:
-          $ref: "#/components/schemas/PaymentInstrument"
+          $ref: '#/components/schemas/PaymentInstrument'
           description: Contains information about the payment instrument resource that triggered the event.
       type: object
     PaymentInstrumentReference:
@@ -1179,7 +1180,7 @@ components:
     PaymentNotificationRequest:
       properties:
         data:
-          $ref: "#/components/schemas/PaymentInstrumentNotificationData"
+          $ref: '#/components/schemas/PaymentInstrumentNotificationData'
           description: Contains event details.
         environment:
           description: |-
@@ -1291,8 +1292,8 @@ components:
         schedule:
           description: The schedule when the `triggerAmount` is evaluated. If the balance meets the threshold, funds are pushed out of or pulled in to the balance account.
           oneOf:
-            - $ref: "#/components/schemas/CronSweepSchedule"
-            - $ref: "#/components/schemas/SweepSchedule"
+            - $ref: '#/components/schemas/CronSweepSchedule'
+            - $ref: '#/components/schemas/SweepSchedule'
         status:
           description: |+
             The status of the sweep. If not provided, by default, this is set to **active**.
@@ -1313,10 +1314,10 @@ components:
             - description: The sweep is disabled and cannot be triggered.
               value: inactive
         sweepAmount:
-          $ref: "#/components/schemas/Amount"
+          $ref: '#/components/schemas/Amount'
           description: The amount that must be pushed out or pulled in. You can configure either `sweepAmount` or `targetAmount`, not both.
         targetAmount:
-          $ref: "#/components/schemas/Amount"
+          $ref: '#/components/schemas/Amount'
           description: The amount that must be available in the balance account after the sweep. You can configure either `sweepAmount` or `targetAmount`, not both.
         transferInstrumentId:
           description: |-
@@ -1325,7 +1326,7 @@ components:
             You can also use this in combination with a `merchantAccount` and a `type` **pull** to start a direct debit request from the source transfer instrument. To use this feature, reach out to your Adyen contact.
           type: string
         triggerAmount:
-          $ref: "#/components/schemas/Amount"
+          $ref: '#/components/schemas/Amount'
           description: |-
             The threshold amount that triggers the sweep. If not provided, by default, the amount is set to zero. The `triggerAmount` is evaluated according to the specified `schedule.type`.
 
@@ -1359,13 +1360,13 @@ components:
           description: The unique identifier of the balance platform.
           type: string
         sweep:
-          $ref: "#/components/schemas/SweepConfigurationV2"
+          $ref: '#/components/schemas/SweepConfigurationV2'
           description: Contains information about the sweep resource that triggered the event.
       type: object
     SweepConfigurationNotificationRequest:
       properties:
         data:
-          $ref: "#/components/schemas/SweepConfigurationNotificationData"
+          $ref: '#/components/schemas/SweepConfigurationNotificationData'
           description: Contains event details.
         environment:
           description: |-
@@ -1388,7 +1389,7 @@ components:
     SweepConfigurationV2:
       properties:
         counterparty:
-          $ref: "#/components/schemas/SweepCounterparty"
+          $ref: '#/components/schemas/SweepCounterparty'
           description: |-
             The destination or the source of the funds, depending on the `type`.
 
@@ -1428,8 +1429,8 @@ components:
         schedule:
           description: The schedule when the `triggerAmount` is evaluated. If the balance meets the threshold, funds are pushed out of or pulled in to the balance account.
           oneOf:
-            - $ref: "#/components/schemas/CronSweepSchedule"
-            - $ref: "#/components/schemas/SweepSchedule"
+            - $ref: '#/components/schemas/CronSweepSchedule'
+            - $ref: '#/components/schemas/SweepSchedule'
         status:
           description: |+
             The status of the sweep. If not provided, by default, this is set to **active**.
@@ -1450,13 +1451,13 @@ components:
             - description: The sweep is disabled and cannot be triggered.
               value: inactive
         sweepAmount:
-          $ref: "#/components/schemas/Amount"
+          $ref: '#/components/schemas/Amount'
           description: The amount that must be pushed out or pulled in. You can configure either `sweepAmount` or `targetAmount`, not both.
         targetAmount:
-          $ref: "#/components/schemas/Amount"
+          $ref: '#/components/schemas/Amount'
           description: The amount that must be available in the balance account after the sweep. You can configure either `sweepAmount` or `targetAmount`, not both.
         triggerAmount:
-          $ref: "#/components/schemas/Amount"
+          $ref: '#/components/schemas/Amount'
           description: |-
             The threshold amount that triggers the sweep. If not provided, by default, the amount is set to zero. The `triggerAmount` is evaluated according to the specified `schedule.type`.
 
@@ -1552,7 +1553,7 @@ components:
           type: string
         type:
           default: usLocal
-          description: "**usLocal**"
+          description: '**usLocal**'
           enum:
             - usLocal
           type: string
@@ -1579,18 +1580,18 @@ webhooks:
           application/json:
             examples:
               balancePlatform-accountHolder-created:
-                $ref: "#/components/examples/post-balancePlatform.accountHolder.created-balancePlatform-accountHolder-created"
+                $ref: '#/components/examples/post-balancePlatform.accountHolder.created-balancePlatform-accountHolder-created'
             schema:
-              $ref: "#/components/schemas/AccountHolderNotificationRequest"
+              $ref: '#/components/schemas/AccountHolderNotificationRequest'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
                 balancePlatform-accountHolder-created:
-                  $ref: "#/components/examples/WebhookAck"
+                  $ref: '#/components/examples/WebhookAck'
               schema:
-                $ref: "#/components/schemas/BalancePlatformNotificationResponse"
+                $ref: '#/components/schemas/BalancePlatformNotificationResponse'
           description: OK - the request has succeeded.
       security:
         - ApiKeyAuth: []
@@ -1609,18 +1610,18 @@ webhooks:
           application/json:
             examples:
               balancePlatform-accountHolder-updated:
-                $ref: "#/components/examples/post-balancePlatform.accountHolder.updated-balancePlatform-accountHolder-updated"
+                $ref: '#/components/examples/post-balancePlatform.accountHolder.updated-balancePlatform-accountHolder-updated'
             schema:
-              $ref: "#/components/schemas/AccountHolderNotificationRequest"
+              $ref: '#/components/schemas/AccountHolderNotificationRequest'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
                 balancePlatform-accountHolder-updated:
-                  $ref: "#/components/examples/WebhookAck"
+                  $ref: '#/components/examples/WebhookAck'
               schema:
-                $ref: "#/components/schemas/BalancePlatformNotificationResponse"
+                $ref: '#/components/schemas/BalancePlatformNotificationResponse'
           description: OK - the request has succeeded.
       security:
         - ApiKeyAuth: []
@@ -1639,18 +1640,18 @@ webhooks:
           application/json:
             examples:
               balancePlatform-balanceAccount-created:
-                $ref: "#/components/examples/post-balancePlatform.balanceAccount.created-balancePlatform-balanceAccount-created"
+                $ref: '#/components/examples/post-balancePlatform.balanceAccount.created-balancePlatform-balanceAccount-created'
             schema:
-              $ref: "#/components/schemas/BalanceAccountNotificationRequest"
+              $ref: '#/components/schemas/BalanceAccountNotificationRequest'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
                 balancePlatform-balanceAccount-created:
-                  $ref: "#/components/examples/WebhookAck"
+                  $ref: '#/components/examples/WebhookAck'
               schema:
-                $ref: "#/components/schemas/BalancePlatformNotificationResponse"
+                $ref: '#/components/schemas/BalancePlatformNotificationResponse'
           description: OK - the request has succeeded.
       security:
         - ApiKeyAuth: []
@@ -1669,18 +1670,18 @@ webhooks:
           application/json:
             examples:
               balancePlatform-balanceAccount-updated:
-                $ref: "#/components/examples/post-balancePlatform.balanceAccount.updated-balancePlatform-balanceAccount-updated"
+                $ref: '#/components/examples/post-balancePlatform.balanceAccount.updated-balancePlatform-balanceAccount-updated'
             schema:
-              $ref: "#/components/schemas/BalanceAccountNotificationRequest"
+              $ref: '#/components/schemas/BalanceAccountNotificationRequest'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
                 balancePlatform-balanceAccount-updated:
-                  $ref: "#/components/examples/WebhookAck"
+                  $ref: '#/components/examples/WebhookAck'
               schema:
-                $ref: "#/components/schemas/BalancePlatformNotificationResponse"
+                $ref: '#/components/schemas/BalancePlatformNotificationResponse'
           description: OK - the request has succeeded.
       security:
         - ApiKeyAuth: []
@@ -1699,18 +1700,18 @@ webhooks:
           application/json:
             examples:
               balancePlatform-sweep-created:
-                $ref: "#/components/examples/post-balancePlatform.balanceAccountSweep.created-balancePlatform-sweep-created"
+                $ref: '#/components/examples/post-balancePlatform.balanceAccountSweep.created-balancePlatform-sweep-created'
             schema:
-              $ref: "#/components/schemas/SweepConfigurationNotificationRequest"
+              $ref: '#/components/schemas/SweepConfigurationNotificationRequest'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
                 balancePlatform-sweep-created:
-                  $ref: "#/components/examples/WebhookAck"
+                  $ref: '#/components/examples/WebhookAck'
               schema:
-                $ref: "#/components/schemas/BalancePlatformNotificationResponse"
+                $ref: '#/components/schemas/BalancePlatformNotificationResponse'
           description: OK - the request has succeeded.
       security:
         - ApiKeyAuth: []
@@ -1729,18 +1730,18 @@ webhooks:
           application/json:
             examples:
               balancePlatform-sweep-deleted:
-                $ref: "#/components/examples/post-balancePlatform.balanceAccountSweep.deleted-balancePlatform-sweep-deleted"
+                $ref: '#/components/examples/post-balancePlatform.balanceAccountSweep.deleted-balancePlatform-sweep-deleted'
             schema:
-              $ref: "#/components/schemas/SweepConfigurationNotificationRequest"
+              $ref: '#/components/schemas/SweepConfigurationNotificationRequest'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
                 balancePlatform-sweep-deleted:
-                  $ref: "#/components/examples/WebhookAck"
+                  $ref: '#/components/examples/WebhookAck'
               schema:
-                $ref: "#/components/schemas/BalancePlatformNotificationResponse"
+                $ref: '#/components/schemas/BalancePlatformNotificationResponse'
           description: OK - the request has succeeded.
       security:
         - ApiKeyAuth: []
@@ -1759,18 +1760,18 @@ webhooks:
           application/json:
             examples:
               balancePlatform-sweep-updated:
-                $ref: "#/components/examples/post-balancePlatform.balanceAccountSweep.updated-balancePlatform-sweep-updated"
+                $ref: '#/components/examples/post-balancePlatform.balanceAccountSweep.updated-balancePlatform-sweep-updated'
             schema:
-              $ref: "#/components/schemas/SweepConfigurationNotificationRequest"
+              $ref: '#/components/schemas/SweepConfigurationNotificationRequest'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
                 balancePlatform-sweep-updated:
-                  $ref: "#/components/examples/WebhookAck"
+                  $ref: '#/components/examples/WebhookAck'
               schema:
-                $ref: "#/components/schemas/BalancePlatformNotificationResponse"
+                $ref: '#/components/schemas/BalancePlatformNotificationResponse'
           description: OK - the request has succeeded.
       security:
         - ApiKeyAuth: []
@@ -1788,13 +1789,13 @@ webhooks:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CardOrderNotificationRequest"
+              $ref: '#/components/schemas/CardOrderNotificationRequest'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/BalancePlatformNotificationResponse"
+                $ref: '#/components/schemas/BalancePlatformNotificationResponse'
           description: OK - the request has succeeded.
       security:
         - ApiKeyAuth: []
@@ -1812,13 +1813,13 @@ webhooks:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CardOrderNotificationRequest"
+              $ref: '#/components/schemas/CardOrderNotificationRequest'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/BalancePlatformNotificationResponse"
+                $ref: '#/components/schemas/BalancePlatformNotificationResponse'
           description: OK - the request has succeeded.
       security:
         - ApiKeyAuth: []
@@ -1839,18 +1840,18 @@ webhooks:
           application/json:
             examples:
               balancePlatform-paymentInstrument-created:
-                $ref: "#/components/examples/post-balancePlatform.paymentInstrument.created-balancePlatform-paymentInstrument-created"
+                $ref: '#/components/examples/post-balancePlatform.paymentInstrument.created-balancePlatform-paymentInstrument-created'
             schema:
-              $ref: "#/components/schemas/PaymentNotificationRequest"
+              $ref: '#/components/schemas/PaymentNotificationRequest'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
                 balancePlatform-paymentInstrument-created:
-                  $ref: "#/components/examples/WebhookAck"
+                  $ref: '#/components/examples/WebhookAck'
               schema:
-                $ref: "#/components/schemas/BalancePlatformNotificationResponse"
+                $ref: '#/components/schemas/BalancePlatformNotificationResponse'
           description: OK - the request has succeeded.
       security:
         - ApiKeyAuth: []
@@ -1862,25 +1863,25 @@ webhooks:
       x-sortIndex: 1
   balancePlatform.paymentInstrument.updated:
     post:
-      description: "Adyen sends this webhook when you successfully [update a payment instrument](https://docs.adyen.com/api-explorer/balanceplatform/latest/patch/paymentInstruments/_id_). "
+      description: 'Adyen sends this webhook when you successfully [update a payment instrument](https://docs.adyen.com/api-explorer/balanceplatform/latest/patch/paymentInstruments/_id_). '
       operationId: post-balancePlatform.paymentInstrument.updated
       requestBody:
         content:
           application/json:
             examples:
               balancePlatform-paymentInstrument-updated:
-                $ref: "#/components/examples/post-balancePlatform.paymentInstrument.updated-balancePlatform-paymentInstrument-updated"
+                $ref: '#/components/examples/post-balancePlatform.paymentInstrument.updated-balancePlatform-paymentInstrument-updated'
             schema:
-              $ref: "#/components/schemas/PaymentNotificationRequest"
+              $ref: '#/components/schemas/PaymentNotificationRequest'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
                 balancePlatform-paymentInstrument-updated:
-                  $ref: "#/components/examples/WebhookAck"
+                  $ref: '#/components/examples/WebhookAck'
               schema:
-                $ref: "#/components/schemas/BalancePlatformNotificationResponse"
+                $ref: '#/components/schemas/BalancePlatformNotificationResponse'
           description: OK - the request has succeeded.
       security:
         - ApiKeyAuth: []

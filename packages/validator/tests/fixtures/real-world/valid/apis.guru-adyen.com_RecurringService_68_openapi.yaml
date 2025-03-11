@@ -53,7 +53,7 @@ info:
     Get your `{PREFIX}` from your live Customer Area under **Developers** > **API URLs** > **Prefix**.
   termsOfService: https://www.adyen.com/legal/terms-and-conditions
   title: Adyen Recurring API
-  version: "68"
+  version: '68'
   x-apisguru-categories:
     - payment
   x-logo:
@@ -61,7 +61,7 @@ info:
   x-origin:
     - format: openapi
       url: https://raw.githubusercontent.com/Adyen/adyen-openapi/main/json/RecurringService-v68.json
-      version: "3.1"
+      version: '3.1'
   x-preferred: true
   x-providerName: adyen.com
   x-publicVersion: true
@@ -78,43 +78,43 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreatePermitRequest"
+              $ref: '#/components/schemas/CreatePermitRequest'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CreatePermitResult"
+                $ref: '#/components/schemas/CreatePermitResult'
           description: OK - the request has succeeded.
-        "400":
+        '400':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -122,7 +122,7 @@ paths:
       summary: Create new permits linked to a recurring contract.
       tags:
         - General
-      x-addedInVersion: "40"
+      x-addedInVersion: '40'
       x-groupName: General
       x-methodName: createPermit
       x-sortIndex: 0
@@ -138,45 +138,45 @@ paths:
           application/json:
             examples:
               disableARecurringContract:
-                $ref: "#/components/examples/post-disable-disableARecurringContract"
+                $ref: '#/components/examples/post-disable-disableARecurringContract'
             schema:
-              $ref: "#/components/schemas/DisableRequest"
+              $ref: '#/components/schemas/DisableRequest'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/DisableResult"
+                $ref: '#/components/schemas/DisableResult'
           description: OK - the request has succeeded.
-        "400":
+        '400':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -195,43 +195,43 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/DisablePermitRequest"
+              $ref: '#/components/schemas/DisablePermitRequest'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/DisablePermitResult"
+                $ref: '#/components/schemas/DisablePermitResult'
           description: OK - the request has succeeded.
-        "400":
+        '400':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -239,7 +239,7 @@ paths:
       summary: Disable an existing permit.
       tags:
         - General
-      x-addedInVersion: "61"
+      x-addedInVersion: '61'
       x-groupName: General
       x-methodName: disablePermit
       x-sortIndex: 0
@@ -255,45 +255,45 @@ paths:
           application/json:
             examples:
               listAllRecurringDetails:
-                $ref: "#/components/examples/post-listRecurringDetails-listAllRecurringDetails"
+                $ref: '#/components/examples/post-listRecurringDetails-listAllRecurringDetails'
             schema:
-              $ref: "#/components/schemas/RecurringDetailsRequest"
+              $ref: '#/components/schemas/RecurringDetailsRequest'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/RecurringDetailsResult"
+                $ref: '#/components/schemas/RecurringDetailsResult'
           description: OK - the request has succeeded.
-        "400":
+        '400':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -313,48 +313,48 @@ paths:
           application/json:
             examples:
               notifyShopperOfUpcomingRecurringPayment:
-                $ref: "#/components/examples/post-notifyShopper-notifyShopperOfUpcomingRecurringPayment"
+                $ref: '#/components/examples/post-notifyShopper-notifyShopperOfUpcomingRecurringPayment'
             schema:
-              $ref: "#/components/schemas/NotifyShopperRequest"
+              $ref: '#/components/schemas/NotifyShopperRequest'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
                 notifyShopperOfUpcomingRecurringPayment:
-                  $ref: "#/components/examples/post-notifyShopper-notifyShopperOfUpcomingRecurringPayment-200"
+                  $ref: '#/components/examples/post-notifyShopper-notifyShopperOfUpcomingRecurringPayment-200'
               schema:
-                $ref: "#/components/schemas/NotifyShopperResult"
+                $ref: '#/components/schemas/NotifyShopperResult'
           description: OK - the request has succeeded.
-        "400":
+        '400':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -377,47 +377,47 @@ paths:
           application/json:
             examples:
               scheduleAccountUpdaterWithCardData:
-                $ref: "#/components/examples/post-scheduleAccountUpdater-scheduleAccountUpdaterWithCardData"
+                $ref: '#/components/examples/post-scheduleAccountUpdater-scheduleAccountUpdaterWithCardData'
               scheduleAccountUpdaterWithTokenData:
-                $ref: "#/components/examples/post-scheduleAccountUpdater-scheduleAccountUpdaterWithTokenData"
+                $ref: '#/components/examples/post-scheduleAccountUpdater-scheduleAccountUpdaterWithTokenData'
             schema:
-              $ref: "#/components/schemas/ScheduleAccountUpdaterRequest"
+              $ref: '#/components/schemas/ScheduleAccountUpdaterRequest'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ScheduleAccountUpdaterResult"
+                $ref: '#/components/schemas/ScheduleAccountUpdaterResult'
           description: OK - the request has succeeded.
-        "400":
+        '400':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -425,7 +425,7 @@ paths:
       summary: Schedule running the Account Updater
       tags:
         - General
-      x-addedInVersion: "4"
+      x-addedInVersion: '4'
       x-groupName: General
       x-methodName: scheduleAccountUpdater
       x-sortIndex: 3
@@ -435,7 +435,7 @@ components:
       summary: Disable a recurring contract
       value:
         merchantAccount: YOUR_MERCHANT_ACCOUNT
-        recurringDetailReference: "8314442372419167"
+        recurringDetailReference: '8314442372419167'
         shopperReference: YOUR_UNIQUE_SHOPPER_ID
     post-listRecurringDetails-listAllRecurringDetails:
       summary: List recurring details of the specified contract value
@@ -455,7 +455,7 @@ components:
         merchantAccount: YOUR_MERCHANT_ACCOUNT
         reference: Example reference
         shopperReference: YOUR_SHOPPER_REFERENCE
-        storedPaymentMethodId: "8415995487234100"
+        storedPaymentMethodId: '8415995487234100'
     post-notifyShopper-notifyShopperOfUpcomingRecurringPayment-200:
       summary: Example response for request 'notifyShopper'
       value:
@@ -464,16 +464,16 @@ components:
         pspReference: M5N7TQ4TG5PFWR50
         reference: Example reference
         resultCode: Success
-        shopperNotificationReference: "9915003646742627"
-        storedPaymentMethodId: "8415995487234100"
+        shopperNotificationReference: '9915003646742627'
+        storedPaymentMethodId: '8415995487234100'
     post-scheduleAccountUpdater-scheduleAccountUpdaterWithCardData:
       summary: Schedule AccountUpdater with card data
       value:
         card:
-          expiryMonth: "03"
-          expiryYear: "2030"
+          expiryMonth: '03'
+          expiryYear: '2030'
           holderName: Adyen Test
-          number: "4111111111111111"
+          number: '4111111111111111'
         merchantAccount: YOUR_MERCHANT_ACCOUNT
         reference: YOUR_REFERENCE
     post-scheduleAccountUpdater-scheduleAccountUpdaterWithTokenData:
@@ -481,13 +481,13 @@ components:
       value:
         merchantAccount: YOUR_MERCHANT_ACCOUNT
         reference: YOUR_REFERENCE
-        selectedRecurringDetailReference: "8814232895168272"
+        selectedRecurringDetailReference: '8814232895168272'
         shopperReference: YOUR_UNIQUE_SHOPPER_ID
   schemas:
     Address:
       properties:
         city:
-          description: "The name of the city. Maximum length: 3000 characters."
+          description: 'The name of the city. Maximum length: 3000 characters.'
           maxLength: 3000
           type: string
         country:
@@ -496,7 +496,7 @@ components:
             > If you don't know the country or are not collecting the country from the shopper, provide `country` as `ZZ`.
           type: string
         houseNumberOrName:
-          description: "The number or name of the house. Maximum length: 3000 characters."
+          description: 'The number or name of the house. Maximum length: 3000 characters.'
           maxLength: 3000
           type: string
         postalCode:
@@ -543,7 +543,7 @@ components:
         bankCity:
           description: The bank city.
           type: string
-          x-addedInVersion: "18"
+          x-addedInVersion: '18'
         bankLocationId:
           description: The location id of the bank. The field value is `nil` in most cases.
           type: string
@@ -579,7 +579,7 @@ components:
         taxId:
           description: The bank account holder's tax ID.
           type: string
-          x-addedInVersion: "18"
+          x-addedInVersion: '18'
       type: object
     Card:
       properties:
@@ -646,7 +646,7 @@ components:
         permits:
           description: The permits to create for this recurring contract.
           items:
-            $ref: "#/components/schemas/Permit"
+            $ref: '#/components/schemas/Permit'
           type: array
         recurringDetailReference:
           description: The recurring contract the new permits will use.
@@ -665,7 +665,7 @@ components:
         permitResultList:
           description: List of new permits.
           items:
-            $ref: "#/components/schemas/PermitResult"
+            $ref: '#/components/schemas/PermitResult'
           type: array
         pspReference:
           description: A unique reference associated with the request. This value is globally unique; quote it when communicating with us about this request.
@@ -703,7 +703,7 @@ components:
             * RECURRING
             * PAYOUT
           type: string
-          x-addedInVersion: "3"
+          x-addedInVersion: '3'
         merchantAccount:
           description: The merchant account identifier with which you want to process the transaction.
           type: string
@@ -744,7 +744,7 @@ components:
     NotifyShopperRequest:
       properties:
         amount:
-          $ref: "#/components/schemas/Amount"
+          $ref: '#/components/schemas/Amount'
           description: The amount of the upcoming payment.
         billingDate:
           description: Date on which the subscription amount will be debited from the shopper. In YYYY-MM-DD format
@@ -812,7 +812,7 @@ components:
           description: The profile to apply to this permit (when using the shared permits model).
           type: string
         restriction:
-          $ref: "#/components/schemas/PermitRestriction"
+          $ref: '#/components/schemas/PermitRestriction'
           description: Permit level restriction overrides.
         resultKey:
           description: The key to link permit requests to permit results.
@@ -825,10 +825,10 @@ components:
     PermitRestriction:
       properties:
         maxAmount:
-          $ref: "#/components/schemas/Amount"
+          $ref: '#/components/schemas/Amount'
           description: The total sum amount of one or more payments made using this permit may not exceed this amount if set.
         singleTransactionLimit:
-          $ref: "#/components/schemas/Amount"
+          $ref: '#/components/schemas/Amount'
           description: The amount of any single payment using this permit may not exceed this amount if set.
         singleUse:
           description: Only a single payment can be made using this permit if set to true, otherwise multiple payments are allowed.
@@ -839,11 +839,11 @@ components:
         resultKey:
           description: The key to link permit requests to permit results.
           type: string
-          x-addedInVersion: "32"
+          x-addedInVersion: '32'
         token:
           description: The permit token which is used to make payments by the partner company.
           type: string
-          x-addedInVersion: "32"
+          x-addedInVersion: '32'
       type: object
     Recurring:
       properties:
@@ -867,18 +867,18 @@ components:
           description: Date after which no further authorisations shall be performed. Only for 3D Secure 2.
           format: date-time
           type: string
-          x-addedInVersion: "40"
+          x-addedInVersion: '40'
         recurringFrequency:
           description: Minimum number of days between authorisations. Only for 3D Secure 2.
           type: string
-          x-addedInVersion: "40"
+          x-addedInVersion: '40'
         tokenService:
           description: The name of the token service.
           enum:
             - VISATOKENSERVICE
             - MCTOKENSERVICE
           type: string
-          x-addedInVersion: "25"
+          x-addedInVersion: '25'
       type: object
     RecurringDetail:
       properties:
@@ -890,37 +890,37 @@ components:
 
             The additionalData object consists of entries, each of which includes the key and value.
           type: object
-          x-addedInVersion: "5"
+          x-addedInVersion: '5'
         alias:
           description: |-
             The alias of the credit card number.
 
             Applies only to recurring contracts storing credit card details
           type: string
-          x-addedInVersion: "4"
+          x-addedInVersion: '4'
         aliasType:
           description: |-
             The alias type of the credit card number.
 
             Applies only to recurring contracts storing credit card details.
           type: string
-          x-addedInVersion: "4"
+          x-addedInVersion: '4'
         bank:
-          $ref: "#/components/schemas/BankAccount"
+          $ref: '#/components/schemas/BankAccount'
           description: A container for bank account data.
         billingAddress:
-          $ref: "#/components/schemas/Address"
+          $ref: '#/components/schemas/Address'
           description: The billing address.
-          x-addedInVersion: "4"
+          x-addedInVersion: '4'
         card:
-          $ref: "#/components/schemas/Card"
+          $ref: '#/components/schemas/Card'
           description: A container for card data.
         contractTypes:
           description: Types of recurring contracts.
           items:
             type: string
           type: array
-          x-addedInVersion: "12"
+          x-addedInVersion: '12'
         creationDate:
           description: The date when the recurring details were created.
           format: date-time
@@ -928,7 +928,7 @@ components:
         firstPspReference:
           description: The `pspReference` of the first recurring payment that created the recurring detail.
           type: string
-          x-addedInVersion: "4"
+          x-addedInVersion: '4'
         name:
           description: An optional descriptive name for this recurring detail.
           type: string
@@ -938,25 +938,25 @@ components:
 
             This contains either the Mastercard Trace ID or the Visa Transaction ID.
           type: string
-          x-addedInVersion: "68"
+          x-addedInVersion: '68'
         paymentMethodVariant:
           description: The  type or sub-brand of a payment method used, e.g. Visa Debit, Visa Corporate, etc. For more information, refer to [PaymentMethodVariant](https://docs.adyen.com/development-resources/paymentmethodvariant).
           type: string
-          x-addedInVersion: "2"
+          x-addedInVersion: '2'
         recurringDetailReference:
           description: The reference that uniquely identifies the recurring detail.
           type: string
         shopperName:
-          $ref: "#/components/schemas/Name"
+          $ref: '#/components/schemas/Name'
           description: The name of the shopper.
-          x-addedInVersion: "4"
+          x-addedInVersion: '4'
         socialSecurityNumber:
           description: A shopper's social security number (only in countries where it is legal to collect).
           type: string
-          x-addedInVersion: "4"
+          x-addedInVersion: '4'
         tokenDetails:
-          $ref: "#/components/schemas/TokenDetails"
-          x-addedInVersion: "2"
+          $ref: '#/components/schemas/TokenDetails'
+          x-addedInVersion: '2'
         variant:
           description: The payment method, such as “mc", "visa", "ideal", "paypal".
           type: string
@@ -967,14 +967,14 @@ components:
     RecurringDetailWrapper:
       properties:
         RecurringDetail:
-          $ref: "#/components/schemas/RecurringDetail"
+          $ref: '#/components/schemas/RecurringDetail'
     RecurringDetailsRequest:
       properties:
         merchantAccount:
           description: The merchant account identifier you want to process the (transaction) request with.
           type: string
         recurring:
-          $ref: "#/components/schemas/Recurring"
+          $ref: '#/components/schemas/Recurring'
           description: |-
             A container for the type of a recurring contract to be retrieved.
 
@@ -996,7 +996,7 @@ components:
         details:
           description: Payment details stored for recurring payments.
           items:
-            $ref: "#/components/schemas/RecurringDetailWrapper"
+            $ref: '#/components/schemas/RecurringDetailWrapper'
           type: array
         lastKnownShopperEmail:
           description: The most recent email for this shopper (if available).
@@ -1013,7 +1013,7 @@ components:
           description: This field contains additional data, which may be required for a particular request.
           type: object
         card:
-          $ref: "#/components/schemas/Card"
+          $ref: '#/components/schemas/Card'
           description: |-
             Credit card data.
 
@@ -1059,7 +1059,7 @@ components:
             type: string
           description: Contains additional information about the payment. Some data fields are included only if you select them first. Go to **Customer Area** > **Developers** > **Additional data**.
           type: object
-          x-addedInVersion: "46"
+          x-addedInVersion: '46'
         errorCode:
           description: The error code mapped to the error message.
           type: string

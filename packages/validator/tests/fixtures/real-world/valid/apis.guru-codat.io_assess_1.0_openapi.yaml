@@ -12,11 +12,11 @@ info:
 
     [Read more...](https://www.codat.io/assess/)
 
-    [See our OpenAPI spec](https://github.com/codatio/oas) 
+    [See our OpenAPI spec](https://github.com/codatio/oas)
   summary: Codat's financial insights API
   termsOfService: https://www.codat.io/legals/
   title: Assess API
-  version: "1.0"
+  version: '1.0'
   x-apisguru-categories:
     - financial
   x-logo:
@@ -24,7 +24,7 @@ info:
   x-origin:
     - format: openapi
       url: https://raw.githubusercontent.com/codatio/oas/main/json/Codat-Assess.json
-      version: "3.1"
+      version: '3.1'
   x-providerName: codat.io
   x-serviceName: assess
 security:
@@ -39,7 +39,7 @@ tags:
   - description: Categorisation
     name: Categories
 paths:
-  "/companies/{companyId}/reports/enhancedBalanceSheet/accounts":
+  '/companies/{companyId}/reports/enhancedBalanceSheet/accounts':
     get:
       description: |-
         The Enhanced Balance Sheet Accounts endpoint returns a list of categorized accounts that appear on a company’s Balance Sheet along with a balance per financial statement date.
@@ -47,10 +47,10 @@ paths:
         Codat suggests a category for each account automatically, but you can [change it](/docs/assess-categorizing-accounts-ecommerce-lending) to a more suitable one.
       operationId: get-accounts-for-enhanced-balance-sheet
       parameters:
-        - $ref: "#/components/parameters/reportDate"
-        - $ref: "#/components/parameters/numberOfPeriods"
+        - $ref: '#/components/parameters/reportDate'
+        - $ref: '#/components/parameters/numberOfPeriods'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               example:
@@ -246,23 +246,23 @@ paths:
                     balance: 638999.6
                     date: 2022-08-31T00:00:00
               schema:
-                $ref: "#/components/schemas/EnhancedReport"
+                $ref: '#/components/schemas/EnhancedReport'
           description: OK
       summary: Enhanced Balance Sheet Accounts
       tags:
         - Reports
     parameters:
-      - $ref: "#/components/parameters/companyId"
-  "/companies/{companyId}/reports/enhancedCashFlow/transactions":
+      - $ref: '#/components/parameters/companyId'
+  '/companies/{companyId}/reports/enhancedCashFlow/transactions':
     get:
       description: The Enhanced Cash Flow Transactions endpoint provides a fully categorized list of banking transactions for a company. Accounts and transaction data are obtained from the company's banking data sources.
       operationId: get-enhanced-cash-flow-transactions
       parameters:
-        - $ref: "#/components/parameters/page"
-        - $ref: "#/components/parameters/pageSize"
-        - $ref: "#/components/parameters/query"
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/query'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               example:
@@ -400,23 +400,23 @@ paths:
                         transactionCategory:
                           levels: []
               schema:
-                $ref: "#/components/schemas/EnhancedCashFlowTransactions"
+                $ref: '#/components/schemas/EnhancedCashFlowTransactions'
           description: OK
       summary: Get enhanced cash flow report
       tags:
         - Reports
     parameters:
-      - $ref: "#/components/parameters/companyId"
-  "/companies/{companyId}/reports/enhancedInvoices":
+      - $ref: '#/components/parameters/companyId'
+  '/companies/{companyId}/reports/enhancedInvoices':
     get:
       description: Gets a list of invoices linked to the corresponding banking transaction
       operationId: get-enhanced-invoices-report
       parameters:
-        - $ref: "#/components/parameters/page"
-        - $ref: "#/components/parameters/pageSize"
-        - $ref: "#/components/parameters/query"
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/query'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               example:
@@ -607,15 +607,15 @@ paths:
                     status: PartiallyPaid
                     totalAmount: 7191.32
               schema:
-                $ref: "#/components/schemas/EnhancedInvoicesReport"
+                $ref: '#/components/schemas/EnhancedInvoicesReport'
               x-speakeasy-usage-example: true
           description: OK
       summary: Enhanced Invoices Report
       tags:
         - Reports
     parameters:
-      - $ref: "#/components/parameters/companyId"
-  "/companies/{companyId}/reports/enhancedProfitAndLoss/accounts":
+      - $ref: '#/components/parameters/companyId'
+  '/companies/{companyId}/reports/enhancedProfitAndLoss/accounts':
     get:
       description: |-
         The Enhanced Profit and Loss Accounts endpoint returns a list of categorized accounts that appear on a company’s Profit and Loss. It also includes a balance per the financial statement date.
@@ -623,10 +623,10 @@ paths:
         Codat suggests a category for each account automatically, but you can [change it](/docs/assess-categorizing-accounts-ecommerce-lending) to a more suitable one.
       operationId: get-accounts-for-enhanced-profit-and-loss
       parameters:
-        - $ref: "#/components/parameters/reportDate"
-        - $ref: "#/components/parameters/numberOfPeriods"
+        - $ref: '#/components/parameters/reportDate'
+        - $ref: '#/components/parameters/numberOfPeriods'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               example:
@@ -890,129 +890,129 @@ paths:
                     balance: 138457.98
                     date: 2022-08-31T00:00:00
               schema:
-                $ref: "#/components/schemas/EnhancedReport"
+                $ref: '#/components/schemas/EnhancedReport'
           description: OK
       summary: Enhanced Profit and Loss Accounts
       tags:
         - Reports
     parameters:
-      - $ref: "#/components/parameters/companyId"
+      - $ref: '#/components/parameters/companyId'
   /data/assess/accounts/categories:
     get:
       deprecated: true
       description: "Lists available account categories Codat's categorisation engine can provide. "
       operationId: list-available-account-categories
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples: {}
               schema:
-                $ref: "#/components/schemas/Categories"
+                $ref: '#/components/schemas/Categories'
           description: OK
       summary: List account categories
       tags:
         - Categories
     parameters: []
-  "/data/companies/{companyId}/assess/dataTypes/{dataType}/dataIntegrity/details":
+  '/data/companies/{companyId}/assess/dataTypes/{dataType}/dataIntegrity/details':
     get:
       description: Gets record-by-record match results for a given company and datatype, optionally restricted by a Codat query string.
       operationId: get-data-integrity-details
       parameters:
-        - $ref: "#/components/parameters/page"
-        - $ref: "#/components/parameters/pageSize"
-        - $ref: "#/components/parameters/query"
-        - $ref: "#/components/parameters/orderBy"
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/query'
+        - $ref: '#/components/parameters/orderBy'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Details"
+                $ref: '#/components/schemas/Details'
           description: OK
       summary: Lists data integrity details for date type
       tags:
         - Data integrity
     parameters:
-      - $ref: "#/components/parameters/companyId"
-      - $ref: "#/components/parameters/dataIntegrityDataType"
-  "/data/companies/{companyId}/assess/dataTypes/{dataType}/dataIntegrity/status":
+      - $ref: '#/components/parameters/companyId'
+      - $ref: '#/components/parameters/dataIntegrityDataType'
+  '/data/companies/{companyId}/assess/dataTypes/{dataType}/dataIntegrity/status':
     get:
       description: Gets match status for a given company and datatype.
       operationId: get-data-integrity-status
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Status"
+                $ref: '#/components/schemas/Status'
           description: OK
       summary: Get data integrity status
       tags:
         - Data integrity
     parameters:
-      - $ref: "#/components/parameters/companyId"
-      - $ref: "#/components/parameters/dataIntegrityDataType"
-  "/data/companies/{companyId}/assess/dataTypes/{dataType}/dataIntegrity/summaries":
+      - $ref: '#/components/parameters/companyId'
+      - $ref: '#/components/parameters/dataIntegrityDataType'
+  '/data/companies/{companyId}/assess/dataTypes/{dataType}/dataIntegrity/summaries':
     get:
       description: Gets match summary for a given company and datatype, optionally restricted by a Codat query string.
       operationId: get-data-integrity-summaries
       parameters:
-        - $ref: "#/components/parameters/query"
+        - $ref: '#/components/parameters/query'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Summaries"
+                $ref: '#/components/schemas/Summaries'
           description: OK
       summary: Get data integrity summary
       tags:
         - Data integrity
     parameters:
-      - $ref: "#/components/parameters/companyId"
-      - $ref: "#/components/parameters/dataIntegrityDataType"
-  "/data/companies/{companyId}/assess/excel":
+      - $ref: '#/components/parameters/companyId'
+      - $ref: '#/components/parameters/dataIntegrityDataType'
+  '/data/companies/{companyId}/assess/excel':
     get:
       description: Returns the status of the latest report requested.
       operationId: get-excel-report-generation-status
       parameters:
-        - $ref: "#/components/parameters/excelReportType"
+        - $ref: '#/components/parameters/excelReportType'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ExcelStatus"
+                $ref: '#/components/schemas/ExcelStatus'
           description: OK
       summary: Get status of Excel report
       tags:
         - Excel reports
     parameters:
-      - $ref: "#/components/parameters/companyId"
+      - $ref: '#/components/parameters/companyId'
     post:
       description: Generate an Excel report which can subsequently be downloaded.
       operationId: generate-excel-report
       parameters:
-        - $ref: "#/components/parameters/excelReportType"
+        - $ref: '#/components/parameters/excelReportType'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ExcelStatus"
+                $ref: '#/components/schemas/ExcelStatus'
           description: OK
       summary: Generate an Excel report
       tags:
         - Excel reports
-  "/data/companies/{companyId}/assess/excel/download":
+  '/data/companies/{companyId}/assess/excel/download':
     get:
       description: Download the previously generated Excel report to a local drive.
       operationId: get-excel-report
       parameters:
-        - $ref: "#/components/parameters/excelReportType"
+        - $ref: '#/components/parameters/excelReportType'
       responses:
-        "200":
+        '200':
           content:
             application/octet-stream:
               schema:
@@ -1022,15 +1022,15 @@ paths:
       tags:
         - Excel reports
     parameters:
-      - $ref: "#/components/parameters/companyId"
+      - $ref: '#/components/parameters/companyId'
     post:
       deprecated: true
       description: Download the previously generated Excel report to a local drive.
       operationId: download-excel-report
       parameters:
-        - $ref: "#/components/parameters/excelReportType"
+        - $ref: '#/components/parameters/excelReportType'
       responses:
-        "200":
+        '200':
           content:
             application/octet-stream:
               schema:
@@ -1039,23 +1039,23 @@ paths:
       summary: Download generated excel report
       tags:
         - Excel reports
-  "/data/companies/{companyId}/connections/{connectionId}/assess/accountingMetrics/marketing":
+  '/data/companies/{companyId}/connections/{connectionId}/assess/accountingMetrics/marketing':
     get:
       description: Request an Excel report for download.
       operationId: get-accounting-marketing-metrics
       parameters:
-        - $ref: "#/components/parameters/reportDate"
-        - $ref: "#/components/parameters/periodLength"
-        - $ref: "#/components/parameters/numberOfPeriods"
-        - $ref: "#/components/parameters/periodUnit"
-        - $ref: "#/components/parameters/includeDisplayNames"
+        - $ref: '#/components/parameters/reportDate'
+        - $ref: '#/components/parameters/periodLength'
+        - $ref: '#/components/parameters/numberOfPeriods'
+        - $ref: '#/components/parameters/periodUnit'
+        - $ref: '#/components/parameters/includeDisplayNames'
         - description: If set to true, then the system includes the input values within the response.
           in: query
           name: showInputValues
           schema:
             type: boolean
       responses:
-        "200":
+        '200':
           content:
             application/json:
               example:
@@ -1080,11 +1080,11 @@ paths:
                     - displayName: Percentage
                       index: 0
                       type: percentage
-                      units: "%"
+                      units: '%'
                     - displayName: Percentage change vs previous period
                       index: 1
                       type: percentage
-                      units: "%"
+                      units: '%'
                   reportData:
                     - components:
                         - dimension: 1
@@ -1117,26 +1117,26 @@ paths:
                     displayName: Marketing metrics
                     name: marketing_metrics
               schema:
-                $ref: "#/components/schemas/Report"
+                $ref: '#/components/schemas/Report'
           description: OK
       summary: Get the marketing metrics from an accounting source for a given company.
       tags:
         - Excel reports
     parameters:
-      - $ref: "#/components/parameters/companyId"
-      - $ref: "#/components/parameters/connectionId"
-  "/data/companies/{companyId}/connections/{connectionId}/assess/accounts/categories":
+      - $ref: '#/components/parameters/companyId'
+      - $ref: '#/components/parameters/connectionId'
+  '/data/companies/{companyId}/connections/{connectionId}/assess/accounts/categories':
     get:
       deprecated: true
       description: Lists suggested and confirmed chart of account categories for the given company and data connection.
       operationId: list-accounts-categories
       parameters:
-        - $ref: "#/components/parameters/page"
-        - $ref: "#/components/parameters/pageSize"
-        - $ref: "#/components/parameters/query"
-        - $ref: "#/components/parameters/orderBy"
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/query'
+        - $ref: '#/components/parameters/orderBy'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
@@ -1165,14 +1165,14 @@ paths:
                           type: Asset
                     totalResults: 1
               schema:
-                $ref: "#/components/schemas/CategorisedAccounts"
+                $ref: '#/components/schemas/CategorisedAccounts'
           description: OK
       summary: List suggested and confirmed account categories
       tags:
         - Categories
     parameters:
-      - $ref: "#/components/parameters/companyId"
-      - $ref: "#/components/parameters/connectionId"
+      - $ref: '#/components/parameters/companyId'
+      - $ref: '#/components/parameters/connectionId'
     patch:
       deprecated: true
       description: Comfirms the categories for all or a batch of accounts for a specific connection.
@@ -1182,38 +1182,38 @@ paths:
           application/json:
             examples: {}
             schema:
-              $ref: "#/components/schemas/ConfirmCategories"
-        description: ""
+              $ref: '#/components/schemas/ConfirmCategories'
+        description: ''
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
                 items:
-                  $ref: "#/components/schemas/CategorisedAccount"
+                  $ref: '#/components/schemas/CategorisedAccount'
                 type: array
           description: OK
       summary: Confirm categories for accounts
       tags:
         - Categories
-  "/data/companies/{companyId}/connections/{connectionId}/assess/accounts/{accountId}/categories":
+  '/data/companies/{companyId}/connections/{connectionId}/assess/accounts/{accountId}/categories':
     get:
       deprecated: true
       description: Get category for specific nominal account.
       operationId: get-account-category
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CategorisedAccount"
+                $ref: '#/components/schemas/CategorisedAccount'
           description: OK
       summary: Get suggested and/or confirmed category for a specific account
       tags:
         - Categories
     parameters:
-      - $ref: "#/components/parameters/companyId"
-      - $ref: "#/components/parameters/connectionId"
+      - $ref: '#/components/parameters/companyId'
+      - $ref: '#/components/parameters/connectionId'
       - description: Nominal account id
         in: path
         name: accountId
@@ -1228,29 +1228,29 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ConfirmCategory"
+              $ref: '#/components/schemas/ConfirmCategory'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CategorisedAccount"
+                $ref: '#/components/schemas/CategorisedAccount'
           description: OK
       summary: Patch account categories
       tags:
         - Categories
-  "/data/companies/{companyId}/connections/{connectionId}/assess/commerceMetrics/customerRetention":
+  '/data/companies/{companyId}/connections/{connectionId}/assess/commerceMetrics/customerRetention':
     get:
       description: Gets the customer retention metrics for a specific company connection, over one or more periods of time.
       operationId: get-commerce-customer-retention-metrics
       parameters:
-        - $ref: "#/components/parameters/reportDate"
-        - $ref: "#/components/parameters/periodLength"
-        - $ref: "#/components/parameters/numberOfPeriods"
-        - $ref: "#/components/parameters/periodUnit"
-        - $ref: "#/components/parameters/includeDisplayNames"
+        - $ref: '#/components/parameters/reportDate'
+        - $ref: '#/components/parameters/periodLength'
+        - $ref: '#/components/parameters/numberOfPeriods'
+        - $ref: '#/components/parameters/periodUnit'
+        - $ref: '#/components/parameters/includeDisplayNames'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               example:
@@ -1334,26 +1334,26 @@ paths:
                     displayName: Customer Retention
                     name: customer_retention
               schema:
-                $ref: "#/components/schemas/Report"
+                $ref: '#/components/schemas/Report'
           description: OK
       summary: Get the customer retention metrics for a specific company.
       tags:
         - Reports
     parameters:
-      - $ref: "#/components/parameters/companyId"
-      - $ref: "#/components/parameters/connectionId"
-  "/data/companies/{companyId}/connections/{connectionId}/assess/commerceMetrics/lifetimeValue":
+      - $ref: '#/components/parameters/companyId'
+      - $ref: '#/components/parameters/connectionId'
+  '/data/companies/{companyId}/connections/{connectionId}/assess/commerceMetrics/lifetimeValue':
     get:
       description: Gets the lifetime value metric for a specific company connection, over one or more periods of time.
       operationId: get-commerce-lifetime-value-metrics
       parameters:
-        - $ref: "#/components/parameters/reportDate"
-        - $ref: "#/components/parameters/periodLength"
-        - $ref: "#/components/parameters/numberOfPeriods"
-        - $ref: "#/components/parameters/periodUnit"
-        - $ref: "#/components/parameters/includeDisplayNames"
+        - $ref: '#/components/parameters/reportDate'
+        - $ref: '#/components/parameters/periodLength'
+        - $ref: '#/components/parameters/numberOfPeriods'
+        - $ref: '#/components/parameters/periodUnit'
+        - $ref: '#/components/parameters/includeDisplayNames'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               example:
@@ -1395,26 +1395,26 @@ paths:
                     displayName: Lifetime Value
                     name: lifetime_value
               schema:
-                $ref: "#/components/schemas/Report"
+                $ref: '#/components/schemas/Report'
           description: OK
       summary: Get the lifetime value metric for a specific company.
       tags:
         - Reports
     parameters:
-      - $ref: "#/components/parameters/companyId"
-      - $ref: "#/components/parameters/connectionId"
-  "/data/companies/{companyId}/connections/{connectionId}/assess/commerceMetrics/orders":
+      - $ref: '#/components/parameters/companyId'
+      - $ref: '#/components/parameters/connectionId'
+  '/data/companies/{companyId}/connections/{connectionId}/assess/commerceMetrics/orders':
     get:
       description: Gets the order information for a specific company connection, over one or more periods of time.
       operationId: get-commerce-orders-metrics
       parameters:
-        - $ref: "#/components/parameters/reportDate"
-        - $ref: "#/components/parameters/periodLength"
-        - $ref: "#/components/parameters/numberOfPeriods"
-        - $ref: "#/components/parameters/periodUnit"
-        - $ref: "#/components/parameters/includeDisplayNames"
+        - $ref: '#/components/parameters/reportDate'
+        - $ref: '#/components/parameters/periodLength'
+        - $ref: '#/components/parameters/numberOfPeriods'
+        - $ref: '#/components/parameters/periodUnit'
+        - $ref: '#/components/parameters/includeDisplayNames'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               example:
@@ -1479,26 +1479,26 @@ paths:
                     displayName: Orders
                     name: orders
               schema:
-                $ref: "#/components/schemas/Report"
+                $ref: '#/components/schemas/Report'
           description: OK
       summary: Get order information for a specific company
       tags:
         - Reports
     parameters:
-      - $ref: "#/components/parameters/companyId"
-      - $ref: "#/components/parameters/connectionId"
-  "/data/companies/{companyId}/connections/{connectionId}/assess/commerceMetrics/refunds":
+      - $ref: '#/components/parameters/companyId'
+      - $ref: '#/components/parameters/connectionId'
+  '/data/companies/{companyId}/connections/{connectionId}/assess/commerceMetrics/refunds':
     get:
       description: Gets the refunds information for a specific company connection, over one or more periods of time.
       operationId: get-commerce-refunds-metrics
       parameters:
-        - $ref: "#/components/parameters/reportDate"
-        - $ref: "#/components/parameters/periodLength"
-        - $ref: "#/components/parameters/numberOfPeriods"
-        - $ref: "#/components/parameters/periodUnit"
-        - $ref: "#/components/parameters/includeDisplayNames"
+        - $ref: '#/components/parameters/reportDate'
+        - $ref: '#/components/parameters/periodLength'
+        - $ref: '#/components/parameters/numberOfPeriods'
+        - $ref: '#/components/parameters/periodUnit'
+        - $ref: '#/components/parameters/includeDisplayNames'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               example:
@@ -1532,7 +1532,7 @@ paths:
                     - displayName: Percentage
                       index: 2
                       type: percentage
-                      units: "%"
+                      units: '%'
                   reportData:
                     - components:
                         - dimension: 1
@@ -1567,26 +1567,26 @@ paths:
                     displayName: Refunds
                     name: refunds
               schema:
-                $ref: "#/components/schemas/Report"
+                $ref: '#/components/schemas/Report'
           description: OK
       summary: Get the refunds information for a specific company
       tags:
         - Reports
     parameters:
-      - $ref: "#/components/parameters/companyId"
-      - $ref: "#/components/parameters/connectionId"
-  "/data/companies/{companyId}/connections/{connectionId}/assess/commerceMetrics/revenue":
+      - $ref: '#/components/parameters/companyId'
+      - $ref: '#/components/parameters/connectionId'
+  '/data/companies/{companyId}/connections/{connectionId}/assess/commerceMetrics/revenue':
     get:
       description: Get the revenue and revenue growth for a specific company connection, over one or more periods of time.
       operationId: get-commerce-revenue-metrics
       parameters:
-        - $ref: "#/components/parameters/reportDate"
-        - $ref: "#/components/parameters/periodLength"
-        - $ref: "#/components/parameters/numberOfPeriods"
-        - $ref: "#/components/parameters/periodUnit"
-        - $ref: "#/components/parameters/includeDisplayNames"
+        - $ref: '#/components/parameters/reportDate'
+        - $ref: '#/components/parameters/periodLength'
+        - $ref: '#/components/parameters/numberOfPeriods'
+        - $ref: '#/components/parameters/periodUnit'
+        - $ref: '#/components/parameters/includeDisplayNames'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               example:
@@ -1615,7 +1615,7 @@ paths:
                     - displayName: Percentage change vs. previous period
                       index: 1
                       type: percentage
-                      units: "%"
+                      units: '%'
                   reportData:
                     - components:
                         - dimension: 1
@@ -1642,26 +1642,26 @@ paths:
                     displayName: Revenue
                     name: revenue
               schema:
-                $ref: "#/components/schemas/Report"
+                $ref: '#/components/schemas/Report'
           description: OK
       summary: Commerce Revenue Metrics
       tags:
         - Reports
     parameters:
-      - $ref: "#/components/parameters/companyId"
-      - $ref: "#/components/parameters/connectionId"
-  "/data/companies/{companyId}/connections/{connectionId}/assess/enhancedBalanceSheet":
+      - $ref: '#/components/parameters/companyId'
+      - $ref: '#/components/parameters/connectionId'
+  '/data/companies/{companyId}/connections/{connectionId}/assess/enhancedBalanceSheet':
     get:
       deprecated: true
       description: Gets a fully categorized balance sheet statement for a given company, over one or more period(s).
       operationId: get-enhanced-balance-sheet
       parameters:
-        - $ref: "#/components/parameters/reportDate"
-        - $ref: "#/components/parameters/periodLength"
-        - $ref: "#/components/parameters/numberOfPeriods"
-        - $ref: "#/components/parameters/includeDisplayNames"
+        - $ref: '#/components/parameters/reportDate'
+        - $ref: '#/components/parameters/periodLength'
+        - $ref: '#/components/parameters/numberOfPeriods'
+        - $ref: '#/components/parameters/includeDisplayNames'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               example:
@@ -1820,7 +1820,7 @@ paths:
                   - displayName: Percentage change vs previous period
                     index: 1
                     type: percentage
-                    units: "%"
+                    units: '%'
                 reportData:
                   - components:
                       - components:
@@ -2199,26 +2199,26 @@ paths:
                   displayName: Enhanced Balance Sheet
                   name: enhanced_balance_sheet
               schema:
-                $ref: "#/components/schemas/Report"
+                $ref: '#/components/schemas/Report'
           description: OK
       summary: Enhanced Balance Sheet
       tags:
         - Reports
     parameters:
-      - $ref: "#/components/parameters/companyId"
-      - $ref: "#/components/parameters/connectionId"
-  "/data/companies/{companyId}/connections/{connectionId}/assess/enhancedProfitAndLoss":
+      - $ref: '#/components/parameters/companyId'
+      - $ref: '#/components/parameters/connectionId'
+  '/data/companies/{companyId}/connections/{connectionId}/assess/enhancedProfitAndLoss':
     get:
       deprecated: true
       description: Gets a fully categorized profit and loss statement for a given company, over one or more period(s).
       operationId: get-enhanced-profit-and-loss
       parameters:
-        - $ref: "#/components/parameters/reportDate"
-        - $ref: "#/components/parameters/periodLength"
-        - $ref: "#/components/parameters/numberOfPeriods"
-        - $ref: "#/components/parameters/includeDisplayNames"
+        - $ref: '#/components/parameters/reportDate'
+        - $ref: '#/components/parameters/periodLength'
+        - $ref: '#/components/parameters/numberOfPeriods'
+        - $ref: '#/components/parameters/includeDisplayNames'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               example:
@@ -2405,7 +2405,7 @@ paths:
                   - displayName: Percentage change vs previous period
                     index: 1
                     type: percentage
-                    units: "%"
+                    units: '%'
                 reportData:
                   - components:
                       - components:
@@ -2847,30 +2847,30 @@ paths:
                   displayName: Enhanced Profit and Loss
                   name: enhanced_profit_and_loss
               schema:
-                $ref: "#/components/schemas/Report"
+                $ref: '#/components/schemas/Report'
           description: OK
       summary: Enhanced Profit and Loss
       tags:
         - Reports
     parameters:
-      - $ref: "#/components/parameters/companyId"
-      - $ref: "#/components/parameters/connectionId"
-  "/data/companies/{companyId}/connections/{connectionId}/assess/financialMetrics":
+      - $ref: '#/components/parameters/companyId'
+      - $ref: '#/components/parameters/connectionId'
+  '/data/companies/{companyId}/connections/{connectionId}/assess/financialMetrics':
     get:
       deprecated: true
       description: Gets all the available financial metrics for a given company, over one or more periods.
       operationId: get-enhanced-financial-metrics
       parameters:
-        - $ref: "#/components/parameters/reportDate"
-        - $ref: "#/components/parameters/periodLength"
-        - $ref: "#/components/parameters/numberOfPeriods"
+        - $ref: '#/components/parameters/reportDate'
+        - $ref: '#/components/parameters/periodLength'
+        - $ref: '#/components/parameters/numberOfPeriods'
         - description: If set to true, then the system includes the input values within the response.
           in: query
           name: showMetricInputs
           schema:
             type: boolean
       responses:
-        "200":
+        '200':
           content:
             application/json:
               example:
@@ -2882,9 +2882,9 @@ paths:
                   - errors:
                       - details:
                           accountIds:
-                            - "123"
-                            - "456"
-                            - "789"
+                            - '123'
+                            - '456'
+                            - '789'
                         message: There are uncategorized accounts, see details.
                         type: UncategorizedAccounts
                     key: EBITDA
@@ -2906,48 +2906,48 @@ paths:
                         value: 0
                 periodUnit: Month
               schema:
-                $ref: "#/components/schemas/FinancialMetrics"
+                $ref: '#/components/schemas/FinancialMetrics'
           description: OK
       summary: List financial metrics
       tags:
         - Reports
     parameters:
-      - $ref: "#/components/parameters/companyId"
-      - $ref: "#/components/parameters/connectionId"
-  "/data/companies/{companyId}/connections/{connectionId}/assess/subscriptions/mrr":
+      - $ref: '#/components/parameters/companyId'
+      - $ref: '#/components/parameters/connectionId'
+  '/data/companies/{companyId}/connections/{connectionId}/assess/subscriptions/mrr':
     get:
       description: Gets key metrics for subscription revenue.
       operationId: get-recurring-revenue-metrics
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Report"
+                $ref: '#/components/schemas/Report'
           description: OK
       summary: Get key metrics for subscription revenue
       tags:
         - Reports
     parameters:
-      - $ref: "#/components/parameters/companyId"
-      - $ref: "#/components/parameters/connectionId"
-  "/data/companies/{companyId}/connections/{connectionId}/assess/subscriptions/process":
+      - $ref: '#/components/parameters/companyId'
+      - $ref: '#/components/parameters/connectionId'
+  '/data/companies/{companyId}/connections/{connectionId}/assess/subscriptions/process':
     get:
       description: Request production of key subscription revenue metrics.
       operationId: request-recurring-revenue-metrics
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Report"
+                $ref: '#/components/schemas/Report'
           description: OK
       summary: Request production of key subscription revenue metrics
       tags:
         - Reports
     parameters:
-      - $ref: "#/components/parameters/companyId"
-      - $ref: "#/components/parameters/connectionId"
+      - $ref: '#/components/parameters/companyId'
+      - $ref: '#/components/parameters/connectionId'
 components:
   parameters:
     companyId:
@@ -3103,7 +3103,7 @@ components:
           description: Name of your client in Codat.
           type: string
         companyId:
-          $ref: "#/components/parameters/companyId/schema"
+          $ref: '#/components/parameters/companyId/schema'
         data:
           properties:
             modifiedDate:
@@ -3113,7 +3113,7 @@ components:
               type: string
           type: object
         dataConnectionId:
-          $ref: "#/components/parameters/connectionId/schema"
+          $ref: '#/components/parameters/connectionId/schema'
         message:
           description: A human readable message about the webhook.
           type: string
@@ -3151,7 +3151,7 @@ components:
     Categories:
       items:
         allOf:
-          - $ref: "#/components/schemas/AccountCategory"
+          - $ref: '#/components/schemas/AccountCategory'
           - properties:
               detailTypeDescription:
                 description: A description of the fully categorized (to detail type) account.
@@ -3182,10 +3182,10 @@ components:
       definitions:
         accountCategoryDeprecated:
           allOf:
-            - $ref: "#/components/schemas/AccountCategory"
+            - $ref: '#/components/schemas/AccountCategory'
             - properties:
                 modifiedDate:
-                  $ref: "#/components/schemas/ExcelStatus/properties/lastGenerated"
+                  $ref: '#/components/schemas/ExcelStatus/properties/lastGenerated'
                   description: The date on which this record was last modified in Codat.
               title: ModifiedDate
               type: object
@@ -3219,11 +3219,11 @@ components:
             type: Asset
       properties:
         accountRef:
-          $ref: "#/components/schemas/CategorisedAccount/definitions/accountRef"
+          $ref: '#/components/schemas/CategorisedAccount/definitions/accountRef'
         confirmed:
-          $ref: "#/components/schemas/CategorisedAccount/definitions/accountCategoryDeprecated"
+          $ref: '#/components/schemas/CategorisedAccount/definitions/accountCategoryDeprecated'
         suggested:
-          $ref: "#/components/schemas/CategorisedAccount/definitions/accountCategoryDeprecated"
+          $ref: '#/components/schemas/CategorisedAccount/definitions/accountCategoryDeprecated'
       title: Categorised account
       type: object
     CategorisedAccounts:
@@ -3232,15 +3232,15 @@ components:
             results:
               description: A list confirmed and suggested account categories.
               items:
-                $ref: "#/components/schemas/CategorisedAccount"
+                $ref: '#/components/schemas/CategorisedAccount'
               type: array
           type: object
-        - $ref: "#/components/schemas/PagingInfo"
+        - $ref: '#/components/schemas/PagingInfo'
       x-internal: true
     ConfirmCategories:
       properties:
         categories:
-          description: "List of confirmed account categories set manually by the user. "
+          description: 'List of confirmed account categories set manually by the user. '
           items:
             properties:
               accountRef:
@@ -3261,7 +3261,7 @@ components:
                 x-stoplight:
                   id: 516bf0ecc4907
               confirmed:
-                $ref: "#/components/schemas/AccountCategory"
+                $ref: '#/components/schemas/AccountCategory'
             type: object
           type: array
       type: object
@@ -3269,7 +3269,7 @@ components:
     ConfirmCategory:
       properties:
         confirmed:
-          $ref: "#/components/schemas/AccountCategory"
+          $ref: '#/components/schemas/AccountCategory'
       required:
         - confirmed
       type: object
@@ -3331,7 +3331,7 @@ components:
               format: uuid
               type: string
             currency:
-              $ref: "#/components/schemas/Currency"
+              $ref: '#/components/schemas/Currency'
               description: The currency of the transaction.
             date:
               description: The date of the transaction.
@@ -3356,10 +3356,10 @@ components:
           readOnly: true
           type: string
         currency:
-          $ref: "#/components/schemas/Currency"
+          $ref: '#/components/schemas/Currency'
           description: The currency of the transaction.
         date:
-          $ref: "#/components/schemas/ExcelStatus/properties/lastGenerated"
+          $ref: '#/components/schemas/ExcelStatus/properties/lastGenerated'
           description: The date of the transaction.
         description:
           description: The transaction description.
@@ -3369,7 +3369,7 @@ components:
           type: string
         matches:
           items:
-            $ref: "#/components/schemas/DataIntegrityDetails/definitions/dataIntegrityMatch"
+            $ref: '#/components/schemas/DataIntegrityDetails/definitions/dataIntegrityMatch'
           type: array
         type:
           description: The data type of the record.
@@ -3378,23 +3378,23 @@ components:
       type: object
     DataIntegrityStatus:
       allOf:
-        - $ref: "#/components/schemas/DataIntegritySummary/definitions/dataIntegrityType"
+        - $ref: '#/components/schemas/DataIntegritySummary/definitions/dataIntegrityType'
         - properties:
             amounts:
-              $ref: "#/components/schemas/DataIntegrityStatus/definitions/dataIntegrityAmounts"
+              $ref: '#/components/schemas/DataIntegrityStatus/definitions/dataIntegrityAmounts'
             connectionIds:
-              $ref: "#/components/schemas/DataIntegrityStatus/definitions/dataIntegrityConnectionId"
+              $ref: '#/components/schemas/DataIntegrityStatus/definitions/dataIntegrityConnectionId'
             dates:
-              $ref: "#/components/schemas/DataIntegrityStatus/definitions/dataIntegrityDates"
+              $ref: '#/components/schemas/DataIntegrityStatus/definitions/dataIntegrityDates'
             statusInfo:
-              $ref: "#/components/schemas/DataIntegrityStatus/definitions/dataIntegrityStatusInfo"
+              $ref: '#/components/schemas/DataIntegrityStatus/definitions/dataIntegrityStatusInfo'
           type: object
       definitions:
         dataIntegrityAmounts:
           description: Only returned for transactions. For accounts, there is nothing returned.
           properties:
             currency:
-              $ref: "#/components/schemas/Currency"
+              $ref: '#/components/schemas/Currency'
             max:
               description: Highest value of transaction set.
               type: number
@@ -3419,28 +3419,28 @@ components:
           description: Only returned for transactions. For accounts, there is nothing returned.
           properties:
             maxDate:
-              $ref: "#/components/schemas/ExcelStatus/properties/lastGenerated"
+              $ref: '#/components/schemas/ExcelStatus/properties/lastGenerated'
               description: Latest date of transaction set.
               readOnly: true
             maxOverlappingDate:
-              $ref: "#/components/schemas/ExcelStatus/properties/lastGenerated"
+              $ref: '#/components/schemas/ExcelStatus/properties/lastGenerated'
               description: Latest date where transactions exist in both account and banking platforms.
               readOnly: true
             minDate:
-              $ref: "#/components/schemas/ExcelStatus/properties/lastGenerated"
+              $ref: '#/components/schemas/ExcelStatus/properties/lastGenerated'
               description: Earliest date of transaction set.
               readOnly: true
             minOverlappingDate:
-              $ref: "#/components/schemas/ExcelStatus/properties/lastGenerated"
+              $ref: '#/components/schemas/ExcelStatus/properties/lastGenerated'
               description: Earliest date where transactions exist in both accounting and banking platforms.
               readOnly: true
           type: object
         dataIntegrityStatusInfo:
           properties:
             currentStatus:
-              $ref: "#/components/schemas/DataIntegrityStatus/definitions/integrityStatus"
+              $ref: '#/components/schemas/DataIntegrityStatus/definitions/integrityStatus'
             lastMatched:
-              $ref: "#/components/schemas/ExcelStatus/properties/lastGenerated"
+              $ref: '#/components/schemas/ExcelStatus/properties/lastGenerated'
               description: The date the matching algorithm last ran against the company’s data type specified.
               readOnly: true
               type: string
@@ -3482,18 +3482,18 @@ components:
       type: object
     DataIntegritySummary:
       allOf:
-        - $ref: "#/components/schemas/DataIntegritySummary/definitions/dataIntegrityType"
+        - $ref: '#/components/schemas/DataIntegritySummary/definitions/dataIntegrityType'
         - properties:
             byAmount:
-              $ref: "#/components/schemas/DataIntegritySummary/definitions/dataIntegrityByAmount"
+              $ref: '#/components/schemas/DataIntegritySummary/definitions/dataIntegrityByAmount'
             byCount:
-              $ref: "#/components/schemas/DataIntegritySummary/definitions/dataIntegrityByCount"
+              $ref: '#/components/schemas/DataIntegritySummary/definitions/dataIntegrityByCount'
           type: object
       definitions:
         dataIntegrityByAmount:
           properties:
             currency:
-              $ref: "#/components/schemas/Currency"
+              $ref: '#/components/schemas/Currency'
             matchPercentage:
               description: The percentage of the absolute value of transactions of the type specified in the route which have a match.
               type: number
@@ -3537,10 +3537,10 @@ components:
         - properties:
             results:
               items:
-                $ref: "#/components/schemas/DataIntegrityDetails"
+                $ref: '#/components/schemas/DataIntegrityDetails'
               type: array
           type: object
-        - $ref: "#/components/schemas/PagingInfo"
+        - $ref: '#/components/schemas/PagingInfo'
       x-internal: true
     EnhancedCashFlowTransactions:
       definitions:
@@ -3556,7 +3556,7 @@ components:
               description: The type of banking account, e.g. credit or debit.
               type: string
             currency:
-              $ref: "#/components/schemas/Currency"
+              $ref: '#/components/schemas/Currency'
               description: The currency code for the bank account.
             currentBalance:
               description: The balance of the bank account.
@@ -3565,15 +3565,15 @@ components:
               description: Name of the banking data source, e.g. "Plaid".
               type: string
             sourceRef:
-              $ref: "#/components/schemas/EnhancedCashFlowTransactions/definitions/sourceRef"
+              $ref: '#/components/schemas/EnhancedCashFlowTransactions/definitions/sourceRef'
           title: Accounts
           type: object
         dataSource:
           properties:
             accounts:
-              description: "An array containing bank account data for each connected banking data source that have the following data types enabled: `banking-accounts`, `banking-transactions`."
+              description: 'An array containing bank account data for each connected banking data source that have the following data types enabled: `banking-accounts`, `banking-transactions`.'
               items:
-                $ref: "#/components/schemas/EnhancedCashFlowTransactions/definitions/accounts"
+                $ref: '#/components/schemas/EnhancedCashFlowTransactions/definitions/accounts'
               type: array
           type: object
         enhancedCashFlowItem:
@@ -3581,7 +3581,7 @@ components:
             transactions:
               description: An array of transaction data.
               items:
-                $ref: "#/components/schemas/EnhancedCashFlowTransactions/definitions/enhancedCashFlowTransaction"
+                $ref: '#/components/schemas/EnhancedCashFlowTransactions/definitions/enhancedCashFlowTransaction'
               type: array
           type: object
         enhancedCashFlowTransaction:
@@ -3592,7 +3592,7 @@ components:
             currency:
               type: string
             date:
-              $ref: "#/components/schemas/ExcelStatus/properties/lastGenerated"
+              $ref: '#/components/schemas/ExcelStatus/properties/lastGenerated'
               description: The date the bank transaction was posted.
             description:
               description: The description of the bank transaction.
@@ -3601,9 +3601,9 @@ components:
               description: The unique identifier of the bank transaction.
               type: string
             sourceRef:
-              $ref: "#/components/schemas/EnhancedCashFlowTransactions/definitions/sourceRef"
+              $ref: '#/components/schemas/EnhancedCashFlowTransactions/definitions/sourceRef'
             transactionCategory:
-              $ref: "#/components/schemas/EnhancedCashFlowTransactions/definitions/transactionCategory"
+              $ref: '#/components/schemas/EnhancedCashFlowTransactions/definitions/transactionCategory'
               description: Contains an array of category levels.
           title: Cash flow transaction
           type: object
@@ -3631,17 +3631,17 @@ components:
               type: array
           title: Transaction category
           type: object
-      description: ""
+      description: ''
       properties:
         dataSources:
           items:
-            $ref: "#/components/schemas/EnhancedCashFlowTransactions/definitions/dataSource"
+            $ref: '#/components/schemas/EnhancedCashFlowTransactions/definitions/dataSource'
           type: array
         reportInfo:
-          $ref: "#/components/schemas/EnhancedInvoicesReport/definitions/reportInfo"
+          $ref: '#/components/schemas/EnhancedInvoicesReport/definitions/reportInfo'
         reportItems:
           items:
-            $ref: "#/components/schemas/EnhancedCashFlowTransactions/definitions/enhancedCashFlowItem"
+            $ref: '#/components/schemas/EnhancedCashFlowTransactions/definitions/enhancedCashFlowItem'
           type: array
       title: Enhanced cash flow transactions
       type: object
@@ -3650,11 +3650,11 @@ components:
         customerRef:
           properties:
             companyName:
-              description: "`customerName` from the Customer data type"
+              description: '`customerName` from the Customer data type'
               nullable: true
               type: string
             id:
-              description: "`id` from the Customers data type"
+              description: '`id` from the Customers data type'
               minLength: 1
               type: string
           required:
@@ -3665,26 +3665,26 @@ components:
             amountDue:
               type: number
             currency:
-              $ref: "#/components/schemas/Currency"
+              $ref: '#/components/schemas/Currency'
             customerRef:
-              $ref: "#/components/schemas/EnhancedInvoicesReport/definitions/customerRef"
+              $ref: '#/components/schemas/EnhancedInvoicesReport/definitions/customerRef'
             dueDate:
-              $ref: "#/components/schemas/ExcelStatus/properties/lastGenerated"
+              $ref: '#/components/schemas/ExcelStatus/properties/lastGenerated'
             id:
               description: ID of the invoice, which may be a GUID but it may be something else depending on the accounting platdform
               type: string
             invoiceNumber:
               type: string
             issueDate:
-              $ref: "#/components/schemas/ExcelStatus/properties/lastGenerated"
+              $ref: '#/components/schemas/ExcelStatus/properties/lastGenerated'
             paidOnDate:
-              $ref: "#/components/schemas/ExcelStatus/properties/lastGenerated"
+              $ref: '#/components/schemas/ExcelStatus/properties/lastGenerated'
             payments:
               items:
-                $ref: "#/components/schemas/EnhancedInvoicesReport/definitions/payment"
+                $ref: '#/components/schemas/EnhancedInvoicesReport/definitions/payment'
               type: array
             status:
-              $ref: "#/components/schemas/EnhancedInvoicesReport/definitions/invoiceStatus"
+              $ref: '#/components/schemas/EnhancedInvoicesReport/definitions/invoiceStatus'
             totalAmount:
               type: number
           title: Enhanced invoice report item
@@ -3710,18 +3710,18 @@ components:
           allOf:
             - properties:
                 accountRef:
-                  $ref: "#/components/schemas/CategorisedAccount/definitions/accountRef"
+                  $ref: '#/components/schemas/CategorisedAccount/definitions/accountRef'
                   description: Account the payment is recorded against in the accounting platform.
                 currency:
-                  $ref: "#/components/schemas/Currency"
+                  $ref: '#/components/schemas/Currency'
                   description: ISO currency code recorded for the payment in the accounting platform.
                 currencyRate:
-                  $ref: "#/components/schemas/CurrencyRate"
+                  $ref: '#/components/schemas/CurrencyRate'
                 customerRef:
-                  $ref: "#/components/schemas/EnhancedInvoicesReport/definitions/customerRef"
+                  $ref: '#/components/schemas/EnhancedInvoicesReport/definitions/customerRef'
                   description: Customer the payment is recorded against in the accounting platform.
                 date:
-                  $ref: "#/components/schemas/ExcelStatus/properties/lastGenerated"
+                  $ref: '#/components/schemas/ExcelStatus/properties/lastGenerated'
                   description: Date the payment was recorded in the accounting software.
                 id:
                   description: Identifier for the payment, unique to the company in the accounting platform.
@@ -3729,7 +3729,7 @@ components:
                 lines:
                   description: An array of payment lines.
                   items:
-                    $ref: "#/components/schemas/EnhancedInvoicesReport/definitions/payment/definitions/paymentLine"
+                    $ref: '#/components/schemas/EnhancedInvoicesReport/definitions/payment/definitions/paymentLine'
                   nullable: true
                   type: array
                 metadata:
@@ -3748,10 +3748,10 @@ components:
                   description: The Payment Method to which the payment is linked in the accounting platform.
                   properties:
                     id:
-                      description: "`id` from the Payment Methods data type"
+                      description: '`id` from the Payment Methods data type'
                       type: string
                     name:
-                      description: "`name` from the Payment Methods data type"
+                      description: '`name` from the Payment Methods data type'
                       nullable: true
                       type: string
                   type: object
@@ -3774,10 +3774,10 @@ components:
                   type: number
               type: object
             - allOf:
-                - $ref: "#/components/schemas/CategorisedAccount/definitions/accountCategoryDeprecated/allOf/1"
+                - $ref: '#/components/schemas/CategorisedAccount/definitions/accountCategoryDeprecated/allOf/1'
                 - properties:
                     sourceModifiedDate:
-                      $ref: "#/components/schemas/ExcelStatus/properties/lastGenerated"
+                      $ref: '#/components/schemas/ExcelStatus/properties/lastGenerated'
                       description: The date on which this record was last modified in the originating system
                   title: Source Modified Date
                   type: object
@@ -3787,14 +3787,14 @@ components:
             paymentLine:
               properties:
                 allocatedOnDate:
-                  $ref: "#/components/schemas/ExcelStatus/properties/lastGenerated"
+                  $ref: '#/components/schemas/ExcelStatus/properties/lastGenerated'
                   description: The date the payment was allocated.
                 amount:
                   description: Amount in the payment currency.
                   type: number
                 links:
                   items:
-                    $ref: "#/components/schemas/EnhancedInvoicesReport/definitions/payment/definitions/paymentLineLink"
+                    $ref: '#/components/schemas/EnhancedInvoicesReport/definitions/payment/definitions/paymentLineLink'
                   nullable: true
                   type: array
               required:
@@ -3812,12 +3812,12 @@ components:
                   nullable: true
                   type: number
                 currencyRate:
-                  $ref: "#/components/schemas/CurrencyRate"
+                  $ref: '#/components/schemas/CurrencyRate'
                 id:
                   description: Unique identifier of the transaction represented by the link.
                   type: string
                 type:
-                  $ref: "#/components/schemas/EnhancedInvoicesReport/definitions/payment/definitions/paymentLinkType"
+                  $ref: '#/components/schemas/EnhancedInvoicesReport/definitions/payment/definitions/paymentLinkType'
               required:
                 - type
               title: Payment Line Link
@@ -4566,13 +4566,13 @@ components:
       description: The enhanced invoices report takes the key elements of the Invoices report verifying those marked as paid in the accounting platform have actually been paid by matching with the bank statement.
       properties:
         reportInfo:
-          $ref: "#/components/schemas/EnhancedInvoicesReport/definitions/reportInfo"
+          $ref: '#/components/schemas/EnhancedInvoicesReport/definitions/reportInfo'
         reportItems:
           items:
             properties:
               invoices:
                 items:
-                  $ref: "#/components/schemas/EnhancedInvoicesReport/definitions/enhancedInvoiceReportItem"
+                  $ref: '#/components/schemas/EnhancedInvoicesReport/definitions/enhancedInvoiceReportItem'
                 type: array
             type: object
           type: array
@@ -4596,7 +4596,7 @@ components:
           properties:
             levels:
               items:
-                $ref: "#/components/schemas/EnhancedReport/definitions/accountCategoryLevel"
+                $ref: '#/components/schemas/EnhancedReport/definitions/accountCategoryLevel'
               type: array
             status:
               description: Returns a status of "Suggested" or "Confirmed". If an account has a confirmed category, it will replace any suggested category returned.
@@ -4609,10 +4609,10 @@ components:
               description: Name of the company queried.
               type: string
             currency:
-              $ref: "#/components/schemas/Currency"
+              $ref: '#/components/schemas/Currency'
               description: Currency of the P&L/Balance sheet.
             generatedDate:
-              $ref: "#/components/schemas/ExcelStatus/properties/lastGenerated"
+              $ref: '#/components/schemas/ExcelStatus/properties/lastGenerated'
               description: Returns the YYYY-MM-DD datetime of report generation.
             reportName:
               description: The name of the report.
@@ -4663,13 +4663,13 @@ components:
               date: 2022-01-01
       properties:
         reportInfo:
-          $ref: "#/components/schemas/EnhancedReport/definitions/enhancedReportInfo"
+          $ref: '#/components/schemas/EnhancedReport/definitions/enhancedReportInfo'
         reportItems:
           description: An array of report items.
           items:
             properties:
               accountCategory:
-                $ref: "#/components/schemas/EnhancedReport/definitions/enhancedReportAccountCategory"
+                $ref: '#/components/schemas/EnhancedReport/definitions/enhancedReportAccountCategory'
               accountId:
                 description: The unique account ID.
                 type: string
@@ -4680,7 +4680,7 @@ components:
                 description: Balance of the account as reported on the profit and loss or Balance sheet.
                 type: number
               date:
-                $ref: "#/components/schemas/ExcelStatus/properties/lastGenerated"
+                $ref: '#/components/schemas/ExcelStatus/properties/lastGenerated'
                 description: Last date of the period.
             title: Report item
             type: object
@@ -4755,13 +4755,13 @@ components:
           title: Assess error details
           type: object
         financialMetric:
-          description: ""
+          description: ''
           properties:
             errors:
               items:
                 properties:
                   details:
-                    $ref: "#/components/schemas/FinancialMetrics/definitions/assessErrorDetails"
+                    $ref: '#/components/schemas/FinancialMetrics/definitions/assessErrorDetails'
                   message:
                     description: Description of the error.
                     example: There are uncategorized accounts IDs, see details.
@@ -4814,7 +4814,7 @@ components:
                     items:
                       properties:
                         details:
-                          $ref: "#/components/schemas/FinancialMetrics/definitions/assessErrorDetails"
+                          $ref: '#/components/schemas/FinancialMetrics/definitions/assessErrorDetails'
                         massage:
                           description: Description of the error.
                           example: Missing account data
@@ -4871,15 +4871,15 @@ components:
           type: object
       properties:
         currency:
-          $ref: "#/components/schemas/Currency"
+          $ref: '#/components/schemas/Currency'
         errors:
           description: If there are no errors, an empty array is returned.
           items:
-            $ref: "#/components/schemas/FinancialMetrics/definitions/financialMetricError"
+            $ref: '#/components/schemas/FinancialMetrics/definitions/financialMetricError'
           type: array
         metrics:
           items:
-            $ref: "#/components/schemas/FinancialMetrics/definitions/financialMetric"
+            $ref: '#/components/schemas/FinancialMetrics/definitions/financialMetric'
           type: array
         periodUnit:
           enum:
@@ -4905,13 +4905,13 @@ components:
             href: /companies/{id}/data/{dataType}
       properties:
         current:
-          $ref: "#/components/schemas/HalRef"
+          $ref: '#/components/schemas/HalRef'
         next:
-          $ref: "#/components/schemas/HalRef"
+          $ref: '#/components/schemas/HalRef'
         previous:
-          $ref: "#/components/schemas/HalRef"
+          $ref: '#/components/schemas/HalRef'
         self:
-          $ref: "#/components/schemas/HalRef"
+          $ref: '#/components/schemas/HalRef'
       required:
         - self
         - current
@@ -4929,7 +4929,7 @@ components:
             totalResults: 1
       properties:
         _links:
-          $ref: "#/components/schemas/Links"
+          $ref: '#/components/schemas/Links'
         pageNumber:
           type: integer
         pageSize:
@@ -4949,7 +4949,7 @@ components:
           properties:
             components:
               items:
-                $ref: "#/components/schemas/Report/definitions/reportComponent"
+                $ref: '#/components/schemas/Report/definitions/reportComponent'
               type: array
             dimension:
               type: integer
@@ -4961,7 +4961,7 @@ components:
               type: string
             measures:
               items:
-                $ref: "#/components/schemas/Report/definitions/reportComponentMeasure"
+                $ref: '#/components/schemas/Report/definitions/reportComponentMeasure'
               type: array
           title: Report component
           type: object
@@ -5043,19 +5043,19 @@ components:
       properties:
         dimensions:
           items:
-            $ref: "#/components/schemas/Report/definitions/reportDimension"
+            $ref: '#/components/schemas/Report/definitions/reportDimension'
           type: array
         errors:
           items:
-            $ref: "#/components/schemas/Report/definitions/reportError"
+            $ref: '#/components/schemas/Report/definitions/reportError'
           type: array
         measures:
           items:
-            $ref: "#/components/schemas/Report/definitions/reportMeasure"
+            $ref: '#/components/schemas/Report/definitions/reportMeasure'
           type: array
         reportData:
           items:
-            $ref: "#/components/schemas/Report/definitions/reportComponent"
+            $ref: '#/components/schemas/Report/definitions/reportComponent'
           type: array
         reportInfo:
           additionalProperties:
@@ -5104,7 +5104,7 @@ components:
       properties:
         metadata:
           items:
-            $ref: "#/components/schemas/DataIntegrityStatus"
+            $ref: '#/components/schemas/DataIntegrityStatus'
           type: array
       type: object
       x-internal: true
@@ -5112,7 +5112,7 @@ components:
       properties:
         summaries:
           items:
-            $ref: "#/components/schemas/DataIntegritySummary"
+            $ref: '#/components/schemas/DataIntegritySummary'
           type: array
       type: object
       x-internal: true
@@ -5129,10 +5129,10 @@ webhooks:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/AccountCategoriesUpdatedWebhook"
+              $ref: '#/components/schemas/AccountCategoriesUpdatedWebhook'
         description: Triggered anytime that Codat updates the suggested fields or a user updates the confirmed fields.
       responses:
-        "200":
+        '200':
           description: Return a 200 status to indicate that the webhook was received successfully.
 x-speakeasy-retries:
   backoff:

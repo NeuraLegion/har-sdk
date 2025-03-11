@@ -42,7 +42,7 @@ info:
     ```
   termsOfService: https://www.adyen.com/legal/terms-and-conditions
   title: Fund API
-  version: "6"
+  version: '6'
   x-apisguru-categories:
     - payment
   x-logo:
@@ -50,7 +50,7 @@ info:
   x-origin:
     - format: openapi
       url: https://raw.githubusercontent.com/Adyen/adyen-openapi/main/json/FundService-v6.json
-      version: "3.1"
+      version: '3.1'
   x-preferred: true
   x-providerName: adyen.com
   x-publicVersion: true
@@ -68,51 +68,51 @@ paths:
           application/json:
             examples:
               basic:
-                $ref: "#/components/examples/post-accountHolderBalance-basic"
+                $ref: '#/components/examples/post-accountHolderBalance-basic'
             schema:
-              $ref: "#/components/schemas/AccountHolderBalanceRequest"
+              $ref: '#/components/schemas/AccountHolderBalanceRequest'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/AccountHolderBalanceResponse"
+                $ref: '#/components/schemas/AccountHolderBalanceResponse'
           description: OK - the request has succeeded.
-        "202":
+        '202':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/AccountHolderBalanceResponse"
+                $ref: '#/components/schemas/AccountHolderBalanceResponse'
           description: Accepted - the request has been accepted for processing, but the processing has not been completed.
-        "400":
+        '400':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -132,53 +132,53 @@ paths:
           application/json:
             examples:
               basic:
-                $ref: "#/components/examples/post-accountHolderTransactionList-basic"
+                $ref: '#/components/examples/post-accountHolderTransactionList-basic'
               specific:
-                $ref: "#/components/examples/post-accountHolderTransactionList-specific"
+                $ref: '#/components/examples/post-accountHolderTransactionList-specific'
             schema:
-              $ref: "#/components/schemas/AccountHolderTransactionListRequest"
+              $ref: '#/components/schemas/AccountHolderTransactionListRequest'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/AccountHolderTransactionListResponse"
+                $ref: '#/components/schemas/AccountHolderTransactionListResponse'
           description: OK - the request has succeeded.
-        "202":
+        '202':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/AccountHolderTransactionListResponse"
+                $ref: '#/components/schemas/AccountHolderTransactionListResponse'
           description: Accepted - the request has been accepted for processing, but the processing has not been completed.
-        "400":
+        '400':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -201,54 +201,54 @@ paths:
           application/json:
             examples:
               debit-account-holder:
-                $ref: "#/components/examples/post-debitAccountHolder-debit-account-holder"
+                $ref: '#/components/examples/post-debitAccountHolder-debit-account-holder'
             schema:
-              $ref: "#/components/schemas/DebitAccountHolderRequest"
+              $ref: '#/components/schemas/DebitAccountHolderRequest'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
                 debit-account-holder:
-                  $ref: "#/components/examples/post-debitAccountHolder-debit-account-holder-200"
+                  $ref: '#/components/examples/post-debitAccountHolder-debit-account-holder-200'
               schema:
-                $ref: "#/components/schemas/DebitAccountHolderResponse"
+                $ref: '#/components/schemas/DebitAccountHolderResponse'
           description: OK - the request has succeeded.
-        "202":
+        '202':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/DebitAccountHolderResponse"
+                $ref: '#/components/schemas/DebitAccountHolderResponse'
           description: Accepted - the request has been accepted for processing, but the processing has not been completed.
-        "400":
+        '400':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -268,51 +268,51 @@ paths:
           application/json:
             examples:
               oneOff:
-                $ref: "#/components/examples/post-payoutAccountHolder-oneOff"
+                $ref: '#/components/examples/post-payoutAccountHolder-oneOff'
             schema:
-              $ref: "#/components/schemas/PayoutAccountHolderRequest"
+              $ref: '#/components/schemas/PayoutAccountHolderRequest'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PayoutAccountHolderResponse"
+                $ref: '#/components/schemas/PayoutAccountHolderResponse'
           description: OK - the request has succeeded.
-        "202":
+        '202':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PayoutAccountHolderResponse"
+                $ref: '#/components/schemas/PayoutAccountHolderResponse'
           description: Accepted - the request has been accepted for processing, but the processing has not been completed.
-        "400":
+        '400':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -325,58 +325,58 @@ paths:
       x-sortIndex: 3
   /refundFundsTransfer:
     post:
-      description: "Refunds funds transferred from one account to another. Both accounts must be in the same platform, but can have different account holders. "
+      description: 'Refunds funds transferred from one account to another. Both accounts must be in the same platform, but can have different account holders. '
       operationId: post-refundFundsTransfer
       requestBody:
         content:
           application/json:
             examples:
               basic:
-                $ref: "#/components/examples/post-refundFundsTransfer-basic"
+                $ref: '#/components/examples/post-refundFundsTransfer-basic'
             schema:
-              $ref: "#/components/schemas/RefundFundsTransferRequest"
+              $ref: '#/components/schemas/RefundFundsTransferRequest'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/RefundFundsTransferResponse"
+                $ref: '#/components/schemas/RefundFundsTransferResponse'
           description: OK - the request has succeeded.
-        "202":
+        '202':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/RefundFundsTransferResponse"
+                $ref: '#/components/schemas/RefundFundsTransferResponse'
           description: Accepted - the request has been accepted for processing, but the processing has not been completed.
-        "400":
+        '400':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -396,51 +396,51 @@ paths:
           application/json:
             examples:
               basic:
-                $ref: "#/components/examples/post-refundNotPaidOutTransfers-basic"
+                $ref: '#/components/examples/post-refundNotPaidOutTransfers-basic'
             schema:
-              $ref: "#/components/schemas/RefundNotPaidOutTransfersRequest"
+              $ref: '#/components/schemas/RefundNotPaidOutTransfersRequest'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/RefundNotPaidOutTransfersResponse"
+                $ref: '#/components/schemas/RefundNotPaidOutTransfersResponse'
           description: OK - the request has succeeded.
-        "202":
+        '202':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/RefundNotPaidOutTransfersResponse"
+                $ref: '#/components/schemas/RefundNotPaidOutTransfersResponse'
           description: Accepted - the request has been accepted for processing, but the processing has not been completed.
-        "400":
+        '400':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -460,51 +460,51 @@ paths:
           application/json:
             examples:
               basic:
-                $ref: "#/components/examples/post-setupBeneficiary-basic"
+                $ref: '#/components/examples/post-setupBeneficiary-basic'
             schema:
-              $ref: "#/components/schemas/SetupBeneficiaryRequest"
+              $ref: '#/components/schemas/SetupBeneficiaryRequest'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SetupBeneficiaryResponse"
+                $ref: '#/components/schemas/SetupBeneficiaryResponse'
           description: OK - the request has succeeded.
-        "202":
+        '202':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SetupBeneficiaryResponse"
+                $ref: '#/components/schemas/SetupBeneficiaryResponse'
           description: Accepted - the request has been accepted for processing, but the processing has not been completed.
-        "400":
+        '400':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -524,51 +524,51 @@ paths:
           application/json:
             examples:
               basic:
-                $ref: "#/components/examples/post-transferFunds-basic"
+                $ref: '#/components/examples/post-transferFunds-basic'
             schema:
-              $ref: "#/components/schemas/TransferFundsRequest"
+              $ref: '#/components/schemas/TransferFundsRequest'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/TransferFundsResponse"
+                $ref: '#/components/schemas/TransferFundsResponse'
           description: OK - the request has succeeded.
-        "202":
+        '202':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/TransferFundsResponse"
+                $ref: '#/components/schemas/TransferFundsResponse'
           description: Accepted - the request has been accepted for processing, but the processing has not been completed.
-        "400":
+        '400':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Bad Request - a problem reading or understanding the request.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ServiceError"
+                $ref: '#/components/schemas/ServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - BasicAuth: []
@@ -590,7 +590,7 @@ components:
       value:
         accountHolderCode: CODE_OF_ACCOUNT_HOLDER
         transactionListsPerAccount:
-          - accountCode: "195752115"
+          - accountCode: '195752115'
             page: 1
     post-accountHolderTransactionList-specific:
       summary: Retrieve transactions with specific statuses.
@@ -615,7 +615,7 @@ components:
         description: YOUR_DESCRIPTION
         merchantAccount: YOUR_MERCHANT_ACCOUNT
         splits:
-          - account: "8535516988037431"
+          - account: '8535516988037431'
             amount:
               value: 6000
             reference: YOUR_SPLIT_REFERENCE_1
@@ -628,12 +628,12 @@ components:
       description: Example response for requesting a direct debit from a bank account
       summary: Direct debit request sent
       value:
-        pspReference: "8816480354727275"
-        submittedAsync: "false"
+        pspReference: '8816480354727275'
+        submittedAsync: 'false'
     post-payoutAccountHolder-oneOff:
       summary: One-off payout
       value:
-        accountCode: "118731451"
+        accountCode: '118731451'
         accountHolderCode: CODE_OF_ACCOUNT_HOLDER
         amount:
           currency: EUR
@@ -651,22 +651,22 @@ components:
     post-refundNotPaidOutTransfers-basic:
       summary: Refund last transactions
       value:
-        accountCode: "189184578"
+        accountCode: '189184578'
         accountHolderCode: CODE_OF_ACCOUNT_HOLDER
     post-setupBeneficiary-basic:
       summary: Set up a beneficiary
       value:
-        destinationAccountCode: "128952522"
+        destinationAccountCode: '128952522'
         merchantReference: YOUR_REFERENCE_ID
-        sourceAccountCode: "134498192"
+        sourceAccountCode: '134498192'
     post-transferFunds-basic:
       summary: Transfer funds from one account to another
       value:
         amount:
           currency: EUR
           value: 2000
-        destinationAccountCode: "190324759"
-        sourceAccountCode: "100000000"
+        destinationAccountCode: '190324759'
+        sourceAccountCode: '100000000'
         transferCode: TransferCode_1
   schemas:
     AccountDetailBalance:
@@ -675,7 +675,7 @@ components:
           description: The code of the account that holds the balance.
           type: string
         detailBalance:
-          $ref: "#/components/schemas/DetailBalance"
+          $ref: '#/components/schemas/DetailBalance'
           description: Details of the balance held by the account.
       type: object
     AccountHolderBalanceRequest:
@@ -691,14 +691,14 @@ components:
         balancePerAccount:
           description: A list of each account and their balances.
           items:
-            $ref: "#/components/schemas/AccountDetailBalance"
+            $ref: '#/components/schemas/AccountDetailBalance'
           type: array
         invalidFields:
           description: Contains field validation errors that would prevent requests from being processed.
           items:
-            $ref: "#/components/schemas/ErrorFieldType"
+            $ref: '#/components/schemas/ErrorFieldType'
           type: array
-          x-addedInVersion: "5"
+          x-addedInVersion: '5'
         pspReference:
           description: The reference of a request. Can be used to uniquely identify the request.
           type: string
@@ -706,7 +706,7 @@ components:
           description: The result code.
           type: string
         totalBalance:
-          $ref: "#/components/schemas/DetailBalance"
+          $ref: '#/components/schemas/DetailBalance'
           description: The total balance of the account holder.
       type: object
     AccountHolderTransactionListRequest:
@@ -717,7 +717,7 @@ components:
         transactionListsPerAccount:
           description: A list of accounts to include in the transaction list. If left blank, the last fifty (50) transactions for all accounts of the account holder will be included.
           items:
-            $ref: "#/components/schemas/TransactionListForAccount"
+            $ref: '#/components/schemas/TransactionListForAccount'
           type: array
         transactionStatuses:
           description: |-
@@ -800,14 +800,14 @@ components:
         accountTransactionLists:
           description: A list of the transactions.
           items:
-            $ref: "#/components/schemas/AccountTransactionList"
+            $ref: '#/components/schemas/AccountTransactionList'
           type: array
         invalidFields:
           description: Contains field validation errors that would prevent requests from being processed.
           items:
-            $ref: "#/components/schemas/ErrorFieldType"
+            $ref: '#/components/schemas/ErrorFieldType'
           type: array
-          x-addedInVersion: "5"
+          x-addedInVersion: '5'
         pspReference:
           description: The reference of a request. Can be used to uniquely identify the request.
           type: string
@@ -826,7 +826,7 @@ components:
         transactions:
           description: The list of transactions.
           items:
-            $ref: "#/components/schemas/Transaction"
+            $ref: '#/components/schemas/Transaction'
           type: array
       type: object
     Amount:
@@ -865,7 +865,7 @@ components:
         bankAccountReference:
           description: Merchant reference to the bank account.
           type: string
-          x-addedInVersion: "5"
+          x-addedInVersion: '5'
         bankAccountUUID:
           description: |
             The unique identifier (UUID) of the Bank Account.
@@ -1006,7 +1006,7 @@ components:
           description: The code of the account holder.
           type: string
         amount:
-          $ref: "#/components/schemas/Amount"
+          $ref: '#/components/schemas/Amount'
           description: The amount to be debited from the account holder's bank account.
         bankAccountUUID:
           description: The Adyen-generated unique alphanumeric identifier (UUID) of the account holder's bank account.
@@ -1024,7 +1024,7 @@ components:
         splits:
           description: Contains instructions on how to split the funds between the accounts in your platform. The request must have at least one split item.
           items:
-            $ref: "#/components/schemas/Split"
+            $ref: '#/components/schemas/Split'
           type: array
       required:
         - accountHolderCode
@@ -1044,9 +1044,9 @@ components:
         invalidFields:
           description: Contains field validation errors that would prevent requests from being processed.
           items:
-            $ref: "#/components/schemas/ErrorFieldType"
+            $ref: '#/components/schemas/ErrorFieldType'
           type: array
-          x-addedInVersion: "5"
+          x-addedInVersion: '5'
         merchantReferences:
           description: List of the `reference` values from the `split` array in the request.
           items:
@@ -1064,18 +1064,18 @@ components:
         balance:
           description: The list of balances held by the account.
           items:
-            $ref: "#/components/schemas/Amount"
+            $ref: '#/components/schemas/Amount'
           type: array
         onHoldBalance:
           description: The list of on hold balances held by the account.
           items:
-            $ref: "#/components/schemas/Amount"
+            $ref: '#/components/schemas/Amount'
           type: array
-          x-addedInVersion: "5"
+          x-addedInVersion: '5'
         pendingBalance:
           description: The list of pending balances held by the account.
           items:
-            $ref: "#/components/schemas/Amount"
+            $ref: '#/components/schemas/Amount'
           type: array
       type: object
     ErrorFieldType:
@@ -1088,7 +1088,7 @@ components:
           description: A description of the validation error.
           type: string
         fieldType:
-          $ref: "#/components/schemas/FieldType"
+          $ref: '#/components/schemas/FieldType'
           description: The type of error field.
       type: object
     FieldType:
@@ -1276,7 +1276,7 @@ components:
             The Account Holder is the party to which the payout will be made.
           type: string
         amount:
-          $ref: "#/components/schemas/Amount"
+          $ref: '#/components/schemas/Amount'
           description: |-
             An object containing the currency and value of the payout.
             If the account has multiple currencies, specify the currency to be used.
@@ -1296,22 +1296,22 @@ components:
         merchantReference:
           description: A value that can be supplied at the discretion of the executing user in order to link multiple transactions to one another.
           type: string
-          x-addedInVersion: "2"
+          x-addedInVersion: '2'
         payoutMethodCode:
           description: |-
             The unique ID of the payout method held by the Account Holder to which the payout is to be made.
             If left blank, a payout instrument is automatically selected.
           type: string
-          x-addedInVersion: "5"
+          x-addedInVersion: '5'
         payoutSpeed:
           default: STANDARD
-          description: "Speed with which payouts for this account are processed. Permitted values: `STANDARD`, `SAME_DAY`."
+          description: 'Speed with which payouts for this account are processed. Permitted values: `STANDARD`, `SAME_DAY`.'
           enum:
             - INSTANT
             - SAME_DAY
             - STANDARD
           type: string
-          x-addedInVersion: "5"
+          x-addedInVersion: '5'
       required:
         - accountHolderCode
         - accountCode
@@ -1324,22 +1324,22 @@ components:
         invalidFields:
           description: Contains field validation errors that would prevent requests from being processed.
           items:
-            $ref: "#/components/schemas/ErrorFieldType"
+            $ref: '#/components/schemas/ErrorFieldType'
           type: array
-          x-addedInVersion: "5"
+          x-addedInVersion: '5'
         merchantReference:
           description: The value supplied by the executing user when initiating the transfer; may be used to link multiple transactions.
           type: string
-          x-addedInVersion: "2"
+          x-addedInVersion: '2'
         payoutSpeed:
           default: STANDARD
-          description: "Speed with which payouts for this account are processed. Permitted values: `STANDARD`, `SAME_DAY`."
+          description: 'Speed with which payouts for this account are processed. Permitted values: `STANDARD`, `SAME_DAY`.'
           enum:
             - INSTANT
             - SAME_DAY
             - STANDARD
           type: string
-          x-addedInVersion: "5"
+          x-addedInVersion: '5'
         pspReference:
           description: The reference of a request. Can be used to uniquely identify the request.
           type: string
@@ -1350,7 +1350,7 @@ components:
     RefundFundsTransferRequest:
       properties:
         amount:
-          $ref: "#/components/schemas/Amount"
+          $ref: '#/components/schemas/Amount'
           description: The amount to be transferred.
         merchantReference:
           description: A value that can be supplied at the discretion of the executing user in order to link multiple transactions to one another.
@@ -1367,9 +1367,9 @@ components:
         invalidFields:
           description: Contains field validation errors that would prevent requests from being processed.
           items:
-            $ref: "#/components/schemas/ErrorFieldType"
+            $ref: '#/components/schemas/ErrorFieldType'
           type: array
-          x-addedInVersion: "5"
+          x-addedInVersion: '5'
         merchantReference:
           description: The value supplied by the executing user when initiating the transfer refund; may be used to link multiple transactions.
           type: string
@@ -1403,9 +1403,9 @@ components:
         invalidFields:
           description: Contains field validation errors that would prevent requests from being processed.
           items:
-            $ref: "#/components/schemas/ErrorFieldType"
+            $ref: '#/components/schemas/ErrorFieldType'
           type: array
-          x-addedInVersion: "5"
+          x-addedInVersion: '5'
         pspReference:
           description: The reference of a request. Can be used to uniquely identify the request.
           type: string
@@ -1452,9 +1452,9 @@ components:
         invalidFields:
           description: Contains field validation errors that would prevent requests from being processed.
           items:
-            $ref: "#/components/schemas/ErrorFieldType"
+            $ref: '#/components/schemas/ErrorFieldType'
           type: array
-          x-addedInVersion: "5"
+          x-addedInVersion: '5'
         pspReference:
           description: The reference of a request. Can be used to uniquely identify the request.
           type: string
@@ -1470,7 +1470,7 @@ components:
 
           type: string
         amount:
-          $ref: "#/components/schemas/SplitAmount"
+          $ref: '#/components/schemas/SplitAmount'
           description: The amount of this split.
         description:
           description: A description of this split.
@@ -1521,10 +1521,10 @@ components:
     Transaction:
       properties:
         amount:
-          $ref: "#/components/schemas/Amount"
+          $ref: '#/components/schemas/Amount'
           description: The amount of the transaction.
         bankAccountDetail:
-          $ref: "#/components/schemas/BankAccountDetail"
+          $ref: '#/components/schemas/BankAccountDetail'
           description: The details of the bank account to where a payout was made.
         captureMerchantReference:
           description: The merchant reference of a related capture.
@@ -1554,11 +1554,11 @@ components:
         paymentPspReference:
           description: The psp reference of the related authorisation or transfer.
           type: string
-          x-addedInVersion: "3"
+          x-addedInVersion: '3'
         payoutPspReference:
           description: The psp reference of the related payout.
           type: string
-          x-addedInVersion: "3"
+          x-addedInVersion: '3'
         pspReference:
           description: The psp reference of a transaction.
           type: string
@@ -1638,7 +1638,7 @@ components:
     TransferFundsRequest:
       properties:
         amount:
-          $ref: "#/components/schemas/Amount"
+          $ref: '#/components/schemas/Amount'
           description: The amount to be transferred.
         destinationAccountCode:
           description: |-
@@ -1648,7 +1648,7 @@ components:
         merchantReference:
           description: A value that can be supplied at the discretion of the executing user in order to link multiple transactions to one another.
           type: string
-          x-addedInVersion: "2"
+          x-addedInVersion: '2'
         sourceAccountCode:
           description: |-
             The code of the account from which the funds are to be debited.
@@ -1670,13 +1670,13 @@ components:
         invalidFields:
           description: Contains field validation errors that would prevent requests from being processed.
           items:
-            $ref: "#/components/schemas/ErrorFieldType"
+            $ref: '#/components/schemas/ErrorFieldType'
           type: array
-          x-addedInVersion: "5"
+          x-addedInVersion: '5'
         merchantReference:
           description: The value supplied by the executing user when initiating the transfer; may be used to link multiple transactions.
           type: string
-          x-addedInVersion: "2"
+          x-addedInVersion: '2'
         pspReference:
           description: The reference of a request. Can be used to uniquely identify the request.
           type: string

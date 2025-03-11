@@ -42,7 +42,7 @@ info:
 
   termsOfService: https://www.adyen.com/legal/terms-and-conditions
   title: Transfers API
-  version: "3"
+  version: '3'
   x-apisguru-categories:
     - payment
   x-logo:
@@ -50,7 +50,7 @@ info:
   x-origin:
     - format: openapi
       url: https://raw.githubusercontent.com/Adyen/adyen-openapi/main/json/TransferService-v3.json
-      version: "3.1"
+      version: '3.1'
   x-preferred: true
   x-providerName: adyen.com
   x-publicVersion: true
@@ -120,49 +120,49 @@ paths:
             format: int32
             type: integer
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
                 success:
-                  $ref: "#/components/examples/get-transactions-success-200"
+                  $ref: '#/components/examples/get-transactions-success-200'
               schema:
-                $ref: "#/components/schemas/TransactionSearchResponse"
+                $ref: '#/components/schemas/TransactionSearchResponse'
           description: OK - the request has succeeded.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/RestServiceError"
+                $ref: '#/components/schemas/RestServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/RestServiceError"
+                $ref: '#/components/schemas/RestServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/RestServiceError"
+                $ref: '#/components/schemas/RestServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/RestServiceError"
+                $ref: '#/components/schemas/RestServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - ApiKeyAuth: []
       summary: Get all transactions
       tags:
         - Transactions
-      x-addedInVersion: "1"
+      x-addedInVersion: '1'
       x-groupName: Transactions
       x-methodName: getAllTransactions
       x-sortIndex: 1
-  "/transactions/{id}":
+  '/transactions/{id}':
     get:
       description: Returns a transaction.
       operationId: get-transactions-id
@@ -174,45 +174,45 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
                 success:
-                  $ref: "#/components/examples/get-transactions-id-success-200"
+                  $ref: '#/components/examples/get-transactions-id-success-200'
               schema:
-                $ref: "#/components/schemas/Transaction"
+                $ref: '#/components/schemas/Transaction'
           description: OK - the request has succeeded.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/RestServiceError"
+                $ref: '#/components/schemas/RestServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/RestServiceError"
+                $ref: '#/components/schemas/RestServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/RestServiceError"
+                $ref: '#/components/schemas/RestServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/RestServiceError"
+                $ref: '#/components/schemas/RestServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - ApiKeyAuth: []
       summary: Get a transaction
       tags:
         - Transactions
-      x-addedInVersion: "1"
+      x-addedInVersion: '1'
       x-groupName: Transactions
       x-methodName: getTransaction
       x-sortIndex: 2
@@ -228,71 +228,71 @@ paths:
           application/json:
             examples:
               payout-cross-border:
-                $ref: "#/components/examples/post-transfers-payout-cross-border"
+                $ref: '#/components/examples/post-transfers-payout-cross-border'
               payout-local-transfer-sepa:
-                $ref: "#/components/examples/post-transfers-payout-local-transfer-sepa"
+                $ref: '#/components/examples/post-transfers-payout-local-transfer-sepa'
               payout-local-transfer-us:
-                $ref: "#/components/examples/post-transfers-payout-local-transfer-us"
+                $ref: '#/components/examples/post-transfers-payout-local-transfer-us'
               payout-to-balance-account:
-                $ref: "#/components/examples/post-transfers-payout-to-balance-account"
+                $ref: '#/components/examples/post-transfers-payout-to-balance-account'
               payout-to-transfer-instrument:
-                $ref: "#/components/examples/post-transfers-payout-to-transfer-instrument"
+                $ref: '#/components/examples/post-transfers-payout-to-transfer-instrument'
             schema:
-              $ref: "#/components/schemas/TransferInfo"
+              $ref: '#/components/schemas/TransferInfo'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               examples:
                 payout-cross-border:
-                  $ref: "#/components/examples/post-transfers-payout-cross-border-200"
+                  $ref: '#/components/examples/post-transfers-payout-cross-border-200'
                 payout-local-transfer-sepa:
-                  $ref: "#/components/examples/post-transfers-payout-local-transfer-sepa-200"
+                  $ref: '#/components/examples/post-transfers-payout-local-transfer-sepa-200'
                 payout-local-transfer-us:
-                  $ref: "#/components/examples/post-transfers-payout-local-transfer-us-200"
+                  $ref: '#/components/examples/post-transfers-payout-local-transfer-us-200'
                 payout-to-balance-account:
-                  $ref: "#/components/examples/post-transfers-payout-to-balance-account-200"
+                  $ref: '#/components/examples/post-transfers-payout-to-balance-account-200'
                 payout-to-transfer-instrument:
-                  $ref: "#/components/examples/post-transfers-payout-to-transfer-instrument-200"
+                  $ref: '#/components/examples/post-transfers-payout-to-transfer-instrument-200'
               schema:
-                $ref: "#/components/schemas/Transfer"
+                $ref: '#/components/schemas/Transfer'
           description: OK - the request has succeeded.
-        "202":
+        '202':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Transfer"
+                $ref: '#/components/schemas/Transfer'
           description: Accepted - the request has been accepted for processing, but the processing has not been completed.
-        "401":
+        '401':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/RestServiceError"
+                $ref: '#/components/schemas/RestServiceError'
           description: Unauthorized - authentication required.
-        "403":
+        '403':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/RestServiceError"
+                $ref: '#/components/schemas/RestServiceError'
           description: Forbidden - insufficient permissions to process the request.
-        "422":
+        '422':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/RestServiceError"
+                $ref: '#/components/schemas/RestServiceError'
           description: Unprocessable Entity - a request validation error.
-        "500":
+        '500':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/RestServiceError"
+                $ref: '#/components/schemas/RestServiceError'
           description: Internal Server Error - the server could not process the request.
       security:
         - ApiKeyAuth: []
       summary: Transfer funds
       tags:
         - Transfers
-      x-addedInVersion: "2"
+      x-addedInVersion: '2'
       x-groupName: Transfers
       x-methodName: transferFunds
       x-sortIndex: 1
@@ -405,13 +405,13 @@ components:
               address:
                 city: San Francisco
                 country: US
-                postalCode: "94678"
+                postalCode: '94678'
                 stateOrProvince: CA
                 street: Brannan Street
-                street2: "274"
+                street2: '274'
               fullName: A. Klaassen
             accountIdentification:
-              accountNumber: "123456789"
+              accountNumber: '123456789'
               bic: BOFAUS3NXXX
               type: numberAndBic
         description: Your description for the transfer
@@ -441,13 +441,13 @@ components:
               address:
                 city: San Francisco
                 country: US
-                postalCode: "94678"
+                postalCode: '94678'
                 stateOrProvince: CA
                 street: Brannan Street
-                street2: "274"
+                street2: '274'
               fullName: A. Klaassen
             accountIdentification:
-              accountNumber: "123456789"
+              accountNumber: '123456789'
               bic: BOFAUS3NXXX
               type: numberAndBic
         description: Your description for the transfer
@@ -534,8 +534,8 @@ components:
             accountHolder:
               fullName: A. Klaassen
             accountIdentification:
-              accountNumber: "123456789"
-              routingNumber: "011000138"
+              accountNumber: '123456789'
+              routingNumber: '011000138'
               type: usLocal
         description: Your description for the transfer
         priority: regular
@@ -563,8 +563,8 @@ components:
             accountHolder:
               fullName: A. Klaassen
             accountIdentification:
-              accountNumber: "123456789"
-              routingNumber: "011000138"
+              accountNumber: '123456789'
+              routingNumber: '011000138'
               type: usLocal
         description: Your description for the transfer
         direction: outgoing
@@ -682,7 +682,7 @@ components:
           type: string
         type:
           default: auLocal
-          description: "**auLocal**"
+          description: '**auLocal**'
           enum:
             - auLocal
           type: string
@@ -775,7 +775,7 @@ components:
           type: string
         type:
           default: brLocal
-          description: "**brLocal**"
+          description: '**brLocal**'
           enum:
             - brLocal
           type: string
@@ -788,25 +788,25 @@ components:
     BankAccountV3:
       properties:
         accountHolder:
-          $ref: "#/components/schemas/PartyIdentification-2"
+          $ref: '#/components/schemas/PartyIdentification-2'
           description: Information about the owner of the bank account.
         accountIdentification:
           description: Contains the bank account details. The fields required in this object depend on the country of the bank account and the currency of the transfer.
           oneOf:
-            - $ref: "#/components/schemas/AULocalAccountIdentification"
-            - $ref: "#/components/schemas/BRLocalAccountIdentification"
-            - $ref: "#/components/schemas/CALocalAccountIdentification"
-            - $ref: "#/components/schemas/CZLocalAccountIdentification"
-            - $ref: "#/components/schemas/DKLocalAccountIdentification"
-            - $ref: "#/components/schemas/HULocalAccountIdentification"
-            - $ref: "#/components/schemas/IbanAccountIdentification"
-            - $ref: "#/components/schemas/NOLocalAccountIdentification"
-            - $ref: "#/components/schemas/NumberAndBicAccountIdentification"
-            - $ref: "#/components/schemas/PLLocalAccountIdentification"
-            - $ref: "#/components/schemas/SELocalAccountIdentification"
-            - $ref: "#/components/schemas/SGLocalAccountIdentification"
-            - $ref: "#/components/schemas/UKLocalAccountIdentification"
-            - $ref: "#/components/schemas/USLocalAccountIdentification"
+            - $ref: '#/components/schemas/AULocalAccountIdentification'
+            - $ref: '#/components/schemas/BRLocalAccountIdentification'
+            - $ref: '#/components/schemas/CALocalAccountIdentification'
+            - $ref: '#/components/schemas/CZLocalAccountIdentification'
+            - $ref: '#/components/schemas/DKLocalAccountIdentification'
+            - $ref: '#/components/schemas/HULocalAccountIdentification'
+            - $ref: '#/components/schemas/IbanAccountIdentification'
+            - $ref: '#/components/schemas/NOLocalAccountIdentification'
+            - $ref: '#/components/schemas/NumberAndBicAccountIdentification'
+            - $ref: '#/components/schemas/PLLocalAccountIdentification'
+            - $ref: '#/components/schemas/SELocalAccountIdentification'
+            - $ref: '#/components/schemas/SGLocalAccountIdentification'
+            - $ref: '#/components/schemas/UKLocalAccountIdentification'
+            - $ref: '#/components/schemas/USLocalAccountIdentification'
       required:
         - accountIdentification
         - accountHolder
@@ -841,7 +841,7 @@ components:
           type: string
         type:
           default: caLocal
-          description: "**caLocal**"
+          description: '**caLocal**'
           enum:
             - caLocal
           type: string
@@ -881,7 +881,7 @@ components:
           type: string
         type:
           default: czLocal
-          description: "**czLocal**"
+          description: '**czLocal**'
           enum:
             - czLocal
           type: string
@@ -896,7 +896,7 @@ components:
           description: Unique identifier of the [balance account](https://docs.adyen.com/api-explorer/#/balanceplatform/latest/post/balanceAccounts__resParam_id).
           type: string
         bankAccount:
-          $ref: "#/components/schemas/BankAccountV3"
+          $ref: '#/components/schemas/BankAccountV3'
           description: Contains information about the bank account.
         transferInstrumentId:
           description: Unique identifier of the [transfer instrument](https://docs.adyen.com/api-explorer/#/legalentity/latest/post/transferInstruments__resParam_id).
@@ -908,10 +908,10 @@ components:
           description: Unique identifier of the [balance account](https://docs.adyen.com/api-explorer/#/balanceplatform/latest/post/balanceAccounts__resParam_id).
           type: string
         bankAccount:
-          $ref: "#/components/schemas/BankAccountV3"
+          $ref: '#/components/schemas/BankAccountV3'
           description: Contains information about the bank account.
         merchant:
-          $ref: "#/components/schemas/MerchantData"
+          $ref: '#/components/schemas/MerchantData'
           description: Contains information about the merchant.
         transferInstrumentId:
           description: Unique identifier of the [transfer instrument](https://docs.adyen.com/api-explorer/#/legalentity/latest/post/transferInstruments__resParam_id).
@@ -932,7 +932,7 @@ components:
           type: string
         type:
           default: dkLocal
-          description: "**dkLocal**"
+          description: '**dkLocal**'
           enum:
             - dkLocal
           type: string
@@ -951,7 +951,7 @@ components:
           type: string
         type:
           default: huLocal
-          description: "**huLocal**"
+          description: '**huLocal**'
           enum:
             - huLocal
           type: string
@@ -967,7 +967,7 @@ components:
           type: string
         type:
           default: iban
-          description: "**iban**"
+          description: '**iban**'
           enum:
             - iban
           type: string
@@ -995,10 +995,10 @@ components:
       properties:
         paths:
           items:
-            $ref: "#/components/schemas/JSONPath"
+            $ref: '#/components/schemas/JSONPath'
           type: array
         rootPath:
-          $ref: "#/components/schemas/JSONPath"
+          $ref: '#/components/schemas/JSONPath'
       type: object
     JSONPath:
       properties:
@@ -1015,10 +1015,10 @@ components:
     Links:
       properties:
         next:
-          $ref: "#/components/schemas/Link"
+          $ref: '#/components/schemas/Link'
           description: Contains a link to the next page.
         prev:
-          $ref: "#/components/schemas/Link"
+          $ref: '#/components/schemas/Link'
           description: Contains a link to the previous page.
       type: object
     MerchantData:
@@ -1030,7 +1030,7 @@ components:
           description: The merchant identifier.
           type: string
         nameLocation:
-          $ref: "#/components/schemas/NameLocation"
+          $ref: '#/components/schemas/NameLocation'
           description: Contains the merchant's name and location.
         postalCode:
           description: The merchant postal code.
@@ -1046,7 +1046,7 @@ components:
           type: string
         type:
           default: noLocal
-          description: "**noLocal**"
+          description: '**noLocal**'
           enum:
             - noLocal
           type: string
@@ -1083,7 +1083,7 @@ components:
           maxLength: 34
           type: string
         additionalBankIdentification:
-          $ref: "#/components/schemas/AdditionalBankIdentification"
+          $ref: '#/components/schemas/AdditionalBankIdentification'
           description: Additional identification codes of the bank. Some banks may require these identifiers for cross-border transfers.
         bic:
           description: The bank's 8- or 11-character BIC or SWIFT code.
@@ -1092,7 +1092,7 @@ components:
           type: string
         type:
           default: numberAndBic
-          description: "**numberAndBic**"
+          description: '**numberAndBic**'
           enum:
             - numberAndBic
           type: string
@@ -1111,7 +1111,7 @@ components:
           type: string
         type:
           default: plLocal
-          description: "**plLocal**"
+          description: '**plLocal**'
           enum:
             - plLocal
           type: string
@@ -1122,7 +1122,7 @@ components:
     PartyIdentification-2:
       properties:
         address:
-          $ref: "#/components/schemas/Address-2"
+          $ref: '#/components/schemas/Address-2'
           description: Address of the bank account owner.
         dateOfBirth:
           description: |-
@@ -1177,7 +1177,7 @@ components:
         tokenType:
           description: The type of wallet the network token is associated with.
           type: string
-          x-addedInVersion: "3"
+          x-addedInVersion: '3'
       type: object
     ResourceReference:
       properties:
@@ -1205,13 +1205,13 @@ components:
         invalidFields:
           description: Detailed explanation of each validation error, when applicable.
           items:
-            $ref: "#/components/schemas/InvalidField"
+            $ref: '#/components/schemas/InvalidField'
           type: array
         requestId:
           description: A unique reference for the request, essentially the same as `pspReference`.
           type: string
         response:
-          $ref: "#/components/schemas/JSONObject"
+          $ref: '#/components/schemas/JSONObject'
           description: JSON response payload.
         status:
           description: The HTTP status code.
@@ -1245,7 +1245,7 @@ components:
           type: string
         type:
           default: seLocal
-          description: "**seLocal**"
+          description: '**seLocal**'
           enum:
             - seLocal
           type: string
@@ -1269,7 +1269,7 @@ components:
           type: string
         type:
           default: sgLocal
-          description: "**sgLocal**"
+          description: '**sgLocal**'
           enum:
             - sgLocal
           type: string
@@ -1282,24 +1282,24 @@ components:
         accountHolderId:
           description: Unique identifier of the account holder.
           type: string
-          x-addedInVersion: "1"
+          x-addedInVersion: '1'
         amount:
-          $ref: "#/components/schemas/Amount"
+          $ref: '#/components/schemas/Amount'
           description: The amount.
-          x-addedInVersion: "1"
+          x-addedInVersion: '1'
         balanceAccountId:
           description: Unique identifier of the balance account.
           type: string
-          x-addedInVersion: "1"
+          x-addedInVersion: '1'
         balancePlatform:
           description: Unique identifier of the balance platform.
           type: string
-          x-addedInVersion: "1"
+          x-addedInVersion: '1'
         bookingDate:
           description: The date the transaction was booked to the balance account.
           format: date-time
           type: string
-          x-addedInVersion: "1"
+          x-addedInVersion: '1'
         category:
           description: |+
             The category of the transaction indicating the type of activity.
@@ -1321,36 +1321,36 @@ components:
             - issuedCard
             - platformPayment
           type: string
-          x-addedInVersion: "1"
+          x-addedInVersion: '1'
         counterparty:
-          $ref: "#/components/schemas/CounterpartyV3"
+          $ref: '#/components/schemas/CounterpartyV3'
           description: Contains information about the other party in the transaction.
-          x-addedInVersion: "3"
+          x-addedInVersion: '3'
         createdAt:
           description: The date the transaction was created.
           format: date-time
           type: string
-          x-addedInVersion: "1"
+          x-addedInVersion: '1'
         description:
           description: The `description` from the `/transfers` request.
           type: string
-          x-addedInVersion: "1"
+          x-addedInVersion: '1'
         id:
           description: Unique identifier of the transaction.
           type: string
-          x-addedInVersion: "1"
+          x-addedInVersion: '1'
         instructedAmount:
-          $ref: "#/components/schemas/Amount"
+          $ref: '#/components/schemas/Amount'
           description: The amount that the sender instructed their bank to send. This can be higher than `amount.value` when their bank deducts costs for the transfer.
-          x-addedInVersion: "1"
+          x-addedInVersion: '1'
         paymentInstrumentId:
           description: Unique identifier of the payment instrument that was used for the transaction.
           type: string
-          x-addedInVersion: "1"
+          x-addedInVersion: '1'
         reference:
           description: The [`reference`](https://docs.adyen.com/api-explorer/#/transfers/latest/post/transfers__reqParam_reference) from the `/transfers` request. If you haven't provided any, Adyen generates a unique reference.
           type: string
-          x-addedInVersion: "1"
+          x-addedInVersion: '1'
         referenceForBeneficiary:
           description: |-
             The reference sent to or received from the counterparty.
@@ -1359,7 +1359,7 @@ components:
 
              * For incoming funds, this is the reference from the sender.
           type: string
-          x-addedInVersion: "1"
+          x-addedInVersion: '1'
         status:
           description: |+
             The status of the transaction.
@@ -1374,11 +1374,11 @@ components:
             - booked
             - pending
           type: string
-          x-addedInVersion: "1"
+          x-addedInVersion: '1'
         transferId:
           description: Unique identifier of the related transfer.
           type: string
-          x-addedInVersion: "1"
+          x-addedInVersion: '1'
         type:
           description: |-
             The type of the transaction.
@@ -1412,12 +1412,12 @@ components:
             - reserveAdjustment
             - secondChargeback
           type: string
-          x-addedInVersion: "1"
+          x-addedInVersion: '1'
         valueDate:
           description: The date the transfer amount becomes available in the balance account.
           format: date-time
           type: string
-          x-addedInVersion: "1"
+          x-addedInVersion: '1'
       required:
         - id
         - accountHolderId
@@ -1434,34 +1434,34 @@ components:
     TransactionSearchResponse:
       properties:
         _links:
-          $ref: "#/components/schemas/Links"
+          $ref: '#/components/schemas/Links'
           description: Contains links to the next and previous page whenever applicable.
         data:
           description: Contains the transactions that match the query parameters.
           items:
-            $ref: "#/components/schemas/Transaction"
+            $ref: '#/components/schemas/Transaction'
           type: array
       type: object
     Transfer:
       properties:
         accountHolder:
-          $ref: "#/components/schemas/ResourceReference"
+          $ref: '#/components/schemas/ResourceReference'
           description: The account holder associated with the balance account used in the transfer.
-          x-addedInVersion: "3"
+          x-addedInVersion: '3'
         amount:
-          $ref: "#/components/schemas/Amount"
+          $ref: '#/components/schemas/Amount'
           description: The amount of the transfer.
-          x-addedInVersion: "1"
+          x-addedInVersion: '1'
         balanceAccount:
-          $ref: "#/components/schemas/ResourceReference"
+          $ref: '#/components/schemas/ResourceReference'
           description: Contains information about the balance account involved in the transfer.
-          x-addedInVersion: "3"
+          x-addedInVersion: '3'
         balanceAccountId:
           deprecated: true
           description: The unique identifier of the source [balance account](https://docs.adyen.com/api-explorer/#/balanceplatform/latest/post/balanceAccounts__resParam_id).
           type: string
-          x-addedInVersion: "2"
-          x-deprecatedInVersion: "3"
+          x-addedInVersion: '2'
+          x-deprecatedInVersion: '3'
           x-deprecatedMessage: Use the ID in the [`balanceAccount`](https://docs.adyen.com/api-explorer/transfer-webhooks/latest/post/balancePlatform.transfer.created#request-data-balanceAccount-id) object instead.
         category:
           description: |-
@@ -1482,11 +1482,11 @@ components:
             - issuedCard
             - platformPayment
           type: string
-          x-addedInVersion: "3"
+          x-addedInVersion: '3'
         counterparty:
-          $ref: "#/components/schemas/CounterpartyV3"
+          $ref: '#/components/schemas/CounterpartyV3'
           description: The other party in the transfer.
-          x-addedInVersion: "3"
+          x-addedInVersion: '3'
         description:
           description: |-
             Your description for the transfer. It is used by most banks as the transfer description. We recommend sending a maximum of 140 characters, otherwise the description may be truncated.
@@ -1495,7 +1495,7 @@ components:
 
             Supported characters for **regular** and **fast** transfers to a US counterparty: **[a-z] [A-Z] [0-9] & $ % # @** **~ = + - _ ' " ! ?**
           type: string
-          x-addedInVersion: "1"
+          x-addedInVersion: '1'
         direction:
           description: |-
             The direction of the transfer.
@@ -1505,20 +1505,20 @@ components:
             - incoming
             - outgoing
           type: string
-          x-addedInVersion: "2"
+          x-addedInVersion: '2'
         id:
           description: The ID of the resource.
           type: string
         paymentInstrument:
-          $ref: "#/components/schemas/PaymentInstrument"
+          $ref: '#/components/schemas/PaymentInstrument'
           description: Contains information about the payment instrument used in the transfer.
-          x-addedInVersion: "3"
+          x-addedInVersion: '3'
         paymentInstrumentId:
           deprecated: true
           description: The unique identifier of the [payment instrument](https://docs.adyen.com/api-explorer/#/balanceplatform/latest/post/balanceAccounts__resParam_id) used in the transfer.
           type: string
-          x-addedInVersion: "2"
-          x-deprecatedInVersion: "3"
+          x-addedInVersion: '2'
+          x-deprecatedInVersion: '3'
           x-deprecatedMessage: Use the ID in the [`paymentInstrument`](https://docs.adyen.com/api-explorer/transfer-webhooks/latest/post/balancePlatform.transfer.created#request-data-paymentInstrument-id) object instead.
         priority:
           description: |-
@@ -1546,7 +1546,7 @@ components:
             - regular
             - wire
           type: string
-          x-addedInVersion: "3"
+          x-addedInVersion: '3'
         reason:
           description: Additional information about the status of the transfer.
           enum:
@@ -1564,12 +1564,12 @@ components:
             - routeNotFound
             - unknown
           type: string
-          x-addedInVersion: "2"
+          x-addedInVersion: '2'
         reference:
           description: Your reference for the transfer, used internally within your platform. If you don't provide this in the request, Adyen generates a unique reference.
           maxLength: 80
           type: string
-          x-addedInVersion: "2"
+          x-addedInVersion: '2'
         referenceForBeneficiary:
           description: |2-
              A reference that is sent to the recipient. This reference is also sent in all notification webhooks related to the transfer, so you can use it to track statuses for both the source and recipient of funds.
@@ -1581,7 +1581,7 @@ components:
             - **bank**: 35 characters when transferring to an IBAN, 15 characters for others.
           maxLength: 80
           type: string
-          x-addedInVersion: "2"
+          x-addedInVersion: '2'
         status:
           description: |-
             The result of the transfer.
@@ -1650,7 +1650,7 @@ components:
             - secondChargebackPending
             - undefined
           type: string
-          x-addedInVersion: "2"
+          x-addedInVersion: '2'
       required:
         - category
         - amount
@@ -1660,9 +1660,9 @@ components:
     TransferInfo:
       properties:
         amount:
-          $ref: "#/components/schemas/Amount"
+          $ref: '#/components/schemas/Amount'
           description: The amount of the transfer.
-          x-addedInVersion: "1"
+          x-addedInVersion: '1'
         balanceAccountId:
           description: The unique identifier of the source [balance account](https://docs.adyen.com/api-explorer/#/balanceplatform/latest/post/balanceAccounts__resParam_id).
           type: string
@@ -1685,11 +1685,11 @@ components:
             - issuedCard
             - platformPayment
           type: string
-          x-addedInVersion: "3"
+          x-addedInVersion: '3'
         counterparty:
-          $ref: "#/components/schemas/CounterpartyInfoV3"
+          $ref: '#/components/schemas/CounterpartyInfoV3'
           description: The recipient of the funds transfer. A bank account, a balance account, or a transfer instrument is required.
-          x-addedInVersion: "3"
+          x-addedInVersion: '3'
         description:
           description: |-
             Your description for the transfer. It is used by most banks as the transfer description. We recommend sending a maximum of 140 characters, otherwise the description may be truncated.
@@ -1698,7 +1698,7 @@ components:
 
             Supported characters for **regular** and **fast** transfers to a US counterparty: **[a-z] [A-Z] [0-9] & $ % # @** **~ = + - _ ' " ! ?**
           type: string
-          x-addedInVersion: "1"
+          x-addedInVersion: '1'
         id:
           description: The ID of the resource.
           type: string
@@ -1731,12 +1731,12 @@ components:
             - regular
             - wire
           type: string
-          x-addedInVersion: "3"
+          x-addedInVersion: '3'
         reference:
           description: Your reference for the transfer, used internally within your platform. If you don't provide this in the request, Adyen generates a unique reference.
           maxLength: 80
           type: string
-          x-addedInVersion: "2"
+          x-addedInVersion: '2'
         referenceForBeneficiary:
           description: |2-
              A reference that is sent to the recipient. This reference is also sent in all notification webhooks related to the transfer, so you can use it to track statuses for both the source and recipient of funds.
@@ -1748,11 +1748,11 @@ components:
             - **bank**: 35 characters when transferring to an IBAN, 15 characters for others.
           maxLength: 80
           type: string
-          x-addedInVersion: "2"
+          x-addedInVersion: '2'
         ultimateParty:
-          $ref: "#/components/schemas/UltimatePartyIdentification"
+          $ref: '#/components/schemas/UltimatePartyIdentification'
           description: The ultimate sender of the funds of the transfer (ultimate debtor).
-          x-addedInVersion: "3"
+          x-addedInVersion: '3'
       required:
         - category
         - amount
@@ -1773,7 +1773,7 @@ components:
           type: string
         type:
           default: ukLocal
-          description: "**ukLocal**"
+          description: '**ukLocal**'
           enum:
             - ukLocal
           type: string
@@ -1807,7 +1807,7 @@ components:
           type: string
         type:
           default: usLocal
-          description: "**usLocal**"
+          description: '**usLocal**'
           enum:
             - usLocal
           type: string
@@ -1819,7 +1819,7 @@ components:
     UltimatePartyIdentification:
       properties:
         address:
-          $ref: "#/components/schemas/Address-2"
+          $ref: '#/components/schemas/Address-2'
           description: Address of the bank account owner.
         dateOfBirth:
           description: |-

@@ -12,7 +12,7 @@ info:
     [Read More...](https://docs.codat.io/sfc/overview)
   termsOfService: https://www.codat.io/legals/
   title: Sync for Commerce API
-  version: "1.1"
+  version: '1.1'
   x-apisguru-categories:
     - ecommerce
   x-logo:
@@ -20,7 +20,7 @@ info:
   x-origin:
     - format: openapi
       url: https://raw.githubusercontent.com/codatio/oas/main/json/Codat-Sync-Commerce.json
-      version: "3.1"
+      version: '3.1'
   x-providerName: codat.io
   x-serviceName: sync-for-commerce
 security:
@@ -37,16 +37,16 @@ tags:
   - description: View useful information about codat's integrations.
     name: Integrations
 paths:
-  "/clients/{clientId}/config/ui/accounts/platform/{platformKey}":
+  '/clients/{clientId}/config/ui/accounts/platform/{platformKey}':
     get:
       description: Enable retrieval for accounts which are visible on sync flow.
       operationId: get-visible-accounts
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/VisibleAccounts"
+                $ref: '#/components/schemas/VisibleAccounts'
           description: Success
       summary: List visible accounts
       tags:
@@ -64,45 +64,46 @@ paths:
         schema:
           format: uuid
           type: string
-  "/companies/{companyId}/sync/commerce/latest":
+  '/companies/{companyId}/sync/commerce/latest':
     parameters:
-      - $ref: "#/paths/~1meta~1companies~1%7BcompanyId%7D~1connections/parameters/0"
+      - $ref: '#/paths/~1meta~1companies~1%7BcompanyId%7D~1connections/parameters/0'
     post:
-      description: "Run a Commerce sync from the last successful sync up to the date provided (optional), otherwise UtcNow is used.\r
+      description:
+        "Run a Commerce sync from the last successful sync up to the date provided (optional), otherwise UtcNow is used.\r
 
         If there was no previously successful sync, the start date in the config is used."
       operationId: request-sync
       parameters:
-        - $ref: "#/paths/~1meta~1companies~1%7BcompanyId%7D~1connections/parameters/0"
+        - $ref: '#/paths/~1meta~1companies~1%7BcompanyId%7D~1connections/parameters/0'
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SyncToLatestArgs"
-        description: ""
+              $ref: '#/components/schemas/SyncToLatestArgs'
+        description: ''
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SyncSummary"
+                $ref: '#/components/schemas/SyncSummary'
               x-speakeasy-usage-example: true
           description: Success
       summary: Run a Commerce sync from the last successful sync
       tags:
         - Sync
-  "/config/companies/{companyId}/sync/commerce":
+  '/config/companies/{companyId}/sync/commerce':
     get:
       description: Retrieve current config preferences.
       operationId: get-configuration
       parameters:
-        - $ref: "#/paths/~1meta~1companies~1%7BcompanyId%7D~1connections/parameters/0"
+        - $ref: '#/paths/~1meta~1companies~1%7BcompanyId%7D~1connections/parameters/0'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Configuration"
+                $ref: '#/components/schemas/Configuration'
           description: Success
       summary: Retrieve config preferences set for a company.
       tags:
@@ -111,13 +112,13 @@ paths:
       description: Make changes to configuration preferences.
       operationId: set-configuration
       parameters:
-        - $ref: "#/paths/~1meta~1companies~1%7BcompanyId%7D~1connections/parameters/0"
+        - $ref: '#/paths/~1meta~1companies~1%7BcompanyId%7D~1connections/parameters/0'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Configuration"
+                $ref: '#/components/schemas/Configuration'
           description: Success
       summary: Create or update configuration.
       tags:
@@ -127,21 +128,21 @@ paths:
       description: Retrieve a list of available integrations support by datatype and state of release.
       operationId: list-integrations
       parameters:
-        - $ref: "#/paths/~1meta~1companies/get/parameters/0"
-        - $ref: "#/paths/~1meta~1companies/get/parameters/1"
-        - $ref: "#/paths/~1meta~1companies/get/parameters/2"
-        - $ref: "#/paths/~1meta~1companies/get/parameters/3"
+        - $ref: '#/paths/~1meta~1companies/get/parameters/0'
+        - $ref: '#/paths/~1meta~1companies/get/parameters/1'
+        - $ref: '#/paths/~1meta~1companies/get/parameters/2'
+        - $ref: '#/paths/~1meta~1companies/get/parameters/3'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Integrations"
+                $ref: '#/components/schemas/Integrations'
           description: Success
       summary: List information on Codat's supported integrations
       tags:
         - Integrations
-  "/config/integrations/{platformKey}/branding":
+  '/config/integrations/{platformKey}/branding':
     get:
       description: Retrieve Integration branding assets.
       operationId: get-integration-branding
@@ -153,11 +154,11 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Branding"
+                $ref: '#/components/schemas/Branding'
                 properties:
                   logo:
                     properties:
@@ -173,7 +174,7 @@ paths:
         required: true
         schema:
           type: string
-  "/config/sync/commerce/{commerceKey}/{accountingKey}/start":
+  '/config/sync/commerce/{commerceKey}/{accountingKey}/start':
     get:
       description: Get a URL for Sync Flow including a one time passcode.
       operationId: get-sync-flow-url
@@ -196,11 +197,11 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SyncFlowUrl"
+                $ref: '#/components/schemas/SyncFlowUrl'
           description: Success
       summary: Retrieve sync flow url
       tags:
@@ -268,11 +269,11 @@ paths:
           x-stoplight:
             id: 4je9lwo02netu
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Companies"
+                $ref: '#/components/schemas/Companies'
           description: Success
       summary: List companies
       tags:
@@ -287,33 +288,33 @@ paths:
             example:
               name: string
             schema:
-              $ref: "#/components/schemas/CreateCompany"
+              $ref: '#/components/schemas/CreateCompany'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Company"
+                $ref: '#/components/schemas/Company'
           description: Success
       summary: Create a sync for commerce company
       tags:
         - Company management
-  "/meta/companies/{companyId}/connections":
+  '/meta/companies/{companyId}/connections':
     get:
       description: Retrieve previously created data connections.
       operationId: list-connections
       parameters:
-        - $ref: "#/paths/~1meta~1companies~1%7BcompanyId%7D~1connections/parameters/0"
-        - $ref: "#/paths/~1meta~1companies/get/parameters/0"
-        - $ref: "#/paths/~1meta~1companies/get/parameters/1"
-        - $ref: "#/paths/~1meta~1companies/get/parameters/2"
-        - $ref: "#/paths/~1meta~1companies/get/parameters/3"
+        - $ref: '#/paths/~1meta~1companies~1%7BcompanyId%7D~1connections/parameters/0'
+        - $ref: '#/paths/~1meta~1companies/get/parameters/0'
+        - $ref: '#/paths/~1meta~1companies/get/parameters/1'
+        - $ref: '#/paths/~1meta~1companies/get/parameters/2'
+        - $ref: '#/paths/~1meta~1companies/get/parameters/3'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Connections"
+                $ref: '#/components/schemas/Connections'
           description: Success
       summary: List data connections
       tags:
@@ -323,93 +324,93 @@ paths:
         name: companyId
         required: true
         schema:
-          $ref: "#/components/schemas/Company/properties/id"
+          $ref: '#/components/schemas/Company/properties/id'
     post:
       description: Create a data connection for company.
       operationId: create-connection
       parameters:
-        - $ref: "#/paths/~1meta~1companies~1%7BcompanyId%7D~1connections/parameters/0"
+        - $ref: '#/paths/~1meta~1companies~1%7BcompanyId%7D~1connections/parameters/0'
       requestBody:
         content:
           application/json:
             schema:
               type: string
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Connection"
+                $ref: '#/components/schemas/Connection'
           description: Success
       summary: Create a data connection
       tags:
         - Company management
-  "/meta/companies/{companyId}/connections/{connectionId}":
+  '/meta/companies/{companyId}/connections/{connectionId}':
     parameters:
-      - $ref: "#/paths/~1meta~1companies~1%7BcompanyId%7D~1connections/parameters/0"
+      - $ref: '#/paths/~1meta~1companies~1%7BcompanyId%7D~1connections/parameters/0'
       - in: path
         name: connectionId
         required: true
         schema:
-          $ref: "#/components/schemas/Connection/properties/id"
+          $ref: '#/components/schemas/Connection/properties/id'
     patch:
       description: Update a data connection
       operationId: update-connection
       parameters:
-        - $ref: "#/paths/~1meta~1companies~1%7BcompanyId%7D~1connections/parameters/0"
-        - $ref: "#/paths/~1meta~1companies~1%7BcompanyId%7D~1connections~1%7BconnectionId%7D/parameters/1"
+        - $ref: '#/paths/~1meta~1companies~1%7BcompanyId%7D~1connections/parameters/0'
+        - $ref: '#/paths/~1meta~1companies~1%7BcompanyId%7D~1connections~1%7BconnectionId%7D/parameters/1'
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UpdateConnection"
+              $ref: '#/components/schemas/UpdateConnection'
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Connection"
+                $ref: '#/components/schemas/Connection'
           description: Success
       summary: Update data connection
       tags:
         - Company management
-  "/meta/companies/{companyId}/sync/commerce/historic":
+  '/meta/companies/{companyId}/sync/commerce/historic':
     post:
       description: Run a Commerce sync from the specified start date to the specified finish date in the request payload.
       operationId: request-sync-for-date-range
       parameters:
-        - $ref: "#/paths/~1meta~1companies~1%7BcompanyId%7D~1connections/parameters/0"
+        - $ref: '#/paths/~1meta~1companies~1%7BcompanyId%7D~1connections/parameters/0'
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/DateRange"
-        description: ""
+              $ref: '#/components/schemas/DateRange'
+        description: ''
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SyncSummary"
+                $ref: '#/components/schemas/SyncSummary'
           description: Success
       summary: Run a Commerce sync from a given date range
       tags:
         - Sync
-  "/meta/companies/{companyId}/sync/commerce/status":
+  '/meta/companies/{companyId}/sync/commerce/status':
     get:
       description: Check the sync history and sync status for a company.
       operationId: get-sync-status
       parameters:
-        - $ref: "#/paths/~1meta~1companies~1%7BcompanyId%7D~1connections/parameters/0"
+        - $ref: '#/paths/~1meta~1companies~1%7BcompanyId%7D~1connections/parameters/0'
       responses:
-        "200":
+        '200':
           description: Success
       summary: Get status for a company's syncs
       tags:
         - Configuration
     parameters:
-      - $ref: "#/paths/~1meta~1companies~1%7BcompanyId%7D~1connections/parameters/0"
-  "/sync/commerce/config/ui/accounts/platform/{commerceKey}":
+      - $ref: '#/paths/~1meta~1companies~1%7BcompanyId%7D~1connections/parameters/0'
+  '/sync/commerce/config/ui/accounts/platform/{commerceKey}':
     patch:
       description: To enable update of accounts visible preferences set on Sync Flow.
       operationId: update-visible-accounts-sync-flow
@@ -424,14 +425,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/VisibleAccounts"
-        description: ""
+              $ref: '#/components/schemas/VisibleAccounts'
+        description: ''
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/VisibleAccounts"
+                $ref: '#/components/schemas/VisibleAccounts'
           description: Success
       summary: Update the visible accounts on Sync Flow
       tags:
@@ -441,11 +442,11 @@ paths:
       description: To enable retrieval of preferences set for the text fields on Sync Flow.
       operationId: get-config-text-sync-flow
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/LocalizationInfo"
+                $ref: '#/components/schemas/LocalizationInfo'
           description: Success
       summary: Retrieve preferences for text fields on Sync Flow
       tags:
@@ -457,14 +458,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/LocalizationInfo"
-        description: ""
+              $ref: '#/components/schemas/LocalizationInfo'
+        description: ''
       responses:
-        "200":
+        '200':
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/LocalizationInfo"
+                $ref: '#/components/schemas/LocalizationInfo'
           description: Success
       summary: Update preferences for text fields on sync flow
       tags:
@@ -480,7 +481,7 @@ components:
             - Bank Nominal
           type:
             - string
-            - "null"
+            - 'null'
         id:
           description: Identifier for the account, unique for the company.
           type: string
@@ -488,12 +489,12 @@ components:
           description: Name of the account.
           type:
             - string
-            - "null"
+            - 'null'
         nominalCode:
           description: Reference given to each nominal account for a business. It ensures money is allocated to the correct account. This code isn't a unique identifier in the Codat system.
           type:
             - string
-            - "null"
+            - 'null'
       title: Account option
       type: object
       x-internal: true
@@ -523,9 +524,9 @@ components:
           description: Button branding references.
           properties:
             default:
-              $ref: "#/paths/~1config~1integrations~1%7BplatformKey%7D~1branding/get/responses/200/content/application~1json/schema/properties/logo/properties/full"
+              $ref: '#/paths/~1config~1integrations~1%7BplatformKey%7D~1branding/get/responses/200/content/application~1json/schema/properties/logo/properties/full'
             hover:
-              $ref: "#/paths/~1config~1integrations~1%7BplatformKey%7D~1branding/get/responses/200/content/application~1json/schema/properties/logo/properties/full"
+              $ref: '#/paths/~1config~1integrations~1%7BplatformKey%7D~1branding/get/responses/200/content/application~1json/schema/properties/logo/properties/full'
           type: object
           x-internal: true
         logo:
@@ -550,7 +551,7 @@ components:
               type: object
               x-internal: true
             square:
-              $ref: "#/paths/~1config~1integrations~1%7BplatformKey%7D~1branding/get/responses/200/content/application~1json/schema/properties/logo/properties/full"
+              $ref: '#/paths/~1config~1integrations~1%7BplatformKey%7D~1branding/get/responses/200/content/application~1json/schema/properties/logo/properties/full'
           type: object
           x-internal: true
         sourceId:
@@ -566,10 +567,10 @@ components:
         - properties:
             results:
               items:
-                $ref: "#/components/schemas/Company"
+                $ref: '#/components/schemas/Company'
               type: array
           type: object
-        - $ref: "#/components/schemas/PagingInfo"
+        - $ref: '#/components/schemas/PagingInfo'
       x-internal: true
     Company:
       description: A company in Codat represent a small or medium sized business, whose data you wish to share
@@ -622,7 +623,7 @@ components:
           type: string
         dataConnections:
           items:
-            $ref: "#/components/schemas/Connection"
+            $ref: '#/components/schemas/Connection'
           type: array
         description:
           description: Additional information about the company. This can be used to store foreign IDs, references, etc.
@@ -634,7 +635,7 @@ components:
           format: uuid
           type: string
         lastSync:
-          $ref: "#/components/schemas/Company/properties/created"
+          $ref: '#/components/schemas/Company/properties/created'
         name:
           description: The name of the company
           examples:
@@ -664,20 +665,20 @@ components:
         accountOptions:
           description: Object containing account options.
           items:
-            $ref: "#/components/schemas/AccountOption"
+            $ref: '#/components/schemas/AccountOption'
           type:
             - array
-            - "null"
+            - 'null'
         descriptionText:
           description: Descriprtive text for sales configuration section.
           type:
             - string
-            - "null"
+            - 'null'
         labelText:
           description: Label text for sales configuration section.
           type:
             - string
-            - "null"
+            - 'null'
         required:
           description: Required section to be configured for sync.
           type: boolean
@@ -685,7 +686,7 @@ components:
           description: Selected account id from the list of available accounts.
           type:
             - string
-            - "null"
+            - 'null'
       title: Account configuration
       type: object
       x-internal: true
@@ -693,13 +694,13 @@ components:
       additionalProperties: false
       properties:
         fees:
-          $ref: "#/components/schemas/Fees"
+          $ref: '#/components/schemas/Fees'
         newPayments:
-          $ref: "#/components/schemas/NewPayments"
+          $ref: '#/components/schemas/NewPayments'
         payments:
-          $ref: "#/components/schemas/Payments"
+          $ref: '#/components/schemas/Payments'
         sales:
-          $ref: "#/components/schemas/Sales"
+          $ref: '#/components/schemas/Sales'
       type: object
     Connection:
       definitions:
@@ -708,7 +709,7 @@ components:
             errorMessage:
               type: string
             erroredOnUtc:
-              $ref: "#/components/schemas/Company/properties/created"
+              $ref: '#/components/schemas/Company/properties/created'
             statusCode:
               type: string
             statusText:
@@ -754,10 +755,10 @@ components:
             type: string
           type: object
         created:
-          $ref: "#/components/schemas/Company/properties/created"
+          $ref: '#/components/schemas/Company/properties/created'
         dataConnectionErrors:
           items:
-            $ref: "#/components/schemas/Connection/definitions/dataConnectionError"
+            $ref: '#/components/schemas/Connection/definitions/dataConnectionError'
           type: array
         id:
           description: Unique identifier for a company's data connection.
@@ -775,7 +776,7 @@ components:
           description: A unique four-character ID that identifies the platform of the company's data connection. This ensures continuity if the platform changes its name in the future.
           type: string
         lastSync:
-          $ref: "#/components/schemas/Company/properties/created"
+          $ref: '#/components/schemas/Company/properties/created'
         linkUrl:
           examples:
             - https://link-api.codat.io/companies/86bd88cb-44ab-4dfb-b32f-87b19b14287f/connections/2e2eb431-c1fa-4dc9-93fa-d29781c12bcd/start
@@ -784,7 +785,7 @@ components:
         platformName:
           type: string
         sourceId:
-          $ref: "#/components/schemas/Branding/properties/sourceId"
+          $ref: '#/components/schemas/Branding/properties/sourceId'
         sourceType:
           description: The type of platform of the connection.
           enum:
@@ -799,7 +800,7 @@ components:
           type: string
           x-internal: true
         status:
-          $ref: "#/components/schemas/Connection/definitions/dataConnectionStatus"
+          $ref: '#/components/schemas/Connection/definitions/dataConnectionStatus'
       required:
         - id
         - integrationId
@@ -817,10 +818,10 @@ components:
         - properties:
             results:
               items:
-                $ref: "#/components/schemas/Connection"
+                $ref: '#/components/schemas/Connection'
               type: array
           type: object
-        - $ref: "#/components/schemas/PagingInfo"
+        - $ref: '#/components/schemas/PagingInfo'
       x-internal: true
     CreateCompany:
       additionalProperties: false
@@ -841,25 +842,25 @@ components:
         customerOptions:
           description: List of customer options from the list of customer records on the accounting software.
           items:
-            $ref: "#/components/schemas/Option"
+            $ref: '#/components/schemas/Option'
           type:
             - array
-            - "null"
+            - 'null'
         selectedCustomerId:
           description: Selected customer id from the list of customer records on the accounting software.
           type:
             - string
-            - "null"
+            - 'null'
       type: object
       x-internal: true
     DateRange:
       additionalProperties: false
       properties:
         finish:
-          $ref: "#/components/schemas/Company/properties/created"
+          $ref: '#/components/schemas/Company/properties/created'
           description: Finish date of the Sync.
         start:
-          $ref: "#/components/schemas/Company/properties/created"
+          $ref: '#/components/schemas/Company/properties/created'
           description: Start date of the Sync.
       title: Data range
       type: object
@@ -869,12 +870,12 @@ components:
       properties:
         accounts:
           additionalProperties:
-            $ref: "#/components/schemas/ConfigAccount"
+            $ref: '#/components/schemas/ConfigAccount'
           type:
             - object
-            - "null"
+            - 'null'
         feesSupplier:
-          $ref: "#/components/schemas/FeesSupplier"
+          $ref: '#/components/schemas/FeesSupplier'
         syncFees:
           description: Boolean indicator to enable syncing fees.
           type: boolean
@@ -887,14 +888,14 @@ components:
           description: Selected supplier id from the list of supplier records on the accounting software.
           type:
             - string
-            - "null"
+            - 'null'
         supplierOptions:
           description: List of supplier options from the list of supplier records on the accounting software.
           items:
-            $ref: "#/components/schemas/Option"
+            $ref: '#/components/schemas/Option'
           type:
             - array
-            - "null"
+            - 'null'
       title: Supplier fees
       type: object
       x-internal: true
@@ -902,18 +903,18 @@ components:
       additionalProperties: false
       properties:
         groupingLevels:
-          $ref: "#/components/schemas/GroupingLevels"
+          $ref: '#/components/schemas/GroupingLevels'
         groupingPeriod:
-          $ref: "#/components/schemas/GroupingPeriod"
+          $ref: '#/components/schemas/GroupingPeriod'
       type: object
       x-internal: true
     GroupingLevels:
       additionalProperties: false
       properties:
         invoiceLevel:
-          $ref: "#/components/schemas/InvoiceLevelSelection"
+          $ref: '#/components/schemas/InvoiceLevelSelection'
         invoiceLineLevel:
-          $ref: "#/components/schemas/InvoiceLineLevelSelection"
+          $ref: '#/components/schemas/InvoiceLineLevelSelection'
       title: Grouping levels
       type: object
       x-internal: true
@@ -926,12 +927,12 @@ components:
             type: string
           type:
             - array
-            - "null"
+            - 'null'
         selectedGroupingPeriod:
           description: Grouping period i.e. Daily sales.
           type:
             - string
-            - "null"
+            - 'null'
       title: Grouping period
       type: object
       x-internal: true
@@ -1003,7 +1004,7 @@ components:
               x-internal: true
             supportedFeatures:
               items:
-                $ref: "#/components/schemas/Integration/definitions/supportedFeature"
+                $ref: '#/components/schemas/Integration/definitions/supportedFeature'
               type: array
           required:
             - datatype
@@ -1038,9 +1039,9 @@ components:
         supportedFeature:
           properties:
             featureState:
-              $ref: "#/components/schemas/Integration/definitions/featureState"
+              $ref: '#/components/schemas/Integration/definitions/featureState'
             featureType:
-              $ref: "#/components/schemas/Integration/definitions/featureType"
+              $ref: '#/components/schemas/Integration/definitions/featureType'
           required:
             - featureType
             - featureState
@@ -1068,24 +1069,24 @@ components:
           type: string
         datatypeFeatures:
           items:
-            $ref: "#/components/schemas/Integration/definitions/dataTypeFeature"
+            $ref: '#/components/schemas/Integration/definitions/dataTypeFeature'
           type: array
         enabled:
           description: Whether this integration is enabled for your customers to use
           type: boolean
         integrationId:
-          $ref: "#/components/schemas/Connection/properties/integrationId"
+          $ref: '#/components/schemas/Connection/properties/integrationId'
         isBeta:
           type: boolean
         isOfflineConnector:
           type: boolean
         key:
-          description: "A unique 4-letter key to represent a platform in each integration. View [accounting](https://docs.codat.io/integrations/accounting/accounting-platform-keys), [banking](https://docs.codat.io/integrations/banking/banking-platform-keys), and [commerce](https://docs.codat.io/integrations/commerce/commerce-platform-keys) platform keys. "
+          description: 'A unique 4-letter key to represent a platform in each integration. View [accounting](https://docs.codat.io/integrations/accounting/accounting-platform-keys), [banking](https://docs.codat.io/integrations/banking/banking-platform-keys), and [commerce](https://docs.codat.io/integrations/commerce/commerce-platform-keys) platform keys. '
           examples:
             - gbol
           maxLength: 4
           minLength: 4
-          pattern: "[a-z]{4}"
+          pattern: '[a-z]{4}'
           type: string
         logoUrl:
           format: uri
@@ -1095,9 +1096,9 @@ components:
             - Xero
           type: string
         sourceId:
-          $ref: "#/components/schemas/Branding/properties/sourceId"
+          $ref: '#/components/schemas/Branding/properties/sourceId'
         sourceType:
-          $ref: "#/components/schemas/Connection/properties/sourceType"
+          $ref: '#/components/schemas/Connection/properties/sourceType'
       required:
         - key
         - logoUrl
@@ -1110,10 +1111,10 @@ components:
         - properties:
             results:
               items:
-                $ref: "#/components/schemas/Integration"
+                $ref: '#/components/schemas/Integration'
               type: array
           type: object
-        - $ref: "#/components/schemas/PagingInfo"
+        - $ref: '#/components/schemas/PagingInfo'
       x-internal: true
     InvoiceLevelSelection:
       additionalProperties: false
@@ -1124,14 +1125,14 @@ components:
             type: string
           type:
             - array
-            - "null"
+            - 'null'
         selectedGroupByOptions:
           description: Selected array of grouping options.
           items:
             type: string
           type:
             - array
-            - "null"
+            - 'null'
       title: Invoice level selection
       type: object
       x-internal: true
@@ -1144,14 +1145,14 @@ components:
             type: string
           type:
             - array
-            - "null"
+            - 'null'
         selectedGroupByOptions:
           description: Invoice line level selection.
           items:
             type: string
           type:
             - array
-            - "null"
+            - 'null'
       title: Invoice line level selection
       type: object
       x-internal: true
@@ -1164,14 +1165,14 @@ components:
             type: string
           type:
             - array
-            - "null"
+            - 'null'
         selectedInvoiceStatus:
           description: Selected option for invoice status for invoice to be synced.
           examples:
             - Submitted
           type:
             - string
-            - "null"
+            - 'null'
       title: Invoice status
       type: object
       x-internal: true
@@ -1183,13 +1184,13 @@ components:
             href: /companies/{id}/data/{dataType}
       properties:
         current:
-          $ref: "#/components/schemas/HalRef"
+          $ref: '#/components/schemas/HalRef'
         next:
-          $ref: "#/components/schemas/HalRef"
+          $ref: '#/components/schemas/HalRef'
         previous:
-          $ref: "#/components/schemas/HalRef"
+          $ref: '#/components/schemas/HalRef'
         self:
-          $ref: "#/components/schemas/HalRef"
+          $ref: '#/components/schemas/HalRef'
       required:
         - self
         - current
@@ -1203,12 +1204,12 @@ components:
           description: Value of the property.
           type:
             - string
-            - "null"
+            - 'null'
       type: object
       x-internal: true
     LocalizationInfo:
       additionalProperties:
-        $ref: "#/components/schemas/Localization"
+        $ref: '#/components/schemas/Localization'
       title: Localization info.
       type: object
     NewPayments:
@@ -1216,10 +1217,10 @@ components:
       properties:
         accounts:
           additionalProperties:
-            $ref: "#/components/schemas/ConfigAccount"
+            $ref: '#/components/schemas/ConfigAccount'
           type:
             - object
-            - "null"
+            - 'null'
         syncPayments:
           description: Boolean indicator for syncing payments.
           type: boolean
@@ -1232,36 +1233,36 @@ components:
         accountingTaxRateOptions:
           description: Array of accounting tax rate options.
           items:
-            $ref: "#/components/schemas/Option"
+            $ref: '#/components/schemas/Option'
           type:
             - array
-            - "null"
+            - 'null'
         commerceTaxRateOptions:
           description: Array of tax component options.
           items:
-            $ref: "#/components/schemas/Option"
+            $ref: '#/components/schemas/Option'
           type:
             - array
-            - "null"
+            - 'null'
         defaultZeroTaxRateOptions:
           description: Default zero tax rate selected for sync.
           items:
-            $ref: "#/components/schemas/Option"
+            $ref: '#/components/schemas/Option'
           type:
             - array
-            - "null"
+            - 'null'
         selectedDefaultZeroTaxRateId:
           description: Default tax rate selected for sync.
           type:
             - string
-            - "null"
+            - 'null'
         taxRateMappings:
           description: Array of tax component to rate mapppings.
           items:
-            $ref: "#/components/schemas/TaxRateMapping"
+            $ref: '#/components/schemas/TaxRateMapping'
           type:
             - array
-            - "null"
+            - 'null'
       title: New tax rates
       type: object
       x-internal: true
@@ -1275,7 +1276,7 @@ components:
           description: Name value of the option.
           type:
             - string
-            - "null"
+            - 'null'
       type: object
       x-internal: true
     PagingInfo:
@@ -1290,7 +1291,7 @@ components:
             totalResults: 1
       properties:
         _links:
-          $ref: "#/components/schemas/Links"
+          $ref: '#/components/schemas/Links'
         pageNumber:
           type: integer
         pageSize:
@@ -1309,10 +1310,10 @@ components:
       properties:
         accounts:
           additionalProperties:
-            $ref: "#/components/schemas/ConfigAccount"
+            $ref: '#/components/schemas/ConfigAccount'
           type:
             - object
-            - "null"
+            - 'null'
         syncPayments:
           description: Boolean indicator for syncing sales.
           type: boolean
@@ -1323,27 +1324,27 @@ components:
       properties:
         accounts:
           additionalProperties:
-            $ref: "#/components/schemas/ConfigAccount"
+            $ref: '#/components/schemas/ConfigAccount'
           type:
             - object
-            - "null"
+            - 'null'
         grouping:
-          $ref: "#/components/schemas/Grouping"
+          $ref: '#/components/schemas/Grouping'
         invoiceStatus:
-          $ref: "#/components/schemas/InvoiceStatus"
+          $ref: '#/components/schemas/InvoiceStatus'
         newTaxRates:
-          $ref: "#/components/schemas/NewTaxRates"
+          $ref: '#/components/schemas/NewTaxRates'
         salesCustomer:
-          $ref: "#/components/schemas/Customer"
+          $ref: '#/components/schemas/Customer'
         syncSales:
           description: Boolean indicator for syncing sales.
           type: boolean
         taxRates:
           additionalProperties:
-            $ref: "#/components/schemas/TaxRateAmount"
+            $ref: '#/components/schemas/TaxRateAmount'
           type:
             - object
-            - "null"
+            - 'null'
       type: object
       x-internal: true
     SyncFlowUrl:
@@ -1373,10 +1374,10 @@ components:
         dataConnections:
           description: Array of containing objects data connection information for the company.
           items:
-            $ref: "#/components/schemas/Connection"
+            $ref: '#/components/schemas/Connection'
           type:
             - array
-            - "null"
+            - 'null'
         dataPushed:
           description: Boolean indicator for data being pushed during a sync operation.
           examples:
@@ -1388,23 +1389,23 @@ components:
             - Customer 3b9bf2ed-a618-4af2-80f2-f2b57fddc748 is not in an Active state. (Archived)
           type:
             - string
-            - "null"
+            - 'null'
         syncDateRangeUtc:
-          $ref: "#/components/schemas/DateRange"
+          $ref: '#/components/schemas/DateRange'
         syncExceptionMessage:
           description: Exception message for the sync operation.
           examples:
             - Customer 3b9bf2ed-a618-4af2-80f2-f2b57fddc748 is not in an Active state. (Archived)
           type:
             - string
-            - "null"
+            - 'null'
         syncStatus:
           description: Status of the sync of the company data. This is linked to status code.
           examples:
             - ValidateError, Pending
           type:
             - string
-            - "null"
+            - 'null'
         syncStatusCode:
           description: Numerical status code sync of the company data.
           examples:
@@ -1412,14 +1413,14 @@ components:
           format: int32
           type: integer
         syncUtc:
-          $ref: "#/components/schemas/Company/properties/created"
+          $ref: '#/components/schemas/Company/properties/created'
           description: UTC DateTime for the Sync.
           nullable: true
       type: object
     SyncToLatestArgs:
       properties:
         syncTo:
-          $ref: "#/components/schemas/Company/properties/created"
+          $ref: '#/components/schemas/Company/properties/created'
           description: The DateTime, upto which Sync will run up to starting from the previous successful sync
           nullable: true
       title: Sync To Latest Args
@@ -1432,14 +1433,14 @@ components:
           description: Selected tax rate id from the list of tax rates on the accounting software.
           type:
             - string
-            - "null"
+            - 'null'
         taxRateOptions:
           description: Array of tax rate options object.
           items:
-            $ref: "#/components/schemas/Option"
+            $ref: '#/components/schemas/Option'
           type:
             - array
-            - "null"
+            - 'null'
       title: Tax rate amount
       type: object
       x-internal: true
@@ -1450,14 +1451,14 @@ components:
           description: Selected tax rate id from the list of tax rates on the accounting software.
           type:
             - string
-            - "null"
+            - 'null'
         selectedCommerceTaxRateIds:
           description: Selected tax component id from the list of tax components on the commerce software.
           items:
             type: string
           type:
             - array
-            - "null"
+            - 'null'
       title: Tax rate mapping
       type: object
       x-internal: true
@@ -1470,7 +1471,7 @@ components:
             - Linked
           type:
             - string
-            - "null"
+            - 'null'
       type: object
       x-internal: true
     VisibleAccounts:
@@ -1481,7 +1482,7 @@ components:
             type: string
           type:
             - array
-            - "null"
+            - 'null'
       title: Visible accounts
       type: object
   securitySchemes:

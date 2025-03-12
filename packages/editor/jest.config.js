@@ -1,10 +1,5 @@
 module.exports = {
   displayName: 'editor',
-  globals: {
-    'ts-jest': {
-      tsconfig: '<rootDir>/tsconfig.json'
-    }
-  },
   transform: {
     '^.+\\.[tj]s$': 'ts-jest'
   },

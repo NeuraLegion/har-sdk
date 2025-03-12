@@ -4,19 +4,18 @@ import yaml from 'js-yaml';
 import { resolve } from 'path';
 import { readFile } from 'fs';
 import { promisify } from 'util';
-import * as fs from 'node:fs';
-import * as path from 'node:path';
+import { readdirSync } from 'node:fs';
 
-describe('OASValidator - real world specifications', () => {
+describe('OASValidator', () => {
   const validator = new OASValidator();
 
   const readDirectory = (dir: string) =>
-    fs.readdirSync(dir).flatMap((file) => path.join(dir, file));
+    readdirSync(dir).flatMap((file) => resolve(dir, file));
 
   describe('verify', () => {
     it.each([
       ...readDirectory(resolve(__dirname, './fixtures/real-world/valid'))
-    ])('should validate oas.3.1 %s', async (input) => {
+    ])('should successfully validate OAS 3.1 (%s)', async (input) => {
       const spec: OpenAPIV3.Document = yaml.load(
         await promisify(readFile)(input, 'utf8')
       ) as OpenAPIV3.Document;
@@ -31,23 +30,23 @@ describe('OASValidator - real world specifications', () => {
 
       expect(result).toEqual([]);
     });
-  });
 
-  it.failing.each([
-    ...readDirectory(resolve(__dirname, './fixtures/real-world/invalid'))
-  ])('should not validate oas.3.1 %s', async (input) => {
-    const spec: OpenAPIV3.Document = yaml.load(
-      await promisify(readFile)(input, 'utf8')
-    ) as OpenAPIV3.Document;
+    it.failing.each([
+      ...readDirectory(resolve(__dirname, './fixtures/real-world/invalid'))
+    ])('should successfully validate OAS 3.1 (%s)', async (input) => {
+      const spec: OpenAPIV3.Document = yaml.load(
+        await promisify(readFile)(input, 'utf8')
+      ) as OpenAPIV3.Document;
 
-    spec.servers = [
-      {
-        url: 'https://example.com'
-      }
-    ];
+      spec.servers = [
+        {
+          url: 'https://example.com'
+        }
+      ];
 
-    const result = await validator.verify(spec);
+      const result = await validator.verify(spec);
 
-    expect(result).toEqual([]);
+      expect(result).toEqual([]);
+    });
   });
 });

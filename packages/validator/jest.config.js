@@ -1,10 +1,6 @@
 module.exports = {
   displayName: 'validator',
-  globals: {
-    'ts-jest': {
-      tsconfig: '<rootDir>/tsconfig.json'
-    }
-  },
+
   transform: {
     '^.+\\.[tj]s$': 'ts-jest'
   },

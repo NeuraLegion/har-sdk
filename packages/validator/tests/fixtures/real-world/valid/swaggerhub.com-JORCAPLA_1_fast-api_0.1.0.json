@@ -1,0 +1,473 @@
+{
+  "openapi": "3.1.0",
+  "info": { "title": "FastAPI", "version": "0.1.0" },
+  "paths": {
+    "/incidencias": {
+      "get": {
+        "summary": "Obtener incidencias",
+        "description": "Obtiene una lista de incidencias filtradas por varios criterios.",
+        "operationId": "get_incidents_incidencias_get",
+        "parameters": [
+          {
+            "required": false,
+            "schema": { "type": "string", "title": "Subject" },
+            "name": "subject",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": { "type": "string", "title": "Short Description" },
+            "name": "short_description",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": { "type": "string", "title": "Technician" },
+            "name": "technician",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": { "type": "string", "title": "Priority" },
+            "name": "priority",
+            "in": "query"
+          },
+          {
+            "required": false,
+            "schema": { "type": "string", "title": "Status" },
+            "name": "status",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": { "$ref": "#/components/schemas/Incident" },
+                  "type": "array",
+                  "title": "Response Get Incidents Incidencias Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Account": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Nombre de la cuenta",
+            "example": "Mercadona CAM"
+          },
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "description": "ID de la cuenta",
+            "example": "4503"
+          },
+          "country": { "type": "object", "title": "Country" },
+          "inactive": { "type": "boolean", "title": "Inactive" },
+          "ciid": { "type": "string", "title": "Ciid" }
+        },
+        "type": "object",
+        "required": ["name", "id"],
+        "title": "Account"
+      },
+      "CreatedTime": {
+        "properties": {
+          "display_value": {
+            "type": "string",
+            "title": "Display Value",
+            "description": "Valor mostrado de la hora de creación",
+            "example": "Jan 8, 2024 07:46 PM"
+          },
+          "value": {
+            "type": "string",
+            "title": "Value",
+            "description": "Valor de la hora de creación",
+            "example": "1704739587943"
+          }
+        },
+        "type": "object",
+        "required": ["display_value", "value"],
+        "title": "CreatedTime"
+      },
+      "Department": {
+        "properties": {
+          "site": {
+            "allOf": [{ "$ref": "#/components/schemas/Site" }],
+            "title": "Site",
+            "description": "Información del sitio asociado al departamento"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Nombre del departamento",
+            "example": "General"
+          },
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "description": "ID del departamento",
+            "example": "4807"
+          }
+        },
+        "type": "object",
+        "required": ["site", "name", "id"],
+        "title": "Department"
+      },
+      "Group": {
+        "properties": {
+          "site": {
+            "allOf": [{ "$ref": "#/components/schemas/Site" }],
+            "title": "Site",
+            "description": "Sitio asociado al grupo"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Nombre del grupo",
+            "example": "N2 CAM"
+          },
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "description": "ID del grupo",
+            "example": "6901"
+          }
+        },
+        "type": "object",
+        "required": ["site", "name", "id"],
+        "title": "Group"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": { "$ref": "#/components/schemas/ValidationError" },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "Incident": {
+        "properties": {
+          "requester": {
+            "allOf": [{ "$ref": "#/components/schemas/User" }],
+            "title": "Requester",
+            "description": "Información del solicitante"
+          },
+          "template": {
+            "allOf": [{ "$ref": "#/components/schemas/Template" }],
+            "title": "Template",
+            "description": "Información de la plantilla asociada a la incidencia"
+          },
+          "short_description": {
+            "type": "string",
+            "title": "Short Description",
+            "description": "Descripción corta de la incidencia",
+            "example": "A/A de responsable servicio técnico..."
+          },
+          "created_time": {
+            "allOf": [{ "$ref": "#/components/schemas/CreatedTime" }],
+            "title": "Created Time",
+            "description": "Hora de creación de la incidencia"
+          },
+          "subject": {
+            "type": "string",
+            "title": "Subject",
+            "description": "Asunto de la incidencia",
+            "example": "TSK000019291658-C-3944 - Gestión Avería Mercadona"
+          },
+          "time_elapsed": {
+            "type": "string",
+            "title": "Time Elapsed",
+            "description": "Tiempo transcurrido"
+          },
+          "is_overdue": {
+            "type": "boolean",
+            "title": "Is Overdue",
+            "description": "Indica si la incidencia está vencida",
+            "example": true
+          },
+          "technician": {
+            "allOf": [{ "$ref": "#/components/schemas/User" }],
+            "title": "Technician",
+            "description": "Técnico asignado a la incidencia"
+          },
+          "priority": {
+            "allOf": [{ "$ref": "#/components/schemas/Priority" }],
+            "title": "Priority",
+            "description": "Prioridad de la incidencia"
+          },
+          "created_by": {
+            "allOf": [{ "$ref": "#/components/schemas/User" }],
+            "title": "Created By",
+            "description": "Usuario que creó la incidencia"
+          },
+          "due_by_time": {
+            "allOf": [{ "$ref": "#/components/schemas/CreatedTime" }],
+            "title": "Due By Time",
+            "description": "Fecha límite para la incidencia"
+          },
+          "response_time_elapsed": {
+            "type": "string",
+            "title": "Response Time Elapsed",
+            "description": "Tiempo de respuesta transcurrido"
+          },
+          "site": {
+            "allOf": [{ "$ref": "#/components/schemas/Site" }],
+            "title": "Site",
+            "description": "Sitio asociado a la incidencia"
+          },
+          "is_service_request": {
+            "type": "boolean",
+            "title": "Is Service Request",
+            "description": "Indica si es una solicitud de servicio",
+            "example": false
+          },
+          "cancel_requested_is_pending": {
+            "type": "boolean",
+            "title": "Cancel Requested Is Pending",
+            "description": "Indica si la solicitud de cancelación está pendiente",
+            "example": false
+          },
+          "cancel_requested": {
+            "type": "boolean",
+            "title": "Cancel Requested",
+            "description": "Indica si se ha solicitado la cancelación",
+            "example": false
+          },
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "description": "ID de la incidencia",
+            "example": "533586"
+          },
+          "account": {
+            "allOf": [{ "$ref": "#/components/schemas/Account" }],
+            "title": "Account",
+            "description": "Cuenta asociada a la incidencia"
+          },
+          "status": {
+            "allOf": [{ "$ref": "#/components/schemas/Status" }],
+            "title": "Status",
+            "description": "Estado de la incidencia"
+          },
+          "group": {
+            "allOf": [{ "$ref": "#/components/schemas/Group" }],
+            "title": "Group",
+            "description": "Grupo asociado a la incidencia"
+          }
+        },
+        "type": "object",
+        "required": [
+          "requester",
+          "template",
+          "short_description",
+          "created_time",
+          "subject",
+          "is_overdue",
+          "technician",
+          "priority",
+          "created_by",
+          "due_by_time",
+          "site",
+          "is_service_request",
+          "cancel_requested_is_pending",
+          "cancel_requested",
+          "id",
+          "account",
+          "status",
+          "group"
+        ],
+        "title": "Incident"
+      },
+      "Priority": {
+        "properties": {
+          "color": {
+            "type": "string",
+            "title": "Color",
+            "description": "Color representativo de la prioridad",
+            "example": "#666666"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Nombre de la prioridad",
+            "example": "Baja"
+          },
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "description": "ID de la prioridad",
+            "example": "1"
+          }
+        },
+        "type": "object",
+        "required": ["color", "name", "id"],
+        "title": "Priority"
+      },
+      "Site": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Nombre del sitio",
+            "example": "CAM"
+          },
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "description": "ID del sitio",
+            "example": "4504"
+          }
+        },
+        "type": "object",
+        "required": ["name", "id"],
+        "title": "Site"
+      },
+      "Status": {
+        "properties": {
+          "color": {
+            "type": "string",
+            "title": "Color",
+            "description": "Color representativo del estado",
+            "example": "#00ff00"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Nombre del estado",
+            "example": "Abierto"
+          },
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "description": "ID del estado",
+            "example": "1"
+          }
+        },
+        "type": "object",
+        "required": ["color", "name", "id"],
+        "title": "Status"
+      },
+      "Template": {
+        "properties": {
+          "is_service_template": {
+            "type": "boolean",
+            "title": "Is Service Template",
+            "description": "Indica si es una plantilla de servicio",
+            "example": false
+          },
+          "service_category": {
+            "type": "string",
+            "title": "Service Category",
+            "description": "Categoría del servicio"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Nombre de la plantilla",
+            "example": "Mercadona CAM"
+          },
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "description": "ID de la plantilla",
+            "example": "7502"
+          }
+        },
+        "type": "object",
+        "required": ["is_service_template", "name", "id"],
+        "title": "Template"
+      },
+      "User": {
+        "properties": {
+          "email_id": {
+            "type": "string",
+            "title": "Email Id",
+            "description": "Correo electrónico del usuario"
+          },
+          "phone": {
+            "type": "string",
+            "title": "Phone",
+            "description": "Teléfono del usuario"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Nombre del usuario",
+            "example": "Juan Aleixandre"
+          },
+          "mobile": {
+            "type": "string",
+            "title": "Mobile",
+            "description": "Móvil del usuario"
+          },
+          "is_vipuser": {
+            "type": "boolean",
+            "title": "Is Vipuser",
+            "description": "Indica si el usuario es VIP",
+            "example": false
+          },
+          "org_user_status": {
+            "type": "string",
+            "title": "Org User Status",
+            "description": "Estado del usuario en la organización",
+            "example": "ACTIVE"
+          },
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "description": "ID del usuario",
+            "example": "27312"
+          },
+          "department": {
+            "allOf": [{ "$ref": "#/components/schemas/Department" }],
+            "title": "Department",
+            "description": "Departamento del usuario"
+          },
+          "account": {
+            "allOf": [{ "$ref": "#/components/schemas/Account" }],
+            "title": "Account",
+            "description": "Cuenta asociada al usuario"
+          }
+        },
+        "type": "object",
+        "required": ["name", "is_vipuser", "org_user_status", "id"],
+        "title": "User"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": { "anyOf": [{ "type": "string" }, { "type": "integer" }] },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": { "type": "string", "title": "Message" },
+          "type": { "type": "string", "title": "Error Type" }
+        },
+        "type": "object",
+        "required": ["loc", "msg", "type"],
+        "title": "ValidationError"
+      }
+    }
+  }
+}

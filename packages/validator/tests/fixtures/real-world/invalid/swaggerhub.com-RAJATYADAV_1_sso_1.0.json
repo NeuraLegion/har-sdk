@@ -1,0 +1,282 @@
+{
+  "openapi": "3.1.0",
+  "x-stoplight": { "id": "9prm1cwipxktt" },
+  "info": {
+    "title": "SSO",
+    "version": "1.0",
+    "summary": "SSO Documenation",
+    "description": "Endpoint documentation for SSO to and from EduGorilla",
+    "contact": { "name": "" }
+  },
+  "servers": [
+    { "url": "https://testseries_portal_url/sso_client/", "description": "" }
+  ],
+  "paths": {
+    "/sso_client/user_details_from_cookie": {
+      "parameters": [
+        {
+          "schema": { "type": "string" },
+          "in": "header",
+          "description": "Login cookie should be sent in the Cookie header. Its name and value should be as it was set in the browser",
+          "name": "Headers"
+        }
+      ],
+      "servers": [{ "url": "/user_details_from_cookie", "description": "" }],
+      "post": {
+        "summary": "Your POST endpoint",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "x-examples": {
+                    "Example 1": { "status": false, "msg": "", "user_info": {} }
+                  },
+                  "properties": {
+                    "status": { "type": "boolean" },
+                    "msg": { "type": "string" },
+                    "user_info": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "x-stoplight": { "id": "xyoyl0a1scjmq" }
+                        },
+                        "email": {
+                          "type": "string",
+                          "x-stoplight": { "id": "pwvbxrv3aj2mb" }
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "Endpoint response when the cookie data is correct": {
+                    "value": {
+                      "status": true,
+                      "msg": "",
+                      "user_info": {
+                        "name": "John Doe",
+                        "email": "johndoe@example.com"
+                      }
+                    }
+                  },
+                  "Endpoint response when the cookie data is invalid": {
+                    "value": {
+                      "status": false,
+                      "msg": "Invalid cookie data",
+                      "user_info": {}
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "operationId": "post-sso_client-user_details_from_cookie",
+        "x-stoplight": { "id": "yj5l8lxej2r7s" },
+        "description": "# 1. OBJECTIVE\nTo carry an already logged-in user's session from the Testseries Domain to the Primary Domain without the user requiring to log-in again\n\n# 2. PROCESS FLOW\nA user (logged in on Testseries Domain) goes to Primary Domain\nPrimary Domain retrieves the user login cookie set by Testseries Domain (cookie details are mentioned in Section 3)\nPrimary Domain server then calls the Testseries Domain cookie authentication API Endpoint to validate this cookie (Details of API endpoint is listed in Section 4)\nOn successful authentication from Testeries Domain, you get back the user details. This detail can be used to Log-in (if the user already existed) or Sign-up (if its the first time log-in)  on Primary Domain\n\n# 3. LOGIN COOKIE DETAILS\n\nTestseries Domain login cookie can be retrieved from any page on Primary Domain as this login cookie was set with cookie domain of Primary domain with a leading dot (RFC 2109)\n\nTestseries cookie name: eg_user\nTestseries cookie verification endpoint: <testseries_portal_url>/sso_client/user_details_from_cookie\n",
+        "parameters": [
+          {
+            "schema": { "type": "string" },
+            "in": "header",
+            "name": "Headers",
+            "description": "Login cookie should be sent in the Cookie header. Its name and value should be as it was set in the browser"
+          }
+        ]
+      }
+    },
+    "/api/v1/activate_package": {
+      "post": {
+        "summary": "Your POST endpoint",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "boolean" },
+                    "msg": { "type": "string" },
+                    "transaction_id": { "type": "string" }
+                  },
+                  "x-examples": {
+                    "Example 1": {
+                      "status": true,
+                      "msg": "Coupon allotted successfully",
+                      "transaction_id": "EG_ef582b201549"
+                    }
+                  }
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "status": true,
+                      "msg": "Coupon allotted successfully",
+                      "transaction_id": "EG_ef582b201549"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "boolean" },
+                    "msg": { "type": "string" }
+                  },
+                  "x-examples": {
+                    "Example 1": {
+                      "status": false,
+                      "msg": "No coupons available for this product_id"
+                    }
+                  }
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "status": false,
+                      "msg": "No coupons available for this product_id"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "post-api-v1-activate_package",
+        "x-stoplight": { "id": "z2v5nnzrmblqb" },
+        "description": "The idea of this endpoint is to activate an Exam Package for a student on Testseries through an API call.\nIt is provided by EduGorilla and below pointers need to be ensured for the request to succeed:\n\n\nIncoming request to this endpoint should have an Authorization header set with the secret code shared with you.\nYour integrated Testseries portal should have an active coupon that covers the package you are requesting. You may refer Testseries admin dashboard to check the currently active coupons on your portal.\n\nFailing to meet the above requirements will lead to request failure. So always check the response status and error message to know the success of your request or for debugging.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "product_id": { "type": "integer" },
+                  "user_info": {
+                    "type": "object",
+                    "properties": {
+                      "picture": { "type": "string" },
+                      "name": { "type": "string" },
+                      "email": { "type": "string" }
+                    }
+                  }
+                },
+                "x-examples": {
+                  "Example 1": {
+                    "product_id": 930,
+                    "user_info": {
+                      "picture": "https://secure.gravatar.com/avatar/?s96&d=mm",
+                      "name": "John Doe",
+                      "email": "johndoeundefined"
+                    }
+                  }
+                }
+              },
+              "examples": {
+                "Example 1": {
+                  "value": {
+                    "product_id": 930,
+                    "user_info": {
+                      "picture": "https://secure.gravatar.com/avatar/?s96&d=mm",
+                      "name": "John Doe",
+                      "email": "john@doe.undefined"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": { "type": "string" },
+            "in": "header",
+            "name": "Authorization:",
+            "description": "Authorization header should be present with the secret code shared with you in below syntax: Authorization: <secret_code>",
+            "required": true
+          },
+          {
+            "schema": { "type": "string" },
+            "in": "header",
+            "name": "Content-Type:",
+            "description": "Content-Type header should be set as we expect JSON payload Content-Type: application/json",
+            "required": true
+          }
+        ]
+      },
+      "parameters": []
+    }
+  },
+  "components": {
+    "schemas": {
+      "User": {
+        "title": "User",
+        "type": "object",
+        "description": "",
+        "examples": [
+          {
+            "id": 142,
+            "firstName": "Alice",
+            "lastName": "Smith",
+            "email": "alice.smith@gmail.com",
+            "dateOfBirth": "1997-10-31",
+            "emailVerified": true,
+            "signUpDate": "2019-08-24"
+          }
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Unique identifier for the given user.",
+            "x-stoplight": { "id": "dxpgq3zjlx914" }
+          },
+          "firstName": {
+            "type": "string",
+            "x-stoplight": { "id": "w2emkwvv0gv5l" }
+          },
+          "lastName": {
+            "type": "string",
+            "x-stoplight": { "id": "1yeeyxpsai3yp" }
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "x-stoplight": { "id": "f472cds6v592b" }
+          },
+          "dateOfBirth": {
+            "type": "string",
+            "format": "date",
+            "example": "1997-10-31",
+            "x-stoplight": { "id": "96tm696rs0it0" }
+          },
+          "emailVerified": {
+            "type": "boolean",
+            "description": "Set to true if the user's email has been verified.",
+            "x-stoplight": { "id": "2j456m828ha9a" }
+          },
+          "createDate": {
+            "type": "string",
+            "format": "date",
+            "description": "The date that the user was created.",
+            "x-stoplight": { "id": "oj4t3c2hvt217" }
+          }
+        },
+        "required": ["id", "firstName", "lastName", "email", "emailVerified"],
+        "x-stoplight": { "id": "hx4sd0pnrevjt" }
+      }
+    }
+  }
+}

@@ -1,0 +1,895 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Persist Cart V1",
+    "description": "The Ecommerce Persistent Cart Service resource is intended to be used on Marriott website and Mobile App. However this can be used for other channels as well.\n\n Some useful links:\n - [Persistence Cart Confluence](https://confluence.marriott.com/x/CZMzG)",
+    "termsOfService": null,
+    "contact": {
+      "name": ": Cart Domain team",
+      "email": "Pankaj.Singh@marriott.com>;Somasekhar.Patil@marriott.com;"
+    },
+    "license": { "name": null, "url": null },
+    "version": "1.0.2"
+  },
+  "externalDocs": {
+    "description": "Find out more about Persistence Cart",
+    "url": "https://confluence.marriott.com/x/CZMzG"
+  },
+  "servers": [
+    {
+      "url": "https://gatewaydsapdev1.marriott.com/",
+      "description": "DEV Environment"
+    },
+    {
+      "url": "https://gatewaydsaptst1.marriott.com/",
+      "description": "TST1 Environment"
+    },
+    {
+      "url": "https://gatewaydsaptst2.marriott.com/",
+      "description": "TST2 Environment"
+    }
+  ],
+  "tags": [
+    {
+      "name": "cart",
+      "description": "Cat represnets list of products to be ordered by the customer",
+      "externalDocs": {
+        "description": "Find out more about our cart",
+        "url": null
+      }
+    },
+    {
+      "name": "cart-line-item-furure-scope",
+      "description": "Cart line item represents single product from the cart",
+      "externalDocs": {
+        "description": "Find out more abot cart-line-item",
+        "url": null
+      }
+    }
+  ],
+  "paths": {
+    "/commerce/v1/carts/persistent": {
+      "parameters": [
+        {
+          "name": "client_id",
+          "in": "header",
+          "description": "channel name from where cart is called",
+          "schema": { "type": "string" },
+          "required": true
+        },
+        {
+          "name": "altConsumerId",
+          "in": "header",
+          "description": "altCustId of loggedIn/Member user",
+          "schema": { "type": "string" },
+          "required": true
+        },
+        {
+          "name": "x-correlation-id",
+          "in": "header",
+          "description": "channels are passing a unique id for each transaction to help with the distributed tracing",
+          "schema": { "type": "string" },
+          "required": true
+        },
+        {
+          "name": "Authorization",
+          "in": "header",
+          "description": "For member user pass Bearer token and for guest user need to pass Basic Auth.",
+          "schema": { "type": "string" },
+          "required": true
+        }
+      ],
+      "post": {
+        "tags": ["cart"],
+        "summary": "Add a new or update existing cart-line-item",
+        "description": "Add a new or update existing cart-line-item for the provided product in the request",
+        "operationId": "addCartLineItem",
+        "requestBody": {
+          "description": "Add a new or update existing cart-line-item with",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePersistCartRequest"
+              },
+              "examples": {
+                "Cash Flow": {
+                  "value": "{\"userProfile\": {\"uniqueID \": \"CBE3F7A1C0F02511D231E4A7C871D064.U1\",\"isMember\": true,\"memberLocale\": {\"languageCode\": \"en\",\"countryCode\": \"US\"}},\"lineItems\": [{\"offerID\": \"QVVTU0h8TVMySHxFWFFTfDIwMjMtMTAtMjh8MjAyMy0xMC0zMHxiMGVlYjNjNy0yZjAyLTQ0YWItYTg2NC0yYTQwMDVlOTEzMjg\",\"quantity\": 2,\"productType\": {\"itemType\": \"Room\",\"typeEnum\": \"Individual\",\"timespan\": {\"start\": \"2023-09-29\",\"end\": \"2023-09-30\"},\"hotels\": [{\"propertyBrand\": {\"brandName\": \"RENAISSANCE\",\"code\": \"BR\"},\"propertyCode\": {\"hotelName\": \"RENAISSANCE AUSTIN HOTEL\",\"code\": \"WASAK\"}}],\"products\": [{\"inventoryTypeCode\": \"EXQS\",\"inventoryTypeName\": [{\"locale\": {\"languageCode\": \"en\",\"countryCode\": \"US\"},\"text\": [\"Executive Suite, 2 Queen(s), Sofa bed\"]}]}],\"rateplans\": [{\"code\": \"MS2H\",\"details\": {\"commissionableInd\": true,\"awardAcceptedInd\": false,\"ratePlanType\": {\"code\": \"12.RPT\",\"description\": \"Discount Rates\"},\"names\": [{\"locale\": {\"languageCode\": \"en\",\"countryCode\": \"US\"},\"text\": [\"Member Rate Prepay Non-refundable\"]}],\"descriptions\": [{\"locale\": {\"languageCode\": \"en\",\"countryCode\": \"US\"},\"text\": [\"changes up to 1 day prior to stay, prepay in full, see Rate details\"]}]},\"marketType\": {\"marketCode\": \"35MS2H\"},\"priceViewableInd\": true}],\"segments\": [{\"offer\": {\"platinumOverrideInd\": false,\"productUses\": [{\"housingProtectedInd\": false,\"guestCounts\": [{\"count\": 1}],\"totalGuestCounts\": [{\"count\": 1}]}]}}]},\"additionalAttributes\": [{\"key\": \"isMBOPFlow\",\"value\": \"true\"},{\"key\": \"isMembersOnlyRate\",\"value\": \"true\"},{\"key\": \"rateCategory\",\"value\": \"standard\"}]}]}"
+                },
+                "Cash and Point Flow": {
+                  "value": "{\"userProfile\": {\"uniqueID \": \"CBE3F7A1C0F02511D231E4A7C871D064.U1\",\"isMember\": true,\"memberLocale\": {\"languageCode\": \"en\",\"countryCode\": \"US\"}},\"lineItems\": [{\"offerID\": \"QVVTU0h8TVMySHxFWFFTfDIwMjMtMTAtMjh8MjAyMy0xMC0zMHxiMGVlYjNjNy0yZjAyLTQ0YWItYTg2NC0yYTQwMDVlOTEzMjg\",\"quantity\": 1,\"productType\": {\"itemType\": \"Room\",\"typeEnum\": \"Individual\",\"timespan\": {\"start\": \"2023-10-04\",\"end\": \"2023-10-06\"},\"hotels\": [{\"propertyBrand\": {\"brandName\": \"RENAISSANCE\",\"code\": \"BR\"},\"propertyCode\": {\"hotelName\": \"RENAISSANCE AUSTIN HOTEL\",\"code\": \"MCOAT\"}}],\"products\": [{\"inventoryTypeCode\": \"EXQS\",\"inventoryTypeName\": [{\"locale\": {\"languageCode\": \"en\",\"countryCode\": \"US\"},\"text\": [\"Executive Suite, 2 Queen(s), Sofa bed\"]}]}],\"rateplans\": [{\"code\": \"MS2H\",\"details\": {\"commissionableInd\": true,\"awardAcceptedInd\": true,\"ratePlanType\": {\"code\": \"12.RPT\",\"description\": \"Discount Rates\"},\"names\": [{\"locale\": {\"languageCode\": \"en\",\"countryCode\": \"US\"},\"text\": [\"Member Rate Prepay Non-refundable\"]}],\"descriptions\": [{\"locale\": {\"languageCode\": \"en\",\"countryCode\": \"US\"},\"text\": [\"changes up to 1 day prior to stay, prepay in full, see Rate details\"]}]},\"marketType\": {\"marketCode\": \"35MS2H\"},\"priceViewableInd\": true}],\"segments\": [{\"offer\": {\"platinumOverrideInd\": false,\"productUses\": [{\"housingProtectedInd\": false,\"guestCounts\": [{\"count\": 1}],\"totalGuestCounts\": [{\"count\": 1}]}]}}]},\"additionalAttributes\": [{\"key\": \"isMBOPFlow\",\"value\": \"true\"},{\"key\": \"isMembersOnlyRate\",\"value\": \"true\"},{\"key\": \"rateCategory\",\"value\": \"standard\"}]}]}"
+                },
+                "Point Flow": {
+                  "value": "{\"userProfile\": {\"uniqueID \": \"CBE3F7A1C0F02511D231E4A7C871D064.U1\",\"isMember\": true,\"memberLocale\": {\"languageCode\": \"en\",\"countryCode\": \"US\"}},\"lineItems\": [{\"offerID\": \"QVVTU0h8TVMySHxFWFFTfDIwMjMtMTAtMjh8MjAyMy0xMC0zMHxiMGVlYjNjNy0yZjAyLTQ0YWItYTg2NC0yYTQwMDVlOTEzMjg\",\"quantity\": 1,\"productType\": {\"itemType\": \"Room\",\"typeEnum\": \"Individual\",\"timespan\": {\"start\": \"2023-09-27\",\"end\": \"2023-09-28\"},\"hotels\": [{\"propertyBrand\": {\"brandName\": \"RENAISSANCE\",\"code\": \"BR\"},\"propertyCode\": {\"hotelName\": \"RENAISSANCE AUSTIN HOTEL\",\"code\": \"WASNC\"}}],\"products\": [{\"inventoryTypeCode\": \"EXQS\",\"inventoryTypeName\": [{\"locale\": {\"languageCode\": \"en\",\"countryCode\": \"US\"},\"text\": [\"Executive Suite, 2 Queen(s), Sofa bed\"]}]}],\"rateplans\": [{\"code\": \"MS2H\",\"details\": {\"commissionableInd\": true,\"awardAcceptedInd\": true,\"ratePlanType\": {\"code\": \"12.RPT\",\"description\": \"Discount Rates\"},\"names\": [{\"locale\": {\"languageCode\": \"en\",\"countryCode\": \"US\"},\"text\": [\"Member Rate Prepay Non-refundable\"]}],\"descriptions\": [{\"locale\": {\"languageCode\": \"en\",\"countryCode\": \"US\"},\"text\": [\"changes up to 1 day prior to stay, prepay in full, see Rate details\"]}]},\"marketType\": {\"marketCode\": \"35MS2H\"},\"priceViewableInd\": true}],\"segments\": [{\"offer\": {\"platinumOverrideInd\": false,\"productUses\": [{\"housingProtectedInd\": false,\"guestCounts\": [{\"count\": 1},{\"count\": 1},{\"count\": 1,\"age\": 1}],\"totalGuestCounts\": [{\"count\": 3}]}]}}]},\"additionalAttributes\": [{\"key\": \"isMBOPFlow\",\"value\": \"true\"},{\"key\": \"isMembersOnlyRate\",\"value\": \"true\"}]}]}"
+                },
+                "With clusterCode": {
+                  "value": "{\"userProfile\": {\"uniqueID \": \"CBE3F7A1C0F02511D231E4A7C871D064.U1\",\"isMember\": true,\"memberLocale\": {\"languageCode\": \"en\",\"countryCode\": \"US\"}},\"lineItems\": [{\"offerID\": \"QVVTU0h8TVMySHxFWFFTfDIwMjMtMTAtMjh8MjAyMy0xMC0zMHxiMGVlYjNjNy0yZjAyLTQ0YWItYTg2NC0yYTQwMDVlOTEzMjg\",\"quantity\": 1,\"productType\": {\"itemType\": \"Room\",\"typeEnum\": \"Individual\",\"timespan\": {\"start\": \"2023-09-27\",\"end\": \"2023-09-28\"},\"hotels\": [{\"propertyBrand\": {\"brandName\": \"RENAISSANCE\",\"code\": \"BR\"},\"propertyCode\": {\"hotelName\": \"RENAISSANCE AUSTIN HOTEL\",\"code\": \"WASNC\"}}],\"products\": [{\"inventoryTypeCode\": \"EXQS\",\"inventoryTypeName\": [{\"locale\": {\"languageCode\": \"en\",\"countryCode\": \"US\"},\"text\": [\"Executive Suite, 2 Queen(s), Sofa bed\"]}]}],\"rateplans\": [{\"code\": \"MS2H\",\"details\": {\"commissionableInd\": true,\"awardAcceptedInd\": false,\"ratePlanType\": {\"code\": \"12.RPT\",\"description\": \"Discount Rates\"},\"names\": [{\"locale\": {\"languageCode\": \"en\",\"countryCode\": \"US\"},\"text\": [\"Member Rate Prepay Non-refundable\"]}],\"descriptions\": [{\"locale\": {\"languageCode\": \"en\",\"countryCode\": \"US\"},\"text\": [\"changes up to 1 day prior to stay, prepay in full, see Rate details\"]}]},\"marketType\": {\"marketCode\": \"35MS2H\"},\"priceViewableInd\": true}],\"segments\": [{\"offer\": {\"platinumOverrideInd\": false,\"productUses\": [{\"housingProtectedInd\": false,\"guestCounts\": [{\"count\": 1},{\"count\": 1},{\"count\": 1,\"age\": 1}],\"totalGuestCounts\": [{\"count\": 3}]}]}}]},\"additionalAttributes\": [{\"key\": \"isMBOPFlow\",\"value\": \"true\"},{\"key\": \"isMembersOnlyRate\",\"value\": \"true\"},{\"key\": \"rateCategory\",\"value\": \"standard\"},{\"key\": \"clusterCode\",\"value\": \"aaa\"}]}]}"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/CreateCartResponse" },
+                "examples": {
+                  "Default": {
+                    "value": "{\"cartId\": \"CBE3F7A1C0F02511D231E4A7C871D064.U1\",\"cartLineItemIds\":[\"QVVTU0h8TVMySHxFWFFTfDIwMjMtMTAtMjh8MjAyMy0xMC0zMHxiMGVlYjNjNy0yZjAyLTQ0YWItYTg2NC0yYTQwMDVlOTEzMjg\"],\"cartStatus\":\"PROCESSING\"}"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "4xx response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/BadRequestResponse" },
+                "examples": {
+                  "Bad Request": {
+                    "value": "{\"errors\": [{\"code\": \"CARTPERSIST-SYS-400-OFFERID\",\"message\": \"Missing or Invalid offerId\",\"source\": \"Cart-Persistent -Capture -Service\",\"timestamp\": \"2023-09-15T07:56:22.455+00:00\",\"path\": \"/commerce/v1/carts/persistent\"}]}"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "5xx response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "examples": {
+                  "Internal Server Error": {
+                    "value": "{\"errors\":[{\"code\":\"CARTPERSIST-DB-500\",\"message\":\"Error encountered an error with the database\",\"source\":\"Cart-Persistent -Capture -Service\",\"timestamp\":\"2023-09-15T08:00:11.682+00:00\",\"path\":\"/commerce/v1/carts/persistent\"}]}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/commerce/v1/carts/persistent/{unique_id}": {
+      "parameters": [
+        {
+          "name": "unique_id",
+          "in": "path",
+          "schema": { "type": "string" },
+          "description": "altCustomerId for logged in user, [TDB] HexId for guest flow",
+          "required": true
+        },
+        {
+          "name": "Accept-Language",
+          "in": "header",
+          "schema": { "type": "string" },
+          "description": "user locale",
+          "required": true
+        },
+        {
+          "name": "client_id",
+          "in": "header",
+          "description": "channel name from where cart is called",
+          "schema": { "type": "string" },
+          "required": true
+        },
+        {
+          "name": "altConsumerId",
+          "in": "header",
+          "description": "altCustId of loggedIn/Member user",
+          "schema": { "type": "string" }
+        },
+        {
+          "name": "x-correlation-id",
+          "in": "header",
+          "description": "channels are passing a unique id for each transaction to help with the distributed tracing",
+          "schema": { "type": "string" },
+          "required": true
+        },
+        {
+          "name": "Authorization",
+          "in": "header",
+          "description": "For member user pass Bearer token and for guest user need to pass Basic Auth.",
+          "schema": { "type": "string" },
+          "required": true
+        }
+      ],
+      "get": {
+        "tags": ["cart"],
+        "summary": "Retrieve persisted cart for the user",
+        "description": "Retrieve persisted cart for the user. Number of cart line iterms to be returned based on backend configuration. To start with - it would be One cart line item.",
+        "operationId": "getPersistedCart",
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ViewPersistCartResponse"
+                },
+                "examples": {
+                  "Default": {
+                    "value": "{\"cartId\": \"CBE3F7A1C0F02511D231E4A7C871D064.U1\",\"type\": \"PERSISTENT CART\",\"status\": \"ACTIVE\",\"lineItems\": [{\"id\": \"QVVTU0h8TVMySHxFWFFTfDIwMjMtMTAtMjh8MjAyMy0xMC0zMHxiMGVlYjNjNy0yZjAyLTQ0YWItYTg2NC0yYTQwMDVlOTEzMjg\",\"quantity\": 2,\"status\": \"ACTIVE\",\"totalAmount\": {\"totalPrice\": {\"currencyCode\": \"USD\",\"value\": 71953,\"numberOfDecimals\": 2,\"localeCurrencyCode\": \"USD\",\"localeValue\": 71953,\"localeNumberOfDecimals\": 2,\"guestViewableInd\": true},\"totalPoints\": 70000},\"productType\": {\"itemType\": \"Room\",\"typeEnum\": \"Individual\",\"timespan\": {\"start\": \"2023-09-29\",\"end\": \"2023-09-30\"},\"hotels\": [{\"propertyBrand\": {\"brandName\": \"RENAISSANCE\",\"code\": \"BR\"},\"propertyCode\": {\"hotelName\": \"RENAISSANCE AUSTIN HOTEL\",\"code\": \"WASAK\"}}],\"products\": [{\"inventoryTypeCode\": \"EXQS\",\"inventoryTypeName\": [{\"locale\": {\"languageCode\": \"en\",\"countryCode\": \"US\"},\"text\": [\"Executive Suite, 2 Queen(s), Sofa bed\"]}]}],\"rateplans\": [{\"code\": \"MS2H\",\"details\": {\"commissionableInd\": true,\"awardAcceptedInd\": false,\"ratePlanType\": {\"code\": \"12.RPT\",\"description\": \"Discount Rates\"},\"names\": [{\"locale\": {\"languageCode\": \"en\",\"countryCode\": \"US\"},\"text\": [\"Member Rate Prepay Non-refundable\"]}],\"descriptions\": [{\"locale\": {\"languageCode\": \"en\",\"countryCode\": \"US\"},\"text\": [\"changes up to 1 day prior to stay, prepay in full, see Rate details\"]}]},\"marketType\": {\"marketCode\": \"35MS2H\"},\"priceViewableInd\": true}],\"segments\": [{\"offer\": {\"offerID\": \"QVVTU0h8TVMySHxFWFFTfDIwMjMtMTAtMjh8MjAyMy0xMC0zMHxiMGVlYjNjNy0yZjAyLTQ0YWItYTg2NC0yYTQwMDVlOTEzMjg\",\"platinumOverrideInd\": false,\"productUses\": [{\"housingProtectedInd\": false,\"guestCounts\": [{\"count\": 1}],\"totalGuestCounts\": [{\"count\": 1}]}]}}]},\"additionalAttributes\": [{\"key\": \"isMBOPFlow\",\"value\": \"true\"},{\"key\": \"isMembersOnlyRate //Ask Payal\",\"value\": \"true\"},{\"key\": \"rateCategory\",\"value\": \"standard\"}],\"metaInfo\": {\"version\": 1,\"expiryTime\": \"2023-09-25T09:47:43.579Z\",\"createdDate\": \"2023-09-25T09:32:44.018Z\",\"lastUpdatedDate\": \"2023-09-25T09:32:44.018Z\",\"lastUpdatedByChannel\": \"marriott_ios_client\",\"lastEventCaptured\": \"New Line Item\"}}],\"metaInfo\": {\"version\": 1,\"expiryTime\": \"2023-09-25T09:47:43.579Z\",\"createdDate\": \"2023-09-25T09:32:44.018Z\",\"lastUpdatedDate\": \"2023-09-25T09:32:44.018Z\",\"lastUpdatedByChannel\": \"marriott_ios_client\",\"lastEventCaptured\": \"New Line Item\"},\"userProfile\": {\"uniqueID \": \"CBE3F7A1C0F02511D231E4A7C871D064.U1\",\"isMember\": true,\"memberLocale\": {\"languageCode\": \"en\",\"countryCode\": \"US\"}}}"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "4xx response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/BadRequestResponse" },
+                "examples": {
+                  "Bad Request": {
+                    "value": "{\"errors\": [{\"code\": \"CARTPERSIST-SYS-400-BADREQUEST\",\"message\": \"Missing or Invalid request data\",\"source\": \"Cart-Persistent -View-Service\",\"timestamp\": \"2023-09-15T07:56:22.455+00:00\",\"path\": \"/commerce/v1/carts/persistent\"}]}"
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "5xx response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "examples": {
+                  "Service Unavailable": {
+                    "value": "{\"errors\": [{\"code\": \"CARTPERSIST-V2QUERY-503\",\"message\": \"Invalid Response from V2 query Product\",\"source\": \"Cart-Persistent -View-Service\",\"timestamp\": \"2023-09-15T07:56:22.455+00:00\",\"path\": \"/commerce/v1/carts/persistent\"}]}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["cart"],
+        "summary": "Delete persisted cart for the user",
+        "description": "Delete persisted cart for the user",
+        "operationId": "deletePersistedCart",
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "content": {
+              "application/json": {
+                "schema": { "type": "boolean" },
+                "examples": { "Default": { "value": "true" } }
+              }
+            }
+          },
+          "400": {
+            "description": "400 response.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "500": {
+            "description": "500 response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/commerce/v1/carts/persistent/{uniqueID}/cart_line_items/{cart_line_item_id}": {
+      "delete": {
+        "tags": ["cart-line-item-furure-scope"],
+        "summary": "Delete existing cart-line-item",
+        "description": "Delete cart-line-item for the provided cartLineItemId",
+        "operationId": "deleteCartLineItem",
+        "parameters": [
+          {
+            "name": "cart_line_item_id",
+            "in": "path",
+            "schema": { "type": "string" },
+            "description": "Cart Line-Item Id to delete form the Cart",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "content": {
+              "application/json": {
+                "schema": { "type": "boolean" },
+                "examples": { "Default": { "value": "true" } }
+              }
+            }
+          },
+          "400": {
+            "description": "400 response.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "500": {
+            "description": "500 response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CreatePersistCartRequest": {
+        "type": "object",
+        "properties": {
+          "userProfile": { "$ref": "#/components/schemas/Profile" },
+          "cartLineItems": {
+            "type": "array",
+            "$ref": "#/components/schemas/CartRequestLineItem"
+          }
+        },
+        "required": ["userProfile", "cartLineItems"]
+      },
+      "CartRequestLineItem": {
+        "properties": {
+          "offerId": {
+            "type": "string",
+            "description": "Unique ID within the Reservation for this Offer"
+          },
+          "quantity": {
+            "type": "integer",
+            "description": "number of quantity, should be > 0"
+          },
+          "productType": { "$ref": "#/components/schemas/ProductType" },
+          "additionalAttributes": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/AdditionalAttribute" }
+          }
+        },
+        "required": ["offerId", "quantity", "productType"]
+      },
+      "CreateCartResponse": {
+        "type": "object",
+        "properties": {
+          "cartId": {
+            "type": "string",
+            "description": "unique id of the cart"
+          },
+          "cartLineItemIds": {
+            "type": "array",
+            "description": "list of line item ids in the cart",
+            "items": { "type": "string" }
+          },
+          "cartStatus": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "COMPLETED",
+              "INTIALIZED",
+              "ABANDONED",
+              "DELETED",
+              "PROCESSING",
+              "EXPIRED",
+              "NOTAVAILABLE",
+              "OTHERS"
+            ],
+            "description": "status of cart"
+          }
+        }
+      },
+      "ViewPersistCartResponse": {
+        "properties": {
+          "cartId": {
+            "type": "string",
+            "description": "unique identifier for cart - altCustomerId for logged in user, [TDB] HexId for guest flow"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["SHOPPING CART", "SAVE FOR LATER", "PERSISTENT CART"],
+            "description": "Cart type as per user chosen"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "COMPLETED",
+              "INITIALIZED",
+              "ABANDONED",
+              "DELETED",
+              "OTHERS"
+            ],
+            "description": "status of cart"
+          },
+          "userProfile": { "$ref": "#/components/schemas/Profile" },
+          "lineItems": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/CartLineItem" }
+          },
+          "metaInfo": { "$ref": "#/components/schemas/MetaInfo" }
+        },
+        "required": ["cartId", "status", "userProfile", "lineItems", "metaInfo"]
+      },
+      "CartLineItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "cart line item identifier"
+          },
+          "quantity": {
+            "type": "integer",
+            "description": "number of quantity, should be > 0"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "COMPLETED",
+              "INTIALIZED",
+              "ABANDONED",
+              "DELETED",
+              "PROCESSING",
+              "EXPIRED",
+              "NOTAVAILABLE",
+              "OTHERS"
+            ],
+            "description": "cart line item status"
+          },
+          "metaInfo": { "$ref": "#/components/schemas/MetaInfo" },
+          "totalAmount": { "$ref": "#/components/schemas/TotalAmount" },
+          "productType": { "$ref": "#/components/schemas/ProductType" },
+          "additionalAttributes": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/AdditionalAttribute" }
+          }
+        },
+        "required": ["id", "quantity", "productType", "metaInfo"]
+      },
+      "ProductType": {
+        "type": "object",
+        "oneOf": [{ "$ref": "#/components/schemas/RoomReservation" }],
+        "discriminator": { "propertyName": "itemType" }
+      },
+      "AdditionalAttribute": {
+        "type": "object",
+        "properties": {
+          "key": { "type": "string" },
+          "value": { "type": "string" }
+        },
+        "required": ["key", "value"]
+      },
+      "RoomReservation": {
+        "type": "object",
+        "properties": {
+          "itemType": {
+            "type": "string",
+            "default": "Room",
+            "description": "type of product stored in cart. In case of Room product type the value will be Room"
+          },
+          "timespan": { "$ref": "#/components/schemas/TimeSpan" },
+          "hotels": {
+            "type": "array",
+            "description": "Hotel information",
+            "items": { "$ref": "#/components/schemas/Hotel" }
+          },
+          "products": {
+            "type": "array",
+            "description": "Inventory details",
+            "items": { "$ref": "#/components/schemas/Product" }
+          },
+          "ratePlans": {
+            "type": "array",
+            "description": "List of ratePlans used in reservation",
+            "items": { "$ref": "#/components/schemas/RatePlan" }
+          },
+          "typeEnum": {
+            "type": "string",
+            "description": "Type of reservation Individual/Group",
+            "enum": ["Individual", "Group"],
+            "default": "Individual"
+          },
+          "segments": {
+            "type": "array",
+            "description": "Segment information consisting of offer details",
+            "items": { "$ref": "#/components/schemas/Segment" }
+          }
+        },
+        "required": [
+          "segments",
+          "itemType",
+          "timespan",
+          "hotels",
+          "products",
+          "ratePlans"
+        ]
+      },
+      "Hotel": {
+        "type": "object",
+        "properties": {
+          "propertyBrand": { "$ref": "#/components/schemas/PropertyBrand" },
+          "propertyCode": { "$ref": "#/components/schemas/PropertyCode" }
+        },
+        "required": ["propertyCode"]
+      },
+      "PropertyBrand": {
+        "type": "object",
+        "description": "property brand information",
+        "properties": {
+          "brandName": {
+            "type": "string",
+            "description": "brand name of property"
+          },
+          "code": { "type": "string", "description": "brand code of property" }
+        }
+      },
+      "PropertyCode": {
+        "type": "object",
+        "description": "property code information",
+        "properties": {
+          "hotelName": {
+            "type": "string",
+            "description": "name of hotel property"
+          },
+          "code": { "type": "string", "description": "code of hotel property" }
+        },
+        "required": ["code", "hotelName"]
+      },
+      "Product": {
+        "type": "object",
+        "properties": {
+          "inventoryTypeCode": {
+            "type": "string",
+            "description": "Code representing an inventory type"
+          },
+          "inventoryTypeName": {
+            "type": "array",
+            "description": "details of the inventory type",
+            "items": { "$ref": "#/components/schemas/Description" }
+          }
+        },
+        "required": ["inventoryTypeCode"]
+      },
+      "RatePlan": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "rate plan code. Unique value"
+          },
+          "details": { "$ref": "#/components/schemas/Details" },
+          "marketType": { "$ref": "#/components/schemas/MarketType" },
+          "priceViewableInd": {
+            "type": "boolean",
+            "description": "Rate amount is to be displayed to guest."
+          }
+        },
+        "required": ["code", "details", "marketType"]
+      },
+      "Details": {
+        "type": "object",
+        "description": "rateplan details",
+        "properties": {
+          "commissionableInd": {
+            "type": "boolean",
+            "description": "indicates if the rateplan is commissionable"
+          },
+          "loyaltyNumberRequiredInd": {
+            "type": "boolean",
+            "description": "Indicates whether a customer needs to provide a loyalty number in order to see availability and book this rate plan."
+          },
+          "awardAcceptedInd": {
+            "type": "boolean",
+            "description": "Indicates whether the rate is for a redemption flow.",
+            "default": false
+          },
+          "ratePlanTypeCode": {
+            "type": "string",
+            "description": "Rate Plan type code e.g. '12.RPT'"
+          },
+          "ratePlanTypeEnum": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "Rate Plan type code e.g. 'DiscountRates'"
+            }
+          },
+          "names": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Description" }
+          },
+          "descriptions": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Description" }
+          }
+        },
+        "required": [
+          "ratePlanTypeCode",
+          "awardAcceptedInd",
+          "loyaltyNumberRequiredInd"
+        ]
+      },
+      "Segment": {
+        "type": "object",
+        "properties": { "offer": { "$ref": "#/components/schemas/Offer" } },
+        "required": ["offer"]
+      },
+      "Offer": {
+        "type": "object",
+        "properties": {
+          "offerId": {
+            "type": "string",
+            "description": "Unique ID within in this Reservation for this Offer"
+          },
+          "platinumOverrideInd": {
+            "type": "boolean",
+            "description": "platinum privledge invoked flag"
+          },
+          "productUses": {
+            "type": "array",
+            "description": "Room related information",
+            "items": { "$ref": "#/components/schemas/ProductUse" }
+          }
+        },
+        "required": ["offerId", "productUses"]
+      },
+      "ProductUse": {
+        "type": "object",
+        "properties": {
+          "housingProtectedInd": {
+            "type": "boolean",
+            "description": "True - Indicates the DSP Rate Plan is Housing Protected. False - Indicates the DSP Rate Plan is not Housing Protected. Housing Protected is only relevant for DSP Room Types/DSP Rate Plans (XDRZ rates)."
+          },
+          "guestCounts": {
+            "type": "array",
+            "description": "guest related information",
+            "items": { "$ref": "#/components/schemas/GuestCount" }
+          },
+          "totalGuestCounts": {
+            "type": "array",
+            "description": "total guest related information",
+            "items": { "$ref": "#/components/schemas/GuestCount" }
+          }
+        },
+        "required": ["guestCounts", "totalGuestCounts"]
+      },
+      "GuestCount": {
+        "type": "object",
+        "properties": {
+          "count": { "type": "integer", "description": "number of guests" },
+          "age": { "type": "integer", "description": "age of guest" },
+          "ageQualifyingCodeEnum": {
+            "type": "string",
+            "description": "guest related information"
+          }
+        },
+        "required": ["count"]
+      },
+      "MarketType": {
+        "type": "object",
+        "properties": {
+          "marketCode": {
+            "type": "string",
+            "description": "Mini-hotel market code / Corporate Market Segment"
+          }
+        },
+        "required": ["marketCode"]
+      },
+      "Description": {
+        "type": "object",
+        "properties": {
+          "locale": { "$ref": "#/components/schemas/Locale" },
+          "text": {
+            "type": "array",
+            "description": "multiline description",
+            "items": { "type": "string" }
+          }
+        }
+      },
+      "TimeSpan": {
+        "type": "object",
+        "description": "Stay details",
+        "properties": {
+          "start": {
+            "type": "string",
+            "format": "yyyy-MM-dd",
+            "description": "start date or checkIn date"
+          },
+          "end": {
+            "type": "string",
+            "format": "yyyy-MM-dd",
+            "description": "end date or checkOut date"
+          }
+        },
+        "required": ["start", "end"]
+      },
+      "MetaInfo": {
+        "type": "object",
+        "description": "cart meta information",
+        "properties": {
+          "version": { "type": "integer", "description": "cart version id" },
+          "expiryTime": {
+            "type": "string",
+            "pattern": "yyyy-MM-ddTHH:mm:ss.SSS",
+            "description": "Date and Time of cart expiry"
+          },
+          "createdDate": {
+            "type": "string",
+            "pattern": "yyyy-MM-ddTHH:mm:ss.SSS",
+            "description": "Date and Time of cart creation"
+          },
+          "lastUpdatedDate": {
+            "type": "string",
+            "pattern": "yyyy-MM-ddTHH:mm:ss.SSS",
+            "description": "Date and Time of cart update"
+          },
+          "lastUpdatedByChannel": {
+            "type": "string",
+            "description": "Cart last modified by channel"
+          },
+          "lastEventCaptured": {
+            "type": "string",
+            "enum": [
+              "New Cart",
+              "Updated Cart",
+              "Deleted Cart",
+              "Deleted Line Item",
+              "Updated Line Item",
+              "New Line Item"
+            ],
+            "description": "This would be an enum added to support MDP to know whats the last update in cart"
+          }
+        },
+        "required": [
+          "version",
+          "expiryTime",
+          "createdDate",
+          "lastUpdatedDate",
+          "lastUpdatedByChannel",
+          "lastEventCaptured"
+        ]
+      },
+      "Profile": {
+        "type": "object",
+        "properties": {
+          "uniqueID": {
+            "type": "string",
+            "description": "altCustomerId for logged in user, [TDB] HexId for guest flow"
+          },
+          "isMember": {
+            "type": "boolean",
+            "default": true,
+            "description": "true for Member, false for Guest"
+          },
+          "userLocale": { "$ref": "#/components/schemas/UserLocale" }
+        },
+        "required": ["uniqueID", "userLocale"]
+      },
+      "Locale": {
+        "type": "object",
+        "description": "locale details",
+        "properties": {
+          "languageCode": { "type": "string", "description": "language code" },
+          "countryCode": { "type": "string", "description": "country code" }
+        }
+      },
+      "UserLocale": {
+        "type": "object",
+        "description": "locale details",
+        "properties": {
+          "languageCode": { "type": "string", "description": "language code" },
+          "countryCode": { "type": "string", "description": "country code" }
+        },
+        "required": ["languageCode", "countryCode"]
+      },
+      "TotalAmount": {
+        "type": "object",
+        "description": "total amount at cart/cartLineItem level",
+        "properties": {
+          "totalPoints": {
+            "type": "number",
+            "default": 0,
+            "description": "Total Points Charged, defaults to 0"
+          },
+          "totalPrice": { "$ref": "#/components/schemas/Amount" }
+        }
+      },
+      "Amount": {
+        "type": "object",
+        "description": "amount details",
+        "properties": {
+          "currencyCode": { "type": "string", "description": "currencyCode" },
+          "value": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Currency Value"
+          },
+          "numberOfDecimals": {
+            "type": "integer",
+            "default": 0,
+            "description": "Number Of Decimals, default '0'"
+          },
+          "localeCurrencyCode": {
+            "type": "string",
+            "description": "currencyCode"
+          },
+          "localeValue": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Currency Value"
+          },
+          "localeNumberOfDecimals": {
+            "type": "integer",
+            "default": 0,
+            "description": "Number Of Decimals, default '0'"
+          },
+          "guestViewableInd": {
+            "type": "boolean",
+            "description": "Is Guest Viewable flag, default false"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "array",
+        "items": { "$ref": "#/components/schemas/Error" }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "timestamp": { "type": "string", "description": "error time stamp" },
+          "path": {
+            "type": "string",
+            "description": "error occured at endpoint"
+          },
+          "source": {
+            "type": "string",
+            "description": "occurence of the error"
+          },
+          "message": { "type": "string", "description": "error message" },
+          "code": { "type": "string", "description": "error code" }
+        }
+      },
+      "BadRequestResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "$ref": "#/components/schemas/InvalidRequestErrorResponse"
+          }
+        }
+      },
+      "InvalidRequestErrorResponse": {
+        "type": "object",
+        "properties": {
+          "timestamp": { "type": "string", "description": "error time stamp" },
+          "path": {
+            "type": "string",
+            "description": "error occured at endpoint"
+          },
+          "status": { "type": "integer", "description": "http status code" },
+          "reason": {
+            "type": "string",
+            "description": "reason for error occurence"
+          },
+          "message": { "type": "string", "description": "error message" },
+          "errorMessageList": {
+            "type": "array",
+            "items": {
+              "properties": {
+                "errorCode": { "type": "string" },
+                "message": { "type": "string" }
+              }
+            }
+          },
+          "requestId": { "type": "string" },
+          "sessionId": { "type": "string" }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,2645 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Reference",
+    "version": "1.0.0",
+    "summary": "API Reference",
+    "description": "The DoDays API reference.",
+    "contact": {
+      "name": "DoDays Engineering",
+      "email": "engineering@dodays.co.uk"
+    }
+  },
+  "servers": [
+    { "description": "Local", "url": "http://api.dodays.test/v1" },
+    { "url": "https://api.dodays-staging.co.uk/v1", "description": "Staging" },
+    { "description": "Production", "url": "https://api.dodays.co.uk/v1" }
+  ],
+  "paths": {
+    "/ping": {
+      "parameters": [],
+      "get": {
+        "summary": "Ping",
+        "operationId": "get-ping",
+        "responses": {
+          "200": {
+            "description": "Pong.",
+            "content": {
+              "application/json": {
+                "schema": { "type": "array", "items": {} },
+                "examples": { "Example 1": { "value": ["pong"] } }
+              }
+            }
+          }
+        },
+        "description": "Ping pong.",
+        "tags": ["Ping"]
+      }
+    },
+    "/whoami": {
+      "parameters": [],
+      "get": {
+        "summary": "Whoami",
+        "operationId": "get-whoami",
+        "responses": { "200": { "$ref": "#/components/responses/User" } },
+        "description": "Retrieve the authenticated user.",
+        "tags": ["Auth"]
+      }
+    },
+    "/auth/register": {
+      "parameters": [],
+      "post": {
+        "summary": "Register a user",
+        "operationId": "post-register",
+        "responses": { "201": { "$ref": "#/components/responses/Token" } },
+        "description": "Register and retrieve a token.",
+        "security": [],
+        "tags": ["Auth"],
+        "requestBody": { "$ref": "#/components/requestBodies/Register" }
+      }
+    },
+    "/auth/token": {
+      "parameters": [],
+      "post": {
+        "summary": "Get a token",
+        "operationId": "post-token",
+        "responses": { "200": { "$ref": "#/components/responses/Token" } },
+        "description": "Sign in and retrieve a token.",
+        "security": [],
+        "tags": ["Auth"],
+        "requestBody": { "$ref": "#/components/requestBodies/Token" }
+      }
+    },
+    "/auth/forgot-password": {
+      "parameters": [],
+      "post": {
+        "summary": "Password reset link",
+        "operationId": "post-forgot-password",
+        "responses": { "200": { "$ref": "#/components/responses/Status" } },
+        "description": "Request a password reset link.",
+        "security": [],
+        "tags": ["Auth"],
+        "requestBody": { "$ref": "#/components/requestBodies/ForgotPassword" }
+      }
+    },
+    "/auth/reset-password": {
+      "parameters": [],
+      "post": {
+        "summary": "Reset password",
+        "operationId": "post-reset-password",
+        "responses": { "200": { "$ref": "#/components/responses/Status" } },
+        "description": "Reset the users password.",
+        "security": [],
+        "tags": ["Auth"],
+        "requestBody": { "$ref": "#/components/requestBodies/ResetPassword" }
+      }
+    },
+    "/activate": {
+      "parameters": [],
+      "post": {
+        "summary": "Activate a user",
+        "operationId": "post-activate",
+        "responses": { "204": { "description": "No content." } },
+        "description": "Activate a user account.",
+        "security": [],
+        "tags": ["Users"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "terms": { "type": "array", "items": { "type": "boolean" } },
+                  "marketing": {
+                    "type": "array",
+                    "items": { "type": "boolean" }
+                  }
+                }
+              }
+            }
+          },
+          "description": "Activates the users account."
+        }
+      }
+    },
+    "/organisers/{organiserId}/accept": {
+      "parameters": [
+        {
+          "schema": { "type": "string" },
+          "name": "organiserId",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "post": {
+        "summary": "Connect accept",
+        "operationId": "post-connect-accept",
+        "responses": { "204": { "description": "No content." } },
+        "description": "Acccept a connect request.",
+        "security": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "terms": { "type": "boolean" },
+                  "marketing": { "type": "boolean" }
+                }
+              }
+            }
+          },
+          "description": "Accepts the organisers connect request."
+        },
+        "tags": ["Users"]
+      }
+    },
+    "/organisers/{organiserId}/reject": {
+      "parameters": [
+        {
+          "schema": { "type": "string" },
+          "name": "organiserId",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "post": {
+        "summary": "Connect reject",
+        "operationId": "post-connect-reject",
+        "responses": { "204": { "description": "No content." } },
+        "description": "Reject a connect request.",
+        "security": [],
+        "requestBody": {
+          "content": {},
+          "description": "Rejects the organisers connect request."
+        },
+        "tags": ["Users"]
+      }
+    },
+    "/links": {
+      "parameters": [],
+      "get": {
+        "summary": "Get a link",
+        "operationId": "get-link",
+        "responses": {
+          "200": {
+            "description": "Returns the users link for the given organiser.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/Link" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "Retrieve a organiser link.",
+        "x-internal": false,
+        "parameters": [
+          {
+            "schema": { "type": "integer" },
+            "in": "query",
+            "name": "filter[organiser]",
+            "description": "ID of the organiser"
+          }
+        ],
+        "security": [],
+        "tags": ["Links"]
+      }
+    },
+    "/account/details": {
+      "parameters": [],
+      "patch": {
+        "summary": "Update details",
+        "operationId": "patch-details",
+        "responses": { "200": { "$ref": "#/components/responses/User" } },
+        "description": "Update the account holders details.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "first_name": { "type": "string" },
+                  "last_name": { "type": "string" },
+                  "email": { "type": "string" },
+                  "telephone": { "type": "string" },
+                  "street": { "type": "string" },
+                  "town": { "type": "string" },
+                  "region": { "type": "string" },
+                  "postcode": { "type": "string" },
+                  "medical": { "type": "string" }
+                },
+                "required": ["first_name", "last_name", "email", "telephone"]
+              },
+              "examples": {
+                "Example 1": {
+                  "value": {
+                    "first_name": "Jim",
+                    "last_name": "Brown",
+                    "email": "jim@thebrowns.com",
+                    "telephone": "01913334444",
+                    "street": "1 Brown Street",
+                    "town": "Brown Town",
+                    "region": "Brown",
+                    "postcode": "BR0WN",
+                    "medical": "Some medical information"
+                  }
+                }
+              }
+            }
+          },
+          "description": "Updates the users account."
+        },
+        "tags": ["Account"]
+      }
+    },
+    "/account/emergency-contact": {
+      "parameters": [],
+      "patch": {
+        "summary": "Update emergency contact",
+        "operationId": "patch-emergency-contact",
+        "responses": { "200": { "$ref": "#/components/responses/User" } },
+        "description": "Update the account holders emergency contact.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string" },
+                  "telephone": { "type": "string" },
+                  "relationship": { "type": "string" }
+                }
+              },
+              "examples": {
+                "Example 1": {
+                  "value": {
+                    "name": "Sue Brown",
+                    "telephone": "01913334445",
+                    "relationship": "sue@thebrowns.com"
+                  }
+                }
+              }
+            }
+          },
+          "description": "Updates the users emergency contact."
+        },
+        "tags": ["Account"]
+      }
+    },
+    "/account/password": {
+      "parameters": [],
+      "patch": {
+        "summary": "Update password",
+        "operationId": "patch-password",
+        "responses": { "200": { "$ref": "#/components/responses/User" } },
+        "description": "Update the account password.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "current_password": { "type": "string" },
+                  "new_password": { "type": "string" },
+                  "new_password_confirmation": { "type": "string" }
+                },
+                "required": [
+                  "current_password",
+                  "new_password",
+                  "new_password_confirmation"
+                ]
+              },
+              "examples": {
+                "Example 1": {
+                  "value": {
+                    "current_password": "password",
+                    "new_password": "new-password",
+                    "new_password_confirmation": "new-password"
+                  }
+                }
+              }
+            }
+          },
+          "description": "Updates the users password."
+        },
+        "x-internal": false,
+        "tags": ["Account"]
+      }
+    },
+    "/account/attach-payment-method": {
+      "parameters": [],
+      "post": {
+        "summary": "Attach Payment Method",
+        "operationId": "post-attach-payment-method",
+        "responses": { "204": { "description": "No content." } },
+        "tags": ["Account"],
+        "description": "Attach a payment method to the user.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "organiser_id": { "type": "integer" },
+                  "payment_method": { "type": "string" }
+                },
+                "required": ["organiser_id", "payment_method"]
+              },
+              "examples": {
+                "Example 1": {
+                  "value": { "organiser_id": 1, "payment_method": "card" }
+                }
+              }
+            }
+          },
+          "description": "Attaches a new payment method to the authenticated user for a given organiser."
+        }
+      }
+    },
+    "/account/marketing-consent": {
+      "parameters": [],
+      "patch": {
+        "summary": "Update marketing consent",
+        "operationId": "patch-marketing-consent",
+        "responses": { "204": { "description": "No content." } },
+        "description": "Update the account holders marketing consent.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": { "organiser_id": { "type": "integer" } },
+                "required": ["organiser_id"]
+              },
+              "examples": { "Example 1": { "value": { "organiser_id": 1 } } }
+            }
+          },
+          "description": "Toggles the users marketing consent for a given organiser."
+        },
+        "x-internal": false,
+        "tags": ["Account"]
+      }
+    },
+    "/account/photo-consent": {
+      "parameters": [],
+      "patch": {
+        "summary": "Update photo consent",
+        "operationId": "patch-photo-consent",
+        "responses": { "204": { "description": "No content." } },
+        "description": "Update the account holders photo consent.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": { "organiser_id": { "type": "integer" } },
+                "required": ["organiser_id"]
+              },
+              "examples": { "Example 1": { "value": { "organiser_id": 1 } } }
+            }
+          },
+          "description": "Toggles the users photo consent for a given organiser."
+        },
+        "x-internal": false,
+        "tags": ["Account"]
+      }
+    },
+    "/account/session-reminders": {
+      "parameters": [],
+      "patch": {
+        "summary": "Update session reminders",
+        "operationId": "patch-session-reminders",
+        "responses": { "204": { "description": "No content." } },
+        "description": "Update the account holders session reminders.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": { "organiser_id": { "type": "integer" } },
+                "required": ["organiser_id"]
+              },
+              "examples": { "Example 1": { "value": { "organiser_id": 1 } } }
+            }
+          },
+          "description": "Toggles the users session reminders setting for a given organiser."
+        },
+        "x-internal": false,
+        "tags": ["Account"]
+      }
+    },
+    "/organisers": {
+      "parameters": [],
+      "get": {
+        "summary": "List organisers",
+        "operationId": "get-organisers",
+        "responses": {
+          "200": {
+            "description": "Returns a list of Organiser objects.\n\nWhen the user filter is provided, the list contains only organisers the user is linked too.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/Organiser" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "Retrieve a list of organisers.",
+        "x-internal": false,
+        "parameters": [
+          {
+            "schema": { "type": "integer" },
+            "in": "query",
+            "name": "filter[user]",
+            "description": "ID of the user"
+          }
+        ],
+        "tags": ["Organisers"],
+        "security": []
+      }
+    },
+    "/organisers/{organiserId}": {
+      "parameters": [
+        {
+          "schema": { "type": "string" },
+          "name": "organiserId",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "Get an organiser",
+        "responses": {
+          "200": {
+            "description": "Returns an Organiser object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": { "$ref": "#/components/schemas/Organiser" }
+                  }
+                }
+              }
+            }
+          },
+          "404": { "description": "Organiser not found." }
+        },
+        "operationId": "get-organiser",
+        "description": "Retrieve the organiser.",
+        "x-internal": false,
+        "tags": ["Organisers"],
+        "security": []
+      }
+    },
+    "/venues": {
+      "parameters": [],
+      "get": {
+        "summary": "List venues",
+        "operationId": "get-venues",
+        "responses": {
+          "200": {
+            "description": "Returns a list of Venue objects.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/Venue" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "Retrieve a list of venues.",
+        "x-internal": false,
+        "security": [],
+        "tags": ["Venues"]
+      }
+    },
+    "/venues/{venueId}": {
+      "parameters": [
+        {
+          "schema": { "type": "string" },
+          "name": "venueId",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "Get a venue",
+        "responses": {
+          "200": {
+            "description": "Returns a Venue object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": { "$ref": "#/components/schemas/Venue" }
+                  }
+                }
+              }
+            }
+          },
+          "404": { "description": "Venue not found." }
+        },
+        "operationId": "get-venue",
+        "description": "Retrieve the venue.",
+        "x-internal": false,
+        "security": [],
+        "tags": ["Venues"]
+      }
+    },
+    "/terms": {
+      "parameters": [],
+      "get": {
+        "summary": "List terms",
+        "operationId": "get-terms",
+        "responses": {
+          "200": {
+            "description": "Returns a list of Term objects.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/Term" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "Retrieve a list of terms.",
+        "x-internal": false,
+        "security": [],
+        "tags": ["Terms"]
+      }
+    },
+    "/classes": {
+      "parameters": [],
+      "get": {
+        "summary": "List classes",
+        "operationId": "get-classes",
+        "responses": {
+          "200": {
+            "description": "Returns a list of Class objects.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/Class" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "Retrieve a list of classes.",
+        "parameters": [
+          {
+            "schema": { "type": "integer" },
+            "in": "query",
+            "name": "filter[organiser]",
+            "description": "ID of the organiser"
+          },
+          {
+            "schema": { "type": "integer", "format": "date" },
+            "in": "query",
+            "name": "filter[term]",
+            "description": "ID of the term"
+          },
+          {
+            "schema": { "type": "integer" },
+            "in": "query",
+            "name": "filter[venue]",
+            "description": "ID of the venue"
+          },
+          {
+            "schema": { "type": "integer" },
+            "in": "query",
+            "name": "filter[stage]",
+            "description": "ID of the stage"
+          },
+          {
+            "schema": { "type": "string" },
+            "in": "query",
+            "name": "filter[age][interval]",
+            "description": "Interval between the min and max age i.e. month, year"
+          },
+          {
+            "schema": { "type": "integer" },
+            "in": "query",
+            "name": "filter[age][min]",
+            "description": "Minimum age threshold"
+          },
+          {
+            "schema": { "type": "integer" },
+            "in": "query",
+            "name": "filter[age][max]",
+            "description": "Maximum age threshold"
+          },
+          {
+            "schema": { "type": "integer" },
+            "in": "query",
+            "name": "filter[ability]",
+            "description": "ID of the ability"
+          },
+          {
+            "schema": { "type": "integer" },
+            "in": "query",
+            "name": "filter[activity]",
+            "description": "ID of the activity"
+          },
+          {
+            "schema": { "type": "string" },
+            "in": "query",
+            "name": "filter[day]",
+            "description": "Numerical day of the week i.e. 1 = Sunday, 2 = Monday etc."
+          },
+          {
+            "schema": { "type": "string" },
+            "in": "query",
+            "name": "filter[search]",
+            "description": "Phrase to match the class name, venue name and organiser name"
+          },
+          {
+            "schema": { "type": "integer" },
+            "in": "query",
+            "name": "page",
+            "description": "Pagination page number"
+          },
+          {
+            "schema": { "type": "integer" },
+            "in": "query",
+            "name": "limit",
+            "description": "Pagination page limit"
+          }
+        ],
+        "security": [],
+        "tags": ["Classes"]
+      }
+    },
+    "/classes/{classId}": {
+      "parameters": [
+        {
+          "schema": { "type": "string" },
+          "name": "classId",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "Get a class",
+        "responses": {
+          "200": {
+            "description": "Returns a Class object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": { "$ref": "#/components/schemas/Class" }
+                  }
+                }
+              }
+            }
+          },
+          "404": { "description": "Class not found." }
+        },
+        "operationId": "get-class",
+        "description": "Retrieve the class.",
+        "x-internal": false,
+        "tags": ["Classes"],
+        "security": []
+      }
+    },
+    "/classes/costs": {
+      "parameters": [],
+      "get": {
+        "summary": "List class costs",
+        "operationId": "get-class-costs",
+        "responses": {
+          "200": {
+            "description": "Returns a list of lesson costs, in pence format, associated to the classes in the given term.",
+            "content": {
+              "application/json": {
+                "schema": { "type": "array", "items": { "type": "integer" } }
+              }
+            }
+          }
+        },
+        "description": "Retrieve a list of class costs.",
+        "x-internal": false,
+        "parameters": [
+          {
+            "schema": { "type": "integer" },
+            "in": "query",
+            "name": "filter[term]",
+            "description": "ID of the term"
+          }
+        ],
+        "security": [],
+        "tags": ["Classes"]
+      }
+    },
+    "/stages": {
+      "parameters": [],
+      "get": {
+        "summary": "List stages",
+        "operationId": "get-stages",
+        "responses": {
+          "200": {
+            "description": "Returns a list of Stage objects.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/Stage" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "Retrieve a list of stages.",
+        "x-internal": false,
+        "security": [],
+        "tags": ["Stages"]
+      }
+    },
+    "/activities": {
+      "parameters": [],
+      "get": {
+        "summary": "List activities",
+        "operationId": "get-activities",
+        "responses": {
+          "200": {
+            "description": "Returns a list of activities.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": { "1": { "type": "string" } }
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": { "1": "Swimming", "2": "Yoga", "3": "Cookery" }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "Retrieve a list of activities.",
+        "x-internal": false,
+        "security": [],
+        "tags": ["Activities"]
+      }
+    },
+    "/abilities": {
+      "parameters": [],
+      "get": {
+        "summary": "List abilities",
+        "operationId": "get-abilities",
+        "responses": {
+          "200": {
+            "description": "Returns a list of abilities.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": { "1": { "type": "string" } }
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "1": "Beginner",
+                      "2": "Intermediate",
+                      "3": "Advanced"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "Retrieve a list of abilities.",
+        "x-internal": false,
+        "security": [],
+        "tags": ["Abilities"]
+      }
+    },
+    "/referrals": {
+      "parameters": [],
+      "get": {
+        "summary": "List referrals",
+        "operationId": "get-referrals",
+        "responses": {
+          "200": {
+            "description": "Returns a list of referrals.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": { "1": { "type": "string" } }
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "facebook": "Facebook",
+                      "searchEngine": "Search Engine",
+                      "wordOfMouth": "Word Of Mouth"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "Retrieve a list of referrals.",
+        "x-internal": false,
+        "security": [],
+        "tags": ["Referrals"]
+      }
+    },
+    "/days": {
+      "parameters": [],
+      "get": {
+        "summary": "List days",
+        "operationId": "get-days",
+        "responses": {
+          "200": {
+            "description": "Returns a list of days the organiser delivers classes.",
+            "content": {
+              "application/json": {
+                "schema": { "type": "array", "items": { "type": "string" } },
+                "examples": {
+                  "Example 1": { "value": ["Monday", "Wednesday"] }
+                }
+              }
+            }
+          }
+        },
+        "description": "Retrieve a list of days.",
+        "x-internal": false,
+        "parameters": [
+          {
+            "schema": { "type": "integer" },
+            "in": "query",
+            "name": "filter[organiser]",
+            "description": "ID of the organiser"
+          }
+        ],
+        "security": [],
+        "tags": ["Days"]
+      }
+    },
+    "/waitees": {
+      "parameters": [],
+      "post": {
+        "summary": "Create a waitee",
+        "operationId": "post-waitee",
+        "responses": {
+          "200": {
+            "description": "Waitee created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/Waitee" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Waitees"],
+        "description": "Create a new waitee.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "organiser_id": { "type": "integer" },
+                  "first_name": { "type": "string" },
+                  "last_name": { "type": "string" },
+                  "email": { "type": "string" },
+                  "telephone": { "type": "string" },
+                  "students": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": { "type": "integer" },
+                        "first_name": { "type": "string" },
+                        "last_name": { "type": "string" },
+                        "dob": { "type": "string", "format": "date" },
+                        "medical": { "type": "string" },
+                        "stage_id": { "type": "integer" }
+                      }
+                    }
+                  },
+                  "venues": { "type": "array", "items": { "type": "integer" } },
+                  "days": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "day": { "type": "string" },
+                        "time": { "type": "string" }
+                      },
+                      "required": ["day"]
+                    }
+                  },
+                  "notes": { "type": "string" }
+                },
+                "required": ["organiser_id", "students", "venues", "days"]
+              }
+            }
+          },
+          "description": "Creates a new waitee.\nIf a user is signed in, `students.id` is required and the waitee will be associated to the authenticated user.\nIf no user is signed in, `first_name`, `last_name`, `email`, `telephone`, `students.first_name` and `students.last_name` are required."
+        }
+      }
+    },
+    "/waitees/{inviteCode}": {
+      "parameters": [
+        {
+          "schema": { "type": "string" },
+          "name": "inviteCode",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "Get a waitee",
+        "responses": {
+          "200": {
+            "description": "Returns a Waitee object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": { "$ref": "#/components/schemas/Waitee" }
+                  }
+                }
+              }
+            }
+          },
+          "404": { "description": "Waitee not found." }
+        },
+        "operationId": "get-waitee",
+        "description": "Retrieve the waitee.",
+        "x-internal": false,
+        "security": [],
+        "tags": ["Waitees"]
+      },
+      "delete": {
+        "summary": "Delete a waitee",
+        "operationId": "delete-waitee",
+        "responses": { "204": { "description": "Waitee deleted." } },
+        "description": "Delete a waitee.",
+        "tags": ["Waitees"]
+      }
+    },
+    "/vouchers": {
+      "parameters": [],
+      "post": {
+        "summary": "Create a voucher",
+        "operationId": "post-voucher",
+        "responses": {
+          "200": {
+            "description": "Voucher created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/Voucher" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "Create a new voucher.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "product_id": { "type": "integer" },
+                  "name": { "type": "string" },
+                  "email": { "type": "string" },
+                  "payment_intent": { "type": "string" },
+                  "terms": { "type": "boolean" }
+                },
+                "required": ["product_id", "name", "email", "terms"]
+              }
+            }
+          },
+          "description": "Creates a new voucher."
+        },
+        "tags": ["Vouchers"]
+      }
+    },
+    "/vouchers/check": {
+      "parameters": [],
+      "post": {
+        "summary": "Check a voucher",
+        "operationId": "post-voucher-check",
+        "responses": {
+          "200": {
+            "description": "Returns a message relating to the status of the voucher.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": { "message": { "type": "string" } }
+                }
+              }
+            }
+          }
+        },
+        "description": "Check a voucher code.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": { "code": { "type": "string" } }
+              }
+            }
+          },
+          "description": "Checks a voucher code exists."
+        },
+        "tags": ["Vouchers"]
+      }
+    },
+    "/payment-intents": {
+      "post": {
+        "summary": "Create a payment intent",
+        "operationId": "post-payment-intent",
+        "responses": {
+          "200": {
+            "description": "Payment intent created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "intent": { "type": "string" },
+                    "method": { "type": "string" },
+                    "client_secret": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "organiser_id": { "type": "integer" },
+                  "booking_id": { "type": "integer" },
+                  "subscription_id": { "type": "integer" },
+                  "customer": { "type": "string" },
+                  "payment_method": { "type": "string" },
+                  "amount": { "type": "integer" },
+                  "force_absorb": { "type": "boolean" },
+                  "overrides": {
+                    "type": "object",
+                    "properties": {
+                      "payment_method_types": {
+                        "type": "array",
+                        "items": { "type": "string" }
+                      },
+                      "setup_future_usage": { "type": "string" },
+                      "capture_method": { "type": "string" }
+                    }
+                  }
+                },
+                "required": ["organiser_id", "payment_method", "amount"]
+              }
+            }
+          },
+          "description": "Creates a new payment intent on Stripe."
+        },
+        "description": "Create a new payment intent.",
+        "x-internal": false,
+        "tags": ["Payment Intents"]
+      },
+      "parameters": [],
+      "patch": {
+        "summary": "Update a payment intent",
+        "operationId": "patch-payment-intent",
+        "responses": {
+          "200": {
+            "description": "Payment intent updated.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "intent": { "type": "string" },
+                    "method": { "type": "string" },
+                    "client_secret": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "Updates a payment intent.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "organiser_id": { "type": "integer" },
+                  "booking_id": { "type": "integer" },
+                  "subscription_id": { "type": "integer" },
+                  "payment_intent": { "type": "string" },
+                  "payment_method": { "type": "string" },
+                  "amount": { "type": "integer" },
+                  "force_absorb": { "type": "boolean" }
+                }
+              }
+            }
+          },
+          "description": "Updates the payment intent on Stripe."
+        },
+        "tags": ["Payment Intents"]
+      }
+    },
+    "/students": {
+      "post": {
+        "summary": "Create a student",
+        "operationId": "post-student",
+        "responses": {
+          "201": {
+            "description": "Student created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": { "$ref": "#/components/schemas/Student" }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "organiser_id": { "type": "integer" },
+                  "first_name": { "type": "string" },
+                  "last_name": { "type": "string" },
+                  "dob": { "type": "string", "format": "date" },
+                  "due_date": { "type": "string", "format": "date" },
+                  "medical": { "type": "string" },
+                  "relation": { "type": "string" },
+                  "stage_id": { "type": "integer" },
+                  "notes": { "type": "string" }
+                },
+                "required": ["organiser_id", "first_name", "last_name"]
+              }
+            }
+          },
+          "description": "Creates a new family member."
+        },
+        "description": "Create a new family member.",
+        "x-internal": false,
+        "tags": ["Students"]
+      },
+      "parameters": [],
+      "get": {
+        "summary": "List students",
+        "operationId": "get-students",
+        "responses": {
+          "200": {
+            "description": "Returns a list of Student objects.\n\nWhen the class filter is provided, the list contains only students who qualify the class based on age.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/Student" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "Retrieve a list of family members.",
+        "x-internal": false,
+        "tags": ["Students"],
+        "parameters": [
+          {
+            "schema": { "type": "integer" },
+            "in": "query",
+            "name": "filter[class]",
+            "description": "ID of the class"
+          }
+        ]
+      }
+    },
+    "/students/{studentId}": {
+      "parameters": [
+        {
+          "schema": { "type": "string" },
+          "name": "studentId",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "Get a student",
+        "tags": ["Students"],
+        "responses": {
+          "200": {
+            "description": "Returns a Student object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": { "$ref": "#/components/schemas/Student" }
+                  }
+                }
+              }
+            }
+          },
+          "403": { "description": "Forbidden." },
+          "404": { "description": "Student not found." }
+        },
+        "operationId": "get-student",
+        "description": "Retrieve the family member.",
+        "x-internal": false
+      },
+      "patch": {
+        "summary": "Update a student",
+        "operationId": "patch-student",
+        "responses": {
+          "200": {
+            "description": "Returns a Student object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": { "$ref": "#/components/schemas/Student" }
+                  }
+                }
+              }
+            }
+          },
+          "403": { "description": "Forbidden." },
+          "404": { "description": "Student not found." }
+        },
+        "description": "Update the family member.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "first_name": { "type": "string" },
+                  "last_name": { "type": "string" },
+                  "dob": { "type": "string", "format": "date" },
+                  "medical": { "type": "string" }
+                },
+                "required": ["first_name", "last_name", "dob"]
+              }
+            }
+          },
+          "description": "Updates the family member."
+        },
+        "x-internal": false,
+        "tags": ["Students"]
+      }
+    },
+    "/students/{studentId}/stages": {
+      "parameters": [
+        {
+          "schema": { "type": "string" },
+          "name": "studentId",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "List student stages",
+        "tags": ["Students"],
+        "responses": {
+          "200": {
+            "description": "Return a list of StudentStage objects.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/StudentStage" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": { "description": "Forbidden." },
+          "404": { "description": "Student not found." }
+        },
+        "operationId": "get-student-stages",
+        "description": "Retrieve a list of the family members stages.",
+        "x-internal": false
+      }
+    },
+    "/prices": {
+      "parameters": [],
+      "get": {
+        "summary": "List prices",
+        "operationId": "get-prices",
+        "responses": {
+          "200": {
+            "description": "Returns a list of Price objects.\n\nWhen the class filter is provided, the list contains only prices that are available for this class.\n\nWhen the students filter is provided, the list contains only prices that are available for all students.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/Price" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "Retrieve a list of prices.",
+        "parameters": [
+          {
+            "schema": { "type": "integer" },
+            "in": "query",
+            "name": "filter[class]",
+            "description": "ID of the class",
+            "required": true
+          },
+          {
+            "schema": { "type": "array" },
+            "in": "query",
+            "name": "filter[students][]",
+            "description": "IDs of the students",
+            "required": true
+          }
+        ],
+        "tags": ["Prices"]
+      }
+    },
+    "/coupons/apply": {
+      "parameters": [],
+      "get": {
+        "summary": "Apply coupon",
+        "operationId": "get-apply-coupon",
+        "responses": {
+          "200": {
+            "description": "Returns a Discount or Voucher object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "oneOf": [
+                        { "$ref": "#/components/schemas/Discount" },
+                        { "$ref": "#/components/schemas/Voucher" }
+                      ]
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "enum": ["discount", "voucher"]
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {}
+              }
+            }
+          }
+        },
+        "description": "Retrieve a Discount or Voucher.",
+        "parameters": [
+          {
+            "schema": { "type": "string" },
+            "in": "query",
+            "name": "filter[code]",
+            "description": "Coupon code",
+            "required": true
+          },
+          {
+            "schema": { "type": "integer" },
+            "in": "query",
+            "name": "filter[class]",
+            "required": true,
+            "description": "ID of the class"
+          }
+        ],
+        "tags": ["Coupons"]
+      }
+    },
+    "/bookings": {
+      "post": {
+        "summary": "Create a booking",
+        "operationId": "post-booking",
+        "responses": {
+          "201": {
+            "description": "Booking created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": { "$ref": "#/components/schemas/Booking" }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "class_id": { "type": "integer" },
+                  "sessions": {
+                    "type": "array",
+                    "items": { "type": "integer" }
+                  },
+                  "students": {
+                    "type": "array",
+                    "items": { "type": "integer" }
+                  },
+                  "price_id": { "type": "integer" },
+                  "plan_id": { "type": "integer" },
+                  "discount_id": { "type": "integer" },
+                  "voucher_id": { "type": "integer" },
+                  "payment_amount": { "type": "integer" },
+                  "voucher_amount": { "type": "integer" },
+                  "credit_amount": { "type": "integer" },
+                  "payment_intent": { "type": "string" },
+                  "payment_method": { "type": "string" },
+                  "save_payment_method": { "type": "boolean" },
+                  "invite_code": { "type": "string" },
+                  "terms": { "type": "boolean" },
+                  "loco_parentis": { "type": "boolean" },
+                  "marketing_consent": { "type": "boolean" },
+                  "photo_consent": { "type": "boolean" },
+                  "referral": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "friend",
+                          "wordOfMouth",
+                          "searchEngine",
+                          "facebook",
+                          "twitter",
+                          "instagram",
+                          "clubHub",
+                          "whatsOn4Kids",
+                          "netmums",
+                          "leaflet",
+                          "tvRadio",
+                          "event",
+                          "other"
+                        ]
+                      },
+                      "name": { "type": "string" }
+                    }
+                  },
+                  "emergency": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "friend",
+                          "wordOfMouth",
+                          "searchEngine",
+                          "facebook",
+                          "twitter",
+                          "instagram",
+                          "clubHub",
+                          "whatsOn4Kids",
+                          "netmums",
+                          "leaflet",
+                          "tvRadio",
+                          "event",
+                          "other"
+                        ]
+                      },
+                      "telephone": { "type": "string" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "description": "Creates a new booking."
+        },
+        "description": "Create a new booking.",
+        "x-internal": false,
+        "tags": ["Bookings"]
+      },
+      "parameters": [],
+      "get": {
+        "summary": "List bookings",
+        "operationId": "get-bookings",
+        "responses": {
+          "200": {
+            "description": "Booking created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/Booking" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "Retrieve a list of bookings.",
+        "parameters": [
+          {
+            "schema": { "type": "integer" },
+            "in": "query",
+            "name": "filter[organiser]",
+            "description": "ID of the organiser"
+          },
+          {
+            "schema": { "type": "integer" },
+            "in": "query",
+            "name": "filter[student]",
+            "description": "ID of the student"
+          },
+          {
+            "schema": { "type": "boolean" },
+            "in": "query",
+            "name": "filter[ended]",
+            "description": "Whether the booking has ended"
+          },
+          {
+            "schema": { "type": "string" },
+            "in": "query",
+            "name": "include",
+            "description": "Related resources to include"
+          }
+        ],
+        "tags": ["Bookings"]
+      }
+    },
+    "/bookings/calculate": {
+      "parameters": [],
+      "get": {
+        "summary": "Calculate booking costs",
+        "operationId": "get-booking-calculation",
+        "responses": {
+          "200": {
+            "description": "Returns the calculated booking costs.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "booking_net": { "type": "integer" },
+                    "booking_discount": { "type": "integer" },
+                    "booking_fee": { "type": "integer" },
+                    "booking_gross": { "type": "integer" },
+                    "subscription_net": { "type": "integer" },
+                    "subscription_discount": { "type": "integer" },
+                    "subscription_fee": { "type": "integer" },
+                    "subscription_gross": { "type": "integer" },
+                    "subscription_upfront_net": { "type": "integer" },
+                    "subscription_upfront_discount": { "type": "integer" },
+                    "subscription_upfront_fee": { "type": "integer" },
+                    "subscription_upfront_gross": { "type": "integer" },
+                    "voucher_amount": { "type": "integer" },
+                    "credit_amount": { "type": "integer" },
+                    "amount_due": { "type": "integer" },
+                    "payment_intent_amount": { "type": "integer" },
+                    "force_absorb": { "type": "boolean" }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "Retrieve the Booking costs.",
+        "parameters": [
+          {
+            "schema": { "type": "integer" },
+            "in": "query",
+            "name": "filter[class]",
+            "description": "ID of the class",
+            "required": true
+          },
+          {
+            "schema": { "type": "array" },
+            "in": "query",
+            "name": "filter[sessions][]",
+            "description": "IDs of the sessions",
+            "required": true
+          },
+          {
+            "schema": { "type": "array" },
+            "in": "query",
+            "name": "filter[students][]",
+            "description": "IDs of the students",
+            "required": true
+          },
+          {
+            "schema": { "type": "integer" },
+            "in": "query",
+            "name": "filter[price]",
+            "description": "ID of the price",
+            "required": true
+          },
+          {
+            "schema": { "type": "integer" },
+            "in": "query",
+            "name": "filter[plan]",
+            "description": "ID of the plan"
+          },
+          {
+            "schema": { "type": "integer" },
+            "in": "query",
+            "name": "filter[discount]",
+            "description": "ID of the discount"
+          },
+          {
+            "schema": { "type": "integer" },
+            "in": "query",
+            "name": "filter[voucher]",
+            "description": "ID of the voucher"
+          }
+        ],
+        "tags": ["Bookings"]
+      }
+    },
+    "/bookings/{bookingRef}": {
+      "parameters": [
+        {
+          "schema": { "type": "string" },
+          "name": "bookingRef",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "Get a booking",
+        "responses": {
+          "200": {
+            "description": "Returns the Booking object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": { "$ref": "#/components/schemas/Booking" }
+                  }
+                }
+              }
+            }
+          },
+          "404": { "description": "Booking not found." }
+        },
+        "operationId": "get-booking",
+        "description": "Retrieve the booking.",
+        "tags": ["Bookings"]
+      }
+    },
+    "/bookings/{bookingRef}/pay": {
+      "parameters": [
+        {
+          "schema": { "type": "string" },
+          "name": "bookingRef",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "post": {
+        "summary": "Pay booking",
+        "operationId": "post-pay-booking",
+        "responses": { "204": { "description": "No content." } },
+        "description": "Pay a booking.",
+        "tags": ["Bookings"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": { "payment_intent": { "type": "string" } }
+              }
+            }
+          },
+          "description": "Pays for a booking."
+        }
+      }
+    },
+    "/payments": {
+      "parameters": [],
+      "get": {
+        "summary": "List payments",
+        "operationId": "get-payments",
+        "responses": {
+          "200": {
+            "description": "Returns a list of Payment objects.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/Payment" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "Retrieve a list of payments.",
+        "parameters": [
+          {
+            "schema": { "type": "integer" },
+            "in": "query",
+            "name": "filter[organiser]",
+            "description": "ID of the organiser"
+          }
+        ],
+        "tags": ["Payments"]
+      }
+    },
+    "/subscriptions": {
+      "parameters": [],
+      "get": {
+        "summary": "List subscriptions",
+        "operationId": "get-subscriptions",
+        "responses": {
+          "200": {
+            "description": "Returns a list of Subscription objects.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/Subscription" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "Retrieve a list of subscriptions.",
+        "parameters": [
+          {
+            "schema": { "type": "integer" },
+            "in": "query",
+            "name": "filter[organiser]",
+            "description": "ID of the organiser"
+          },
+          {
+            "schema": { "type": "integer" },
+            "in": "query",
+            "name": "filter[student]",
+            "description": "ID of the student"
+          }
+        ],
+        "tags": ["Subscriptions"]
+      }
+    },
+    "/subscriptions/{subscriptionId}/activate": {
+      "parameters": [
+        {
+          "schema": { "type": "string" },
+          "name": "subscriptionId",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "post": {
+        "summary": "Activate subscription",
+        "operationId": "post-activate-subscription",
+        "responses": { "204": { "description": "No content." } },
+        "description": "Activate a subscription.",
+        "requestBody": {
+          "content": {},
+          "description": "Activates a subscription."
+        },
+        "tags": ["Subscriptions"]
+      }
+    },
+    "/subscriptions/{subscriptionId}/pay": {
+      "parameters": [
+        {
+          "schema": { "type": "string" },
+          "name": "subscriptionId",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "post": {
+        "summary": "Pay subscription",
+        "operationId": "post-pay-subscription",
+        "responses": { "204": { "description": "No content." } },
+        "description": "Pay a subscription.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": { "payment_intent": { "type": "string" } }
+              }
+            }
+          },
+          "description": "Pays for a subscription."
+        },
+        "tags": ["Subscriptions"]
+      }
+    },
+    "/setup-intents": {
+      "post": {
+        "summary": "Create a setup intent",
+        "operationId": "post-setup-intent",
+        "responses": {
+          "200": {
+            "description": "Setup intent created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": { "client_secret": { "type": "string" } }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "organiser_id": { "type": "integer" },
+                  "customer": { "type": "string" },
+                  "overrides": {
+                    "type": "object",
+                    "properties": {
+                      "payment_method_types": {
+                        "type": "array",
+                        "items": { "type": "string" }
+                      }
+                    }
+                  }
+                },
+                "required": ["organiser_id", "customer"]
+              }
+            }
+          },
+          "description": "Creates a new setup intent on Stripe."
+        },
+        "description": "Create a new setup intent.",
+        "x-internal": false,
+        "tags": ["Setup Intents"]
+      },
+      "parameters": []
+    },
+    "/metics/{domain}/{metric}": {
+      "parameters": [
+        {
+          "schema": { "type": "string" },
+          "name": "domain",
+          "in": "path",
+          "required": true
+        },
+        {
+          "schema": { "type": "string" },
+          "name": "metric",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "Get a metric",
+        "responses": {
+          "200": {
+            "description": "Returns the trend or value metric.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "properties": {
+                        "trend": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "label": { "type": "string" },
+                              "value": { "type": "integer" }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "properties": {
+                        "value": { "type": "integer" },
+                        "previous": { "type": "integer" }
+                      }
+                    }
+                  ],
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "404": { "description": "Booking not found." }
+        },
+        "operationId": "get-metric",
+        "description": "Retrieve the metric.",
+        "parameters": [
+          {
+            "schema": { "type": "integer" },
+            "in": "query",
+            "name": "club_id",
+            "description": "ID of the organiser"
+          },
+          {
+            "schema": { "type": "string" },
+            "in": "query",
+            "name": "filter[date_range]",
+            "description": "Date range"
+          }
+        ],
+        "tags": ["Metrics"]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Booking": {
+        "title": "Booking",
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "ref": { "type": "string" },
+          "student_id": { "type": "integer" },
+          "student_name": { "type": "string" },
+          "organiser_id": { "type": "integer" },
+          "organiser_name": { "type": "string" },
+          "class_id": { "type": "integer" },
+          "class_name": { "type": "string" },
+          "zoom_id": { "type": "string" },
+          "zoom_password": { "type": "string" },
+          "teacher_name": { "type": "string" },
+          "venue_name": { "type": "string" },
+          "net": { "type": "integer" },
+          "gross": { "type": "integer" },
+          "balance": { "type": "integer" },
+          "credit": { "type": "integer" },
+          "payment_method": {
+            "type": "string",
+            "enum": ["card", "subscription"]
+          },
+          "payment_method_label": { "type": "string" },
+          "price_type": { "type": "string" },
+          "next_session": { "type": "string", "format": "date-time" },
+          "next_session_ends_at": { "type": "string", "format": "date-time" },
+          "last_session": { "type": "string", "format": "date-time" },
+          "processing_payments_count": { "type": "integer" },
+          "successful_payments_count": { "type": "integer" },
+          "sessions": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/BookingSession" }
+          },
+          "class": { "$ref": "#/components/schemas/Class" }
+        }
+      },
+      "BookingSession": {
+        "title": "BookingSession",
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "date_time": { "type": "string", "format": "date-time" },
+          "attended": { "type": "boolean" },
+          "absent": { "type": "boolean" },
+          "cancelled": { "type": "boolean" },
+          "session": { "$ref": "#/components/schemas/Session" }
+        }
+      },
+      "Class": {
+        "title": "Class",
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "activity_id": { "type": "integer" },
+          "name": { "type": "string" },
+          "image": { "type": "string" },
+          "description": { "type": "string" },
+          "session_cost": { "type": "integer" },
+          "trial_allowed": { "type": "boolean" },
+          "trial_cost": { "type": "integer" },
+          "age_range": { "type": "string" },
+          "sell": { "type": "boolean" },
+          "term": { "type": "string" },
+          "teacher": { "type": "string" },
+          "venue_id": { "type": "integer" },
+          "venue_name": { "type": "string" },
+          "organiser_id": { "type": "integer" },
+          "organiser_name": { "type": "string" },
+          "organiser_class_image": { "type": "string" },
+          "stage": { "type": "string" },
+          "stage_class_image": { "type": "string" },
+          "ability": {
+            "type": "string",
+            "enum": ["Beginner", "Intermediate", "Advanced"]
+          },
+          "spaces_count": { "type": "integer" },
+          "invited_waitees_count": { "type": "integer" },
+          "next_session": { "type": "string", "format": "date-time" },
+          "next_session_ends_at": { "type": "string", "format": "date-time" },
+          "sessions": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Session" }
+          }
+        }
+      },
+      "Discount": {
+        "title": "Discount",
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "description": { "type": "string" },
+          "percent_off": { "type": "integer" }
+        }
+      },
+      "Link": {
+        "title": "Link",
+        "type": "object",
+        "properties": {
+          "organiser_id": { "type": "integer" },
+          "organiser_name": { "type": "string" },
+          "user_id": { "type": "string" },
+          "user_name": { "type": "string" },
+          "stripe_id": { "type": "string" },
+          "balance": { "type": "integer" },
+          "card_last_four": { "type": "string" },
+          "bacs_last_four": { "type": "string" },
+          "marketing_consent": { "type": "boolean" },
+          "photo_consent": { "type": "boolean" },
+          "session_reminders": { "type": "boolean" },
+          "connected_at": { "type": "string", "format": "date-time" }
+        }
+      },
+      "Order": {
+        "title": "Order",
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "product_name": { "type": "string" }
+        }
+      },
+      "Organiser": {
+        "title": "Organiser",
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "name": { "type": "string" },
+          "icon": { "type": "string" },
+          "class_image": { "type": "string" },
+          "strapline": { "type": "string" },
+          "description": { "type": "string" },
+          "handle": { "type": "string" },
+          "email": { "type": "string" },
+          "telephone": { "type": "string" },
+          "website": { "type": "string" },
+          "absorb_fee": { "type": "boolean" },
+          "session_reminders": { "type": "boolean" },
+          "stripe_id": { "type": "string" },
+          "booking_settings": {
+            "type": "object",
+            "properties": {
+              "dob": { "type": "boolean" },
+              "due_date": { "type": "boolean" },
+              "notes": { "type": "boolean" },
+              "medical": { "type": "boolean" },
+              "space": { "type": "boolean" },
+              "referral": { "type": "boolean" },
+              "stage": { "type": "boolean" },
+              "same_day": { "type": "boolean" },
+              "loco_parentis": { "type": "boolean" }
+            }
+          },
+          "waiting_list_settings": {
+            "type": "object",
+            "properties": {
+              "enabled": { "type": "boolean" },
+              "limit_days": { "type": "boolean" },
+              "notes": { "type": "boolean" }
+            }
+          },
+          "connected_at": { "type": "string", "format": "date-time" },
+          "terms_and_conditions": { "type": "string" },
+          "privacy_policy": { "type": "string" },
+          "photo_consent": { "type": "string" },
+          "terms": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Term" }
+          },
+          "venues": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Venue" }
+          },
+          "stages": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Stage" }
+          },
+          "vouchers": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Product" }
+          }
+        }
+      },
+      "Payment": {
+        "title": "Payment",
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "payment_date": { "type": "string", "format": "date-time" },
+          "amount": { "type": "integer" },
+          "status": {
+            "type": "string",
+            "enum": ["Successful", "Failed", "Refunded"]
+          },
+          "organiser_name": { "type": "string" },
+          "booking": { "$ref": "#/components/schemas/Booking" },
+          "order": { "$ref": "#/components/schemas/Order" },
+          "student": { "$ref": "#/components/schemas/Student" },
+          "subscription": { "$ref": "#/components/schemas/Subscription" }
+        }
+      },
+      "Plan": {
+        "title": "Plan",
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "net": { "type": "integer" },
+          "gross": { "type": "integer" }
+        }
+      },
+      "Price": {
+        "title": "Price",
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "type": {
+            "type": "string",
+            "enum": ["perSession", "perTrial", "fixedCost"]
+          },
+          "payment_method": {
+            "type": "string",
+            "enum": ["card", "subscription"]
+          },
+          "fixed_cost": { "type": "integer" },
+          "session_limit": { "type": "integer" },
+          "session_selection_type": {
+            "type": "string",
+            "enum": ["fixedStart", "flexiStart", "cherryPick"]
+          },
+          "plan": { "$ref": "#/components/schemas/Plan" }
+        }
+      },
+      "Product": {
+        "title": "Product",
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "name": {
+            "type": "string",
+            "enum": ["perSession", "perTrial", "fixedCost"]
+          },
+          "cost": { "type": "integer" }
+        }
+      },
+      "Session": {
+        "title": "Session",
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "date_time": { "type": "string", "format": "date-time" },
+          "moved_from": { "type": "string", "format": "date-time" },
+          "teacher_name": { "type": "string" },
+          "cancelled": { "type": "boolean" },
+          "spaces_count": { "type": "integer" }
+        }
+      },
+      "Stage": {
+        "title": "Stage",
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "name": { "type": "string" }
+        }
+      },
+      "Student": {
+        "title": "Student",
+        "type": "object",
+        "x-internal": false,
+        "properties": {
+          "id": { "type": "integer" },
+          "first_name": { "type": "string" },
+          "last_name": { "type": "string" },
+          "dob": { "type": "string", "format": "date" },
+          "due_date": { "type": "string", "format": "date" },
+          "medical": { "type": "string" },
+          "relation": { "type": "string" }
+        }
+      },
+      "StudentGoal": {
+        "title": "StudentGoal",
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "name": { "type": "string" },
+          "achieved_at": { "type": "string", "format": "date-time" }
+        }
+      },
+      "StudentStage": {
+        "title": "StudentStage",
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "name": { "type": "string" },
+          "organiser_name": { "type": "string" },
+          "active": { "type": "boolean" },
+          "awarded_on": { "type": "string", "format": "date" },
+          "goals": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/StudentGoal" }
+          }
+        }
+      },
+      "Subscription": {
+        "title": "Subscription",
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "organiser_id": { "type": "integer" },
+          "plan_name": { "type": "string" },
+          "student_name": { "type": "string" },
+          "payment_method": { "type": "string" },
+          "goal": { "type": "integer" },
+          "amount": { "type": "integer" },
+          "stripe_active": { "type": "boolean" },
+          "starts_at": { "type": "string", "format": "date-time" },
+          "trial_ends_at": { "type": "string", "format": "date-time" },
+          "outstanding_payments_count": { "type": "integer" }
+        }
+      },
+      "Term": {
+        "title": "Term",
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "name": { "type": "string" }
+        }
+      },
+      "User": {
+        "title": "User",
+        "type": "object",
+        "x-internal": false,
+        "properties": {
+          "id": { "type": "integer" },
+          "first_name": { "type": "string" },
+          "last_name": { "type": "string" },
+          "email": { "type": "string" },
+          "telephone": { "type": "string" },
+          "street": { "type": "string" },
+          "town": { "type": "string" },
+          "region": { "type": "string" },
+          "postcode": { "type": "string" },
+          "emergency_name": { "type": "string" },
+          "emergency_telephone": { "type": "string" },
+          "emergency_relationship": { "type": "string" },
+          "activated_at": { "type": "string", "format": "date-time" }
+        }
+      },
+      "Venue": {
+        "title": "Venue",
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "name": { "type": "string" },
+          "image": { "type": "string" },
+          "address": { "type": "string" },
+          "information": { "type": "string" },
+          "parking": { "type": "string" },
+          "landmarks": { "type": "string" },
+          "dimensions": { "type": "string" },
+          "depth": { "type": "string" },
+          "changing_facilities": { "type": "string" }
+        }
+      },
+      "Voucher": {
+        "title": "Voucher",
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "value": { "type": "integer" },
+          "remaining_value": { "type": "integer" }
+        }
+      },
+      "Waitee": {
+        "title": "Waitee",
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "invite_code": { "type": "string" },
+          "invited_at": { "type": "string", "format": "date-time" },
+          "expired": { "type": "boolean" },
+          "organiser": { "$ref": "#/components/schemas/Organiser" },
+          "class": { "$ref": "#/components/schemas/Class" }
+        }
+      }
+    },
+    "securitySchemes": {
+      "Authorization": { "type": "http", "scheme": "bearer" }
+    },
+    "parameters": {},
+    "requestBodies": {
+      "Register": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "first_name": { "type": "string" },
+                "last_name": { "type": "string" },
+                "email": { "type": "string" },
+                "password": { "type": "string" },
+                "password_confirmation": { "type": "string" },
+                "telephone": { "type": "string" },
+                "terms": { "type": "boolean" },
+                "device_name": { "type": "string" }
+              },
+              "required": [
+                "first_name",
+                "last_name",
+                "email",
+                "password",
+                "password_confirmation",
+                "telephone",
+                "terms",
+                "device_name"
+              ]
+            },
+            "examples": {
+              "Example 1": {
+                "value": {
+                  "first_name": "Jim",
+                  "last_name": "Brown",
+                  "email": "jim@thebrowns.com",
+                  "password": "password",
+                  "password_confirmation": "password",
+                  "telephone": "01913334444",
+                  "terms": true,
+                  "device_name": "Device"
+                }
+              }
+            }
+          }
+        },
+        "description": "Creates and authenticates a new User and generates a new Token."
+      },
+      "Token": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": { "type": "string" },
+                "password": { "type": "string" },
+                "device_name": { "type": "string" }
+              },
+              "required": ["email", "password", "device_name"]
+            },
+            "examples": {
+              "Example 1": {
+                "value": {
+                  "email": "jim@thebrowns.com",
+                  "password": "password",
+                  "device_name": "Device"
+                }
+              }
+            }
+          }
+        },
+        "description": "Authenticates the User credentials and generates a new Token."
+      },
+      "ForgotPassword": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": { "email": { "type": "string" } },
+              "required": ["email"]
+            },
+            "examples": {
+              "Example 1": { "value": { "email": "jim@thebrowns.com" } }
+            }
+          }
+        },
+        "description": "Sends a new password reset email."
+      },
+      "ResetPassword": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "token": { "type": "string" },
+                "email": { "type": "string" },
+                "password": { "type": "string" },
+                "password_confirmation": { "type": "string" }
+              },
+              "required": [
+                "token",
+                "email",
+                "password",
+                "password_confirmation"
+              ]
+            },
+            "examples": {
+              "Example 1": {
+                "value": {
+                  "token": "abc123",
+                  "email": "jim@thebrowns.com",
+                  "password": "password",
+                  "password_confirmation": "password"
+                }
+              }
+            }
+          }
+        },
+        "description": "Resets the User password."
+      }
+    },
+    "responses": {
+      "Token": {
+        "description": "Returns a token string.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": { "token": { "type": "string" } }
+            },
+            "examples": { "Example 1": { "value": { "token": "1|t0k3n" } } }
+          }
+        }
+      },
+      "User": {
+        "description": "Returns a User object.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": { "data": { "$ref": "#/components/schemas/User" } }
+            }
+          }
+        }
+      },
+      "Status": {
+        "description": "Returns a status string.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": { "status": { "type": "string" } }
+            },
+            "examples": {
+              "Example 1": {
+                "value": {
+                  "status": "We have emailed your password reset link."
+                }
+              },
+              "Example 2": {
+                "value": { "status": "Your password has been reset." }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "security": [{ "Authorization": [] }],
+  "tags": [
+    { "name": "Abilities" },
+    { "name": "Account" },
+    { "name": "Activities" },
+    { "name": "Auth" },
+    { "name": "Bookings" },
+    { "name": "Classes" },
+    { "name": "Coupons" },
+    { "name": "Days" },
+    { "name": "Links" },
+    { "name": "Metrics" },
+    { "name": "Organisers" },
+    { "name": "Payment Intents" },
+    { "name": "Payments" },
+    { "name": "Ping" },
+    { "name": "Prices" },
+    { "name": "Referrals" },
+    { "name": "Setup Intents" },
+    { "name": "Stages" },
+    { "name": "Students" },
+    { "name": "Subscriptions" },
+    { "name": "Terms" },
+    { "name": "Users" },
+    { "name": "Venues" },
+    { "name": "Vouchers" },
+    { "name": "Waitees" }
+  ]
+}

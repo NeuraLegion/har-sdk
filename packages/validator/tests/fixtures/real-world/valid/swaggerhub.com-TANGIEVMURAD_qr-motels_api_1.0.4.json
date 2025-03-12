@@ -1,0 +1,1632 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "qr_motels API",
+    "description": "qr_motels API",
+    "version": "1.0.4"
+  },
+  "servers": [{ "url": "https://qr-motels-latest.onrender.com" }],
+  "tags": [
+    { "name": "Auth", "description": "Authentication and Authorization" },
+    { "name": "Motel", "description": "Motel-related operations" },
+    { "name": "Admin", "description": "Admin-related operations" },
+    { "name": "Public", "description": "User-related operations" }
+  ],
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "JwtRequest": {
+        "type": "object",
+        "properties": {
+          "email": { "type": "string" },
+          "password": { "type": "string" }
+        }
+      },
+      "Review": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "content": { "type": "string" },
+          "rating": { "type": "integer", "format": "int32" },
+          "photoUrl": { "type": "string" },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "room": { "$ref": "#/components/schemas/Room" }
+        }
+      },
+      "ReviewDTO": {
+        "type": "object",
+        "properties": {
+          "content": { "type": "string" },
+          "rating": { "type": "integer", "format": "int32" }
+        }
+      },
+      "ReviewResponseDTO": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "content": { "type": "string" },
+          "rating": { "type": "integer", "format": "int32" },
+          "photoUrl": { "type": "string" },
+          "createdAt": { "type": "string", "format": "date-time" }
+        }
+      },
+      "PageReviewResponseDTO": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/ReviewResponseDTO" }
+          },
+          "pageable": {
+            "type": "object",
+            "properties": {
+              "pageNumber": { "type": "integer", "format": "int32" },
+              "pageSize": { "type": "integer", "format": "int32" }
+            }
+          },
+          "totalPages": { "type": "integer", "format": "int32" },
+          "totalElements": { "type": "integer", "format": "int64" }
+        }
+      },
+      "BigDecimal": { "type": "number", "format": "double" },
+      "DailyStatisticsDTO": {
+        "type": "object",
+        "properties": {
+          "date": { "type": "string", "format": "date" },
+          "totalReviews": { "type": "integer", "format": "int32" },
+          "averageRating": { "type": "number", "format": "double" },
+          "totalTipAmount": { "$ref": "#/components/schemas/BigDecimal" }
+        }
+      },
+      "Tip": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "amount": { "$ref": "#/components/schemas/BigDecimal" },
+          "room": { "$ref": "#/components/schemas/Room" },
+          "createdAt": { "type": "string", "format": "date-time" }
+        }
+      },
+      "TipDTO": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "number",
+            "format": "double",
+            "description": "The amount to tip"
+          }
+        }
+      },
+      "TipResponseDTO": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "amount": { "$ref": "#/components/schemas/BigDecimal" },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "paymentId": { "type": "string" },
+          "paymentStatus": { "type": "string" },
+          "motelName": { "type": "string" },
+          "roomNumber": { "type": "string" }
+        }
+      },
+      "Room": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "roomNumber": { "type": "string" },
+          "motel": { "$ref": "#/components/schemas/Motel" },
+          "reviews": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Review" }
+          },
+          "tips": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Tip" }
+          }
+        }
+      },
+      "RoomDTO": {
+        "type": "object",
+        "properties": { "roomNumber": { "type": "string" } }
+      },
+      "Motel": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "email": { "type": "string" },
+          "hasDeletePrivilege": { "type": "boolean" },
+          "hasChoosePrivilege": { "type": "boolean" },
+          "canHandleReviews": { "type": "boolean" },
+          "canHandleTips": { "type": "boolean" },
+          "name": { "type": "string" },
+          "logoUrl": { "type": "string" },
+          "policyUrl": { "type": "string" },
+          "welcomeTextEn": { "type": "string" },
+          "welcomeTextEs": { "type": "string" },
+          "welcomeTextDe": { "type": "string" },
+          "reviewThanksTextEn": { "type": "string" },
+          "reviewThanksTextEs": { "type": "string" },
+          "reviewThanksTextDe": { "type": "string" },
+          "tipThanksTextEn": { "type": "string" },
+          "tipThanksTextEs": { "type": "string" },
+          "tipThanksTextDe": { "type": "string" },
+          "reviewLabelTextEn": { "type": "string" },
+          "reviewLabelTextEs": { "type": "string" },
+          "reviewLabelTextDe": { "type": "string" },
+          "tipLabelTextEn": { "type": "string" },
+          "tipLabelTextEs": { "type": "string" },
+          "tipLabelTextDe": { "type": "string" },
+          "rooms": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Room" }
+          }
+        }
+      },
+      "MotelDTO": {
+        "type": "object",
+        "properties": {
+          "email": { "type": "string" },
+          "password": { "type": "string" },
+          "name": { "type": "string" },
+          "logoUrl": { "type": "string" },
+          "policyUrl": { "type": "string" },
+          "hasDeletePrivilege": { "type": "boolean" },
+          "hasChoosePrivilege": { "type": "boolean" },
+          "canHandleReviews": { "type": "boolean" },
+          "canHandleTips": { "type": "boolean" },
+          "welcomeTextEn": { "type": "string" },
+          "welcomeTextEs": { "type": "string" },
+          "welcomeTextDe": { "type": "string" },
+          "reviewThanksTextEn": { "type": "string" },
+          "reviewThanksTextEs": { "type": "string" },
+          "reviewThanksTextDe": { "type": "string" },
+          "tipThanksTextEn": { "type": "string" },
+          "tipThanksTextEs": { "type": "string" },
+          "tipThanksTextDe": { "type": "string" },
+          "reviewLabelTextEn": { "type": "string" },
+          "reviewLabelTextEs": { "type": "string" },
+          "reviewLabelTextDe": { "type": "string" },
+          "tipLabelTextEn": { "type": "string" },
+          "tipLabelTextEs": { "type": "string" },
+          "tipLabelTextDe": { "type": "string" }
+        }
+      },
+      "MotelPublicDTO": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "presignedLogoUrl": { "type": "string" },
+          "presignedPolicyUrl": { "type": "string" },
+          "welcomeTextEn": { "type": "string" },
+          "welcomeTextEs": { "type": "string" },
+          "welcomeTextDe": { "type": "string" },
+          "reviewThanksTextEn": { "type": "string" },
+          "reviewThanksTextEs": { "type": "string" },
+          "reviewThanksTextDe": { "type": "string" },
+          "tipThanksTextEn": { "type": "string" },
+          "tipThanksTextEs": { "type": "string" },
+          "tipThanksTextDe": { "type": "string" },
+          "reviewLabelTextEn": { "type": "string" },
+          "reviewLabelTextEs": { "type": "string" },
+          "reviewLabelTextDe": { "type": "string" },
+          "tipLabelTextEn": { "type": "string" },
+          "tipLabelTextEs": { "type": "string" },
+          "tipLabelTextDe": { "type": "string" }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/api/v1/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Login to obtain JWT token",
+        "operationId": "login",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/JwtRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "JWT token generated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": { "token": { "type": "string" } }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/motels": {
+      "get": {
+        "tags": ["Admin"],
+        "summary": "Get all motels",
+        "operationId": "getAllMotels",
+        "security": [{ "BearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "List of motels retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Motel" }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Admin"],
+        "summary": "Create a new motel",
+        "operationId": "createMotel",
+        "security": [{ "BearerAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/MotelDTO" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Motel created successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Motel" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/motels/{id}": {
+      "get": {
+        "tags": ["Admin"],
+        "summary": "Get a motel by ID",
+        "operationId": "getMotelById",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Motel retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Motel" }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Admin"],
+        "summary": "Update a motel completely",
+        "operationId": "updateMotelAdmin",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Motel" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Motel updated successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Motel" }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Admin"],
+        "summary": "Partially update a motel",
+        "operationId": "partiallyUpdateMotel",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "requestBody": {
+          "content": { "application/json": { "schema": { "type": "object" } } },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Motel updated successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Motel" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Admin"],
+        "summary": "Delete a motel",
+        "operationId": "deleteMotel",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Motel deleted successfully",
+            "content": {
+              "application/json": { "schema": { "type": "string" } }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/motels/{id}/policy": {
+      "post": {
+        "tags": ["Admin"],
+        "summary": "POST api/v1/admin/motels/{id}/policy",
+        "operationId": "uploadPolicyDocumentAdmin",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "policy": { "type": "string", "format": "binary" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Policy document uploaded successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": { "message": { "type": "string" } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Admin"],
+        "summary": "DELETE api/v1/admin/motels/{id}/policy",
+        "operationId": "deletePolicyDocumentAdmin",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Policy document deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": { "message": { "type": "string" } }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/motels/{id}/logo": {
+      "post": {
+        "tags": ["Admin"],
+        "summary": "POST api/v1/admin/motels/{id}/logo",
+        "operationId": "uploadLogoFileAdmin",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "logo": { "type": "string", "format": "binary" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Logo file uploaded successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": { "message": { "type": "string" } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Admin"],
+        "summary": "DELETE api/v1/admin/motels/{id}/logo",
+        "operationId": "deleteLogoFileAdmin",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Logo file deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": { "message": { "type": "string" } }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/motels/{id}/policy/url": {
+      "get": {
+        "tags": ["Admin"],
+        "summary": "GET api/v1/admin/motels/{id}/policy/url",
+        "operationId": "getPolicyDocumentUrlAdmin",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Presigned URL generated successfully",
+            "content": {
+              "application/json": { "schema": { "type": "string" } }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/motels/{id}/logo/url": {
+      "get": {
+        "tags": ["Admin"],
+        "summary": "GET api/v1/admin/motels/{id}/logo/url",
+        "operationId": "getLogoFileUrlAdmin",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Presigned URL generated successfully",
+            "content": {
+              "application/json": { "schema": { "type": "string" } }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/motels/{id}/statistics": {
+      "get": {
+        "tags": ["Admin"],
+        "summary": "GET api/v1/admin/motels/{id}/statistics",
+        "operationId": "getDailyStatisticsAdmin",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "format": "date" }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "format": "date" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "*/*": { "schema": { "type": "object" } } }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/motels/statistics": {
+      "get": {
+        "tags": ["Admin"],
+        "summary": "GET api/v1/admin/motels/statistics",
+        "operationId": "getFullDailyStatisticsAdmin",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "from",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "format": "date" }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "format": "date" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "*/*": { "schema": { "type": "object" } } }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/reviews": {
+      "get": {
+        "tags": ["Admin"],
+        "summary": "Get all reviews with optional filters",
+        "operationId": "getAllReviewsAdmin",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "motelName",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "ratingFrom",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "format": "int32" }
+          },
+          {
+            "name": "ratingTo",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "format": "int32" }
+          },
+          {
+            "name": "withPhoto",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "boolean" }
+          },
+          {
+            "name": "skip",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "format": "int32", "default": 0 }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "format": "int32", "default": 10 }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of reviews retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageReviewResponseDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/reviews/{id}": {
+      "delete": {
+        "tags": ["Admin"],
+        "summary": "DELETE api/v1/admin/reviews/{id}",
+        "operationId": "deleteReviewAdmin",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "*/*": { "schema": { "type": "string" } } }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/rooms": {
+      "get": {
+        "tags": ["Admin"],
+        "summary": "Get all rooms",
+        "operationId": "getAllRoomsAdmin",
+        "security": [{ "BearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "List of rooms retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Room" }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Admin"],
+        "summary": "Create a room for a motel",
+        "operationId": "createRoomAdmin",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "motelId",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/RoomDTO" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Room created successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Room" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/rooms/{id}": {
+      "get": {
+        "tags": ["Admin"],
+        "summary": "Get a room by ID",
+        "operationId": "getRoomByIdAdmin",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Room retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Room" }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Admin"],
+        "summary": "Update a room",
+        "operationId": "updateRoomAdmin",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/RoomDTO" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Room updated successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Room" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Admin"],
+        "summary": "Delete a room",
+        "operationId": "deleteRoomAdmin",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Room deleted successfully",
+            "content": {
+              "application/json": { "schema": { "type": "string" } }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/tips": {
+      "get": {
+        "tags": ["Admin"],
+        "summary": "GET api/v1/admin/tips",
+        "operationId": "getAllTipsAdmin",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "motelName",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "amountFrom",
+            "in": "query",
+            "required": false,
+            "schema": { "$ref": "#/components/schemas/BigDecimal" }
+          },
+          {
+            "name": "amountTo",
+            "in": "query",
+            "required": false,
+            "schema": { "$ref": "#/components/schemas/BigDecimal" }
+          },
+          {
+            "name": "dateFrom",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string", "format": "date" }
+          },
+          {
+            "name": "dateTo",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string", "format": "date" }
+          },
+          {
+            "name": "paymentStatus",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "skip",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "format": "int32", "default": "0" }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "format": "int32", "default": "10" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/TipResponseDTO" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/motel": {
+      "get": {
+        "tags": ["Motel"],
+        "summary": "Get motel details",
+        "operationId": "getMotelDetails",
+        "security": [{ "BearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Motel details retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Motel" }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Motel"],
+        "summary": "Update motel completely",
+        "operationId": "updateMotel",
+        "security": [{ "BearerAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Motel" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Motel updated successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Motel" }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Motel"],
+        "summary": "Partially update motel",
+        "operationId": "partiallyUpdate",
+        "security": [{ "BearerAuth": [] }],
+        "requestBody": {
+          "content": { "application/json": { "schema": { "type": "object" } } },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Motel updated successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Motel" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/motel/policy": {
+      "post": {
+        "tags": ["Motel"],
+        "summary": "Upload policy document",
+        "operationId": "uploadPolicyDocument",
+        "security": [{ "BearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "policy": { "type": "string", "format": "binary" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Policy document uploaded successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": { "message": { "type": "string" } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Motel"],
+        "summary": "Delete policy document",
+        "operationId": "deletePolicyDocument",
+        "security": [{ "BearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Policy document deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": { "message": { "type": "string" } }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/motel/policy/url": {
+      "get": {
+        "tags": ["Motel"],
+        "summary": "Get presigned URL for policy document",
+        "operationId": "getPolicyDocumentUrl",
+        "security": [{ "BearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Presigned URL generated successfully",
+            "content": {
+              "application/json": { "schema": { "type": "string" } }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/motel/logo": {
+      "post": {
+        "tags": ["Motel"],
+        "summary": "Upload logo file",
+        "operationId": "uploadLogoFile",
+        "security": [{ "BearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "logo": { "type": "string", "format": "binary" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Logo file uploaded successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": { "message": { "type": "string" } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Motel"],
+        "summary": "Delete logo file",
+        "operationId": "deleteLogoFile",
+        "security": [{ "BearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Logo file deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": { "message": { "type": "string" } }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/motel/logo/url": {
+      "get": {
+        "tags": ["Motel"],
+        "summary": "Get presigned URL for logo file",
+        "operationId": "getLogoFileUrl",
+        "security": [{ "BearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Presigned URL generated successfully",
+            "content": {
+              "application/json": { "schema": { "type": "string" } }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/motel/reviews": {
+      "get": {
+        "tags": ["Motel"],
+        "summary": "Get all reviews for the motel with optional filters",
+        "operationId": "getAllReviews",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "ratingFrom",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "format": "int32" }
+          },
+          {
+            "name": "ratingTo",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "format": "int32" }
+          },
+          {
+            "name": "withPhoto",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "boolean" }
+          },
+          {
+            "name": "skip",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "format": "int32", "default": 0 }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "format": "int32", "default": 10 }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of reviews retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageReviewResponseDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/motel/reviews/{id}": {
+      "delete": {
+        "tags": ["Motel"],
+        "summary": "Delete a review",
+        "operationId": "deleteReview",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Review deleted successfully",
+            "content": {
+              "application/json": { "schema": { "type": "string" } }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/motel/rooms": {
+      "get": {
+        "tags": ["Motel"],
+        "summary": "Get all rooms for the motel",
+        "operationId": "getAllRooms",
+        "security": [{ "BearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "List of rooms retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Room" }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Motel"],
+        "summary": "Create a new room",
+        "operationId": "createRoom",
+        "security": [{ "BearerAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/RoomDTO" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Room created successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Room" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/motel/rooms/{id}": {
+      "get": {
+        "tags": ["Motel"],
+        "summary": "Get a room by ID",
+        "operationId": "getRoomById",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Room retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Room" }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Motel"],
+        "summary": "Update a room",
+        "operationId": "updateRoom",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/RoomDTO" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Room updated successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Room" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Motel"],
+        "summary": "Delete a room",
+        "operationId": "deleteRoom",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Room deleted successfully",
+            "content": {
+              "application/json": { "schema": { "type": "string" } }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/motel/tips": {
+      "get": {
+        "tags": ["Motel"],
+        "summary": "GET api/v1/motel/tips",
+        "operationId": "getAllTips",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "amountFrom",
+            "in": "query",
+            "required": false,
+            "schema": { "$ref": "#/components/schemas/BigDecimal" }
+          },
+          {
+            "name": "amountTo",
+            "in": "query",
+            "required": false,
+            "schema": { "$ref": "#/components/schemas/BigDecimal" }
+          },
+          {
+            "name": "dateFrom",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string", "format": "date" }
+          },
+          {
+            "name": "dateTo",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string", "format": "date" }
+          },
+          {
+            "name": "paymentStatus",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "skip",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "format": "int32", "default": "0" }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "format": "int32", "default": "10" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/TipResponseDTO" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/motel/statistics": {
+      "get": {
+        "tags": ["Motel"],
+        "summary": "GET api/v1/motel/statistics",
+        "operationId": "getDailyStatistics",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "from",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "format": "date" }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "format": "date" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/DailyStatisticsDTO" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/public/{roomId}/review": {
+      "post": {
+        "tags": ["Public"],
+        "summary": "Submit a review for a room",
+        "operationId": "submitReview",
+        "parameters": [
+          {
+            "name": "roomId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "review": { "$ref": "#/components/schemas/ReviewDTO" },
+                  "photo": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Optional photo related to the review."
+                  }
+                },
+                "required": ["review"]
+              },
+              "encoding": {
+                "review": { "contentType": "application/json" },
+                "photo": { "contentType": "image/jpeg, image/png" }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Review submitted successfully.",
+            "content": { "text/plain": { "schema": { "type": "string" } } }
+          },
+          "404": {
+            "description": "Room not found.",
+            "content": { "text/plain": { "schema": { "type": "string" } } }
+          },
+          "500": {
+            "description": "Failed to upload photo.",
+            "content": { "text/plain": { "schema": { "type": "string" } } }
+          }
+        }
+      }
+    },
+    "/api/v1/public/validate": {
+      "get": {
+        "tags": ["Public"],
+        "summary": "GET api/v1/public/validate",
+        "operationId": "validateMotelAndRoom",
+        "parameters": [
+          {
+            "name": "motelName",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "roomId",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "*/*": { "schema": { "type": "object" } } }
+          }
+        }
+      }
+    },
+    "/api/v1/public/motel": {
+      "get": {
+        "tags": ["Public"],
+        "summary": "GET api/v1/public/motel",
+        "operationId": "getMotelInfo",
+        "parameters": [
+          {
+            "name": "motelName",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/MotelPublicDTO" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/public/{roomId}/tip": {
+      "post": {
+        "tags": ["Public"],
+        "summary": "Send a tip for a specific room",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "roomId",
+            "required": true,
+            "schema": { "type": "integer" },
+            "description": "The ID of the room for which the tip is being sent"
+          }
+        ],
+        "requestBody": {
+          "description": "Amount to tip",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/TipDTO" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Payment URL for the tip",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "examples": ["https://www.mollie.com/payments/checkout/xyz"]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Room not found",
+            "content": {
+              "application/json": {
+                "schema": { "type": "string", "examples": ["Room not found."] }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed to create payment",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "examples": ["Failed to create payment."]
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/public/mollie-webhook": {
+      "post": {
+        "tags": ["Public"],
+        "summary": "Mollie webhook to handle payment status updates",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "id",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "Mollie payment ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Webhook processed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "examples": ["Webhook processed"]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error processing webhook",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "examples": ["Error processing webhook"]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

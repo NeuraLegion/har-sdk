@@ -1,0 +1,508 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Data Scraper API",
+    "version": "1.0.0",
+    "description": "A RESTful API for managing web scraping data related to educational institutions, programmes, courses, and schedules."
+  },
+  "servers": [{ "url": "http://localhost:5000" }],
+  "paths": {
+    "/scraping-preview": {
+      "get": {
+        "summary": "Get all scraping session awaiting approval of associated data.",
+        "responses": {
+          "200": {
+            "description": "A list of all scraping sessions awaiting approval.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "sessions": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/SessionPreviewDTO"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/scraping-preview/{institution}": {
+      "get": {
+        "summary": "Get scraping sessions awaiting approval for a specific institution.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "institution",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of sessions awaiting approval for the given institution.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "sessions": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/SessionPreviewDTO"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/scraping-preview/{institution}/{session_id}": {
+      "get": {
+        "summary": "Get preview data for a specific session by institution.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "institution",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "in": "path",
+            "name": "session_id",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "description": "Retrieve a random set of data from a specific session by institution.",
+        "responses": { "200": { "description": "The session data." } }
+      }
+    },
+    "/institutions": {
+      "get": {
+        "summary": "List all institutions.",
+        "description": "Retrieve a list of all available institutions.",
+        "responses": {
+          "200": {
+            "description": "A list of institutions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "institutions": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/InstitutionPreview"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/institutions/{institution}/programmes": {
+      "get": {
+        "summary": "List all programmes for a specific institution.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "institution",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "description": "Retrieve all programmes associated with a given institution.",
+        "responses": {
+          "200": {
+            "description": "List of programmes.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "programmes": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/ProgrammeDTO" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": { "description": "Institution not found." }
+        }
+      }
+    },
+    "/institutions/{institution}/courses": {
+      "get": {
+        "summary": "List all courses for a specific institution.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "institution",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "description": "Retrieve all courses associated with a given institution.",
+        "responses": {
+          "200": {
+            "description": "List of courses.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "courses": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/CourseDTO" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": { "description": "Institution not found." }
+        }
+      }
+    },
+    "/schedules": {
+      "get": {
+        "summary": "List all schedules.",
+        "description": "Retrieve a list of all active schedules.",
+        "responses": {
+          "200": {
+            "description": "A list of schedules.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/SchedulePreview" }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Enable or disable scraping schedules.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "action": {
+                    "type": "string",
+                    "enum": ["start", "stop"],
+                    "description": "Action to be performed."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Scheduling action executed successfully." },
+          "400": { "description": "Invalid or missing action in request." }
+        }
+      }
+    },
+    "/scraping-jobs": {
+      "get": {
+        "summary": "List all scraping jobs.",
+        "description": "Retrieve a list of all running scraping jobs.",
+        "responses": {
+          "200": {
+            "description": "A list of scraping jobs.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "sessions": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/SessionDTO" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/scraping-job/{scraping_id}": {
+      "post": {
+        "summary": "Approve or reject a scraping job.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "scraping_id",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "approve": {
+                    "type": "boolean",
+                    "description": "Approval flag for the scraping job."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Scraping data approved successfully." },
+          "400": { "description": "Invalid input." }
+        }
+      }
+    },
+    "/scraping-jobs/{institution_name}": {
+      "get": {
+        "summary": "List scraping jobs for a specific institution.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "institution_name",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "description": "Retrieve all scraping jobs running for a specific institution.",
+        "responses": {
+          "200": {
+            "description": "A list of scraping jobs.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "sessions": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/SessionDTO" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Start or stop scraping job for a institution.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "institution_name",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "action": {
+                    "type": "string",
+                    "enum": ["start", "stop"],
+                    "description": "Action to be performed."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Scraping job updated successfully." },
+          "400": { "description": "Invalid action." }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "InstitutionDTO": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "programme_keys": { "type": "array", "items": { "type": "integer" } },
+          "course_keys": { "type": "array", "items": { "type": "integer" } },
+          "lecturer_keys": { "type": "array", "items": { "type": "integer" } },
+          "session_keys": { "type": "array", "items": { "type": "integer" } }
+        }
+      },
+      "ProgrammeDTO": {
+        "type": "object",
+        "properties": {
+          "hash": { "type": "integer" },
+          "name": { "type": "string" },
+          "first_seen_key": { "type": "integer" },
+          "last_seen_key": { "type": "integer" },
+          "institution_key": { "type": "string" },
+          "no_semesters": { "type": "integer" },
+          "level": { "type": "string" },
+          "ects_to_complete": { "type": "integer" },
+          "language": { "type": "string" },
+          "start_semester": { "type": "string" },
+          "location": { "type": "string" },
+          "description": { "type": "string" },
+          "mandatory_courses_keys": {
+            "type": "array",
+            "items": { "type": "integer" }
+          },
+          "programme_id": { "type": "string" },
+          "capacity": { "type": "integer" },
+          "leader_key": { "type": "integer" },
+          "level_extended": { "type": "string" }
+        }
+      },
+      "CourseDTO": {
+        "type": "object",
+        "properties": {
+          "hash": { "type": "integer" },
+          "first_seen_key": { "type": "integer" },
+          "last_seen_key": { "type": "integer" },
+          "name": { "type": "string" },
+          "institution_key": { "type": "string" },
+          "ects_points": { "type": "integer" },
+          "start_year": { "type": "integer" },
+          "end_year": { "type": "integer" },
+          "semester": { "type": "string" },
+          "course_id": { "type": "string" },
+          "language": { "type": "string" },
+          "lecturer_keys": { "type": "array", "items": { "type": "integer" } },
+          "description_keys": {
+            "type": "array",
+            "items": { "type": "integer" }
+          },
+          "mandatory_in_keys": {
+            "type": "array",
+            "items": { "type": "integer" }
+          }
+        }
+      },
+      "LecturerDTO": {
+        "type": "object",
+        "properties": {
+          "hash": { "type": "integer" },
+          "first_name": { "type": "string" },
+          "last_name": { "type": "string" },
+          "institution_key": { "type": "integer" },
+          "first_seen_key": { "type": "integer" },
+          "last_seen_key": { "type": "integer" },
+          "email": { "type": "string" },
+          "teaches_keys": { "type": "array", "items": { "type": "integer" } }
+        }
+      },
+      "SessionDTO": {
+        "type": "object",
+        "properties": {
+          "hash": { "type": "integer" },
+          "institution_key": { "type": "string" },
+          "start_time": { "type": "string", "format": "date-time" },
+          "end_time": { "type": "string", "format": "date-time" },
+          "status": { "type": "string" },
+          "approved": { "type": "boolean" },
+          "new_course_keys": {
+            "type": "array",
+            "items": { "type": "integer" }
+          },
+          "updated_course_keys": {
+            "type": "array",
+            "items": { "type": "integer" }
+          },
+          "new_programme_keys": {
+            "type": "array",
+            "items": { "type": "integer" }
+          },
+          "updated_programme_keys": {
+            "type": "array",
+            "items": { "type": "integer" }
+          },
+          "new_description_keys": {
+            "type": "array",
+            "items": { "type": "integer" }
+          },
+          "updated_description_keys": {
+            "type": "array",
+            "items": { "type": "integer" }
+          },
+          "new_lecturer_keys": {
+            "type": "array",
+            "items": { "type": "integer" }
+          },
+          "updated_lecturer_keys": {
+            "type": "array",
+            "items": { "type": "integer" }
+          }
+        }
+      },
+      "SessionPreviewDTO": {
+        "type": "object",
+        "properties": {
+          "hash": { "type": "integer" },
+          "institution_key": { "type": "string" },
+          "start_time": { "type": "string", "format": "date-time" },
+          "end_time": { "type": "string", "format": "date-time" },
+          "status": { "type": "string" },
+          "approved": { "type": "boolean" },
+          "no_new_courses": { "type": "integer" },
+          "no_new_descriptions": { "type": "integer" },
+          "no_new_lectureres": { "type": "integer" },
+          "no_new_programmes": { "type": "integer" },
+          "no_updated_courses": { "type": "integer" },
+          "no_updated_descriptions": { "type": "integer" },
+          "no_updated_lecturers": { "type": "integer" },
+          "no_updated_programmes": { "type": "integer" }
+        }
+      },
+      "Schedule": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "status": { "type": "string" }
+        }
+      },
+      "InstitutionPreview": { "type": "string" },
+      "SchedulePreview": {
+        "type": "object",
+        "properties": {
+          "institution": {
+            "type": "string",
+            "description": "Name of the institution"
+          },
+          "next_scrape": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The next scheduled time for a scrape."
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "info": {
+    "title": "SDefender License Server",
+    "version": "1.0.0",
+    "description": "Just one end point to check licenses."
+  },
+  "openapi": "3.1.0",
+  "paths": {
+    "/api/v1/licenses/check": {
+      "post": {
+        "summary": "Check License",
+        "description": "The preferable way is to use \"Bearer\" header to send license code instead of \"key\" parameter.",
+        "responses": {
+          "401": { "description": "Authentication is invalid" },
+          "403": { "description": "License is invalid" },
+          "204": { "description": "License is valid (no response body)" }
+        },
+        "requestBody": {
+          "content": {
+            "application/json;charset=UTF-8": {
+              "schema": {
+                "$ref": "#/components/schemas/PostApiV1LicensesCheckRequestBody"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "PostApiV1LicensesCheckRequestBody": {
+        "type": "object",
+        "properties": {
+          "key": { "type": "string" },
+          "address": { "type": "string" },
+          "devices": { "type": "number" },
+          "process": { "type": "number" }
+        },
+        "required": ["key", "address", "devices", "process"]
+      }
+    }
+  }
+}

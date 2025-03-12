@@ -1,0 +1,648 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Hyperloom - OpenAPI 3.1",
+    "description": "Hyperloom is a web based application that leverages ChatGPT and Midjourney to provide users new & expansive fictional worlds. Users are able to browse previously generated worlds or create new ones with the click of a button. Hyperloom aims to foster the imagination and excitement of its users while providing them with high resolution images to give the sense of an immersive experience.\n\nHyperloom was built with a separate frontend and backend. The backend API service exposes RESTful endpoints returning JSON data for the frontend to consume. The backend seeds its database using a script for generating textual descriptions of worlds via the ChatGPT API. The ChatGPT API creates the AI-generated textual metadata for an imaginary world. This metadata is then also used to create the prompt that is sent to the Midjourney API to create AI-generated images based off of those descriptions.\n\nSome useful links:\n- [Hyperloom back end repository](https://github.com/The-Never-Ending-Story/back-end)\n- [OpenAPI Initiative](https://www.openapis.org/)\n- [OpenAPI Specification](https://github.com/OAI/OpenAPI-Specification)",
+    "license": { "name": "MIT", "url": "https://opensource.org/license/mit/" },
+    "version": "1.1.1"
+  },
+  "servers": [{ "url": "https://hyperloom-d209dae18b26.herokuapp.com" }],
+  "tags": [
+    { "name": "worlds", "description": "Get data about worlds" },
+    { "name": "locations", "description": "Get data about locations" },
+    { "name": "characters", "description": "Get data about characters" },
+    { "name": "events", "description": "Get data about events" }
+  ],
+  "paths": {
+    "/worlds": {
+      "get": {
+        "tags": ["worlds"],
+        "summary": "Get all worlds",
+        "description": "Get all worlds",
+        "operationId": "getWorlds",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/world" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/worlds/{world_id}": {
+      "get": {
+        "tags": ["worlds"],
+        "summary": "Get world by ID",
+        "description": "Get world by ID",
+        "operationId": "getWorld",
+        "parameters": [
+          {
+            "name": "world_id",
+            "in": "path",
+            "description": "ID of world",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/world" }
+              }
+            }
+          },
+          "404": { "description": "World not found" }
+        }
+      }
+    },
+    "/worlds/discover": {
+      "get": {
+        "tags": ["worlds"],
+        "summary": "Get a random undiscovered world",
+        "description": "Get a random undiscovered world",
+        "operationId": "discoverWorld",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/world" }
+              }
+            }
+          },
+          "404": { "description": "No undiscovered worlds found" }
+        }
+      }
+    },
+    "/locations": {
+      "get": {
+        "tags": ["locations"],
+        "summary": "Get all locations",
+        "description": "Get all locations",
+        "operationId": "getLocations",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/location" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/locations/{location_id}": {
+      "get": {
+        "tags": ["locations"],
+        "summary": "Get location by ID",
+        "description": "Get location by ID",
+        "operationId": "getLocation",
+        "parameters": [
+          {
+            "name": "location_id",
+            "in": "path",
+            "description": "ID of location",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/location" }
+              }
+            }
+          },
+          "404": { "description": "Location not found" }
+        }
+      }
+    },
+    "/worlds/{world_id}/locations": {
+      "get": {
+        "tags": ["locations"],
+        "summary": "Get world locations by world ID",
+        "description": "Get world locations by world ID",
+        "operationId": "getWorldLocations",
+        "parameters": [
+          {
+            "name": "world_id",
+            "in": "path",
+            "description": "ID of world",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/location" }
+                }
+              }
+            }
+          },
+          "404": { "description": "World not found" }
+        }
+      }
+    },
+    "/worlds/{world_id}/locations/{location_id}": {
+      "get": {
+        "tags": ["locations"],
+        "summary": "Get world locations by world ID and location ID",
+        "description": "Get world location by world ID and location ID",
+        "operationId": "getWorldLocation",
+        "parameters": [
+          {
+            "name": "world_id",
+            "in": "path",
+            "description": "ID of world",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          },
+          {
+            "name": "location_id",
+            "in": "path",
+            "description": "ID of location",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/location" }
+              }
+            }
+          },
+          "404": { "description": "World or location not found" }
+        }
+      }
+    },
+    "/characters": {
+      "get": {
+        "tags": ["characters"],
+        "summary": "Get all characters",
+        "description": "Get all characters",
+        "operationId": "getCharacters",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/character" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/characters/{character_id}": {
+      "get": {
+        "tags": ["characters"],
+        "summary": "Get character by ID",
+        "description": "Get character by ID",
+        "operationId": "getCharacter",
+        "parameters": [
+          {
+            "name": "character_id",
+            "in": "path",
+            "description": "ID of character",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/character" }
+              }
+            }
+          },
+          "404": { "description": "Character not found" }
+        }
+      }
+    },
+    "/worlds/{world_id}/characters": {
+      "get": {
+        "tags": ["characters"],
+        "summary": "Get world characters by world ID",
+        "description": "Get world characters by world ID",
+        "operationId": "getWorldCharacters",
+        "parameters": [
+          {
+            "name": "world_id",
+            "in": "path",
+            "description": "ID of world",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/character" }
+                }
+              }
+            }
+          },
+          "404": { "description": "World not found" }
+        }
+      }
+    },
+    "/worlds/{world_id}/characters/{character_id}": {
+      "get": {
+        "tags": ["characters"],
+        "summary": "Get world character by world ID and character ID",
+        "description": "Get world character by world ID and character ID",
+        "operationId": "getWorldCharacter",
+        "parameters": [
+          {
+            "name": "world_id",
+            "in": "path",
+            "description": "ID of world",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          },
+          {
+            "name": "character_id",
+            "in": "path",
+            "description": "ID of character",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/character" }
+              }
+            }
+          },
+          "404": { "description": "World or character not found" }
+        }
+      }
+    },
+    "/events": {
+      "get": {
+        "tags": ["events"],
+        "summary": "Get all events",
+        "description": "Get all events",
+        "operationId": "getEvents",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/event" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/events/{event_id}": {
+      "get": {
+        "tags": ["events"],
+        "summary": "Get event by ID",
+        "description": "Get event by ID",
+        "operationId": "getEvent",
+        "parameters": [
+          {
+            "name": "event_id",
+            "in": "path",
+            "description": "ID of event",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/event" }
+              }
+            }
+          },
+          "404": { "description": "Event not found" }
+        }
+      }
+    },
+    "/worlds/{world_id}/events": {
+      "get": {
+        "tags": ["events"],
+        "summary": "Get world events by world ID",
+        "description": "Get world events by world ID",
+        "operationId": "getWorldEvents",
+        "parameters": [
+          {
+            "name": "world_id",
+            "in": "path",
+            "description": "ID of world",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/event" }
+                }
+              }
+            }
+          },
+          "404": { "description": "World not found" }
+        }
+      }
+    },
+    "/worlds/{world_id}/events/{event_id}": {
+      "get": {
+        "tags": ["events"],
+        "summary": "Get world event by world ID and event ID",
+        "description": "Get world event by world ID and event ID",
+        "operationId": "getWorldEvent",
+        "parameters": [
+          {
+            "name": "world_id",
+            "in": "path",
+            "description": "ID of world",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          },
+          {
+            "name": "event_id",
+            "in": "path",
+            "description": "ID of event",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/event" }
+              }
+            }
+          },
+          "404": { "description": "World or event not found" }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "world": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64", "example": 56 },
+          "name": { "type": "string", "example": "Nebula of Songs" },
+          "blurb": {
+            "type": "string",
+            "example": "A pocket dimension shaped as a sentient nebula; a fairy tale submerged in an underwater realm."
+          },
+          "category": { "type": "string", "example": "Futuristic & Tech" },
+          "genres": {
+            "type": "array",
+            "items": { "type": "string" },
+            "example": ["Underwater", "Fairy Tale"]
+          },
+          "description": {
+            "type": "string",
+            "example": "Nebula of Songs is neither of this earthly realm, nor identifiable by typical planetary shapes. Instead, it takes the shape of a sentient nebula, a pocket dimension echoing with harmonious sounds - a symphony, generated by the singing climate, echoes through the water-soaked valleys and mangrove swamps, pulsates in the floating cavernous caves, creating a mesmerizing spectacle of lights and sounds. In this world, the edges between Magick and technology blur - with technology aiding in survival and Magick enhancing the realm's beauty."
+          },
+          "geoDynamics": {
+            "type": "object",
+            "properties": {
+              "size": { "type": "string", "example": "Pocket Dimension" },
+              "shape": { "type": "string", "example": "Sentient Nebula" },
+              "climate": { "type": "string", "example": "Singing" },
+              "landscapes": {
+                "type": "array",
+                "items": { "type": "string" },
+                "example": "[\n  \"glowing deep valleys\",\n  \"shadow-shrouded mangrove swamps\",\n  \"floating cavernous caves\"\n]"
+              }
+            }
+          },
+          "magicTechnology": {
+            "type": "object",
+            "properties": {
+              "magic": {
+                "type": "array",
+                "items": { "type": "string" },
+                "example": "[\n  \"Astral singing\",\n  \"Luminary enchantments\",\n  \"Tide controlling\",\n  \"Dimension shifting\"\n]"
+              },
+              "techLvl": { "type": "integer", "format": "int64", "example": 4 },
+              "magicLvl": {
+                "type": "integer",
+                "format": "int64",
+                "example": 9
+              },
+              "technology": {
+                "type": "array",
+                "items": { "type": "string" },
+                "example": "[\n  \"Aqua-resisting cloaks\",\n  \"Bio-luminescent lighting\",\n  \"Crystal-powered vessels\",\n  \"Underwater breathing apparatus\"\n]"
+              }
+            }
+          },
+          "img": {
+            "type": "object",
+            "properties": {
+              "hero": {
+                "type": "string",
+                "example": "https://cdn.midjourney.com/3e3156af-9e5d-47da-958c-150532378124/0_0.png"
+              },
+              "landscape": {
+                "type": "string",
+                "example": "https://cdn.midjourney.com/5e7d1c8b-ff6d-49db-9765-87acf500afe7/0_0.png"
+              },
+              "thumbnail": {
+                "type": "string",
+                "example": "https://cdn.midjourney.com/04d2f42e-2085-4c7f-9692-76fd20f2bd0e/0_0.png"
+              }
+            }
+          },
+          "imgs": {
+            "type": "object",
+            "properties": {
+              "heros": {
+                "type": "array",
+                "items": { "type": "string" },
+                "example": "[\n  \"https://cdn.midjourney.com/3e3156af-9e5d-47da-958c-150532378124/0_0.png\",\n  \"https://cdn.midjourney.com/3e3156af-9e5d-47da-958c-150532378124/0_1.png\",\n  \"https://cdn.midjourney.com/3e3156af-9e5d-47da-958c-150532378124/0_2.png\",\n  \"https://cdn.midjourney.com/3e3156af-9e5d-47da-958c-150532378124/0_3.png\"\n]"
+              },
+              "landscapes": {
+                "type": "array",
+                "items": { "type": "string" },
+                "example": "[\n  \"https://cdn.midjourney.com/5e7d1c8b-ff6d-49db-9765-87acf500afe7/0_0.png\",\n  \"https://cdn.midjourney.com/5e7d1c8b-ff6d-49db-9765-87acf500afe7/0_1.png\",\n  \"https://cdn.midjourney.com/5e7d1c8b-ff6d-49db-9765-87acf500afe7/0_2.png\",\n  \"https://cdn.midjourney.com/5e7d1c8b-ff6d-49db-9765-87acf500afe7/0_3.png\"\n]"
+              },
+              "thumbnails": {
+                "type": "array",
+                "items": { "type": "string" },
+                "example": "[\n  \"https://cdn.midjourney.com/04d2f42e-2085-4c7f-9692-76fd20f2bd0e/0_0.png\",\n  \"https://cdn.midjourney.com/04d2f42e-2085-4c7f-9692-76fd20f2bd0e/0_1.png\",\n  \"https://cdn.midjourney.com/04d2f42e-2085-4c7f-9692-76fd20f2bd0e/0_2.png\",\n  \"https://cdn.midjourney.com/04d2f42e-2085-4c7f-9692-76fd20f2bd0e/0_3.png\"\n]"
+              }
+            }
+          },
+          "species": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/species" }
+          },
+          "locations": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/location" }
+          },
+          "characters": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/character" }
+          },
+          "events": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/event" }
+          },
+          "lore": {
+            "type": "array",
+            "items": { "type": "string" },
+            "example": "[\n  \"In the First Epoch, the Sentient Nebula called into existence the Aquaknights and formed their home, Aqualoria. The Aquaknights evolved, learning to harness the Magick of the nebula and developing tech aids augmenting their underwater life.\",\n  \"The Second Epoch, known as the 'Age of Depths', marked an era of exploration and the War of The Silent Depths. The Aquaknights faced off against a dark force intent on disturbing their harmony. Led by Aqua-Commander Laris, they defended their world, reinforcing their dedication to peace.\",\n  \"In the Third Epoch, 'The Age of Songs', the Aquaknights enjoy a peaceful existence, in harmony with the sentient nebula. The emotional echoes of the war resonate through the singing of the nebula, reminding all of the valuable peace they preserved.\"\n]"
+          }
+        }
+      },
+      "species": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64", "example": 76 },
+          "name": { "type": "string", "example": "Aquaknights" },
+          "alignment": { "type": "string", "example": "Neutral Good" },
+          "politics": {
+            "type": "string",
+            "example": "Democratic Confederation"
+          },
+          "lore": {
+            "type": "string",
+            "example": "Aquaknights are hydro-locomotive beings with toughened skin of bioluminescent scales. Their ability to manipulate tides and currents makes them architects of their underwater home. They are stoic, but non-aggressive, believing in communal living."
+          },
+          "imagine": {
+            "type": "string",
+            "example": "In your mind's eye, see glimmering entities swimming through warm, glowing waters, their lithe forms bending light into dancing hues around them. They move gracefully, in rhythm with the melodic ambience, blue and green scales reflecting the nebulic luminescence."
+          },
+          "img": {
+            "type": "string",
+            "example": "https://cdn.midjourney.com/daf25f09-4347-4434-bbd7-fb7152451488/0_0.png"
+          },
+          "imgs": { "type": "array", "example": [] },
+          "type": { "type": "string", "example": "none" },
+          "world": { "type": "integer", "format": "int64", "example": 56 }
+        }
+      },
+      "location": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64", "example": 97 },
+          "name": { "type": "string", "example": "Aqualoria" },
+          "type": { "type": "string", "example": "Underwater City" },
+          "climate": { "type": "string", "example": "Mildly Tropical" },
+          "lore": {
+            "type": "string",
+            "example": "Aqualoria is a glorious underwater city, built from luminescent corals and giant mother-of-pearl shells. Vessels of crystal, powered by effervescent magick, transport Aquaknights through the city."
+          },
+          "imagine": {
+            "type": "string",
+            "example": "Picture a sprawling collection of intricate structures, carved from mother-of-pearl, glowing softly amidst the murkiness of the deep sea. Crystal vessels drift between them, glints of light bouncing from their surfaces."
+          },
+          "img": {
+            "type": "string",
+            "example": "https://cdn.midjourney.com/01c31570-7eb3-4adb-b54d-89d0ae029f23/0_0.png"
+          },
+          "imgs": { "type": "array", "example": [] },
+          "world": { "type": "integer", "format": "int64", "example": 56 }
+        }
+      },
+      "character": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64", "example": 81 },
+          "name": { "type": "string", "example": "Aqua-Commander Laris" },
+          "species": { "type": "string", "example": "Aquaknights" },
+          "alignment": { "type": "string", "example": "Lawful Good" },
+          "age": { "type": "integer", "format": "int64", "example": 60 },
+          "lore": {
+            "type": "string",
+            "example": "Aqua-Commander Laris is respected among the Aquaknights, known for his wisdom. He is a guardian of Nebula of Songs and its inhabitants. He led the Aquaknights during the War of the Silent Depths, elevating him to the status of a Hero."
+          },
+          "imagine": {
+            "type": "string",
+            "example": "Visualize an older, towering figure wrapped in swirling aqua blue armor, his glowing scales shimmering with the wisdom of ages, his intelligent eyes reflecting the surrounding nebular radiance."
+          },
+          "img": {
+            "type": "string",
+            "example": "https://cdn.midjourney.com/ee9e5280-eb17-4471-9d55-75b6f6307107/0_0.png"
+          },
+          "imgs": { "type": "array", "example": [] },
+          "location": { "type": "string", "example": "" },
+          "world": { "type": "integer", "format": "int64", "example": 56 }
+        }
+      },
+      "event": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64", "example": 83 },
+          "name": { "type": "string", "example": "War of the Silent Depths" },
+          "type": { "type": "string", "example": "War" },
+          "age": { "type": "string", "example": "Second Epoch" },
+          "time": { "type": "string", "example": "Year 352" },
+          "lore": {
+            "type": "string",
+            "example": "During this war, the Aquaknights faced a mysterious, hostile force from the depths of the nebula. Under Aqua-Commander Laris' guidance, they united and emerged victorious, securing their ongoing harmony in the Nebula of Songs."
+          },
+          "imagine": {
+            "type": "string",
+            "example": "Witness in your mind's eye an epic battle unfolding beneath the depths of the singing nebula. Figures arrayed in bio-luminescent armor moving through glowing waters, facing a dark entity trying to disturb the harmony of their world."
+          },
+          "img": {
+            "type": "string",
+            "example": "https://cdn.midjourney.com/09f1fd07-c7fb-4667-bd57-ac0676530c0b/0_0.png"
+          },
+          "imgs": { "type": "array", "example": [] },
+          "location": { "type": "string", "example": "" },
+          "world": { "type": "integer", "format": "int64", "example": 56 }
+        }
+      }
+    }
+  }
+}

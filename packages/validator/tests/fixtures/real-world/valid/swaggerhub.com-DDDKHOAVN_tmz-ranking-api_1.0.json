@@ -1,0 +1,104 @@
+{
+  "openapi": "3.1.0",
+  "info": { "title": "FastAPI", "version": "1.0" },
+  "paths": {
+    "/api/ranking": {
+      "post": {
+        "summary": "Ranking",
+        "operationId": "ranking_api_ranking_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ItemInput" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": { "$ref": "#/components/schemas/ItemResponse" },
+                  "type": "array",
+                  "title": "Response Ranking Api Ranking Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": { "$ref": "#/components/schemas/ValidationError" },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "ItemInput": {
+        "properties": {
+          "products_interacted": {
+            "items": { "type": "integer" },
+            "type": "array",
+            "title": "Products Interacted",
+            "examples": [[7878917619954, 7878917619953]]
+          },
+          "collections": {
+            "anyOf": [
+              { "items": { "type": "integer" }, "type": "array" },
+              { "type": "null" }
+            ],
+            "title": "Collections"
+          }
+        },
+        "type": "object",
+        "required": ["products_interacted"],
+        "title": "ItemInput"
+      },
+      "ItemResponse": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id",
+            "examples": [7878917619954]
+          },
+          "score": { "type": "integer", "title": "Score", "examples": [10] }
+        },
+        "type": "object",
+        "required": ["id", "score"],
+        "title": "ItemResponse"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": { "anyOf": [{ "type": "string" }, { "type": "integer" }] },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": { "type": "string", "title": "Message" },
+          "type": { "type": "string", "title": "Error Type" }
+        },
+        "type": "object",
+        "required": ["loc", "msg", "type"],
+        "title": "ValidationError"
+      }
+    }
+  }
+}

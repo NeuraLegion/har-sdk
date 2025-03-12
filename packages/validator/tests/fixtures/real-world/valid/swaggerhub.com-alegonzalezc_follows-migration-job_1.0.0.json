@@ -1,0 +1,173 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Job de migración de seguidores",
+    "description": "Este endpoint genérico de storefronts-api, se va a usar para lanzar el proceso de migración de seguidores, sobre un conjunto cerrado de tiendas.",
+    "version": "1.0.0"
+  },
+  "tags": [
+    {
+      "name": "jobs",
+      "description": "Jobs programados de procesamiento de tiendas."
+    }
+  ],
+  "paths": {
+    "/job/reprocess/{topic-filter}": {
+      "post": {
+        "summary": "Storefronts reprocess",
+        "description": "Define a set of storefronts, given the queries and filters of the requests, and sends messages to a Bigqueue service, with a given topic filter.",
+        "operationId": "reprocessStorefronts",
+        "tags": ["jobs"],
+        "parameters": [
+          {
+            "name": "topic-filter",
+            "in": "path",
+            "description": "topic filter",
+            "required": true,
+            "schema": { "type": "string" },
+            "examples": {
+              "followers-migration": {
+                "summary": "Filtro de topico a usar para la migración de seguidores",
+                "value": "followers-migration"
+              }
+            }
+          },
+          {
+            "name": "sites_ids",
+            "in": "query",
+            "description": "Lista de sites, sobre los cuales se van a reprocesar tiendas, separada por     comas, e.g. \"site_ids=MLA,MLB,MLM\"",
+            "required": false,
+            "schema": { "type": "array", "items": { "type": "string" } },
+            "examples": {
+              "one-site-query": {
+                "summary": "Filtro por un solo site",
+                "value": ["MLA"]
+              },
+              "multiple-site-query": {
+                "summary": "Filtro para multiples sites",
+                "value": ["MLA", "MLB", "MLM"]
+              }
+            }
+          },
+          {
+            "name": "statuses",
+            "in": "query",
+            "description": "Lista de status posibles para obtener tiendas a procesar, separada por comas, e.g. \"statuse=active,inactive,suspended\"",
+            "required": false,
+            "schema": { "type": "array", "items": { "type": "string" } },
+            "examples": {
+              "one-site-query": {
+                "summary": "Filtro por un solo status",
+                "value": ["active"]
+              },
+              "multiple-site-query": {
+                "summary": "Filtro para multiples statuses",
+                "value": ["active", "inactive", "suspended"]
+              }
+            }
+          },
+          {
+            "name": "channel",
+            "in": "query",
+            "description": "Canal sobre el cual se desea procesar tiendas",
+            "required": false,
+            "schema": { "type": "string" },
+            "examples": {
+              "marketplace": {
+                "summary": "marketplace channel",
+                "value": "marketplace"
+              },
+              "mshops": { "summary": "mercadoshops channel", "value": "mshops" }
+            }
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "Tipo de tienda sobre la cual se desea procesar tiendas",
+            "required": false,
+            "schema": { "type": "string" },
+            "examples": {
+              "seller": { "summary": "tienda tipo seller", "value": "seller" },
+              "affiliate": {
+                "summary": "tienda tipo afiliado",
+                "value": "affiliate"
+              },
+              "super": { "summary": "tienda tipo super", "value": "super" },
+              "brand": { "summary": "tienda tipo brand", "value": "brand" }
+            }
+          },
+          {
+            "name": "last_digit",
+            "in": "query",
+            "description": "Último digito del owner-id de la tienda. Esto se usa para acotar aún más el conjunto de resutaldos. Teoricamente, debería corresponder con el 10% del total de resultados",
+            "required": false,
+            "schema": { "type": "integer" },
+            "examples": {
+              "one": {
+                "summary": "Owners Ids terminados en el digito 0",
+                "value": 0
+              },
+              "five": {
+                "summary": "Owners Ids terminados en el digito 5",
+                "value": 5
+              }
+            }
+          },
+          {
+            "name": "list_owners",
+            "in": "query",
+            "description": "Lista de owners de tiendas, sobre las cuales se desea ejcutar el procesamiento. Es una lista separada por comas, e.g. \"list_owners=12345,4321,9876\"",
+            "required": false,
+            "schema": { "type": "array", "items": { "type": "integer" } },
+            "examples": {
+              "multiple-owners": {
+                "summary": "Filtro para multiples statuses",
+                "value": [12345, 4321, 9876]
+              }
+            }
+          },
+          {
+            "name": "tags",
+            "in": "query",
+            "description": "Filtro para incluir las tiendas que contengan al menos uno los tags de la lista proporcionada. Es una lista separada por comas, e.g. \"tags=test_store,has_followers\"",
+            "required": false,
+            "schema": { "type": "array", "items": { "type": "string" } },
+            "examples": {
+              "single": {
+                "summary": "Filtro para un solo elemento",
+                "value": ["test_store"]
+              },
+              "multiple": {
+                "summary": "Filtro para multiples elementos",
+                "value": ["test_store", "has_followers"]
+              }
+            }
+          },
+          {
+            "name": "exclude_tags",
+            "in": "query",
+            "description": "Filtro para excluir las tiendas que contengan todos los tags, de la lista proporcionado. Es una lista separada por comas, e.g. \"exclude_tags=test_store,has_followers\"",
+            "required": false,
+            "schema": { "type": "array", "items": { "type": "string" } },
+            "examples": {
+              "single": {
+                "summary": "Filtro para un solo elemento",
+                "value": ["has_followers"]
+              },
+              "multiple": {
+                "summary": "Filtro para multiples elementos",
+                "value": ["test_store", "has_followers"]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Successful operation" },
+          "400": { "description": "Bad request" },
+          "404": { "description": "Storefront not found" },
+          "500": { "description": "Internal server error" }
+        }
+      }
+    }
+  }
+}

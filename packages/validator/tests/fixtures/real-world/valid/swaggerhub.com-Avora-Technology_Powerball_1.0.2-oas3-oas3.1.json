@@ -1,0 +1,316 @@
+{
+  "openapi": "3.1.0",
+  "servers": [
+    { "description": "RapidAPI", "url": "https://powerball.p.rapidapi.com" }
+  ],
+  "info": {
+    "description": "All users must have a valid RapidAPI account. Powerball API provides the most accurate and up-to-date winning Powerball Lottery numbers. Get more out of your statistics with our unmatched complete and easy -to-use API which separates each willing number so that your statistics can view data for rainbow tables, bell curves, and so much more.\nPowerball players may pick five (5) numbers from two separate pools of numbers - five different numbers from 1 to 69 (the white balls) and one number from 1 to 26 (the red Powerball).",
+    "version": "1.0.2-oas3-oas3.1",
+    "title": "Powerball API",
+    "contact": { "email": "sales@avoratech.com" },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "tags": [
+    {
+      "name": "requests",
+      "description": "any call to an endpoint is included in requests"
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "tags": ["requests"],
+        "summary": "Returns all Powerball winning numbers recorded",
+        "security": [{ "ApiKeyAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/WinningNumbers" }
+                }
+              }
+            }
+          },
+          "400": { "description": "bad input parameter" },
+          "401": { "$ref": "#/components/responses/UnauthorizedError" }
+        }
+      }
+    },
+    "/{DrawingDate}": {
+      "get": {
+        "tags": ["requests"],
+        "summary": "Gqet the winning Powerball number set from a specific drawing date.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "DrawingDate",
+            "required": true,
+            "description": "date string",
+            "schema": { "type": "string", "format": "DATE (YYYY-MM-DD)" }
+          }
+        ],
+        "security": [{ "ApiKeyAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "search results matching criteria",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/WinningNumbers" }
+                }
+              }
+            }
+          },
+          "400": { "description": "bad input parameter" },
+          "401": { "$ref": "#/components/responses/UnauthorizedError" }
+        }
+      }
+    },
+    "/BetweenDates/{date1}/{date2}": {
+      "get": {
+        "tags": ["requests"],
+        "summary": "Returns winning number between two specified dates",
+        "description": "Get all Powerball winning number sets between two specified dates where the first number supplied (date1) is the beginning date and the second number supplied (date2) is the end date.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "date1",
+            "description": "pass a required beginning date string",
+            "required": true,
+            "schema": { "type": "string", "format": "DATE (YYYY-MM-DD)" }
+          },
+          {
+            "in": "path",
+            "name": "date2",
+            "description": "pass a required ending date string",
+            "required": true,
+            "schema": { "type": "string", "format": "DATE (YYYY-MM-DD)" }
+          }
+        ],
+        "security": [{ "ApiKeyAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/WinningNumbers" }
+                }
+              }
+            }
+          },
+          "400": { "description": "bad input parameter" },
+          "401": { "$ref": "#/components/responses/UnauthorizedError" }
+        }
+      }
+    },
+    "/Latest": {
+      "get": {
+        "tags": ["requests"],
+        "summary": "Returns the last winning Powerball number set.",
+        "security": [{ "ApiKeyAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/WinningNumbers" }
+                }
+              }
+            }
+          },
+          "400": { "description": "bad input parameter" },
+          "401": { "$ref": "#/components/responses/UnauthorizedError" }
+        }
+      }
+    },
+    "/Latest10": {
+      "get": {
+        "tags": ["requests"],
+        "summary": "Returns the latest, and last winning 10 Powerball number sets.",
+        "security": [{ "ApiKeyAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "the latest 10 winning Powerball drawings",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/WinningNumbers" }
+                }
+              }
+            }
+          },
+          "400": { "description": "bad input parameter" },
+          "401": { "$ref": "#/components/responses/UnauthorizedError" }
+        }
+      }
+    },
+    "/QuickPick": {
+      "get": {
+        "tags": ["requests"],
+        "summary": "Returns a randomized Quick Pick for the Powerball. This is a random set of playable Powerball numbers.",
+        "security": [{ "ApiKeyAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/QuickPick" }
+                }
+              }
+            }
+          },
+          "400": { "description": "bad input parameter" },
+          "401": { "$ref": "#/components/responses/UnauthorizedError" }
+        }
+      }
+    },
+    "/CheckTicket/{date}/{firstNumber}/{secondNumber}/{thirdNumber}/{fourthNumber}/{fifthNumber}/{powerball}": {
+      "get": {
+        "tags": ["requests"],
+        "summary": "Checks a set of 6 numbers to determine if there is a prize for the provided date and if so, the endpoint returns the prize level.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "date",
+            "description": "pass a required beginning date string",
+            "required": true,
+            "schema": { "type": "string", "format": "DATE (YYYY-MM-DD)" }
+          },
+          {
+            "in": "path",
+            "name": "firstNumber",
+            "description": "pass the first number of the number set",
+            "required": true,
+            "schema": { "type": "integer" }
+          },
+          {
+            "in": "path",
+            "name": "secondNumber",
+            "description": "pass the second number of the number set",
+            "required": true,
+            "schema": { "type": "integer" }
+          },
+          {
+            "in": "path",
+            "name": "thirdNumber",
+            "description": "pass the third number of the number set",
+            "required": true,
+            "schema": { "type": "integer" }
+          },
+          {
+            "in": "path",
+            "name": "fourthNumber",
+            "description": "pass the fourth number of the number set",
+            "required": true,
+            "schema": { "type": "integer" }
+          },
+          {
+            "in": "path",
+            "name": "fifthNumber",
+            "description": "pass the fifth number of the number set",
+            "required": true,
+            "schema": { "type": "integer" }
+          },
+          {
+            "in": "path",
+            "name": "powerball",
+            "description": "pass the powerball number of the number set",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "security": [{ "ApiKeyAuth": [] }],
+        "responses": {
+          "200": { "description": "success" },
+          "400": { "description": "bad input parameter" },
+          "401": { "$ref": "#/components/responses/UnauthorizedError" }
+        }
+      }
+    },
+    "/Stats": {
+      "get": {
+        "tags": ["requests"],
+        "summary": "Returns the statistics of the Powerball numbers. For each ball (denoted firstNumber, secondNumber, thirdNumber, fourthNumber, fifthNumber, powerBall, multiplier) of the mean, median, mode, and standard deviation.",
+        "security": [{ "ApiKeyAuth": [] }],
+        "responses": {
+          "200": { "description": "search results matching criteria" },
+          "400": { "description": "bad input parameter" },
+          "401": { "$ref": "#/components/responses/UnauthorizedError" }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-RapidAPI-Key"
+      }
+    },
+    "schemas": {
+      "WinningNumbers": {
+        "type": "object",
+        "properties": {
+          "DrawingDate": {
+            "type": "string",
+            "example": "2021-01-27T00:00:00.000Z"
+          },
+          "FirstNumber": { "type": "integer", "example": 17 },
+          "SecondNumber": { "type": "integer", "example": 33 },
+          "ThirdNumber": { "type": "integer", "example": 35 },
+          "FourthNumber": { "type": "integer", "example": 42 },
+          "FifthNumber": { "type": "integer", "example": 52 },
+          "PowerBall": { "type": "integer", "example": 9 },
+          "Multiplier": { "type": "integer", "example": 3 },
+          "JackPot": { "type": "string", "example": "$20,000,000" },
+          "VideoUrl": {
+            "type": "string",
+            "example": "https://youtu.be/qpn2W6gL4DA"
+          },
+          "NumberSet": { "type": "string", "example": "17 33 35 42 52 9 3x" }
+        }
+      },
+      "QuickPick": {
+        "type": "object",
+        "properties": {
+          "FirstNumber": { "type": "integer", "example": 17 },
+          "SecondNumber": { "type": "integer", "example": 33 },
+          "ThirdNumber": { "type": "integer", "example": 35 },
+          "FourthNumber": { "type": "integer", "example": 42 },
+          "FifthNumber": { "type": "integer", "example": 52 },
+          "PowerBall": { "type": "integer", "example": 9 },
+          "Multiplier": { "type": "integer", "example": 3 },
+          "NumberSet": { "type": "string", "example": "17 33 35 42 52 9 3x" }
+        }
+      }
+    },
+    "responses": {
+      "UnauthorizedError": {
+        "description": "API key is missing or invalid",
+        "headers": {
+          "WWW_Authenticate": {
+            "schema": {
+              "type": "string",
+              "example": "You are not subscribed to this API."
+            }
+          }
+        }
+      }
+    }
+  }
+}

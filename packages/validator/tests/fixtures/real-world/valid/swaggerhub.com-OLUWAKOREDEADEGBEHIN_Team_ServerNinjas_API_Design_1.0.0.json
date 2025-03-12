@@ -1,0 +1,3503 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Team ServerNinjas HNG Stage 3 API Design",
+    "description": "This API facilitates the creation of a robust and feature-rich web application. It includes comprehensive authentication mechanisms such as social authentication, magic link authentication, and in-app authentication screens for actions like password changes. Messaging functionalities are integrated with default templates and background processes for efficient email handling. The API supports payments using majot payment gateways like Flutterwave and Stripe. It manages users and organizations, offering a superadmin interface for overseeing users, organizations, payments, and activity logs."
+  },
+  "paths": {
+    "/auth/signup": {
+      "post": {
+        "summary": "Register a new user",
+        "description": "Endpoint to register a user. Upon successful registration, the user would be required to verify their account with an OTP sent to their email",
+        "tags": ["Authentication"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "first_name": { "type": "string", "examples": ["John"] },
+                  "last_name": { "type": "string", "examples": ["Doe"] },
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "examples": ["john.doe01@gmail.com"]
+                  },
+                  "password": { "type": "string" },
+                  "confirm_password": { "type": "string" },
+                  "role": {
+                    "type": "string",
+                    "format": "enum",
+                    "examples": ["user"]
+                  },
+                  "signup_type": {
+                    "type": "string",
+                    "format": "enum",
+                    "examples": ["user"]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successfully created user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/StatusMessage" },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": { "$ref": "#/components/schemas/User" }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "422": {
+            "description": "Validation error",
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "500": {
+            "description": "Server error",
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "summary": "User login",
+        "description": "Endpoint to log a user into the system. Upon successful login, an access and refresh token would be provided in the response",
+        "tags": ["Authentication"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "examples": ["john.doe01@gmail.com"]
+                  },
+                  "password": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully logged in user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/StatusMessage" },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "object",
+                          "properties": {
+                            "user": { "$ref": "#/components/schemas/User" },
+                            "access_token": { "type": "string" },
+                            "refresh_token": { "type": "string" },
+                            "token_type": {
+                              "type": "string",
+                              "examples": ["bearer"]
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "description": "Permission denied",
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "422": {
+            "description": "Validation error",
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "500": {
+            "description": "Server error",
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/auth/google/continue": {
+      "get": {
+        "summary": "Continue with Google",
+        "description": "Endpoint to log in or sign up with Google on the application. Upon successful authorization by Google, an access and refresh token would be provided to the user. If the user is already registered with Google, the access and refresh token will be returned to the user without adding them to the database.",
+        "tags": ["Authentication"],
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/StatusMessage" },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "object",
+                          "properties": {
+                            "user": { "$ref": "#/components/schemas/User" },
+                            "access_token": { "type": "string" },
+                            "refresh_token": { "type": "string" },
+                            "token_type": {
+                              "type": "string",
+                              "examples": ["bearer"]
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "description": "Permission denied",
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "500": {
+            "description": "Server error",
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/auth/verify": {
+      "post": {
+        "summary": "Verify a user",
+        "description": "Endpoint to verify a user's account through an OTP sent to the user's email. This is done immediately after a user completes their registration",
+        "tags": ["Authentication"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "otp": { "type": "string", "examples": [123456] }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully verified user",
+            "$ref": "#/components/responses/SuccessResponse"
+          },
+          "400": {
+            "description": "Bad request",
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "422": {
+            "description": "Validation error",
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "500": {
+            "description": "Server error",
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/auth/reverify": {
+      "post": {
+        "summary": "Re-verify user",
+        "description": "Endpoint to request for a new verification email. This endpoint is here in case there wan an error verifying the user initially, so they can request for a new verification email.",
+        "tags": ["Authentication"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "examples": ["john.doe1@gmail.com"]
+                  },
+                  "otp": { "type": "string", "examples": [123456] }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully verified user",
+            "$ref": "#/components/responses/SuccessResponse"
+          },
+          "400": {
+            "description": "Bad request",
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "422": {
+            "description": "Validation error",
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "500": {
+            "description": "Server error",
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/api/v1/users": {
+      "get": {
+        "summary": "Get all users",
+        "description": "Endpoint to get a list of all registered users",
+        "tags": ["Users"],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of user records to show at a go",
+            "schema": {
+              "type": "integer",
+              "minimum": 10,
+              "maximum": 20,
+              "example": 15
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Number of user records to skip",
+            "schema": {
+              "type": "integer",
+              "minimum": 10,
+              "maximum": 20,
+              "example": 15
+            }
+          },
+          {
+            "name": "first_name",
+            "in": "query",
+            "description": "To filter users by first name",
+            "schema": { "type": "string", "example": "John" }
+          },
+          {
+            "name": "last_name",
+            "in": "query",
+            "description": "To filter users by last name",
+            "schema": { "type": "string", "example": "Doe" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Users fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/StatusMessage" },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": { "$ref": "#/components/schemas/Users" }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "description": "Permission denied",
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "500": {
+            "description": "Server error",
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/api/v1/users/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "This is the id of the user to be searched",
+          "schema": { "type": "integer", "example": 5 }
+        }
+      ],
+      "get": {
+        "summary": "Get a single user",
+        "description": "Endpoint to get a single user's details",
+        "tags": ["Users"],
+        "responses": {
+          "200": {
+            "description": "User fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/StatusMessage" },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": { "$ref": "#/components/schemas/Users" }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "description": "Permission denied",
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "description": "User not found",
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "description": "Server error",
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/api/v1/users/current": {
+      "get": {
+        "summary": "Get current user",
+        "description": "Endpoint to get the current user details",
+        "tags": ["Users"],
+        "responses": {
+          "200": {
+            "description": "Successfully fetched current user details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/StatusMessage" },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": { "$ref": "#/components/schemas/User" }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "description": "Permission denied",
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "500": {
+            "description": "Server error",
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update current user",
+        "description": "Endpoint to update the details of the current logged in user",
+        "tags": ["Users"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "first_name": { "type": "string", "examples": ["John"] },
+                  "last_name": { "type": "string", "examples": ["Smith"] }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully updated user details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/StatusMessage" },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": { "$ref": "#/components/schemas/User" }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "422": {
+            "description": "Validation error",
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "description": "Permission denied",
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "500": {
+            "description": "Server error",
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete current user",
+        "description": "Endpoint to delete a user. This endpoint renders the user inactive and they won't have access to any endpoints",
+        "tags": ["Users"],
+        "responses": {
+          "204": {
+            "description": "Successfully deleted user",
+            "$ref": "#/components/responses/DeletedResponse"
+          },
+          "400": {
+            "description": "Bad request",
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "422": {
+            "description": "Validation error",
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "403": {
+            "description": "Permission denied",
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "500": {
+            "description": "Server error",
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/api/v1/users/current/update-email": {
+      "put": {
+        "summary": "Update current user email",
+        "description": "Endpoint to update the current user's email. After updating, the user would have to verify that email with the OTP sent to the email.",
+        "tags": ["Users"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "examples": ["johndoe2@gmail.com"]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully updated user email",
+            "$ref": "#/components/responses/SuccessResponse"
+          },
+          "400": {
+            "description": "Bad request",
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "422": {
+            "description": "Validation error",
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "403": {
+            "description": "Permission denied",
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "500": {
+            "description": "Server error",
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/api/v1/users/current/change-password": {
+      "put": {
+        "summary": "Change current user password",
+        "description": "Endpoint to update the current user's password. Before the password can be changed, the user has to be re-authenticated using their email and current password",
+        "tags": ["Users"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "examples": ["johndoe2@gmail.com"]
+                  },
+                  "old_password": { "type": "string" },
+                  "new_password": { "type": "string" },
+                  "confirm_password": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User password changed successfully",
+            "$ref": "#/components/responses/SuccessResponse"
+          },
+          "400": {
+            "description": "Bad request",
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "422": {
+            "description": "Validation error",
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "403": {
+            "description": "Permission denied",
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "500": {
+            "description": "Server error",
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/api/v1/users/logout": {
+      "post": {
+        "summary": "Logout",
+        "description": "Endpoint for a user to log out. Once a user logs out, their token will be blacklisted and won't be able to use that token to access other endpoints.",
+        "tags": ["Users"],
+        "responses": {
+          "200": {
+            "description": "Successfully logged out",
+            "$ref": "#/components/responses/SuccessResponse"
+          },
+          "400": {
+            "description": "Bad request",
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "description": "Permission denied",
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "500": {
+            "description": "Server error",
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/api/v1//tokens/blacklist": {
+      "get": {
+        "tags": ["Token"],
+        "summary": "Get all blacklisted tokens",
+        "description": "Endpoint to get all blacklisted tokens. This is only available to superadmins",
+        "responses": {
+          "200": {
+            "description": "Successfully fetched all blacklisted tokens",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/StatusMessage" },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/BlacklistedTokens"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "description": "Permission denied",
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "description": "Not found",
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "description": "Server Error",
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/api/v1//tokens/refresh": {
+      "post": {
+        "tags": ["Token"],
+        "summary": "Refresh access token",
+        "description": "Endpoint to refresh access token. You pass in the refresh token in the request body and if the token is valid, a new access and refresh token is generated for the user.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": { "refresh_token": { "type": "string" } }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully refreshed access token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/StatusMessage" },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "properties": {
+                            "access_token": { "type": "string" },
+                            "refresh_token": { "type": "string" },
+                            "token_type": {
+                              "type": "string",
+                              "examples": ["bearer"]
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "description": "Permission denied",
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "description": "Not found",
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "description": "Server Error",
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/api/v1//tokens/blacklist/{id}": {
+      "get": {
+        "tags": ["Token"],
+        "summary": "Get single blacklisted token",
+        "description": "Endpoint to get a blacklisted token. This is only available to superadmins",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The id of the token to be returned",
+            "schema": { "type": "integer", "examples": [15] }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully fetched blacklisted token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/StatusMessage" },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/BlacklistedToken"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "description": "Permission denied",
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "description": "Not found",
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "description": "Server Error",
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Token"],
+        "summary": "Delete single blacklisted token",
+        "description": "Endpoint to delete a blacklisted token. This is only available to superadmins",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The id of the token to be deleted",
+            "schema": { "type": "integer", "examples": [15] }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successfully deleted blacklisted token",
+            "$ref": "#/components/responses/DeletedResponse"
+          },
+          "400": {
+            "description": "Bad request",
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "description": "Permission denied",
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "description": "Not found",
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "description": "Server Error",
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/api/v1/organisations": {
+      "post": {
+        "tags": ["Organisations"],
+        "summary": "Add organisation",
+        "description": "Add a new Organisation",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "The name of the organisation",
+                    "examples": ["John's organisation"]
+                  },
+                  "description": {
+                    "description": "The details of the organisation",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successfully created organisation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/StatusMessage" },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": { "$ref": "#/components/schemas/Organisation" }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "description": "Permission denied",
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "422": {
+            "description": "Validation error",
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "500": {
+            "description": "Server error",
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "get": {
+        "tags": ["Organisations"],
+        "summary": "Get all organisations",
+        "description": "Obtain all organisations for the current user. This endpoint can also be used to get all organisations in the database, only if the user role is that of an admin or superadmin.",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The amount of organisations returned",
+            "schema": {
+              "type": "integer",
+              "minimum": 10,
+              "maximum": 20,
+              "examples": [15]
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "The amount of organisations to skip",
+            "schema": {
+              "type": "integer",
+              "minimum": 10,
+              "maximum": 20,
+              "examples": [15]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully pull of organisations",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/StatusMessage" },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": { "$ref": "#/components/schemas/Organisations" }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "description": "Permission denied",
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "500": {
+            "description": "Server error",
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/api/v1/organisations/{id}": {
+      "get": {
+        "tags": ["Organisations"],
+        "summary": "Get single organisation",
+        "description": "Obtain a single organisation. This endpoint is also role based. So if it is a regular user, they have access to only organisations they belong to, and if it is an admin or superadmin, they have access to all organisations.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The id of the organisation to be returned",
+            "schema": { "type": "integer", "examples": [15] }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully fetched organisation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/StatusMessage" },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": { "$ref": "#/components/schemas/Organisation" }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "description": "Permission denied",
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "description": "Not found",
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "description": "Server Error",
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Organisations"],
+        "summary": "Update an organisation",
+        "description": "Update the details of an organisation. This is also protected just like in the get request above.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The id of the organisation to be updated",
+            "schema": { "type": "integer", "examples": [15] }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "The name of the organisation",
+                    "examples": ["John's organisation"]
+                  },
+                  "description": {
+                    "description": "The details of the organisation",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully updated organisation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/StatusMessage" },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": { "$ref": "#/components/schemas/Organisation" }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "description": "Permission denied",
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "description": "Not found",
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "422": {
+            "description": "Validation error",
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "500": {
+            "description": "Server error",
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Organisations"],
+        "summary": "Delete an organisation",
+        "description": "Delete an organisation from the database. This ia also a protected route.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The id of the organisation to be deleted",
+            "schema": { "type": "integer", "examples": [15] }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successfully deleted organisation",
+            "$ref": "#/components/responses/DeletedResponse"
+          },
+          "400": {
+            "description": "Bad request",
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "description": "Permission denied",
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "description": "Not found",
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "description": "Server error",
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/api/v1/organisations/{id}/users": {
+      "post": {
+        "summary": "Add user to organisation",
+        "description": "Endpoint to add a user to an organisation",
+        "tags": ["Organisations"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The id of the organisation to add the user to",
+            "schema": { "type": "integer", "examples": [15] }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_id": { "type": "string", "format": "uuid" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully added user to organisation",
+            "$ref": "#/components/responses/SuccessResponse"
+          },
+          "400": {
+            "description": "Bad request",
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "description": "Permission denied",
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "description": "Not found",
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "422": {
+            "description": "Validation error",
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "500": {
+            "description": "Server error",
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "get": {
+        "summary": "Get all users in an organisation",
+        "description": "Endpoint to get all users in an organisation.",
+        "tags": ["Organisations"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The id of the organisation to get the users",
+            "schema": { "type": "integer", "examples": [15] }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully fetched all users in the organisation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/StatusMessage" },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": { "$ref": "#/components/schemas/Users" }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "description": "Permission denied",
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "description": "Not found",
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "description": "Server error",
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/api/v1/payments": {
+      "post": {
+        "tags": ["Payments"],
+        "summary": "Make a payment",
+        "description": "Endpoint for a user to make a payment",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/PaymentForm" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Payment was successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/StatusMessage" },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": { "$ref": "#/components/schemas/Payment" }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "422": {
+            "description": "Validation error",
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "403": {
+            "description": "Permission denied",
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "500": {
+            "description": "Server error",
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "get": {
+        "tags": ["Payments"],
+        "summary": "Get all payments",
+        "description": "Obtain all payments history. This endpoint is role based as well. If a user is an admin or superadmin, they will get all payment history, but if the user is a regular user, they will only get their payment history alone.",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The amount of payments returned",
+            "schema": {
+              "type": "integer",
+              "minimum": 10,
+              "maximum": 20,
+              "examples": [15]
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "The amount of payments to skip",
+            "schema": {
+              "type": "integer",
+              "minimum": 10,
+              "maximum": 20,
+              "examples": [15]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully fetched all payments",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/StatusMessage" },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": { "$ref": "#/components/schemas/Payments" }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "description": "Permission denied",
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "500": {
+            "description": "Server error",
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/api/v1/payments/{id}": {
+      "get": {
+        "tags": ["Payments"],
+        "summary": "Obtain a single payment",
+        "description": "Obtain the details of a single payment. This ia also role based in that, a regular user can only get the details of the payments they made, and an admin or superadmin user can get the details of all payments.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The id of the organisation to be returned",
+            "schema": { "type": "integer", "examples": [15] }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully fetched payment details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/StatusMessage" },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": { "$ref": "#/components/schemas/Payment" }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "description": "Permission denied",
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "description": "Not found",
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "description": "Server Error",
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Payments"],
+        "summary": "Update a payment",
+        "description": "Endpoint to update a payment. This endpoint is made available only to superadmins.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "This is the id of the payment to be updated",
+            "schema": { "type": "integer", "example": 5 }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/PaymentForm" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully updated payment",
+            "$ref": "#/components/responses/SuccessResponse"
+          },
+          "400": {
+            "description": "Bad request",
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "description": "Permission denied",
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "description": "Not Found",
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "422": {
+            "description": "Validation Error",
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "500": {
+            "description": "Server error",
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Payments"],
+        "summary": "Delete a payment",
+        "description": "Delete a payment from the database records. This endpoint is made available to only superadmin users.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The id of the payment to be deleted",
+            "schema": { "type": "integer", "examples": [15] }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successfully delete payment",
+            "$ref": "#/components/responses/DeletedResponse"
+          },
+          "400": {
+            "description": "Bad request",
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "description": "Permission denied",
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "description": "Not found",
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "description": "Server error",
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/api/v1/notifications": {
+      "post": {
+        "summary": "Create a new notification",
+        "description": "Endpoint to send a notification to a user. Ensure you pass in the id of the user to send a notification to in the request body.",
+        "tags": ["Notifications"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_id": { "type": "integer", "examples": [4] },
+                  "message": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successfully created notification",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/StatusMessage" },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": { "$ref": "#/components/schemas/Notification" }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/BadRequestError" },
+          "401": { "$ref": "#/components/responses/UnauthorizedError" },
+          "403": { "$ref": "#/components/responses/ForbiddenError" },
+          "500": { "$ref": "#/components/responses/ServerError" }
+        }
+      },
+      "get": {
+        "summary": "Get all notifications",
+        "description": "Endpoint to get all notifications. If the logged in user is a regular user or admin user, they will get only notifications sent to them, but a superadmin will get all notifications.",
+        "tags": ["Notifications"],
+        "responses": {
+          "200": {
+            "description": "Successfully fetched notifications",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/StatusMessage" },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": { "$ref": "#/components/schemas/Notifications" }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/UnauthorizedError" },
+          "403": { "$ref": "#/components/responses/ForbiddenError" },
+          "500": { "$ref": "#/components/responses/ServerError" }
+        }
+      }
+    },
+    "/api/v1/notifications/{id}": {
+      "get": {
+        "summary": "Get a notification by ID",
+        "description": "Endpoint to get a single notification. Once a user triggers this endpoint, as long as they are a regular user or admin, the notification status will be set to 'read'.",
+        "tags": ["Notifications"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "example": 4 }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully fetched notification",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/StatusMessage" },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": { "$ref": "#/components/schemas/Notification" }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/UnauthorizedError" },
+          "403": { "$ref": "#/components/responses/ForbiddenError" },
+          "404": { "$ref": "#/components/responses/NotFoundError" },
+          "500": { "$ref": "#/components/responses/ServerError" }
+        }
+      },
+      "put": {
+        "summary": "Update a notification",
+        "description": "Endpoint to update a notification item. This is only available to superadmin users",
+        "tags": ["Notifications"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "example": 3 }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": { "type": "string" },
+                  "status": {
+                    "type": "string",
+                    "format": "emum",
+                    "examples": ["unread"]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully updated notification",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/StatusMessage" },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": { "$ref": "#/components/schemas/Notification" }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/BadRequestError" },
+          "401": { "$ref": "#/components/responses/UnauthorizedError" },
+          "403": { "$ref": "#/components/responses/ForbiddenError" },
+          "404": { "$ref": "#/components/responses/NotFoundError" },
+          "422": { "$ref": "#/components/responses/ValidationError" },
+          "500": { "$ref": "#/components/responses/ServerError" }
+        }
+      },
+      "delete": {
+        "summary": "Delete a notification",
+        "description": "Endpoint to delete a single notification",
+        "tags": ["Notifications"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "example": 4 }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successfully deleted notification",
+            "$ref": "#/components/responses/DeletedResponse"
+          },
+          "400": { "$ref": "#/components/responses/BadRequestError" },
+          "401": { "$ref": "#/components/responses/UnauthorizedError" },
+          "403": { "$ref": "#/components/responses/ForbiddenError" },
+          "404": { "$ref": "#/components/responses/NotFoundError" },
+          "500": { "$ref": "#/components/responses/ServerError" }
+        }
+      }
+    },
+    "/api/v1/blogs": {
+      "get": {
+        "description": "Endpoint to get all blog posts.",
+        "summary": "Get all blog posts",
+        "tags": ["Blogs"],
+        "parameters": [
+          {
+            "name": "title",
+            "in": "query",
+            "description": "This is the title of the blog to be used as a filter",
+            "schema": { "type": "string", "example": "HNG" }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "This is how many blogs should be returned",
+            "schema": {
+              "type": "integer",
+              "example": 10,
+              "minimum": 10,
+              "maximum": 20
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "This is how many blogs should be skipped",
+            "schema": {
+              "type": "integer",
+              "example": 10,
+              "minimum": 10,
+              "maximum": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Blogs fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/StatusMessage" },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": { "$ref": "#/components/schemas/Blogs" }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "$ref": "#/components/responses/Unauthorizederror"
+          },
+          "403": {
+            "description": "Permission denied",
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "500": {
+            "description": "Server error",
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "description": "Endpoint to create a new blog post.",
+        "summary": "Add blog post",
+        "tags": ["Blogs"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/BlogForm" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Blog added successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Blog" }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "$ref": "#/components/responses/Unauthorizederror"
+          },
+          "403": {
+            "description": "Permission denied",
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "422": {
+            "description": "Validation Error",
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "500": {
+            "description": "Server error",
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/api/v1/blogs/{id}": {
+      "put": {
+        "description": "Endpoint to update a blog.",
+        "summary": "Update blog post",
+        "tags": ["Blogs"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "This is the id of the blog to be updated",
+            "schema": { "type": "integer", "example": 4 }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/BlogForm" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully updated blog",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/StatusMessage" },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": { "$ref": "#/components/schemas/Blog" }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "description": "Permission denied",
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "description": "Not Found",
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "422": {
+            "description": "Validation Error",
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "500": {
+            "description": "Server error",
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "delete": {
+        "description": "Endpoint to delete a blog.",
+        "summary": "Delete blog post",
+        "tags": ["Blogs"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "This is the id of the blog to be deleted",
+            "schema": { "type": "integer", "example": 5 }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successfully deleted blog",
+            "$ref": "#/components/responses/DeletedResponse"
+          },
+          "400": {
+            "description": "Bad request",
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "description": "Permission denied",
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "description": "Not Found",
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "description": "Server error",
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "get": {
+        "description": "Endpoint to get a blog.",
+        "summary": "Get blog post",
+        "tags": ["Blogs"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "This is the id of the blog to be fetched",
+            "schema": { "type": "integer", "example": 5 }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully fetched blog",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/StatusMessage" },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": { "$ref": "#/components/schemas/Blog" }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "description": "Permission denied",
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "description": "Not Found",
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "description": "Server error",
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/api/v1/comments/{blog_id}": {
+      "get": {
+        "description": "Endpoint to get all comments posts.",
+        "summary": "Get comments for blog post",
+        "tags": ["Comments"],
+        "parameters": [
+          {
+            "name": "blog_id",
+            "required": true,
+            "in": "path",
+            "description": "ID of the blog to get all comments for",
+            "schema": { "type": "integer", "example": 1 }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Comments fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/StatusMessage" },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": { "$ref": "#/components/schemas/Comments" }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "$ref": "#/components/responses/Unauthorizederror"
+          },
+          "403": {
+            "description": "Permission denied",
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "500": {
+            "description": "Server error",
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "description": "Endpoint to create a new comment on a blog post.",
+        "summary": "Add comment to a blog post",
+        "tags": ["Comments"],
+        "parameters": [
+          {
+            "name": "blog_id",
+            "required": true,
+            "in": "path",
+            "description": "ID of the blog to add a comment to",
+            "schema": { "type": "integer", "example": 1 }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CommentForm" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Comment added successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/StatusMessage" },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": { "$ref": "#/components/schemas/Comment" }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "$ref": "#/components/responses/Unauthorizederror"
+          },
+          "403": {
+            "description": "Permission denied",
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "422": {
+            "description": "Validation Error",
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "500": {
+            "description": "Server error",
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/api/v1/comments/{id}": {
+      "put": {
+        "description": "Endpoint to update a comment.",
+        "summary": "Update comment",
+        "tags": ["Comments"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "This is the id of the comment to be updated",
+            "schema": { "type": "integer", "example": 4 }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CommentForm" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully updated comment",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/StatusMessage" },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": { "$ref": "#/components/schemas/Comment" }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "description": "Permission denied",
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "description": "Not Found",
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "422": {
+            "description": "Validation Error",
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "500": {
+            "description": "Server error",
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "delete": {
+        "description": "Endpoint to delete a comment.",
+        "summary": "Delete comment",
+        "tags": ["Comments"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "This is the id of the comment to be deleted",
+            "schema": { "type": "integer", "example": 5 }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successfully deleted comment",
+            "$ref": "#/components/responses/DeletedResponse"
+          },
+          "400": {
+            "description": "Bad request",
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "description": "Permission denied",
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "description": "Not Found",
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "description": "Server error",
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "get": {
+        "description": "Endpoint to get a single comment.",
+        "summary": "Get comment",
+        "tags": ["Comments"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "This is the id of the comment to be fetched",
+            "schema": { "type": "integer", "example": 5 }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully fetched comment",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/StatusMessage" },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": { "$ref": "#/components/schemas/Comment" }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "description": "Permission denied",
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "description": "Not Found",
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "description": "Server error",
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/api/v1/activitylogs": {
+      "post": {
+        "summary": "Add new activity log",
+        "description": "Endpoint to add new activity log. Only available to superadmins.",
+        "tags": ["Activity Logs"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ActivityLogForm" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Activity Log added successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/StatusMessage" },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": { "$ref": "#/components/schemas/ActivityLog" }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "description": "Unauthorized request",
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "description": "Permission denied",
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "422": {
+            "description": "Validation error",
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "500": {
+            "description": "Server error",
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "get": {
+        "summary": "Get all activity logs",
+        "description": "Endpoint to get all activity logs. Only available to superadmins",
+        "tags": ["Activity Logs"],
+        "responses": {
+          "200": {
+            "description": "Activity Logs fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/StatusMessage" },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": { "$ref": "#/components/schemas/ActivityLogs" }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "description": "Permission denied",
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "500": {
+            "description": "Server error",
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/api/v1/activitylog/{id}": {
+      "get": {
+        "summary": "Get details of an activity log",
+        "description": "This endpoint get an activity log specified by the id. Available to only superadmins.",
+        "tags": ["Activity Logs"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The id of the activity log to be returned",
+            "schema": { "type": "integer", "examples": [15] }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Activity log fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/StatusMessage" },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": { "$ref": "#/components/schemas/ActivityLog" }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "description": "Permission denied",
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "description": "Not found",
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "description": "Server error",
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Activity Logs"],
+        "summary": "Delete an activity log",
+        "description": "Delete an activity log record. This endpoint is made available to only superadmin users.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The id of the activity log to be deleted",
+            "schema": { "type": "integer", "examples": [15] }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successfully deleted activity log",
+            "$ref": "#/components/responses/DeletedResponse"
+          },
+          "400": {
+            "description": "Bad request",
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "description": "Unauthorized request",
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "description": "Permission denied",
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "description": "Not found",
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "description": "Server error",
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/api/v1/activitylogs/user/{user_id}": {
+      "get": {
+        "summary": "Get all activity logs for a user",
+        "description": "Get activity logs for a particular user. This endpoint is available to only superadmins.",
+        "tags": ["Activity Logs"],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "description": "The id of the user's activity logs to get",
+            "schema": { "type": "integer", "examples": [1] }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Activity logs for user fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/StatusMessage" },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": { "$ref": "#/components/schemas/ActivityLogs" }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "description": "Permission denied",
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "description": "Not found",
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "description": "Server error",
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/api/v1/contacts": {
+      "get": {
+        "tags": ["Contact"],
+        "summary": "Get contact requests",
+        "description": "Endpoint to get all contact requests. This will only be accessible by admins and superadmins.",
+        "responses": {
+          "200": {
+            "description": "Contact requests fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/StatusMessage" },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": { "$ref": "#/components/schemas/Contacts" }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "$ref": "#/components/responses/Unauthorizederror"
+          },
+          "403": {
+            "description": "Permission denied",
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "500": {
+            "description": "Server error",
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Contact"],
+        "summary": "Send contact message",
+        "description": "Endpoint for a user to make a contact request. This is open to unauthenticated users.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ContactForm" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Contact request added successfully",
+            "$ref": "#/components/responses/SuccessResponse"
+          },
+          "400": {
+            "description": "Bad request",
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "422": {
+            "description": "Validation Error",
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "500": {
+            "description": "Server error",
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/api/v1/contacts/{id}": {
+      "put": {
+        "tags": ["Contact"],
+        "summary": "Update a contact request",
+        "description": "Endpoint to update a contact. This endpoint is made available only to superadmins",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "This is the id of the contact request to be updated",
+            "schema": { "type": "integer", "example": 5 }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ContactForm" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully updated contact",
+            "$ref": "#/components/responses/SuccessResponse"
+          },
+          "400": {
+            "description": "Bad request",
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "description": "Permission denied",
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "description": "Not Found",
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "422": {
+            "description": "Validation Error",
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "500": {
+            "description": "Server error",
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Contact"],
+        "summary": "Delete a contact request",
+        "description": "Endpoint to delete a contact. This endpoint is made available only to superadmins",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "This is the id of the contact request to be deleted",
+            "schema": { "type": "integer", "example": 5 }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successfully deleted contact",
+            "$ref": "#/components/responses/DeletedResponse"
+          },
+          "400": {
+            "description": "Bad request",
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "description": "Permission denied",
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "description": "Not Found",
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "description": "Server error",
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/api/v1/waitlist": {
+      "get": {
+        "tags": ["Waitlist"],
+        "summary": "Get waitlist",
+        "description": "Endpoint to get all users placed on waitlist. Only accessible to admins and superadmins",
+        "responses": {
+          "200": {
+            "description": "Waitlist fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/StatusMessage" },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": { "$ref": "#/components/schemas/Waitlists" }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "description": "Permission denied",
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "500": {
+            "description": "Server error",
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Waitlist"],
+        "summary": "Add to waitlist",
+        "description": "Endpoint for a user to be added to the waitlist. No authentication is required",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "examples": ["johndoe1@gmail.com"]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User added to waitlist",
+            "$ref": "#/components/responses/SuccessResponse"
+          },
+          "400": {
+            "description": "Bad request",
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "description": "Permission denied",
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "422": {
+            "description": "Validation Error",
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "500": {
+            "description": "Server error",
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/api/v1/waitlist/{id}": {
+      "put": {
+        "tags": ["Waitlist"],
+        "summary": "Update waitlist item",
+        "description": "Endpoint to update a waitlist item. This endpoint is made available only to superadmins",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "This is the id of the waitlist item to be updated",
+            "schema": { "type": "integer", "example": 5 }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "examples": ["john.doe01@gmail.com"]
+                  },
+                  "status": {
+                    "type": "string",
+                    "format": "enum",
+                    "examples": ["pending"]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully updated waitlist",
+            "$ref": "#/components/responses/SuccessResponse"
+          },
+          "400": {
+            "description": "Bad request",
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "description": "Permission denied",
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "description": "Not Found",
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "422": {
+            "description": "Validation Error",
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "500": {
+            "description": "Server error",
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Waitlist"],
+        "summary": "Delete waitlist",
+        "description": "Endpoint to delete a waitlist item. This endpoint is made available only to superadmins",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "This is the id of the waitlist item to be deleted",
+            "schema": { "type": "integer", "example": 5 }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successfully deleted waitlist item",
+            "$ref": "#/components/responses/DeletedResponse"
+          },
+          "400": {
+            "description": "Bad request",
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "description": "Permission denied",
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "description": "Not Found",
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "description": "Server error",
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/api/v1/invites": {
+      "get": {
+        "tags": ["Invite"],
+        "summary": "Get invites",
+        "description": "Endpoint to get all invites made to the users placed on waitlist. Only accessible to admins and superadmins",
+        "responses": {
+          "200": {
+            "description": "Invites fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/StatusMessage" },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": { "$ref": "#/components/schemas/Invites" }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "description": "Permission denied",
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "500": {
+            "description": "Server error",
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Invite"],
+        "summary": "Send invite",
+        "description": "Endpoint for a user to be sent an invite. Only accessible to admins and superadmins. The way this works is that the waitlist table is queried, and an invite is sent to the email attached to any waitlist with a status of pending. There will be a limit to how many invites can be sent out through query parameters. After the invites have been sent to the respective emails, the waitlist item for that email is set to an invited status.",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": true,
+            "description": "This is the limit for number of invites to be sent out at once",
+            "schema": {
+              "type": "integer",
+              "minimum": 5,
+              "maxiumu": 15,
+              "example": 5
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "nvites sent successfully",
+            "$ref": "#/components/responses/SuccessResponse"
+          },
+          "400": {
+            "description": "Bad request",
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "description": "Permission denied",
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "description": "Not found",
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "422": {
+            "description": "Validation Error",
+            "$ref": "#/components/responses/ValidationError"
+          },
+          "500": {
+            "description": "Server error",
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/api/v1/invite/{id}": {
+      "delete": {
+        "tags": ["Invite"],
+        "summary": "Delete invite",
+        "description": "Endpoint to delete an invite. This endpoint is made available only to superadmins",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "This is the id of the invite to be deleted",
+            "schema": { "type": "integer", "examples": [5] }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successfully deleted invite",
+            "$ref": "#/components/responses/DeletedResponse"
+          },
+          "400": {
+            "description": "Bad request",
+            "$ref": "#/components/responses/BadRequestError"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "403": {
+            "description": "Permission denied",
+            "$ref": "#/components/responses/ForbiddenError"
+          },
+          "404": {
+            "description": "Not Found",
+            "$ref": "#/components/responses/NotFoundError"
+          },
+          "500": {
+            "description": "Server error",
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "StatusMessage": {
+        "type": "object",
+        "properties": {
+          "status": { "type": "boolean", "examples": [true] },
+          "message": { "type": "string", "examples": ["success message here"] }
+        }
+      },
+      "Users": {
+        "description": "Model for list of users",
+        "type": "array",
+        "items": { "$ref": "#/components/schemas/User" }
+      },
+      "User": {
+        "description": "Model for user onject",
+        "properties": {
+          "id": { "type": "integer", "examples": [2] },
+          "unique_id": { "type": "string", "format": "uuid" },
+          "first_name": { "type": "string", "examples": ["John"] },
+          "last_name": { "type": "string", "examples": ["Doe"] },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "examples": ["john.doe01@gmail.com"]
+          },
+          "role": { "type": "string", "format": "enum", "examples": ["user"] },
+          "signup_type": {
+            "type": "string",
+            "format": "enum",
+            "examples": ["email"]
+          },
+          "is_active": { "type": "boolean", "examples": [true] },
+          "is_verified": { "type": "boolean", "examples": [false] },
+          "created_at": { "type": "string", "format": "date-time" },
+          "updated_at": { "type": "string", "format": "date-time" },
+          "last_login-at": { "type": "string", "format": "date-time" }
+        }
+      },
+      "Organisations": {
+        "description": "Model for list of Organisations",
+        "type": "array",
+        "items": { "$ref": "#/components/schemas/Organisation" }
+      },
+      "Organisation": {
+        "description": "Model for Organisation object",
+        "properties": {
+          "id": { "type": "integer", "examples": [2] },
+          "unique_id": { "type": "string", "format": "uuid" },
+          "name": { "type": "string", "examples": ["John's Organisation"] },
+          "description": {
+            "type": "string",
+            "examples": ["This is the organisation for john"]
+          },
+          "created_at": { "type": "string", "format": "date-time" },
+          "updated_at": { "type": "string", "format": "date-time" }
+        }
+      },
+      "Payments": {
+        "description": "Model for list of Organisations",
+        "type": "array",
+        "items": { "$ref": "#/components/schemas/Payment" }
+      },
+      "Payment": {
+        "description": "Model for Payment object",
+        "properties": {
+          "id": { "type": "integer", "examples": [2] },
+          "unique_id": { "type": "string", "format": "uuid" },
+          "payment_method": { "type": "string", "examples": ["flutterwave"] },
+          "currency": { "type": "string", "examples": ["usdollars"] },
+          "amount": { "type": "string", "examples": [50] },
+          "status": { "type": "string", "examples": ["Pending"] },
+          "created_at": { "type": "string", "format": "date-time" },
+          "updated_at": { "type": "string", "format": "date-time" },
+          "payment_made_by": {
+            "type": "object",
+            "$ref": "#/components/schemas/User"
+          }
+        }
+      },
+      "PaymentForm": {
+        "description": "Model for payment form",
+        "properties": {
+          "payment_method": {
+            "type": "string",
+            "description": "The mode of payment",
+            "examples": ["Card payment"]
+          },
+          "currency": {
+            "type": "string",
+            "description": "The currency the user is paying with",
+            "examples": ["$"]
+          },
+          "amount": {
+            "type": "integer",
+            "description": "The amount of money to be paid",
+            "examples": [50]
+          },
+          "card_details": {
+            "description": "The details of the users card",
+            "type": "object",
+            "properties": {
+              "card_number": {
+                "type": "integer",
+                "description": "The users card number",
+                "examples": ["1234 5678 9012 4567"]
+              },
+              "expiry_date": {
+                "type": "integer",
+                "description": "The expiry date of the card",
+                "examples": ["03/24"]
+              },
+              "cvv": {
+                "type": "integer",
+                "description": "The cvv number of the card",
+                "examples": [555]
+              }
+            }
+          }
+        }
+      },
+      "Contacts": {
+        "description": "Model for list of contact requests",
+        "type": "array",
+        "items": { "$ref": "#/components/schemas/Contact" }
+      },
+      "ContactForm": {
+        "description": "Model for contact form",
+        "properties": {
+          "name": { "type": "string", "examples": ["John Doe"] },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "examples": ["john.doe01@gmail.com"]
+          },
+          "subject": { "type": "string", "examples": ["subject"] },
+          "message": { "type": "string", "examples": ["message here"] }
+        }
+      },
+      "Contact": {
+        "description": "Model for contact onject",
+        "properties": {
+          "id": { "type": "integer", "examples": [10] },
+          "name": { "type": "string", "examples": ["John Doe"] },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "examples": ["john.doe01@gmail.com"]
+          },
+          "subject": { "type": "string", "examples": ["subject"] },
+          "message": { "type": "string", "examples": ["message here"] },
+          "timestamp": { "type": "string", "format": "date-time" }
+        }
+      },
+      "Waitlists": {
+        "description": "Model for list of waitlist requests",
+        "type": "array",
+        "items": { "$ref": "#/components/schemas/Waitlist" }
+      },
+      "Waitlist": {
+        "description": "Model for waitlist",
+        "properties": {
+          "id": { "type": "integer", "examples": [10] },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "examples": ["john.doe01@gmail.com"]
+          },
+          "status": {
+            "type": "string",
+            "format": "enum",
+            "examples": ["pending"]
+          },
+          "timestamp": { "type": "string", "format": "date-time" }
+        }
+      },
+      "Invites": {
+        "description": "Model for list of invites",
+        "type": "array",
+        "items": { "$ref": "#/components/schemas/Invite" }
+      },
+      "Invite": {
+        "description": "Model for Invite",
+        "properties": {
+          "id": { "type": "integer", "examples": [10] },
+          "waitlist": {
+            "type": "object",
+            "$ref": "#/components/schemas/Waitlist"
+          },
+          "timestamp": { "type": "string", "format": "date-time" }
+        }
+      },
+      "BlacklistedTokens": {
+        "description": "Model for list of blacklisted tokens",
+        "type": "array",
+        "items": { "$ref": "#/components/schemas/BlacklistedToken" }
+      },
+      "BlacklistedToken": {
+        "description": "Model for a blacklisted token",
+        "properties": {
+          "id": { "type": "integer", "examples": [10] },
+          "token": { "type": "string", "examples": ["token here"] },
+          "created_at": { "type": "string", "format": "date-time" },
+          "user": { "type": "object", "$ref": "#/components/schemas/User" }
+        }
+      },
+      "Notifications": {
+        "description": "Model for list of notifications",
+        "type": "array",
+        "items": { "$ref": "#/components/schemas/Notification" }
+      },
+      "Notification": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "examples": [4] },
+          "unique_id": { "type": "string", "format": "uuid" },
+          "message": { "type": "string" },
+          "status": { "type": "string", "enum": ["read", "unread"] },
+          "created_at": { "type": "string", "format": "date-time" },
+          "updated_at": { "type": "string", "format": "date-time" },
+          "user": { "type": "object", "$ref": "#/components/schemas/User" }
+        }
+      },
+      "Blogs": {
+        "description": "Model for blog posts",
+        "type": "array",
+        "items": { "$ref": "#/components/schemas/Blog" }
+      },
+      "Blog": {
+        "description": "Model for blog",
+        "properties": {
+          "id": { "type": "integer", "examples": [1] },
+          "unique_id": { "type": "string", "format": "uuid" },
+          "title": { "type": "string", "examples": ["About HNG"] },
+          "description": {
+            "type": "string",
+            "examples": ["HNG is an internship"]
+          },
+          "content": { "type": "string", "examples": ["contents"] },
+          "no_of_likes": { "type": "integer", "examples": [1000] },
+          "no_of_comments": { "type": "integer", "examples": [1000] },
+          "created_at": { "type": "string", "format": "date-time" },
+          "updated_at": { "type": "string", "format": "date-time" },
+          "author": { "type": "object", "$ref": "#/components/schemas/User" }
+        }
+      },
+      "BlogForm": {
+        "description": "Model for creating blog",
+        "properties": {
+          "title": { "type": "string", "examples": ["About HNG"] },
+          "description": {
+            "type": "string",
+            "examples": ["HNG is an internship"]
+          },
+          "content": { "type": "string", "examples": ["contents"] }
+        }
+      },
+      "Comments": {
+        "description": "Model for comments on blog posts",
+        "type": "array",
+        "items": { "$ref": "#/components/schemas/Comment" }
+      },
+      "Comment": {
+        "description": "Model for comment",
+        "properties": {
+          "id": { "type": "integer", "examples": [1] },
+          "message": { "type": "string", "examples": ["contents"] },
+          "created_at": { "type": "string", "format": "date-time" },
+          "updated_at": { "type": "string", "format": "date-time" },
+          "blog": { "type": "object", "$ref": "#/components/schemas/Blog" },
+          "commenter": { "type": "object", "$ref": "#/components/schemas/User" }
+        }
+      },
+      "CommentForm": {
+        "description": "Model for creating comment",
+        "properties": {
+          "message": { "type": "string", "examples": ["contents"] }
+        }
+      },
+      "ActivityLogs": {
+        "description": "Model for list of activity logs",
+        "type": "array",
+        "items": { "$ref": "#/components/schemas/ActivityLog" }
+      },
+      "ActivityLog": {
+        "description": "model for an activity log",
+        "properties": {
+          "id": { "type": "integer", "examples": [10] },
+          "action": {
+            "type": "string",
+            "examples": ["user initiated payment"]
+          },
+          "user": { "type": "object", "$ref": "#/components/schemas/User" },
+          "timestamp": { "type": "string", "format": "date-time" }
+        }
+      },
+      "ActivityLogForm": {
+        "description": "model for an activity log",
+        "properties": {
+          "action": { "type": "string", "examples": ["user initiated payment"] }
+        }
+      }
+    },
+    "responses": {
+      "SuccessResponse": {
+        "description": "Success",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "boolean", "examples": [true] },
+                "message": {
+                  "type": "string",
+                  "examples": ["success message here"]
+                }
+              }
+            }
+          }
+        }
+      },
+      "DeletedResponse": {
+        "description": "Successful deletion",
+        "content": { "application/json": { "schema": { "type": "object" } } }
+      },
+      "UnauthorizedError": {
+        "description": "Unauthorized error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "boolean", "examples": [false] },
+                "message": {
+                  "type": "string",
+                  "examples": ["Could not validate credentials"]
+                }
+              }
+            }
+          }
+        }
+      },
+      "ForbiddenError": {
+        "description": "Permission error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "boolean", "examples": [false] },
+                "message": {
+                  "type": "string",
+                  "examples": ["Permission denied"]
+                }
+              }
+            }
+          }
+        }
+      },
+      "BadRequestError": {
+        "description": "Bad request error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "boolean", "examples": [false] },
+                "message": { "type": "string", "examples": ["Bad request"] }
+              }
+            }
+          }
+        }
+      },
+      "NotFoundError": {
+        "description": "Not found error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "boolean", "examples": [false] },
+                "message": { "type": "string", "examples": ["Not found"] }
+              }
+            }
+          }
+        }
+      },
+      "ValidationError": {
+        "description": "Validation error for form fields",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "boolean", "examples": [false] },
+                "message": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "field": { "type": "string", "examples": ["email"] },
+                      "error": {
+                        "type": "string",
+                        "examples": ["must be a valid email address"]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Server error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "boolean", "examples": [false] },
+                "message": {
+                  "type": "string",
+                  "examples": ["An unexpected error occured"]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

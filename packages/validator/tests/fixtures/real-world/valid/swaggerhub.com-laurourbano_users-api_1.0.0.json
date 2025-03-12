@@ -1,0 +1,110 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Api de cadastro de usuários",
+    "description": "crud usuários"
+  },
+  "paths": {
+    "/users-list": {
+      "get": {
+        "summary": "Retorna todos os users",
+        "responses": { "200": { "description": "Lista de users" } }
+      }
+    },
+    "/users-list/{codigo}": {
+      "get": {
+        "summary": "Retorna um user por código",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "codigo",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "User encontrado" },
+          "404": { "description": "User não encontrado" }
+        }
+      }
+    },
+    "/users-post": {
+      "post": {
+        "summary": "Cria um novo User",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/User" }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "User criado com sucesso" },
+          "400": { "description": "Dados inválidos" }
+        }
+      }
+    },
+    "/users-edit/{codigo}/atualizar": {
+      "put": {
+        "summary": "Atualiza um User por código",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "codigo",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/User" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "User atualizado com sucesso" },
+          "404": { "description": "User não encontrado" },
+          "400": { "description": "Dados inválidos" }
+        }
+      }
+    },
+    "/users-delete/{codigo}/excluir": {
+      "delete": {
+        "summary": "Exclui um User por código",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "codigo",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "204": { "description": "User excluído com sucesso" },
+          "404": { "description": "User não encontrado" }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "email": { "type": "string" }
+        }
+      }
+    }
+  },
+  "servers": [
+    {
+      "description": "SwaggerHub API Auto Mocking",
+      "url": "https://virtserver.swaggerhub.com/laurourbano/APIusers/1.0.1"
+    }
+  ]
+}

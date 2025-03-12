@@ -1,0 +1,438 @@
+{
+  "openapi": "3.1.0",
+  "info": { "title": "repair", "version": "0.0.14" },
+  "servers": [{ "url": "/repair" }],
+  "paths": {
+    "/any/lint": {
+      "post": {
+        "summary": "Diagnostics",
+        "operationId": "diagnostics_any_lint_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/DiagnosticsRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/DiagnosticsResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/any/compile": {
+      "post": {
+        "summary": "Compile",
+        "operationId": "compile_any_compile_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CompileRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/CompileResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/python/lint": {
+      "post": {
+        "summary": "Diagnostics",
+        "operationId": "diagnostics_python_lint_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/DiagnosticsRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/DiagnosticsResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "deprecated": true
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CompileContext": {
+        "properties": {
+          "projectConfigurations": {
+            "anyOf": [
+              { "items": { "type": "object" }, "type": "array" },
+              { "type": "null" }
+            ],
+            "title": "Projectconfigurations",
+            "deprecated": true
+          },
+          "externallyDefinedBodySymbols": {
+            "anyOf": [
+              { "items": { "type": "object" }, "type": "array" },
+              { "type": "null" }
+            ],
+            "title": "Externallydefinedbodysymbols",
+            "deprecated": true
+          },
+          "targetSymbol": {
+            "anyOf": [{ "type": "object" }, { "type": "null" }],
+            "title": "Targetsymbol",
+            "deprecated": true
+          },
+          "importsSection": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Importssection",
+            "default": "",
+            "deprecated": true
+          },
+          "openedTabs": {
+            "anyOf": [
+              {
+                "items": { "$ref": "#/components/schemas/EditorTab" },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "title": "Openedtabs",
+            "deprecated": true
+          },
+          "unitTestExamples": {
+            "anyOf": [
+              {
+                "items": { "$ref": "#/components/schemas/EditorTab" },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "title": "Unittestexamples",
+            "deprecated": true
+          }
+        },
+        "type": "object",
+        "title": "CompileContext"
+      },
+      "CompileContextFile": {
+        "properties": {
+          "project": { "type": "string", "title": "Project", "default": "" },
+          "path": { "type": "string", "title": "Path" },
+          "origContent": { "type": "string", "title": "Origcontent" },
+          "patchText": {
+            "type": "string",
+            "title": "Patchtext",
+            "default": ""
+          },
+          "language": { "type": "string", "title": "Language" },
+          "spanOfInterest": {
+            "items": { "type": "integer" },
+            "prefixItems": [{ "type": "integer" }, { "type": "integer" }],
+            "type": "array",
+            "maxItems": 2,
+            "minItems": 2,
+            "title": "Spanofinterest"
+          },
+          "additionalContext": { "$ref": "#/components/schemas/CompileContext" }
+        },
+        "type": "object",
+        "required": ["path", "origContent", "language"],
+        "title": "CompileContextFile"
+      },
+      "CompileRequest": {
+        "properties": {
+          "requestId": { "type": "string", "title": "Requestid" },
+          "attemptCount": { "type": "integer", "title": "Attemptcount" },
+          "files": {
+            "items": { "$ref": "#/components/schemas/CompileContextFile" },
+            "type": "array",
+            "title": "Files"
+          },
+          "runtimeReport": { "$ref": "#/components/schemas/RuntimeReport" }
+        },
+        "type": "object",
+        "required": ["requestId", "attemptCount", "files", "runtimeReport"],
+        "title": "CompileRequest"
+      },
+      "CompileResponse": {
+        "properties": {
+          "attemptCount": { "type": "integer", "title": "Attemptcount" },
+          "repairStatus": {
+            "type": "integer",
+            "maximum": 1,
+            "minimum": -4,
+            "title": "Repairstatus"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "default": "unknown"
+          },
+          "patches": {
+            "items": { "$ref": "#/components/schemas/OutputPatch" },
+            "type": "array",
+            "title": "Patches"
+          }
+        },
+        "type": "object",
+        "required": ["attemptCount", "repairStatus", "patches"],
+        "title": "CompileResponse",
+        "description": "Return codes (repairStatus) are inherited from diagnostic (AutoAliasBaseModel),\nonly few are used (see description of reserved ones in the base class):\n|  1 -- warning\n|  0 -- all ok\n| -1 -- reserved serious error code\n| -3 -- reserved serious error code, but repair attempt limit exceeded\n| -4 -- no change since last repair attempt"
+      },
+      "DiagnosticsContext": {
+        "properties": {
+          "projectConfigurations": {
+            "anyOf": [
+              { "items": { "type": "object" }, "type": "array" },
+              { "type": "null" }
+            ],
+            "title": "Projectconfigurations",
+            "deprecated": true
+          },
+          "externallyDefinedBodySymbols": {
+            "anyOf": [
+              { "items": { "type": "object" }, "type": "array" },
+              { "type": "null" }
+            ],
+            "title": "Externallydefinedbodysymbols",
+            "deprecated": true
+          },
+          "targetSymbol": {
+            "anyOf": [{ "type": "object" }, { "type": "null" }],
+            "title": "Targetsymbol",
+            "deprecated": true
+          },
+          "importsSection": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Importssection",
+            "default": "",
+            "deprecated": true
+          },
+          "openedTabs": {
+            "anyOf": [
+              {
+                "items": { "$ref": "#/components/schemas/EditorTab" },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "title": "Openedtabs",
+            "deprecated": true
+          },
+          "origDiagnostics": {
+            "items": { "type": "object" },
+            "type": "array",
+            "title": "Origdiagnostics"
+          },
+          "currDiagnostics": {
+            "items": { "type": "object" },
+            "type": "array",
+            "title": "Currdiagnostics"
+          }
+        },
+        "type": "object",
+        "title": "DiagnosticsContext"
+      },
+      "DiagnosticsContextFile": {
+        "properties": {
+          "project": { "type": "string", "title": "Project", "default": "" },
+          "path": { "type": "string", "title": "Path" },
+          "origContent": { "type": "string", "title": "Origcontent" },
+          "patchText": {
+            "type": "string",
+            "title": "Patchtext",
+            "default": ""
+          },
+          "language": { "type": "string", "title": "Language" },
+          "spanOfInterest": {
+            "prefixItems": [{ "type": "integer" }, { "type": "integer" }],
+            "type": "array",
+            "maxItems": 2,
+            "minItems": 2,
+            "title": "Spanofinterest"
+          },
+          "additionalContext": {
+            "$ref": "#/components/schemas/DiagnosticsContext"
+          }
+        },
+        "type": "object",
+        "required": ["path", "origContent", "language"],
+        "title": "DiagnosticsContextFile"
+      },
+      "DiagnosticsRequest": {
+        "properties": {
+          "requestId": { "type": "string", "title": "Requestid" },
+          "attemptCount": { "type": "integer", "title": "Attemptcount" },
+          "file": { "$ref": "#/components/schemas/DiagnosticsContextFile" },
+          "diagnostics": {
+            "items": { "type": "object" },
+            "type": "array",
+            "title": "Diagnostics",
+            "deprecated": true
+          },
+          "toolChain": {
+            "items": { "type": "string" },
+            "type": "array",
+            "title": "Toolchain",
+            "deprecated": true
+          }
+        },
+        "type": "object",
+        "required": ["requestId", "attemptCount", "file"],
+        "title": "DiagnosticsRequest"
+      },
+      "DiagnosticsResponse": {
+        "properties": {
+          "attemptCount": { "type": "integer", "title": "Attemptcount" },
+          "repairStatus": {
+            "type": "integer",
+            "maximum": 2,
+            "minimum": -4,
+            "title": "Repairstatus"
+          },
+          "patch": { "$ref": "#/components/schemas/OutputPatch" }
+        },
+        "type": "object",
+        "required": ["attemptCount", "repairStatus", "patch"],
+        "title": "DiagnosticsResponse",
+        "description": "Return codes (repairStatus)\n|  2 -- continue repair\n|  1 -- warning\n|  0 -- all ok\n| -1 -- reserved serious error code\n| -2 -- recoverable runtime error, returning last viable generation\n| -3 -- repair attempt limit exceeded\n| -4 -- no change since last repair attempt\n\nThis is a final class: other response classes of this type are assumed\nto be mere type aliases with no additional fields or validation."
+      },
+      "EditorTab": {
+        "properties": {
+          "content": { "type": "string", "title": "Content" },
+          "path": { "type": "string", "title": "Path" }
+        },
+        "type": "object",
+        "required": ["content", "path"],
+        "title": "EditorTab"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": { "$ref": "#/components/schemas/ValidationError" },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "OutputPatch": {
+        "properties": {
+          "project": { "type": "string", "title": "Project", "default": "" },
+          "path": { "type": "string", "title": "Path" },
+          "patchText": { "type": "string", "title": "Patchtext" },
+          "spanOfInterest": {
+            "prefixItems": [{ "type": "integer" }, { "type": "integer" }],
+            "type": "array",
+            "maxItems": 2,
+            "minItems": 2,
+            "title": "Spanofinterest"
+          }
+        },
+        "type": "object",
+        "required": ["path", "patchText", "spanOfInterest"],
+        "title": "OutputPatch"
+      },
+      "RuntimeReport": {
+        "properties": {
+          "toolchain": { "$ref": "#/components/schemas/Toolchain" },
+          "stdout": { "type": "string", "title": "Stdout" },
+          "stderr": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Stderr"
+          },
+          "status": { "type": "string", "title": "Status" },
+          "report": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Report"
+          }
+        },
+        "type": "object",
+        "required": ["stdout", "status"],
+        "title": "RuntimeReport"
+      },
+      "Toolchain": {
+        "properties": {
+          "buildSystem": {
+            "type": "string",
+            "title": "Buildsystem",
+            "default": ""
+          },
+          "testFramework": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Testframework"
+          },
+          "assertionFramework": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Assertionframework"
+          },
+          "mockingFramework": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Mockingframework"
+          }
+        },
+        "type": "object",
+        "title": "Toolchain"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": { "anyOf": [{ "type": "string" }, { "type": "integer" }] },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": { "type": "string", "title": "Message" },
+          "type": { "type": "string", "title": "Error Type" }
+        },
+        "type": "object",
+        "required": ["loc", "msg", "type"],
+        "title": "ValidationError"
+      }
+    }
+  }
+}

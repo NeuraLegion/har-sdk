@@ -1,0 +1,453 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Digital Practice API",
+    "contact": { "email": "dev-team@vethelpdirect.com" },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "x-logo": {
+      "url": "https://messaging.vethelpdirect.com/assets/images/dp-logo.svg"
+    },
+    "description": "This is documentation for the Digital Practice public API"
+  },
+  "tags": [{ "name": "Practice", "description": "Practice scoped endpoints." }],
+  "servers": [{ "url": "https://example.com/api/public" }],
+  "paths": {
+    "/practices/{id}/sites": {
+      "get": {
+        "summary": "Retrieve practice sites",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "type": "integer" },
+            "description": "ID of the practice"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/PublicSite" }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": { "error": { "type": "string" } }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/practices/{id}/templates": {
+      "get": {
+        "summary": "Retrieve practice templates",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "type": "integer" },
+            "description": "ID of the practice"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/PublicTemplate" }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": { "error": { "type": "string" } }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/practices/{id}/templates/{templateId}/merge-fields": {
+      "get": {
+        "summary": "Retrieve merge fields for a template",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "type": "integer" },
+            "description": "ID of the practice"
+          },
+          {
+            "in": "path",
+            "name": "templateId",
+            "required": true,
+            "schema": { "type": "integer" },
+            "description": "ID of the template"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PublicTemplateMergeField"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": { "error": { "type": "string" } }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/practices/{id}/messages/send": {
+      "post": {
+        "summary": "Send a message",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "type": "integer" },
+            "description": "ID of the practice"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/MessageSendRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "sent": { "type": "boolean" },
+                    "error": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "sent": { "type": "boolean" },
+                    "error": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/practices/{id}/payments/send": {
+      "post": {
+        "summary": "Send a payment link",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "type": "integer" },
+            "description": "ID of the practice"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/PaymentSendRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "sent": { "type": "boolean" },
+                    "error": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "sent": { "type": "boolean" },
+                    "error": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "api_key": { "type": "apiKey", "in": "header", "name": "api_key" }
+    },
+    "schemas": {
+      "PublicTemplate": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The unique identifier of the template"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the template"
+          },
+          "body": {
+            "type": "string",
+            "description": "The content/body of the template"
+          },
+          "type": {
+            "type": "string",
+            "description": "The type of the template"
+          },
+          "active": {
+            "type": "boolean",
+            "description": "Indicates if the template is active or not"
+          },
+          "status": {
+            "type": "string",
+            "description": "The approval status of the template"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The date and time when the template was created"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The date and time when the template was last updated"
+          },
+          "deletedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The date and time when the template was deleted, if applicable"
+          },
+          "rejectedReason": {
+            "type": "string",
+            "description": "The reason for rejection, if the template was rejected"
+          }
+        }
+      },
+      "PublicSite": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The unique identifier of the site"
+          },
+          "name": { "type": "string", "description": "The name of the site" },
+          "vetbookerResourceId": {
+            "type": "string",
+            "description": "The VetbookerResourceID associated with the site"
+          },
+          "paymentMethodId": {
+            "type": "string",
+            "description": "The ID of the payment method associated with the site"
+          },
+          "clinicCode": {
+            "type": "string",
+            "description": "The clinic code associated with the site, if available"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The date and time when the site was created"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The date and time when the site was last updated"
+          }
+        }
+      },
+      "PublicTemplateMergeField": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The unique identifier of the merge field"
+          },
+          "placeholder": {
+            "type": "string",
+            "description": "The placeholder for the merge field"
+          },
+          "content": {
+            "type": "string",
+            "description": "The content of the merge field"
+          },
+          "customName": {
+            "type": "string",
+            "description": "The custom name of the merge field, if applicable"
+          },
+          "example": {
+            "type": "string",
+            "description": "An example value for the merge field, if applicable"
+          },
+          "type": {
+            "type": "string",
+            "description": "The type of the merge field"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The date and time when the merge field was created"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The date and time when the merge field was last updated"
+          }
+        }
+      },
+      "MessageSendRequest": {
+        "type": "object",
+        "properties": {
+          "recipient": {
+            "type": "string",
+            "description": "The recipient phone number"
+          },
+          "channel": {
+            "type": "string",
+            "enum": ["WhatsApp", "SMS"],
+            "description": "The messaging channel for sending the message"
+          },
+          "content": {
+            "type": "string",
+            "description": "The content of the message, if not sending a template"
+          },
+          "templateId": {
+            "type": "integer",
+            "description": "The ID of the template to be used for the message"
+          },
+          "mergeFields": {
+            "type": "object",
+            "additionalProperties": { "type": "string" },
+            "description": "The merge fields to be replaced in the message template"
+          },
+          "sendMode": {
+            "type": "string",
+            "enum": ["CONVERSATION", "STANDALONE", "CONVERSATION_IF_EXISTS"],
+            "description": "The send mode for the message"
+          },
+          "buttonLink": {
+            "type": "string",
+            "description": "The link attached to a button in the message, if using a template with a button"
+          }
+        }
+      },
+      "PaymentSendRequest": {
+        "type": "object",
+        "properties": {
+          "recipient": {
+            "type": "string",
+            "description": "The recipients phone number"
+          },
+          "channel": {
+            "type": "string",
+            "enum": ["WhatsApp", "SMS"],
+            "description": "The messaging channel for sending the payment"
+          },
+          "templateId": {
+            "type": "integer",
+            "description": "The ID of the template to be used for the payment"
+          },
+          "description": {
+            "type": "string",
+            "description": "The description of the payment"
+          },
+          "amount": { "type": "number", "description": "The payment amount" },
+          "clientPmsId": {
+            "type": "string",
+            "description": "The PMS ID of the client to associate with the payment"
+          },
+          "sendMode": {
+            "type": "string",
+            "enum": ["CONVERSATION", "STANDALONE", "CONVERSATION_IF_EXISTS"],
+            "description": "The send mode for the payment message"
+          },
+          "patientPmsId": {
+            "type": "string",
+            "description": "The PMS ID of the patient to associate with the payment, if applicable"
+          },
+          "siteId": {
+            "type": "string",
+            "description": "The ID of the site for the payment, if applicable"
+          },
+          "message": {
+            "type": "string",
+            "description": "Additional message related to the payment"
+          }
+        }
+      }
+    }
+  }
+}

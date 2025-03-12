@@ -1,0 +1,423 @@
+{
+  "openapi": "3.1.0",
+  "info": { "title": "SSO API", "version": "1.0.0" },
+  "servers": [{ "url": "https://datasync-api.gg4l.com/datahub" }],
+  "components": {
+    "securitySchemes": { "sec0": { "type": "http", "scheme": "basic" } }
+  },
+  "security": [{ "sec0": [] }],
+  "paths": {
+    "/oauth/token?": {
+      "post": {
+        "summary": "API authorization - Client Credentials grant",
+        "description": "",
+        "operationId": "access-token",
+        "parameters": [
+          {
+            "name": "grant_type",
+            "in": "query",
+            "description": "Must be “client_credentials”",
+            "required": true,
+            "schema": { "type": "string", "default": "client_credentials" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n  \"access_token\": \"DWJ...DV8\",\n  \"token_type\": \"bearer\",\n  \"expires_in\": 86399,\n  \"scope\": \"data_api\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "access_token": {
+                      "type": "string",
+                      "example": "DWJ...DV8"
+                    },
+                    "token_type": { "type": "string", "example": "bearer" },
+                    "expires_in": {
+                      "type": "integer",
+                      "example": 86399,
+                      "default": 0
+                    },
+                    "scope": { "type": "string", "example": "data_api" }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Invalid_grant": {
+                    "value": "{\"error\":\"invalid_grant\", \"error_description\":\"Unauthorized grant type: not_valid_grant\"}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": { "type": "string", "example": "invalid_grant" },
+                    "error_description": {
+                      "type": "string",
+                      "example": "Unauthorized grant type: not_valid_grant"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      },
+      "get": {
+        "summary": "Resource Owner Password Credentials Grant",
+        "description": "",
+        "operationId": "resource-owner-password-credentials-grant",
+        "parameters": [
+          {
+            "name": "grant_type",
+            "in": "query",
+            "description": "The type of the grant (should be: password)",
+            "required": true,
+            "schema": { "type": "string", "default": "password" }
+          },
+          {
+            "name": "username",
+            "in": "query",
+            "description": "Credential username",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "Credential password",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "_orgId",
+            "in": "query",
+            "description": "ID of organization hosted on SSO Platform",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n  \"access_token\":\"...\",\n  \"token_type\":\"bearer\",\n  \"refresh_token\":\"...\",\n  \"expires_in\":43199,\n  \"auth_token\":\"...\"\n}\n"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "access_token": { "type": "string", "example": "..." },
+                    "token_type": { "type": "string", "example": "bearer" },
+                    "refresh_token": { "type": "string", "example": "..." },
+                    "expires_in": {
+                      "type": "integer",
+                      "example": 43199,
+                      "default": 0
+                    },
+                    "auth_token": { "type": "string", "example": "..." }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": { "Result": { "value": "{}" } },
+                "schema": { "type": "object", "properties": {} }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/oauth/loginwith/logout": {
+      "get": {
+        "summary": "Log out",
+        "description": "",
+        "operationId": "log-out",
+        "parameters": [
+          {
+            "name": "redirect_uri",
+            "in": "query",
+            "description": "The URL of external resource where user should be redirected after log out",
+            "schema": { "type": "string" }
+          }
+        ],
+        "deprecated": false,
+        "security": []
+      }
+    },
+    "/oauth/token": {
+      "post": {
+        "summary": "Access Token Request",
+        "description": "",
+        "operationId": "user-access-token-request",
+        "parameters": [
+          {
+            "name": "grant_type",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "default": "authorization_code" }
+          },
+          { "name": "code", "in": "query", "schema": { "type": "string" } },
+          {
+            "name": "redirect_uri",
+            "in": "query",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n  \"access_token\": \"...\",\n  \"token_type\": \"bearer\",\n  \"refresh_token\": \"...\",\n  \"expires_in\": 43199,\n  \"scope\": \"user.profile\",\n  \"auth_token\": \"...\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "access_token": { "type": "string", "example": "..." },
+                    "token_type": { "type": "string", "example": "bearer" },
+                    "refresh_token": { "type": "string", "example": "..." },
+                    "expires_in": {
+                      "type": "integer",
+                      "example": 43199,
+                      "default": 0
+                    },
+                    "scope": { "type": "string", "example": "user.profile" },
+                    "auth_token": { "type": "string", "example": "..." }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": { "Result": { "value": "{}" } },
+                "schema": { "type": "object", "properties": {} }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      },
+      "get": {
+        "summary": "Refresh Token",
+        "description": "",
+        "operationId": "refresh-token",
+        "parameters": [
+          {
+            "name": "grant_type",
+            "in": "query",
+            "description": "Must be “refresh_token”",
+            "required": true,
+            "schema": { "type": "string", "default": "refresh_token" }
+          },
+          {
+            "name": "refresh_token",
+            "in": "query",
+            "description": "The refresh token value",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n  \"access_token\": \"...\",\n  \"token_type\": \"bearer\",\n  \"refresh_token\": \"...\",\n  \"expires_in\": 43199,\n  \"scope\": \"user.profile\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "access_token": { "type": "string", "example": "..." },
+                    "token_type": { "type": "string", "example": "bearer" },
+                    "refresh_token": { "type": "string", "example": "..." },
+                    "expires_in": {
+                      "type": "integer",
+                      "example": 43199,
+                      "default": 0
+                    },
+                    "scope": { "type": "string", "example": "user.profile" }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": { "Result": { "value": "{}" } },
+                "schema": { "type": "object", "properties": {} }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/oauth/auth": {
+      "get": {
+        "summary": "Implicit grant",
+        "description": "",
+        "operationId": "implicit-grant",
+        "parameters": [
+          {
+            "name": "response_type",
+            "in": "query",
+            "description": "The type of the response (should be: token)",
+            "required": true,
+            "schema": { "type": "string", "default": "token" }
+          },
+          {
+            "name": "client_id",
+            "in": "query",
+            "description": "The identifier of the client registered on the server",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "redirect_uri",
+            "in": "query",
+            "description": "The uri for redirection after successful authentication (the value gets validated if is registered in SSO Platform)",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "state",
+            "in": "query",
+            "description": "This parameter will be returned back to requester after successful authentication of user",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "orgGuid",
+            "in": "query",
+            "description": "An identifier of the organization (typically of a district). This value corresponds to the value of GUID that consumers of roster data receive from GG4L. GG4L will prepopulate “Organization selector” in the Login page based on the provided value of orgGuid.",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "іnvalidate",
+            "in": "query",
+            "description": "The default value is “false”. Set the value to “true” to invalidate any active web session and OAuth tokens associated with that session.",
+            "schema": { "type": "boolean", "default": false }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "text/plain": {
+                "examples": {
+                  "Result": {
+                    "value": "Redirect to https://{partner’s_hostname}&access_token=...&token_type=bearer&expires_in=43199&scope={scopes}\n&auth_token=...\n"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": { "Result": { "value": "{}" } },
+                "schema": { "type": "object", "properties": {} }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/oauth/token/": {
+      "post": {
+        "summary": "Service Level Authorization",
+        "description": "",
+        "operationId": "service-level-authorization",
+        "parameters": [
+          {
+            "name": "auth_token",
+            "in": "query",
+            "description": "The signed JWT",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "grant_type",
+            "in": "query",
+            "description": "Must be “jwt-bearer”",
+            "required": true,
+            "schema": { "type": "string", "default": "jwt-bearer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n  \"access_token\": \"...\",\n  \"token_type\": \"bearer\",\n  \"refresh_token\": \"...\",\n  \"expires_in\": 43199,\n  \"scope\": \"user.profile\",\n  \"auth_token\": \"...\"\n}\n"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "access_token": { "type": "string", "example": "..." },
+                    "token_type": { "type": "string", "example": "bearer" },
+                    "refresh_token": { "type": "string", "example": "..." },
+                    "expires_in": {
+                      "type": "integer",
+                      "example": 43199,
+                      "default": 0
+                    },
+                    "scope": { "type": "string", "example": "user.profile" },
+                    "auth_token": { "type": "string", "example": "..." }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": { "Result": { "value": "{}" } },
+                "schema": { "type": "object", "properties": {} }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    }
+  },
+  "x-readme": { "headers": [] },
+  "x-readme-fauxas": true
+}

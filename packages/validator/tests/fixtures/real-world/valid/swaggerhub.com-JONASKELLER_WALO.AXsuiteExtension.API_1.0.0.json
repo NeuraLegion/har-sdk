@@ -1,0 +1,222 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "WALO.AXsuiteExtension.API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/health": {
+      "get": {
+        "tags": ["healthcheck"],
+        "summary": "Perform a Health Check",
+        "description": "## Perform a Health Check\nEndpoint to perform a healthcheck on. This endpoint can primarily be used Docker\nto ensure a robust container orchestration and management is in place. Other\nservices which rely on proper functioning of the API service will not deploy if this\nendpoint returns any other HTTP status code except 200 (OK).\nReturns:\n    HealthCheck: Returns a JSON response with the health status",
+        "operationId": "get_health_health_get",
+        "responses": {
+          "200": {
+            "description": "Return HTTP Status Code 200 (OK)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthCheck"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/token": {
+      "get": {
+        "tags": ["Requests"],
+        "summary": "Login For Access Token",
+        "operationId": "login_for_access_token_token_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Token"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBasic": []
+          }
+        ]
+      }
+    },
+    "/users": {
+      "get": {
+        "tags": ["Requests"],
+        "summary": "Get Users",
+        "operationId": "get_users_users_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/UserResponse"
+                  },
+                  "type": "array",
+                  "title": "Response Get Users Users Get"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/ViewProjects": {
+      "get": {
+        "tags": ["Requests"],
+        "summary": "Get View Projects",
+        "operationId": "get_view_projects_ViewProjects_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ViewProjects"
+                  },
+                  "type": "array",
+                  "title": ""
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
+    "/logout": {
+      "post": {
+        "tags": ["Requests"],
+        "summary": "Logout",
+        "operationId": "logout_logout_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HealthCheck": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "default": "OK"
+          }
+        },
+        "type": "object",
+        "title": "HealthCheck",
+        "description": "Response model to validate and return when performing a health check."
+      },
+      "Token": {
+        "properties": {
+          "access_token": {
+            "type": "string",
+            "title": "Access Token"
+          },
+          "token_type": {
+            "type": "string",
+            "title": "Token Type"
+          }
+        },
+        "type": "object",
+        "required": ["access_token", "token_type"],
+        "title": "TokenResponse"
+      },
+      "UserResponse": {
+        "properties": {
+          "username": {
+            "type": "string",
+            "title": "Username"
+          }
+        },
+        "type": "object",
+        "required": ["username"],
+        "title": "UserResponse"
+      },
+      "ViewProjects": {
+        "properties": {
+          "ProjectNumber": {
+            "type": "integer",
+            "title": "ProjectNumber"
+          },
+          "ProjectName": {
+            "type": "string",
+            "title": "ProjectName"
+          },
+          "Owner": {
+            "type": "integer",
+            "title": "Owner"
+          },
+          "ProjectType": {
+            "type": "integer",
+            "title": "ProjectType"
+          },
+          "MUTDATUM": {
+            "type": "string",
+            "pattern": "yyyy-mm-ddThh:MM:ss",
+            "title": "MUTDATUM"
+          }
+        },
+        "type": "object",
+        "required": [
+          "ProjectNumber",
+          "ProjectName",
+          "Owner",
+          "ProjectType",
+          "MUTDATUM"
+        ],
+        "title": "ViewProjectsResponse"
+      }
+    },
+    "securitySchemes": {
+      "HTTPBasic": {
+        "type": "http",
+        "scheme": "basic"
+      },
+      "OAuth2PasswordBearer": {
+        "type": "oauth2",
+        "flows": {
+          "password": {
+            "scopes": {},
+            "tokenUrl": "https://example.com/token"
+          }
+        }
+      }
+    }
+  }
+}

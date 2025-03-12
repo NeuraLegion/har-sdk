@@ -1,0 +1,499 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Sensibo API",
+    "version": "2.0.0",
+    "description": "# Introduction\nThe Sensibo API is built on HTTP. Our API is RESTful.\nIt accepts JSON in the HTTP body and returns JSON in the result.   \n\nYou can use your favorite HTTP/REST library for your programming language to use the API, or you can use our example client library available in [Python](https://github.com/Sensibo/sensibo-python-sdk).\n\nThe yaml specification file can be uploaded to swagger ([try it live](https://editor.swagger.io/?url=https://raw.githubusercontent.com/Sensibo/sensibo.github.io/master/sensibo.openapi.yaml)).\n## Facebook Group - Best way to get assistance\nThe best way to get help and get involved is to join the official [Sensibo Facebook group](https://facebook.com/groups/sensibo)\n## Support site\nAlso, you can find more resources and help on our [support site](http://support.sensibo.com)\n## Authentication\nWhen you sign up for an account, you can generate API keys [here](https://home.sensibo.com/me/api), and delete API keys (as you may need to rotate your keys in the future). You authenticate to the Sensibo API by providing your api key in the request query parameters as ?apiKey={your_api_key}.\n## GET requests\nMost GET requests can be provided with 'fields' parameter in the query string to specify which fields you'd like to retrieve. If you want to retrieve all fields or see the options specify fields=\\*\n## Common Examples\n### Get all devices info `curl --compressed -X GET https://home.sensibo.com/api/v2/users/me/pods?fields=*&apiKey={api_key}`\n### Turn on the AC `curl --compressed -X POST https://home.sensibo.com/api/v2/pods/{device_id}/acStates?apiKey={api_key} -d \"{\\\"acState\\\":{\\\"on\\\":true}}\"`\n### Turn off the AC `curl --compressed -X POST https://home.sensibo.com/api/v2/pods/{device_id}/acStates?apiKey={api_key} -d \"{\\\"acState\\\":{\\\"on\\\":false}}\"`\n### Get historical measurements `curl --compressed https://home.sensibo.com/api/v2/pods/{device_id}/historicalMeasurements?apiKey={api_key}&days=1`\n## Compression\nYou should accept gzip compression in your calls. Make sure to add \"Accept-Encoding: gzip\" in your calls.\n## Rate limit\nRequests may be rate limited. In such cases you will get HTTP 429. To increase your rate limit, use gzip compression (see above)\n",
+    "x-logo": { "url": "https://sensibo.github.io/logo.png" }
+  },
+  "servers": [{ "url": "https://home.sensibo.com/api/v2" }],
+  "paths": {
+    "/users/me/pods": {
+      "get": {
+        "description": "Get all devices",
+        "parameters": [
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "comma separated fields to retrieve or * for all",
+            "schema": { "type": "string" }
+          }
+        ],
+        "security": [{ "api_key": [] }],
+        "responses": { "200": { "description": "Successful response" } }
+      }
+    },
+    "/pods/{device_id}": {
+      "get": {
+        "description": "Get specific device info",
+        "parameters": [
+          {
+            "name": "device_id",
+            "in": "path",
+            "description": "device unique id",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "comma separated fields to retrieve or * for all",
+            "schema": { "type": "string" }
+          }
+        ],
+        "security": [{ "api_key": [] }],
+        "responses": { "200": { "description": "Success" } }
+      }
+    },
+    "/pods/{device_id}/acStates": {
+      "get": {
+        "description": "Get current and previous AC states",
+        "parameters": [
+          {
+            "name": "device_id",
+            "in": "path",
+            "description": "device unique id",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "number of states to retrieve. Max=20",
+            "schema": { "type": "string" }
+          }
+        ],
+        "security": [{ "api_key": [] }],
+        "responses": { "200": { "description": "Success" } }
+      },
+      "post": {
+        "description": "Set the AC state",
+        "parameters": [
+          {
+            "name": "device_id",
+            "in": "path",
+            "description": "device unique id",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/acStateObject" }
+            }
+          }
+        },
+        "security": [{ "api_key": [] }],
+        "responses": {
+          "200": {
+            "description": "Success. Returns when command actually happened"
+          }
+        }
+      }
+    },
+    "/pods/{device_id}/acStates/{property}": {
+      "patch": {
+        "description": "Change only one property of the AC state",
+        "parameters": [
+          {
+            "name": "device_id",
+            "in": "path",
+            "description": "device unique id",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "property",
+            "in": "path",
+            "description": "The property to change (e.g., targetTemperature)",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/newValueObject" }
+            }
+          }
+        },
+        "security": [{ "api_key": [] }],
+        "responses": {
+          "200": { "description": "Success. Returns historical measurements" }
+        }
+      }
+    },
+    "/pods/{device_id}/historicalMeasurements": {
+      "get": {
+        "description": "Get historical measurements",
+        "parameters": [
+          {
+            "name": "device_id",
+            "in": "path",
+            "description": "device unique id",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "days",
+            "in": "query",
+            "description": "number of days, default is 1",
+            "schema": { "type": "integer" }
+          }
+        ],
+        "security": [{ "api_key": [] }],
+        "responses": {
+          "200": {
+            "description": "Success. Returns when command actually happened"
+          }
+        }
+      }
+    },
+    "/pods/{device_id}/smartmode": {
+      "get": {
+        "description": "Get the Climate React settings",
+        "parameters": [
+          {
+            "name": "device_id",
+            "in": "path",
+            "description": "device unique id",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "security": [{ "api_key": [] }],
+        "responses": { "200": { "description": "Success" } }
+      },
+      "put": {
+        "description": "Enable or disable Climate React",
+        "parameters": [
+          {
+            "name": "device_id",
+            "in": "path",
+            "description": "device unique id",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "enabled": {
+                    "description": "whether to enable or disable Climate React",
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [{ "api_key": [] }],
+        "responses": { "200": { "description": "Success" } }
+      },
+      "post": {
+        "description": "Set Climate React configuration",
+        "parameters": [
+          {
+            "name": "device_id",
+            "in": "path",
+            "description": "device unique id",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "enabled": {
+                    "description": "whether to enable or disable Climate React",
+                    "type": "boolean"
+                  },
+                  "lowTemperatureThreshold": {
+                    "description": "low threshold to trigger Climate React",
+                    "type": "number"
+                  },
+                  "lowTemperatureState": {
+                    "description": "desired state when low threshold is triggered",
+                    "type": "object"
+                  },
+                  "highTemperatureThreshold": {
+                    "description": "high threshold to trigger Climate React",
+                    "type": "number"
+                  },
+                  "highTemperatureState": {
+                    "description": "desired state when high threshold is triggered",
+                    "type": "object"
+                  }
+                },
+                "example": {
+                  "enabled": true,
+                  "lowTemperatureThreshold": 22,
+                  "lowTemperatureState": { "on": false },
+                  "highTemperatureThreshold": 25,
+                  "highTemperatureState": { "on": true, "mode": "cool" }
+                }
+              }
+            }
+          }
+        },
+        "security": [{ "api_key": [] }],
+        "responses": { "200": { "description": "Success" } }
+      }
+    },
+    "/pods/{device_id}/timer/": {
+      "servers": [{ "url": "https://home.sensibo.com/api/v1/" }],
+      "get": {
+        "description": "Get the current timer",
+        "parameters": [
+          {
+            "name": "device_id",
+            "in": "path",
+            "description": "device unique id",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "security": [{ "api_key": [] }],
+        "responses": { "200": { "description": "Success" } }
+      },
+      "delete": {
+        "description": "Delete a timer",
+        "parameters": [
+          {
+            "name": "device_id",
+            "in": "path",
+            "description": "device unique id",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ]
+      },
+      "put": {
+        "description": "Set a timer",
+        "parameters": [
+          {
+            "name": "device_id",
+            "in": "path",
+            "description": "device unique id",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/timerObject" }
+            }
+          }
+        },
+        "security": [{ "api_key": [] }],
+        "responses": { "200": { "description": "Success" } }
+      }
+    },
+    "/pods/{device_id}/schedules/": {
+      "servers": [{ "url": "https://home.sensibo.com/api/v1/" }],
+      "get": {
+        "description": "Get the scheduled items",
+        "parameters": [
+          {
+            "name": "device_id",
+            "in": "path",
+            "description": "device unique id",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "security": [{ "api_key": [] }],
+        "responses": { "200": { "description": "Success" } }
+      },
+      "post": {
+        "description": "create a new schedule",
+        "parameters": [
+          {
+            "name": "device_id",
+            "in": "path",
+            "description": "device unique id",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/scheduleObject" }
+            }
+          }
+        },
+        "security": [{ "api_key": [] }],
+        "responses": { "200": { "description": "Success" } }
+      }
+    },
+    "/pods/{device_id}/schedules/{schedule_id}/": {
+      "servers": [{ "url": "https://home.sensibo.com/api/v1/" }],
+      "get": {
+        "description": "Get a specific schedule",
+        "parameters": [
+          {
+            "name": "device_id",
+            "in": "path",
+            "description": "device unique id",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "schedule_id",
+            "in": "path",
+            "description": "schedule id",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "security": [{ "api_key": [] }],
+        "responses": { "200": { "description": "Success" } }
+      },
+      "delete": {
+        "description": "Delete a specific schedule",
+        "parameters": [
+          {
+            "name": "device_id",
+            "in": "path",
+            "description": "device unique id",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "schedule_id",
+            "in": "path",
+            "description": "schedule id",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "security": [{ "api_key": [] }],
+        "responses": { "200": { "description": "Success" } }
+      },
+      "put": {
+        "description": "Enable or disable a specific schedule",
+        "parameters": [
+          {
+            "name": "device_id",
+            "in": "path",
+            "description": "device unique id",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "schedule_id",
+            "in": "path",
+            "description": "schedule id",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "security": [{ "api_key": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "isEnabled": {
+                    "description": "whether to enable or disable the schedule",
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "Success" } }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "api_key": { "type": "apiKey", "in": "query", "name": "apiKey" }
+    },
+    "schemas": {
+      "acStateObject": {
+        "required": ["acState"],
+        "properties": { "acState": { "$ref": "#/components/schemas/acState" } }
+      },
+      "acState": {
+        "type": "object",
+        "required": [true, "mode", "fanLevel", "targetTemperature"],
+        "properties": {
+          "on": {
+            "type": "boolean",
+            "description": "true for on, false for off"
+          },
+          "mode": {
+            "type": "string",
+            "description": "one of modes in remoteCapabilities (\"cool\", \"heat\", \"fan\", \"auto\", \"dry\")"
+          },
+          "fanLevel": {
+            "type": "string",
+            "description": "one of fan levels in remoteCapabilities (e.g., \"low\", \"medium\", \"high\", \"auto\")"
+          },
+          "targetTemperature": {
+            "type": "integer",
+            "description": "target temperature"
+          },
+          "temperatureUnit": {
+            "type": "string",
+            "description": "'C' for Celsius or 'F' for Fahrenheit"
+          },
+          "swing": {
+            "type": "string",
+            "description": "one of the swing states in remoteCapabilities (e.g., \"stopped\", \"rangeful\")"
+          }
+        }
+      },
+      "newValueObject": {
+        "type": "object",
+        "required": ["newValue"],
+        "properties": {
+          "newValue": { "type": "string", "description": "the new value" }
+        }
+      },
+      "timerObject": {
+        "type": "object",
+        "required": ["minutesFromNow", "acState"],
+        "properties": {
+          "minutesFromNow": {
+            "type": "integer",
+            "description": "fire the timer in X minutes"
+          },
+          "acState": { "$ref": "#/components/schemas/acState" }
+        }
+      },
+      "scheduleObject": {
+        "type": "object",
+        "required": [
+          "targetTimeLocal",
+          "timezone",
+          "acState",
+          "recurOnDaysOfWeek"
+        ],
+        "properties": {
+          "targetTimeLocal": {
+            "type": "string",
+            "description": "time in 24 hour format. e.g., 22:15 for ten fifteen pm"
+          },
+          "timezone": {
+            "type": "string",
+            "description": "timezone for the user (e.g., Europe/Oslo)"
+          },
+          "acState": { "$ref": "#/components/schemas/acState" },
+          "recurOnDaysOfWeek": {
+            "description": "a list of days the schedule is recurring (e.g., [\"sunday\", \"tuesday\"]). Empty list if not recurring"
+          }
+        }
+      }
+    }
+  }
+}

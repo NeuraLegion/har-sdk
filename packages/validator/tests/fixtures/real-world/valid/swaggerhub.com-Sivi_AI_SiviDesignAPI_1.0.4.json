@@ -1,0 +1,777 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Sivi Gen-2 API - OpenAPI 3.1",
+    "description": "Sivi is an AI designer. You can generate product banners, ads and so on for your content and in your brand guideline.",
+    "termsOfService": "https://sivi.ai/terms-of-service",
+    "contact": { "email": "support@sivi.ai" },
+    "version": "1.0.4"
+  },
+  "servers": [
+    { "url": "https://connect.sivi.ai/gen-staging" },
+    { "url": "https://connect.sivi.ai/gen-prod" }
+  ],
+  "tags": [
+    {
+      "name": "generation-request",
+      "description": "Submit Generation request and return url for checking its Status"
+    },
+    {
+      "name": "generation-event",
+      "description": "Get the status of generation request"
+    }
+  ],
+  "paths": {
+    "/get-job-by-jid-llm": {
+      "get": {
+        "tags": ["generation-event"],
+        "summary": "Job Request status",
+        "description": "Get the job request status with all designs urls",
+        "operationId": "getJobByJIDLLM",
+        "security": [{ "oAuth2ClientCredentials": [] }, { "ApiKeyAuth": [] }],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "queryParams",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/jobReqListInput" }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Failed to authenticate request. Please add `sivi-api-key` header in request.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/authFailedOutput" }
+              }
+            }
+          },
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/jobReqListOutput" }
+              }
+            }
+          },
+          "500": {
+            "description": "Server internal error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/reqFailureOutput" }
+              }
+            }
+          },
+          "422": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "number", "examples": [422] },
+                    "body": {
+                      "type": "object",
+                      "properties": { "message": { "type": "string" } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["generation-event"],
+        "summary": "Job Request status",
+        "description": "Get the job request status with all designs urls",
+        "operationId": "jobByJIDLLM",
+        "security": [{ "oAuth2ClientCredentials": [] }, { "ApiKeyAuth": [] }],
+        "requestBody": {
+          "description": "Optional description in *Markdown*",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/jobReqListInput" }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Failed to authenticate request. Please add `sivi-api-key` header in request.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/authFailedOutput" }
+              }
+            }
+          },
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/jobReqListOutput" }
+              }
+            }
+          },
+          "500": {
+            "description": "Server internal error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/reqFailureOutput" }
+              }
+            }
+          },
+          "422": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "number", "examples": [422] },
+                    "body": {
+                      "type": "object",
+                      "properties": { "message": { "type": "string" } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/designs-from-prompt": {
+      "get": {
+        "tags": ["generation-request"],
+        "description": "Add generation request to queue and return its url to check its current status with BTS (Behind The Scene)",
+        "operationId": "getSubmitGenerationRequest",
+        "security": [{ "oAuth2ClientCredentials": [] }, { "ApiKeyAuth": [] }],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "queryParams",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/reqSubmitInput" }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Failed to authenticate request. Please add `sivi-api-key` header in request.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/authFailedOutput" }
+              }
+            }
+          },
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/reqSubmitOuput" }
+              }
+            }
+          },
+          "500": {
+            "description": "Server internal error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/reqFailureOutput" }
+              }
+            }
+          },
+          "402": {
+            "description": "User is not having enough credits to fullfill request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/reqFailureForCredits"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "number", "examples": [422] },
+                    "body": {
+                      "type": "object",
+                      "properties": { "message": { "type": "string" } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["generation-request"],
+        "description": "Add generation request to queue and return its url to check its current status with BTS (Behind The Scene)",
+        "operationId": "submitGenerationRequest",
+        "security": [{ "oAuth2ClientCredentials": [] }, { "ApiKeyAuth": [] }],
+        "requestBody": {
+          "description": "Request can be submitted with pre-generated content or promptValue",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/reqSubmitInput" }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Failed to authenticate request. Please add `sivi-api-key` header in request.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/authFailedOutput" }
+              }
+            }
+          },
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/reqSubmitOuput" }
+              }
+            }
+          },
+          "500": {
+            "description": "Server internal error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/reqFailureOutput" }
+              }
+            }
+          },
+          "402": {
+            "description": "User is not having enough credits to fullfill request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/reqFailureForCredits"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "number", "examples": [422] },
+                    "body": {
+                      "type": "object",
+                      "properties": { "message": { "type": "string" } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/designs-from-content": {
+      "get": {
+        "tags": ["generation-request"],
+        "description": "Add generation request to queue and return its url to check its current status with BTS (Behind The Scene)",
+        "operationId": "getSubmitGenerationRequestWithContent",
+        "security": [{ "oAuth2ClientCredentials": [] }, { "ApiKeyAuth": [] }],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "queryParams",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/reqSubmitWithContentInput"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Failed to authenticate request. Please add `sivi-api-key` header in request.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/authFailedOutput" }
+              }
+            }
+          },
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/reqSubmitOuput" }
+              }
+            }
+          },
+          "500": {
+            "description": "Server internal error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/reqFailureOutput" }
+              }
+            }
+          },
+          "402": {
+            "description": "User is not having enough credits to fullfill request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/reqFailureForCredits"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/invalidInputOutput" }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["generation-request"],
+        "description": "Add generation request to queue and return its url to check its current status with BTS (Behind The Scene)",
+        "operationId": "submitGenerationRequestWithContent",
+        "security": [{ "oAuth2ClientCredentials": [] }, { "ApiKeyAuth": [] }],
+        "requestBody": {
+          "description": "Request can be submitted with pre-generated content or promptValue",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/reqSubmitWithContentInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Failed to authenticate request. Please add `sivi-api-key` header in request.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/authFailedOutput" }
+              }
+            }
+          },
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/reqSubmitOuput" }
+              }
+            }
+          },
+          "500": {
+            "description": "Server internal error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/reqFailureOutput" }
+              }
+            }
+          },
+          "402": {
+            "description": "User is not having enough credits to fullfill request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/reqFailureForCredits"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/invalidInputOutput" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "oAuth2ClientCredentials": {
+        "type": "oauth2",
+        "description": "Sivi Auth per user",
+        "flows": {
+          "authorizationCode": {
+            "authorizationUrl": "https://instant.sivi.ai/oauth/login",
+            "tokenUrl": "https://connect.sivi.ai/gen-prod/get-thirdparty-auth-token",
+            "scopes": {}
+          }
+        }
+      },
+      "oAuth2ClientCredentialsStaging": {
+        "type": "oauth2",
+        "description": "Sivi Auth per user",
+        "flows": {
+          "authorizationCode": {
+            "authorizationUrl": "https://instant-staging.sivi.ai/oauth/login",
+            "tokenUrl": "https://connect.sivi.ai/gen-staging/get-thirdparty-auth-token",
+            "scopes": {}
+          }
+        }
+      },
+      "ApiKeyAuth": { "type": "apiKey", "in": "header", "name": "sivi-api-key" }
+    },
+    "schemas": {
+      "reqSubmitWithContentInput": {
+        "type": "object",
+        "properties": {
+          "numOfVariants": {
+            "type": "number",
+            "examples": [4],
+            "description": "Number of variants/designs required. Maximum 4 and minimum 1 designs can be generated at same time.",
+            "optional": true
+          },
+          "purpose": {
+            "type": "string",
+            "description": "Purpose of generated design",
+            "examples": ["promote-product"]
+          },
+          "medium": {
+            "type": "string",
+            "description": "medium value in case of userContent is not passed",
+            "examples": ["amazon"],
+            "optional": true
+          },
+          "mediumType": {
+            "type": "string",
+            "description": "mediumType value in case of userContent is not passed",
+            "examples": ["amazon-fullscreen-HD"],
+            "optional": true
+          },
+          "dimension": {
+            "type": "object",
+            "description": "Dimension object in case of userContent, medium and mediumType are not passed",
+            "optional": true,
+            "properties": {
+              "width": { "type": "number", "examples": [1920] },
+              "height": { "type": "number", "examples": [1080] }
+            }
+          },
+          "userContent": {
+            "type": "object",
+            "properties": {
+              "copy": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "examples": ["Discover the Freedom"]
+                  },
+                  "supertext": { "type": "string", "examples": ["New Year"] },
+                  "subtext": {
+                    "type": "string",
+                    "examples": [
+                      "Explore our latest collection of cars and bikes."
+                    ]
+                  },
+                  "button": { "type": "string", "examples": ["Shop Now"] },
+                  "caption": {
+                    "type": "string",
+                    "examples": ["Terms and conditions apply."]
+                  },
+                  "coupon": { "type": "string", "examples": ["BONUS20"] },
+                  "offer": {
+                    "type": "string",
+                    "examples": ["Limited Time: Up to 20% Off"]
+                  },
+                  "bulletlist": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "examples": ["Wide range of models"]
+                    }
+                  },
+                  "numberedlist": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "examples": ["Wide range of models"]
+                    }
+                  },
+                  "date_time": {
+                    "type": "string",
+                    "examples": ["12th July 2024"]
+                  },
+                  "phone": {
+                    "type": "string",
+                    "examples": ["+1 (800) 3543 323"]
+                  },
+                  "email": {
+                    "type": "string",
+                    "examples": ["joe@example.com"]
+                  },
+                  "website": {
+                    "type": "string",
+                    "examples": ["www.example.com"]
+                  },
+                  "address": {
+                    "type": "string",
+                    "examples": ["40, M. Ave, Richmond road, US"]
+                  },
+                  "whatsapp": {
+                    "type": "string",
+                    "examples": ["+1 6351621222"]
+                  },
+                  "instagram": { "type": "string", "examples": ["@example"] },
+                  "facebook": { "type": "string", "examples": ["example"] },
+                  "linkedin": { "type": "string", "examples": ["joe_example"] },
+                  "twitter": { "type": "string", "examples": ["@example"] },
+                  "behance": { "type": "string", "examples": ["example"] },
+                  "dribbble": { "type": "string", "examples": ["example"] },
+                  "pinterest": { "type": "string", "examples": ["example"] },
+                  "slack": { "type": "string", "examples": ["example"] },
+                  "text": { "type": "string", "examples": ["example"] }
+                }
+              },
+              "language": { "type": "string", "examples": ["english"] },
+              "designName": { "type": "string", "examples": ["New design"] },
+              "colors": {
+                "type": "array",
+                "items": { "type": "string" },
+                "examples": [["#90EE90"]]
+              },
+              "assets": {
+                "type": "object",
+                "properties": {
+                  "image": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "url": {
+                          "type": "string",
+                          "examples": [
+                            "https://images.pexels.com/photos/3225517/pexels-photo-3225517.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                          ]
+                        },
+                        "imagePreference": {
+                          "type": "object",
+                          "properties": {
+                            "crop": { "type": "boolean", "examples": [true] },
+                            "removeBg": {
+                              "type": "boolean",
+                              "examples": [false]
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "logo": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "url": {
+                          "type": "string",
+                          "examples": ["https://logos.com/logo_sivi.png"]
+                        },
+                        "logoPreference": {
+                          "type": "object",
+                          "properties": {
+                            "style": {
+                              "type": "string",
+                              "examples": ["backdrop"]
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "icon": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "url": {
+                          "type": "string",
+                          "examples": ["https://icons-repo.com/nature/tree.svg"]
+                        },
+                        "iconPreference": {
+                          "type": "object",
+                          "properties": {
+                            "style": { "type": "string", "examples": ["line"] }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "dimensions": {
+                "type": "object",
+                "properties": {
+                  "width": { "type": "number", "examples": [450] },
+                  "height": { "type": "number", "examples": [580] },
+                  "name": {
+                    "type": "string",
+                    "description": "Design object name",
+                    "examples": ["My First Design"]
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "reqSubmitInput": {
+        "type": "object",
+        "properties": {
+          "numOfVariants": {
+            "type": "number",
+            "examples": [4],
+            "description": "Number of variants/designs required. Maximum 4 and minimum 1 designs can be generated at same time.",
+            "optional": true
+          },
+          "purpose": {
+            "type": "string",
+            "description": "Purpose of generated design",
+            "examples": ["promote-product"]
+          },
+          "promptValue": {
+            "type": "string",
+            "description": "Prompt value in case of userContent is not passed",
+            "examples": ["a cat sleeping on floor"]
+          },
+          "medium": {
+            "type": "string",
+            "description": "medium value in case of userContent is not passed",
+            "examples": ["amazon"]
+          },
+          "mediumType": {
+            "type": "string",
+            "description": "mediumType value in case of userContent is not passed",
+            "examples": ["amazon-fullscreen-HD"]
+          },
+          "dimension": {
+            "type": "object",
+            "description": "Dimension object in case of userContent, medium and mediumType are not passed",
+            "properties": {
+              "width": { "type": "number", "examples": [1920] },
+              "height": { "type": "number", "examples": [1080] }
+            }
+          }
+        }
+      },
+      "reqSubmitOuput": {
+        "type": "object",
+        "properties": {
+          "status": { "type": "number", "examples": [200] },
+          "body": {
+            "type": "object",
+            "properties": {
+              "extraWaitTime": { "type": "number" },
+              "jId": { "type": "string" },
+              "link": { "type": "string" },
+              "resultLink": { "type": "string" }
+            }
+          }
+        }
+      },
+      "reqFailureForCredits": {
+        "type": "object",
+        "properties": {
+          "status": { "type": "number", "examples": [402] },
+          "body": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string",
+                "examples": ["Not enough credits to complete tranaction"]
+              }
+            }
+          }
+        }
+      },
+      "jobReqListInput": {
+        "type": "object",
+        "properties": {
+          "jId": {
+            "type": "string",
+            "format": "ascii",
+            "examples": ["sbhMkIZKCPp"]
+          }
+        }
+      },
+      "reqFailureOutput": {
+        "type": "object",
+        "properties": {
+          "status": { "type": "number", "examples": [500] },
+          "body": {
+            "type": "object",
+            "properties": { "message": { "type": "string" } }
+          }
+        }
+      },
+      "invalidInputOutput": {
+        "type": "object",
+        "properties": {
+          "status": { "type": "number", "examples": [422] },
+          "body": {
+            "type": "object",
+            "properties": { "message": { "type": "string" } }
+          }
+        }
+      },
+      "authFailedOutput": {
+        "type": "object",
+        "properties": {
+          "status": { "type": "number", "examples": [401] },
+          "body": {
+            "type": "object",
+            "properties": { "message": { "type": "string" } }
+          }
+        }
+      },
+      "jobReqListOutput": {
+        "type": "object",
+        "properties": {
+          "status": { "type": "number", "examples": [200] },
+          "body": {
+            "type": "object",
+            "properties": {
+              "extraWaitTime": { "type": "number" },
+              "status": { "type": "string" },
+              "link": { "type": "string" },
+              "resultLink": { "type": "string" },
+              "urls": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "previewUrl": { "type": "string" },
+                    "variantUrl": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

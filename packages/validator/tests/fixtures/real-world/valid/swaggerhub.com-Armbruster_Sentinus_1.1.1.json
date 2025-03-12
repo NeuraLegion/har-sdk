@@ -1,0 +1,221 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Sentinus Camera API",
+    "description": "API for controlling and configuring programs on a Sentinus AI camera",
+    "version": "1.1.1"
+  },
+  "tags": [
+    { "name": "Camera", "description": "Endpoints for controlling the camera" },
+    {
+      "name": "ELAM",
+      "description": "Endpoints for webhooks and result submission"
+    }
+  ],
+  "paths": {
+    "/program/start": {
+      "post": {
+        "tags": ["Camera"],
+        "summary": "Starts a program on the camera",
+        "requestBody": {
+          "description": "Details of the program to start, including a webhook URL to receive the result and an ID to be included in the result",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "programId": { "type": "string", "example": "12345" },
+                  "webhookResultUrl": {
+                    "type": "string",
+                    "format": "uri",
+                    "example": "http://elam-address/webhook/result"
+                  },
+                  "webhookMessageUrl": {
+                    "type": "string",
+                    "format": "uri",
+                    "example": "http://elam-address/webhook/message"
+                  },
+                  "webhookTimeoutUrl": {
+                    "type": "string",
+                    "format": "uri",
+                    "example": "http://elam-address/webhook/timeout"
+                  },
+                  "timeout": { "type": "number", "example": 30 },
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "550e8400-e29b-41d4-a716-446655440000"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": { "description": "No content" },
+          "400": { "description": "Invalid request" },
+          "404": { "description": "Program not found" }
+        }
+      }
+    },
+    "/program/cancel": {
+      "post": {
+        "tags": ["Camera"],
+        "summary": "Cancels the currently active program on the camera",
+        "responses": { "204": { "description": "No content" } }
+      }
+    },
+    "/program/status": {
+      "get": {
+        "tags": ["Camera"],
+        "summary": "Retrieves the ID of the currently active program, if any",
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved the ID of the active program",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "programId": { "type": "string", "example": "12345" },
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "550e8400-e29b-41d4-a716-446655440000"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "204": { "description": "No active program" }
+        }
+      }
+    },
+    "/livestream": {
+      "get": {
+        "tags": ["Camera"],
+        "summary": "Retrieves the live video stream from the camera",
+        "responses": {
+          "200": {
+            "description": "Live video stream successfully retrieved",
+            "content": {
+              "multipart/x-mixed-replace": {
+                "schema": {
+                  "description": "Contains image/jpeg as content type.",
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/webhook/result": {
+      "post": {
+        "tags": ["ELAM"],
+        "summary": "Receives the result from the camera",
+        "description": "This endpoint receives the result of the program execution from the camera.\nThe URL is dynamically set by the `webhookResultUrl` provided in the `/program/start` request.\n",
+        "requestBody": {
+          "description": "Result data from the camera, including the ID provided in the `/program/start` request, the result status, and the image encoded in base64",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "programId": { "type": "string", "example": "12345" },
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "550e8400-e29b-41d4-a716-446655440000"
+                  },
+                  "result": {
+                    "type": "string",
+                    "enum": ["correct", "incorrect"],
+                    "example": "correct"
+                  },
+                  "image": {
+                    "type": "string",
+                    "format": "byte",
+                    "example": "iVBORw0KGgoAAAANSUhEUgAAAAUA"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": { "description": "No content" },
+          "409": { "description": "Conflict" }
+        }
+      }
+    },
+    "/webhook/message": {
+      "post": {
+        "tags": ["ELAM"],
+        "summary": "Receives a message from the camera",
+        "description": "This endpoint receives a message from the camera.\nThe URL is dynamically set by the `webhookMessageUrl` provided in the `/program/start` request.\n",
+        "requestBody": {
+          "description": "Message from the camera, including the ID provided in the `/program/start` request and the raw message",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "programId": { "type": "string", "example": "12345" },
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "550e8400-e29b-41d4-a716-446655440000"
+                  },
+                  "rawMessage": {
+                    "type": "string",
+                    "example": "The position is not correct"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": { "description": "No content" },
+          "409": { "description": "Conflict" }
+        }
+      }
+    },
+    "/webhook/timeout": {
+      "post": {
+        "tags": ["ELAM"],
+        "summary": "Receives a timeout from the camera",
+        "description": "This endpoint receives a timeout from the camera.\nThe URL is dynamically set by the `webhookTimeoutUrl` provided in the `/program/start` request.\n",
+        "requestBody": {
+          "description": "Timeout from the camera, including the ID provided in the `/program/start` request",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "programId": { "type": "string", "example": "12345" },
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "550e8400-e29b-41d4-a716-446655440000"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": { "description": "No content" },
+          "409": { "description": "Conflict" }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,544 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Messaging API",
+    "version": "1.0.0",
+    "description": "API documentation for messaging system with channel quota configuration, blacklist management, and usage summary features."
+  },
+  "servers": [
+    { "url": "https://api.example.com/v1", "description": "Production server" }
+  ],
+  "paths": {
+    "/summary": {
+      "get": {
+        "summary": "Get daily sending summary",
+        "description": "Fetch summary data of daily sending with filters.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "startDate",
+            "schema": { "type": "string", "format": "date" },
+            "required": false,
+            "description": "Start date for the summary"
+          },
+          {
+            "in": "query",
+            "name": "endDate",
+            "schema": { "type": "string", "format": "date" },
+            "required": false,
+            "description": "End date for the summary"
+          },
+          {
+            "in": "query",
+            "name": "application",
+            "schema": { "type": "string" },
+            "required": false,
+            "description": "Application name filter"
+          },
+          {
+            "in": "query",
+            "name": "type",
+            "schema": { "type": "string" },
+            "required": false,
+            "description": "Type filter"
+          },
+          {
+            "in": "query",
+            "name": "channel",
+            "schema": { "type": "string" },
+            "required": false,
+            "description": "Channel filter"
+          },
+          {
+            "in": "query",
+            "name": "entity",
+            "schema": { "type": "string" },
+            "required": false,
+            "description": "Entity filter"
+          },
+          {
+            "in": "query",
+            "name": "pageSize",
+            "schema": { "type": "integer" },
+            "required": true,
+            "description": "Number of items per page"
+          },
+          {
+            "in": "query",
+            "name": "pageNum",
+            "schema": { "type": "integer" },
+            "required": true,
+            "description": "Page number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Summary data retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": { "type": "string" },
+                          "application": { "type": "string" },
+                          "type": { "type": "string" },
+                          "channel": { "type": "string" },
+                          "entity": { "type": "string" },
+                          "successCount": { "type": "integer" },
+                          "failedCount": { "type": "integer" }
+                        }
+                      }
+                    },
+                    "pagination": {
+                      "type": "object",
+                      "properties": {
+                        "totalItems": { "type": "integer" },
+                        "totalPages": { "type": "integer" },
+                        "currentPage": { "type": "integer" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "description": "Bad request due to invalid parameters" },
+          "500": { "description": "Internal server error" }
+        }
+      }
+    },
+    "/enums": {
+      "get": {
+        "summary": "Get enumeration values for filters",
+        "description": "Fetch enumeration values for applications, types, channels, and entities.",
+        "responses": {
+          "200": {
+            "description": "Enum values retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "applications": {
+                      "type": "array",
+                      "items": { "type": "string" }
+                    },
+                    "types": { "type": "array", "items": { "type": "string" } },
+                    "channels": {
+                      "type": "array",
+                      "items": { "type": "string" }
+                    },
+                    "entities": {
+                      "type": "array",
+                      "items": { "type": "string" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": { "description": "Internal server error" }
+        }
+      }
+    },
+    "/channel-quotas": {
+      "get": {
+        "summary": "Get all channel quota configurations",
+        "description": "Fetch all current channel quota configurations with pagination and filters.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "type",
+            "schema": { "type": "string" },
+            "required": false,
+            "description": "Filter by type"
+          },
+          {
+            "in": "query",
+            "name": "channel",
+            "schema": { "type": "string" },
+            "required": false,
+            "description": "Filter by channel"
+          },
+          {
+            "in": "query",
+            "name": "entity",
+            "schema": { "type": "string" },
+            "required": false,
+            "description": "Filter by entity"
+          },
+          {
+            "in": "query",
+            "name": "pageSize",
+            "schema": { "type": "integer" },
+            "required": true,
+            "description": "Number of items per page"
+          },
+          {
+            "in": "query",
+            "name": "pageNum",
+            "schema": { "type": "integer" },
+            "required": true,
+            "description": "Page number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Quota configurations retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": { "type": "string" },
+                          "type": { "type": "string" },
+                          "channel": { "type": "string" },
+                          "entity": { "type": "string" },
+                          "warmQuota": { "type": "integer" },
+                          "hotQuota": { "type": "integer" },
+                          "limitQuota": { "type": "integer" }
+                        }
+                      }
+                    },
+                    "pagination": {
+                      "type": "object",
+                      "properties": {
+                        "totalItems": { "type": "integer" },
+                        "totalPages": { "type": "integer" },
+                        "currentPage": { "type": "integer" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": { "description": "Internal server error" }
+        }
+      },
+      "put": {
+        "summary": "Update channel quota configuration",
+        "description": "Update the limit of each channel quota.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": { "type": "string" },
+                  "warmQuota": { "type": "integer" },
+                  "hotQuota": { "type": "integer" },
+                  "limitQuota": { "type": "integer" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Quota configuration updated successfully" },
+          "400": { "description": "Bad request due to invalid input" },
+          "500": { "description": "Internal server error" }
+        }
+      }
+    },
+    "/channel-configurations": {
+      "get": {
+        "summary": "Get channel configurations",
+        "description": "Fetch all current channel configurations with pagination and filters.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "type",
+            "schema": { "type": "string" },
+            "required": false,
+            "description": "Filter by type"
+          },
+          {
+            "in": "query",
+            "name": "channel",
+            "schema": { "type": "string" },
+            "required": false,
+            "description": "Filter by channel"
+          },
+          {
+            "in": "query",
+            "name": "entity",
+            "schema": { "type": "string" },
+            "required": false,
+            "description": "Filter by entity"
+          },
+          {
+            "in": "query",
+            "name": "enabled",
+            "schema": { "type": "boolean" },
+            "required": false,
+            "description": "Filter by enabled status"
+          },
+          {
+            "in": "query",
+            "name": "pageSize",
+            "schema": { "type": "integer" },
+            "required": true,
+            "description": "Number of items per page"
+          },
+          {
+            "in": "query",
+            "name": "pageNum",
+            "schema": { "type": "integer" },
+            "required": true,
+            "description": "Page number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Channel configurations retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": { "type": "string" },
+                          "type": { "type": "string" },
+                          "channel": { "type": "string" },
+                          "entity": { "type": "string" },
+                          "enabled": { "type": "boolean" },
+                          "applications": {
+                            "type": "array",
+                            "items": { "type": "string" }
+                          }
+                        }
+                      }
+                    },
+                    "pagination": {
+                      "type": "object",
+                      "properties": {
+                        "totalItems": { "type": "integer" },
+                        "totalPages": { "type": "integer" },
+                        "currentPage": { "type": "integer" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": { "description": "Internal server error" }
+        }
+      },
+      "put": {
+        "summary": "Update channel configuration",
+        "description": "Enable/disable a channel and decide which application can use the channel.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": { "type": "string" },
+                  "enabled": { "type": "boolean" },
+                  "applications": {
+                    "type": "array",
+                    "items": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Channel configuration updated successfully"
+          },
+          "400": { "description": "Bad request due to invalid input" },
+          "500": { "description": "Internal server error" }
+        }
+      }
+    },
+    "/blacklist": {
+      "get": {
+        "summary": "Get blacklist",
+        "description": "Fetch all blacklisted mobile phone numbers with pagination and filters.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "mobilePhoneNumber",
+            "schema": { "type": "string" },
+            "required": false,
+            "description": "Filter by mobile phone number"
+          },
+          {
+            "in": "query",
+            "name": "reason",
+            "schema": { "type": "string" },
+            "required": false,
+            "description": "Filter by blacklist reason"
+          },
+          {
+            "in": "query",
+            "name": "startDateTime",
+            "schema": { "type": "string", "format": "date-time" },
+            "required": false,
+            "description": "Start datetime for filtering blacklist entries"
+          },
+          {
+            "in": "query",
+            "name": "endDateTime",
+            "schema": { "type": "string", "format": "date-time" },
+            "required": false,
+            "description": "End datetime for filtering blacklist entries"
+          },
+          {
+            "in": "query",
+            "name": "pageSize",
+            "schema": { "type": "integer" },
+            "required": true,
+            "description": "Number of items per page"
+          },
+          {
+            "in": "query",
+            "name": "pageNum",
+            "schema": { "type": "integer" },
+            "required": true,
+            "description": "Page number"
+          },
+          {
+            "in": "query",
+            "name": "search",
+            "schema": { "type": "string" },
+            "required": false,
+            "description": "Search query string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Blacklist data retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": { "type": "string" },
+                          "mobilePhoneNumber": { "type": "string" },
+                          "blacklistReason": { "type": "string" },
+                          "blacklistEndDateTime": {
+                            "type": "string",
+                            "format": "date-time"
+                          }
+                        }
+                      }
+                    },
+                    "pagination": {
+                      "type": "object",
+                      "properties": {
+                        "totalItems": { "type": "integer" },
+                        "totalPages": { "type": "integer" },
+                        "currentPage": { "type": "integer" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": { "description": "Internal server error" }
+        }
+      },
+      "post": {
+        "summary": "Create a new blacklist entry",
+        "description": "Add a new mobile phone number to the blacklist.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "mobilePhoneNumber": { "type": "string" },
+                  "blacklistReason": { "type": "string" },
+                  "blacklistEndDateTime": {
+                    "type": "string",
+                    "format": "date-time"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Blacklist entry created successfully" },
+          "400": { "description": "Bad request due to invalid input" },
+          "500": { "description": "Internal server error" }
+        }
+      },
+      "put": {
+        "summary": "Update a blacklist entry",
+        "description": "Update an existing blacklist entry.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": { "type": "string" },
+                  "blacklistReason": { "type": "string" },
+                  "blacklistEndDateTime": {
+                    "type": "string",
+                    "format": "date-time"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Blacklist entry updated successfully" },
+          "400": { "description": "Bad request due to invalid input" },
+          "500": { "description": "Internal server error" }
+        }
+      },
+      "delete": {
+        "summary": "Delete a blacklist entry",
+        "description": "Remove a mobile phone number from the blacklist.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": { "id": { "type": "string" } }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Blacklist entry deleted successfully" },
+          "400": { "description": "Bad request due to invalid input" },
+          "500": { "description": "Internal server error" }
+        }
+      }
+    }
+  }
+}

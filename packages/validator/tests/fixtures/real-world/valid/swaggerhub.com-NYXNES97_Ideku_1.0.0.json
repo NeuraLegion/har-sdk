@@ -1,0 +1,24 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Ideku API",
+    "description": "This API documentation BETA version or Bad Version for now, this have purpose just for developer absolute beginner if who one wanna to build a simple Apps, and i decided use for myself too."
+  },
+  "paths": {
+    "/tasks": {
+      "get": {
+        "tags": ["tasks"],
+        "summary": "Get existing tasks",
+        "description": "Show all tasks",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": { "application/json": { "schema": { "type": "array" } } }
+          },
+          "400": { "description": "Invalid status value" }
+        }
+      }
+    }
+  }
+}

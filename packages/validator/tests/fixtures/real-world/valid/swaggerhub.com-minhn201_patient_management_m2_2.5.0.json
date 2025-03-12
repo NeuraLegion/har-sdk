@@ -1,0 +1,754 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Patient Management API",
+    "description": "The API for patient management for MisterEd system.",
+    "version": "2.5.0",
+    "x-logo": {
+      "url": "https://fastapi.tiangolo.com/img/logo-margin/logo-teal.png"
+    }
+  },
+  "paths": {
+    "/login/": {
+      "post": {
+        "summary": "User Validation",
+        "operationId": "user_validation_login__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/LoginData" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/LoginResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/create-account/": {
+      "post": {
+        "summary": "Create New Account",
+        "operationId": "create_new_account_create_account__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AccountCreationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountCreationResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{patient_id}/account-info/": {
+      "put": {
+        "summary": "Update Account Information",
+        "operationId": "update_account_information__patient_id__account_info__put",
+        "parameters": [
+          {
+            "name": "patient_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "Patient Id" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAccountInformationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ResponseMessage" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete Account Information",
+        "operationId": "delete_account_information__patient_id__account_info__delete",
+        "parameters": [
+          {
+            "name": "patient_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "Patient Id" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ResponseMessage" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{patient_id}/": {
+      "get": {
+        "summary": "Get User Health Info",
+        "operationId": "get_user_health_info__patient_id___get",
+        "parameters": [
+          {
+            "name": "patient_id",
+            "in": "path",
+            "required": true,
+            "schema": { "title": "Patient Id" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserHealthInfoResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{patient_id}/health-info/": {
+      "put": {
+        "summary": "Update User Health Info",
+        "operationId": "update_user_health_info__patient_id__health_info__put",
+        "parameters": [
+          {
+            "name": "patient_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "Patient Id" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserHealthInfoRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ResponseMessage" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete User Health Info",
+        "operationId": "delete_user_health_info__patient_id__health_info__delete",
+        "parameters": [
+          {
+            "name": "patient_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "Patient Id" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ResponseMessage" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{patient_id}/triages/": {
+      "get": {
+        "summary": "Get Triage List",
+        "operationId": "get_triage_list__patient_id__triages__get",
+        "parameters": [
+          {
+            "name": "patient_id",
+            "in": "path",
+            "required": true,
+            "schema": { "title": "Patient Id" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/TriageListResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{patient_id}/triages/{triage_id}": {
+      "get": {
+        "summary": "Get Specific Triage",
+        "operationId": "get_specific_triage__patient_id__triages__triage_id__get",
+        "parameters": [
+          {
+            "name": "patient_id",
+            "in": "path",
+            "required": true,
+            "schema": { "title": "Patient Id" }
+          },
+          {
+            "name": "triage_id",
+            "in": "path",
+            "required": true,
+            "schema": { "title": "Triage Id" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TriageDetailResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update Triage",
+        "operationId": "update_triage__patient_id__triages__triage_id__put",
+        "parameters": [
+          {
+            "name": "patient_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "Patient Id" }
+          },
+          {
+            "name": "triage_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "Triage Id" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UpdateTriageRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ResponseMessage" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete Triage",
+        "operationId": "delete_triage__patient_id__triages__triage_id__delete",
+        "parameters": [
+          {
+            "name": "patient_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "Patient Id" }
+          },
+          {
+            "name": "triage_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "Triage Id" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ResponseMessage" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AccountCreationRequest": {
+        "properties": {
+          "account_info": {
+            "$ref": "#/components/schemas/AccountInformationCreation"
+          },
+          "health_info": {
+            "$ref": "#/components/schemas/UserHealthInfoCreation"
+          }
+        },
+        "type": "object",
+        "required": ["account_info", "health_info"],
+        "title": "AccountCreationRequest"
+      },
+      "AccountCreationResponse": {
+        "properties": {
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "example": "Account created successfully."
+          },
+          "patient_id": {
+            "type": "string",
+            "title": "Patient Id",
+            "example": "12345"
+          },
+          "user_name": {
+            "type": "string",
+            "title": "User Name",
+            "example": "John Doe"
+          },
+          "username": {
+            "type": "string",
+            "title": "Username",
+            "example": "johndoe12345"
+          }
+        },
+        "type": "object",
+        "required": ["message", "patient_id", "user_name", "username"],
+        "title": "AccountCreationResponse"
+      },
+      "AccountInformationCreation": {
+        "properties": {
+          "username": { "type": "string", "title": "Username" },
+          "password": { "type": "string", "title": "Password" },
+          "first": { "type": "string", "title": "First" },
+          "last": { "type": "string", "title": "Last" },
+          "phone": { "type": "string", "title": "Phone" },
+          "email": { "type": "string", "title": "Email" },
+          "str_num": { "type": "string", "title": "Str Num" },
+          "str_name": { "type": "string", "title": "Str Name" },
+          "city": { "type": "string", "title": "City" },
+          "province": { "type": "string", "title": "Province" },
+          "postal_code": { "type": "string", "title": "Postal Code" }
+        },
+        "type": "object",
+        "required": [
+          "username",
+          "password",
+          "first",
+          "last",
+          "phone",
+          "email",
+          "str_num",
+          "str_name",
+          "city",
+          "province",
+          "postal_code"
+        ],
+        "title": "AccountInformationCreation"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": { "$ref": "#/components/schemas/ValidationError" },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "LoginData": {
+        "properties": {
+          "username": { "type": "string", "title": "Username" },
+          "password": { "type": "string", "title": "Password" }
+        },
+        "type": "object",
+        "required": ["username", "password"],
+        "title": "LoginData"
+      },
+      "LoginResponse": {
+        "properties": {
+          "success": { "type": "boolean", "title": "Success", "example": true },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "example": "Login successful"
+          }
+        },
+        "type": "object",
+        "required": ["success", "message"],
+        "title": "LoginResponse"
+      },
+      "ResponseMessage": {
+        "properties": {
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "example": "Operation successful."
+          }
+        },
+        "type": "object",
+        "required": ["message"],
+        "title": "ResponseMessage"
+      },
+      "TriageDetailResponse": {
+        "properties": {
+          "patient_id": {
+            "type": "string",
+            "title": "Patient Id",
+            "example": "12345"
+          },
+          "triage_id": {
+            "type": "string",
+            "title": "Triage Id",
+            "example": "45382"
+          },
+          "available_date": {
+            "type": "string",
+            "title": "Available Date",
+            "example": "1944-06-06"
+          },
+          "summary": {
+            "type": "string",
+            "title": "Summary",
+            "example": "44-year-old male with acute chest pain, ..."
+          }
+        },
+        "type": "object",
+        "required": ["patient_id", "triage_id", "available_date", "summary"],
+        "title": "TriageDetailResponse"
+      },
+      "TriageHistoryItem": {
+        "properties": {
+          "patient_id": {
+            "type": "string",
+            "title": "Patient Id",
+            "example": "12345"
+          },
+          "triage_id": {
+            "type": "string",
+            "title": "Triage Id",
+            "example": "45382"
+          },
+          "available_date": {
+            "type": "string",
+            "title": "Available Date",
+            "example": "1944-06-06"
+          },
+          "summary": {
+            "type": "string",
+            "title": "Summary",
+            "example": "44-year-old male with acute chest pain, shortness of breath, and sweating presented. Vital signs: BP 160/95 mmHg, HR 110 bpm, RR 22 breaths/min, Temp 98.6°F, O2 Sat 92%. Pain described as sharp, radiating to left arm, rated 8/10. ECG showed ST-segment elevation in leads II, III, aVF, categorized as Triage Level 2. Administered chewable aspirin, nitroglycerin, prepared for further emergency procedures. Family updated."
+          }
+        },
+        "type": "object",
+        "required": ["patient_id", "triage_id", "available_date", "summary"],
+        "title": "TriageHistoryItem"
+      },
+      "TriageListResponse": {
+        "properties": {
+          "triage_history": {
+            "items": { "$ref": "#/components/schemas/TriageHistoryItem" },
+            "type": "array",
+            "title": "Triage History",
+            "example": {
+              "triage_history": [
+                {
+                  "available_date": "1944-06-06",
+                  "patient_id": "12345",
+                  "summary": "44-year-old male with acute chest pain, shortness of breath, and sweating presented. Vital signs: BP 160/95 mmHg, HR 110 bpm, RR 22 breaths/min, Temp 98.6°F, O2 Sat 92%. Pain described as sharp, radiating to left arm, rated 8/10. ECG showed ST-segment elevation in leads II, III, aVF, categorized as Triage Level 2. Administered chewable aspirin, nitroglycerin, prepared for further emergency procedures. Family updated.",
+                  "triage_id": "45382"
+                },
+                {
+                  "available_date": "1975-07-15",
+                  "patient_id": "12345",
+                  "summary": "75-year-old male, Triage Level 1, showed severe respiratory distress, cyanosis, altered consciousness. Immediate airway management, high-flow oxygen initiated, critical care team mobilized for advanced support.",
+                  "triage_id": "10439"
+                },
+                {
+                  "available_date": "1980-03-23",
+                  "patient_id": "12345",
+                  "summary": "80-year-old male, Triage Level 2, with persistent chest pain, mild dyspnea, history of hypertension. Administered nitroglycerin, continuous ECG monitoring, cardiology alerted for comprehensive cardiac assessment.",
+                  "triage_id": "86241"
+                }
+              ]
+            }
+          }
+        },
+        "type": "object",
+        "required": ["triage_history"],
+        "title": "TriageListResponse"
+      },
+      "UpdateAccountInformationRequest": {
+        "properties": {
+          "phone": {
+            "type": "string",
+            "title": "Phone",
+            "example": "555-1234"
+          },
+          "email": {
+            "type": "string",
+            "title": "Email",
+            "example": "johndoe@example.com"
+          }
+        },
+        "type": "object",
+        "title": "UpdateAccountInformationRequest"
+      },
+      "UpdateTriageRequest": {
+        "properties": {
+          "available_date": {
+            "type": "string",
+            "title": "Available Date",
+            "example": "1944-06-06"
+          },
+          "summary": {
+            "type": "string",
+            "title": "Summary",
+            "example": "44-year-old male with acute chest pain, shortness of breath, and sweating presented. Vital signs: BP 160/95 mmHg, HR 110 bpm, RR 22 breaths/min, Temp 98.6°F, O2 Sat 92%. Pain described as sharp, radiating to left arm, rated 8/10. ECG showed ST-segment elevation in leads II, III, aVF, categorized as Triage Level 2. Administered chewable aspirin, nitroglycerin, prepared for further emergency procedures. Family updated."
+          }
+        },
+        "type": "object",
+        "title": "UpdateTriageRequest"
+      },
+      "UpdateUserHealthInfoRequest": {
+        "properties": {
+          "height": { "type": "number", "title": "Height", "example": 175.3 },
+          "weight": { "type": "number", "title": "Weight", "example": 68.5 },
+          "blood_type": {
+            "type": "string",
+            "title": "Blood Type",
+            "example": "A+"
+          },
+          "blood_pressure": {
+            "type": "number",
+            "title": "Blood Pressure",
+            "example": 120.8
+          },
+          "allergies": {
+            "type": "string",
+            "title": "Allergies",
+            "example": "Peanuts, Shellfish"
+          },
+          "complications": {
+            "type": "string",
+            "title": "Complications",
+            "example": "Hypertension, Diabetes Type 2"
+          }
+        },
+        "type": "object",
+        "title": "UpdateUserHealthInfoRequest"
+      },
+      "UserHealthInfoCreation": {
+        "properties": {
+          "height": { "type": "number", "title": "Height" },
+          "weight": { "type": "number", "title": "Weight" },
+          "blood_type": { "type": "string", "title": "Blood Type" },
+          "blood_pressure": { "type": "number", "title": "Blood Pressure" },
+          "allergies": { "type": "string", "title": "Allergies" },
+          "complications": { "type": "string", "title": "Complications" }
+        },
+        "type": "object",
+        "required": [
+          "height",
+          "weight",
+          "blood_type",
+          "blood_pressure",
+          "allergies",
+          "complications"
+        ],
+        "title": "UserHealthInfoCreation"
+      },
+      "UserHealthInfoResponse": {
+        "properties": {
+          "patient_id": {
+            "type": "string",
+            "title": "Patient Id",
+            "example": "12345"
+          },
+          "height": { "type": "number", "title": "Height", "example": 175.3 },
+          "weight": { "type": "number", "title": "Weight", "example": 68.5 },
+          "blood_type": {
+            "type": "string",
+            "title": "Blood Type",
+            "example": "A+"
+          },
+          "blood_pressure": {
+            "type": "number",
+            "title": "Blood Pressure",
+            "example": 120.8
+          },
+          "allergies": {
+            "type": "string",
+            "title": "Allergies",
+            "example": "Peanuts, Shellfish"
+          },
+          "complications": {
+            "type": "string",
+            "title": "Complications",
+            "example": "Hypertension, Diabetes Type 2"
+          }
+        },
+        "type": "object",
+        "required": [
+          "patient_id",
+          "height",
+          "weight",
+          "blood_type",
+          "blood_pressure",
+          "allergies",
+          "complications"
+        ],
+        "title": "UserHealthInfoResponse"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": { "anyOf": [{ "type": "string" }, { "type": "integer" }] },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": { "type": "string", "title": "Message" },
+          "type": { "type": "string", "title": "Error Type" }
+        },
+        "type": "object",
+        "required": ["loc", "msg", "type"],
+        "title": "ValidationError"
+      }
+    }
+  }
+}

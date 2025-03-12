@@ -1,0 +1,1752 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "RPHaven Games Management",
+    "description": "This is a sample Pet Store Server based on the OpenAPI 3.1 specification.  You can find out more about\nSwagger at [https://swagger.io](https://swagger.io). In the third iteration of the pet store, we've switched to the design first approach!\nYou can now help us improve the API whether it's by making changes to the definition itself or to the code.\nThat way, with time, we can improve the API in general, and expose some of the new features in OAS3.\n\nSome useful links:\n- [The Pet Store repository](https://github.com/swagger-api/swagger-petstore)\n- [The source API definition for the Pet Store](https://github.com/swagger-api/swagger-petstore/blob/master/src/main/resources/openapi.yaml)",
+    "termsOfService": "http://api.rphaven.co.uk/terms/",
+    "contact": { "email": "apiteam@rphaven.co.uk" },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "1.0.2"
+  },
+  "externalDocs": {
+    "description": "Find out more about RPHaven",
+    "url": "http://wiki.rphaven.co.uk"
+  },
+  "servers": [{ "url": "https://api.rphaven.co.uk/v1" }],
+  "tags": [
+    {
+      "name": "branch",
+      "description": "Everything about RP Haven branches",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "http://wiki.rphaven.co.uk/api/rels/branch"
+      }
+    },
+    {
+      "name": "venue",
+      "description": "Access to venues",
+      "externalDocs": {
+        "description": "Access to venues",
+        "url": "http://wiki.rphaven.co.uk/api/rels/venue"
+      }
+    },
+    {
+      "name": "game",
+      "description": "Access to branch games",
+      "externalDocs": {
+        "description": "Operations about to branch games",
+        "url": "http://wiki.rphaven.co.uk/api/rels/games"
+      }
+    },
+    {
+      "name": "meet",
+      "description": "Access to branch meets",
+      "externalDocs": {
+        "description": "Operations about branch meets",
+        "url": "http://wiki.rphaven.co.uk/api/rels/meets"
+      }
+    },
+    {
+      "name": "session",
+      "description": "Access to game sessions",
+      "externalDocs": {
+        "description": "Operations about game sessions",
+        "url": "http://wiki.rphaven.co.uk/api/rels/sessions"
+      }
+    },
+    { "name": "member", "description": "Operations about Members" }
+  ],
+  "paths": {
+    "/branch": {
+      "get": {
+        "tags": ["branch"],
+        "summary": "Show all branches",
+        "description": "Show all branches",
+        "operationId": "showBranches",
+        "requestBody": {
+          "description": "Update an existent branch in the store",
+          "content": {
+            "application/hal+json": {
+              "schema": { "items": { "$ref": "#/components/schemas/Branch" } }
+            }
+          }
+        },
+        "security": [{ "rphaven_auth": ["write:branches", "read:branches"] }]
+      },
+      "post": {
+        "tags": ["branch"],
+        "summary": "Create a new branch",
+        "description": "Update an existing branch by Id",
+        "operationId": "addBranch",
+        "requestBody": {
+          "description": "Update an existent branch in the store",
+          "content": {
+            "application/hal+json": {
+              "schema": { "$ref": "#/components/schemas/BranchResource" }
+            }
+          }
+        }
+      }
+    },
+    "/branch/{branchId}": {
+      "get": {
+        "tags": ["branch"],
+        "summary": "Show branch information",
+        "description": "Show an existing branch by Id",
+        "operationId": "showBranch",
+        "parameters": [
+          {
+            "name": "branchId",
+            "in": "path",
+            "description": "ID of the branch",
+            "schema": { "$ref": "#/components/schemas/Uuid" },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Show the branch",
+            "content": {
+              "application/hal+json": {
+                "schema": { "$ref": "#/components/schemas/BranchDetails" }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["branch"],
+        "summary": "Update an existing branch",
+        "description": "Update an existing branch by Id",
+        "operationId": "updateBranch",
+        "parameters": [
+          {
+            "name": "branchId",
+            "in": "path",
+            "description": "ID of the branch",
+            "schema": { "$ref": "#/components/schemas/Uuid" },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "description": "Update an existent branch in the store",
+          "content": {
+            "application/hal+json": {
+              "schema": { "$ref": "#/components/schemas/BranchResource" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/hal+json": {
+                "schema": { "$ref": "#/components/schemas/BranchResource" }
+              }
+            }
+          },
+          "400": { "description": "Invalid ID supplied" },
+          "404": { "description": "Branch not found" },
+          "405": { "description": "Validation exception" }
+        },
+        "security": [{ "rphaven_auth": ["write:branches", "read:branches"] }]
+      }
+    },
+    "/branch/{branchId}/meets": {
+      "get": {
+        "tags": ["branch"],
+        "summary": "Show all planned game meets for a branch",
+        "operationId": "showBranchMeets",
+        "parameters": [
+          {
+            "name": "branchId",
+            "in": "path",
+            "description": "ID of the branch",
+            "schema": { "$ref": "#/components/schemas/Uuid" },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "show Meets",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/BranchMeets" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/branch/{branchId}/tables": {
+      "get": {
+        "tags": ["branch", "table"],
+        "operationId": "showBranchTables",
+        "parameters": [
+          {
+            "name": "branchId",
+            "in": "path",
+            "description": "ID of the branch",
+            "schema": { "$ref": "#/components/schemas/Uuid" },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Show branch tables",
+            "content": {
+              "application/hal+json": {
+                "schema": { "$ref": "#/components/schemas/BranchTables" }
+              }
+            }
+          }
+        },
+        "security": [{ "api_key": [] }]
+      }
+    },
+    "/branch/{branchId}/games": {
+      "get": {
+        "tags": ["branch", "game"],
+        "summary": "Returns all the games for a branch",
+        "description": "Show all the games for a branch",
+        "operationId": "showBranchGames",
+        "parameters": [
+          {
+            "name": "branchId",
+            "in": "path",
+            "description": "ID of the branch",
+            "schema": { "$ref": "#/components/schemas/Uuid" },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Show all the games for a branch",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/BranchGames" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/branch/{branchId}/venues": {
+      "get": {
+        "tags": ["branch", "venue"],
+        "description": "Show Venues for a Branch",
+        "operationId": "showBranchVenues",
+        "parameters": [
+          {
+            "name": "branchId",
+            "in": "path",
+            "description": "ID of the Branch",
+            "schema": { "$ref": "#/components/schemas/Uuid" },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Show Venues for a Branch",
+            "content": {
+              "application/hal+json": {
+                "schema": { "$ref": "#/components/schemas/BranchVenues" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/venue/{venueId}": {
+      "get": {
+        "tags": ["venue"],
+        "description": "Show a Venue",
+        "operationId": "showVenueDetails",
+        "parameters": [
+          {
+            "name": "venueId",
+            "in": "path",
+            "description": "ID of the venue",
+            "schema": { "$ref": "#/components/schemas/Uuid" },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "show venue details",
+            "content": {
+              "application/hal+json": {
+                "schema": { "$ref": "#/components/schemas/VenueDetails" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/venue/{venueId}/meets": {
+      "get": {
+        "tags": ["venue", "meet"],
+        "description": "Show Meets at a Venue",
+        "operationId": "showVenueMeets",
+        "parameters": [
+          {
+            "name": "venueId",
+            "in": "path",
+            "description": "ID of the venue",
+            "schema": { "$ref": "#/components/schemas/Uuid" },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "show venue meets",
+            "content": {
+              "application/hal+json": {
+                "schema": { "$ref": "#/components/schemas/VenueMeets" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/venue/{venueId}/tables": {
+      "get": {
+        "tags": ["venue", "table"],
+        "description": "Show Tables at a Venue",
+        "operationId": "showVenueTables",
+        "parameters": [
+          {
+            "name": "venueId",
+            "in": "path",
+            "description": "ID of the venue",
+            "schema": { "$ref": "#/components/schemas/Uuid" },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "show venue tables",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "items": { "$ref": "#/components/schemas/VenueTables" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/table/{tableId}": {
+      "get": {
+        "tags": ["table"],
+        "description": "Show a table run by a branch",
+        "operationId": "showTableDetails",
+        "parameters": [
+          {
+            "name": "tableId",
+            "in": "path",
+            "description": "ID of the table",
+            "schema": { "$ref": "#/components/schemas/Uuid" },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "show table",
+            "content": {
+              "application/hal+json": {
+                "schema": { "$ref": "#/components/schemas/TableDetails" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/table/{tableId}/meets": {
+      "get": {
+        "tags": ["table"],
+        "description": "Show games on a table",
+        "operationId": "showTableMeets",
+        "parameters": [
+          {
+            "name": "tableId",
+            "in": "path",
+            "description": "ID of the table",
+            "schema": { "$ref": "#/components/schemas/Uuid" },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "show table games",
+            "content": {
+              "application/hal+json": {
+                "schema": {
+                  "items": { "$ref": "#/components/schemas/TableMeets" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/table/{tableId}/runners": {
+      "get": {
+        "tags": ["table"],
+        "description": "Show table organisers",
+        "operationId": "showTableRunners",
+        "parameters": [
+          {
+            "name": "tableId",
+            "in": "path",
+            "description": "ID of the table",
+            "schema": { "$ref": "#/components/schemas/Uuid" },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "show table runners",
+            "content": {
+              "application/hal+json": {
+                "schema": { "$ref": "#/components/schemas/TableRunners" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/table/{tableId}/party": {
+      "get": {
+        "tags": ["table"],
+        "description": "Show table organisers",
+        "operationId": "showTableParty",
+        "parameters": [
+          {
+            "name": "tableId",
+            "in": "path",
+            "description": "ID of the table",
+            "schema": { "$ref": "#/components/schemas/Uuid" },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "show table party",
+            "content": {
+              "application/hal+json": {
+                "schema": { "$ref": "#/components/schemas/TableParty" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/table/{tableId}/games": {
+      "get": {
+        "tags": ["table"],
+        "description": "Show games on a table",
+        "operationId": "showTableGames",
+        "parameters": [
+          {
+            "name": "tableId",
+            "in": "path",
+            "description": "ID of the table",
+            "schema": { "$ref": "#/components/schemas/Uuid" },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "show table games",
+            "content": {
+              "application/hal+json": {
+                "schema": { "$ref": "#/components/schemas/TableGames" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/meet/{meetId}": {
+      "get": {
+        "tags": ["meet"],
+        "description": "Show a Meet",
+        "operationId": "showMeetDetails",
+        "parameters": [
+          {
+            "name": "meetId",
+            "in": "path",
+            "description": "ID of the Meet",
+            "schema": { "$ref": "#/components/schemas/Uuid" },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "show Meet details",
+            "content": {
+              "application/hal+json": {
+                "schema": { "$ref": "#/components/schemas/MeetDetails" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/meet/{meetId}/sessions": {
+      "get": {
+        "tags": ["meet", "session"],
+        "description": "Show all Session for a Meet",
+        "operationId": "showMeetSessions",
+        "parameters": [
+          {
+            "name": "meetId",
+            "in": "path",
+            "description": "ID of the Meet",
+            "schema": { "$ref": "#/components/schemas/Uuid" },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "show Meet",
+            "content": {
+              "application/hal+json": {
+                "schema": { "$ref": "#/components/schemas/MeetSessions" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/game/{gameId}": {
+      "get": {
+        "tags": ["game"],
+        "description": "Show a game",
+        "operationId": "showGameDetails",
+        "parameters": [
+          {
+            "name": "gameId",
+            "in": "path",
+            "description": "ID of the game",
+            "schema": { "$ref": "#/components/schemas/Uuid" },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "show Game",
+            "content": {
+              "application/hal+json": {
+                "schema": { "$ref": "#/components/schemas/Game" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/game/{gameId}/sessions": {
+      "get": {
+        "tags": ["game", "session"],
+        "description": "Show session for a game",
+        "operationId": "showGameSessions",
+        "parameters": [
+          {
+            "name": "gameId",
+            "in": "path",
+            "description": "ID of the game",
+            "schema": { "$ref": "#/components/schemas/Uuid" },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "show Game sessions",
+            "content": {
+              "application/hal+json": {
+                "schema": { "$ref": "#/components/schemas/GameSessions" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/session/{sessionId}": {
+      "get": {
+        "tags": ["game", "session"],
+        "description": "Show session for a game",
+        "operationId": "sessionDetails",
+        "parameters": [
+          {
+            "name": "sessionId",
+            "in": "path",
+            "description": "ID of the session",
+            "schema": { "$ref": "#/components/schemas/Uuid" },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "show session details",
+            "content": {
+              "application/hal+json": {
+                "schema": { "$ref": "#/components/schemas/SessionDetails" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Branch": {
+        "description": "The base HAL Branch schema",
+        "type": "object",
+        "allOf": [
+          { "$ref": "#/components/schemas/BranchLinks" },
+          { "$ref": "#/components/schemas/BranchResource" }
+        ]
+      },
+      "Table": {
+        "description": "The base HAL Table schema",
+        "type": "object",
+        "allOf": [
+          { "$ref": "#/components/schemas/TableLinks" },
+          { "$ref": "#/components/schemas/TableResource" }
+        ]
+      },
+      "Meet": {
+        "description": "The base HAL Meet schema",
+        "type": "object",
+        "allOf": [
+          { "$ref": "#/components/schemas/MeetLinks" },
+          { "$ref": "#/components/schemas/MeetResource" }
+        ]
+      },
+      "Session": {
+        "description": "The base HAL Session schema",
+        "type": "object",
+        "allOf": [
+          { "$ref": "#/components/schemas/SessionLinks" },
+          { "$ref": "#/components/schemas/SessionResource" }
+        ]
+      },
+      "Game": {
+        "description": "The base HAL Game schema",
+        "type": "object",
+        "allOf": [
+          { "$ref": "#/components/schemas/GameLinks" },
+          { "$ref": "#/components/schemas/GameResource" }
+        ]
+      },
+      "Party": {
+        "description": "The base HAL Party schema",
+        "type": "object",
+        "allOf": [
+          { "$ref": "#/components/schemas/PartyLinks" },
+          { "$ref": "#/components/schemas/PartyResource" }
+        ]
+      },
+      "Member": {
+        "description": "The base HAL Member schema",
+        "type": "object",
+        "allOf": [
+          { "$ref": "#/components/schemas/MemberLinks" },
+          { "$ref": "#/components/schemas/MemberResource" }
+        ]
+      },
+      "Venue": {
+        "description": "The base HAL Venue schema",
+        "type": "object",
+        "allOf": [
+          { "$ref": "#/components/schemas/VenueLinks" },
+          { "$ref": "#/components/schemas/VenueResource" }
+        ]
+      },
+      "VenueDetails": {
+        "description": "The main Venue HAL resource, including documentation Curies",
+        "type": "object",
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "_links": {
+                "type": "object",
+                "properties": {
+                  "curies": {
+                    "items": {
+                      "allOf": [
+                        { "$ref": "#/components/schemas/Curies" },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "name": { "type": "string", "enum": ["venue"] }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          { "$ref": "#/components/schemas/Venue" }
+        ]
+      },
+      "VenueMeets": {
+        "description": "Meets at a Venue",
+        "type": "object",
+        "allOf": [
+          { "$ref": "#/components/schemas/VenueLinks" },
+          {
+            "type": "object",
+            "properties": {
+              "_links": {
+                "type": "object",
+                "properties": {
+                  "self": {
+                    "type": "string",
+                    "format": "uri",
+                    "examples": [
+                      "https://api.rphaven.co.u/venue/89f8f430-672b-4f56-8935-c1055724b2f2/meets"
+                    ]
+                  },
+                  "curies": {
+                    "items": {
+                      "allOf": [
+                        { "$ref": "#/components/schemas/Curies" },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "name": { "type": "string", "enum": ["venue"] }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              },
+              "_embedded": {
+                "type": "object",
+                "properties": {
+                  "venue:meets": {
+                    "type": "array",
+                    "items": { "$ref": "#/components/schemas/Meet" }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "VenueTables": {
+        "description": "Tables running at a Venue",
+        "type": "object",
+        "allOf": [
+          { "$ref": "#/components/schemas/VenueLinks" },
+          {
+            "type": "object",
+            "properties": {
+              "_links": {
+                "type": "object",
+                "properties": {
+                  "self": {
+                    "type": "string",
+                    "format": "uri",
+                    "examples": [
+                      "https://api.rphaven.co.u/venue/89f8f430-672b-4f56-8935-c1055724b2f2/tables"
+                    ]
+                  },
+                  "curies": {
+                    "items": {
+                      "allOf": [
+                        { "$ref": "#/components/schemas/Curies" },
+                        {
+                          "type": "object",
+                          "properties": { "name": { "enum": ["venue"] } }
+                        }
+                      ]
+                    }
+                  }
+                }
+              },
+              "_embedded": {
+                "type": "object",
+                "properties": {
+                  "venue:tables": {
+                    "type": "array",
+                    "items": { "$ref": "#/components/schemas/Table" }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "BranchDetails": {
+        "description": "The main branch resource",
+        "type": "object",
+        "allOf": [
+          { "$ref": "#/components/schemas/BranchLinks" },
+          {
+            "type": "object",
+            "properties": {
+              "_links": {
+                "type": "object",
+                "properties": {
+                  "curies": {
+                    "items": {
+                      "allOf": [
+                        { "$ref": "#/components/schemas/Curies" },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "name": { "type": "string", "enum": ["branch"] }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          { "$ref": "#/components/schemas/BranchResource" },
+          {
+            "type": "object",
+            "properties": {
+              "_embedded": {
+                "type": "object",
+                "properties": {
+                  "branch:venues": {
+                    "items": { "$ref": "#/components/schemas/Venue" }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "BranchTables": {
+        "description": "Tables for a given branch",
+        "type": "object",
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "_links": {
+                "type": "object",
+                "properties": {
+                  "self": {
+                    "examples": [
+                      "https://api.rphaven.co.u/branch/89f8f430-672b-4f56-8935-c1055724b2f2/tables"
+                    ]
+                  },
+                  "curies": {
+                    "items": {
+                      "allOf": [
+                        { "$ref": "#/components/schemas/Curies" },
+                        {
+                          "type": "object",
+                          "properties": { "name": { "enum": ["branch"] } }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          { "$ref": "#/components/schemas/BranchLinks" },
+          {
+            "type": "object",
+            "properties": {
+              "_embedded": {
+                "type": "object",
+                "properties": {
+                  "branch:tables": {
+                    "items": { "$ref": "#/components/schemas/Table" }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "BranchVenues": {
+        "description": "Tables for a given branch",
+        "type": "object",
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "_links": {
+                "type": "object",
+                "properties": {
+                  "self": {
+                    "examples": [
+                      "https://api.rphaven.co.u/branch/89f8f430-672b-4f56-8935-c1055724b2f2/venues"
+                    ]
+                  },
+                  "curies": {
+                    "items": {
+                      "allOf": [
+                        { "$ref": "#/components/schemas/Curies" },
+                        {
+                          "type": "object",
+                          "properties": { "name": { "enum": ["branch"] } }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          { "$ref": "#/components/schemas/BranchLinks" },
+          {
+            "type": "object",
+            "properties": {
+              "_embedded": {
+                "type": "object",
+                "properties": {
+                  "branch:venues": {
+                    "items": { "$ref": "#/components/schemas/Venue" }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "BranchMeets": {
+        "description": "Planned Meets for a Branch",
+        "type": "object",
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "_links": {
+                "type": "object",
+                "properties": {
+                  "self": {
+                    "examples": [
+                      "https://api.rphaven.co.u/branch/89f8f430-672b-4f56-8935-c1055724b2f2/meets"
+                    ]
+                  },
+                  "curies": {
+                    "items": {
+                      "allOf": [
+                        { "$ref": "#/components/schemas/Curies" },
+                        {
+                          "type": "object",
+                          "properties": { "name": { "enum": ["branch"] } }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          { "$ref": "#/components/schemas/BranchLinks" },
+          {
+            "type": "object",
+            "properties": {
+              "_embedded": {
+                "type": "object",
+                "properties": {
+                  "branch:meets": {
+                    "items": { "$ref": "#/components/schemas/Meet" }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "BranchGames": {
+        "type": "object",
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "_links": {
+                "type": "object",
+                "properties": {
+                  "self": {
+                    "examples": [
+                      "https://api.rphaven.co.u/branch/89f8f430-672b-4f56-8935-c1055724b2f2/games"
+                    ]
+                  },
+                  "curies": {
+                    "items": {
+                      "allOf": [
+                        { "$ref": "#/components/schemas/Curies" },
+                        {
+                          "type": "object",
+                          "properties": { "name": { "enum": ["branch"] } }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "SessionDetails": {
+        "type": "object",
+        "allOf": [
+          { "$ref": "#/components/schemas/SessionLinks" },
+          {
+            "type": "object",
+            "properties": {
+              "_links": {
+                "type": "object",
+                "properties": {
+                  "curies": {
+                    "items": {
+                      "allOf": [
+                        { "$ref": "#/components/schemas/Curies" },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "name": { "type": "string", "enum": ["session"] }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          { "$ref": "#/components/schemas/SessionResource" },
+          {
+            "type": "object",
+            "properties": {
+              "_embedded": {
+                "type": "object",
+                "properties": {
+                  "session:venue": { "$ref": "#/components/schemas/Venue" },
+                  "session:game": { "$ref": "#/components/schemas/Game" },
+                  "session:meet": { "$ref": "#/components/schemas/Meet" }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "TableDetails": {
+        "type": "object",
+        "allOf": [
+          { "$ref": "#/components/schemas/TableLinks" },
+          {
+            "type": "object",
+            "properties": {
+              "_embedded": {
+                "type": "object",
+                "properties": {
+                  "table:runners": {
+                    "items": {
+                      "description": "The members running the table",
+                      "$ref": "#/components/schemas/Member"
+                    }
+                  },
+                  "table:games": {
+                    "items": {
+                      "description": "The games assigned to this Table",
+                      "$ref": "#/components/schemas/Game"
+                    }
+                  },
+                  "table:party": { "$ref": "#/components/schemas/Party" }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "TableMeets": {
+        "type": "object",
+        "allOf": [
+          { "$ref": "#/components/schemas/TableLinks" },
+          {
+            "type": "object",
+            "properties": {
+              "_embedded": {
+                "type": "object",
+                "properties": {
+                  "table:meets": {
+                    "type": "array",
+                    "items": { "$ref": "#/components/schemas/Meet" }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "TableRunners": { "type": "object" },
+      "TableGames": { "type": "object" },
+      "TableParty": { "type": "object" },
+      "MeetDetails": {
+        "allOf": [
+          { "$ref": "#/components/schemas/Meet" },
+          {
+            "type": "object",
+            "properties": {
+              "_embedded": {
+                "type": "object",
+                "properties": {
+                  "meet:venue": {
+                    "items": { "$ref": "#/components/schemas/Venue" }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "MeetSessions": { "type": "object" },
+      "GameSessions": {
+        "allOf": [
+          { "$ref": "#/components/schemas/Game" },
+          {
+            "type": "object",
+            "properties": {
+              "_embedded": {
+                "type": "object",
+                "properties": {
+                  "game:party": { "$ref": "#/components/schemas/Party" },
+                  "game:session": {
+                    "type": "array",
+                    "items": { "$ref": "#/components/schemas/Session" }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "MeetResource": {
+        "description": "A meet is an available date at a venue for sessions to occur",
+        "type": "object",
+        "properties": {
+          "start": {
+            "type": "string",
+            "format": "date-time",
+            "examples": [
+              "2024-08-08T19:00:00+00:00",
+              "2024-08-15T19:00:00+00:00"
+            ]
+          },
+          "finish": {
+            "type": "string",
+            "format": "date-time",
+            "examples": [
+              "2024-08-08T22:00:00+00:00",
+              "2024-08-15T22:00:00+00:00"
+            ]
+          }
+        }
+      },
+      "BranchResource": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string", "examples": ["Stratford", "Archway"] },
+          "uri": {
+            "description": "The URI for the Branch page",
+            "type": "string",
+            "format": "uri",
+            "examples": ["https://rphaven.co.uk/branches/stratford"]
+          }
+        }
+      },
+      "MemberResource": {
+        "type": "object",
+        "properties": {
+          "_links": {
+            "type": "object",
+            "properties": {
+              "self": {
+                "type": "string",
+                "format": "uri",
+                "examples": [
+                  "https://api.rphaven.co.uk/member/89f8f430-672b-4f56-8935-c1055724b2f2"
+                ]
+              },
+              "curies": {
+                "allOf": [
+                  { "$ref": "#/components/schemas/Curies" },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "name": { "type": "string", "enum": ["member"] }
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "gamesMaster": { "type": "boolean", "examples": [true] },
+          "firstName": { "type": "string", "examples": ["Fred"] },
+          "lastName": { "type": "string", "examples": ["Flintstone"] },
+          "pronouns": {
+            "type": "string",
+            "examples": ["She/Her", "He/Him", "They/Them"]
+          }
+        }
+      },
+      "PartyResource": {
+        "type": "object",
+        "properties": { "members": { "type": "integer", "examples": [3] } }
+      },
+      "AddressResource": {
+        "type": "object",
+        "properties": {
+          "addressLine1": { "type": "string", "examples": ["437 Lytton"] },
+          "addressLine2": { "type": "string", "examples": ["437 Lytton"] },
+          "city": { "type": "string", "examples": ["Palo Alto"] },
+          "state": { "type": "string", "examples": ["London"] },
+          "zip": { "type": "string", "examples": ["94301"] }
+        }
+      },
+      "TableResource": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "examples": ["Wings of Xanthis", "One-shot table"]
+          },
+          "seats": {
+            "type": "integer",
+            "description": "The maximum number of participants (including GMs)",
+            "format": "int32",
+            "examples": [6]
+          },
+          "formed": {
+            "type": "string",
+            "format": "date-time",
+            "examples": ["2024-08-08T19:00:00+00:00"]
+          },
+          "disbands": {
+            "type": "string",
+            "format": "date-time",
+            "examples": ["2024-08-08T19:00:00+00:00"]
+          },
+          "signup": {
+            "type": "string",
+            "format": "date-time",
+            "examples": ["2024-08-08T19:00:00+00:00"]
+          }
+        }
+      },
+      "GameResource": {
+        "type": "object",
+        "properties": {
+          "title": { "type": "string", "examples": ["Session Zero"] },
+          "system": { "$ref": "#/components/schemas/SystemResource" }
+        }
+      },
+      "SessionResource": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Session Status",
+            "enum": ["running", "cancelled", "pending"]
+          }
+        }
+      },
+      "SystemResource": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "examples": ["D&D 5E: Spelljammer", "Dungeonworld"]
+          },
+          "uri": {
+            "type": "string",
+            "format": "uri",
+            "examples": ["https://dnd.wizards.com/products/spelljammer"]
+          }
+        }
+      },
+      "VenueResource": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "examples": ["The Escape Bar, Stratford"]
+          },
+          "address": { "$ref": "#/components/schemas/AddressResource" }
+        }
+      },
+      "Uuid": {
+        "type": "string",
+        "format": "uuid",
+        "examples": ["89f8f430-672b-4f56-8935-c1055724b2f2"]
+      },
+      "PartyLinks": {
+        "type": "object",
+        "properties": {
+          "_links": {
+            "type": "object",
+            "properties": {
+              "self": {
+                "type": "string",
+                "format": "uri",
+                "examples": [
+                  "https://api.rphaven.co.uk/party/89f8f430-672b-4f56-8935-c1055724b2f2"
+                ]
+              },
+              "party:members": {
+                "allOf": [
+                  { "$ref": "#/components/schemas/HalLinkRelation" },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "title": { "examples": ["Party Members"] },
+                      "href": {
+                        "examples": [
+                          "https://api.rphaven.co.uk/party/{?id}/members"
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "GameLinks": {
+        "type": "object",
+        "properties": {
+          "_links": {
+            "type": "object",
+            "properties": {
+              "self": {
+                "type": "string",
+                "format": "uri",
+                "examples": [
+                  "https://api.rphaven.co.u/game/89f8f430-672b-4f56-8935-c1055724b2f2"
+                ]
+              },
+              "game": {
+                "allOf": [
+                  { "$ref": "#/components/schemas/HalLinkRelation" },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "title": { "examples": ["Game Details"] },
+                      "href": {
+                        "examples": ["https://api.rphaven.co.uk/game/{?id}"]
+                      }
+                    }
+                  }
+                ]
+              },
+              "game:sessions": {
+                "allOf": [
+                  { "$ref": "#/components/schemas/HalLinkRelation" },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "title": { "examples": ["Game Sessions"] },
+                      "href": {
+                        "examples": [
+                          "https://api.rphaven.co.uk/game/{?id}/sessions"
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "MemberLinks": {
+        "type": "object",
+        "properties": {
+          "_links": {
+            "type": "object",
+            "properties": {
+              "self": {
+                "type": "string",
+                "format": "uri",
+                "examples": [
+                  "https://api.rphaven.co.u/session/89f8f430-672b-4f56-8935-c1055724b2f2"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "SessionLinks": {
+        "type": "object",
+        "properties": {
+          "_links": {
+            "type": "object",
+            "properties": {
+              "self": {
+                "type": "string",
+                "format": "uri",
+                "examples": [
+                  "https://api.rphaven.co.u/session/89f8f430-672b-4f56-8935-c1055724b2f2"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "VenueLinks": {
+        "type": "object",
+        "properties": {
+          "_links": {
+            "type": "object",
+            "properties": {
+              "self": {
+                "type": "string",
+                "format": "uri",
+                "examples": [
+                  "https://api.rphaven.co.u/venue/89f8f430-672b-4f56-8935-c1055724b2f2"
+                ]
+              },
+              "venue": {
+                "allOf": [
+                  { "$ref": "#/components/schemas/HalLinkRelation" },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "title": { "examples": ["Venue Details"] },
+                      "href": {
+                        "examples": ["https://api.rphaven.co.uk/venue/{?id}"]
+                      }
+                    }
+                  }
+                ]
+              },
+              "venue:meets": {
+                "allOf": [
+                  { "$ref": "#/components/schemas/HalLinkRelation" },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "title": { "examples": ["Escape Bar Stratford: Meets"] },
+                      "href": {
+                        "examples": [
+                          "https://api.rphaven.co.uk/venue/{?id}/meets"
+                        ]
+                      }
+                    }
+                  }
+                ]
+              },
+              "venue:tables": {
+                "allOf": [
+                  { "$ref": "#/components/schemas/HalLinkRelation" },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "title": { "examples": ["Stratford Branch: Tables"] },
+                      "href": {
+                        "examples": [
+                          "https://api.rphaven.co.uk/venue/{?id}/tables"
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "BranchLinks": {
+        "type": "object",
+        "properties": {
+          "_links": {
+            "type": "object",
+            "properties": {
+              "self": {
+                "type": "string",
+                "format": "uri",
+                "examples": [
+                  "https://api.rphaven.co.u/branch/89f8f430-672b-4f56-8935-c1055724b2f2"
+                ]
+              },
+              "branch": {
+                "allOf": [
+                  { "$ref": "#/components/schemas/HalLinkRelation" },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "title": { "examples": ["Stratford Branch"] },
+                      "href": {
+                        "examples": ["https://api.rphaven.co.uk/branch/{?id}"]
+                      }
+                    }
+                  }
+                ]
+              },
+              "branch:meets": {
+                "allOf": [
+                  { "$ref": "#/components/schemas/HalLinkRelation" },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "title": { "examples": ["Stratford Branch: Meets"] },
+                      "href": {
+                        "examples": [
+                          "https://api.rphaven.co.uk/branch/{?id}/meets"
+                        ]
+                      }
+                    }
+                  }
+                ]
+              },
+              "branch:tables": {
+                "allOf": [
+                  { "$ref": "#/components/schemas/HalLinkRelation" },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "title": { "examples": ["Stratford Branch: Tables"] },
+                      "href": {
+                        "examples": [
+                          "https://api.rphaven.co.uk/branch/{?id}/tables"
+                        ]
+                      }
+                    }
+                  }
+                ]
+              },
+              "branch:venues": {
+                "allOf": [
+                  { "$ref": "#/components/schemas/HalLinkRelation" },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "title": { "examples": ["Stratford Branch: Venues"] },
+                      "href": {
+                        "examples": [
+                          "https://api.rphaven.co.uk/branch/{?id}/venues"
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "MeetLinks": {
+        "type": "object",
+        "properties": {
+          "_links": {
+            "type": "object",
+            "properties": {
+              "self": {
+                "type": "string",
+                "format": "uri",
+                "examples": [
+                  "https://api.rphaven.co.u/meet/89f8f430-672b-4f56-8935-c1055724b2f2"
+                ]
+              },
+              "meet": {
+                "allOf": [
+                  { "$ref": "#/components/schemas/HalLinkRelation" },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "title": { "examples": ["Meet"] },
+                      "href": {
+                        "examples": ["https://api.rphaven.co.uk/meet/{?id}"]
+                      }
+                    }
+                  }
+                ]
+              },
+              "meet:tables": {
+                "allOf": [
+                  { "$ref": "#/components/schemas/HalLinkRelation" },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "title": { "examples": ["Meet tables"] },
+                      "href": {
+                        "examples": [
+                          "https://api.rphaven.co.uk/meet/{?id}/tables"
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "TableLinks": {
+        "type": "object",
+        "properties": {
+          "_links": {
+            "type": "object",
+            "properties": {
+              "self": {
+                "type": "string",
+                "format": "uri",
+                "examples": [
+                  "https://api.rphaven.co.u/table/89f8f430-672b-4f56-8935-c1055724b2f2"
+                ]
+              },
+              "table": {
+                "allOf": [
+                  { "$ref": "#/components/schemas/HalLinkRelation" },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "title": { "examples": ["Table Details"] },
+                      "href": {
+                        "examples": ["https://api.rphaven.co.uk/table/{?id}"]
+                      }
+                    }
+                  }
+                ]
+              },
+              "table:games": {
+                "allOf": [
+                  { "$ref": "#/components/schemas/HalLinkRelation" },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "title": { "examples": ["Table Games"] },
+                      "href": {
+                        "examples": [
+                          "https://api.rphaven.co.uk/table/{?id}/games"
+                        ]
+                      }
+                    }
+                  }
+                ]
+              },
+              "table:runners": {
+                "allOf": [
+                  { "$ref": "#/components/schemas/HalLinkRelation" },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "title": { "examples": ["Table Runners"] },
+                      "href": {
+                        "examples": [
+                          "https://api.rphaven.co.uk/table/{?id}/runners"
+                        ]
+                      }
+                    }
+                  }
+                ]
+              },
+              "table:meets": {
+                "allOf": [
+                  { "$ref": "#/components/schemas/HalLinkRelation" },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "title": { "examples": ["Table Meets"] },
+                      "href": {
+                        "examples": [
+                          "https://api.rphaven.co.uk/table/{?id}/meets"
+                        ]
+                      }
+                    }
+                  }
+                ]
+              },
+              "table:party": {
+                "allOf": [
+                  { "$ref": "#/components/schemas/HalLinkRelation" },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "title": { "examples": ["Table Party"] },
+                      "href": {
+                        "examples": [
+                          "https://api.rphaven.co.uk/branch/{?id}/party"
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "HalLinkRelation": {
+        "description": "A HAL Link Relation. See https://stateless.group/hal_specification.html",
+        "type": "object",
+        "properties": {
+          "title": { "type": "string" },
+          "href": { "type": "string", "format": "url" },
+          "templated": { "type": "boolean", "default": true }
+        },
+        "required": ["href"]
+      },
+      "Curies": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "href": {
+            "type": "string",
+            "format": "uri",
+            "enum": ["https://wiki.rphaven.co.uk/api/rels/{rel}"]
+          },
+          "templated": { "type": "boolean", "default": true }
+        },
+        "required": ["href"]
+      },
+      "ApiResponse": {
+        "type": "object",
+        "properties": {
+          "code": { "type": "integer", "format": "int32" },
+          "type": { "type": "string" },
+          "message": { "type": "string" }
+        },
+        "xml": { "name": "##default" }
+      }
+    },
+    "securitySchemes": {
+      "rphaven_auth": {
+        "type": "oauth2",
+        "flows": {
+          "implicit": {
+            "authorizationUrl": "https://petstore3.swagger.io/oauth/authorize",
+            "scopes": {
+              "write:pets": "modify pets in your account",
+              "read:pets": "read your pets"
+            }
+          }
+        }
+      },
+      "api_key": { "type": "apiKey", "name": "api_key", "in": "header" }
+    }
+  }
+}

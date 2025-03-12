@@ -1,0 +1,391 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Babypips Content API",
+    "description": "This is the API specification for consuming Babypips articles.",
+    "termsOfService": "https://www.babypips.com/terms-of-use",
+    "contact": { "email": "support@babypips.com" },
+    "version": "0.0.2"
+  },
+  "servers": [{ "url": "https://www.babypips.com" }],
+  "tags": [
+    { "name": "feed", "description": "Fetching a group of articles" },
+    { "name": "article", "description": "Fetching a specific article" }
+  ],
+  "security": [{ "bearerAuth": [] }],
+  "paths": {
+    "/feed": {
+      "get": {
+        "tags": ["feed"],
+        "summary": "Get a list of recent article",
+        "description": "Returns list of most recent articles across all categories. Excludes premium or sponsored articles. Up to 20 articles are returned.",
+        "operationId": "getFeed",
+        "parameters": [
+          {
+            "name": "tags",
+            "in": "query",
+            "description": "Comma separated list of tag slugs to filter the returned articles. Only posts matching all tags are returned (AND).",
+            "required": false,
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "examples": [["eurusd", "audcad"], []],
+              "default": null
+            }
+          }
+        ],
+        "responses": {
+          "200": { "$ref": "#/components/responses/FeedResponse" },
+          "401": { "description": "Returned when API licensee is inactive." },
+          "503": {
+            "description": "Returned when website is temporarily unavailable."
+          }
+        }
+      }
+    },
+    "/{category}/feed": {
+      "get": {
+        "tags": ["feed"],
+        "summary": "Get a list of recent article within a specific category",
+        "description": "Returns list of most recent articles for a given top-level category. Excludes premium or sponsored articles. Up to 20 articles are returned.",
+        "operationId": "getCategoryFeed",
+        "parameters": [
+          {
+            "name": "category",
+            "in": "path",
+            "description": "Slug of top-level category to filter the returned articles",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "examples": ["news"],
+              "enum": ["news", "trading"]
+            }
+          },
+          {
+            "name": "tags",
+            "in": "query",
+            "description": "Comma separated list of tag slugs to filter the returned articles. Only posts matching all tags are returned (AND).",
+            "required": false,
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "examples": [["eurusd", "audcad"], []],
+              "default": null
+            }
+          }
+        ],
+        "responses": {
+          "200": { "$ref": "#/components/responses/FeedResponse" },
+          "401": { "description": "Returned when API licensee is inactive." },
+          "404": { "description": "Returned if a cateogry does not exist." },
+          "503": {
+            "description": "Returned when website is temporarily unavailable."
+          }
+        }
+      }
+    },
+    "/{category}/{subcategory}/feed": {
+      "get": {
+        "tags": ["feed"],
+        "summary": "Get a list of recent article within a specific category",
+        "description": "Returns list of most recent articles for a given top-level category. Excludes premium or sponsored articles. Up to 20 articles are returned.",
+        "operationId": "getSubcategoryFeed",
+        "parameters": [
+          {
+            "name": "category",
+            "in": "path",
+            "description": "Slug of top-level category to filter the returned articles",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "examples": ["news"],
+              "enum": ["news", "trading"]
+            }
+          },
+          {
+            "name": "subcategory",
+            "in": "path",
+            "description": "Slug of sub category to filter the returned articles",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "examples": ["trade-ideas"],
+              "enum": [
+                "trade-ideas",
+                "technical-analysis",
+                "psychology",
+                "trading-systems",
+                "crypto"
+              ]
+            }
+          },
+          {
+            "name": "tags",
+            "in": "query",
+            "description": "Comma separated list of tag slugs to filter the returned articles. Only posts matching all tags are returned (AND).",
+            "required": false,
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "examples": [["eurusd", "audcad"], []],
+              "default": null
+            }
+          }
+        ],
+        "responses": {
+          "200": { "$ref": "#/components/responses/FeedResponse" },
+          "401": { "description": "Returned when API licensee is inactive." },
+          "404": {
+            "description": "Returned if a cateogry + subcategory combination does not exist."
+          },
+          "503": {
+            "description": "Returned when website is temporarily unavailable."
+          }
+        }
+      }
+    },
+    "/{category}/{slug}": {
+      "get": {
+        "tags": ["article"],
+        "summary": "Get a specific article",
+        "description": "Returns content of article for a given top-level category and slug.",
+        "operationId": "getArticle",
+        "parameters": [
+          {
+            "name": "category",
+            "in": "path",
+            "description": "Slug of top-level category to filter the returned articles",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "examples": ["news", "trading"],
+              "enum": ["news", "trading"]
+            }
+          },
+          {
+            "name": "slug",
+            "in": "path",
+            "description": "Slug of an article",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "examples": ["daily-broad-market-recap-2024-07-09"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string",
+                  "format": "html",
+                  "examples": ["<html><head>...</head><body>...</body></html>"]
+                }
+              },
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Article" }
+              }
+            }
+          },
+          "301": {
+            "description": "The location for this article has changed permanently. Follow redirect and update any cached URIs."
+          },
+          "302": {
+            "description": "The location for this article has changed temporarily. Follow redirect."
+          },
+          "401": { "description": "Returned when API licensee is inactive." },
+          "404": { "description": "Returned if article does not exist." },
+          "503": {
+            "description": "Returned when website is temporarily unavailable."
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "FeedResponse": {
+        "description": "Successful response including requested articles.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "allOf": [
+                { "$ref": "#/components/schemas/Feed" },
+                {
+                  "type": "object",
+                  "properties": {
+                    "posts": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/Article" }
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "application/rss+xml": {
+            "schema": {
+              "type": "object",
+              "xml": { "name": "rss" },
+              "properties": {
+                "channel": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/Feed" },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "posts": {
+                          "type": "array",
+                          "items": { "$ref": "#/components/schemas/Article" },
+                          "xml": { "name": "item" }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "application/atom+xml": {
+            "schema": {
+              "xml": {
+                "name": "feed",
+                "namespace": "http://www.w3.org/2005/Atom"
+              },
+              "allOf": [
+                { "$ref": "#/components/schemas/Feed" },
+                {
+                  "type": "object",
+                  "properties": {
+                    "posts": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/Article" },
+                      "xml": { "name": "entry" }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "Feed": {
+        "type": "object",
+        "properties": {
+          "title": { "type": "string", "examples": ["Babypips"] },
+          "description": {
+            "type": "string",
+            "examples": [
+              "Learn How to Trade Forex. Babypips Is The Beginner's Guide to Forex Trading."
+            ]
+          },
+          "image": {
+            "type": "object",
+            "properties": {
+              "url": {
+                "type": "string",
+                "format": "uri",
+                "examples": ["https://www.babypips.com/favicon-230x230.png"]
+              },
+              "title": { "type": ["string", "null"], "examples": ["Babypips"] },
+              "link": { "type": ["string", "null"], "format": "uri" },
+              "language": { "type": "string", "examples": ["en-US"] },
+              "copyright": {
+                "type": "string",
+                "examples": [
+                  "Copyright © 2024 Babypips.com LLC. All rights reserved."
+                ]
+              },
+              "lastBuildDate": {
+                "type": "string",
+                "description": "The last time the content of the channel changed in RFC-822 format (for RSS and Atom) or ISO-8601 format (for JSON). For Atom, this field is called \"updated\".",
+                "examples": [
+                  "Mon, 10 Jan 2022 17:56:50 +0000",
+                  "2022-01-10T17:56:50.000Z"
+                ]
+              },
+              "updatePeriod": {
+                "type": "string",
+                "description": "Describes the period over which the channel format is updated.",
+                "examples": ["hourly"],
+                "enum": ["hourly", "daily", "weekly", "monthly", "yearly"]
+              },
+              "updateFrequency": {
+                "type": "number",
+                "description": "Used to describe the frequency of updates in relation to the update period. A positive integer indicates how many times in that period the channel is updated. For example, an updatePeriod of daily, and an updateFrequency of 2 indicates the channel format is updated twice daily.",
+                "examples": [1]
+              }
+            }
+          },
+          "link": {
+            "type": "string",
+            "format": "uri",
+            "examples": ["https://www.babypips.com"]
+          }
+        }
+      },
+      "Article": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "examples": ["Crypto Watchlist: Major Support Retest on BTC"]
+          },
+          "link": {
+            "type": "string",
+            "format": "uri",
+            "examples": [
+              "https://www.babypips.com/trading/taotd-gold-minor-pullback-2024-07-10"
+            ],
+            "description": "Fully qualified URI for the article."
+          },
+          "author": { "type": "string", "examples": ["Pippo"] },
+          "category": { "type": "string", "examples": ["Crypto"] },
+          "tags": {
+            "type": "array",
+            "items": { "type": "string" },
+            "uniqueItems": true,
+            "examples": [["eurusd", "usdjpy", "technical-analysis"]],
+            "description": "Array of tag slugs associated with the article. Only returned on JSON responses."
+          },
+          "description": {
+            "type": "string",
+            "format": "byte",
+            "examples": [
+              "<p>Bitcoin (BTC) is back to a major support area.</p>"
+            ],
+            "description": "Short excerpt of the article in HTML format."
+          },
+          "content": {
+            "type": "string",
+            "format": "html",
+            "examples": [
+              "<p>Bitcoin (BTC) is back to a major support area.</p><p>It's likely most crypto traders will be watching this area.</p>"
+            ],
+            "description": "Full content of the article in HTML format."
+          },
+          "guid": {
+            "type": "string",
+            "description": "Unique identifier for the article. May or may not be a fully qualified URI.",
+            "examples": [
+              "https://www.babypips.com/trading/taotd-gold-minor-pullback-2024-07-10"
+            ]
+          },
+          "pubDate": {
+            "type": "string",
+            "description": "Publish date of an article in RFC-822 format (for RSS and Atom) or ISO-8601 format (for JSON).",
+            "examples": [
+              "Mon, 10 Jan 2022 17:56:50 +0000",
+              "2022-01-10T17:56:50.000Z"
+            ]
+          }
+        }
+      }
+    },
+    "securitySchemes": { "bearerAuth": { "type": "http", "scheme": "bearer" } }
+  }
+}

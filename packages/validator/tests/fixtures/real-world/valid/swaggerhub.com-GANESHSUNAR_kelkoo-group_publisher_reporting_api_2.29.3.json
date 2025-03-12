@@ -1,0 +1,1261 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "KelkooGroup Publisher Reporting API",
+    "version": "2.29.3",
+    "description": "Reporting data for publisher by time period. Documentation available at [https://developers.kelkoogroup.com/](https://developers.kelkoogroup.com/)"
+  },
+  "servers": [{ "url": "https://api.kelkoogroup.net/publisher/reports/v1" }],
+  "paths": {
+    "/raw": {
+      "get": {
+        "tags": ["Report"],
+        "summary": "Get raw report for a given time period `[start, end]`",
+        "operationId": "getRaw",
+        "parameters": [
+          {
+            "name": "start",
+            "in": "query",
+            "description": "First day of the report, included, in UTC time zone. Must be in the format yyyy-mm-dd.",
+            "required": false,
+            "schema": { "type": "string", "format": "date" }
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "description": "Last day of the report, included, in UTC time zone. Must be in the format yyyy-mm-dd.",
+            "required": false,
+            "schema": { "type": "string", "format": "date" }
+          },
+          {
+            "name": "country",
+            "in": "query",
+            "description": "The country of the report.",
+            "required": false,
+            "schema": { "type": "string" },
+            "example": "fr"
+          },
+          {
+            "name": "dateRange",
+            "in": "query",
+            "description": "Specify one range to download report",
+            "required": false,
+            "schema": { "$ref": "#/components/schemas/DateRange" },
+            "example": "yesterday"
+          },
+          {
+            "name": "userDevice",
+            "in": "query",
+            "description": "Optional filter on user device.",
+            "required": false,
+            "schema": { "$ref": "#/components/schemas/Device" }
+          },
+          {
+            "name": "service",
+            "in": "query",
+            "description": "Optional filter on service type. Available values: Search, Links, Feeds",
+            "required": false,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "publisherTokenId",
+            "in": "query",
+            "description": "Optional filter on token ID. Example: 1234-abcdefgh",
+            "required": false,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "salesTracked",
+            "in": "query",
+            "description": "Optional filter to only return leads that have their sales tracked. Available values: true, false.",
+            "required": false,
+            "schema": { "type": "boolean" }
+          },
+          {
+            "name": "publisherSubId",
+            "in": "query",
+            "description": "Optional filter to only return data related to a publisher sub id.",
+            "required": false,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "publisherSubName",
+            "in": "query",
+            "description": "Optional filter to only return data related to a publisher sub name.",
+            "required": false,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "publisherTrafficType",
+            "in": "query",
+            "description": "Optional filter to only return data related to a publisher traffic type.",
+            "required": false,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "trafficAnalysisIsBot",
+            "in": "query",
+            "description": "Optional filter to only return data related to robotic traffic or only to human traffic.",
+            "required": false,
+            "schema": { "type": "boolean" }
+          },
+          {
+            "name": "columnsSet",
+            "in": "query",
+            "description": "Optional setting to retrieve only specified columns sets. Possible columns sets are : basic, performance, conversion, technical, publisher, traffic, links, offer. Eg: columnsSet=basic,perfomance,publisher",
+            "required": false,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {
+              "X-Concurrent-Requests-Limit": {
+                "description": "Maximum number of concurrent requests allowed",
+                "required": true,
+                "schema": { "type": "integer", "format": "int32" }
+              },
+              "X-Concurrent-Requests-Remaining": {
+                "description": "Number of concurrent requests remaining allowed",
+                "required": true,
+                "schema": { "type": "string" }
+              },
+              "Content-Disposition": {
+                "required": true,
+                "schema": { "type": "string" }
+              }
+            },
+            "content": {
+              "text/tab-separated-values": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RawClicksReportLine"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RawClicksReportLine"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input parameters",
+            "headers": {
+              "X-Concurrent-Requests-Limit": {
+                "description": "Maximum number of concurrent requests allowed",
+                "required": false,
+                "schema": { "type": "integer", "format": "int32" }
+              },
+              "X-Concurrent-Requests-Remaining": {
+                "description": "Number of concurrent requests remaining allowed",
+                "required": false,
+                "schema": { "type": "string" }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/DecodeFailure" }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "headers": {
+              "X-Concurrent-Requests-Limit": {
+                "description": "Maximum number of concurrent requests allowed",
+                "required": false,
+                "schema": { "type": "integer", "format": "int32" }
+              },
+              "X-Concurrent-Requests-Remaining": {
+                "description": "Number of concurrent requests remaining allowed",
+                "required": false,
+                "schema": { "type": "string" }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvalidAuthentication"
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Unsupported media type",
+            "headers": {
+              "X-Concurrent-Requests-Limit": {
+                "description": "Maximum number of concurrent requests allowed",
+                "required": false,
+                "schema": { "type": "integer", "format": "int32" }
+              },
+              "X-Concurrent-Requests-Remaining": {
+                "description": "Number of concurrent requests remaining allowed",
+                "required": false,
+                "schema": { "type": "string" }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/InvalidFormat" }
+              }
+            }
+          },
+          "429": {
+            "description": "Concurrent requests quota exceeded",
+            "headers": {
+              "X-Concurrent-Requests-Limit": {
+                "description": "Maximum number of concurrent requests allowed",
+                "required": false,
+                "schema": { "type": "integer", "format": "int32" }
+              },
+              "X-Concurrent-Requests-Remaining": {
+                "description": "Number of concurrent requests remaining allowed",
+                "required": false,
+                "schema": { "type": "string" }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/QuotaReached" }
+              }
+            }
+          },
+          "501": {
+            "description": "Data are not available yet for the requested dates",
+            "headers": {
+              "X-Concurrent-Requests-Limit": {
+                "description": "Maximum number of concurrent requests allowed",
+                "required": false,
+                "schema": { "type": "integer", "format": "int32" }
+              },
+              "X-Concurrent-Requests-Remaining": {
+                "description": "Number of concurrent requests remaining allowed",
+                "required": false,
+                "schema": { "type": "string" }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/NoDataYet" }
+              }
+            }
+          },
+          "503": {
+            "description": "Service unavailable",
+            "headers": {
+              "X-Concurrent-Requests-Limit": {
+                "description": "Maximum number of concurrent requests allowed",
+                "required": false,
+                "schema": { "type": "integer", "format": "int32" }
+              },
+              "X-Concurrent-Requests-Remaining": {
+                "description": "Number of concurrent requests remaining allowed",
+                "required": false,
+                "schema": { "type": "string" }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Unavailable" }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "headers": {
+              "X-Concurrent-Requests-Limit": {
+                "description": "Maximum number of concurrent requests allowed",
+                "required": false,
+                "schema": { "type": "integer", "format": "int32" }
+              },
+              "X-Concurrent-Requests-Remaining": {
+                "description": "Number of concurrent requests remaining allowed",
+                "required": false,
+                "schema": { "type": "string" }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Unexpected" }
+              }
+            }
+          }
+        },
+        "security": [{ "JWT": [] }]
+      }
+    },
+    "/aggregated": {
+      "get": {
+        "tags": ["Report"],
+        "summary": "Get aggregated report for a given time period `[start, end]`",
+        "operationId": "getAggregated",
+        "parameters": [
+          {
+            "name": "start",
+            "in": "query",
+            "description": "First day of the report, included, in UTC time zone. Must be in the format yyyy-mm-dd.",
+            "required": false,
+            "schema": { "type": "string", "format": "date" }
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "description": "Last day of the report, included, in UTC time zone. Must be in the format yyyy-mm-dd.",
+            "required": false,
+            "schema": { "type": "string", "format": "date" }
+          },
+          {
+            "name": "country",
+            "in": "query",
+            "description": "The country of the report.",
+            "required": false,
+            "schema": { "type": "string" },
+            "example": "fr"
+          },
+          {
+            "name": "dateRange",
+            "in": "query",
+            "description": "Specify one range to download report",
+            "required": false,
+            "schema": { "$ref": "#/components/schemas/DateRange" },
+            "example": "yesterday"
+          },
+          {
+            "name": "groupBy",
+            "in": "query",
+            "description": "The dimensions of the aggregation, comma-separated. Available values: day, month, country, userDevice, publisherTokenId, offerCategoryId, merchantId, offerBrandId, custom1, custom2, custom3, linkUrlTarget, linkPublisherPage, domainLinkPublisherPage, service, publisherSubId, publisherSubName, publisherTrafficType, trafficAnalysisIsBot",
+            "required": false,
+            "schema": { "type": "string" },
+            "example": "day,country"
+          },
+          {
+            "name": "userDevice",
+            "in": "query",
+            "description": "Optional filter on user device.",
+            "required": false,
+            "schema": { "$ref": "#/components/schemas/Device" }
+          },
+          {
+            "name": "service",
+            "in": "query",
+            "description": "Optional filter on service type. Available values: Search, Links, Feeds",
+            "required": false,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "publisherTokenId",
+            "in": "query",
+            "description": "Optional filter on token ID. Example: 1234-abcdefgh",
+            "required": false,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "salesTracked",
+            "in": "query",
+            "description": "Optional filter to only return leads that have their sales tracked. Available values: true, false.",
+            "required": false,
+            "schema": { "type": "boolean" }
+          },
+          {
+            "name": "publisherSubId",
+            "in": "query",
+            "description": "Optional filter to only return data related to a publisher sub id.",
+            "required": false,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "publisherSubName",
+            "in": "query",
+            "description": "Optional filter to only return data related to a publisher sub name.",
+            "required": false,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "publisherTrafficType",
+            "in": "query",
+            "description": "Optional filter to only return data related to a publisher traffic type.",
+            "required": false,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "trafficAnalysisIsBot",
+            "in": "query",
+            "description": "Optional filter to only return data related to robotic traffic or only to human traffic.",
+            "required": false,
+            "schema": { "type": "boolean" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {
+              "X-Concurrent-Requests-Limit": {
+                "description": "Maximum number of concurrent requests allowed",
+                "required": true,
+                "schema": { "type": "integer", "format": "int32" }
+              },
+              "X-Concurrent-Requests-Remaining": {
+                "description": "Number of concurrent requests remaining allowed",
+                "required": true,
+                "schema": { "type": "string" }
+              },
+              "Content-Disposition": {
+                "required": true,
+                "schema": { "type": "string" }
+              },
+              "Cache-Control": {
+                "required": true,
+                "schema": { "type": "string" }
+              },
+              "Vary": { "required": true, "schema": { "type": "string" } }
+            },
+            "content": {
+              "text/tab-separated-values": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AggregatedClicksReportLine"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AggregatedClicksReportLine"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input parameters",
+            "headers": {
+              "X-Concurrent-Requests-Limit": {
+                "description": "Maximum number of concurrent requests allowed",
+                "required": false,
+                "schema": { "type": "integer", "format": "int32" }
+              },
+              "X-Concurrent-Requests-Remaining": {
+                "description": "Number of concurrent requests remaining allowed",
+                "required": false,
+                "schema": { "type": "string" }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/DecodeFailure" }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "headers": {
+              "X-Concurrent-Requests-Limit": {
+                "description": "Maximum number of concurrent requests allowed",
+                "required": false,
+                "schema": { "type": "integer", "format": "int32" }
+              },
+              "X-Concurrent-Requests-Remaining": {
+                "description": "Number of concurrent requests remaining allowed",
+                "required": false,
+                "schema": { "type": "string" }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvalidAuthentication"
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Unsupported media type",
+            "headers": {
+              "X-Concurrent-Requests-Limit": {
+                "description": "Maximum number of concurrent requests allowed",
+                "required": false,
+                "schema": { "type": "integer", "format": "int32" }
+              },
+              "X-Concurrent-Requests-Remaining": {
+                "description": "Number of concurrent requests remaining allowed",
+                "required": false,
+                "schema": { "type": "string" }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/InvalidFormat" }
+              }
+            }
+          },
+          "429": {
+            "description": "Concurrent requests quota exceeded",
+            "headers": {
+              "X-Concurrent-Requests-Limit": {
+                "description": "Maximum number of concurrent requests allowed",
+                "required": false,
+                "schema": { "type": "integer", "format": "int32" }
+              },
+              "X-Concurrent-Requests-Remaining": {
+                "description": "Number of concurrent requests remaining allowed",
+                "required": false,
+                "schema": { "type": "string" }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/QuotaReached" }
+              }
+            }
+          },
+          "501": {
+            "description": "Data are not available yet for the requested dates",
+            "headers": {
+              "X-Concurrent-Requests-Limit": {
+                "description": "Maximum number of concurrent requests allowed",
+                "required": false,
+                "schema": { "type": "integer", "format": "int32" }
+              },
+              "X-Concurrent-Requests-Remaining": {
+                "description": "Number of concurrent requests remaining allowed",
+                "required": false,
+                "schema": { "type": "string" }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/NoDataYet" }
+              }
+            }
+          },
+          "503": {
+            "description": "Service unavailable",
+            "headers": {
+              "X-Concurrent-Requests-Limit": {
+                "description": "Maximum number of concurrent requests allowed",
+                "required": false,
+                "schema": { "type": "integer", "format": "int32" }
+              },
+              "X-Concurrent-Requests-Remaining": {
+                "description": "Number of concurrent requests remaining allowed",
+                "required": false,
+                "schema": { "type": "string" }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Unavailable" }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "headers": {
+              "X-Concurrent-Requests-Limit": {
+                "description": "Maximum number of concurrent requests allowed",
+                "required": false,
+                "schema": { "type": "integer", "format": "int32" }
+              },
+              "X-Concurrent-Requests-Remaining": {
+                "description": "Number of concurrent requests remaining allowed",
+                "required": false,
+                "schema": { "type": "string" }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Unexpected" }
+              }
+            }
+          }
+        },
+        "security": [{ "JWT": [] }]
+      }
+    },
+    "/aggregated/views/links-unmonetized": {
+      "get": {
+        "tags": ["Report"],
+        "summary": "Get links with bad monetization ratio that need to be taken care of.",
+        "operationId": "getAggregatedViewsLinks-unmonetized",
+        "parameters": [
+          {
+            "name": "start",
+            "in": "query",
+            "description": "First day of the report, included, in UTC time zone. Must be in the format yyyy-mm-dd.",
+            "required": false,
+            "schema": { "type": "string", "format": "date" }
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "description": "Last day of the report, included, in UTC time zone. Must be in the format yyyy-mm-dd.",
+            "required": false,
+            "schema": { "type": "string", "format": "date" }
+          },
+          {
+            "name": "country",
+            "in": "query",
+            "description": "The country of the report.",
+            "required": false,
+            "schema": { "type": "string" },
+            "example": "fr"
+          },
+          {
+            "name": "dateRange",
+            "in": "query",
+            "description": "Specify one range to download report",
+            "required": false,
+            "schema": { "$ref": "#/components/schemas/DateRange" },
+            "example": "yesterday"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {
+              "X-Concurrent-Requests-Limit": {
+                "description": "Maximum number of concurrent requests allowed",
+                "required": true,
+                "schema": { "type": "integer", "format": "int32" }
+              },
+              "X-Concurrent-Requests-Remaining": {
+                "description": "Number of concurrent requests remaining allowed",
+                "required": true,
+                "schema": { "type": "string" }
+              },
+              "Content-Disposition": {
+                "required": true,
+                "schema": { "type": "string" }
+              },
+              "Cache-Control": {
+                "required": true,
+                "schema": { "type": "string" }
+              },
+              "Vary": { "required": true, "schema": { "type": "string" } }
+            },
+            "content": {
+              "text/tab-separated-values": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UnmonetizedLinksReportLine"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UnmonetizedLinksReportLine"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input parameters",
+            "headers": {
+              "X-Concurrent-Requests-Limit": {
+                "description": "Maximum number of concurrent requests allowed",
+                "required": false,
+                "schema": { "type": "integer", "format": "int32" }
+              },
+              "X-Concurrent-Requests-Remaining": {
+                "description": "Number of concurrent requests remaining allowed",
+                "required": false,
+                "schema": { "type": "string" }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/DecodeFailure" }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "headers": {
+              "X-Concurrent-Requests-Limit": {
+                "description": "Maximum number of concurrent requests allowed",
+                "required": false,
+                "schema": { "type": "integer", "format": "int32" }
+              },
+              "X-Concurrent-Requests-Remaining": {
+                "description": "Number of concurrent requests remaining allowed",
+                "required": false,
+                "schema": { "type": "string" }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvalidAuthentication"
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Unsupported media type",
+            "headers": {
+              "X-Concurrent-Requests-Limit": {
+                "description": "Maximum number of concurrent requests allowed",
+                "required": false,
+                "schema": { "type": "integer", "format": "int32" }
+              },
+              "X-Concurrent-Requests-Remaining": {
+                "description": "Number of concurrent requests remaining allowed",
+                "required": false,
+                "schema": { "type": "string" }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/InvalidFormat" }
+              }
+            }
+          },
+          "429": {
+            "description": "Concurrent requests quota exceeded",
+            "headers": {
+              "X-Concurrent-Requests-Limit": {
+                "description": "Maximum number of concurrent requests allowed",
+                "required": false,
+                "schema": { "type": "integer", "format": "int32" }
+              },
+              "X-Concurrent-Requests-Remaining": {
+                "description": "Number of concurrent requests remaining allowed",
+                "required": false,
+                "schema": { "type": "string" }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/QuotaReached" }
+              }
+            }
+          },
+          "501": {
+            "description": "Data are not available yet for the requested dates",
+            "headers": {
+              "X-Concurrent-Requests-Limit": {
+                "description": "Maximum number of concurrent requests allowed",
+                "required": false,
+                "schema": { "type": "integer", "format": "int32" }
+              },
+              "X-Concurrent-Requests-Remaining": {
+                "description": "Number of concurrent requests remaining allowed",
+                "required": false,
+                "schema": { "type": "string" }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/NoDataYet" }
+              }
+            }
+          },
+          "503": {
+            "description": "Service unavailable",
+            "headers": {
+              "X-Concurrent-Requests-Limit": {
+                "description": "Maximum number of concurrent requests allowed",
+                "required": false,
+                "schema": { "type": "integer", "format": "int32" }
+              },
+              "X-Concurrent-Requests-Remaining": {
+                "description": "Number of concurrent requests remaining allowed",
+                "required": false,
+                "schema": { "type": "string" }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Unavailable" }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "headers": {
+              "X-Concurrent-Requests-Limit": {
+                "description": "Maximum number of concurrent requests allowed",
+                "required": false,
+                "schema": { "type": "integer", "format": "int32" }
+              },
+              "X-Concurrent-Requests-Remaining": {
+                "description": "Number of concurrent requests remaining allowed",
+                "required": false,
+                "schema": { "type": "string" }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Unexpected" }
+              }
+            }
+          }
+        },
+        "security": [{ "JWT": [] }]
+      }
+    },
+    "/aggregated/views/links-unmonetized-detailed": {
+      "get": {
+        "tags": ["Report"],
+        "summary": "Get links with bad monetization ratio that need to be taken care of (Detailed).",
+        "operationId": "getAggregatedViewsLinks-unmonetized-detailed",
+        "parameters": [
+          {
+            "name": "start",
+            "in": "query",
+            "description": "First day of the report, included, in UTC time zone. Must be in the format yyyy-mm-dd.",
+            "required": false,
+            "schema": { "type": "string", "format": "date" }
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "description": "Last day of the report, included, in UTC time zone. Must be in the format yyyy-mm-dd.",
+            "required": false,
+            "schema": { "type": "string", "format": "date" }
+          },
+          {
+            "name": "country",
+            "in": "query",
+            "description": "The country of the report.",
+            "required": false,
+            "schema": { "type": "string" },
+            "example": "fr"
+          },
+          {
+            "name": "dateRange",
+            "in": "query",
+            "description": "Specify one range to download report",
+            "required": false,
+            "schema": { "$ref": "#/components/schemas/DateRange" },
+            "example": "yesterday"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {
+              "X-Concurrent-Requests-Limit": {
+                "description": "Maximum number of concurrent requests allowed",
+                "required": true,
+                "schema": { "type": "integer", "format": "int32" }
+              },
+              "X-Concurrent-Requests-Remaining": {
+                "description": "Number of concurrent requests remaining allowed",
+                "required": true,
+                "schema": { "type": "string" }
+              },
+              "Content-Disposition": {
+                "required": true,
+                "schema": { "type": "string" }
+              },
+              "Cache-Control": {
+                "required": true,
+                "schema": { "type": "string" }
+              },
+              "Vary": { "required": true, "schema": { "type": "string" } }
+            },
+            "content": {
+              "text/tab-separated-values": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UnmonetizedLinksDetailedReportLine"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UnmonetizedLinksDetailedReportLine"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input parameters",
+            "headers": {
+              "X-Concurrent-Requests-Limit": {
+                "description": "Maximum number of concurrent requests allowed",
+                "required": false,
+                "schema": { "type": "integer", "format": "int32" }
+              },
+              "X-Concurrent-Requests-Remaining": {
+                "description": "Number of concurrent requests remaining allowed",
+                "required": false,
+                "schema": { "type": "string" }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/DecodeFailure" }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "headers": {
+              "X-Concurrent-Requests-Limit": {
+                "description": "Maximum number of concurrent requests allowed",
+                "required": false,
+                "schema": { "type": "integer", "format": "int32" }
+              },
+              "X-Concurrent-Requests-Remaining": {
+                "description": "Number of concurrent requests remaining allowed",
+                "required": false,
+                "schema": { "type": "string" }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvalidAuthentication"
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Unsupported media type",
+            "headers": {
+              "X-Concurrent-Requests-Limit": {
+                "description": "Maximum number of concurrent requests allowed",
+                "required": false,
+                "schema": { "type": "integer", "format": "int32" }
+              },
+              "X-Concurrent-Requests-Remaining": {
+                "description": "Number of concurrent requests remaining allowed",
+                "required": false,
+                "schema": { "type": "string" }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/InvalidFormat" }
+              }
+            }
+          },
+          "429": {
+            "description": "Concurrent requests quota exceeded",
+            "headers": {
+              "X-Concurrent-Requests-Limit": {
+                "description": "Maximum number of concurrent requests allowed",
+                "required": false,
+                "schema": { "type": "integer", "format": "int32" }
+              },
+              "X-Concurrent-Requests-Remaining": {
+                "description": "Number of concurrent requests remaining allowed",
+                "required": false,
+                "schema": { "type": "string" }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/QuotaReached" }
+              }
+            }
+          },
+          "501": {
+            "description": "Data are not available yet for the requested dates",
+            "headers": {
+              "X-Concurrent-Requests-Limit": {
+                "description": "Maximum number of concurrent requests allowed",
+                "required": false,
+                "schema": { "type": "integer", "format": "int32" }
+              },
+              "X-Concurrent-Requests-Remaining": {
+                "description": "Number of concurrent requests remaining allowed",
+                "required": false,
+                "schema": { "type": "string" }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/NoDataYet" }
+              }
+            }
+          },
+          "503": {
+            "description": "Service unavailable",
+            "headers": {
+              "X-Concurrent-Requests-Limit": {
+                "description": "Maximum number of concurrent requests allowed",
+                "required": false,
+                "schema": { "type": "integer", "format": "int32" }
+              },
+              "X-Concurrent-Requests-Remaining": {
+                "description": "Number of concurrent requests remaining allowed",
+                "required": false,
+                "schema": { "type": "string" }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Unavailable" }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "headers": {
+              "X-Concurrent-Requests-Limit": {
+                "description": "Maximum number of concurrent requests allowed",
+                "required": false,
+                "schema": { "type": "integer", "format": "int32" }
+              },
+              "X-Concurrent-Requests-Remaining": {
+                "description": "Number of concurrent requests remaining allowed",
+                "required": false,
+                "schema": { "type": "string" }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Unexpected" }
+              }
+            }
+          }
+        },
+        "security": [{ "JWT": [] }]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AggregatedClicksReportLine": {
+        "type": "object",
+        "properties": {
+          "day": { "type": "string" },
+          "month": { "type": "string" },
+          "country": { "type": "string" },
+          "userDevice": { "type": "string" },
+          "publisherTokenId": { "type": "string" },
+          "publisherTokenName": { "type": "string" },
+          "offerCategoryId": { "type": "integer", "format": "int64" },
+          "offerCategoryName": { "type": "string" },
+          "merchantId": { "type": "integer", "format": "int64" },
+          "merchantName": { "type": "string" },
+          "merchantTier": { "type": "string" },
+          "offerBrandId": { "type": "integer", "format": "int64" },
+          "offerBrandName": { "type": "string" },
+          "publisherSubId": { "type": "string" },
+          "publisherSubName": { "type": "string" },
+          "publisherTrafficType": { "type": "string" },
+          "custom1": { "type": "string" },
+          "custom2": { "type": "string" },
+          "custom3": { "type": "string" },
+          "linkUrlTarget": { "type": "string" },
+          "linkPublisherPage": { "type": "string" },
+          "domainLinkPublisherPage": { "type": "string" },
+          "service": { "type": "string" },
+          "trafficAnalysisIsBot": { "type": "boolean" },
+          "clickCount": { "type": "integer", "format": "int64" },
+          "clickValidCount": { "type": "integer", "format": "int64" },
+          "clickNoMatchCount": { "type": "integer", "format": "int64" },
+          "clickClientRequestInvalidCount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "monetizedClickPercentage": { "type": "string" },
+          "unmonetizedClickPercentage": { "type": "string" },
+          "leadRejectedCount": { "type": "integer", "format": "int64" },
+          "leadUnbilledCount": { "type": "integer", "format": "int64" },
+          "leadCount": { "type": "integer", "format": "int64" },
+          "trackedLeadCount": { "type": "integer", "format": "int64" },
+          "leadEstimatedRevenue": { "type": "number" },
+          "leadEstimatedRevenueInEur": { "type": "number" },
+          "leadEstimatedRevenueInGbp": { "type": "number" },
+          "leadEstimatedRevenueInUsd": { "type": "number" },
+          "saleCount": { "type": "integer", "format": "int64" },
+          "saleValue": { "type": "number" },
+          "saleValueInEur": { "type": "number" },
+          "saleValueInGbp": { "type": "number" },
+          "saleValueInUsd": { "type": "number" },
+          "linkCount": { "type": "integer", "format": "int64" },
+          "offerCount": { "type": "integer", "format": "int64" },
+          "cosPercentage": { "type": "string" },
+          "crPercentage": { "type": "string" }
+        }
+      },
+      "BadParameters": {
+        "required": ["error"],
+        "type": "object",
+        "properties": { "error": { "type": "string" } }
+      },
+      "DateRange": {
+        "type": "string",
+        "enum": ["yesterday", "last7days", "last30days"]
+      },
+      "DecodeFailure": {
+        "required": ["error"],
+        "type": "object",
+        "properties": { "error": { "type": "string" } }
+      },
+      "Device": { "type": "string", "enum": ["mobile", "desktop", "tablet"] },
+      "InvalidAuthentication": {
+        "required": ["error"],
+        "type": "object",
+        "properties": { "error": { "type": "string" } }
+      },
+      "InvalidFormat": {
+        "required": ["error"],
+        "type": "object",
+        "properties": { "error": { "type": "string" } }
+      },
+      "NoDataYet": {
+        "required": ["error"],
+        "type": "object",
+        "properties": { "error": { "type": "string" } }
+      },
+      "QuotaReached": {
+        "required": ["error"],
+        "type": "object",
+        "properties": { "error": { "type": "string" } }
+      },
+      "RawClicksReportLine": {
+        "type": "object",
+        "properties": {
+          "clickId": { "type": "string" },
+          "country": { "type": "string" },
+          "dateTime": { "type": "string" },
+          "day": { "type": "string" },
+          "month": { "type": "string" },
+          "service": { "type": "string" },
+          "publisherApplicationId": { "type": "integer", "format": "int64" },
+          "publisherApplicationName": { "type": "string" },
+          "publisherTokenId": { "type": "string" },
+          "publisherTokenName": { "type": "string" },
+          "userDevice": { "type": "string" },
+          "userOperatingSystem": { "type": "string" },
+          "userOperatingSystemVersion": { "type": "string" },
+          "userBrowser": { "type": "string" },
+          "userBrowserVersion": { "type": "string" },
+          "userAgent": { "type": "string" },
+          "userRequestReferrer": { "type": "string" },
+          "originReferer": { "type": "string" },
+          "publisherClickId": { "type": "string" },
+          "publisherSubId": { "type": "string" },
+          "publisherSubName": { "type": "string" },
+          "publisherTrafficType": { "type": "string" },
+          "custom1": { "type": "string" },
+          "custom2": { "type": "string" },
+          "custom3": { "type": "string" },
+          "clickValid": { "type": "boolean" },
+          "clickInvalidType": { "type": "string" },
+          "clickInvalidReason": { "type": "string" },
+          "trafficAnalysisIsBot": { "type": "boolean" },
+          "trafficAnalysisBotName": { "type": "string" },
+          "trafficAnalysisBotMatchedRules": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "trafficAnalysisBotConfidenceScore": { "type": "number" },
+          "trafficAnalysisIsFraudulent": { "type": "boolean" },
+          "isIframe": { "type": "boolean" },
+          "leadValid": { "type": "boolean" },
+          "leadInvalidType": { "type": "string" },
+          "leadInvalidReason": { "type": "string" },
+          "leadId": { "type": "string" },
+          "leadEstimatedRevenue": { "type": "number" },
+          "leadEstimatedRevenueInEur": { "type": "number" },
+          "leadEstimatedRevenueInGbp": { "type": "number" },
+          "leadEstimatedRevenueInUsd": { "type": "number" },
+          "salesTracked": { "type": "boolean" },
+          "sale": { "type": "boolean" },
+          "saleValue": { "type": "number" },
+          "saleValueInEur": { "type": "number" },
+          "saleValueInGbp": { "type": "number" },
+          "saleValueInUsd": { "type": "number" },
+          "saleCount": { "type": "integer", "format": "int64" },
+          "merchantId": { "type": "integer", "format": "int64" },
+          "merchantName": { "type": "string" },
+          "merchantTier": { "type": "string" },
+          "link": { "type": "boolean" },
+          "linkPublisherPage": { "type": "string" },
+          "linkUrlTarget": { "type": "string" },
+          "offer": { "type": "boolean" },
+          "offerId": { "type": "string" },
+          "offerTitle": { "type": "string" },
+          "offerEan": { "type": "string" },
+          "offerCategoryId": { "type": "integer", "format": "int64" },
+          "offerCategoryName": { "type": "string" },
+          "offerBrandId": { "type": "integer", "format": "int64" },
+          "offerBrandName": { "type": "string" }
+        }
+      },
+      "Unavailable": {
+        "required": ["error"],
+        "type": "object",
+        "properties": { "error": { "type": "string" } }
+      },
+      "Unexpected": {
+        "required": ["error"],
+        "type": "object",
+        "properties": { "error": { "type": "string" } }
+      },
+      "UnmonetizedLinksDetailedReportLine": {
+        "type": "object",
+        "properties": {
+          "country": { "type": "string" },
+          "linkUrlTarget": { "type": "string" },
+          "linkPublisherPage": { "type": "string" },
+          "domainLinkPublisherPage": { "type": "string" },
+          "clickCount": { "type": "integer", "format": "int64" },
+          "clickValidCount": { "type": "integer", "format": "int64" },
+          "clickNoMatchCount": { "type": "integer", "format": "int64" },
+          "clickClientRequestInvalidCount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "monetizedClickPercentage": { "type": "string" },
+          "unmonetizedClickPercentage": { "type": "string" },
+          "leadCount": { "type": "integer", "format": "int64" },
+          "leadEstimatedRevenue": { "type": "number" },
+          "leadEstimatedRevenueInEur": { "type": "number" }
+        }
+      },
+      "UnmonetizedLinksReportLine": {
+        "type": "object",
+        "properties": {
+          "country": { "type": "string" },
+          "linkUrlTarget": { "type": "string" },
+          "domainLinkPublisherPage": { "type": "string" },
+          "clickCount": { "type": "integer", "format": "int64" },
+          "clickValidCount": { "type": "integer", "format": "int64" },
+          "clickNoMatchCount": { "type": "integer", "format": "int64" },
+          "clickClientRequestInvalidCount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "monetizedClickPercentage": { "type": "string" },
+          "unmonetizedClickPercentage": { "type": "string" },
+          "leadCount": { "type": "integer", "format": "int64" },
+          "leadEstimatedRevenue": { "type": "number" },
+          "leadEstimatedRevenueInEur": { "type": "number" }
+        }
+      }
+    },
+    "securitySchemes": {
+      "JWT": {
+        "type": "http",
+        "description": "JWT token",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

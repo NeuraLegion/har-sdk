@@ -1,0 +1,127 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "BBE Nexus LMS API",
+    "description": "API for updating member course completion",
+    "version": "1"
+  },
+  "paths": {
+    "/course/update/{memberId}": {
+      "post": {
+        "tags": ["Update Member Course"],
+        "summary": "Endpoint to update a member with course completion",
+        "description": "Endpoint to update a member with course completion",
+        "operationId": "memberCourseUpdate",
+        "parameters": [
+          {
+            "name": "x-api-key",
+            "in": "header",
+            "description": "API key for authorization",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "x-client-id",
+            "in": "header",
+            "description": "API client ID",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "memberId",
+            "in": "path",
+            "description": "Member ID to update",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MemberCourseUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberCourseUpdateResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "MemberCourseUpdateRequest": {
+        "type": "object",
+        "properties": {
+          "courseCode": {
+            "type": "string",
+            "description": "ID of the course completed by the member"
+          },
+          "qualificationType": {
+            "type": "string",
+            "description": "Type of qualification completed",
+            "examples": ["Coaching", "Referee"]
+          },
+          "qualificationLevel": {
+            "type": "string",
+            "description": "Level of qualification",
+            "examples": ["Level 1", "Level 2"]
+          },
+          "status": {
+            "type": "string",
+            "description": "Completed status of course",
+            "examples": ["Completed"]
+          },
+          "qualificationDate": {
+            "type": "string",
+            "format": "date",
+            "description": "Date when the course was completed"
+          }
+        },
+        "required": [
+          "courseCode",
+          "qualificationType",
+          "qualificationLevel",
+          "status",
+          "qualificationDate"
+        ]
+      },
+      "MemberCourseUpdateResponse": {
+        "type": "object",
+        "properties": {
+          "statusCode": { "type": null },
+          "message": {
+            "type": "string",
+            "description": "Confirmation message for successful course update"
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "message": { "type": "string", "description": "Error message" }
+        }
+      }
+    }
+  }
+}

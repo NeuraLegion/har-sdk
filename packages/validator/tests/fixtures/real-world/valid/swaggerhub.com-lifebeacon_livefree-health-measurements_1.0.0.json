@@ -1,0 +1,697 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "LiveFree Health Measurements API",
+    "description": "The Health Measurements API enables partners to access data from the LiveFree Health Portal.",
+    "version": "1.0.0",
+    "contact": { "name": "API Support", "email": "engineering@lifebeacon.com" }
+  },
+  "servers": [{ "url": "https://device-events.lfapi.net/v1.0/" }],
+  "tags": [
+    {
+      "name": "Measurement Events",
+      "description": "A measurement event contains raw data and measurement info."
+    },
+    {
+      "name": "Measurement Webhooks",
+      "description": "A measurement webhook describes an HTTP endpoint where notification messages will be sent whenever new measurement events occur."
+    }
+  ],
+  "paths": {
+    "/measurement-events": {
+      "get": {
+        "summary": "Query measurement events",
+        "tags": ["Measurement Events"],
+        "parameters": [
+          {
+            "name": "since",
+            "in": "query",
+            "description": "Include events that occurred or were modified after the specified date/time (inclusive).",
+            "schema": { "type": "string", "format": "date-time" }
+          },
+          {
+            "name": "until",
+            "in": "query",
+            "description": "Include events that occurred or were modified before the specified date/time (inclusive).",
+            "schema": { "type": "string", "format": "date-time" }
+          },
+          {
+            "name": "types",
+            "in": "query",
+            "description": "Filter by event type(s).",
+            "schema": {
+              "type": "array",
+              "items": { "$ref": "#/components/schemas/MeasurementEventType" }
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "The number of events to skip.",
+            "schema": { "type": "integer" }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The maximum number of events to return.",
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Measurement events (if any)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/MeasurementEvent" }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a measurement event (for non-production testing only)",
+        "tags": ["Measurement Events"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateMeasurementEventRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Measurement event created",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/MeasurementEvent" }
+              }
+            },
+            "headers": {
+              "Locatioh": {
+                "schema": { "type": "string" },
+                "description": "The URL of the newly created measurement event."
+              }
+            }
+          }
+        }
+      }
+    },
+    "/measurement-events/{id}": {
+      "get": {
+        "summary": "Get a single measurement event",
+        "tags": ["Measurement Events"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the measurement event.",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Measurement event",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/MeasurementEvent" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/measurement-webhooks": {
+      "get": {
+        "summary": "List all measurement webhooks",
+        "tags": ["Measurement Webhooks"],
+        "responses": {
+          "200": {
+            "description": "Measurement webhooks (if any)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/MeasurementWebhook" }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a measurement webhook",
+        "tags": ["Measurement Webhooks"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MeasurementWebhookBase"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Measurement webhook created",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/MeasurementWebhook" }
+              }
+            },
+            "headers": {
+              "Locatioh": {
+                "schema": { "type": "string" },
+                "description": "The URL of the newly created measurement webhook."
+              }
+            }
+          }
+        }
+      }
+    },
+    "/measurement-webhooks/{id}": {
+      "get": {
+        "summary": "Get a single measurement webhook",
+        "tags": ["Measurement Webhooks"],
+        "parameters": [
+          { "$ref": "#/components/parameters/measurementWebhookId" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Measurement webhook",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/MeasurementWebhook" }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Update a measurement webhook",
+        "tags": ["Measurement Webhooks"],
+        "parameters": [
+          { "$ref": "#/components/parameters/measurementWebhookId" }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MeasurementWebhookBase"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Measurement webhook updated",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/MeasurementWebhook" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Dalate a measurement webhook",
+        "tags": ["Measurement Webhooks"],
+        "parameters": [
+          { "$ref": "#/components/parameters/measurementWebhookId" }
+        ],
+        "responses": { "204": { "description": "Measurement webhook deleted" } }
+      }
+    },
+    "/measurement-webhooks/{id}/test": {
+      "post": {
+        "summary": "Test a measurement webhook",
+        "description": "Sends a test notification to your webhook URL and returns information about the response received.",
+        "tags": ["Measurement Webhooks"],
+        "parameters": [
+          { "$ref": "#/components/parameters/measurementWebhookId" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Measurement webhook test result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MeasurementWebhookTestResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "webhooks": {
+    "MeasurementNotification": {
+      "post": {
+        "summary": "Sends a notification message to your webhook URL whenever new measurement events occur.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MeasurementNotification"
+              }
+            }
+          }
+        },
+        "responses": {
+          "2XX": { "description": "Notification received" },
+          "4XX": { "$ref": "#/components/responses/4XXClientError" },
+          "5XX": { "$ref": "#/components/responses/5XXServerError" }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ClientErrorResult": {
+        "type": "object",
+        "description": "A problem details object (see https://datatracker.ietf.org/doc/html/rfc7807).",
+        "properties": {
+          "type": {
+            "type": "string",
+            "format": "uri-reference",
+            "description": "A URI reference that identifies the problem type.",
+            "examples": [
+              "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5"
+            ]
+          },
+          "title": {
+            "type": "string",
+            "description": "A summary of the problem type.",
+            "examples": ["Bad Request"]
+          },
+          "status": {
+            "type": "integer",
+            "description": "The HTTP status code.",
+            "examples": [400]
+          },
+          "detail": {
+            "type": "string",
+            "description": "An explanation specific to this occurrence of the problem.",
+            "examples": ["Missing required field 'event'."]
+          }
+        }
+      },
+      "CreateMeasurementEventDeviceRequest": {
+        "type": "object",
+        "properties": {
+          "serialNumber": { "type": "string" },
+          "peripheralId": { "type": "string" }
+        },
+        "required": ["serialNumber"]
+      },
+      "CreateMeasurementEventRequest": {
+        "type": "object",
+        "properties": {
+          "type": { "$ref": "#/components/schemas/MeasurementEventType" },
+          "device": {
+            "$ref": "#/components/schemas/CreateMeasurementEventDeviceRequest"
+          },
+          "raw": { "$ref": "#/components/schemas/MeasurementEventRaw" },
+          "measurements": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Measurement" }
+          }
+        },
+        "required": ["type", "device", "raw", "measurements"],
+        "examples": [
+          {
+            "type": "BloodPressureReading",
+            "device": {
+              "serialNumber": "W03189101142ATT",
+              "peripheralId": "927a3492e17f"
+            },
+            "raw": { "encoding": "Text", "value": "SYS:114 DIA:82 PUL:65" },
+            "measurements": [
+              {
+                "type": "SystolicBloodPressure",
+                "name": "Systolic Blood Pressure",
+                "value": "114",
+                "unit": "mm[Hg]"
+              },
+              {
+                "type": "DiastolicBloodPressure",
+                "name": "Diastolic Blood Pressure",
+                "value": "82",
+                "unit": "mm[Hg]"
+              },
+              {
+                "type": "HeartRate",
+                "name": "Heart Rate",
+                "value": "65",
+                "unit": "{beats}/min"
+              }
+            ]
+          }
+        ]
+      },
+      "Measurement": {
+        "type": "object",
+        "properties": {
+          "type": { "$ref": "#/components/schemas/MeasurementType" },
+          "name": {
+            "type": "string",
+            "description": "The name of the measurement."
+          },
+          "value": {
+            "type": "string",
+            "description": "The measurement value in string format."
+          },
+          "unit": {
+            "type": "string",
+            "description": "The unit of measure in UCUM format (see https://ucum.org)."
+          },
+          "bodySite": {
+            "type": "string",
+            "description": "The site on the body where the measurement was taken (if applicable)."
+          }
+        },
+        "required": ["type", "name", "value", "unit"]
+      },
+      "MeasurementEvent": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "The unique identifier for the event."
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The time when the event occurred."
+          },
+          "lastModified": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The time when the event was last modified. In some cases an event may be modified to correct invalid information."
+          },
+          "type": { "$ref": "#/components/schemas/MeasurementEventType" },
+          "device": { "$ref": "#/components/schemas/MeasurementEventDevice" },
+          "raw": { "$ref": "#/components/schemas/MeasurementEventRaw" },
+          "measurements": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Measurement" }
+          }
+        },
+        "required": [
+          "id",
+          "timestamp",
+          "lastModified",
+          "type",
+          "device",
+          "raw",
+          "measurements"
+        ],
+        "examples": [
+          {
+            "id": "00000000-0000-0000-0000-000000000000",
+            "timestamp": "2020-05-01T08:40:51.620Z",
+            "lastModified": "2020-05-01T08:40:51.620Z",
+            "type": "BloodPressureReading",
+            "device": {
+              "serialNumber": "W03189101142ATT",
+              "peripheralId": "927a3492e17f",
+              "partnerDeviceId": "1754119",
+              "dealerId": 1234
+            },
+            "raw": { "encoding": "Text", "value": "SYS:114 DIA:82 PUL:65" },
+            "measurements": [
+              {
+                "type": "SystolicBloodPressure",
+                "name": "Systolic Blood Pressure",
+                "value": "114",
+                "unit": "mm[Hg]"
+              },
+              {
+                "type": "DiastolicBloodPressure",
+                "name": "Diastolic Blood Pressure",
+                "value": "82",
+                "unit": "mm[Hg]"
+              },
+              {
+                "type": "HeartRate",
+                "name": "Heart Rate",
+                "value": "65",
+                "unit": "{beats}/min"
+              }
+            ]
+          }
+        ]
+      },
+      "MeasurementEventDevice": {
+        "type": "object",
+        "properties": {
+          "serialNumber": { "type": "string" },
+          "peripheralId": { "type": "string" },
+          "partnerDeviceId": { "type": "string" },
+          "dealerId": { "type": "integer" }
+        },
+        "required": ["serialNumber"]
+      },
+      "MeasurementEventRaw": {
+        "type": "object",
+        "properties": {
+          "encoding": {
+            "$ref": "#/components/schemas/MeasurementEventRawEncodingType"
+          },
+          "value": {
+            "type": "string",
+            "description": "The raw value received from the device."
+          }
+        },
+        "required": ["encoding", "value"]
+      },
+      "MeasurementEventRawEncodingType": {
+        "type": "string",
+        "format": "MeasurementEventRawEncodingType",
+        "description": "The type of encoding for the raw value.",
+        "enum": ["Text", "Base64"]
+      },
+      "MeasurementEventType": {
+        "type": "string",
+        "format": "MeasurementEventType",
+        "description": "The type of measurement event.",
+        "enum": [
+          "BloodGlucoseReading",
+          "BloodPressureReading",
+          "BodyTemperatureReading",
+          "BodyWeightReading",
+          "ElectrocardiogramReading",
+          "PulseOximetryReading"
+        ]
+      },
+      "MeasurementNotification": {
+        "type": "object",
+        "properties": {
+          "webhook": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid",
+                "description": "The unique identifier for the webhook."
+              },
+              "type": { "$ref": "#/components/schemas/WebhookType" }
+            },
+            "required": ["id", "type"]
+          },
+          "event": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid",
+                "description": "The unique identifier for the measurement event."
+              },
+              "timestamp": {
+                "type": "string",
+                "format": "date-time",
+                "description": "The time when the measurement event occurred."
+              }
+            },
+            "required": ["id", "timestamp"]
+          }
+        },
+        "required": ["webhook", "event"]
+      },
+      "MeasurementType": {
+        "type": "string",
+        "format": "MeasurementType",
+        "description": "The type of measurement.",
+        "enum": [
+          "BodyWeight",
+          "DiastolicBloodPressure",
+          "HeartRate",
+          "OxygenSaturation",
+          "PerfusionIndex",
+          "SystolicBloodPressure",
+          "BloodGlucose",
+          "BodyTemperature",
+          "Electrocardiogram",
+          "ElectrocardiogramClassification"
+        ]
+      },
+      "MeasurementWebhook": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid",
+                "description": "The unique identifier for the webhook."
+              }
+            },
+            "required": ["id"]
+          },
+          { "$ref": "#/components/schemas/MeasurementWebhookBase" }
+        ]
+      },
+      "MeasurementWebhookBase": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "description": "The URL where notifications will be sent.",
+            "examples": ["https://api.partner.local/incoming-measurements"]
+          },
+          "active": {
+            "type": "boolean",
+            "default": false,
+            "description": "Indicates whether notifications are enabled for this webhook.",
+            "examples": [true]
+          },
+          "minSecondsPerCall": {
+            "type": "integer",
+            "default": 0,
+            "description": "The number of seconds to wait between notifications, or zero to trigger a notification on every event.",
+            "examples": [30]
+          },
+          "eventTypes": {
+            "type": "array",
+            "default": [],
+            "description": "An optional array of measurement event types to limit which event types will trigger a notification. If no event types are specified then all events will trigger a notification.",
+            "items": { "$ref": "#/components/schemas/MeasurementEventType" }
+          }
+        },
+        "required": ["url"]
+      },
+      "MeasurementWebhookTestResult": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "The unique identifier for the webhook."
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "description": "The URL where the test notification was sent.",
+            "examples": ["https://api.partner.local/incoming-measurements"]
+          },
+          "statusCode": {
+            "type": "integer",
+            "description": "The HTTP status code returned by the notification target.",
+            "examples": [200]
+          }
+        },
+        "required": ["id", "url", "statusCode"]
+      },
+      "ServerErrorResult": {
+        "type": "object",
+        "description": "A problem details object (see https://datatracker.ietf.org/doc/html/rfc7807).",
+        "properties": {
+          "type": {
+            "type": "string",
+            "format": "uri-reference",
+            "description": "A URI reference that identifies the problem type.",
+            "examples": [
+              "https://datatracker.ietf.org/doc/html/rfc7231#section-6.6"
+            ]
+          },
+          "title": {
+            "type": "string",
+            "description": "A summary of the problem type.",
+            "examples": ["Internal Server Error"]
+          },
+          "status": {
+            "type": "integer",
+            "description": "The HTTP status code.",
+            "examples": [500]
+          },
+          "detail": {
+            "type": "string",
+            "description": "An explanation specific to this occurrence of the problem.",
+            "examples": ["An error occurred while processing the request."]
+          }
+        }
+      },
+      "SimpleErrorResult": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "An explanation of the problem.",
+            "examples": ["An error occurred while processing the request."]
+          }
+        }
+      },
+      "WebhookType": {
+        "type": "string",
+        "format": "WebhookType",
+        "description": "The type of webhook.",
+        "enum": ["Measurement"]
+      }
+    },
+    "parameters": {
+      "measurementWebhookId": {
+        "name": "id",
+        "in": "path",
+        "description": "ID of the measurement webhook.",
+        "required": true,
+        "schema": { "type": "string", "format": "uuid" }
+      }
+    },
+    "responses": {
+      "4XXClientError": {
+        "description": "Client error",
+        "content": {
+          "application/problem+json": {
+            "schema": { "$ref": "#/components/schemas/ClientErrorResult" }
+          },
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/SimpleErrorResult" }
+          }
+        }
+      },
+      "5XXServerError": {
+        "description": "Server error",
+        "content": {
+          "application/problem+json": {
+            "schema": { "$ref": "#/components/schemas/ServerErrorResult" }
+          },
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/SimpleErrorResult" }
+          }
+        }
+      }
+    }
+  }
+}

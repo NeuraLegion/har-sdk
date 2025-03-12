@@ -1,0 +1,3015 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "TeamSync Backend",
+    "description": "This is the API document for TeamSync client.",
+    "contact": {
+      "name": "Hao-Liang Wen, Luis",
+      "email": "luis@shuchenai.com"
+    },
+    "version": "1.0.0-oas3.1"
+  },
+  "servers": [
+    {
+      "url": "https://api.scfg.io",
+      "description": "Production server"
+    }
+  ],
+  "paths": {
+    "/public/auth/signin": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Login For Access Token",
+        "description": "Sign in to get access token",
+        "operationId": "login_for_access_token_public_auth_signin_post",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_login_for_access_token_public_auth_signin_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Token"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/private/auth/refresh": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Refresh Token",
+        "description": "Refresh JWT token",
+        "operationId": "refresh_token_private_auth_refresh_post",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "x-api-key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Api-Key"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Token"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/private/chatrooms/chat/ai/{chatroom_id}/speech": {
+      "post": {
+        "tags": ["Chatrooms"],
+        "summary": "Submit Ai Speech",
+        "description": "Submit a speech to the AI agent, and get the response.",
+        "operationId": "submit_ai_speech_private_chatrooms_chat_ai__chatroom_id__speech_post",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "chatroom_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Chatroom ID"
+            }
+          },
+          {
+            "name": "x-api-key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Api-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Body_submit_ai_speech_private_chatrooms_chat_ai__chatroom_id__speech_post"
+                  }
+                ],
+                "title": "Body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssistantMessageInfo"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/private/chatrooms/chat/ai/{chatroom_id}": {
+      "post": {
+        "tags": ["Chatrooms"],
+        "summary": "Submit Ai Chat",
+        "description": "Submit a message to the AI agent, and get the response.",
+        "operationId": "submit_ai_chat_private_chatrooms_chat_ai__chatroom_id__post",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "chatroom_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Chatroom ID"
+            }
+          },
+          {
+            "name": "web_search",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Web search",
+              "default": false,
+              "title": "Web Search"
+            },
+            "description": "Web search"
+          },
+          {
+            "name": "temperature",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number",
+              "maximum": 1,
+              "minimum": 0,
+              "description": "Temperature",
+              "default": 0.7,
+              "title": "Temperature"
+            },
+            "description": "Temperature"
+          },
+          {
+            "name": "agent_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/ChatAgentType"
+                }
+              ],
+              "description": "Agent type",
+              "default": "image_reader",
+              "title": "Agent Type"
+            },
+            "description": "Agent type"
+          },
+          {
+            "name": "tts",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Text-to-speech",
+              "default": false,
+              "title": "Tts"
+            },
+            "description": "Text-to-speech"
+          },
+          {
+            "name": "channel_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/ChatChannelType"
+                }
+              ],
+              "description": "Channel type, except Line",
+              "default": "chatroom",
+              "title": "Channel Type"
+            },
+            "description": "Channel type, except Line"
+          },
+          {
+            "name": "client_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "maxLength": 128,
+                  "pattern": "^[a-zA-Z0-9\\-]+$"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Client ID",
+              "title": "Client Id"
+            },
+            "description": "Client ID"
+          },
+          {
+            "name": "x-api-key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Api-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChatPayload"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssistantMessageInfo"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AssistantMessageInfo": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9\\-]+$",
+            "title": "Id",
+            "description": "Message ID"
+          },
+          "channel_type": {
+            "type": "string",
+            "title": "Channel Type",
+            "description": "Channel Type"
+          },
+          "channel_id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9\\-]+$",
+            "title": "Channel Id",
+            "description": "Channel ID"
+          },
+          "created_at": {
+            "type": "string",
+            "title": "Created At",
+            "description": "Created At"
+          },
+          "succeed": {
+            "type": "boolean",
+            "title": "Succeed",
+            "description": "Succeed"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Message or Error Message (if failed)"
+          },
+          "blobs": {
+            "items": {
+              "$ref": "#/components/schemas/BLOBInfo"
+            },
+            "type": "array",
+            "title": "Blobs",
+            "description": "Blob Info"
+          },
+          "tokens": {
+            "type": "integer",
+            "title": "Tokens",
+            "description": "Tokens"
+          },
+          "costs": {
+            "type": "number",
+            "title": "Costs",
+            "description": "Costs"
+          },
+          "question": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/HumanMessageInfoWithBLOB"
+              }
+            ],
+            "description": "Question Info"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "channel_type",
+          "channel_id",
+          "created_at",
+          "succeed",
+          "message",
+          "blobs",
+          "tokens",
+          "costs",
+          "question"
+        ],
+        "title": "AssistantMessageInfo"
+      },
+      "AssistantMessageInfoOnly": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9\\-]+$",
+            "title": "Id",
+            "description": "Message ID"
+          },
+          "channel_type": {
+            "type": "string",
+            "title": "Channel Type",
+            "description": "Channel Type"
+          },
+          "channel_id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9\\-]+$",
+            "title": "Channel Id",
+            "description": "Channel ID"
+          },
+          "created_at": {
+            "type": "string",
+            "title": "Created At",
+            "description": "Created At"
+          },
+          "succeed": {
+            "type": "boolean",
+            "title": "Succeed",
+            "description": "Succeed"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Message or Error Message (if failed)"
+          },
+          "blobs": {
+            "items": {
+              "$ref": "#/components/schemas/BLOBInfo"
+            },
+            "type": "array",
+            "title": "Blobs",
+            "description": "Blob Info"
+          },
+          "tokens": {
+            "type": "integer",
+            "title": "Tokens",
+            "description": "Tokens"
+          },
+          "costs": {
+            "type": "number",
+            "title": "Costs",
+            "description": "Costs"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "channel_type",
+          "channel_id",
+          "created_at",
+          "succeed",
+          "message",
+          "blobs",
+          "tokens",
+          "costs"
+        ],
+        "title": "AssistantMessageInfoOnly"
+      },
+      "BLOBInfo": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9\\-]+$",
+            "title": "Id",
+            "description": "Blob ID"
+          },
+          "created_at": {
+            "type": "string",
+            "title": "Created At",
+            "description": "Created At"
+          },
+          "url": {
+            "type": "string",
+            "title": "Url",
+            "description": "URL"
+          },
+          "content_type": {
+            "type": "string",
+            "title": "Content Type",
+            "description": "Content Type"
+          }
+        },
+        "type": "object",
+        "required": ["id", "created_at", "url", "content_type"],
+        "title": "BLOBInfo"
+      },
+      "BlobInfo": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9\\-]+$",
+            "title": "Id",
+            "description": "Glob ID"
+          },
+          "created_at": {
+            "type": "string",
+            "title": "Created At",
+            "description": "Created At"
+          },
+          "url": {
+            "type": "string",
+            "title": "Url",
+            "description": "URL"
+          },
+          "content_type": {
+            "type": "string",
+            "title": "Content Type",
+            "description": "Content Type"
+          },
+          "filename": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Filename",
+            "description": "Filename"
+          }
+        },
+        "type": "object",
+        "required": ["id", "created_at", "url", "content_type", "filename"],
+        "title": "BlobInfo"
+      },
+      "Body_add_samples_private_module_hotel__chatroom_id__sample_post": {
+        "properties": {
+          "samples": {
+            "items": {
+              "type": "string",
+              "format": "binary"
+            },
+            "type": "array",
+            "title": "Samples"
+          }
+        },
+        "type": "object",
+        "required": ["samples"],
+        "title": "Body_add_samples_private_module_hotel__chatroom_id__sample_post"
+      },
+      "Body_de_echo_third_party_audio_deEcho_post": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "format": "binary",
+            "title": "File"
+          }
+        },
+        "type": "object",
+        "required": ["file"],
+        "title": "Body_de_echo_third_party_audio_deEcho_post"
+      },
+      "Body_de_noise_third_party_audio_deNoise_post": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "format": "binary",
+            "title": "File"
+          }
+        },
+        "type": "object",
+        "required": ["file"],
+        "title": "Body_de_noise_third_party_audio_deNoise_post"
+      },
+      "Body_login_for_access_token_public_auth_signin_post": {
+        "properties": {
+          "grant_type": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "password"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Grant Type"
+          },
+          "username": {
+            "type": "string",
+            "title": "Username"
+          },
+          "password": {
+            "type": "string",
+            "title": "Password"
+          },
+          "scope": {
+            "type": "string",
+            "title": "Scope",
+            "default": ""
+          },
+          "client_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Client Id"
+          },
+          "client_secret": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Client Secret"
+          }
+        },
+        "type": "object",
+        "required": ["username", "password"],
+        "title": "Body_login_for_access_token_public_auth_signin_post"
+      },
+      "Body_process_all_third_party_audio_pipeline_post": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "format": "binary",
+            "title": "File"
+          }
+        },
+        "type": "object",
+        "required": ["file"],
+        "title": "Body_process_all_third_party_audio_pipeline_post"
+      },
+      "Body_process_all_video_third_party_audio_pipeline_video_post": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "format": "binary",
+            "title": "File"
+          }
+        },
+        "type": "object",
+        "required": ["file"],
+        "title": "Body_process_all_video_third_party_audio_pipeline_video_post"
+      },
+      "Body_set_chatroom_image_private_chatrooms_setting_image__chatroom_id__patch": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "format": "binary",
+            "title": "File"
+          }
+        },
+        "type": "object",
+        "required": ["file"],
+        "title": "Body_set_chatroom_image_private_chatrooms_setting_image__chatroom_id__patch"
+      },
+      "Body_set_company_image_private_company_image_patch": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "format": "binary",
+            "title": "File"
+          }
+        },
+        "type": "object",
+        "required": ["file"],
+        "title": "Body_set_company_image_private_company_image_patch"
+      },
+      "Body_set_image_private_user_image_patch": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "format": "binary",
+            "title": "File"
+          }
+        },
+        "type": "object",
+        "required": ["file"],
+        "title": "Body_set_image_private_user_image_patch"
+      },
+      "Body_split_instrument_and_vocal_third_party_audio_split_post": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "format": "binary",
+            "title": "File"
+          }
+        },
+        "type": "object",
+        "required": ["file"],
+        "title": "Body_split_instrument_and_vocal_third_party_audio_split_post"
+      },
+      "Body_submit_ai_speech_private_chatrooms_chat_ai__chatroom_id__speech_post": {
+        "properties": {
+          "chat_type": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ChatType"
+              }
+            ],
+            "description": "Chat type",
+            "default": "ai"
+          },
+          "web_search": {
+            "type": "boolean",
+            "title": "Web Search",
+            "description": "Web search",
+            "default": false
+          },
+          "temperature": {
+            "type": "number",
+            "maximum": 1,
+            "minimum": 0,
+            "title": "Temperature",
+            "description": "Temperature",
+            "default": 0.7
+          },
+          "agent_type": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ChatAgentType"
+              }
+            ],
+            "description": "Agent type",
+            "default": "image_reader"
+          },
+          "tts": {
+            "type": "boolean",
+            "title": "Tts",
+            "description": "Text-to-speech",
+            "default": false
+          },
+          "blob_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Blob Ids",
+            "description": "Blob IDs"
+          },
+          "channel_type": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ChatChannelType"
+              }
+            ],
+            "description": "Channel type, except Line",
+            "default": "chatroom"
+          },
+          "client_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 128,
+                "pattern": "^[a-zA-Z0-9\\-]+$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Client Id",
+            "description": "Client ID"
+          },
+          "speech_file": {
+            "type": "string",
+            "format": "binary",
+            "title": "Speech File"
+          },
+          "speech_keywords": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Speech Keywords",
+            "description": "Speech keywords"
+          }
+        },
+        "type": "object",
+        "title": "Body_submit_ai_speech_private_chatrooms_chat_ai__chatroom_id__speech_post"
+      },
+      "Body_submit_chat_blob_private_chatrooms_chat_blob__chatroom_id__post": {
+        "properties": {
+          "files": {
+            "items": {
+              "type": "string",
+              "format": "binary"
+            },
+            "type": "array",
+            "title": "Files"
+          }
+        },
+        "type": "object",
+        "required": ["files"],
+        "title": "Body_submit_chat_blob_private_chatrooms_chat_blob__chatroom_id__post"
+      },
+      "Body_submit_file_private_chatrooms_vector_store_file__chatroom_id__post": {
+        "properties": {
+          "files": {
+            "items": {
+              "type": "string",
+              "format": "binary"
+            },
+            "type": "array",
+            "title": "Files"
+          }
+        },
+        "type": "object",
+        "required": ["files"],
+        "title": "Body_submit_file_private_chatrooms_vector_store_file__chatroom_id__post"
+      },
+      "Body_upload_voice_private_property_chatroom_voices__chatroom_id__from_audio_post": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "format": "binary",
+            "title": "File"
+          }
+        },
+        "type": "object",
+        "required": ["file"],
+        "title": "Body_upload_voice_private_property_chatroom_voices__chatroom_id__from_audio_post"
+      },
+      "ChatAgentType": {
+        "type": "string",
+        "enum": ["image_reader", "image_reader_only_text"],
+        "title": "ChatAgentType"
+      },
+      "ChatChannelType": {
+        "type": "string",
+        "enum": ["chatroom", "line", "web"],
+        "title": "ChatChannelType"
+      },
+      "ChatPayload": {
+        "properties": {
+          "chat_type": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ChatType"
+              }
+            ],
+            "description": "Chat type",
+            "default": "normal"
+          },
+          "message": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Message"
+          },
+          "blob_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Blob Ids",
+            "description": "Blob ID for the file"
+          }
+        },
+        "type": "object",
+        "required": ["message"],
+        "title": "ChatPayload"
+      },
+      "ChatRoomCreatePayload": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 32,
+            "minLength": 1,
+            "title": "Name"
+          },
+          "bot_name": {
+            "type": "string",
+            "maxLength": 32,
+            "minLength": 1,
+            "title": "Bot Name",
+            "default": "AI助理"
+          },
+          "group": {
+            "type": "string",
+            "maxLength": 32,
+            "minLength": 1,
+            "title": "Group"
+          },
+          "is_public": {
+            "type": "boolean",
+            "title": "Is Public",
+            "description": "Public or private chatroom",
+            "default": true
+          },
+          "passphrase": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 20,
+                "minLength": 4
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Passphrase",
+            "description": "Passphrase for private chatroom",
+            "default": "0000"
+          }
+        },
+        "type": "object",
+        "required": ["name", "group"],
+        "title": "ChatRoomCreatePayload"
+      },
+      "ChatRoomPropertyType": {
+        "type": "string",
+        "enum": [
+          "line_channel",
+          "voice",
+          "hotel_module_sample",
+          "hotel_module_hotel",
+          "hotel_module_profile"
+        ],
+        "title": "ChatRoomPropertyType"
+      },
+      "ChatType": {
+        "type": "string",
+        "enum": ["normal", "ai", "ai_query"],
+        "title": "ChatType"
+      },
+      "ChatroomGroupInfo": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9\\-]+$",
+            "title": "Id",
+            "description": "Group ID"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Group Name"
+          },
+          "num_of_chatrooms": {
+            "type": "integer",
+            "title": "Num Of Chatrooms",
+            "description": "Number of Chatrooms in Group"
+          }
+        },
+        "type": "object",
+        "required": ["id", "name", "num_of_chatrooms"],
+        "title": "ChatroomGroupInfo"
+      },
+      "ChatroomInfo": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9\\-]+$",
+            "title": "Id",
+            "description": "Chatroom ID"
+          },
+          "photo_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Photo Url",
+            "description": "Chatroom photo URL"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Chatroom Name"
+          },
+          "bot_name": {
+            "type": "string",
+            "title": "Bot Name",
+            "description": "Bot Name"
+          },
+          "group": {
+            "type": "string",
+            "title": "Group",
+            "description": "Group"
+          },
+          "is_public": {
+            "type": "boolean",
+            "title": "Is Public",
+            "description": "Is Public"
+          },
+          "creator_id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9\\-]+$",
+            "title": "Creator Id",
+            "description": "Creator ID"
+          },
+          "creator_nickname": {
+            "type": "string",
+            "title": "Creator Nickname",
+            "description": "Creator Nickname"
+          },
+          "instructions": {
+            "type": "string",
+            "title": "Instructions",
+            "description": "Instructions"
+          },
+          "num_of_members": {
+            "type": "integer",
+            "title": "Num Of Members",
+            "description": "Number of Members in Chatroom"
+          },
+          "context_limit": {
+            "type": "integer",
+            "title": "Context Limit",
+            "description": "Context Limit"
+          },
+          "created_at": {
+            "type": "string",
+            "title": "Created At",
+            "description": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "photo_url",
+          "name",
+          "bot_name",
+          "group",
+          "is_public",
+          "creator_id",
+          "creator_nickname",
+          "instructions",
+          "num_of_members",
+          "context_limit",
+          "created_at"
+        ],
+        "title": "ChatroomInfo"
+      },
+      "ChatroomPropertyInfo": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9\\-]+$",
+            "title": "Id",
+            "description": "Property ID"
+          },
+          "created_at": {
+            "type": "string",
+            "title": "Created At",
+            "description": "Created At"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Property Name"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description",
+            "description": "Property Description"
+          },
+          "chatroom_id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9\\-]+$",
+            "title": "Chatroom Id",
+            "description": "Chatroom ID"
+          },
+          "body": {
+            "type": "object",
+            "title": "Body",
+            "description": "Property Body"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "created_at",
+          "name",
+          "description",
+          "chatroom_id",
+          "body"
+        ],
+        "title": "ChatroomPropertyInfo"
+      },
+      "CompanyCreatedResponse": {
+        "properties": {
+          "company": {
+            "$ref": "#/components/schemas/CompanyInfo"
+          },
+          "department": {
+            "$ref": "#/components/schemas/DepartmentInfo"
+          },
+          "admin": {
+            "$ref": "#/components/schemas/UserInfo"
+          }
+        },
+        "type": "object",
+        "required": ["company", "department", "admin"],
+        "title": "CompanyCreatedResponse"
+      },
+      "CompanyInfo": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9\\-]+$",
+            "title": "Id",
+            "description": "Company ID"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Company Name"
+          },
+          "url_domain": {
+            "type": "string",
+            "title": "Url Domain",
+            "description": "Company Subdomain Name"
+          },
+          "admin_id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9\\-]+$",
+            "title": "Admin Id",
+            "description": "Admin ID"
+          },
+          "admin_username": {
+            "type": "string",
+            "title": "Admin Username",
+            "description": "Admin Username"
+          },
+          "admin_email": {
+            "type": "string",
+            "format": "email",
+            "title": "Admin Email",
+            "description": "Admin Email"
+          },
+          "photo_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Photo Url",
+            "description": "Company Logo URL"
+          },
+          "num_of_users": {
+            "type": "integer",
+            "title": "Num Of Users",
+            "description": "Number of Registered Users in Company"
+          },
+          "num_of_rooms": {
+            "type": "integer",
+            "title": "Num Of Rooms",
+            "description": "Number of Created Chatroom in Company"
+          },
+          "num_of_departments": {
+            "type": "integer",
+            "title": "Num Of Departments",
+            "description": "Number of Created Departments in Company"
+          },
+          "email_domains": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Email Domains",
+            "description": "List of Email Domains"
+          },
+          "chatroom_limit": {
+            "type": "integer",
+            "title": "Chatroom Limit",
+            "description": "Chatroom Limit"
+          },
+          "user_limit": {
+            "type": "integer",
+            "title": "User Limit",
+            "description": "User Limit"
+          },
+          "unlimited_chatroom": {
+            "type": "boolean",
+            "title": "Unlimited Chatroom",
+            "description": "Unlimited Chatroom"
+          },
+          "unlimited_user": {
+            "type": "boolean",
+            "title": "Unlimited User",
+            "description": "Unlimited User"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "url_domain",
+          "admin_id",
+          "admin_username",
+          "admin_email",
+          "photo_url",
+          "num_of_users",
+          "num_of_rooms",
+          "num_of_departments",
+          "email_domains",
+          "chatroom_limit",
+          "user_limit",
+          "unlimited_chatroom",
+          "unlimited_user"
+        ],
+        "title": "CompanyInfo"
+      },
+      "CompanyPropertyInfo": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9\\-]+$",
+            "title": "Id",
+            "description": "Property ID"
+          },
+          "created_at": {
+            "type": "string",
+            "title": "Created At",
+            "description": "Created At"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Property Name"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description",
+            "description": "Property Description"
+          },
+          "body": {
+            "type": "object",
+            "title": "Body",
+            "description": "Property Body"
+          },
+          "company_id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9\\-]+$",
+            "title": "Company Id",
+            "description": "Company ID"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "created_at",
+          "name",
+          "description",
+          "body",
+          "company_id"
+        ],
+        "title": "CompanyPropertyInfo"
+      },
+      "CompanyRegisterPayload": {
+        "properties": {
+          "username": {
+            "type": "string",
+            "maxLength": 20,
+            "minLength": 3,
+            "title": "Username",
+            "description": "Username"
+          },
+          "password": {
+            "type": "string",
+            "maxLength": 20,
+            "minLength": 3,
+            "title": "Password",
+            "description": "Password"
+          },
+          "nickname": {
+            "type": "string",
+            "maxLength": 36,
+            "minLength": 1,
+            "title": "Nickname",
+            "description": "Nickname"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "title": "Email",
+            "description": "Email"
+          },
+          "company_name": {
+            "type": "string",
+            "maxLength": 32,
+            "minLength": 1,
+            "title": "Company Name",
+            "description": "Company name"
+          },
+          "company_url_domain": {
+            "type": "string",
+            "maxLength": 32,
+            "minLength": 1,
+            "title": "Company Url Domain",
+            "description": "Company URL domain",
+            "default": "dev"
+          }
+        },
+        "type": "object",
+        "required": [
+          "username",
+          "password",
+          "nickname",
+          "email",
+          "company_name"
+        ],
+        "title": "CompanyRegisterPayload"
+      },
+      "CustomTTSServiceType": {
+        "type": "string",
+        "enum": ["sync_lab", "camb_ai"],
+        "title": "CustomTTSServiceType"
+      },
+      "DepartmentInfo": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9\\-]+$",
+            "title": "Id",
+            "description": "Department ID"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Department Name"
+          },
+          "created_at": {
+            "type": "string",
+            "title": "Created At",
+            "description": "Created At"
+          },
+          "num_of_users": {
+            "type": "integer",
+            "title": "Num Of Users",
+            "description": "Number of Registered Users in Department"
+          },
+          "num_of_rooms": {
+            "type": "integer",
+            "title": "Num Of Rooms",
+            "description": "Number of Created Chatroom in Department"
+          },
+          "chatroom_limit": {
+            "type": "integer",
+            "title": "Chatroom Limit",
+            "description": "Chatroom Limit"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "created_at",
+          "num_of_users",
+          "num_of_rooms",
+          "chatroom_limit"
+        ],
+        "title": "DepartmentInfo"
+      },
+      "DepartmentPropertyInfo": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9\\-]+$",
+            "title": "Id",
+            "description": "Property ID"
+          },
+          "created_at": {
+            "type": "string",
+            "title": "Created At",
+            "description": "Created At"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Property Name"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description",
+            "description": "Property Description"
+          },
+          "body": {
+            "type": "object",
+            "title": "Body",
+            "description": "Property Body"
+          },
+          "department_id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9\\-]+$",
+            "title": "Department Id",
+            "description": "Department ID"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "created_at",
+          "name",
+          "description",
+          "body",
+          "department_id"
+        ],
+        "title": "DepartmentPropertyInfo"
+      },
+      "DepartmentPropertyType": {
+        "type": "string",
+        "enum": ["voice"],
+        "const": "voice",
+        "title": "DepartmentPropertyType"
+      },
+      "EditableHotelAudioSampleKeys": {
+        "type": "string",
+        "enum": ["customer_question", "service_response", "optimized_response"],
+        "title": "EditableHotelAudioSampleKeys"
+      },
+      "EmailDomainInfo": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9\\-]+$",
+            "title": "Id",
+            "description": "Email Domain ID"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Email Domain"
+          }
+        },
+        "type": "object",
+        "required": ["id", "name"],
+        "title": "EmailDomainInfo"
+      },
+      "EmailPayload": {
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "title": "Email",
+            "description": "Email information"
+          }
+        },
+        "type": "object",
+        "required": ["email"],
+        "title": "EmailPayload"
+      },
+      "ForgetPasswordPayload": {
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "title": "Email",
+            "description": "Email"
+          },
+          "username": {
+            "type": "string",
+            "maxLength": 20,
+            "minLength": 3,
+            "pattern": "^[a-zA-Z0-9\\.\\_\\!\\#\\-]+$",
+            "title": "Username",
+            "description": "Username"
+          }
+        },
+        "type": "object",
+        "required": ["email", "username"],
+        "title": "ForgetPasswordPayload"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "HotelAudioSample": {
+        "properties": {
+          "customer_question": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Customer Question",
+            "description": "The customer question of the audio sample"
+          },
+          "service_response": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Service Response",
+            "description": "The service response of the audio sample"
+          },
+          "optimized_response": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Optimized Response",
+            "description": "The optimized response of the audio sample"
+          },
+          "sample_src": {
+            "type": "string",
+            "title": "Sample Src",
+            "description": "The source of the audio sample"
+          },
+          "sample_filename": {
+            "type": "string",
+            "title": "Sample Filename",
+            "description": "The filename of the audio sample"
+          },
+          "sample_url": {
+            "type": "string",
+            "title": "Sample Url",
+            "description": "The S3 url of the audio sample"
+          },
+          "sample_content_type": {
+            "type": "string",
+            "title": "Sample Content Type",
+            "description": "The content type of the audio sample"
+          },
+          "sample_duration": {
+            "type": "number",
+            "title": "Sample Duration",
+            "description": "The duration of the audio sample in seconds",
+            "default": -1
+          },
+          "upload_date": {
+            "type": "string",
+            "title": "Upload Date",
+            "description": "The date of the audio sample uploaded"
+          },
+          "upload_time": {
+            "type": "string",
+            "title": "Upload Time",
+            "description": "The time of the audio sample uploaded"
+          },
+          "labels": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Labels",
+            "description": "The labels of the audio sample",
+            "default": []
+          },
+          "state": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/HotelAudioSampleState"
+              }
+            ],
+            "description": "The state of the audio sample",
+            "default": "Pending"
+          },
+          "transcription": {
+            "items": {
+              "$ref": "#/components/schemas/TranscriptionSegment"
+            },
+            "type": "array",
+            "title": "Transcription",
+            "description": "The transcription of the audio sample",
+            "default": []
+          },
+          "hotel_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Hotel Id",
+            "description": "The hotel name of the audio sample"
+          },
+          "asr_counts": {
+            "type": "integer",
+            "title": "Asr Counts",
+            "description": "The count of ASR requests",
+            "default": 0
+          },
+          "costs": {
+            "type": "number",
+            "title": "Costs",
+            "description": "The cost of the audio sample",
+            "default": 0
+          },
+          "tokens": {
+            "type": "integer",
+            "title": "Tokens",
+            "description": "The tokens of the audio sample",
+            "default": 0
+          },
+          "id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9\\-]+$",
+            "title": "Id",
+            "description": "Property ID"
+          },
+          "created_at": {
+            "type": "string",
+            "title": "Created At",
+            "description": "Created At"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Property Name"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description",
+            "description": "Property Description"
+          },
+          "chatroom_id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9\\-]+$",
+            "title": "Chatroom Id",
+            "description": "Chatroom ID"
+          }
+        },
+        "type": "object",
+        "required": [
+          "sample_src",
+          "sample_filename",
+          "sample_url",
+          "sample_content_type",
+          "upload_date",
+          "upload_time",
+          "id",
+          "created_at",
+          "name",
+          "description",
+          "chatroom_id"
+        ],
+        "title": "HotelAudioSample"
+      },
+      "HotelAudioSampleState": {
+        "type": "string",
+        "enum": [
+          "Pending",
+          "ASR Finished",
+          "Transcription Analysis Finished",
+          "Tagging Analysis Finished",
+          "Hotel Assignment Analysis Finished",
+          "Done",
+          "Unknown"
+        ],
+        "title": "HotelAudioSampleState"
+      },
+      "HotelInfo": {
+        "properties": {
+          "abbrev": {
+            "type": "string",
+            "title": "Abbrev",
+            "description": "Abbreviation of the hotel"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Name of the hotel"
+          },
+          "address": {
+            "type": "string",
+            "title": "Address",
+            "description": "Address of the hotel"
+          },
+          "phone_number": {
+            "type": "string",
+            "title": "Phone Number",
+            "description": "Phone number of the hotel"
+          },
+          "website": {
+            "type": "string",
+            "title": "Website",
+            "description": "Website of the hotel"
+          },
+          "keywords": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Keywords",
+            "description": "Keywords of the hotel",
+            "default": []
+          }
+        },
+        "type": "object",
+        "required": ["abbrev", "name", "address", "phone_number", "website"],
+        "title": "HotelInfo"
+      },
+      "HotelModuleTaskRegister": {
+        "properties": {
+          "asr_keywords": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Asr Keywords",
+            "description": "Keywords for ASR",
+            "default": []
+          },
+          "tag_group_id": {
+            "type": "string",
+            "title": "Tag Group Id",
+            "description": "ID of label group for the task"
+          }
+        },
+        "type": "object",
+        "required": ["tag_group_id"],
+        "title": "HotelModuleTaskRegister"
+      },
+      "HumanMessageInfoWithBLOB": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9\\-]+$",
+            "title": "Id",
+            "description": "Message ID"
+          },
+          "channel_type": {
+            "type": "string",
+            "title": "Channel Type",
+            "description": "Channel Type"
+          },
+          "channel_id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9\\-]+$",
+            "title": "Channel Id",
+            "description": "Channel ID"
+          },
+          "client_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Client Id",
+            "description": "Client ID"
+          },
+          "created_at": {
+            "type": "string",
+            "title": "Created At",
+            "description": "Created At"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Message"
+          },
+          "user_id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9\\-]+$",
+            "title": "User Id",
+            "description": "User ID"
+          },
+          "user_nickname": {
+            "type": "string",
+            "title": "User Nickname",
+            "description": "User Nickname"
+          },
+          "user_image_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "User Image Url",
+            "description": "User Image URL"
+          },
+          "blobs": {
+            "items": {
+              "$ref": "#/components/schemas/BLOBInfo"
+            },
+            "type": "array",
+            "title": "Blobs",
+            "description": "Blob Info"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "channel_type",
+          "channel_id",
+          "client_id",
+          "created_at",
+          "message",
+          "user_id",
+          "user_nickname",
+          "user_image_url",
+          "blobs"
+        ],
+        "title": "HumanMessageInfoWithBLOB"
+      },
+      "HumanMessageWithResponseInfo": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9\\-]+$",
+            "title": "Id",
+            "description": "Message ID"
+          },
+          "channel_type": {
+            "type": "string",
+            "title": "Channel Type",
+            "description": "Channel Type"
+          },
+          "channel_id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9\\-]+$",
+            "title": "Channel Id",
+            "description": "Channel ID"
+          },
+          "client_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Client Id",
+            "description": "Client ID"
+          },
+          "created_at": {
+            "type": "string",
+            "title": "Created At",
+            "description": "Created At"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "description": "Message"
+          },
+          "user_id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9\\-]+$",
+            "title": "User Id",
+            "description": "User ID"
+          },
+          "user_nickname": {
+            "type": "string",
+            "title": "User Nickname",
+            "description": "User Nickname"
+          },
+          "user_image_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "User Image Url",
+            "description": "User Image URL"
+          },
+          "blobs": {
+            "items": {
+              "$ref": "#/components/schemas/BLOBInfo"
+            },
+            "type": "array",
+            "title": "Blobs",
+            "description": "Blob Info"
+          },
+          "response": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AssistantMessageInfoOnly"
+              }
+            ],
+            "description": "Response Info"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "channel_type",
+          "channel_id",
+          "client_id",
+          "created_at",
+          "message",
+          "user_id",
+          "user_nickname",
+          "user_image_url",
+          "blobs",
+          "response"
+        ],
+        "title": "HumanMessageWithResponseInfo"
+      },
+      "ImageInfo": {
+        "properties": {
+          "url": {
+            "type": "string",
+            "title": "Url",
+            "description": "Image URL"
+          },
+          "preview_url": {
+            "type": "string",
+            "title": "Preview Url",
+            "description": "Preview URL, should be a smaller image"
+          }
+        },
+        "type": "object",
+        "required": ["url", "preview_url"],
+        "title": "ImageInfo"
+      },
+      "JointCGChatroomInfo": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9\\-]+$",
+            "title": "Id",
+            "description": "Group ID"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Group Name"
+          },
+          "num_of_chatrooms": {
+            "type": "integer",
+            "title": "Num Of Chatrooms",
+            "description": "Number of Chatrooms in Group"
+          },
+          "chatrooms": {
+            "items": {
+              "$ref": "#/components/schemas/ChatroomInfo"
+            },
+            "type": "array",
+            "title": "Chatrooms",
+            "description": "List of Chatrooms in Group"
+          }
+        },
+        "type": "object",
+        "required": ["id", "name", "num_of_chatrooms", "chatrooms"],
+        "title": "JointCGChatroomInfo"
+      },
+      "JointDepartmentCGCInfo": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9\\-]+$",
+            "title": "Id",
+            "description": "Department ID"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Department Name"
+          },
+          "created_at": {
+            "type": "string",
+            "title": "Created At",
+            "description": "Created At"
+          },
+          "num_of_users": {
+            "type": "integer",
+            "title": "Num Of Users",
+            "description": "Number of Registered Users in Department"
+          },
+          "num_of_rooms": {
+            "type": "integer",
+            "title": "Num Of Rooms",
+            "description": "Number of Created Chatroom in Department"
+          },
+          "chatroom_limit": {
+            "type": "integer",
+            "title": "Chatroom Limit",
+            "description": "Chatroom Limit"
+          },
+          "chatroom_infos": {
+            "items": {
+              "$ref": "#/components/schemas/JointCGChatroomInfo"
+            },
+            "type": "array",
+            "title": "Chatroom Infos",
+            "description": "List of Chatroom Groups in Department"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "created_at",
+          "num_of_users",
+          "num_of_rooms",
+          "chatroom_limit",
+          "chatroom_infos"
+        ],
+        "title": "JointDepartmentCGCInfo"
+      },
+      "JointDepartmentUserInfo": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9\\-]+$",
+            "title": "Id",
+            "description": "Department ID"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Department Name"
+          },
+          "created_at": {
+            "type": "string",
+            "title": "Created At",
+            "description": "Created At"
+          },
+          "num_of_users": {
+            "type": "integer",
+            "title": "Num Of Users",
+            "description": "Number of Registered Users in Department"
+          },
+          "num_of_rooms": {
+            "type": "integer",
+            "title": "Num Of Rooms",
+            "description": "Number of Created Chatroom in Department"
+          },
+          "chatroom_limit": {
+            "type": "integer",
+            "title": "Chatroom Limit",
+            "description": "Chatroom Limit"
+          },
+          "users": {
+            "items": {
+              "$ref": "#/components/schemas/UserInfo"
+            },
+            "type": "array",
+            "title": "Users",
+            "description": "List of Users in Department"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "created_at",
+          "num_of_users",
+          "num_of_rooms",
+          "chatroom_limit",
+          "users"
+        ],
+        "title": "JointDepartmentUserInfo"
+      },
+      "LineChannelBaseConfig": {
+        "properties": {
+          "channel_id": {
+            "type": "string",
+            "title": "Channel Id",
+            "description": "Channel ID"
+          },
+          "channel_secret": {
+            "type": "string",
+            "title": "Channel Secret",
+            "description": "Channel Secret"
+          },
+          "channel_access_token": {
+            "type": "string",
+            "title": "Channel Access Token",
+            "description": "Channel Access Token"
+          }
+        },
+        "type": "object",
+        "required": ["channel_id", "channel_secret", "channel_access_token"],
+        "title": "LineChannelBaseConfig"
+      },
+      "LineChannelRegister": {
+        "properties": {
+          "agent_type": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ChatAgentType"
+              }
+            ],
+            "description": "Agent type",
+            "default": "image_reader"
+          },
+          "temperature": {
+            "type": "number",
+            "maximum": 1,
+            "minimum": 0,
+            "title": "Temperature",
+            "description": "Temperature",
+            "default": 0.7
+          },
+          "web_search": {
+            "type": "boolean",
+            "title": "Web Search",
+            "description": "Web search",
+            "default": false
+          },
+          "response_mode": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ResponseType"
+              }
+            ],
+            "description": "Response mode",
+            "default": "text_only"
+          },
+          "query_only": {
+            "type": "boolean",
+            "title": "Query Only",
+            "description": "Query only",
+            "default": false
+          },
+          "channel_id": {
+            "type": "string",
+            "title": "Channel Id",
+            "description": "Channel ID"
+          },
+          "channel_secret": {
+            "type": "string",
+            "title": "Channel Secret",
+            "description": "Channel Secret"
+          },
+          "channel_access_token": {
+            "type": "string",
+            "title": "Channel Access Token",
+            "description": "Channel Access Token"
+          }
+        },
+        "type": "object",
+        "required": ["channel_id", "channel_secret", "channel_access_token"],
+        "title": "LineChannelRegister"
+      },
+      "LineProfileResponse": {
+        "properties": {
+          "valid": {
+            "items": {
+              "$ref": "#/components/schemas/ValidLineProfile"
+            },
+            "type": "array",
+            "title": "Valid",
+            "description": "Valid user profiles"
+          },
+          "invalid": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Invalid",
+            "description": "Invalid user IDs (in Line)"
+          }
+        },
+        "type": "object",
+        "required": ["valid", "invalid"],
+        "title": "LineProfileResponse"
+      },
+      "MemberInfo": {
+        "properties": {
+          "role_id": {
+            "type": "integer",
+            "maximum": 4,
+            "minimum": -2,
+            "title": "Role Id",
+            "description": "Role ID"
+          },
+          "role_name": {
+            "type": "string",
+            "enum": [
+              "虛擬部門管理者",
+              "測試員",
+              "一般員工",
+              "資深員工",
+              "初階管理者",
+              "中階管理者",
+              "高階管理者"
+            ],
+            "title": "Role Name",
+            "description": "Role Name"
+          },
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "description": "User ID"
+          },
+          "nickname": {
+            "type": "string",
+            "title": "Nickname",
+            "description": "Nickname"
+          },
+          "department_id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9\\-]+$",
+            "title": "Department Id",
+            "description": "Department ID"
+          },
+          "department_name": {
+            "type": "string",
+            "title": "Department Name",
+            "description": "Department Name"
+          },
+          "company_id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9\\-]+$",
+            "title": "Company Id",
+            "description": "Company ID"
+          },
+          "company_name": {
+            "type": "string",
+            "title": "Company Name",
+            "description": "Company Name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "role_id",
+          "role_name",
+          "id",
+          "nickname",
+          "department_id",
+          "department_name",
+          "company_id",
+          "company_name"
+        ],
+        "title": "MemberInfo"
+      },
+      "NewPasswordPayload": {
+        "properties": {
+          "password": {
+            "type": "string",
+            "maxLength": 20,
+            "minLength": 3,
+            "pattern": "^[a-zA-Z0-9\\.\\_\\!\\#\\-]+$",
+            "title": "Password",
+            "description": "Password"
+          }
+        },
+        "type": "object",
+        "required": ["password"],
+        "title": "NewPasswordPayload"
+      },
+      "NormalRegisterPayload": {
+        "properties": {
+          "username": {
+            "type": "string",
+            "maxLength": 20,
+            "minLength": 3,
+            "pattern": "^[a-zA-Z0-9\\.\\_\\!\\#\\-]+$",
+            "title": "Username",
+            "description": "Username"
+          },
+          "nickname": {
+            "type": "string",
+            "maxLength": 36,
+            "minLength": 1,
+            "title": "Nickname",
+            "description": "Nickname"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "title": "Email",
+            "description": "Email"
+          }
+        },
+        "type": "object",
+        "required": ["username", "nickname", "email"],
+        "title": "NormalRegisterPayload"
+      },
+      "PasswordModel": {
+        "properties": {
+          "password": {
+            "type": "string",
+            "maxLength": 20,
+            "minLength": 3,
+            "pattern": "^[a-zA-Z0-9\\.\\_\\!\\#\\-]+$",
+            "title": "Password",
+            "description": "Password"
+          }
+        },
+        "type": "object",
+        "required": ["password"],
+        "title": "PasswordModel"
+      },
+      "ResponseType": {
+        "type": "string",
+        "enum": ["text_only", "text_and_voice", "voice_only"],
+        "title": "ResponseType"
+      },
+      "SegmentModifyInfo": {
+        "properties": {
+          "idx": {
+            "type": "integer",
+            "title": "Idx",
+            "description": "The index of the segment, start from 0"
+          },
+          "text": {
+            "type": "string",
+            "title": "Text",
+            "description": "The text of the segment"
+          }
+        },
+        "type": "object",
+        "required": ["idx", "text"],
+        "title": "SegmentModifyInfo"
+      },
+      "SegmentSetInfo": {
+        "properties": {
+          "segments": {
+            "items": {
+              "$ref": "#/components/schemas/TranscriptionSegment"
+            },
+            "type": "array",
+            "title": "Segments",
+            "description": "The segments of the audio sample",
+            "default": []
+          },
+          "num_segments": {
+            "type": "integer",
+            "title": "Num Segments",
+            "description": "The number of segments",
+            "default": 0
+          }
+        },
+        "type": "object",
+        "title": "SegmentSetInfo"
+      },
+      "SimpleHotelInfoKeys": {
+        "type": "string",
+        "enum": ["abbrev", "name", "address", "phone_number", "website"],
+        "title": "SimpleHotelInfoKeys"
+      },
+      "SuccessResponse": {
+        "properties": {
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "default": "Success"
+          }
+        },
+        "type": "object",
+        "title": "SuccessResponse"
+      },
+      "TTSResponse": {
+        "properties": {
+          "url": {
+            "type": "string",
+            "title": "Url",
+            "description": "URL"
+          },
+          "length": {
+            "type": "integer",
+            "title": "Length",
+            "description": "Length"
+          }
+        },
+        "type": "object",
+        "required": ["url", "length"],
+        "title": "TTSResponse"
+      },
+      "TTSServiceType": {
+        "type": "string",
+        "enum": ["openai", "elevenlab", "yating"],
+        "title": "TTSServiceType"
+      },
+      "TagGroupInfo": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9\\-]+$",
+            "title": "Id",
+            "description": "Tag Group ID"
+          },
+          "chatroom_id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9\\-]+$",
+            "title": "Chatroom Id",
+            "description": "Chatroom ID"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Tag Group Name"
+          },
+          "created_at": {
+            "type": "string",
+            "title": "Created At",
+            "description": "Created At"
+          },
+          "tags": {
+            "items": {
+              "$ref": "#/components/schemas/TagInfo"
+            },
+            "type": "array",
+            "title": "Tags",
+            "description": "List of Tags in Group"
+          }
+        },
+        "type": "object",
+        "required": ["id", "chatroom_id", "name", "created_at", "tags"],
+        "title": "TagGroupInfo"
+      },
+      "TagGroupJSON": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Tag Group Name",
+            "default": "標籤名稱"
+          },
+          "tags": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Tags",
+            "description": "Tags",
+            "default": ["子標籤一", "子標籤二", "子標籤三"]
+          }
+        },
+        "type": "object",
+        "title": "TagGroupJSON"
+      },
+      "TagInfo": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9\\-]+$",
+            "title": "Id",
+            "description": "Tag ID"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Tag Name"
+          },
+          "created_at": {
+            "type": "string",
+            "title": "Created At",
+            "description": "Created At"
+          }
+        },
+        "type": "object",
+        "required": ["id", "name", "created_at"],
+        "title": "TagInfo"
+      },
+      "TagInfoWithGroupName": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9\\-]+$",
+            "title": "Id",
+            "description": "Tag ID"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Tag Name"
+          },
+          "created_at": {
+            "type": "string",
+            "title": "Created At",
+            "description": "Created At"
+          },
+          "group_id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9\\-]+$",
+            "title": "Group Id",
+            "description": "Tag Group ID"
+          },
+          "group_name": {
+            "type": "string",
+            "title": "Group Name",
+            "description": "Tag Group Name"
+          }
+        },
+        "type": "object",
+        "required": ["id", "name", "created_at", "group_id", "group_name"],
+        "title": "TagInfoWithGroupName"
+      },
+      "TagJSON": {
+        "properties": {
+          "groups": {
+            "items": {
+              "$ref": "#/components/schemas/TagGroupJSON"
+            },
+            "type": "array",
+            "title": "Groups",
+            "description": "Tag Groups"
+          }
+        },
+        "type": "object",
+        "required": ["groups"],
+        "title": "TagJSON"
+      },
+      "TaskInfo": {
+        "properties": {
+          "ttl": {
+            "type": "integer",
+            "title": "Ttl",
+            "description": "Time to live in seconds"
+          },
+          "body": {
+            "title": "Body",
+            "description": "Task body"
+          }
+        },
+        "type": "object",
+        "required": ["ttl", "body"],
+        "title": "TaskInfo"
+      },
+      "TaskResponse": {
+        "properties": {
+          "message": {
+            "type": "string",
+            "title": "Message",
+            "default": "Success"
+          },
+          "ticket_id": {
+            "type": "string",
+            "title": "Ticket Id",
+            "description": "Ticket ID"
+          }
+        },
+        "type": "object",
+        "required": ["ticket_id"],
+        "title": "TaskResponse"
+      },
+      "TextOnlyPayload": {
+        "properties": {
+          "text": {
+            "type": "string",
+            "title": "Text",
+            "description": "Text information"
+          }
+        },
+        "type": "object",
+        "required": ["text"],
+        "title": "TextOnlyPayload"
+      },
+      "Token": {
+        "properties": {
+          "access_token": {
+            "type": "string",
+            "title": "Access Token",
+            "default": "example_token"
+          },
+          "token_type": {
+            "type": "string",
+            "title": "Token Type",
+            "default": "bearer"
+          }
+        },
+        "type": "object",
+        "title": "Token"
+      },
+      "TranscriptionSegment": {
+        "properties": {
+          "start": {
+            "type": "number",
+            "title": "Start",
+            "description": "The start time of the segment in seconds"
+          },
+          "end": {
+            "type": "number",
+            "title": "End",
+            "description": "The end time of the segment in seconds"
+          },
+          "text": {
+            "type": "string",
+            "title": "Text",
+            "description": "The text of the segment"
+          }
+        },
+        "type": "object",
+        "required": ["start", "end", "text"],
+        "title": "TranscriptionSegment"
+      },
+      "UserInfo": {
+        "properties": {
+          "role_id": {
+            "type": "integer",
+            "maximum": 4,
+            "minimum": -2,
+            "title": "Role Id",
+            "description": "Role ID"
+          },
+          "role_name": {
+            "type": "string",
+            "enum": [
+              "虛擬部門管理者",
+              "測試員",
+              "一般員工",
+              "資深員工",
+              "初階管理者",
+              "中階管理者",
+              "高階管理者"
+            ],
+            "title": "Role Name",
+            "description": "Role Name"
+          },
+          "photo_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Photo Url",
+            "description": "User Photo URL"
+          },
+          "created_at": {
+            "type": "string",
+            "title": "Created At",
+            "description": "Created At"
+          },
+          "expired_at": {
+            "type": "string",
+            "title": "Expired At",
+            "description": "Expired At"
+          },
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "description": "User ID"
+          },
+          "enabled": {
+            "type": "boolean",
+            "title": "Enabled",
+            "description": "Enabled"
+          },
+          "username": {
+            "type": "string",
+            "maxLength": 20,
+            "minLength": 3,
+            "pattern": "^[a-zA-Z0-9\\.\\_\\!\\#\\-]+$",
+            "title": "Username",
+            "description": "Username"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "title": "Email",
+            "description": "Email"
+          },
+          "nickname": {
+            "type": "string",
+            "maxLength": 36,
+            "minLength": 1,
+            "title": "Nickname",
+            "description": "Nickname"
+          },
+          "department_id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9\\-]+$",
+            "title": "Department Id",
+            "description": "Department ID"
+          },
+          "department_name": {
+            "type": "string",
+            "title": "Department Name",
+            "description": "Department Name"
+          },
+          "company_id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9\\-]+$",
+            "title": "Company Id",
+            "description": "Company ID"
+          },
+          "company_name": {
+            "type": "string",
+            "title": "Company Name",
+            "description": "Company Name"
+          },
+          "chatroom_limit": {
+            "type": "integer",
+            "title": "Chatroom Limit",
+            "description": "Chatroom Limit"
+          },
+          "created_rooms": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Created Rooms",
+            "description": "List of Chatroom's ID Created by User"
+          },
+          "joined_rooms": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Joined Rooms",
+            "description": "List of Chatroom ID Joined by User"
+          }
+        },
+        "type": "object",
+        "required": [
+          "role_id",
+          "role_name",
+          "photo_url",
+          "created_at",
+          "expired_at",
+          "id",
+          "enabled",
+          "username",
+          "email",
+          "nickname",
+          "department_id",
+          "department_name",
+          "company_id",
+          "company_name",
+          "chatroom_limit",
+          "created_rooms",
+          "joined_rooms"
+        ],
+        "title": "UserInfo"
+      },
+      "UserSSOInfo": {
+        "properties": {
+          "sso_id": {
+            "type": "string",
+            "title": "Sso Id",
+            "description": "SSO ID"
+          },
+          "provider": {
+            "type": "string",
+            "title": "Provider",
+            "description": "SSO Provider"
+          }
+        },
+        "type": "object",
+        "required": ["sso_id", "provider"],
+        "title": "UserSSOInfo"
+      },
+      "ValidLineProfile": {
+        "properties": {
+          "displayName": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Displayname",
+            "description": "Display name of the user"
+          },
+          "userId": {
+            "type": "string",
+            "title": "Userid",
+            "description": "User ID"
+          },
+          "language": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Language",
+            "description": "Language of the user"
+          },
+          "pictureUrl": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pictureurl",
+            "description": "Profile picture URL"
+          },
+          "statusMessage": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Statusmessage",
+            "description": "Status message of the user"
+          },
+          "last_two_messages": {
+            "items": {
+              "$ref": "#/components/schemas/HumanMessageWithResponseInfo"
+            },
+            "type": "array",
+            "title": "Last Two Messages",
+            "description": "Last two messages of the user"
+          }
+        },
+        "type": "object",
+        "required": ["userId", "last_two_messages"],
+        "title": "ValidLineProfile"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": ["loc", "msg", "type"],
+        "title": "ValidationError"
+      },
+      "VectorRecordInfo": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9\\-]+$",
+            "title": "Id",
+            "description": "Vector Record ID"
+          },
+          "room_id": {
+            "type": "string",
+            "pattern": "^[a-zA-Z0-9\\-]+$",
+            "title": "Room Id",
+            "description": "Chatroom ID"
+          },
+          "created_at": {
+            "type": "string",
+            "title": "Created At",
+            "description": "Created At"
+          },
+          "blob": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BlobInfo"
+              }
+            ],
+            "description": "List of Blobs",
+            "default": []
+          }
+        },
+        "type": "object",
+        "required": ["id", "room_id", "created_at"],
+        "title": "VectorRecordInfo"
+      },
+      "VoiceGenderType": {
+        "type": "integer",
+        "enum": [0, 1, 2],
+        "title": "VoiceGenderType"
+      },
+      "WebCrawlPayload": {
+        "properties": {
+          "url": {
+            "type": "string",
+            "title": "Url",
+            "description": "URL to crawl"
+          },
+          "depth": {
+            "type": "integer",
+            "maximum": 1,
+            "minimum": 1,
+            "title": "Depth",
+            "description": "Depth of the URL",
+            "default": 1
+          }
+        },
+        "type": "object",
+        "required": ["url"],
+        "title": "WebCrawlPayload"
+      },
+      "YATING_MODEL": {
+        "type": "string",
+        "enum": [
+          "zh_en_female_1",
+          "zh_en_female_2",
+          "zh_en_male_1",
+          "zh_en_male_2",
+          "tai_female_1",
+          "tai_female_2",
+          "tai_male_1"
+        ],
+        "title": "YATING_MODEL"
+      },
+      "YaTingConfig": {
+        "properties": {
+          "yating_model_id": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/YATING_MODEL"
+              }
+            ],
+            "description": "Model ID",
+            "default": "zh_en_female_1"
+          },
+          "speed": {
+            "type": "number",
+            "maximum": 1.5,
+            "minimum": 0.5,
+            "title": "Speed",
+            "description": "Speed",
+            "default": 1
+          },
+          "pitch": {
+            "type": "number",
+            "maximum": 1.5,
+            "minimum": 0.5,
+            "title": "Pitch",
+            "description": "Pitch",
+            "default": 1
+          },
+          "energy": {
+            "type": "number",
+            "maximum": 1.5,
+            "minimum": 0.5,
+            "title": "Energy",
+            "description": "Energy",
+            "default": 1
+          }
+        },
+        "type": "object",
+        "title": "YaTingConfig"
+      }
+    },
+    "securitySchemes": {
+      "OAuth2PasswordBearer": {
+        "type": "oauth2",
+        "flows": {
+          "password": {
+            "scopes": {},
+            "tokenUrl": "https://example.com/public/auth/signin"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,425 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Hudini AssaAbloy",
+    "description": "Explore the reference documentation for Hudini AssaAbloy Integration, which offers a collection of APIs that application developers can use to access AssaAbloy digital key functionalities.",
+    "contact": { "name": "the developer", "email": "developers@hudini.io" },
+    "version": "1.0.3"
+  },
+  "tags": [
+    { "name": "Cloud APIs", "description": "APIs hosted on the cloud backend" },
+    {
+      "name": "On-Prem APIs",
+      "description": "APIs hosted on the property site"
+    }
+  ],
+  "paths": {
+    "/ddl/hotel/{hotelId}/invitation": {
+      "post": {
+        "summary": "Generate invitation code",
+        "description": "Inviation code api will generate a unique enpoint id and inviation code",
+        "tags": ["Cloud APIs"],
+        "parameters": [
+          {
+            "name": "hotelId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "$ref": "#/components/schemas/GenerateInvitationCodeInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Generate Invitation Code",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/GenerateInvitationCodeResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ddl/hotel/{hotelId}/mobile/key/code/{invitationCode}": {
+      "post": {
+        "summary": "Generate mobile key",
+        "description": "Before calling the mobile key api we need to pass the generated endpoint id to assa abloy mobile SDK to make the enpoint active(this is handled by the mobile app) or the mobile key api will fail. This api will generate a mobile key for the room no provied in invitation code api and the key will be passed to mobile SDK by AssaAbloy.",
+        "tags": ["Cloud APIs"],
+        "parameters": [
+          {
+            "name": "hotelId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "invitationCode",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "channelType",
+            "in": "query",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Generate Mobile Key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/GenericResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ddl/hotels/{hotelId}/rooms/{roomNo}/bookings/{bookingId}/qrcode": {
+      "get": {
+        "summary": "Generate QR code",
+        "description": "For the secondary guests to generate a mobile key for their devices we use this api which will generate a qr code in the primary guest device which the secondary guest can scan. The QR code will contain the invitaion code and the endpoint id for secondary guest device.",
+        "tags": ["Cloud APIs"],
+        "parameters": [
+          {
+            "name": "hotelId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "roomNo",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "bookingId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          { "name": "userId", "in": "query", "schema": { "type": "string" } },
+          {
+            "name": "firstName",
+            "in": "query",
+            "schema": { "type": "string" }
+          },
+          { "name": "lastName", "in": "query", "schema": { "type": "string" } },
+          { "name": "deviceId", "in": "query", "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Generate Mobile Key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/GenericResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ddl/hotels/{hotelId}/rooms/{roomNo}/deacivate/device": {
+      "delete": {
+        "summary": "Delete device key",
+        "description": "To deactivate secondary guest key or primary guest key when checking out from the room we can use this api.",
+        "tags": ["Cloud APIs"],
+        "parameters": [
+          {
+            "name": "hotelId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "roomNo",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "firstName",
+            "in": "query",
+            "schema": { "type": "string" }
+          },
+          { "name": "lastName", "in": "query", "schema": { "type": "string" } },
+          { "name": "deviceId", "in": "query", "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Generate Mobile Key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/GenericResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ddl/{roomId}/invitation/booking/{bookingId}": {
+      "post": {
+        "summary": "Generate invitation",
+        "tags": ["On-Prem APIs"],
+        "parameters": [
+          {
+            "name": "roomId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "bookingId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "lastName",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          { "name": "deviceId", "in": "query", "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Generate invitation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "boolean" },
+                    "message": { "type": "string" },
+                    "data": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ddl/{roomId}/mobile/key/code/{invitationCode}": {
+      "post": {
+        "summary": "Generate mobile key",
+        "tags": ["On-Prem APIs"],
+        "parameters": [
+          {
+            "name": "roomId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "invitationCode",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "startDate",
+            "in": "query",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "expireDate",
+            "in": "query",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Generate invitation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "boolean" },
+                    "message": { "type": "string" },
+                    "data": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ddl/{roomId}/qr/booking/{bookingId}": {
+      "get": {
+        "summary": "Generate QR code",
+        "tags": ["On-Prem APIs"],
+        "parameters": [
+          {
+            "name": "roomId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "bookingId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "firstName",
+            "in": "query",
+            "schema": { "type": "string" }
+          },
+          { "name": "deviceId", "in": "query", "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Generate QR code",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "boolean" },
+                    "message": { "type": "string" },
+                    "data": { "type": "object" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ddl/{roomId}/device/deactivate": {
+      "delete": {
+        "summary": "Deactivate mobile device",
+        "tags": ["On-Prem APIs"],
+        "parameters": [
+          {
+            "name": "roomId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "firstName",
+            "in": "query",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "lastName",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          { "name": "deviceId", "in": "query", "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deactivate mobile device",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": { "type": "boolean" },
+                    "message": { "type": "string" },
+                    "data": { "type": "object" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "GenericResponse": {
+        "type": "object",
+        "properties": {
+          "status": { "type": "string" },
+          "data": { "type": "object" }
+        }
+      },
+      "GenerateInvitationCodeInput": {
+        "type": "object",
+        "required": ["roomNo", "reservationId", "lastName"],
+        "properties": {
+          "roomNo": { "type": "string", "description": "The room number" },
+          "reservationId": {
+            "type": "string",
+            "description": "The reservation ID"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "The last name of the guest"
+          },
+          "deviceId": { "type": "string", "description": "The device ID" }
+        }
+      },
+      "GenerateInvitationCodeResponse": {
+        "type": "object",
+        "properties": {
+          "status": { "type": "string" },
+          "data": {
+            "type": "object",
+            "properties": {
+              "endpointId": {
+                "type": "string",
+                "description": "The ID of the endpoint"
+              },
+              "invitationCode": {
+                "type": "string",
+                "description": "The invitation code"
+              },
+              "reservationId": {
+                "type": "string",
+                "description": "The ID of the reservation"
+              },
+              "roomNo": { "type": "string", "description": "The room number" },
+              "lastName": {
+                "type": "string",
+                "description": "The last name of the guest"
+              },
+              "firstName": {
+                "type": "string",
+                "description": "The first name of the guest"
+              },
+              "hotelId": {
+                "type": "string",
+                "description": "The ID of the hotel"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

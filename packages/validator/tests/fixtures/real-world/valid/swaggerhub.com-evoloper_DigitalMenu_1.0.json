@@ -1,0 +1,301 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "version": "1.0",
+    "title": "Zeoniq Digital Menu Integration",
+    "description": "Zeoniq Digital Menu Integration"
+  },
+  "tags": [
+    { "name": "Partner Menu API", "description": "POS push to Partner API" },
+    {
+      "name": "POS Menu API",
+      "description": "Partner to get from Zeoniq POS API"
+    }
+  ],
+  "paths": {
+    "/api/zeoniq/pushposmenu": {
+      "post": {
+        "tags": ["Partner Menu API"],
+        "summary": "Push POS Menu",
+        "operationId": "PushProductMenu",
+        "parameters": [
+          {
+            "name": "SubscriptionId",
+            "in": "header",
+            "required": true,
+            "description": "Zeoniq Subscription Id",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "LocCode",
+            "in": "header",
+            "required": true,
+            "description": "Zeoniq Outlet/Branch code 分行代码",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "required": true,
+            "description": "plaintextHmacsha256(httpmethod+requestpath+SubscriptionId+LocCode+unixtimestamp+guid+body):unixtimestamp:guid",
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/MenuCategory" }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Success" },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ResponseMessage" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/zeoniq/pushblockitems": {
+      "post": {
+        "tags": ["Partner Menu API"],
+        "summary": "Push Block Items",
+        "operationId": "PushBlockItems",
+        "parameters": [
+          {
+            "name": "SubscriptionId",
+            "in": "header",
+            "required": true,
+            "description": "Zeoniq Subscription Id",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "LocCode",
+            "in": "header",
+            "required": true,
+            "description": "Zeoniq Outlet/Branch code 分行代码",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "required": true,
+            "description": "plaintextHmacsha256(httpmethod+requestpath+SubscriptionId+LocCode+unixtimestamp+guid+body):unixtimestamp:guid",
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/BlockedItem" }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Success" },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ResponseMessage" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/menu/getposmenu": {
+      "get": {
+        "tags": ["POS Menu API"],
+        "summary": "Get POS Menu",
+        "operationId": "GetProductMenu",
+        "parameters": [
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "required": true,
+            "description": "plaintextHmacsha256(httpmethod+requestpath+SubscriptionId+LocCode+unixtimestamp+guid+body):unixtimestamp:guid",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/MenuCategory" }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ResponseMessage" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/menu/getblockitems": {
+      "get": {
+        "tags": ["POS Menu API"],
+        "summary": "Get Block Items",
+        "operationId": "GetBlockItems",
+        "parameters": [
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "required": true,
+            "description": "plaintextHmacsha256(httpmethod+requestpath+SubscriptionId+LocCode+unixtimestamp+guid+body):unixtimestamp:guid",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/BlockedItem" }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ResponseMessage" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "MenuCategory": {
+        "type": "object",
+        "description": "Menu category",
+        "required": ["MenuId"],
+        "properties": {
+          "MenuId": {
+            "type": "string",
+            "maxLength": 25,
+            "description": "MenuId"
+          },
+          "MenuCatgDesc": {
+            "type": "string",
+            "maxLength": 100,
+            "description": "Menu Category Desc"
+          },
+          "MenuItems": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/MenuItem" }
+          }
+        }
+      },
+      "MenuItem": {
+        "type": "object",
+        "required": ["ItemCode"],
+        "properties": {
+          "ItemCode": {
+            "type": "string",
+            "maxLength": 25,
+            "description": "Item code"
+          },
+          "ParentCode": {
+            "type": "string",
+            "maxLength": 25,
+            "description": "Parent item code"
+          },
+          "SortSeq": {
+            "type": "integer",
+            "default": 0,
+            "description": "Sort Sequence No"
+          },
+          "ItemDesc": {
+            "type": "string",
+            "maxLength": 254,
+            "description": "Item description"
+          },
+          "ImageURL": {
+            "type": "string",
+            "maxLength": 254,
+            "description": "Image Url"
+          },
+          "Remark1": {
+            "type": "string",
+            "maxLength": 254,
+            "description": "Image Url"
+          },
+          "Remark2": {
+            "type": "string",
+            "maxLength": 254,
+            "description": "Image Url"
+          },
+          "StatusFlag": {
+            "type": "integer",
+            "default": 0,
+            "description": "Status Flag",
+            "enum": ["0 Unblock", "1 Blocked", "2 Hidden"]
+          },
+          "SellingPrice": {
+            "type": "number",
+            "default": 0,
+            "description": "Selling Price"
+          },
+          "OrigSellingPrice": {
+            "type": "number",
+            "default": 0,
+            "description": "Original Selling Price"
+          }
+        }
+      },
+      "BlockedItem": {
+        "type": "object",
+        "required": ["ItemCode"],
+        "properties": {
+          "ItemCode": {
+            "type": "string",
+            "maxLength": 25,
+            "description": "Item code"
+          },
+          "StatusFlag": {
+            "type": "integer",
+            "default": 0,
+            "description": "Status Flag",
+            "enum": ["0 Unblock", "1 Blocked", "2 Hidden"]
+          }
+        }
+      },
+      "ResponseMessage": {
+        "type": "object",
+        "properties": {
+          "Code": { "type": "string" },
+          "Message": { "type": "string" },
+          "ExceptionMessage": { "type": "string" },
+          "Params": { "type": "string" }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,131 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "VR-Training backend with pockebase (admin panel)",
+    "version": "1.0.0"
+  },
+  "servers": [{ "url": "http://localhost:3000" }],
+  "paths": {
+    "/clients/login": {
+      "post": {
+        "summary": "client login",
+        "description": "login using pocketbase auth with password and username",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": { "type": "string" },
+                  "password": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "To test",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": { "type": "string" },
+                    "seats": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/clients/add_device": {
+      "get": {
+        "summary": "add new device ",
+        "description": "add new device to client license using the generated code",
+        "responses": {
+          "200": {
+            "description": "the generated code",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": { "connect_code": { "type": "number" } }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/clients/list_devices": {
+      "get": {
+        "summary": "list devices",
+        "description": "list all devices connected to client",
+        "responses": {
+          "200": {
+            "description": "devices list",
+            "content": {
+              "array": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "device_id": { "type": "string" },
+                    "device_serial_number": { "type": "string" },
+                    "client_id": { "type": "string" },
+                    "connect_code": { "type": "string" },
+                    "ready": { "type": "boolean" },
+                    "running_scenario": { "type": "string" },
+                    "running_record": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/clients/start_session": {
+      "post": {
+        "summary": "start game session",
+        "description": "start game session so the player can start the game from device",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "device_id": { "type": "string" },
+                  "scenario_id": { "type": "string" },
+                  "user_id": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "To test",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": { "type": "string" },
+                    "seats": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {},
+  "tags": []
+}

@@ -1,0 +1,490 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "IBM Cloud Video - Distributions API",
+    "description": "\n\nSome useful links:\n- [Distribution API Wiki](https://github.com/wiki)\n- [Distribution API Source](https://github.com/distribution-api/)",
+    "termsOfService": "internal",
+    "contact": { "email": "kendrick@us.ibm.com" },
+    "license": {
+      "name": "IBM Commercial",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "1.0.1"
+  },
+  "externalDocs": { "description": null, "url": "http://wiki.com" },
+  "servers": [{ "url": "https://petstore3.swagger.io/api/v3" }],
+  "tags": [
+    {
+      "name": "distributions",
+      "description": "Distribution Operations limited to finding by schedule/channel id + asset id, fetching a distribution by ID and deleting a Distribution by ID"
+    },
+    {
+      "name": "Future",
+      "description": "Distribution Operations limited to finding by schedule/channel id + asset id, fetching a distribution by ID and deleting a Distribution by ID"
+    }
+  ],
+  "paths": {
+    "/distributions/{id}": {
+      "get": {
+        "tags": ["distributions"],
+        "summary": "Get Distribution by Id",
+        "description": "",
+        "operationId": "getDistributionById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Unique Numerical ID of the distribution",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Distribution" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/Distribution" }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid Request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiResponse" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/ApiResponse" }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiResponse" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/ApiResponse" }
+              }
+            },
+            "description": "Distribution not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["distributions"],
+        "summary": "Delete user",
+        "description": null,
+        "operationId": "deleteDistribution",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of the distribution to be deleted",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid Request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiResponse" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/ApiResponse" }
+              }
+            }
+          },
+          "404": {
+            "description": "Distribution not found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiResponse" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/ApiResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/distributions/channels/{channelId}": {
+      "get": {
+        "tags": ["distributions"],
+        "summary": "Get Distribution by Id",
+        "description": "",
+        "operationId": "findChannelDistributionByAssetId",
+        "parameters": [
+          {
+            "name": "channelId",
+            "in": "path",
+            "description": "Unique Numerical ID of the distribution",
+            "required": true,
+            "schema": { "type": "integer" }
+          },
+          {
+            "name": "assetId",
+            "in": "query",
+            "description": "Unique Numerical ID of the distribution",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Distribution" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/Distribution" }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid Request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiResponse" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/ApiResponse" }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiResponse" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/ApiResponse" }
+              }
+            },
+            "description": "Distribution not found"
+          }
+        }
+      }
+    },
+    "/distributions/schedules/{scheduleId}": {
+      "get": {
+        "tags": ["distributions"],
+        "summary": "Get Distribution by Id",
+        "description": "",
+        "operationId": "findScheduleDistributionByAssetId",
+        "parameters": [
+          {
+            "name": "scheduleId",
+            "in": "path",
+            "description": "Unique Numerical ID of the distribution",
+            "required": true,
+            "schema": { "type": "integer" }
+          },
+          {
+            "name": "assetId",
+            "in": "query",
+            "description": "Unique Numerical ID of the distribution",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Distribution" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/Distribution" }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid Request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiResponse" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/ApiResponse" }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiResponse" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/ApiResponse" }
+              }
+            },
+            "description": "Distribution not found"
+          }
+        }
+      }
+    },
+    "/distributions/": {
+      "get": {
+        "tags": ["Future"],
+        "summary": "List Distributions",
+        "description": "",
+        "operationId": "listDistributions",
+        "parameters": [
+          {
+            "name": "index",
+            "in": "query",
+            "description": "Start at offset (paging)",
+            "required": true,
+            "schema": { "type": "integer" }
+          },
+          {
+            "name": "max",
+            "in": "query",
+            "description": "Max returned (paging)",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Distributions" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/Distributions" }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid Request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiResponse" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/ApiResponse" }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiResponse" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/ApiResponse" }
+              }
+            },
+            "description": "Distribution not found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Distribution": {
+        "type": "object",
+        "required": [
+          "id",
+          "asset",
+          "scheduleId",
+          "channel",
+          "account",
+          "created",
+          "state"
+        ],
+        "properties": {
+          "id": { "type": "integer", "format": "int64", "example": 522411622 },
+          "asset": { "$ref": "#/components/schemas/Asset" },
+          "scheduleId": {
+            "type": "integer",
+            "format": "int64",
+            "example": 777777
+          },
+          "channel": { "$ref": "#/components/schemas/Channel" },
+          "account": { "$ref": "#/components/schemas/Account" },
+          "priority": { "type": "number", "example": 1900.0 },
+          "created": {
+            "type": "string",
+            "format": "date-time",
+            "examples": ["2018-09-04T00:00:00"]
+          },
+          "updated": {
+            "type": "string",
+            "fotrmat": "date-time",
+            "examples": ["2018-09-04T00:00:00"]
+          },
+          "requiredBy": {
+            "type": "string",
+            "format": "date-time",
+            "examples": ["2018-09-04T00:00:00"]
+          },
+          "slaDate": {
+            "type": "string",
+            "format": "date-time",
+            "examples": ["2018-09-04T00:00:00"]
+          },
+          "state": {
+            "type": "string",
+            "description": "Distribution Status",
+            "example": "complete",
+            "enum": [
+              "UNKNOWN",
+              "INITIATING",
+              "WAITING_FOR_FILE_TRANSFER",
+              "CONTENT_ERROR",
+              "TRANSFER_ERROR",
+              "SCHEDULED_FOR_TRANSFER",
+              "TRANSFERRING",
+              "TRANSFERRED",
+              "EXPORT_ERROR",
+              "SCHEDULED_FOR_EXPORT",
+              "EXPORTING",
+              "EXPORTED",
+              "SCHEDULED_FOR_DELETE",
+              "DELETING",
+              "DELETED",
+              "DELETE_ERROR",
+              "API_ERROR",
+              "MDU_HOLD",
+              "MDU_HOLD_REJECT",
+              "MDU_HOLD_APPROVED"
+            ]
+          },
+          "fileTransfers": { "$ref": "#/components/schemas/Transfers" },
+          "message": {
+            "type": "string",
+            "example": "Unable to connect to ip: XXX.XXX.XXX.XXX"
+          },
+          "retries": {
+            "type": "integer",
+            "format": "int32",
+            "examples": [3, 0]
+          }
+        },
+        "xml": { "name": "distribution" }
+      },
+      "Asset": {
+        "type": "object",
+        "required": ["id", "name"],
+        "properties": {
+          "id": { "type": "integer", "format": "int64", "example": 1409609 },
+          "name": { "type": "string", "example": "IBMV0021597300000000" }
+        },
+        "xml": { "name": "asset" }
+      },
+      "Account": {
+        "type": "object",
+        "required": ["id", "name"],
+        "properties": {
+          "id": { "type": "integer", "format": "int64", "example": 969696 },
+          "name": { "type": "string", "example": "IBM Cloud Video" }
+        },
+        "xml": { "name": "account" }
+      },
+      "Channel": {
+        "type": "object",
+        "required": ["id", "name"],
+        "properties": {
+          "id": { "type": "integer", "format": "int64", "example": "0981234" },
+          "name": { "type": "string", "example": "IBM - Foo Affiliate" }
+        },
+        "xml": { "name": "channel" }
+      },
+      "Transfer": {
+        "type": "object",
+        "required": ["id", "uri", "state"],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "File Transfer Id",
+            "format": "int64",
+            "example": 108146209
+          },
+          "uri": {
+            "type": "string",
+            "description": "Uri Resolving to the content in s3 (s3 uri)",
+            "example": "s3://vlm-cloud-mock-bucket/assets/999999/IBMV0021597300000000-35007745.mpg"
+          },
+          "state": {
+            "type": "string",
+            "description": "File Transfer State",
+            "example": "SENT",
+            "enum": [
+              "UNKNOWN",
+              "WAITING_FOR_CONTENT_COMPLETION",
+              "SEND_ERROR",
+              "SCHEDULED_FOR_SEND",
+              "SENDING",
+              "SENT",
+              "ABORTED",
+              "EXPORT_ERROR",
+              "SCHEDULED_FOR_EXPORT",
+              "EXPORTING",
+              "EXPORTED"
+            ]
+          },
+          "message": {
+            "type": "string",
+            "examples": ["Transfer created at 9/28/23 2:58:03 AM"]
+          }
+        },
+        "xml": { "name": "fileTransfer" }
+      },
+      "Transfers": {
+        "type": "array",
+        "xml": { "wrapped": true },
+        "items": { "$ref": "#/components/schemas/Transfer" }
+      },
+      "Distributions": {
+        "type": "array",
+        "xml": { "wrapped": true },
+        "items": { "$ref": "#/components/schemas/Distribution" }
+      },
+      "ApiResponse": {
+        "type": "object",
+        "required": ["code", "error"],
+        "properties": {
+          "code": { "type": "integer", "format": "int32", "examples": [404] },
+          "error": { "type": "string", "examples": ["404 - Item not found"] },
+          "message": {
+            "type": "string",
+            "examples": [
+              "com.ibm.error.NotFoundException - Distribution for Id could not be resolved.  Distribution does not exist"
+            ]
+          }
+        },
+        "xml": { "name": "error" }
+      }
+    },
+    "requestBodies": {
+      "Distribution": {
+        "description": null,
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/Distribution" }
+          },
+          "application/xml": {
+            "schema": { "$ref": "#/components/schemas/Distribution" }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "api_key": { "type": "apiKey", "name": "api_key", "in": "header" }
+    }
+  }
+}

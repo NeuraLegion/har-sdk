@@ -1,0 +1,148 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Hearsay LLM API - OpenAPI 3.1",
+    "description": "Serves as a wrapper for LLMs within Hearsay",
+    "contact": { "email": "zbalogh@hearsaysystems.com" },
+    "version": "1.0.0"
+  },
+  "servers": [{ "url": "https://aws/api/v3" }],
+  "tags": [
+    {
+      "name": "Text generation",
+      "description": "Generates text from input prompt",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "http://swagger.io"
+      }
+    }
+  ],
+  "paths": {
+    "/generate": {
+      "post": {
+        "tags": ["text generation"],
+        "summary": "Generates text from input",
+        "description": "Generates text from input prompt according to the parameters",
+        "operationId": "textGeneration",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "prompt": { "type": "string" },
+                  "max_new_tokens": { "type": "integer" },
+                  "temperature": { "type": "float" },
+                  "top_p": { "type": "float" },
+                  "top_k": { "type": "integer" },
+                  "repetition_penalty": { "type": "string" },
+                  "stop_sequences": { "type": "string" }
+                },
+                "example": {
+                  "prompt": "You are a polite virtual assistant at Hearsay Systems and your name is Hearsay Clippy...",
+                  "max_new_tokens": 250,
+                  "temperature": 0.9,
+                  "top_p": 0.9,
+                  "top_k": 10,
+                  "repetition_penalty": 1.05,
+                  "stop_sequences": ["</s>"]
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Text successfully generated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": { "output": { "type": "string" } },
+                  "example": {
+                    "output": "The requested report can be found under ..."
+                  }
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": { "error": { "type": "string" } },
+                  "example": { "error": "parameter is missing" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/detect": {
+      "post": {
+        "tags": ["text generation"],
+        "summary": "PII, toxicity, competitor detection",
+        "description": "Implementation of Hearsay's GenAI Safety Net, that detects Personal Identifiable Information, toxicity or competitors",
+        "operationId": "pii, toxicity, competitor detection",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "text": { "type": "string" },
+                  "detect_pii": { "type": "boolean" },
+                  "detect_safety": { "type": "boolean" },
+                  "detect_competitor": { "type": "boolean" }
+                },
+                "example": {
+                  "text": "You are a polite virtual assistant at Hearsay Systems and your name is Hearsay Clippy...",
+                  "detect_pii": true,
+                  "detect_safety": false,
+                  "detect_competitor": true
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Text successfully checked",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "output_pii": { "type": "boolean" },
+                    "output_safety": { "type": "boolean" },
+                    "output_competitor": { "type": "boolean" },
+                    "output_description": { "type": "string" }
+                  },
+                  "example": {
+                    "description": "The provided text is safe",
+                    "output_safety": false,
+                    "output_competitor": false,
+                    "output_description": false
+                  }
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": { "error": { "type": "string" } },
+                  "example": { "error": "parameter is missing" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

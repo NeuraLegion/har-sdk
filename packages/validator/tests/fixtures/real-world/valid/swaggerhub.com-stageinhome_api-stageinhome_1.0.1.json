@@ -1,0 +1,295 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "StageInHome API",
+    "description": "[StageInHome](https://stageinhome.com/) is a service that offers automatic virtual decoration for indoor spaces. The API allows users to upload images of their indoor spaces and receive digitally staged versions with different furniture and decor styles.",
+    "termsOfService": "https://stageinhome.com/privacy-policy/",
+    "contact": { "name": "StageInHome Support", "email": "ml@stageinhome.com" },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "1.0.1"
+  },
+  "servers": [{ "url": "https://api.stageinhome.com" }],
+  "tags": [
+    {
+      "name": "server",
+      "description": "StgeInHome server",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "https://app.stageinhome.com/login/"
+      }
+    },
+    {
+      "name": "decoration",
+      "description": "Everything about automatic decoration",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "https://app.stageinhome.com/login/"
+      }
+    }
+  ],
+  "paths": {
+    "/ping": {
+      "get": {
+        "tags": ["server"],
+        "summary": "ping",
+        "description": "ping endpoint",
+        "operationId": "ping",
+        "security": [{ "ApiKeyAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Successfull",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Ping" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auto_decoration": {
+      "post": {
+        "tags": ["decoration"],
+        "summary": "Obtain a new automatic 'decoration' image from your input image.",
+        "description": "Generates an automatic decoration for a input image of an indoor space in less than 20 seconds.",
+        "operationId": "autoDecoration",
+        "security": [{ "ApiKeyAuth": [] }],
+        "parameters": [
+          {
+            "name": "room_type",
+            "required": true,
+            "in": "query",
+            "description": "TODO",
+            "schema": {
+              "default": "bedroom",
+              "type": "string",
+              "enum": [
+                "bedroom",
+                "living_room",
+                "dining_room",
+                "bathroom",
+                "kitchen",
+                "office",
+                "study_room"
+              ]
+            }
+          },
+          {
+            "name": "style",
+            "required": true,
+            "in": "query",
+            "description": "TODO",
+            "schema": {
+              "default": "modern",
+              "type": "string",
+              "enum": [
+                "modern",
+                "minimalist",
+                "classic",
+                "rustic",
+                "industrial",
+                "coastal",
+                "scandinavian",
+                "mediterranean"
+              ]
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Send an image",
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "init_image": { "type": "string", "format": "binary" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Image for decoration uploaded successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Decoration" }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/room_type_error" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/retry_decoration": {
+      "post": {
+        "tags": ["decoration"],
+        "summary": "Retry a 'decoration' image using same img_id.",
+        "description": "Generates a new decoration for an specific image identified previously decorated. The room_type and style can't be modified and it will use the same as the ones provided in the auto_decoration call.",
+        "operationId": "retryDecoration",
+        "security": [{ "ApiKeyAuth": [] }],
+        "parameters": [
+          {
+            "name": "img_id",
+            "required": true,
+            "in": "query",
+            "description": "UIID provided in auto_decoration endpoint",
+            "schema": {
+              "default": "xyz1230x-xyz1-123x-567a-abc123xyz123",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Processing a new decoration for specific img_id",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/RetryDecoration" }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/room_type_error" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/get_decoration": {
+      "get": {
+        "tags": ["decoration"],
+        "summary": "Get a full resolution decoration from img_id.",
+        "description": "Get the full resolution decoration computed automatically using the img_id provided in auto_decoration endpoint.",
+        "operationId": "getDecoration",
+        "security": [{ "ApiKeyAuth": [] }],
+        "parameters": [
+          {
+            "name": "img_id",
+            "in": "query",
+            "description": "UUID from the decoration provided for auto_decoration endpoint.",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "retry_id",
+            "in": "query",
+            "description": "Retry id provided for retry_decoration endpoint.",
+            "required": false,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation (Decoration DONE)",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/DecResult" }
+              }
+            }
+          },
+          "201": {
+            "description": "successful operation (Decoration INPROGRESS)",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/DecNotDone" }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/get_error" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Ping": {
+        "type": "object",
+        "properties": { "ping": { "type": "string", "example": "pong!" } }
+      },
+      "Decoration": {
+        "type": "object",
+        "properties": {
+          "img_id": {
+            "type": "string",
+            "example": "xyz1230x-xyz1-123x-567a-abc123xyz123"
+          }
+        }
+      },
+      "RetryDecoration": {
+        "type": "object",
+        "properties": {
+          "img_id": {
+            "type": "string",
+            "example": "xyz1230x-xyz1-123x-567a-abc123xyz123"
+          },
+          "retry_id": { "type": "integer", "format": "int32", "example": 1 }
+        }
+      },
+      "room_type_error": {
+        "type": "object",
+        "properties": {
+          "detail": { "type": "string", "example": "room_type not acceptable." }
+        }
+      },
+      "get_error": {
+        "type": "object",
+        "properties": {
+          "detail": {
+            "type": "string",
+            "example": "image with the specified id does not exist or is empty."
+          }
+        }
+      },
+      "DecNotDone": {
+        "description": "Decoration not ready",
+        "type": "object",
+        "properties": {
+          "decorations": {
+            "type": "string",
+            "format": "base64",
+            "example": null
+          },
+          "STATUS": { "type": "integer", "example": 0 }
+        }
+      },
+      "DecResult": {
+        "description": "Base64-encoded contents of the decoration",
+        "type": "object",
+        "properties": {
+          "decorations": {
+            "type": "string",
+            "format": "base64",
+            "example": ["BASE_64 encdoded image"]
+          },
+          "STATUS": { "type": "integer", "example": 1 }
+        }
+      }
+    },
+    "securitySchemes": {
+      "ApiKeyAuth": { "type": "apiKey", "in": "header", "name": "x-api-key" }
+    }
+  }
+}

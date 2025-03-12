@@ -1,0 +1,194 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Firebender Ads",
+    "description": "Provide contextually relevant advertisements",
+    "version": "v1.0.1",
+    "contact": {
+      "name": "API Support",
+      "url": "http://www.firebender.ai",
+      "email": "aman@firebender.ai"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://ads-firebender.vercel.app/api",
+      "description": "Sponsor service"
+    }
+  ],
+  "paths": {
+    "/sponsors_v2": {
+      "post": {
+        "summary": "Fetch Contextually Relevant Ads",
+        "description": "Responds with a product or service relevant to the provided conversation context.",
+        "operationId": "fetchAds",
+        "tags": ["Sponsor Ads"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "conversation_history": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "role": {
+                          "type": "string",
+                          "enum": ["user", "assistant"]
+                        },
+                        "content": { "type": "string", "minLength": 1 }
+                      },
+                      "required": ["role", "content"]
+                    },
+                    "minItems": 1
+                  }
+                }
+              },
+              "examples": {
+                "Finding girlfriend a gift": {
+                  "value": {
+                    "conversation_history": [
+                      {
+                        "role": "user",
+                        "content": "I'm looking to get my girlfriend something for christmas, what should I get her?"
+                      },
+                      {
+                        "role": "assistant",
+                        "content": "Choosing a Christmas gift for your girlfriend can be a thoughtful and enjoyable process. Here are some ideas, tailored to different interests and preferences:\n\nPersonalized Jewelry: A necklace, bracelet, or ring with her name or initials. This is a timeless and personal gift that shows thought and effort.\n\nExperience Gifts: Consider a spa day, a cooking class, a wine tasting session, or tickets to a concert or theater show. Experiences can create wonderful memories and offer something to look forward to.\n\nBooks or E-Reader: If she loves reading, a collection of books from her favorite genre or a new e-reader loaded with bestsellers could be a great gift.\n\nTech Gadgets: If she's into technology, consider the latest smartphone, smartwatch, or a high-quality pair of headphones.\n\nArt Supplies or Craft Kits: For the creative soul, art supplies, a DIY craft kit, or a subscription to a craft box can be inspiring and fun.\n\nFashion Accessories: A designer handbag, a stylish scarf, or a pair of boots could be a perfect gift if she loves fashion.\n\nBeauty and Skincare Products: High-end skincare products, a makeup set from a brand she loves, or a subscription to a beauty box can be a great idea.\n\nFitness Gear: If she’s into fitness, consider a smart yoga mat, a set of resistance bands, or a subscription to a fitness app.\n\nHome Decor: Elegant home decor items, like a set of luxury candles, a cozy throw blanket, or a beautiful photo frame with a picture of you two.\n\nCooking or Baking Sets: For someone who enjoys cooking or baking, a high-quality knife set, a baking kit, or a fancy cookbook could be ideal.\n\nRemember, the best gifts are those that reflect her personality and your relationship. It's the thought and effort that count the most!"
+                      },
+                      {
+                        "role": "user",
+                        "content": "she is tech savy and likes flowers, she is into skin care, and is vegan"
+                      },
+                      {
+                        "role": "assistant",
+                        "content": "Great, thanks for sharing these details about your girlfriend. Based on her interests in technology, flowers, skincare, and her vegan lifestyle, here are some tailored gift ideas for Christmas:\n\nTech Gadgets for Home: Consider smart home devices that can make life easier and more enjoyable, like a smart speaker, a smart plant monitor that alerts when her plants need care, or a high-quality e-book reader if she enjoys reading.\n\nSustainable Tech Accessories: Look for eco-friendly tech accessories, such as a solar-powered phone charger, a bamboo wireless keyboard and mouse, or a plant-based phone case.\n\nVegan Skincare Products: A set of high-quality vegan skincare products would be a thoughtful gift. Look for brands that emphasize natural ingredients and cruelty-free practices.\n\nSmart Garden: A smart indoor garden system that allows her to grow her favorite herbs or flowers indoors year-round, which is both tech-savvy and aligns with her love for plants.\n\nSubscription to a Vegan Box: There are subscription boxes available that deliver vegan snacks, beauty products, or even meal kits. This could be a fun and practical gift that aligns with her lifestyle.\n\nEco-friendly Flower Subscription: Consider a subscription service that delivers fresh, sustainably sourced flowers regularly. Some services offer unique and exotic flowers, which could be a delightful surprise each time.\n\nOnline Courses or Workshops: If she enjoys learning, consider gifting her an online course or workshop related to technology, vegan cooking, or skincare.\n\nVegan Cookbooks or Cooking Gadgets: A vegan cookbook with creative recipes or high-quality kitchen gadgets that are useful for preparing vegan meals.\n\nPersonalized Tech-Savvy Decor: Look for home decor that incorporates technology in a unique way, like LED light plant pots or a digital photo frame where you can upload photos together.\n\nWellness and Relaxation Tech: Gadgets that promote relaxation and well-being, such as a smart diffuser for essential oils, a high-tech sleep aid device, or a UV sanitizer for her skincare tools.\n\nWhen choosing a gift, consider combining a couple of these ideas to create a personalized package that reflects her unique tastes and interests."
+                      },
+                      {
+                        "role": "user",
+                        "content": "no these all seem kind of stupid. i think flowers is the best bet"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": ["object", "null"],
+                  "properties": {
+                    "product": {
+                      "type": "object",
+                      "properties": {
+                        "name": { "type": "string" },
+                        "description": { "type": "string" },
+                        "url": { "type": "string" }
+                      }
+                    },
+                    "message": { "type": ["string", "null"] },
+                    "error": { "type": ["string", "null"] }
+                  }
+                },
+                "examples": {
+                  "adFound": {
+                    "summary": "Finding girlfriend a gift",
+                    "value": {
+                      "product": {
+                        "name": "Send Flowers!",
+                        "description": "Send Flowers!",
+                        "url": "https://ads-is8uies5u-firebender.vercel.app/api/redirect?impressionId=ba603249-4a93-469d-886b-9b6d9ac4dd12"
+                      },
+                      "message": "Success"
+                    }
+                  },
+                  "noAdFound": {
+                    "summary": "No relevant ad found",
+                    "value": {
+                      "product": null,
+                      "message": "No relevant ads found for the provided context.",
+                      "error": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed Request",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "malformedRequest": {
+                    "summary": "Example of a malformed request",
+                    "value": {
+                      "product": null,
+                      "message": null,
+                      "error": "The request format was incorrect."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid API Key or User ID",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "serverError": {
+                    "summary": "Example of a server error",
+                    "value": {
+                      "product": null,
+                      "message": null,
+                      "error": "Invalid API_KEY. Make sure you have access to API and configured auth header properly!"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "5XX": {
+            "description": "Server Issues",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "serverError": {
+                    "summary": "Example of a server error",
+                    "value": {
+                      "product": null,
+                      "message": null,
+                      "error": "Internal server error."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [{ "BearerAuth": [] }]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "base64"
+      }
+    }
+  }
+}

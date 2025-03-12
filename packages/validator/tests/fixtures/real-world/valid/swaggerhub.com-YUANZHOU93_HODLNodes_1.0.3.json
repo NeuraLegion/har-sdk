@@ -1,0 +1,187 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "HODLNodes.com - OpenAPI 3.1",
+    "description": "This is a HODLNodes API based on the OpenAPI 3.1 specification.  You can find out more about\nat [https://docs.hodlnodes.com](https://docs.hodlnodes.com).\n\nSome useful links:\n- [HODLNodes App](https://stake.hodlnodes.com/)\n- [HODLNodes Smart Contract](https://goerli.etherscan.io/address/0xa7b71ccfA74E418d25a6B79934A236C4b6bF5fD4)",
+    "contact": { "email": "support@hodlnodes.com" },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "1.0.3"
+  },
+  "externalDocs": {
+    "description": "Find out more about HODLNodes.com",
+    "url": "http://docs.hodlnodes.com"
+  },
+  "servers": [
+    { "url": "https://asia-east1-hodl-nodes-goerli.cloudfunctions.net/" }
+  ],
+  "tags": [
+    {
+      "name": "nodes",
+      "description": "Current nodes infomation",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "https://stake.hodlnodes.com/validators"
+      }
+    },
+    { "name": "player", "description": "Access to player information" }
+  ],
+  "paths": {
+    "/node-getStatus": {
+      "get": {
+        "tags": ["nodes"],
+        "summary": "Get hodlnodes' status information",
+        "description": "Return nodes status information",
+        "operationId": "getNodes",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Status" }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Status" }
+                }
+              }
+            }
+          },
+          "400": { "description": "Invalid status value" }
+        }
+      }
+    },
+    "/node-getNodeById/{nodeId}": {
+      "get": {
+        "tags": ["nodes"],
+        "summary": "Get node info by ID",
+        "description": "Returns a node's info",
+        "operationId": "getNodeById",
+        "parameters": [
+          {
+            "name": "nodeId",
+            "in": "path",
+            "description": "ID of node to return",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Node" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/Node" }
+              }
+            }
+          },
+          "400": { "description": "Invalid ID supplied" },
+          "404": { "description": "Node not found" }
+        }
+      }
+    },
+    "/auth-getPlayerById/{playerId}": {
+      "get": {
+        "tags": ["player"],
+        "summary": "Return {playerId}'s information",
+        "description": "Return the player's information",
+        "operationId": "gePlayer",
+        "parameters": [
+          {
+            "name": "playerId",
+            "in": "path",
+            "description": "ID of player to return",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Player" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/Player" }
+              }
+            }
+          },
+          "default": { "description": "successful operation" }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Node": {
+        "type": "object",
+        "properties": {
+          "activeAt": {
+            "type": "string",
+            "format": "date-time",
+            "examples": ["2023-11-19 UTC-8 17:27:54"]
+          },
+          "exitAt": {
+            "type": "string",
+            "format": "date-time",
+            "examples": ["2023-12-9 UTC-8 08:00:00"]
+          },
+          "pubKey": {
+            "type": "string",
+            "examples": [
+              "0x8725d7623b1d8f6b80da32e698e69c2f6804eb7fb559a2c51fdc18d0a3bcc4f8493cb1ef523ccc2ab896f93d7ad87ae0"
+            ]
+          }
+        },
+        "xml": { "name": "tag" }
+      },
+      "Status": {
+        "type": "object",
+        "properties": {
+          "activeHodlBalance": {
+            "type": "string",
+            "examples": ["22561686233331923701"]
+          },
+          "idleHodlBalance": {
+            "type": "string",
+            "examples": ["9438313766668076299"]
+          },
+          "numberOfPendingExitNodes": {
+            "type": "integer",
+            "format": "int64",
+            "examples": [1]
+          }
+        },
+        "xml": { "name": "status" }
+      },
+      "Player": {
+        "type": "object",
+        "properties": {
+          "account": {
+            "type": "string",
+            "examples": ["0xfc2fbd3de59ae16438ffbe3a56ca357adf764b7d"]
+          },
+          "activeBalance": {
+            "type": "string",
+            "examples": ["158600000000000000000"]
+          },
+          "rewardWithdrawn": {
+            "type": "string",
+            "examples": ["189788901804488070"]
+          }
+        },
+        "xml": { "name": "player" }
+      }
+    }
+  }
+}

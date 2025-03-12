@@ -1,0 +1,213 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Tea Subscription",
+    "description": "This project is a Ruby on Rails API for a tea subscription service where customers can subscribe to different kinds of teas. It exposes the 3 endpoints that return JSON formatted per the convention outlined by the JSON API Specification.\n\nSome useful links:\n- [GitHub repository](https://github.com/brandenge/tea-subscription-service)\n- [JSON API Specification](https://json-schema.org/)",
+    "license": { "name": "MIT", "url": "https://opensource.org/license/mit/" },
+    "version": "1.0.0"
+  },
+  "servers": [{ "url": "http://localhost:3000/api/v0" }],
+  "tags": [{ "name": "subscriptions", "description": "Tea subscriptions" }],
+  "paths": {
+    "/subscriptions": {
+      "get": {
+        "tags": ["subscriptions"],
+        "summary": "Get all tea subscriptions",
+        "description": "Get all tea subscriptions",
+        "operationId": "getSubscriptions",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/subscriptions" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["subscriptions"],
+        "summary": "Create a new tea subscription",
+        "description": "Create a new tea subscription",
+        "operationId": "addSubscription",
+        "requestBody": {
+          "description": "Create a new tea subscription",
+          "content": {
+            "application/json; charset=utf-8": {
+              "schema": {
+                "$ref": "#/components/requestBodies/subscription/content/application~1json/schema"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "data": { "$ref": "#/components/schemas/subscription" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["subscriptions"],
+        "summary": "Update a tea subscription",
+        "description": "Update a tea subscription",
+        "operationId": "updateSubscription",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json; charset=utf-8": {
+                "schema": {
+                  "properties": {
+                    "data": { "$ref": "#/components/schemas/subscription" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "subscriptions": {
+        "properties": {
+          "id": { "type": "string", "example": 10 },
+          "type": { "type": "string", "example": "subscription" },
+          "attributes": {
+            "properties": {
+              "customer_id": {
+                "type": "integer",
+                "format": "int32",
+                "example": 8
+              },
+              "tea_id": { "type": "integer", "format": "int32", "example": 5 },
+              "title": { "type": "string", "example": "Patchouli" },
+              "price": { "type": "integer", "format": "int32", "example": 999 },
+              "status": {
+                "type": "string",
+                "description": "Subscription Status",
+                "example": "Active",
+                "enum": ["Active", "Cancelled"]
+              },
+              "frequency": {
+                "type": "integer",
+                "format": "int32",
+                "description": "Subsription frequency",
+                "example": 15
+              },
+              "created_at": { "type": "string", "format": "date-time" },
+              "updated_at": { "type": "string", "format": "date-time" }
+            }
+          },
+          "relationships": {
+            "properties": {
+              "customer": {
+                "properties": {
+                  "data": {
+                    "properties": {
+                      "id": { "type": "string", "example": 4 },
+                      "type": { "type": "string", "example": "customer" }
+                    }
+                  }
+                }
+              },
+              "tea": {
+                "properties": {
+                  "data": {
+                    "properties": {
+                      "id": { "type": "string", "example": 4 },
+                      "type": { "type": "string", "example": "tea" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "subscription": {
+        "properties": {
+          "id": { "type": "string", "example": 10 },
+          "type": { "type": "string", "example": "subscription" },
+          "attributes": {
+            "properties": {
+              "customer_id": {
+                "type": "integer",
+                "format": "int32",
+                "example": 8
+              },
+              "tea_id": { "type": "integer", "format": "int32", "example": 5 },
+              "title": { "type": "string", "example": "Patchouli" },
+              "price": { "type": "integer", "format": "int32", "example": 999 },
+              "status": {
+                "type": "string",
+                "description": "Subscription Status",
+                "example": "Active",
+                "enum": ["Active", "Cancelled"]
+              },
+              "frequency": {
+                "type": "integer",
+                "format": "int32",
+                "description": "Subsription frequency",
+                "example": 15
+              }
+            }
+          }
+        }
+      }
+    },
+    "requestBodies": {
+      "subscription": {
+        "description": "A tea subscription to be created",
+        "content": {
+          "application/json": {
+            "schema": {
+              "properties": {
+                "customer_id": {
+                  "type": "integer",
+                  "format": "int32",
+                  "example": 8
+                },
+                "tea_id": {
+                  "type": "integer",
+                  "format": "int32",
+                  "example": 5
+                },
+                "title": { "type": "string", "example": "Patchouli" },
+                "price": {
+                  "type": "integer",
+                  "format": "int32",
+                  "example": 999
+                },
+                "frequency": {
+                  "type": "integer",
+                  "format": "int32",
+                  "example": 15
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,155 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "KSCB to PACS",
+    "description": "This is a sample API Doc for Kerala State Co-Operative Bank – PACs (Primary Agricultural Credit Societies) Implementation",
+    "termsOfService": "http://swagger.io/terms/",
+    "contact": { "email": "prajin.p@ultsglobal.com" },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "1.0.0"
+  },
+  "tags": [
+    { "name": "loadMoney", "description": "Load money from PACS to KSCB" },
+    { "name": "unLoadMoney", "description": "Load money from PACS to KSCB" }
+  ],
+  "paths": {
+    "/load-money": {
+      "post": {
+        "tags": ["loadMoney"],
+        "summary": "load money from PACS to KSCB",
+        "operationId": "loadMoney",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/loadMoneyRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/loadMoneyResponse" }
+              }
+            }
+          },
+          "405": { "description": "Invalid input" }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "loadMoneyRequest": {
+        "type": "object",
+        "properties": {
+          "BankId": {
+            "type": "string",
+            "description": "Bank ID provided by KSCB",
+            "example": "KSCB",
+            "enum": ["KSCB"]
+          },
+          "PacsCode": {
+            "type": "string",
+            "description": "PACS Code provided by Bank"
+          },
+          "AppType": {
+            "type": "string",
+            "description": "Application Type - PACS",
+            "example": "PACS",
+            "enum": ["PACS"]
+          },
+          "KSCBPacsId": {
+            "type": "number",
+            "description": "PACS ID maintained at bank level"
+          },
+          "KSCBReference": {
+            "type": "string",
+            "description": "KSCB Reference (Optional)"
+          },
+          "KSCBRRN": {
+            "type": "string",
+            "description": "Reference no to be sent by Kerala bank",
+            "maxLength": 254
+          },
+          "AMT": {
+            "type": "number",
+            "description": "Transaction Amount with 2 decimal places"
+          },
+          "CustPACSAccNo": {
+            "type": "string",
+            "description": "Account number of PACS customer maintained at PACS Level",
+            "maxLength": 254
+          },
+          "CustKSCBAccNo": {
+            "type": "string",
+            "description": "Account number of KSCB customer maintained at KSCB Level",
+            "maxLength": 254
+          },
+          "ServiceType": {
+            "type": "string",
+            "description": "Service Type - LOADMoney",
+            "example": "LOADMoney",
+            "enum": ["LOADMoney", "UNLOADMoney"]
+          }
+        }
+      },
+      "loadMoneyResponse": {
+        "type": "object",
+        "properties": {
+          "Status": {
+            "type": "string",
+            "description": "Status of the response",
+            "example": "00"
+          },
+          "Message": {
+            "type": "string",
+            "description": "Message associated with the response status",
+            "example": "Success"
+          },
+          "KSCBRRN": {
+            "type": "string",
+            "description": "KSCB Reference Number",
+            "example": "100003671007"
+          },
+          "PacsRRN": {
+            "type": "string",
+            "description": "PACS Reference Number",
+            "example": "2149444"
+          },
+          "AMT": {
+            "type": "number",
+            "format": "float",
+            "description": "Transaction Amount with 2 decimal places",
+            "example": 3.0
+          },
+          "custPACSAccNo": {
+            "type": "string",
+            "description": "Account number of PACS customer maintained at PACS Level",
+            "example": "13123123132"
+          },
+          "custKSCBAccNo": {
+            "type": "string",
+            "description": "Account number of KSCB customer maintained at KSCB Level",
+            "example": "437827348283"
+          },
+          "ServiceType": {
+            "type": "string",
+            "description": "Service Type - LOADMoney",
+            "example": "LOADMoney"
+          },
+          "chksum": {
+            "type": "string",
+            "description": "Checksum for data integrity verification",
+            "example": "f5be95f78616d616d67447862dc812cc8a31454924848bf8d54c4eadd1c5f346"
+          }
+        }
+      }
+    }
+  }
+}

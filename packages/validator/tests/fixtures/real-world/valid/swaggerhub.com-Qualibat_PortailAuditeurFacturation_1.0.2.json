@@ -1,0 +1,363 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "version": "1.0.2",
+    "title": "Portail auditeur - Facturation",
+    "description": "Api du portail auditeur afin de récupérer des informations de facturation"
+  },
+  "servers": [
+    {
+      "description": "Environnement de Test",
+      "url": "https://test.auditeurs.qualibat.eu/PAF/v1"
+    },
+    {
+      "description": "Environement de pré-production",
+      "url": "https://preprod.auditeurs.qualibat.eu/PAF/v1"
+    },
+    {
+      "description": "Environement de production",
+      "url": "https://auditeurs.qualibat.com/PAF/v1"
+    }
+  ],
+  "security": [{ "BearerAuth": ["BearerAuth"] }],
+  "paths": {
+    "/nouvelleFacture": {
+      "get": {
+        "tags": ["Factures"],
+        "description": "<strong>Récupérer la liste des factures non transmisse dans la compta.</strong>",
+        "operationId": "GetFacturesNouvelles",
+        "responses": {
+          "200": {
+            "description": "Renvoie la liste des factures auditeur.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/NumerosFacture" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/400" },
+          "401": { "$ref": "#/components/responses/401" },
+          "403": { "$ref": "#/components/responses/403" },
+          "404": { "$ref": "#/components/responses/404" },
+          "406": { "$ref": "#/components/responses/406" },
+          "500": { "$ref": "#/components/responses/500" }
+        }
+      }
+    },
+    "/facture/{idFactureAuditeur}": {
+      "get": {
+        "tags": ["Factures"],
+        "description": "<strong>Récupère les informations de la facture auditeur demandée.</strong>",
+        "operationId": "GetFacture",
+        "responses": {
+          "200": {
+            "description": "Informations sur la facture auditeur demandée",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/InformationFacture" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/400" },
+          "401": { "$ref": "#/components/responses/401" },
+          "403": { "$ref": "#/components/responses/403" },
+          "404": { "$ref": "#/components/responses/404" },
+          "406": { "$ref": "#/components/responses/406" },
+          "500": { "$ref": "#/components/responses/500" }
+        }
+      },
+      "parameters": [
+        {
+          "in": "path",
+          "name": "idFactureAuditeur",
+          "description": "Identifiant de la facture auditeur",
+          "required": true,
+          "schema": { "type": "integer" }
+        }
+      ]
+    },
+    "/facture/integreCompta": {
+      "post": {
+        "tags": ["Factures"],
+        "description": "<strong>Transmettre la liste des factures intégrée en compta.</strong> <br> Cette action est possible uniquement si le statut de la facture est vStatutPaFactureEnvoyée voir schéma enumStatutPaFacture",
+        "operationId": "PostFactureIntegreeCompta",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/NumerosFacture" }
+            }
+          }
+        },
+        "responses": {
+          "204": { "$ref": "#/components/responses/204" },
+          "400": { "$ref": "#/components/responses/400" },
+          "401": { "$ref": "#/components/responses/401" },
+          "403": { "$ref": "#/components/responses/403" },
+          "404": { "$ref": "#/components/responses/404" },
+          "406": { "$ref": "#/components/responses/406" },
+          "500": { "$ref": "#/components/responses/500" }
+        }
+      }
+    },
+    "/facture/payee": {
+      "post": {
+        "tags": ["Factures"],
+        "description": "<strong>Transmettre la liste des factures réglée à l'auditeur.</strong> <br> Cette action est possible uniquement si le statut de la facture est vStatutPaFactureEnvoyéeCompta voir schéma enumStatutPaFacture",
+        "operationId": "PostFacturePayee",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ListeFacturePayee" }
+            }
+          }
+        },
+        "responses": {
+          "204": { "$ref": "#/components/responses/204" },
+          "400": { "$ref": "#/components/responses/400" },
+          "401": { "$ref": "#/components/responses/401" },
+          "403": { "$ref": "#/components/responses/403" },
+          "404": { "$ref": "#/components/responses/404" },
+          "406": { "$ref": "#/components/responses/406" },
+          "500": { "$ref": "#/components/responses/500" }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": { "BearerAuth": { "type": "http", "scheme": "bearer" } },
+    "schemas": {
+      "Erreur": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "Code de l'erreur, se référer aux réponses des webservices"
+          },
+          "titre": {
+            "type": "string",
+            "description": "Définition du code erreur http"
+          },
+          "detail": {
+            "type": "string",
+            "description": "Contenu détaillant l'erreur"
+          }
+        }
+      },
+      "enumTypeNotification": {
+        "type": "string",
+        "enum": [
+          "voir schema",
+          "NouvellesFactures",
+          "InformationFacture",
+          "IntegrationCompta",
+          "FacturesPayée"
+        ]
+      },
+      "enumStatutPaFacture": {
+        "type": "string",
+        "enum": [
+          "voir schema",
+          "vStatutPaFactureEnvoyée",
+          "vStatutPaFactureValidéCAF",
+          "vStatutPaFactureEnvoyéeCompta",
+          "vStatutPaFacturePayée"
+        ]
+      },
+      "NumerosFacture": {
+        "type": "object",
+        "properties": {
+          "type": { "$ref": "#/components/schemas/enumTypeNotification" },
+          "data": {
+            "type": "object",
+            "properties": {
+              "idsFactureAuditeur": {
+                "type": "array",
+                "examples": [[25, 45, 254, 3587]]
+              }
+            }
+          }
+        }
+      },
+      "ListeFacturePayee": {
+        "type": "object",
+        "properties": {
+          "type": { "$ref": "#/components/schemas/enumTypeNotification" },
+          "data": {
+            "type": "object",
+            "properties": {
+              "factures": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/FacturePayee" }
+              }
+            }
+          }
+        }
+      },
+      "FacturePayee": {
+        "type": "object",
+        "properties": {
+          "idFactureAuditeur": { "type": "integer", "examples": [12457] },
+          "datePaiement": { "type": "string", "examples": [20230804] }
+        }
+      },
+      "InformationFacture": {
+        "type": "object",
+        "properties": {
+          "type": { "$ref": "#/components/schemas/enumTypeNotification" },
+          "data": {
+            "type": "object",
+            "properties": {
+              "entrepriseAuditeur": {
+                "$ref": "#/components/schemas/EntrepriseAuditeur"
+              },
+              "factureAuditeur": {
+                "$ref": "#/components/schemas/FactureAuditeur"
+              }
+            }
+          }
+        }
+      },
+      "EntrepriseAuditeur": {
+        "type": "object",
+        "properties": {
+          "idEntrepriseAuditeur": { "type": "integer", "examples": [1220] },
+          "siret": { "type": "string", "examples": [84578912300010] },
+          "raisonSociale": {
+            "type": "string",
+            "examples": ["Les auditeurs de l'est"]
+          },
+          "adresse": { "$ref": "#/components/schemas/Adresse" },
+          "tvaNonAssujetti": { "type": "boolean" }
+        }
+      },
+      "Auditeur": {
+        "type": "object",
+        "properties": {
+          "idAuditeur": { "type": "integer", "examples": [540] },
+          "nom": { "type": "string", "examples": ["DUPOND"] },
+          "prenom": { "type": "string", "examples": ["Pierre"] }
+        }
+      },
+      "FactureAuditeur": {
+        "type": "object",
+        "properties": {
+          "idFactureAuditeur": { "type": "string", "examples": [14589] },
+          "statut": { "$ref": "#/components/schemas/enumStatutPaFacture" },
+          "dateFacture": { "type": "string", "examples": [20230823] },
+          "numeroFactureAuditeur": {
+            "type": "string",
+            "examples": ["F202308-0001"]
+          },
+          "totalHT": { "type": "number", "examples": [650.75] },
+          "totalTVA": { "type": "number", "examples": [130.15] },
+          "totalTTC": { "type": "number", "examples": [780.9] },
+          "tvaNonAssujetti": { "type": "boolean" },
+          "fichierPDF": {
+            "type": "string",
+            "examples": ["Fichier binaire encodé Base 64"]
+          },
+          "factureLignes": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/FactureAuditeurLigne" }
+          }
+        }
+      },
+      "FactureAuditeurLigne": {
+        "type": "object",
+        "properties": {
+          "idEntreprise": { "type": "integer", "examples": [124560] },
+          "raisonSociale": {
+            "type": "string",
+            "examples": ["Les pro de la rénovation"]
+          },
+          "auditeur": { "$ref": "#/components/schemas/Auditeur" },
+          "numerosOm": {
+            "type": "array",
+            "examples": [
+              ["29357-161553-113263-EETI-77", "29357-161554-113263-EETI-77"]
+            ]
+          },
+          "dateAudit": { "type": "string", "examples": [20230227] },
+          "codePrestation": { "type": "string", "examples": ["AUDEECR"] },
+          "designation": {
+            "type": "string",
+            "examples": [
+              "OM n°29357-161553-113263-EETI-77 réalisé le 27/02/2023"
+            ]
+          },
+          "quantite": { "type": "number", "examples": [1] },
+          "prixUnitaireHT": { "type": "number", "examples": [150.5] },
+          "totalHT": { "type": "number", "examples": [150.5] },
+          "codeOrganisation": { "type": "string", "examples": ["G12A690000"] }
+        }
+      },
+      "Adresse": {
+        "type": "object",
+        "properties": {
+          "adresse1": { "type": "string", "examples": ["ZAC de la rivière"] },
+          "adresse2": {
+            "type": "string",
+            "examples": ["2 bis avenue de la république"]
+          },
+          "adresse3": { "type": "string" },
+          "adresse4": { "type": "string" },
+          "codePostal": { "type": "string", "examples": [21000] },
+          "ville": { "type": "string", "examples": ["Dijon"] }
+        }
+      }
+    },
+    "responses": {
+      "204": { "description": "<strong>Succès, pas de retour</strong>" },
+      "400": {
+        "description": "<strong>Erreur de requête</strong><br> 4001 - Erreur de requete<br> 4002 - Formatage json<br> 4003 - Information obligatoire manquante<br>",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/Erreur" }
+          }
+        }
+      },
+      "401": {
+        "description": "<strong>Non autorisé</strong><BR> 4011 - Authentification absente ou refusée.<br>",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/Erreur" }
+          }
+        }
+      },
+      "403": {
+        "description": "<strong>Ressource non autorisé</strong><br> 4031 - Entreprise non autorisée<br> 4032 - Auditeur non autorisé<br> 4033 - Compte auditeur non actif<br> 4034 - api non active",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/Erreur" }
+          }
+        }
+      },
+      "404": {
+        "description": "<strong>Non trouvé</strong> <br> 4041 - Entreprise inconnu<br> 4042 - Ordre de mission inconnu<br> 4043 - Auditeur inconnu<br> 4044 - Facture auditeur inconnue<br> 4045 - Entreprise auditeur inconnue<br> 4046 - Fichier inexistant",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/Erreur" }
+          }
+        }
+      },
+      "406": {
+        "description": "<strong>Non acceptable</strong><BR> 4061 - L'état de l'ordre de mission ne permet pas la modification<br> 4062 - Les qualifications de l'auditeur déclarée à Qualibat n'inclue pas le code nomenclature de l'ordre de mission<br> 4063 - La date de l'audit doit être spérieure à la date du jour<br> 4064 - L'auditeur est absent de l'ordre de mission<br> 4065 - L'état de la facture auditeur ne permet pas la modification",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/Erreur" }
+          }
+        }
+      },
+      "500": {
+        "description": "<strong>Erreur interne</strong>",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/Erreur" }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,521 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "version": "1.0.1-oas3.1",
+    "title": "Vikey Api",
+    "description": "<h2>Description</h2></br><p>The Vikey Bureaucracy API can be exploited to manage every bureaucracy service inside Vikey:</p> <ul> <li>Portale alloggiati<li>Istat (to find out which regions are managed by Vikey you can use the /istat/regions endpoint)</ul></br><p>Follows the documentation about the most used APIs<br> This should be enough for the most cases, if you need more details on others APIs please drop a line to supporto@vikey.it.</p></br><h2>API Authorization</h2> <p> All the Vikey APIs have to been authorized with an <code>API token</code> inside the header of the HTTP packet. Please ask for the <code>API token</code> to your account reference or to supporto@vikey.it.</p></br><em> Please contact supporto@vikey.it in order to be guided to the choice.<br/><br/> **Country codes** --> <a href=\"https://alloggiatiweb.poliziadistato.it/PortaleAlloggiati/ashx/Download.ashx?ID=1&N=STATI\">Link</a><br/><br/>**Province and City codes** --> <a href=\"https://alloggiatiweb.poliziadistato.it/PortaleAlloggiati/ashx/Download.ashx?ID=0&N=COMUNI\">Link</a>"
+  },
+  "paths": {
+    "/buro/pa": {
+      "post": {
+        "tags": ["Standard requests"],
+        "summary": "Post a reservations to Portale Alloggiati",
+        "description": "# Post a single reservation in a certain day to Portale Alloggiati\n\n\n**Obtain web service key** (wskey) --> <a href=\"https://support.vikey.it/it/articles/7991406-come-recuperare-la-chiave-web-service-dal-portale-alloggiati\">Link</a>\n\n**Obtain apt_id** --> By accessing your Alloggiati Web Portal user, the list of apartments registered on Alloggiati Web will appear in the Apartments > List of apartments section:\nIf the List of apartments section is not present, and there is only one apartment on the Accommodation Portal, the ID is 0.\nIf there is no apartment, the lack can be corrected by manually adding the structure by clicking on the +.\nAfter taking note of the ID of each apartment in the left column, send it together with the relevant reservations\n\n**Obtain is_multi_apt** --> If in the Apartments > List of apartments section there is more than one apartament is True, else False                                           \n",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": { "result": { "type": "string" } }
+                }
+              }
+            },
+            "description": "ok"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": { "result": { "type": "string" } }
+                }
+              }
+            },
+            "description": "Client error"
+          }
+        },
+        "security": [{ "apiToken": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/post_pa" }
+            }
+          }
+        }
+      }
+    },
+    "/buro/istat": {
+      "post": {
+        "tags": ["Standard requests"],
+        "summary": "Post a reservations to any istat service",
+        "description": "# Sends all reservations for the day to the ISTAT of the specified region\n<br/><br/>To successfully resolve this endpoint **you must first query the istat/regions endpoint**. Once you have retrieved the region of your interest and its relative host data schema you can use them to run this endpoint    ",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": { "result": { "type": "string" } }
+                }
+              }
+            },
+            "description": "ok"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": { "result": { "type": "string" } }
+                }
+              }
+            },
+            "description": "Client error"
+          }
+        },
+        "security": [{ "apiToken": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/post_istat" }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Standard requests"],
+        "summary": "Delete the comunications of a given list of ids for the istat service that support the delete method",
+        "description": "# Delete the comunications of a given list of ids for the istat service that support the delete method\n<br/><br/>To successfully resolve this endpoint **you must first query the istat/regions endpoint**. Once you have retrieved the region of your interest and its relative host data schema you can use them to run this endpoint    ",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": { "result": { "type": "string" } }
+                }
+              }
+            },
+            "description": "ok"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": { "result": { "type": "string" } }
+                }
+              }
+            },
+            "description": "Client error"
+          }
+        },
+        "security": [{ "apiToken": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/delete_istat" }
+            }
+          }
+        }
+      }
+    },
+    "/istat/regions": {
+      "get": {
+        "tags": ["Standard requests"],
+        "summary": "Get all the regions avaiable for Istat service and the relative Host_data node to use in the endpoint buro/istat",
+        "description": "# Get all the regions avaiable for Istat service and the relative Host_data node to use in the endpoint buro/istat",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": { "result": { "type": "object" } }
+                }
+              }
+            },
+            "description": "ok"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": { "result": { "type": "string" } }
+                }
+              }
+            },
+            "description": "Client error"
+          }
+        },
+        "security": [{ "apiToken": [] }]
+      }
+    }
+  },
+  "servers": [
+    {
+      "description": "Vikey Server",
+      "url": "https://api.vikey.it/api/v3/external"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "apiToken": {
+        "type": "apiKey",
+        "name": "Apitoken",
+        "description": "Api token to be used in every request",
+        "in": "header"
+      }
+    },
+    "schemas": {
+      "post_pa": {
+        "properties": {
+          "data": {
+            "description": "Data container",
+            "type": "object",
+            "properties": {
+              "partner_id": { "description": "Partner id", "type": "string" },
+              "host_data": {
+                "description": "Data relative to the host",
+                "type": "object",
+                "properties": {
+                  "wskey": {
+                    "description": "Portale alloggiati key",
+                    "type": "string"
+                  },
+                  "username": {
+                    "description": "Portale alloggiati username",
+                    "type": "string"
+                  },
+                  "password": {
+                    "description": "Portale alloggiati password",
+                    "type": "string"
+                  },
+                  "apt_id": {
+                    "description": "Portale alloggiati apartment id",
+                    "type": "string"
+                  },
+                  "is_multi_apt": {
+                    "description": "If portale alloggiati local were set to multi set True, else False",
+                    "type": "boolean",
+                    "example": false
+                  }
+                },
+                "required": [
+                  "wskey",
+                  "username",
+                  "password",
+                  "apt_id",
+                  "is_multi_apt"
+                ]
+              },
+              "guests": {
+                "description": "Data relative to the guests",
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "is_main_guest": {
+                      "description": "If is the main guest of the reservation set True, else False",
+                      "type": "boolean"
+                    },
+                    "doc_type": {
+                      "description": "The type of document, must have one of the following value. 'IDENT' (paper identity card), 'IDELE' (electronic identity card), 'PASOR' (passport), 'PATEN' (driving licence)",
+                      "type": "string"
+                    },
+                    "id_doc": {
+                      "description": "Document id",
+                      "type": "string"
+                    },
+                    "doc_place": {
+                      "description": "Document relase country code (following the codes specificated in the API description)",
+                      "type": "string",
+                      "example": 100000100
+                    },
+                    "birth_date": {
+                      "description": "Birth date of the guest",
+                      "type": "string",
+                      "format": "date"
+                    },
+                    "birth_country": {
+                      "description": "Birth country code of the guest (following the codes specificated in the API description)",
+                      "type": "string",
+                      "example": 100000100
+                    },
+                    "birth_prov": {
+                      "description": "Birth province code of the guest, mandatory if birth country is Italy (following the codes specificated in the API description)",
+                      "type": "string",
+                      "example": "RM"
+                    },
+                    "birth_city": {
+                      "description": "Birth city code of the guest, mandatory if birth country is Italy (following the codes specificated in the API description)",
+                      "type": "string",
+                      "example": 412058091
+                    },
+                    "first_name": {
+                      "description": "First name of the guest",
+                      "type": "string"
+                    },
+                    "last_name": {
+                      "description": "Last name of the guest",
+                      "type": "string"
+                    },
+                    "sex": {
+                      "description": "Sex of the guest, 1 if male, 2 if female",
+                      "type": "integer"
+                    },
+                    "citizenship": {
+                      "description": "Citizenship code of the guest (following the codes specificated in the API description)",
+                      "type": "string",
+                      "example": 100000100
+                    }
+                  },
+                  "required": [
+                    "is_main_guest",
+                    "doc_type",
+                    "id_doc",
+                    "doc_place",
+                    "birth_date",
+                    "birth_country",
+                    "first_name",
+                    "last_name",
+                    "sex",
+                    "citizenship"
+                  ]
+                }
+              },
+              "resv_checkin": {
+                "description": "Checkin date",
+                "type": "string",
+                "format": "date"
+              },
+              "resv_checkout": {
+                "description": "Checkout date",
+                "type": "string",
+                "format": "date"
+              }
+            },
+            "required": [
+              "partner_id",
+              "host_data",
+              "guests",
+              "resv_checkin",
+              "resv_checkout"
+            ]
+          }
+        },
+        "required": ["data"]
+      },
+      "post_istat": {
+        "properties": {
+          "data": {
+            "description": "Data container",
+            "type": "object",
+            "properties": {
+              "partner_id": { "description": "Partner id", "type": "string" },
+              "region_id": {
+                "description": "id of the region of the accommodation (you can get on the enpoint /istat/regions)",
+                "type": "integer"
+              },
+              "date": {
+                "description": "date relative to the comunication",
+                "type": "string",
+                "format": "date"
+              },
+              "host_data": {
+                "description": "Data relative to the host",
+                "type": "object",
+                "properties": {
+                  "DESCRIPTION": {
+                    "description": "change based on the result of the endpoint /istat/regions",
+                    "type": "string",
+                    "example": "change based on the result of the endpoint /istat/regions"
+                  }
+                }
+              },
+              "resvs_type": {
+                "description": "data relative to the reservations",
+                "type": "object",
+                "properties": {
+                  "arrivi": {
+                    "description": "list of reservations with check-in on the communicated date",
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "resv_id": {
+                          "description": "reservation code",
+                          "type": "string"
+                        },
+                        "guests": {
+                          "description": "list of guests",
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "idswh": {
+                                "description": "guest code",
+                                "type": "string"
+                              },
+                              "is_main_guest": {
+                                "description": "True if is the main guest, else False",
+                                "type": "boolean"
+                              },
+                              "sex": {
+                                "description": "0 if male, 1 if female",
+                                "type": "integer"
+                              },
+                              "citizenship": {
+                                "description": "Citizenship code of the guest (following the codes specificated in the API description)",
+                                "type": "string",
+                                "example": 100000100
+                              },
+                              "birth_date": {
+                                "description": "Birth date of the guest",
+                                "type": "string",
+                                "format": "date"
+                              },
+                              "birth_country": {
+                                "description": "Birth country code of the guest (following the codes specificated in the API description)",
+                                "type": "string",
+                                "example": 100000100
+                              },
+                              "birth_city": {
+                                "description": "Birth city code of the guest, mandatory if birth country is Italy (following the codes specificated in the API description)",
+                                "type": "string",
+                                "example": 412058091
+                              },
+                              "residence_country": {
+                                "description": "Residence country code of the guest (following the codes specificated in the API description)",
+                                "type": "string",
+                                "example": 100000100
+                              },
+                              "residence_city": {
+                                "description": "Residence city code of the guest, mandatory if birth country is Italy (following the codes specificated in the API description)",
+                                "type": "string",
+                                "example": 412058091
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "partenze": {
+                    "description": "list of reservations with check-out on the communicated date",
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "checkin_date": {
+                          "description": "Check-in date of the reservation",
+                          "type": "string",
+                          "format": "date"
+                        },
+                        "resv_id": {
+                          "description": "reservation code",
+                          "type": "string"
+                        },
+                        "guests": {
+                          "description": "list of guests",
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "idswh": {
+                                "description": "guest code",
+                                "type": "string"
+                              },
+                              "is_main_guest": {
+                                "description": "True if is the main guest, else False",
+                                "type": "boolean"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "prenotazioni": {
+                    "description": "list of reservations with created on the communicated date",
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "checkin_date": {
+                          "description": "Check-in date of the reservation",
+                          "type": "string",
+                          "format": "date"
+                        },
+                        "checkout_date": {
+                          "description": "Check-out date of the reservation",
+                          "type": "string",
+                          "format": "date"
+                        },
+                        "resv_id": {
+                          "description": "reservation code",
+                          "type": "string"
+                        },
+                        "guest_num": {
+                          "description": "Number of guest of the reservation",
+                          "type": "integer"
+                        },
+                        "room_num": {
+                          "description": "Number of the occupied room",
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete_istat": {
+        "properties": {
+          "data": {
+            "description": "Data container",
+            "type": "object",
+            "properties": {
+              "partner_id": { "description": "Partner id", "type": "string" },
+              "region_id": {
+                "description": "id of the region of the accommodation (you can get on the enpoint /istat/regions)",
+                "type": "integer"
+              },
+              "date": {
+                "description": "date relative to the comunication",
+                "type": "string",
+                "format": "date"
+              },
+              "host_data": {
+                "description": "Data relative to the host",
+                "type": "object",
+                "properties": {
+                  "DESCRIPTION": {
+                    "description": "change based on the result of the endpoint /istat/regions",
+                    "type": "string",
+                    "example": "change based on the result of the endpoint /istat/regions"
+                  }
+                }
+              },
+              "alloggiati_ids": {
+                "description": "list of id to delete",
+                "type": "array",
+                "items": {
+                  "idswh": {
+                    "description": "single id to delete",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

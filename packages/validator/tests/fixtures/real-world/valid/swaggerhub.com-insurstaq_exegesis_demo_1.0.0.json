@@ -1,0 +1,131 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "InsurStaq.ai - Exegesis Demo",
+    "description": "This API allows users to upload document files, specifically group health policy booklets, \nto a server. Once uploaded, these documents can be processed and interacted with by the company's systems.\n\n### Purpose\nThe primary purpose of this API is to enable the seamless uploading of group health insurance policy (upload only booklet that contains the policy and policy scheudle in a single pdf). \nThis functionality is crucial for companies that need to manage, analyze, and distribute these booklets efficiently.\n\n### Usage\n- **Endpoint URL**: `https://exegesis.techstaq.link`\n- **HTTP Method**: `POST`\n- **Content-Type**: `multipart/form-data`\n\n### Example CURL Request\n```\ncurl --location 'https://exegesis.techstaq.link/ingress' \\\n--form 'file=@\"/path/to/your/document.pdf\"'\n```\n\n### How to Use\n1. **Prepare the Document**: Ensure that the document (only computer-generated PDFs) you wish to upload is accessible on your local file system.\n2. **Send a POST Request**: Use a tool like `curl` to send a POST request to the `/ingress` endpoint with the document included as a form field named `file`.\n3. **Check the Response**: The server will respond with a JSON object indicating the success or failure of the upload. \n\n### Responses\n- **200 OK**: The file was uploaded successfully.\n- **400 Bad Request**: The request was invalid, possibly due to an incorrect file format or missing form field.\n- **500 Internal Server Error**: An error occurred on the server side.",
+    "contact": { "email": "cto@insurstaq.ai" },
+    "version": "1.0.0"
+  },
+  "externalDocs": {
+    "description": "Find out more about InsurStaq.ai",
+    "url": "https://insurstaq.ai"
+  },
+  "servers": [{ "url": "https://exegesis.techstaq.link" }],
+  "tags": [
+    {
+      "name": "Data Pipeline",
+      "description": "Initiate data pipeline processes."
+    }
+  ],
+  "paths": {
+    "/ingress": {
+      "post": {
+        "tags": ["Data Pipeline"],
+        "summary": "Upload a document",
+        "description": "Endpoint to upload a document file",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "The document file to upload"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful upload",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "examples": ["File uploaded successfully"]
+                    },
+                    "fileName": {
+                      "type": "string",
+                      "examples": ["gmc_policy_booklet.pdf"]
+                    },
+                    "trackerId": {
+                      "type": "string",
+                      "examples": ["<24 character unique tracker id>"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "examples": ["Invalid file format or request"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "examples": ["Internal server error"]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "UploadResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "examples": ["File uploaded successfully"]
+          },
+          "fileName": {
+            "type": "string",
+            "examples": ["gmc_policy_booklet.pdf"]
+          },
+          "trackerId": {
+            "type": "string",
+            "examples": ["<24 character unique tracker id>"]
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "message": { "type": "string", "examples": ["An error occurred"] }
+        }
+      }
+    }
+  }
+}

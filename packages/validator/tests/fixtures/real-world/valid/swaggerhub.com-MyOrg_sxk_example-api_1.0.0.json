@@ -1,0 +1,896 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Example API",
+    "termsOfService": "https://example.com/terms/",
+    "contact": {
+      "name": "Contact our support",
+      "email": "contact@example.com",
+      "url": "http://example.com/contact"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "x-logo": {
+      "url": "https://redocly.github.io/openapi-template/logo.png",
+      "altText": "OpenAPI example logo"
+    },
+    "description": "This is an **example** API to demonstrate features of the OpenAPI specification.\n# Introduction\nThis API definition is intended to to be a good starting point for describing your API in [OpenAPI/Swagger format](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.2.md).\nIt also demonstrates features of the [create-openapi-repo](https://github.com/Redocly/create-openapi-repo) tool and the [Redoc](https://github.com/Redocly/Redoc) documentation engine. Beyond the standard OpenAPI syntax, we use a few  [vendor extensions](https://github.com/Redocly/Redoc/blob/main/docs/redoc-vendor-extensions.md).\n# OpenAPI Specification\nThe goal of The OpenAPI Specification is to define a standard, language-agnostic interface to REST APIs which allows both humans and computers to discover and understand the capabilities of the service without access to source code, documentation, or through network traffic inspection. When properly defined via OpenAPI, a consumer can  understand and interact with the remote service with a minimal amount of implementation logic. Similar to what interfaces have done for lower-level programming, OpenAPI removes the guesswork in calling the service.\n"
+  },
+  "servers": [
+    {
+      "url": "https://{tenant}/api/v1",
+      "variables": {
+        "tenant": { "default": "www", "description": "Your tenant id" }
+      }
+    },
+    { "url": "https://example.com/api/v1" }
+  ],
+  "tags": [
+    { "name": "Echo", "description": "Example echo operations." },
+    { "name": "User", "description": "Example actions on user accounts." },
+    {
+      "name": "Admin",
+      "description": "Example operations reserved for administrators."
+    },
+    {
+      "name": "Info",
+      "description": "Example operations for retrieving information."
+    },
+    { "name": "Tag", "description": "This is a tag description." }
+  ],
+  "externalDocs": {
+    "description": "Find out how to create a GitHub repo for your OpenAPI definition.",
+    "url": "https://github.com/Redocly/create-openapi-repo"
+  },
+  "paths": {
+    "/users/{username}": {
+      "parameters": [
+        {
+          "name": "pretty_print",
+          "in": "query",
+          "description": "Choose whether to pretty print the response. This option is **disabled** by default.",
+          "schema": { "type": "boolean", "default": false }
+        }
+      ],
+      "get": {
+        "tags": ["User"],
+        "summary": "Get user by name",
+        "description": "Example description of the operation.\nYou can use `markdown` **here**.\n",
+        "operationId": "getUserByName",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "The username for which you want to retrieve the data.",
+            "example": "John78",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "with_email",
+            "in": "query",
+            "description": "Use this parameter to filter users without email. By default, only users with email are displayed.",
+            "schema": { "type": "boolean", "default": true }
+          },
+          {
+            "name": "userid",
+            "in": "query",
+            "description": "ID of the user. This is an example of a **deprecated** parameter.",
+            "required": false,
+            "deprecated": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "security": [{ "main_auth": ["read:users"] }, { "api_key": [] }],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/User" },
+                "example": { "username": "user1", "email": "user@example.com" }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "$ref": "#/components/responses/Problem"
+          },
+          "404": {
+            "description": "User not found",
+            "$ref": "#/components/responses/Problem"
+          }
+        }
+      },
+      "put": {
+        "tags": ["User"],
+        "summary": "Update user data",
+        "description": "This operation allows users to update the information in their own profile. The update can only be performed by the logged in user.",
+        "operationId": "updateUser",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "The name of the user profile to be **updated**.",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "security": [{ "main_auth": ["write:users"] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/User" }
+            },
+            "application/xml": {
+              "schema": { "$ref": "#/components/schemas/User" }
+            }
+          },
+          "description": "Updated user object",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully updated the user profile",
+            "content": {
+              "application/json": {
+                "example": { "status": 200, "message": "OK" }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid username supplied",
+            "$ref": "#/components/responses/Problem"
+          },
+          "404": {
+            "description": "User not found",
+            "$ref": "#/components/responses/Problem"
+          },
+          "405": {
+            "description": "Method not allowed",
+            "content": {
+              "application/json": {
+                "example": { "status": 405, "message": "Not allowed" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Admin"],
+        "summary": "Delete a user",
+        "description": "This operation deletes all data associated with the requested `username`. Only administrators can perform this operation.",
+        "operationId": "deleteUser",
+        "parameters": [
+          {
+            "name": "api_key",
+            "in": "header",
+            "required": false,
+            "schema": { "type": "string", "example": "Bearer <TOKEN>" }
+          },
+          {
+            "name": "username",
+            "in": "path",
+            "description": "The name of the user profile to be **deleted**.",
+            "example": "John78",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Successfully deleted a user" },
+          "400": { "description": "Invalid username provided" },
+          "404": { "description": "User not found" }
+        },
+        "security": [
+          { "main_auth": ["read:users", "write:users"] },
+          { "api_key": [] }
+        ]
+      }
+    },
+    "/user": {
+      "parameters": [
+        {
+          "name": "Accept-Language",
+          "in": "header",
+          "description": "The language you prefer for messages. Supported values are `en-AU, en-CA, en-GB, en-US`.",
+          "example": "en-US",
+          "required": false,
+          "schema": { "type": "string", "default": "en-GB" }
+        },
+        {
+          "name": "cookieParam",
+          "in": "cookie",
+          "description": "Example cookie parameter.",
+          "required": true,
+          "schema": { "type": "integer", "format": "int64" }
+        }
+      ],
+      "post": {
+        "tags": ["Admin"],
+        "summary": "Create a new user",
+        "description": "This operation creates a new user profile. Only administrators can create user profiles.",
+        "operationId": "createUser",
+        "responses": {
+          "200": { "description": "Successfully created a user" },
+          "405": { "description": "Invalid input" }
+        },
+        "security": [{ "main_auth": ["read:users", "write:users"] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "discriminator": {
+                  "propertyName": "userType",
+                  "mapping": {
+                    "admin": "#/components/schemas/Admin",
+                    "basic": "#/components/schemas/Basic"
+                  }
+                },
+                "anyOf": [
+                  { "$ref": "#/components/schemas/Admin" },
+                  { "$ref": "#/components/schemas/Basic" }
+                ]
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Example description"
+                  }
+                }
+              }
+            }
+          },
+          "description": "User profile to be added to the database.",
+          "required": true
+        }
+      }
+    },
+    "/user/list": {
+      "get": {
+        "tags": ["Admin"],
+        "summary": "List users by status",
+        "description": "This operation lets you list users by their status. Multiple status values can be provided in a single request by using comma-separated strings. Only administrators can use this operation.\n \n**This is an example of a deprecated operation.**",
+        "operationId": "userStatus",
+        "deprecated": true,
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "description": "One or more user status values by which to look up user accounts.",
+            "required": true,
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "uniqueItems": true,
+              "minItems": 1,
+              "maxItems": 3,
+              "items": {
+                "type": "string",
+                "enum": ["active", "banned", "inactive"],
+                "default": "active"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response example",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/User" }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/User" }
+                }
+              },
+              "text/plain": {
+                "examples": { "response": { "value": "Success!" } }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value was provided in the request"
+          }
+        },
+        "security": [{ "main_auth": ["read:users", "write:users"] }]
+      }
+    },
+    "/pathItem": {
+      "post": {
+        "tags": ["Tag"],
+        "summary": "Operation summary",
+        "description": "Operation description **Markdown**.\n",
+        "operationId": "operationId",
+        "security": [{ "api_key": [] }, { "basic_auth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Schema" }
+            }
+          },
+          "description": "requestBody description",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Rate-Limit": {
+                "description": "Calls per hour allowed by the user.",
+                "schema": { "type": "integer", "format": "int32" }
+              },
+              "X-Expires-After": { "$ref": "#/components/headers/ExpiresAfter" }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Schema" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/Problem" }
+        }
+      }
+    },
+    "/pathItemWithExamples": {
+      "post": {
+        "tags": ["Tag"],
+        "summary": "Operation summary with examples",
+        "description": "Operation description **markdown**.\n",
+        "operationId": "postPathItemWithExamples",
+        "security": [{ "api_key": [] }, { "basic_auth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Schema" },
+              "examples": {
+                "mapName": {
+                  "summary": "My first example",
+                  "description": "My first example's description.",
+                  "value": { "stringProperty": "tada" }
+                },
+                "mapNameDoesNotShowInDocsUnlessSummaryIsNotProvided": {
+                  "value": { "stringProperty": "checkmark" }
+                }
+              }
+            }
+          },
+          "description": "requestBody description",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Rate-Limit": {
+                "description": "calls per hour allowed by the user",
+                "schema": { "type": "integer", "format": "int32" }
+              },
+              "X-Expires-After": { "$ref": "#/components/headers/ExpiresAfter" }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Schema" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/Problem" }
+        }
+      }
+    },
+    "/echo": {
+      "post": {
+        "tags": ["Echo"],
+        "summary": "Echo test",
+        "description": "This endpoint returns the exact message you've sent to it. You can use it for testing purposes.",
+        "operationId": "echo",
+        "security": [{ "api_key": [] }, { "basic_auth": [] }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Rate-Limit": {
+                "description": "Calls per hour allowed by the user.",
+                "schema": { "type": "integer", "format": "int32" }
+              },
+              "X-Expires-After": { "$ref": "#/components/headers/ExpiresAfter" }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "type": "string" },
+                "examples": { "response": { "value": "Hello world!" } }
+              },
+              "application/xml": {
+                "schema": { "type": "string" },
+                "examples": {
+                  "xml": { "value": "<response>Hello world in XML!</response>" }
+                }
+              },
+              "text/csv": { "schema": { "type": "string" } }
+            }
+          },
+          "400": { "description": "Unauthorized" }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "type": "string", "example": "Hello world!" }
+            },
+            "application/xml": {
+              "schema": { "type": "string", "example": "Hello world in XML!" }
+            }
+          },
+          "description": "Example Echo payload. When the response is received, its contents should match the contents from the payload.",
+          "required": true
+        },
+        "x-codeSamples": [
+          {
+            "lang": "C#",
+            "source": "API.v1.Echo echo = new API.v1.Echo();\necho.message = \"Hello World!\");\nEchoResponse response = echo.post();\nif (response.statusCode == HttpStatusCode.Created)\n{\n  // Success\n}\nelse\n{\n  // Something wrong -- check response for errors\n  Console.WriteLine(response.getRawResponse());\n}\n"
+          },
+          {
+            "lang": "PHP",
+            "source": "$form = new \\API\\Entities\\Echo();\n$form->setMessage(\"Hello World!\");\ntry {\n    $pet = $client->echo()->post($form);\n} catch (UnprocessableEntityException $e) {\n    var_dump($e->getErrors());\n}\n"
+          }
+        ]
+      }
+    }
+  },
+  "webhooks": {
+    "userInfo": {
+      "post": {
+        "summary": "New user webhook",
+        "description": "Information about a new user in the system.",
+        "operationId": "userInfo",
+        "tags": ["Info"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/User" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved information about a new user."
+          }
+        },
+        "security": [{ "api_key": [] }]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "main_auth": {
+        "description": "Example description text of the OAuth2 scheme.",
+        "type": "oauth2",
+        "flows": {
+          "implicit": {
+            "authorizationUrl": "http://example.com/api/oauth/dialog",
+            "scopes": {
+              "read:users": "read user info",
+              "write:users": "modify or remove users"
+            }
+          }
+        }
+      },
+      "api_key": {
+        "description": "Example description text of the API key scheme.",
+        "type": "apiKey",
+        "in": "header",
+        "name": "api_key"
+      },
+      "basic_auth": { "type": "http", "scheme": "basic" }
+    },
+    "schemas": {
+      "User": {
+        "type": "object",
+        "required": ["username", "status"],
+        "discriminator": {
+          "propertyName": "userType",
+          "mapping": {
+            "admin": "#/components/schemas/Admin",
+            "basic": "#/components/schemas/Basic"
+          }
+        },
+        "properties": {
+          "username": {
+            "description": "The username associated with the user profile.",
+            "type": "string",
+            "minLength": 4,
+            "maxLength": 32,
+            "pattern": "/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/",
+            "example": "John78"
+          },
+          "firstName": {
+            "description": "User's first name.",
+            "type": "string",
+            "minLength": 1,
+            "example": "Bunny"
+          },
+          "lastName": {
+            "description": "User's last name.",
+            "type": "string",
+            "minLength": 1,
+            "example": "Rabbit"
+          },
+          "email": { "$ref": "#/components/schemas/Email" },
+          "exampleObject": {
+            "description": "Example object to show an expanded schema.",
+            "allOf": [{ "$ref": "#/components/schemas/ExampleObject" }]
+          },
+          "phone": {
+            "description": "User's phone number. Must be provided in international format.",
+            "type": "string",
+            "pattern": "/^\\+(?:[0-9]-?){6,14}[0-9]$/",
+            "maxLength": 32,
+            "example": "+4-0800-555-0110"
+          },
+          "profileUrls": {
+            "description": "The list of URLs to user's social media profiles. You must provide the URLs with the scheme (`http` or `https`).",
+            "type": "array",
+            "maxItems": 10,
+            "xml": { "name": "profileUrl", "wrapped": true },
+            "items": { "type": "string", "format": "url" },
+            "example": [
+              "https://twitter.com/example",
+              "https://instagram.com/example"
+            ]
+          },
+          "recursiveProperty": {
+            "allOf": [{ "$ref": "#/components/schemas/User" }]
+          },
+          "status": {
+            "description": "Status of the user account.",
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "enum": ["active", "banned", "inactive"]
+            }
+          },
+          "userid": {
+            "description": "Unique ID of the user.",
+            "externalDocs": {
+              "description": "Example of external documentation link",
+              "url": "https://example.com"
+            },
+            "allOf": [{ "$ref": "#/components/schemas/UserID" }]
+          }
+        },
+        "xml": { "name": "User" }
+      },
+      "Admin": {
+        "description": "Example of a user profile with admin permissions. This type of user is also referred to as an **administrator**.",
+        "allOf": [
+          { "$ref": "#/components/schemas/User" },
+          {
+            "type": "object",
+            "properties": {
+              "userType": { "type": "string", "enum": ["admin", "basic"] },
+              "adminDept": {
+                "type": "string",
+                "description": "One or more departments which the admin user controls.",
+                "default": "all",
+                "example": "finance",
+                "enum": [
+                  "all",
+                  "finance",
+                  "hiring",
+                  "development",
+                  "support",
+                  "contractors"
+                ]
+              }
+            },
+            "required": ["adminDept", "userType"]
+          }
+        ]
+      },
+      "Basic": {
+        "description": "Example of a user with basic (restricted) permissions. In total, there are 5 permission levels, but basic users can only use the first three.",
+        "allOf": [
+          { "$ref": "#/components/schemas/User" },
+          {
+            "type": "object",
+            "properties": {
+              "userType": { "type": "string", "enum": ["admin", "basic"] },
+              "permissionId": {
+                "type": "integer",
+                "format": "int32",
+                "description": "Identifier of the permission level assigned to the basic user.",
+                "default": 1,
+                "minimum": 1,
+                "maximum": 3
+              }
+            },
+            "required": ["permissionId", "userType"]
+          }
+        ]
+      },
+      "Email": {
+        "description": "User's email address.",
+        "type": "string",
+        "format": "email",
+        "example": "bunny.rabbit@example.com"
+      },
+      "UserID": {
+        "type": "integer",
+        "format": "int64",
+        "readOnly": true,
+        "example": 27
+      },
+      "ExampleObject": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "User ID.",
+            "allOf": [{ "$ref": "#/components/schemas/UserID" }]
+          },
+          "name": {
+            "description": "Example name.",
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64,
+            "example": "BunnyRabbit"
+          },
+          "container": {
+            "description": "Example object within an object.",
+            "type": "object",
+            "properties": {
+              "number": {
+                "type": "integer",
+                "description": "Example nullable value in a container object.",
+                "example": 22
+              }
+            }
+          }
+        }
+      },
+      "Problem": {
+        "type": "object",
+        "additionalProperties": true,
+        "minProperties": 1,
+        "description": "The Problem Details JSON Object [[RFC7807](https://tools.ietf.org/html/rfc7807)].",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "A URI reference [[RFC3986](https://tools.ietf.org/html/rfc3986)] that identifies the problem type. It should provide human-readable documentation for the problem type. When this member is not present, its value is assumed to be \"about:blank\".",
+            "format": "uri"
+          },
+          "title": {
+            "type": "string",
+            "description": "A short, human-readable summary of the problem type. It SHOULD NOT change from occurrence to occurrence of the problem, except for purposes of localization."
+          },
+          "status": {
+            "type": "integer",
+            "description": "The HTTP status code.",
+            "minimum": 400,
+            "maximum": 599
+          },
+          "detail": {
+            "type": "string",
+            "description": "A human-readable explanation specific to this occurrence of the problem."
+          },
+          "instance": {
+            "type": "string",
+            "description": "A URI reference that identifies the specific occurrence of the problem.  It may or may not yield further information if dereferenced."
+          }
+        }
+      },
+      "Schema": {
+        "type": "object",
+        "title": "Scalars",
+        "properties": {
+          "stringProperty": {
+            "description": "Property name's description (type is string)",
+            "type": "string",
+            "examples": ["example", "sample"]
+          },
+          "readOnlyStringProperty": {
+            "description": "Notice this only appears in the response.",
+            "type": "string",
+            "readOnly": true,
+            "examples": ["example"]
+          },
+          "writeOnlyStringProperty": {
+            "description": "Notice this only appears in the request.",
+            "type": "string",
+            "writeOnly": true,
+            "examples": ["example"]
+          },
+          "minLengthString": {
+            "description": "Property name's description (type is string)",
+            "type": "string",
+            "minLength": 4,
+            "examples": ["example"]
+          },
+          "maxLengthString": {
+            "description": "Property name's description (type is string)",
+            "type": "string",
+            "maxLength": 140,
+            "examples": ["example"]
+          },
+          "minAndMaxLengthString": {
+            "description": "Property name's description (type is string)",
+            "type": "string",
+            "minLength": 4,
+            "maxLength": 140,
+            "examples": ["example"]
+          },
+          "nullableOrStringProperty": {
+            "description": "Property name's description (type is string or null)",
+            "type": ["string", "null"],
+            "examples": ["example"]
+          },
+          "stringEnumValues": {
+            "description": "Property name's description (type is string)",
+            "type": "string",
+            "enum": [
+              "sample",
+              "example",
+              "specimen",
+              "case",
+              "instance",
+              "illustration"
+            ]
+          },
+          "stringDateTime": {
+            "description": "Property name's description (type is string, format is date-time)",
+            "type": "string",
+            "format": "date-time"
+          },
+          "stringDate": {
+            "description": "Property name's description (type is string, format is date-time)",
+            "type": "string",
+            "format": "date"
+          },
+          "stringEmail": {
+            "description": "Property name's description (type is string, format is email)",
+            "type": "string",
+            "format": "email"
+          },
+          "stringIpAddressV4": {
+            "description": "Property name's description (type is string, format is ipv4 address)",
+            "type": "string",
+            "format": "ipv4"
+          },
+          "stringIpAddressV6": {
+            "description": "Property name's description (type is string, format is ipv6 address)",
+            "type": "string",
+            "format": "ipv6"
+          },
+          "stringPassword": {
+            "description": "Property name's description (type is string, format is password)",
+            "type": "string",
+            "format": "password"
+          },
+          "stringHostname": {
+            "description": "Property name's description (type is string, format is hostname)",
+            "type": "string",
+            "format": "hostname"
+          },
+          "stringUri": {
+            "description": "Property name's description (type is string, format is uri)",
+            "type": "string",
+            "format": "uri"
+          },
+          "stringUuid": {
+            "description": "Property name's description (type is string, format is uuid)",
+            "type": "string",
+            "format": "uuid"
+          },
+          "numberProperty": {
+            "description": "Property name's description (type is number)",
+            "type": "number",
+            "example": 8
+          },
+          "numberFloat": {
+            "description": "Property name's description (type is number, format is float)",
+            "type": "number",
+            "format": "float"
+          },
+          "numberDouble": {
+            "description": "Property name's description (type is number, format is double)",
+            "type": "number",
+            "format": "double"
+          },
+          "numberGreaterThanOrEquals": {
+            "description": "Property name's description (type is number)",
+            "type": "number",
+            "minimum": 5
+          },
+          "numberGreaterThan": {
+            "description": "Property name's description (type is number)",
+            "type": "number",
+            "exclusiveMinimum": 5
+          },
+          "numberLessThan": {
+            "description": "Property name's description (type is number)",
+            "type": "number",
+            "exclusiveMaximum": 8
+          },
+          "numberLessThanOrEquals": {
+            "description": "Property name's description (type is number)",
+            "type": "number",
+            "maximum": 8
+          },
+          "numberRange": {
+            "description": "Property name's description (type is number)",
+            "type": "number",
+            "minimum": 5,
+            "maximum": 8
+          },
+          "numberRangeExclusiveMaximum": {
+            "description": "Property name's description (type is number)",
+            "type": "number",
+            "minimum": 5,
+            "exclusiveMaximum": 8
+          },
+          "numberRangeExclusiveMinimumAndMaximum": {
+            "description": "Property name's description (type is number)",
+            "type": "number",
+            "exclusiveMinimum": 5,
+            "exclusiveMaximum": 8
+          },
+          "numberMultipleOf": {
+            "description": "Property name's description (type is number)",
+            "type": "number",
+            "multipleOf": 2
+          },
+          "integerType": {
+            "description": "Property name's description (type is integer)",
+            "type": "integer"
+          },
+          "integer32bit": {
+            "description": "Property name's description (type is integer, format is int32)",
+            "type": "integer",
+            "format": "int32"
+          },
+          "integer64bit": {
+            "description": "Property name's description (type is integer, format is int64)",
+            "type": "integer",
+            "format": "int64"
+          },
+          "booleanProperty": {
+            "description": "Property name's description (type is boolean)",
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "responses": {
+      "Problem": {
+        "description": "Problem",
+        "content": {
+          "application/problem+json": {
+            "schema": { "$ref": "#/components/schemas/Problem" }
+          }
+        }
+      }
+    },
+    "headers": {
+      "ExpiresAfter": {
+        "description": "date in UTC when token expires",
+        "schema": { "type": "string", "format": "date-time" }
+      }
+    }
+  },
+  "x-tagGroups": [
+    { "name": "General", "tags": ["User", "Info", "Echo"] },
+    { "name": "Administration", "tags": ["Admin"] }
+  ]
+}

@@ -1,0 +1,920 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "version": "1.2.0",
+    "title": "Portail auditeur",
+    "description": "<strong>Documentation de l'api du portail auditeur de Qualibat.</strong> <br> <br> L'identification est effectuée via un Bearer token fourni par Qualibat.<br> Vous pouvez obtenir plus d'information en contactant le support sur l'adresse email <support.portail-auditeur@qualibat.com> <br><br> Des webhooks sont disponibles pour être notifiés des actions effectuées à partir du portail auditeur."
+  },
+  "servers": [
+    {
+      "description": "Environnement de Test",
+      "url": "https://test.auditeurs.qualibat.eu/PAGC/v1"
+    },
+    {
+      "description": "Environement de pré-production",
+      "url": "https://preprod.auditeurs.qualibat.eu/PAGC/v1"
+    },
+    {
+      "description": "Environement de production",
+      "url": "https://auditeurs.qualibat.com/PAGC/v1"
+    }
+  ],
+  "security": [{ "BearerAuth": ["BearerAuth"] }],
+  "webhooks": {
+    "PublicationOM": {
+      "post": {
+        "requestBody": {
+          "description": "<strong> Notifie de la publication d'un ordre de mission  </strong><br> <br> Attention, toutes les webhooks sont envoyées sur la même URL,<br> le type du json défini la nature des données de l'objet data",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/NumerosOM" }
+            }
+          }
+        },
+        "responses": {
+          "204": { "$ref": "#/components/responses/204" },
+          "500": { "$ref": "#/components/responses/500_webhook" }
+        }
+      }
+    },
+    "AcceptationOM": {
+      "post": {
+        "requestBody": {
+          "description": "<strong>Notifie de l'action d'acceptation d'un OM effectuée à partir du portail auditeur</strong><br> <br> Attention, toutes les webhooks sont envoyées sur la même URL,<br> le type du json défini la nature des données de l'objet data",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/NumeroOM" }
+            }
+          }
+        },
+        "responses": {
+          "204": { "$ref": "#/components/responses/204" },
+          "500": { "$ref": "#/components/responses/500_webhook" }
+        }
+      }
+    },
+    "RefusOM": {
+      "post": {
+        "requestBody": {
+          "description": "<strong>Notifie de l'action de refus d'un OM effectuée à partir du portail auditeur</strong><br> <br> Attention, toutes les webhooks sont envoyées sur la même URL,<br> le type du json défini la nature des données de l'objet data.",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/NumeroOMMotif" }
+            }
+          }
+        },
+        "responses": {
+          "204": { "$ref": "#/components/responses/204" },
+          "500": { "$ref": "#/components/responses/500_webhook" }
+        }
+      }
+    },
+    "RecusationEntreprise": {
+      "post": {
+        "requestBody": {
+          "description": "<strong>Notifie de l'action de récusation d'une entreprise effectuée à partir du portail auditeur</strong><br> <br> Attention, toutes les webhooks sont envoyées sur la même URL,<br> le type du json défini la nature des données de l'objet data",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/NumeroOMMotif" }
+            }
+          }
+        },
+        "responses": {
+          "204": { "$ref": "#/components/responses/204" },
+          "500": { "$ref": "#/components/responses/500_webhook" }
+        }
+      }
+    },
+    "AnnulationOm": {
+      "post": {
+        "requestBody": {
+          "description": "<strong>Notifie de l'action d'annulation d'un OM effectuée à partir du portail auditeur ou déclanchée par le gestionnaire d'audit.</strong><br> <br> Attention, toutes les webhooks sont envoyées sur la même URL,<br> le type du json défini la nature des données de l'objet data",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/NumeroOMMotif" }
+            }
+          }
+        },
+        "responses": {
+          "204": { "$ref": "#/components/responses/204" },
+          "500": { "$ref": "#/components/responses/500_webhook" }
+        }
+      }
+    },
+    "ChangementSuperviseur": {
+      "post": {
+        "requestBody": {
+          "description": "<strong>Notifie de l'action d'affectation ou modification d'un superviseur à un ordre de mission à partir du portail auditeur</strong><br> <br> Attention, toutes les webhooks sont envoyées sur la même URL,<br> le type du json défini la nature des données de l'objet data.",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/NumeroOMEmail" }
+            }
+          }
+        },
+        "responses": { "204": { "$ref": "#/components/responses/204" } }
+      }
+    },
+    "ChangementEtatOM": {
+      "post": {
+        "requestBody": {
+          "description": "<strong>Notifie de l'action de modification de l'état d'un ordre de mission  à partir du portail auditeur et non notifié par une autre webhook</strong><br> <br> Attention, toutes les webhooks sont envoyées sur la même URL,<br> le type du json défini la nature des données de l'objet data.",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/EtatOM" }
+            }
+          }
+        },
+        "responses": {
+          "204": { "$ref": "#/components/responses/204" },
+          "500": { "$ref": "#/components/responses/500_webhook" }
+        }
+      }
+    },
+    "ChangementChantierOM": {
+      "post": {
+        "requestBody": {
+          "description": "<strong>Notifie de l'action de modification du chantier d'un ordre de mission à partir de Qualis et non notifié par une autre webhook</strong><br> <br> Attention, toutes les webhooks sont envoyées sur la même URL,<br> le type du json défini la nature des données de l'objet data.",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/NumeroOM" }
+            }
+          }
+        },
+        "responses": {
+          "204": { "$ref": "#/components/responses/204" },
+          "500": { "$ref": "#/components/responses/500_webhook" }
+        }
+      }
+    },
+    "ChangementAuditeur": {
+      "post": {
+        "requestBody": {
+          "description": "<strong>Notifie de l'action d'affectation ou modification d'un auditeur à un ordre de mission à partir du portail auditeur</strong><br> <br> Attention, toutes les webhooks sont envoyées sur la même URL,<br> le type du json défini la nature des données de l'objet data.",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/NumeroOMEmail" }
+            }
+          }
+        },
+        "responses": {
+          "204": { "$ref": "#/components/responses/204" },
+          "500": { "$ref": "#/components/responses/500_webhook" }
+        }
+      }
+    },
+    "ChangementDateAudit": {
+      "post": {
+        "requestBody": {
+          "description": "<strong>Notifie de l'action de changement de la date d'audit effectuée à partir du portail auditeur</strong><br> <br> Attention, toutes les webhooks sont envoyées sur la même URL,<br> le type du json défini la nature des données de l'objet data.",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/PlanificationOM" }
+            }
+          }
+        },
+        "responses": {
+          "204": { "$ref": "#/components/responses/204" },
+          "500": { "$ref": "#/components/responses/500_webhook" }
+        }
+      }
+    },
+    "ChangementStatutFactureAuditeur": {
+      "post": {
+        "requestBody": {
+          "description": "<strong>Notifie de l'action de modification de l'état d'une facture auditeur à partir du portail auditeur et non notifié par une autre webhook</strong><br> <br> Attention, toutes les webhooks sont envoyées sur la même URL,<br> le type du json défini la nature des données de l'objet data.",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/FactureAuditeurApercu" }
+            }
+          }
+        },
+        "responses": {
+          "204": { "$ref": "#/components/responses/204" },
+          "500": { "$ref": "#/components/responses/500_webhook" }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/ordreMission/accepter": {
+      "post": {
+        "tags": ["Ordre de mission"],
+        "description": "<strong>Accepter un ordre de mission</strong><br> Cette action peut être réalisée si l'état de l'ordre de mission est \"vEtatOrdreMissionEnAttenteAcceptation\" voir schéma enumEtatOrdreMission",
+        "operationId": "PostOMAcceptation",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/NumeroOM" }
+            }
+          }
+        },
+        "responses": {
+          "204": { "$ref": "#/components/responses/204" },
+          "400": { "$ref": "#/components/responses/400" },
+          "401": { "$ref": "#/components/responses/401" },
+          "403": { "$ref": "#/components/responses/403" },
+          "404": { "$ref": "#/components/responses/404" },
+          "406": { "$ref": "#/components/responses/406" },
+          "500": { "$ref": "#/components/responses/500" }
+        }
+      }
+    },
+    "/ordreMission/refuser": {
+      "post": {
+        "tags": ["Ordre de mission"],
+        "description": "<strong>Refuser un ordre de mission</strong><br> Cette action peut être réalisée si l'état de l'ordre de mission est \"vEtatOrdreMissionEnAttenteAcceptation\" voir schéma enumEtatOrdreMission",
+        "operationId": "PostOMRefus",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/NumeroOMMotif" }
+            }
+          }
+        },
+        "responses": {
+          "204": { "$ref": "#/components/responses/204" },
+          "400": { "$ref": "#/components/responses/400" },
+          "401": { "$ref": "#/components/responses/401" },
+          "403": { "$ref": "#/components/responses/403" },
+          "404": { "$ref": "#/components/responses/404" },
+          "406": { "$ref": "#/components/responses/406" },
+          "500": { "$ref": "#/components/responses/500" }
+        }
+      }
+    },
+    "/ordreMission/{Numéro}": {
+      "get": {
+        "tags": ["Ordre de mission"],
+        "description": "<strong>Information sur l'ordre de mission</strong><br> Cette action permet de récupérer les informations sur l'ordre de mission <u> <li>Informations générales de l'ordre de mission</li> <li>Informations sur le chantier à auditer</li> <li>Informations sur l'entreprise auditées</li> </u>",
+        "operationId": "GetOM",
+        "responses": {
+          "200": {
+            "description": "Information sur l'ordre de mission demandé",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/OrdreMission" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/400" },
+          "401": { "$ref": "#/components/responses/401" },
+          "403": { "$ref": "#/components/responses/403" },
+          "404": { "$ref": "#/components/responses/404" },
+          "406": { "$ref": "#/components/responses/406" },
+          "500": { "$ref": "#/components/responses/500" }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "Numéro",
+            "description": "Numéro de l'ordre de mission",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ]
+      }
+    },
+    "/ordreMission/annuler": {
+      "post": {
+        "tags": ["Ordre de mission"],
+        "description": "<strong>Annuler un ordre de mission</strong><br> Cette action peut être réalisée à n'importe quel moment dans la mesure ou la confirmation de réaliastion de l'audit n'a pas été éffectuée. (Etat de l'ordre de mission différent de :[vEtatOrdreMissionAnnulé,vEtatOrdreMissionRefusé,vEtatOrdreMissionRécusé,vEtatOrdreMissionRapportARediger,vEtatOrdreMissionRapportAVerifier,vEtatOrdreMissionRapportEnVerification,vEtatOrdreMissionLevéeAVerifier,vEtatOrdreMissionLevéeEnVerification, vEtatOrdreMissionNCAttenteReponse, vEtatOrdreMissionNCAttenteLevées, vEtatOrdreMissionClôturé])",
+        "operationId": "PostOMAnnuler",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/NumeroOMMotif" }
+            }
+          }
+        },
+        "responses": {
+          "204": { "$ref": "#/components/responses/204" },
+          "400": { "$ref": "#/components/responses/400" },
+          "401": { "$ref": "#/components/responses/401" },
+          "403": { "$ref": "#/components/responses/403" },
+          "404": { "$ref": "#/components/responses/404" },
+          "406": { "$ref": "#/components/responses/406" },
+          "500": { "$ref": "#/components/responses/500" }
+        }
+      }
+    },
+    "/ordreMission/auditeur": {
+      "post": {
+        "tags": ["Ordre de mission"],
+        "description": "<strong>Associer un auditeur à un ordre de mission</strong><br> Cette action peut être réalisée  si l'ordre de mission est dans l'état [vEtatOrdreMissionAuditeurAAffecter, vEtatOrdreMissionAuditAPlanifié, vEtatOrdreMissionAuditPlanifié].<br><br><strong>Attention</strong>, pour les OM combinés, l'auditeur affecté doit être le même.",
+        "operationId": "PostOMAuditeur",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/NumeroOMEmail" }
+            }
+          }
+        },
+        "responses": {
+          "204": { "$ref": "#/components/responses/204" },
+          "400": { "$ref": "#/components/responses/400" },
+          "401": { "$ref": "#/components/responses/401" },
+          "403": { "$ref": "#/components/responses/403" },
+          "404": { "$ref": "#/components/responses/404" },
+          "406": { "$ref": "#/components/responses/406" },
+          "500": { "$ref": "#/components/responses/500" }
+        }
+      }
+    },
+    "/ordreMission/planification": {
+      "post": {
+        "tags": ["Ordre de mission"],
+        "description": "<strong>Planifier un ordre de mission</strong><br> Cette action peut être réalisée  si l'ordre de mission est dans l'état [vEtatOrdreMissionAuditAPlanifié, vEtatOrdreMissionAuditPlanifié]. <br> L'année de l'audit ne peut pas être antérieure de plus de 3 ans.",
+        "operationId": "PostOMPlanifier",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/PlanificationOM" }
+            }
+          }
+        },
+        "responses": {
+          "204": { "$ref": "#/components/responses/204" },
+          "400": { "$ref": "#/components/responses/400" },
+          "401": { "$ref": "#/components/responses/401" },
+          "403": { "$ref": "#/components/responses/403" },
+          "404": { "$ref": "#/components/responses/404" },
+          "406": { "$ref": "#/components/responses/406" },
+          "500": { "$ref": "#/components/responses/500" }
+        }
+      }
+    },
+    "/ordreMission/planification/annuler": {
+      "post": {
+        "tags": ["Ordre de mission"],
+        "description": "<strong>Annuler la planification un ordre de mission</strong><br> Cette action peut être réalisée  si l'ordre de mission est dans l'état \"vEtatOrdreMissionAuditPlanifié\".",
+        "operationId": "PostOMPlanifierAnnuler",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/NumeroOMMotif" }
+            }
+          }
+        },
+        "responses": {
+          "204": { "$ref": "#/components/responses/204" },
+          "400": { "$ref": "#/components/responses/400" },
+          "401": { "$ref": "#/components/responses/401" },
+          "403": { "$ref": "#/components/responses/403" },
+          "404": { "$ref": "#/components/responses/404" },
+          "406": { "$ref": "#/components/responses/406" },
+          "500": { "$ref": "#/components/responses/500" }
+        }
+      }
+    },
+    "/factureAuditeur/{idFactureAuditeur}": {
+      "get": {
+        "tags": ["Facture auditeur"],
+        "description": "<strong>Informations sur la facture auditeur</strong><br> Cette action permet de récupérer les informations sur la facture auditeur <u> <li>Informations générales de la facture auditeur</li> <li>Informations générales des lignes de facture</li> </u>",
+        "operationId": "GetFactureAuditeur",
+        "responses": {
+          "200": {
+            "description": "Informations sur la facture auditeur demandée",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FactureAuditeurComplete"
+                }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/400" },
+          "401": { "$ref": "#/components/responses/401" },
+          "403": { "$ref": "#/components/responses/403" },
+          "404": { "$ref": "#/components/responses/404" },
+          "406": { "$ref": "#/components/responses/406" },
+          "500": { "$ref": "#/components/responses/500" }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "idFactureAuditeur",
+            "description": "Identifiant unique de la facture auditeur demandée",
+            "required": true,
+            "schema": { "type": "number" }
+          }
+        ]
+      }
+    },
+    "/factureAuditeur": {
+      "post": {
+        "tags": ["Facture auditeur"],
+        "description": "<strong>Créer une facture auditeur</strong><br>",
+        "operationId": "PostFactureAuditeur",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/FactureAuditeurCorps" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Informations sur la facture auditeur créée",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FactureAuditeurComplete"
+                }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/400" },
+          "401": { "$ref": "#/components/responses/401" },
+          "403": { "$ref": "#/components/responses/403" },
+          "404": { "$ref": "#/components/responses/404" },
+          "406": { "$ref": "#/components/responses/406" },
+          "500": { "$ref": "#/components/responses/500" }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": { "BearerAuth": { "type": "http", "scheme": "bearer" } },
+    "schemas": {
+      "Erreur": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "Code de l'erreur, se référer aux réponses des webservices"
+          },
+          "titre": {
+            "type": "string",
+            "description": "Définition du code erreur http"
+          },
+          "detail": {
+            "type": "string",
+            "description": "Contenu détaillant l'erreur"
+          }
+        }
+      },
+      "enumTypeNotification": {
+        "type": "string",
+        "enum": [
+          "PublicationOM",
+          "AcceptationOM",
+          "RefusOM",
+          "RecusationEntreprise",
+          "AnnulationOM",
+          "Auditeur",
+          "PlanificationAudit",
+          "AnnulationPlanificationAudit",
+          "InformationOM",
+          "Superviseur",
+          "EtatOM",
+          "ChantierOM",
+          "StatutFactureAuditeur",
+          "FactureAuditeur"
+        ],
+        "examples": ["voir schéma enumTypeNotification"]
+      },
+      "enumEtatOrdreMission": {
+        "type": "string",
+        "enum": [
+          "vEtatOrdreMissionAnnulé",
+          "vEtatOrdreMissionRefusé",
+          "vEtatOrdreMissionRécusé",
+          "vEtatOrdreMissionEnAttenteAcceptation",
+          "vEtatOrdreMissionAuditeurAAffecter",
+          "vEtatOrdreMissionAuditAPlanifié",
+          "vEtatOrdreMissionAuditPlanifié",
+          "vEtatOrdreMissionRapportARediger",
+          "vEtatOrdreMissionRapportAVerifier",
+          "vEtatOrdreMissionRapportEnVerification",
+          "vEtatOrdreMissionNCAttenteReponse",
+          "vEtatOrdreMissionNCAttenteLevées",
+          "vEtatOrdreMissionLevéeAVerifier",
+          "vEtatOrdreMissionLevéeEnVerification",
+          "vEtatOrdreMissionClôturé"
+        ],
+        "examples": ["vEtatOrdreMissionEnAttenteAcceptation"]
+      },
+      "enumStatutPaFacture": {
+        "type": "string",
+        "enum": [
+          "vStatutPaFactureNonDefini",
+          "vStatutPaFactureEnvoyée",
+          "vStatutPaFactureValidéCAF",
+          "vStatutPaFactureEnvoyéeCompta",
+          "vStatutPaFacturePayée"
+        ],
+        "examples": ["vStatutPaFactureEnvoyée"]
+      },
+      "NumeroOM": {
+        "type": "object",
+        "properties": {
+          "type": { "$ref": "#/components/schemas/enumTypeNotification" },
+          "data": {
+            "type": "object",
+            "properties": {
+              "numeroOm": {
+                "type": "string",
+                "examples": ["123456-123456-123456-EETI-39"]
+              }
+            }
+          }
+        }
+      },
+      "NumerosOM": {
+        "type": "object",
+        "properties": {
+          "type": { "$ref": "#/components/schemas/enumTypeNotification" },
+          "data": {
+            "type": "object",
+            "properties": {
+              "numerosOM": {
+                "type": "array",
+                "examples": [
+                  [
+                    "123456-123456-123456-EETI-21",
+                    "654321-654321-654321-EETI-49"
+                  ]
+                ]
+              }
+            }
+          }
+        }
+      },
+      "NumeroOMMotif": {
+        "type": "object",
+        "properties": {
+          "type": { "$ref": "#/components/schemas/enumTypeNotification" },
+          "data": {
+            "type": "object",
+            "properties": {
+              "numeroOm": {
+                "type": "string",
+                "examples": ["123456-123456-123456-EETI-39"]
+              },
+              "motif": {
+                "type": "string",
+                "description": "Indiquer le motif de la notification",
+                "examples": ["Aucun auditeur disponible à cette période"]
+              }
+            }
+          }
+        }
+      },
+      "NumeroOMEmail": {
+        "type": "object",
+        "properties": {
+          "type": { "$ref": "#/components/schemas/enumTypeNotification" },
+          "data": {
+            "type": "object",
+            "properties": {
+              "numeroOm": {
+                "type": "string",
+                "examples": ["123456-123456-123456-EETI-39"]
+              },
+              "email": {
+                "type": "string",
+                "description": "Indiquer l'adresse email du compte concerné par la notification"
+              }
+            }
+          }
+        }
+      },
+      "PlanificationOM": {
+        "type": "object",
+        "properties": {
+          "type": { "$ref": "#/components/schemas/enumTypeNotification" },
+          "data": {
+            "type": "object",
+            "properties": {
+              "numeroOm": {
+                "type": "string",
+                "examples": ["123456-123456-123456-EETI-39"]
+              },
+              "dateAudit": {
+                "type": "integer",
+                "examples": [1501056581],
+                "description": "Date et heure de l'audit au format Unix timestamp en seconde"
+              }
+            }
+          }
+        }
+      },
+      "OrdreMission": {
+        "type": "object",
+        "properties": {
+          "type": { "$ref": "#/components/schemas/enumTypeNotification" },
+          "data": {
+            "type": "object",
+            "properties": {
+              "numeroOM": {
+                "type": "string",
+                "examples": ["123456-123456-123456-EETI-21"]
+              },
+              "categorieTravaux": { "type": "string", "examples": ["CT01"] },
+              "estCategorieTravauxCritique": { "type": "boolean" },
+              "qualification": { "type": "string", "examples": [3511] },
+              "etat": { "$ref": "#/components/schemas/enumEtatOrdreMission" },
+              "objetAudit": { "type": "string" },
+              "dateLimiteAudit": { "type": "string" },
+              "dateEcheanceQualification": { "type": "string" },
+              "omCombine": {
+                "type": "array",
+                "examples": [
+                  [
+                    "123456-123456-123456-EETI-21",
+                    "123456-123457-123456-EETI-21"
+                  ]
+                ]
+              },
+              "chantier": { "$ref": "#/components/schemas/Chantier" },
+              "referentRge": { "$ref": "#/components/schemas/Identite" },
+              "contactQualibat": {
+                "$ref": "#/components/schemas/ContactQualibat"
+              },
+              "entreprise": { "$ref": "#/components/schemas/Entreprise" }
+            }
+          }
+        }
+      },
+      "FactureAuditeur": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "numeroFactureAuditeur": {
+                "type": "string",
+                "examples": ["F0000002345"]
+              },
+              "totalHT": { "type": "number", "examples": [798] },
+              "totalTTC": { "type": "number", "examples": [957.6] },
+              "tvaNonAssujettis": { "type": "boolean", "examples": [false] }
+            }
+          }
+        }
+      },
+      "FactureAuditeurComplement": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "idEntrepriseAuditeur": { "type": "number", "examples": [2] },
+              "dateCreation": { "type": "string", "examples": ["2024-07-10"] },
+              "dateReception": { "type": "string", "examples": ["2024-07-12"] },
+              "datePaiement": { "type": "string", "examples": ["2024-07-13"] }
+            }
+          }
+        }
+      },
+      "FactureAuditeurCorps": {
+        "type": "object",
+        "allOf": [{ "$ref": "#/components/schemas/FactureAuditeur" }],
+        "properties": {
+          "type": { "$ref": "#/components/schemas/enumTypeNotification" },
+          "data": {
+            "type": "object",
+            "properties": {
+              "fichierPDF": {
+                "type": "string",
+                "examples": ["dGVzdG9ucyBzb24gZWZmaWNhY2l0w6k="]
+              },
+              "numerosOM": {
+                "type": "array",
+                "items": { "type": "string" },
+                "examples": [
+                  [
+                    "37503-181328-194089-EETI-14",
+                    "37273-180773-90286-EETI-14",
+                    "37525-181392-137252-EETI-76"
+                  ]
+                ]
+              }
+            }
+          }
+        }
+      },
+      "FactureAuditeurApercu": {
+        "type": "object",
+        "properties": {
+          "type": { "$ref": "#/components/schemas/enumTypeNotification" },
+          "data": {
+            "type": "object",
+            "properties": {
+              "idFactureAuditeur": { "type": "number", "examples": [13617] },
+              "statut": { "$ref": "#/components/schemas/enumStatutPaFacture" }
+            }
+          }
+        }
+      },
+      "FactureAuditeurComplete": {
+        "allOf": [
+          { "$ref": "#/components/schemas/FactureAuditeur" },
+          { "$ref": "#/components/schemas/FactureAuditeurApercu" },
+          { "$ref": "#/components/schemas/FactureAuditeurComplement" }
+        ],
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "factureAuditeurLignes": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/FactureAuditeurLigne" }
+              }
+            }
+          }
+        }
+      },
+      "FactureAuditeurLigne": {
+        "type": "object",
+        "properties": {
+          "designation": {
+            "type": "string",
+            "examples": [
+              "OM n°031057-166023-139910-EETI-64 réalisé le 05/07/2023 (PLAQUI'PEINT)"
+            ]
+          },
+          "codeTarif": { "type": "string", "examples": ["AUDEECR"] },
+          "quantite": { "type": "number", "examples": [1] },
+          "prixUnitaireHT": { "type": "number", "examples": [266] },
+          "totalHT": { "type": "number", "examples": [266] },
+          "tauxTVA": { "type": "number", "examples": [20] }
+        }
+      },
+      "Chantier": {
+        "type": "object",
+        "properties": {
+          "nomChantier": { "type": "string" },
+          "dateDebutTravaux": { "type": "string" },
+          "dateReceptionTravaux": { "type": "string" },
+          "adresseChantier": { "$ref": "#/components/schemas/Adresse" },
+          "responsableChantier": { "$ref": "#/components/schemas/Identite" },
+          "montantHtTravaux": { "type": "number" },
+          "montantHtTravauxSousTraite": { "type": "number" },
+          "surface": { "type": "number" },
+          "maitreOuvrage": { "$ref": "#/components/schemas/IdentiteAdresse" },
+          "natureTravaux": { "type": "string" },
+          "natureTravauxSousTraite": { "type": "string" }
+        }
+      },
+      "ContactQualibat": {
+        "type": "object",
+        "properties": {
+          "chargeAffaire": { "type": "string" },
+          "agence": { "$ref": "#/components/schemas/IdentiteAdresse" }
+        }
+      },
+      "Entreprise": {
+        "type": "object",
+        "properties": {
+          "identifiantQualibat": { "type": "integer" },
+          "raisonSociale": { "type": "string" },
+          "siret": { "type": "string" },
+          "formeJuridique": { "type": "string" },
+          "adresse": { "$ref": "#/components/schemas/Adresse" },
+          "responsableEntreprise": {
+            "type": "object",
+            "properties": {
+              "nom": { "type": "string" },
+              "telephone": { "type": "string" },
+              "email": { "type": "string" },
+              "fonction": { "type": "string" }
+            }
+          },
+          "telephone": { "type": "string" },
+          "email": { "type": "string" },
+          "codeDelegation": { "type": "string" },
+          "libDelegation": { "type": "string" }
+        }
+      },
+      "Identite": {
+        "type": "object",
+        "properties": {
+          "nom": { "type": "string" },
+          "telephone": { "type": "string" },
+          "email": { "type": "string" }
+        }
+      },
+      "IdentiteAdresse": {
+        "type": "object",
+        "properties": {
+          "nom": { "type": "string" },
+          "telephone": { "type": "string" },
+          "email": { "type": "string" },
+          "adresse": { "$ref": "#/components/schemas/Adresse" }
+        }
+      },
+      "Adresse": {
+        "type": "object",
+        "properties": {
+          "adresse1": { "type": "string" },
+          "adresse2": { "type": "string" },
+          "adresse3": { "type": "string" },
+          "adresse4": { "type": "string" },
+          "codePostal": { "type": "string" },
+          "ville": { "type": "string" }
+        }
+      },
+      "EtatOM": {
+        "type": "object",
+        "properties": {
+          "type": { "$ref": "#/components/schemas/enumTypeNotification" },
+          "data": {
+            "type": "object",
+            "properties": {
+              "numeroOM": {
+                "type": "string",
+                "examples": ["123456-123456-123456-EETI-21"]
+              },
+              "etat": {
+                "type": "string",
+                "examples": ["vEtatOrdreMissionNCAttenteLevées"]
+              }
+            }
+          }
+        }
+      },
+      "StatutFactureAuditeur": {
+        "type": "object",
+        "properties": {
+          "type": { "$ref": "#/components/schemas/enumTypeNotification" },
+          "data": {
+            "type": "object",
+            "properties": {
+              "idFactureAuditeur": { "type": "number", "examples": [13599] },
+              "statut": {
+                "type": "string",
+                "examples": ["vStatutPaFactureEnvoyée"]
+              }
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "204": { "description": "<strong>Succès, pas de retour</strong>" },
+      "400": {
+        "description": "<strong>Erreur de requête</strong><br> 4001 - Erreur de requete<br> 4002 - Formatage json<br> 4003 - Information obligatoire manquante<br>",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/Erreur" }
+          }
+        }
+      },
+      "401": {
+        "description": "<strong>Non autorisé</strong><BR> 4011 - Authentification absente ou refusée.<br>",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/Erreur" }
+          }
+        }
+      },
+      "403": {
+        "description": "<strong>Ressource non autorisé</strong><br> 4031 - Entreprise non autorisée<br> 4032 - Auditeur non autorisé<br> 4033 - Compte auditeur non actif<br> 4034 - La facture n'appartient pas à votre entreprise.<br>",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/Erreur" }
+          }
+        }
+      },
+      "404": {
+        "description": "<strong>Non trouvé</strong> <br> 4041 - Entreprise inconnu<br> 4042 - Ordre de mission inconnu<br> 4043 - Auditeur inconnu<br> 4044 - Facture inconnu<br> 4045 - Ligne de facture inconnu<br> 4046 - Contrôle de réalisation inconnu<br> 4047 - Etape d'ordre de mission inconnu<br> 4048 - Tarif inconnu<br> 4049 - Adresse inconnu<br> 40410 - Chantier inconnu<br> 40411 - Fiche d'information d'ordre de mission inconnu<br>",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/Erreur" }
+          }
+        }
+      },
+      "406": {
+        "description": "<strong>Non acceptable</strong><BR> 4061 - L'état de l'ordre de mission ne permet pas la modification<br> 4062 - Les qualifications de l'auditeur déclarée à Qualibat n'inclue pas le code nomenclature de l'ordre de mission<br> 4063 - La date de l'audit doit être spérieure à la date du jour<br> 4064 - L'auditeur est absent de l'ordre de mission<br> 4065 - Un autre auditeur est déjà affecté sur un des om combiné (il ne peux y avoir qu'un auditeur sur tous les om combiné ensemble)<br> 4066 - L'identifiant de l'auditeur ou de l'entreprise n'a pas été transmis.<br> 4067 - La date d'audit de l'ordre de mission n°x est vide.<br> 4068 - Les ordres de mission doivent appartenir à la même cellule audit.<br> 4069 - Tous les ordres de mission d'un OM combiné doivent être facturés en même temps.<br> 40610 - La date d'envoi de l'ordre de mission n'a pas pu être identifiée.<br> 40611 - Le fichier PDF passé en paramètre est invalide.<br> 40612 - Le numéro de facture est obligatoire.<br> 40613 - Le fichier de la facture est obligatoire.<br> 40614 - Le montant HT passé en paramètre ne correspond pas au montant HT calculé.<br> 40615 - Le montant TTC passé en paramètre ne correspond pas au montant TTC calculé.<br> 40616 - Le numéro de facture passé en paramètre existe déjà pour une autre facture.<br> 40617 - Ordres de missions déjà facturés -Liste des OMs- <br>",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/Erreur" }
+          }
+        }
+      },
+      "409": {
+        "description": "<strong>Conflit d'enregistrement</strong><BR> 4091 - Erreur d'enregistrement de la facture.<br> 4092 - Erreur d'enregistrement de la ligne de facture.<br> 4093 - Erreur d'enregistrement des informations sur l'entreprise de l'auditeur (TVA).<br> 4094 - Erreur d'enregistrement de l'id facture dans les ordres de missions.<br>"
+      },
+      "500": {
+        "description": "<strong>Erreur interne</strong>",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/Erreur" }
+          }
+        }
+      },
+      "500_webhook": {
+        "description": "En cas d'anomalie, la webhook sera rappelé selon le schéma suivant :<br> <ul> <li>+5 minutes - 1er rappel</li> <li>+10 minutes - 2ème rappel</li> <li>+30 minutes - 3ème rappel</li> <li>+1 heure - 4ème rappel</li> <li>+2 heures - 5ème rappel</li> <li>+3 heures - 6ème rappel</li> <li>+6 heures - 7ème rappel</li> <li>+12 heures - 8ème rappel</li> <li>+18 heures - 9ème rappel</li> <li>+24 heures - 10ème rappel</li> <li>+48 heures - 11ème rappel</li> <li>+96 heures - 12ème rappel</li> </ul>"
+      }
+    }
+  }
+}

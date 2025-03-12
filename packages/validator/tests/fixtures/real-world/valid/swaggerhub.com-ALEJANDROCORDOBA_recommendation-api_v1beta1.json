@@ -1,0 +1,1201 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Recommendation API",
+    "description": "API for recommendations and personalisation",
+    "version": "v1beta1"
+  },
+  "paths": {
+    "/api/v1beta1/top/categories": {
+      "get": {
+        "tags": ["top"],
+        "summary": "Get Category Recommendations",
+        "description": "Retrieve category recommendations based on the provided complex ID and user ID. This endpoint is used to get personalized category suggestions for the user.",
+        "operationId": "get_categories_recommendations_api_v1beta1_top_categories_get",
+        "parameters": [
+          {
+            "name": "complex_id",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "title": "Complex Id" }
+          },
+          {
+            "name": "user_id",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "title": "User Id" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of category recommendations based on the user's profile and complex information.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/CategoriesResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1beta1/top/offers": {
+      "get": {
+        "tags": ["top"],
+        "summary": "Get Offer Recommendations",
+        "description": "Retrieve offer recommendations based on the provided complex ID and user ID. This endpoint is used to get personalized offer suggestions for the user.",
+        "operationId": "get_offers_recommendations_api_v1beta1_top_offers_get",
+        "parameters": [
+          {
+            "name": "complex_id",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "title": "Complex Id" }
+          },
+          {
+            "name": "user_id",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "title": "User Id" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of offer recommendations based on the user's profile and complex information.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/OffersResponse" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1beta1/attractions/related_to_attraction": {
+      "get": {
+        "tags": ["attraction"],
+        "summary": "Get Related Recommendations By Attraction",
+        "description": "Retrieve related recommendations based on a specific attraction.",
+        "operationId": "related_recommendations_by_attraction_api_v1beta1_attractions_related_to_attraction_get",
+        "parameters": [
+          {
+            "name": "attraction_id",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "title": "Attraction Id" }
+          },
+          {
+            "name": "complex_id",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "title": "Complex Id" }
+          },
+          {
+            "name": "user_id",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "title": "User Id" }
+          },
+          {
+            "name": "segment",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Segment"
+            }
+          },
+          {
+            "name": "number_of_attractions",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "integer" }, { "type": "null" }],
+              "title": "Number Of Attractions"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of related attraction recommendations.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecommendationResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1beta1/attractions/related_to_user": {
+      "get": {
+        "tags": ["attraction"],
+        "summary": "Get Personalized Recommendations By User",
+        "description": "Retrieve personalized attraction recommendations based on the user's preferences.",
+        "operationId": "personalized_recommendations_by_user_api_v1beta1_attractions_related_to_user_get",
+        "parameters": [
+          {
+            "name": "complex_id",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "title": "Complex Id" }
+          },
+          {
+            "name": "user_id",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "title": "User Id" }
+          },
+          {
+            "name": "segment",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Segment"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of personalized attraction recommendations.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AttractionRecommendationResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1beta1/merchandise/related_to_attractions": {
+      "get": {
+        "tags": ["merchandise"],
+        "summary": "Get Merchandise Recommendations Related to Attractions",
+        "description": "Retrieve merchandise recommendations based on a list of attraction IDs. Optionally, provide user ID and complex ID for more tailored results.",
+        "operationId": "merchandise_recommendations_by_attractions_api_v1beta1_merchandise_related_to_attractions_get",
+        "parameters": [
+          {
+            "name": "selected_attractions_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": { "type": "string" },
+              "title": "Selected Attractions Id"
+            }
+          },
+          {
+            "name": "user_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "User Id"
+            }
+          },
+          {
+            "name": "complex_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Complex Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of merchandise recommendations related to the specified attractions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MerchandiseRecommendationResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1beta1/merchandise/related_to_user": {
+      "get": {
+        "tags": ["merchandise"],
+        "summary": "Get Personalized Merchandise Recommendations By User",
+        "description": "Retrieve personalized merchandise recommendations based on the user's preferences.",
+        "operationId": "merchandise_recommendations_by_user_api_v1beta1_merchandise_related_to_user_get",
+        "parameters": [
+          {
+            "name": "segment",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Segment"
+            }
+          },
+          {
+            "name": "complex_id",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "title": "Complex Id" }
+          },
+          {
+            "name": "user_id",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "title": "User Id" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of personalized merchandise recommendations for the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MerchandiseRecommendationResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1beta1/fnb/related_to_attractions": {
+      "get": {
+        "tags": ["fnb"],
+        "summary": "Get Restaurant Recommendations Related to Attractions",
+        "description": "Retrieve restaurant recommendations based on selected attractions. Optionally, provide user ID and complex ID for more tailored results.",
+        "operationId": "fnb_recommendations_by_attractions_api_v1beta1_fnb_related_to_attractions_get",
+        "parameters": [
+          {
+            "name": "selected_attractions_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": { "type": "string" },
+              "title": "Selected Attractions Id"
+            }
+          },
+          {
+            "name": "user_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "User Id"
+            }
+          },
+          {
+            "name": "complex_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Complex Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of restaurant recommendations related to the specified attractions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestaurantRecommendationResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1beta1/fnb/related_to_user": {
+      "get": {
+        "tags": ["fnb"],
+        "summary": "Get Personalized Food and Beverage Recommendations By User",
+        "description": "Retrieve personalized food and beverage recommendations based on the user's preferences.",
+        "operationId": "fnb_recommendations_by_user_api_v1beta1_fnb_related_to_user_get",
+        "parameters": [
+          {
+            "name": "segment",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Segment"
+            }
+          },
+          {
+            "name": "complex_id",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "title": "Complex Id" }
+          },
+          {
+            "name": "user_id",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "title": "User Id" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of personalized food and beverage recommendations for the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FoodTabRecommendationResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1beta1/events/related_to_attractions": {
+      "get": {
+        "tags": ["events"],
+        "summary": "Get Event Recommendations Related to Attractions",
+        "description": "Retrieve event recommendations based on a list of attraction IDs.",
+        "operationId": "event_recommendations_by_attractions_api_v1beta1_events_related_to_attractions_get",
+        "parameters": [
+          {
+            "name": "selected_attractions_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": { "type": "string" },
+              "title": "Selected Attractions Id"
+            }
+          },
+          {
+            "name": "user_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "User Id"
+            }
+          },
+          {
+            "name": "complex_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Complex Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of event recommendations related to the specified attractions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EventAttractionRecommendationResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1beta1/events/related_to_user": {
+      "get": {
+        "tags": ["events"],
+        "summary": "Get Personalized Event Recommendations By User",
+        "description": "Retrieve personalized event recommendations based on the user's preferences and segment.",
+        "operationId": "event_recommendations_by_user_api_v1beta1_events_related_to_user_get",
+        "parameters": [
+          {
+            "name": "segment",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Segment"
+            }
+          },
+          {
+            "name": "complex_id",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "title": "Complex Id" }
+          },
+          {
+            "name": "user_id",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "title": "User Id" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of personalized event recommendations for the user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EventUserRecommendationResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1beta1/movies": {
+      "get": {
+        "tags": ["movie"],
+        "summary": "Get Movie Recommendations",
+        "description": "Retrieve movie recommendations based on optional user ID and complex ID.",
+        "operationId": "movie_recommendations_api_v1beta1_movies_get",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "User Id"
+            }
+          },
+          {
+            "name": "complex_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Complex Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of movie recommendations, potentially personalized.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MovieRecommendationResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1beta1/subscribe": {
+      "post": {
+        "tags": ["notification"],
+        "summary": "Subscribe to a Notification",
+        "description": "Subscribe to a specific notification type by providing the notification type and a callback URL.",
+        "operationId": "subscribe_webhook_api_v1beta1_subscribe_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/SubscriptionRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "A confirmation message indicating the subscription status.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Response Subscribe Webhook Api V1Beta1 Subscribe Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1beta1/unsubscribe": {
+      "post": {
+        "tags": ["notification"],
+        "summary": "Unsubscribe from a Notification",
+        "description": "Unsubscribe from a specific notification type by providing the notification type and the callback URL that was used to subscribe.",
+        "operationId": "unsubscribe_webhook_api_v1beta1_unsubscribe_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/SubscriptionRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "A confirmation message indicating the unsubscription status.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Response Unsubscribe Webhook Api V1Beta1 Unsubscribe Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Addon": {
+        "properties": {
+          "addon_id": { "type": "string", "title": "Addon Id" },
+          "name": { "type": "string", "title": "Name" },
+          "description": { "type": "string", "title": "Description" },
+          "price": { "type": "number", "title": "Price" },
+          "image_url": { "type": "string", "title": "Image Url" }
+        },
+        "type": "object",
+        "required": ["addon_id", "name", "description", "price", "image_url"],
+        "title": "Addon"
+      },
+      "Attraction": {
+        "properties": {
+          "attraction_id": { "type": "string", "title": "Attraction Id" },
+          "name": { "type": "string", "title": "Name" },
+          "description": { "type": "string", "title": "Description" },
+          "rating": { "type": "number", "title": "Rating" },
+          "popularity": { "type": "integer", "title": "Popularity" },
+          "image_url": { "type": "string", "title": "Image Url" }
+        },
+        "type": "object",
+        "required": [
+          "attraction_id",
+          "name",
+          "description",
+          "rating",
+          "popularity",
+          "image_url"
+        ],
+        "title": "Attraction"
+      },
+      "AttractionRecommendation": {
+        "properties": {
+          "attraction_id": { "type": "string", "title": "Attraction Id" },
+          "name": { "type": "string", "title": "Name" },
+          "description": { "type": "string", "title": "Description" },
+          "segment": {
+            "items": { "type": "string" },
+            "type": "array",
+            "title": "Segment"
+          },
+          "complex": { "type": "string", "title": "Complex" },
+          "rating": { "type": "number", "title": "Rating" },
+          "popularity": { "type": "integer", "title": "Popularity" },
+          "distance": {
+            "anyOf": [{ "type": "number" }, { "type": "null" }],
+            "title": "Distance"
+          },
+          "recommended_time": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Recommended Time"
+          },
+          "tags": {
+            "items": { "type": "string" },
+            "type": "array",
+            "title": "Tags"
+          },
+          "image_url": { "type": "string", "title": "Image Url" }
+        },
+        "type": "object",
+        "required": [
+          "attraction_id",
+          "name",
+          "description",
+          "segment",
+          "complex",
+          "rating",
+          "popularity",
+          "distance",
+          "recommended_time",
+          "tags",
+          "image_url"
+        ],
+        "title": "AttractionRecommendation"
+      },
+      "AttractionRecommendationResponse": {
+        "properties": {
+          "recommendations": {
+            "items": {
+              "$ref": "#/components/schemas/AttractionRecommendation"
+            },
+            "type": "array",
+            "title": "Recommendations"
+          }
+        },
+        "type": "object",
+        "required": ["recommendations"],
+        "title": "AttractionRecommendationResponse"
+      },
+      "Bundle": {
+        "properties": {
+          "offer_id": { "type": "string", "title": "Offer Id" },
+          "name": { "type": "string", "title": "Name" },
+          "description": { "type": "string", "title": "Description" },
+          "discount": { "type": "integer", "title": "Discount" },
+          "image_url": { "type": "string", "title": "Image Url" }
+        },
+        "type": "object",
+        "required": [
+          "offer_id",
+          "name",
+          "description",
+          "discount",
+          "image_url"
+        ],
+        "title": "Bundle"
+      },
+      "CategoriesResponse": {
+        "properties": {
+          "top_attractions": {
+            "items": { "$ref": "#/components/schemas/Attraction" },
+            "type": "array",
+            "title": "Top Attractions"
+          },
+          "top_restaurants": {
+            "items": {
+              "$ref": "#/components/schemas/src__domain__top__DTO__categories_dto__Restaurant"
+            },
+            "type": "array",
+            "title": "Top Restaurants"
+          },
+          "special_events": {
+            "items": { "$ref": "#/components/schemas/Event" },
+            "type": "array",
+            "title": "Special Events"
+          },
+          "latest_movies": {
+            "items": { "$ref": "#/components/schemas/Movie" },
+            "type": "array",
+            "title": "Latest Movies"
+          }
+        },
+        "type": "object",
+        "required": [
+          "top_attractions",
+          "top_restaurants",
+          "special_events",
+          "latest_movies"
+        ],
+        "title": "CategoriesResponse"
+      },
+      "Event": {
+        "properties": {
+          "event_id": { "type": "string", "title": "Event Id" },
+          "name": { "type": "string", "title": "Name" },
+          "description": { "type": "string", "title": "Description" },
+          "date": { "type": "string", "title": "Date" },
+          "image_url": { "type": "string", "title": "Image Url" }
+        },
+        "type": "object",
+        "required": ["event_id", "name", "description", "date", "image_url"],
+        "title": "Event"
+      },
+      "EventAttractionRecommendationResponse": {
+        "properties": {
+          "events": {
+            "items": { "$ref": "#/components/schemas/EventItemAttraction" },
+            "type": "array",
+            "title": "Events"
+          }
+        },
+        "type": "object",
+        "required": ["events"],
+        "title": "EventAttractionRecommendationResponse"
+      },
+      "EventItemAttraction": {
+        "properties": {
+          "event_id": { "type": "string", "title": "Event Id" },
+          "name": { "type": "string", "title": "Name" },
+          "description": { "type": "string", "title": "Description" },
+          "date": { "type": "string", "title": "Date" },
+          "popularity": { "type": "integer", "title": "Popularity" },
+          "image_url": { "type": "string", "title": "Image Url" }
+        },
+        "type": "object",
+        "required": [
+          "event_id",
+          "name",
+          "description",
+          "date",
+          "popularity",
+          "image_url"
+        ],
+        "title": "EventItemAttraction"
+      },
+      "EventItemUser": {
+        "properties": {
+          "event_id": { "type": "string", "title": "Event Id" },
+          "name": { "type": "string", "title": "Name" },
+          "description": { "type": "string", "title": "Description" },
+          "date": { "type": "string", "title": "Date" },
+          "popularity": { "type": "integer", "title": "Popularity" },
+          "image_url": { "type": "string", "title": "Image Url" }
+        },
+        "type": "object",
+        "required": [
+          "event_id",
+          "name",
+          "description",
+          "date",
+          "popularity",
+          "image_url"
+        ],
+        "title": "EventItemUser"
+      },
+      "EventUserRecommendationResponse": {
+        "properties": {
+          "events": {
+            "items": { "$ref": "#/components/schemas/EventItemUser" },
+            "type": "array",
+            "title": "Events"
+          }
+        },
+        "type": "object",
+        "required": ["events"],
+        "title": "EventUserRecommendationResponse"
+      },
+      "FnBItemAttraction": {
+        "properties": {
+          "restaurant_id": { "type": "string", "title": "Restaurant Id" },
+          "name": { "type": "string", "title": "Name" },
+          "description": { "type": "string", "title": "Description" },
+          "rating": { "type": "number", "title": "Rating" },
+          "popularity": { "type": "integer", "title": "Popularity" },
+          "distance": { "type": "number", "title": "Distance" },
+          "image_url": { "type": "string", "title": "Image Url" }
+        },
+        "type": "object",
+        "required": [
+          "restaurant_id",
+          "name",
+          "description",
+          "rating",
+          "popularity",
+          "distance",
+          "image_url"
+        ],
+        "title": "FnBItemAttraction"
+      },
+      "FnBItemUser": {
+        "properties": {
+          "restaurant_id": { "type": "string", "title": "Restaurant Id" },
+          "name": { "type": "string", "title": "Name" },
+          "description": { "type": "string", "title": "Description" },
+          "rating": { "type": "number", "title": "Rating" },
+          "popularity": { "type": "integer", "title": "Popularity" },
+          "image_url": { "type": "string", "title": "Image Url" }
+        },
+        "type": "object",
+        "required": [
+          "restaurant_id",
+          "name",
+          "description",
+          "rating",
+          "popularity",
+          "image_url"
+        ],
+        "title": "FnBItemUser"
+      },
+      "FoodTabRecommendationResponse": {
+        "properties": {
+          "food_options": {
+            "items": { "$ref": "#/components/schemas/FnBItemUser" },
+            "type": "array",
+            "title": "Food Options"
+          }
+        },
+        "type": "object",
+        "required": ["food_options"],
+        "title": "FoodTabRecommendationResponse"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": { "$ref": "#/components/schemas/ValidationError" },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "Merchandise": {
+        "properties": {
+          "merchandise_id": { "type": "string", "title": "Merchandise Id" },
+          "name": { "type": "string", "title": "Name" },
+          "description": { "type": "string", "title": "Description" },
+          "price": { "type": "number", "title": "Price" },
+          "image_url": { "type": "string", "title": "Image Url" }
+        },
+        "type": "object",
+        "required": [
+          "merchandise_id",
+          "name",
+          "description",
+          "price",
+          "image_url"
+        ],
+        "title": "Merchandise"
+      },
+      "MerchandiseItemAttraction": {
+        "properties": {
+          "merchandise_id": { "type": "string", "title": "Merchandise Id" },
+          "name": { "type": "string", "title": "Name" },
+          "description": { "type": "string", "title": "Description" },
+          "price": { "type": "number", "title": "Price" },
+          "image_url": { "type": "string", "title": "Image Url" }
+        },
+        "type": "object",
+        "required": [
+          "merchandise_id",
+          "name",
+          "description",
+          "price",
+          "image_url"
+        ],
+        "title": "MerchandiseItemAttraction"
+      },
+      "MerchandiseRecommendationResponse": {
+        "properties": {
+          "merchandise": {
+            "items": {
+              "$ref": "#/components/schemas/MerchandiseItemAttraction"
+            },
+            "type": "array",
+            "title": "Merchandise"
+          }
+        },
+        "type": "object",
+        "required": ["merchandise"],
+        "title": "MerchandiseRecommendationResponse"
+      },
+      "Movie": {
+        "properties": {
+          "movie_id": { "type": "string", "title": "Movie Id" },
+          "title": { "type": "string", "title": "Title" },
+          "showtime": { "type": "string", "title": "Showtime" },
+          "rating": { "type": "number", "title": "Rating" },
+          "image_url": { "type": "string", "title": "Image Url" }
+        },
+        "type": "object",
+        "required": ["movie_id", "title", "showtime", "rating", "image_url"],
+        "title": "Movie"
+      },
+      "MovieItem": {
+        "properties": {
+          "movie_id": { "type": "string", "title": "Movie Id" },
+          "title": { "type": "string", "title": "Title" },
+          "showtime": { "type": "string", "title": "Showtime" },
+          "rating": { "type": "number", "title": "Rating" },
+          "image_url": { "type": "string", "title": "Image Url" }
+        },
+        "type": "object",
+        "required": ["movie_id", "title", "showtime", "rating", "image_url"],
+        "title": "MovieItem"
+      },
+      "MovieRecommendationResponse": {
+        "properties": {
+          "movies": {
+            "items": { "$ref": "#/components/schemas/MovieItem" },
+            "type": "array",
+            "title": "Movies"
+          }
+        },
+        "type": "object",
+        "required": ["movies"],
+        "title": "MovieRecommendationResponse"
+      },
+      "Offer": {
+        "properties": {
+          "offer_id": { "type": "string", "title": "Offer Id" },
+          "name": { "type": "string", "title": "Name" },
+          "description": { "type": "string", "title": "Description" },
+          "rating": { "type": "number", "title": "Rating" },
+          "popularity": { "type": "integer", "title": "Popularity" },
+          "distance": { "type": "number", "title": "Distance" },
+          "image_url": { "type": "string", "title": "Image Url" }
+        },
+        "type": "object",
+        "required": [
+          "offer_id",
+          "name",
+          "description",
+          "rating",
+          "popularity",
+          "distance",
+          "image_url"
+        ],
+        "title": "Offer"
+      },
+      "OffersResponse": {
+        "properties": {
+          "addons": {
+            "items": { "$ref": "#/components/schemas/Addon" },
+            "type": "array",
+            "title": "Addons"
+          },
+          "bundles": {
+            "items": { "$ref": "#/components/schemas/Bundle" },
+            "type": "array",
+            "title": "Bundles"
+          },
+          "offers": {
+            "items": { "$ref": "#/components/schemas/Offer" },
+            "type": "array",
+            "title": "Offers"
+          }
+        },
+        "type": "object",
+        "required": ["addons", "bundles", "offers"],
+        "title": "OffersResponse"
+      },
+      "RecommendationResponse": {
+        "properties": {
+          "attractions": {
+            "anyOf": [
+              {
+                "items": { "$ref": "#/components/schemas/Attraction" },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "title": "Attractions"
+          },
+          "merchandise": {
+            "anyOf": [
+              {
+                "items": { "$ref": "#/components/schemas/Merchandise" },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "title": "Merchandise"
+          },
+          "restaurants": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/src__domain__attractions__DTO__attraction_detail_dto__Restaurant"
+                },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "title": "Restaurants"
+          },
+          "events": {
+            "anyOf": [
+              {
+                "items": { "$ref": "#/components/schemas/Event" },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "title": "Events"
+          }
+        },
+        "type": "object",
+        "title": "RecommendationResponse"
+      },
+      "RestaurantRecommendationResponse": {
+        "properties": {
+          "restaurants": {
+            "items": { "$ref": "#/components/schemas/FnBItemAttraction" },
+            "type": "array",
+            "title": "Restaurants"
+          }
+        },
+        "type": "object",
+        "required": ["restaurants"],
+        "title": "RestaurantRecommendationResponse"
+      },
+      "SubscriptionRequest": {
+        "properties": {
+          "notification_type": {
+            "type": "string",
+            "title": "Notification Type"
+          },
+          "callback_url": { "type": "string", "title": "Callback Url" }
+        },
+        "type": "object",
+        "required": ["notification_type", "callback_url"],
+        "title": "SubscriptionRequest"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": { "anyOf": [{ "type": "string" }, { "type": "integer" }] },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": { "type": "string", "title": "Message" },
+          "type": { "type": "string", "title": "Error Type" }
+        },
+        "type": "object",
+        "required": ["loc", "msg", "type"],
+        "title": "ValidationError"
+      },
+      "src__domain__attractions__DTO__attraction_detail_dto__Restaurant": {
+        "properties": {
+          "restaurant_id": { "type": "string", "title": "Restaurant Id" },
+          "name": { "type": "string", "title": "Name" },
+          "description": { "type": "string", "title": "Description" },
+          "rating": { "type": "number", "title": "Rating" },
+          "popularity": { "type": "integer", "title": "Popularity" },
+          "distance": { "type": "number", "title": "Distance" },
+          "image_url": { "type": "string", "title": "Image Url" }
+        },
+        "type": "object",
+        "required": [
+          "restaurant_id",
+          "name",
+          "description",
+          "rating",
+          "popularity",
+          "distance",
+          "image_url"
+        ],
+        "title": "Restaurant"
+      },
+      "src__domain__top__DTO__categories_dto__Restaurant": {
+        "properties": {
+          "restaurant_id": { "type": "string", "title": "Restaurant Id" },
+          "name": { "type": "string", "title": "Name" },
+          "description": { "type": "string", "title": "Description" },
+          "rating": { "type": "number", "title": "Rating" },
+          "popularity": { "type": "integer", "title": "Popularity" },
+          "image_url": { "type": "string", "title": "Image Url" }
+        },
+        "type": "object",
+        "required": [
+          "restaurant_id",
+          "name",
+          "description",
+          "rating",
+          "popularity",
+          "image_url"
+        ],
+        "title": "Restaurant"
+      }
+    }
+  }
+}

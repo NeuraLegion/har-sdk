@@ -1,0 +1,243 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Swagger Email - RestFul",
+    "description": "RestFul Api of DQE Email product\n\nSome useful links:\n- [DQE Helpcenter](https://helpcenter.dqe.tech/hc/en-gb/sections/16735272079121-DQE-Email)",
+    "termsOfService": "https://dqe.tech/privacy-policy/",
+    "contact": { "name": "DQE Support", "email": "support@dqe-software.com" },
+    "version": "1.0.1"
+  },
+  "servers": [
+    {
+      "url": "https://prod-swagger.dqe-software.net",
+      "description": "Swagger server, must be changed for the production environment (please contact the support)"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Email suggestion",
+      "description": "Suggestion of email from firstname and lastname",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "https://helpcenter.dqe.tech/hc/en-gb/articles/19928385270417-Email-MAILSUGGEST-Introduction"
+      }
+    },
+    {
+      "name": "Email validation",
+      "description": "Validation of the email address",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "https://helpcenter.dqe.tech/hc/en-gb/articles/19929668139665-Email-DQEEMAILLOOKUP-Introduction"
+      }
+    }
+  ],
+  "paths": {
+    "/v1/emailsuggest/": {
+      "get": {
+        "tags": ["Email suggestion"],
+        "summary": "Get a suggestion of email address (username and domain name)",
+        "description": "By passing in the appropriate options, you can get a list of email address",
+        "operationId": "emailsuggest_get",
+        "parameters": [
+          {
+            "name": "FirstName",
+            "in": "query",
+            "description": "Pass the firstname",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "LastName",
+            "in": "query",
+            "description": "Pass the lastname",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "Email",
+            "in": "query",
+            "description": "Pass the value of what the user is filling response",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "Country",
+            "in": "query",
+            "description": "Pass the ISO 3 code of the country",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "Licence",
+            "in": "query",
+            "description": "Pass your API key",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get a list of email address",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/SuggestionResponse" }
+              }
+            }
+          },
+          "400": {
+            "description": "bad request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "401": {
+            "description": "unauthorized_client",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/lookupemail/": {
+      "get": {
+        "tags": ["Email validation"],
+        "summary": "Get the state of an email address",
+        "description": "By passing in the appropriate options, you can validate an email address",
+        "operationId": "lookupemail_get",
+        "parameters": [
+          {
+            "name": "Email",
+            "in": "query",
+            "description": "Pass the email address",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "Licence",
+            "in": "query",
+            "description": "Pass your API key",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "Rectify",
+            "in": "query",
+            "description": "Pass the Y if you want a suggestion (only if the syntax is KO or the domain is KO)",
+            "required": false,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "CheckUser",
+            "in": "query",
+            "description": "Pass N if you do not want to check the username",
+            "required": false,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get the state of an email address",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/EmailResponse" }
+              }
+            }
+          },
+          "400": {
+            "description": "bad request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "401": {
+            "description": "unauthorized_client",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "SuggestionResponse": {
+        "type": "object",
+        "properties": {
+          "Found": { "type": "integer", "example": 1 },
+          "Suggestion": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Suggestion" }
+          }
+        }
+      },
+      "Suggestion": {
+        "type": "object",
+        "properties": {
+          "Instance": { "type": "string", "example": "0" },
+          "InputEmail": { "type": "string", "example": "" },
+          "Syntaxe": { "type": "string", "example": "ok" },
+          "List": {
+            "type": "array",
+            "items": { "type": "string", "example": "jlim@" }
+          },
+          "ListCount": { "type": "integer", "example": 8 }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "status": { "type": "integer", "example": 400 },
+          "message": { "type": "string", "example": "Missing parameters" },
+          "details": { "type": "string", "example": "Number" },
+          "error": { "type": "string", "example": "bad request" }
+        }
+      },
+      "UnauthorizedErrorResponse": {
+        "type": "object",
+        "properties": {
+          "status": { "type": "integer", "example": 401 },
+          "message": {
+            "type": "string",
+            "example": "Your licence is not allowed to cover this functionnality"
+          },
+          "details": { "type": "string", "example": "deded" },
+          "error": { "type": "string", "example": "unauthorized_client" }
+        }
+      },
+      "EmailResponse": {
+        "type": "object",
+        "properties": {
+          "Found": { "type": "integer", "example": 1 },
+          "Emails": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Email" }
+          }
+        }
+      },
+      "Email": {
+        "type": "object",
+        "properties": {
+          "ActivityCode": { "type": "string", "example": "" },
+          "IdError": { "type": "string", "example": "02" },
+          "Corrected": { "type": "integer", "example": 0 },
+          "SuggestedEmail": { "type": "string", "example": "toto@gmail.com" },
+          "InputEmail": { "type": "string", "example": "toto@gmail.com" }
+        }
+      }
+    }
+  }
+}

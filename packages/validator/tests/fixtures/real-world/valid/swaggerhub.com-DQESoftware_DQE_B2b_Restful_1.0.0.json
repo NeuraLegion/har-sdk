@@ -1,0 +1,1188 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Swagger B2b - RestFul",
+    "description": "RestFul Api of DQE B2B product\n\nSome useful links:\n- [DQE Helpcenter](https://helpcenter.dqe.tech/hc/en-gb/sections/16742231149457-DQE-B2B)",
+    "termsOfService": "https://dqe.tech/privacy-policy/",
+    "contact": { "name": "DQE Support", "email": "support@dqe-software.com" },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://adeo-b2b.dqe-software.net",
+      "description": "Adeo B2B server"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Companies lookup",
+      "description": "Suggestion of companies",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "https://helpcenter.dqe.tech/hc/en-gb/articles/19917527408913-B2B-RECSIRET-by-company-name-Introduction"
+      }
+    },
+    {
+      "name": "Companies lookup with company name and postalcode",
+      "description": "Suggestion of companies",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "https://helpcenter.dqe.tech/hc/en-gb/articles/19914724838545--RECSIRET-Introduction"
+      }
+    },
+    {
+      "name": "Company information",
+      "description": "Get back company information",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "https://helpcenter.dqe.tech/hc/en-gb/articles/19921299469073-B2B-SIRETINFO-Introduction"
+      }
+    },
+    {
+      "name": "Full company information",
+      "description": "Get back full company information",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "https://helpcenter.dqe.tech/hc/en-gb/articles/19921315012113-B2B-SIRETINFO-from-Notice-80-Introductionx"
+      }
+    }
+  ],
+  "paths": {
+    "/v1/lookupcname/": {
+      "get": {
+        "tags": ["Companies lookup"],
+        "summary": "Get a suggestion of companies from the company name",
+        "description": "By passing in the appropriate options, you can get a list of companies",
+        "operationId": "lookupcname_get",
+        "parameters": [
+          {
+            "name": "CompanyName",
+            "in": "query",
+            "description": "Pass the company name",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "Country",
+            "in": "query",
+            "description": "Pass the ISO 3 code of the country",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "Licence",
+            "in": "query",
+            "description": "Pass your API key",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get a list of companies",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuggestionLookupResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "401": {
+            "description": "unauthorized_client",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/lookupcnum/": {
+      "get": {
+        "tags": ["Companies lookup"],
+        "summary": "Get a suggestion of companies from the company number",
+        "description": "By passing in the appropriate options, you can get a list of companies",
+        "operationId": "lookupcnum_get",
+        "parameters": [
+          {
+            "name": "CompanyNumber",
+            "in": "query",
+            "description": "Pass the company number",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "Country",
+            "in": "query",
+            "description": "Pass the ISO 3 code of the country",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "Licence",
+            "in": "query",
+            "description": "Pass your API key",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get a list of companies",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuggestionLookupResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "401": {
+            "description": "unauthorized_client",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/checkcname/": {
+      "get": {
+        "tags": ["Companies lookup with company name and postalcode"],
+        "summary": "Get a suggestion of companies from the company name and postalcode",
+        "description": "By passing in the appropriate options, you can get a list of companies",
+        "operationId": "checkcname_get",
+        "parameters": [
+          {
+            "name": "CompanyName",
+            "in": "query",
+            "description": "Pass the company name",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "PostalCode",
+            "in": "query",
+            "description": "Pass the postal code",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "Country",
+            "in": "query",
+            "description": "Pass the ISO 3 code of the country",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "Licence",
+            "in": "query",
+            "description": "Pass your API key",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get a list of companies",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuggestionLookupResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "401": {
+            "description": "unauthorized_client",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/infosr/{SearchRef}/": {
+      "get": {
+        "tags": ["Company information"],
+        "summary": "Get company information",
+        "description": "By passing in the appropriate options, you can get back the company information",
+        "operationId": "infosr_get",
+        "parameters": [
+          {
+            "name": "SearchRef",
+            "in": "path",
+            "description": "Pass the search_ref id from lookup call",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "Licence",
+            "in": "query",
+            "description": "Pass your API key",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "Country",
+            "in": "query",
+            "description": "Pass the country iso3 code",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "extension",
+            "in": "query",
+            "description": "Pass the value \"all\" if you want to get the complete company information",
+            "required": false,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get company's information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "description": "Light company information",
+                      "$ref": "#/components/schemas/CompanyInformationResponse"
+                    },
+                    {
+                      "description": "Full company information",
+                      "schema": null,
+                      "$ref": "#/components/schemas/FullCompanyInformation"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "401": {
+            "description": "unauthorized_client",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/infocnum/{SirenNic}/": {
+      "get": {
+        "tags": ["Full company information"],
+        "summary": "Get full company information",
+        "description": "By passing in the appropriate options, you can get back the full company information",
+        "operationId": "infocnum_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "SirenNic",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "The Siren/Nic combination (e.g., 50440338700047) to identify the company.",
+            "example": "50440338700047"
+          },
+          {
+            "name": "Licence",
+            "in": "query",
+            "description": "Pass your API key",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "Country",
+            "in": "query",
+            "description": "Pass the country iso3 code",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "extension",
+            "in": "query",
+            "description": "Pass the value \"all\" if you want to get the complete company information",
+            "required": false,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get full company information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FullCompanyInformation"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "401": {
+            "description": "unauthorized_client",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "SuggestionLookupResponse": {
+        "type": "object",
+        "properties": {
+          "Found": {
+            "type": "integer",
+            "description": "Number of companies found",
+            "example": 30
+          },
+          "Companies": {
+            "type": "array",
+            "description": "List of companies",
+            "items": {
+              "type": "object",
+              "properties": {
+                "City": {
+                  "type": "string",
+                  "description": "City where the company is located",
+                  "example": "LE HAVRE"
+                },
+                "L1Standardized": {
+                  "type": "string",
+                  "description": "Standardized name of the company",
+                  "example": "ADEO"
+                },
+                "MainCompanyFlag": {
+                  "type": "string",
+                  "description": "Indicates if it's the main company",
+                  "example": "0"
+                },
+                "CompanyStatus": {
+                  "type": "string",
+                  "description": "Status of the company (active, inactive)",
+                  "example": "1"
+                },
+                "VatNumber": {
+                  "type": "string",
+                  "description": "VAT number of the company",
+                  "example": "FR 16 781065891"
+                },
+                "SearchRef": {
+                  "type": "string",
+                  "description": "Search reference",
+                  "example": "_11448829"
+                },
+                "PhoneNumber": {
+                  "type": "string",
+                  "description": "Phone number of the company",
+                  "example": ""
+                },
+                "LegalStructure": {
+                  "type": "array",
+                  "description": "Legal structure of the company",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "Value": {
+                        "type": "string",
+                        "description": "Code representing the legal structure",
+                        "example": 9220
+                      },
+                      "Label": {
+                        "type": "string",
+                        "description": "Description of the legal structure",
+                        "example": "Association déclarée"
+                      }
+                    }
+                  }
+                },
+                "L2Standardized": {
+                  "type": "string",
+                  "description": "Additional standardized name",
+                  "example": ""
+                },
+                "CompanyNumber": {
+                  "type": "array",
+                  "description": "Company identification numbers (e.g., Siren, Nic)",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "Type": {
+                        "type": "string",
+                        "description": "Type of company number (e.g., Siren, Nic)",
+                        "example": "Siren"
+                      },
+                      "Value": {
+                        "type": "string",
+                        "description": "Value of the company number",
+                        "example": "781xxxxxx"
+                      }
+                    }
+                  }
+                },
+                "CompanyCName": {
+                  "type": "string",
+                  "description": "Commercial name of the company",
+                  "example": ""
+                },
+                "IncorporationDate": {
+                  "type": "string",
+                  "format": "date",
+                  "description": "Date of company incorporation",
+                  "example": "2012-01-01"
+                },
+                "StaffCount": {
+                  "type": "string",
+                  "description": "Number of staff members in the company",
+                  "example": ""
+                },
+                "Classification": {
+                  "type": "array",
+                  "description": "Classification details of the company",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "Type": {
+                        "type": "string",
+                        "description": "Type of classification (e.g., NAF08)",
+                        "example": "NAF08"
+                      },
+                      "Value": {
+                        "type": "string",
+                        "description": "Classification value",
+                        "example": "8891A"
+                      },
+                      "Label": {
+                        "type": "string",
+                        "description": "Classification label",
+                        "example": ""
+                      }
+                    }
+                  }
+                },
+                "L5Standardized": {
+                  "type": "string",
+                  "description": "Additional standardized name",
+                  "example": ""
+                },
+                "DissolutionDate": {
+                  "type": "string",
+                  "format": "date",
+                  "description": "Date of company dissolution (if applicable)",
+                  "example": ""
+                },
+                "L4Standardized": {
+                  "type": "string",
+                  "description": "Standardized address line 4",
+                  "example": "12 RUE DURECU"
+                },
+                "PosCod": {
+                  "type": "string",
+                  "description": "Postal code of the company",
+                  "example": 76600
+                },
+                "TurnOver": {
+                  "type": "string",
+                  "description": "Company's turnover",
+                  "example": ""
+                }
+              }
+            }
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "status": { "type": "integer", "example": 400 },
+          "message": { "type": "string", "example": "Missing parameters" },
+          "details": { "type": "string", "example": "Number" },
+          "error": { "type": "string", "example": "bad request" }
+        }
+      },
+      "UnauthorizedErrorResponse": {
+        "type": "object",
+        "properties": {
+          "status": { "type": "integer", "example": 401 },
+          "message": {
+            "type": "string",
+            "example": "Your licence is not allowed to cover this functionnality"
+          },
+          "details": { "type": "string", "example": "deded" },
+          "error": { "type": "string", "example": "unauthorized_client" }
+        }
+      },
+      "CompanyInformationResponse": {
+        "type": "object",
+        "properties": {
+          "Found": {
+            "type": "integer",
+            "description": "Number of companies found",
+            "example": 0
+          },
+          "Companies": {
+            "type": "array",
+            "description": "List of companies",
+            "items": {
+              "type": "object",
+              "properties": {
+                "L1Standardized": {
+                  "type": "string",
+                  "description": "Standardized name of the company",
+                  "example": "DQE-SOFTWARE"
+                },
+                "MainCompanyFlag": {
+                  "type": "string",
+                  "description": "Indicates if it's the main company",
+                  "example": "1"
+                },
+                "CompanyStatus": {
+                  "type": "string",
+                  "description": "Status of the company (active, inactive)",
+                  "example": "1"
+                },
+                "Country": {
+                  "type": "string",
+                  "description": "Country code of the company",
+                  "example": "FRA"
+                },
+                "VatNumber": {
+                  "type": "string",
+                  "description": "VAT number of the company",
+                  "example": "FR 85 504403387"
+                },
+                "City": {
+                  "type": "string",
+                  "description": "City where the company is located",
+                  "example": "LEVALLOIS PERRET"
+                },
+                "SearchRef": {
+                  "type": "string",
+                  "description": "Search reference",
+                  "example": "_29613410"
+                },
+                "PhoneNumber": {
+                  "type": "string",
+                  "description": "Phone number of the company",
+                  "example": "0171199739"
+                },
+                "LegalStructure": {
+                  "type": "array",
+                  "description": "Legal structure of the company",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "Value": {
+                        "type": "string",
+                        "description": "Code representing the legal structure",
+                        "example": 5710
+                      },
+                      "Label": {
+                        "type": "string",
+                        "description": "Description of the legal structure",
+                        "example": "SAS, société par actions simplifiée"
+                      }
+                    }
+                  }
+                },
+                "L2Standardized": {
+                  "type": "string",
+                  "description": "Additional standardized name or address",
+                  "example": "102 116"
+                },
+                "Email": {
+                  "type": "string",
+                  "description": "Email address of the company",
+                  "example": ""
+                },
+                "CompanyNumber": {
+                  "type": "array",
+                  "description": "Company identification numbers (e.g., Siren, Nic)",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "Type": {
+                        "type": "string",
+                        "description": "Type of company number (e.g., Siren, Nic)",
+                        "example": "Siren"
+                      },
+                      "Value": {
+                        "type": "string",
+                        "description": "Value of the company number",
+                        "example": 504403387
+                      }
+                    }
+                  }
+                },
+                "CompanyCName": {
+                  "type": "string",
+                  "description": "Commercial name of the company",
+                  "example": "DQE"
+                },
+                "Fax": {
+                  "type": "string",
+                  "description": "Fax number of the company",
+                  "example": ""
+                },
+                "IncorporationDate": {
+                  "type": "string",
+                  "format": "date",
+                  "description": "Date of company incorporation",
+                  "example": "2017-12-29"
+                },
+                "StaffCount": {
+                  "type": "string",
+                  "description": "Number of staff members in the company",
+                  "example": ""
+                },
+                "L5Standardized": {
+                  "type": "string",
+                  "description": "Additional standardized address line",
+                  "example": ""
+                },
+                "DissolutionDate": {
+                  "type": "string",
+                  "format": "date",
+                  "description": "Date of company dissolution (if applicable)",
+                  "example": ""
+                },
+                "Classification": {
+                  "type": "array",
+                  "description": "Classification details of the company",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "Type": {
+                        "type": "string",
+                        "description": "Type of classification (e.g., NAF08)",
+                        "example": "NAF08"
+                      },
+                      "Value": {
+                        "type": "string",
+                        "description": "Classification value",
+                        "example": "5829C"
+                      },
+                      "Label": {
+                        "type": "string",
+                        "description": "Classification label",
+                        "example": "Edition de logiciels applicatifs"
+                      }
+                    }
+                  }
+                },
+                "L4Standardized": {
+                  "type": "string",
+                  "description": "Standardized address line 4",
+                  "example": "102 RUE VICTOR HUGO"
+                },
+                "CompanyName2": {
+                  "type": "string",
+                  "description": "Alternative or second company name",
+                  "example": "DQE"
+                },
+                "TurnOver": {
+                  "type": "string",
+                  "description": "Company's turnover",
+                  "example": ""
+                },
+                "PosCod": {
+                  "type": "string",
+                  "description": "Postal code of the company",
+                  "example": 92300
+                }
+              }
+            }
+          }
+        }
+      },
+      "FullCompanyInformation": {
+        "type": "object",
+        "properties": {
+          "Found": {
+            "type": "integer",
+            "description": "Number of companies found",
+            "example": 1
+          },
+          "Companies": {
+            "type": "array",
+            "description": "List of companies",
+            "items": {
+              "type": "object",
+              "properties": {
+                "Title": {
+                  "type": "string",
+                  "description": "Title of the company",
+                  "example": ""
+                },
+                "ClassificationEnt": {
+                  "type": "array",
+                  "description": "Company classification",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "Type": {
+                        "type": "string",
+                        "description": "Classification type (e.g., NAF08)",
+                        "example": "NAF08"
+                      },
+                      "Value": {
+                        "type": "string",
+                        "description": "Classification value",
+                        "example": "5829C"
+                      },
+                      "Label": {
+                        "type": "string",
+                        "description": "Classification label",
+                        "example": "Édition de logiciels applicatifs"
+                      }
+                    }
+                  }
+                },
+                "Department": {
+                  "type": "string",
+                  "description": "Department code",
+                  "example": "92"
+                },
+                "SocialSolidarityEconomy": {
+                  "type": "string",
+                  "description": "Indicates if the company is part of the social and solidarity economy",
+                  "example": "N"
+                },
+                "ActivityType": {
+                  "type": "string",
+                  "description": "Type of activity",
+                  "example": ""
+                },
+                "RangeCodeStaffCountEnt": {
+                  "type": "string",
+                  "description": "Code indicating the range of staff count in the company",
+                  "example": "12"
+                },
+                "PhoneNumber": {
+                  "type": "string",
+                  "description": "Phone number of the company",
+                  "example": "0171199739"
+                },
+                "CompanyNumber": {
+                  "type": "array",
+                  "description": "Company identification numbers (e.g., Siren, Nic)",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "Type": {
+                        "type": "string",
+                        "description": "Type of company number",
+                        "example": "Siren"
+                      },
+                      "Value": {
+                        "type": "string",
+                        "description": "Value of the company number",
+                        "example": 504403387
+                      }
+                    }
+                  }
+                },
+                "CityId": {
+                  "type": "string",
+                  "description": "City ID",
+                  "example": "044"
+                },
+                "NatureCode": {
+                  "type": "string",
+                  "description": "Nature code of the company",
+                  "example": ""
+                },
+                "StreetName": {
+                  "type": "string",
+                  "description": "Name of the street",
+                  "example": "VICTOR HUGO"
+                },
+                "District": {
+                  "type": "string",
+                  "description": "District code",
+                  "example": "2"
+                },
+                "FourthActivityEnt": {
+                  "type": "string",
+                  "description": "Fourth activity of the company",
+                  "example": ""
+                },
+                "State": {
+                  "type": "string",
+                  "description": "State or region",
+                  "example": "ILE DE FRANCE"
+                },
+                "NatureLastUpdate": {
+                  "type": "string",
+                  "description": "Code indicating the nature of the last update",
+                  "example": "F"
+                },
+                "Acronym": {
+                  "type": "string",
+                  "description": "Acronym of the company",
+                  "example": "DQE"
+                },
+                "ThirdActivityEnt": {
+                  "type": "string",
+                  "description": "Third activity of the company",
+                  "example": ""
+                },
+                "DistributionDate": {
+                  "type": "string",
+                  "description": "Date of distribution",
+                  "example": ""
+                },
+                "EntYearValidity": {
+                  "type": "string",
+                  "description": "Year of validity for the company",
+                  "example": ""
+                },
+                "L1Standardized": {
+                  "type": "string",
+                  "description": "Standardized name of the company",
+                  "example": "DQE-SOFTWARE"
+                },
+                "StartDateActivities": {
+                  "type": "string",
+                  "description": "Date of start of activities",
+                  "example": ""
+                },
+                "L2Registered": {
+                  "type": "string",
+                  "description": "Registered name (level 2)",
+                  "example": "DQE"
+                },
+                "Distribution": {
+                  "type": "string",
+                  "description": "Distribution status",
+                  "example": "O"
+                },
+                "L3Standardized": {
+                  "type": "string",
+                  "description": "Standardized name or address (level 3)",
+                  "example": "102 116"
+                },
+                "Seasonality": {
+                  "type": "string",
+                  "description": "Seasonality information",
+                  "example": ""
+                },
+                "EmployementArea": {
+                  "type": "string",
+                  "description": "Employment area code",
+                  "example": "1101"
+                },
+                "PosCod": {
+                  "type": "string",
+                  "description": "Postal code",
+                  "example": "92300"
+                },
+                "Category": {
+                  "type": "string",
+                  "description": "Company category (e.g., PME)",
+                  "example": "PME"
+                },
+                "SecondActivityEnt": {
+                  "type": "string",
+                  "description": "Second activity of the company",
+                  "example": ""
+                },
+                "FirstName": {
+                  "type": "string",
+                  "description": "First name of the company representative",
+                  "example": ""
+                },
+                "IndPublipo": {
+                  "type": "string",
+                  "description": "Public indicator",
+                  "example": ""
+                },
+                "MainActivityMethodEnt": {
+                  "type": "string",
+                  "description": "Main activity method of the company",
+                  "example": ""
+                },
+                "L6Registered": {
+                  "type": "string",
+                  "description": "Registered name or address (level 6)",
+                  "example": "92300 LEVALLOIS-PERRET"
+                },
+                "L4Standardized": {
+                  "type": "string",
+                  "description": "Standardized address line 4",
+                  "example": "102 RUE VICTOR HUGO"
+                },
+                "CharityNumber": {
+                  "type": "string",
+                  "description": "Charity number",
+                  "example": ""
+                },
+                "NatureLabel": {
+                  "type": "string",
+                  "description": "Label of the nature of the company",
+                  "example": ""
+                },
+                "ProductiveEnt": {
+                  "type": "string",
+                  "description": "Indicates if the company is productive",
+                  "example": ""
+                },
+                "Classification": {
+                  "type": "array",
+                  "description": "Classification details of the company",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "Type": {
+                        "type": "string",
+                        "description": "Classification type",
+                        "example": "NAF08"
+                      },
+                      "Value": {
+                        "type": "string",
+                        "description": "Classification value",
+                        "example": "5829C"
+                      },
+                      "Label": {
+                        "type": "string",
+                        "description": "Classification label",
+                        "example": "Édition de logiciels applicatifs"
+                      }
+                    }
+                  }
+                },
+                "L4Registered": {
+                  "type": "string",
+                  "description": "Registered address line 4",
+                  "example": "102 RUE VICTOR HUGO"
+                },
+                "City": {
+                  "type": "string",
+                  "description": "City where the company is located",
+                  "example": "LEVALLOIS PERRET"
+                },
+                "StateCode": {
+                  "type": "string",
+                  "description": "State code",
+                  "example": "11"
+                },
+                "ActivityPlace": {
+                  "type": "string",
+                  "description": "Place of activity",
+                  "example": ""
+                },
+                "SpecificProduction": {
+                  "type": "string",
+                  "description": "Specific production of the company",
+                  "example": ""
+                },
+                "RangeLabelStaffCount": {
+                  "type": "string",
+                  "description": "Label indicating the range of staff count",
+                  "example": "20-49"
+                },
+                "NicHeadquarter": {
+                  "type": "string",
+                  "description": "NIC of the headquarter",
+                  "example": "00047"
+                },
+                "ClassificationYear": {
+                  "type": "string",
+                  "description": "Year of classification",
+                  "example": "2008"
+                },
+                "MainActivityMethod": {
+                  "type": "string",
+                  "description": "Main activity method",
+                  "example": ""
+                },
+                "TurnOver": {
+                  "type": "string",
+                  "description": "Turnover of the company",
+                  "example": ""
+                },
+                "IncorporationDateEnt": {
+                  "type": "string",
+                  "format": "date",
+                  "description": "Date of company incorporation",
+                  "example": "2008-05-13"
+                },
+                "StaffCountYearEnt": {
+                  "type": "string",
+                  "description": "Year of staff count entry",
+                  "example": "2018"
+                },
+                "UrbanUnitNumber": {
+                  "type": "string",
+                  "description": "Urban unit number",
+                  "example": "51"
+                },
+                "StaffCountYear": {
+                  "type": "string",
+                  "description": "Year of staff count",
+                  "example": "2018"
+                },
+                "L7Standardized": {
+                  "type": "string",
+                  "description": "Standardized name or address (level 7)",
+                  "example": ""
+                },
+                "StaffCountEnt": {
+                  "type": "string",
+                  "description": "Staff count of the company",
+                  "example": ""
+                },
+                "StoreType": {
+                  "type": "string",
+                  "description": "Type of store",
+                  "example": ""
+                },
+                "IncorporationDate": {
+                  "type": "string",
+                  "format": "date",
+                  "description": "Date of incorporation",
+                  "example": "2017-12-29"
+                },
+                "RangeLabelStaffCountEnt": {
+                  "type": "string",
+                  "description": "Label indicating the range of staff count (enterprise)",
+                  "example": ""
+                },
+                "StreetNum": {
+                  "type": "string",
+                  "description": "Street number",
+                  "example": "102"
+                },
+                "RangeCodeStaffCount": {
+                  "type": "string",
+                  "description": "Code indicating the range of staff count",
+                  "example": "12"
+                },
+                "L5Standardized": {
+                  "type": "string",
+                  "description": "Standardized name or address (level 5)",
+                  "example": ""
+                },
+                "MainActivity": {
+                  "type": "string",
+                  "description": "Main activity of the company",
+                  "example": ""
+                },
+                "AuxiliaryActivity": {
+                  "type": "string",
+                  "description": "Auxiliary activity of the company",
+                  "example": ""
+                },
+                "PoBox": {
+                  "type": "string",
+                  "description": "PO box",
+                  "example": ""
+                },
+                "StreetType": {
+                  "type": "string",
+                  "description": "Type of street",
+                  "example": "R"
+                },
+                "VatNumber": {
+                  "type": "string",
+                  "description": "VAT number",
+                  "example": "FR 85 504403387"
+                },
+                "Email": {
+                  "type": "string",
+                  "description": "Email address",
+                  "example": ""
+                },
+                "StaffCount": {
+                  "type": "string",
+                  "description": "Number of staff members in the company",
+                  "example": ""
+                },
+                "L3Registered": {
+                  "type": "string",
+                  "description": "Registered name or address (level 3)",
+                  "example": "102-116"
+                },
+                "L1Registered": {
+                  "type": "string",
+                  "description": "Registered name (level 1)",
+                  "example": "DQE-SOFTWARE"
+                },
+                "UrbanUnitDpt": {
+                  "type": "string",
+                  "description": "Urban unit department",
+                  "example": "00"
+                },
+                "UrbanUnitRange": {
+                  "type": "string",
+                  "description": "Urban unit range",
+                  "example": "8"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

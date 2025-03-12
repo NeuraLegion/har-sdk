@@ -1,0 +1,326 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "FiledgrDigiCertAPI",
+    "version": "0.4.0",
+    "description": "The API to be used by digital certificate websites in the Filedgr format"
+  },
+  "servers": [
+    {
+      "url": "https://digicert-api.dev.filedgr.com",
+      "description": "Developer Network"
+    }
+  ],
+  "paths": {
+    "/attachments/{data_attachment_id}": {
+      "get": {
+        "tags": ["attachments"],
+        "summary": "Get Data Attachment",
+        "operationId": "get_data_attachment_attachments__data_attachment_id__get",
+        "parameters": [
+          {
+            "name": "data_attachment_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Data Attachment Id"
+            }
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "enum": ["application/vnd.com.filedgr.digicertApi.0.4.0+json"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetDataAttachmentResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ItemNotFoundMessage" }
+              }
+            },
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tokens/{token_code}/attachments": {
+      "get": {
+        "tags": ["tokens"],
+        "summary": "Get Token Attachments",
+        "operationId": "get_token_attachments_tokens__token_code__attachments_get",
+        "parameters": [
+          {
+            "name": "token_code",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "Token Code" }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "default": 10, "title": "Page Size" }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "default": 1, "title": "Page" }
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "schema": {
+              "type": "string",
+              "enum": ["application/vnd.com.filedgr.digicertApi.0.4.0+json"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetDataAttachmentPaginationSet"
+                }
+              }
+            }
+          },
+          "204": { "description": "No Content" },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "DataAttachmentStatus": {
+        "type": "string",
+        "enum": ["UPLOAD_PENDING", "REPLICATION_PENDING", "ATTACHED"],
+        "title": "DataAttachmentStatus"
+      },
+      "FileAttachmentStatus": {
+        "type": "string",
+        "enum": ["UPLOAD_PENDING", "REPLICATION_PENDING", "ATTACHED"],
+        "title": "FileAttachmentStatus"
+      },
+      "TokenStatus": {
+        "type": "string",
+        "enum": ["SUBMITTED", "CREATED", "MINTED"],
+        "title": "TokenStatus"
+      },
+      "Ledgers": { "type": "string", "const": "XRPL", "title": "Ledgers" },
+      "FileDto": {
+        "properties": {
+          "id": { "type": "string", "format": "uuid", "title": "Id" },
+          "filename": { "type": "string", "title": "Filename" },
+          "mimetype": { "type": "string", "title": "Mimetype" },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "status": {
+            "allOf": [{ "$ref": "#/components/schemas/FileAttachmentStatus" }],
+            "default": "UPLOAD_PENDING"
+          },
+          "hash": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Hash"
+          },
+          "size": { "type": "integer", "title": "Size" },
+          "cid": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Cid",
+            "default": ""
+          }
+        },
+        "type": "object",
+        "required": ["id", "filename", "mimetype", "created_at", "size"],
+        "title": "FileDto"
+      },
+      "TokenDto": {
+        "properties": {
+          "id": { "type": "string", "format": "uuid", "title": "Id" },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "asset_code": { "type": "string", "title": "Asset Code" },
+          "description": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Description"
+          },
+          "ledger": { "$ref": "#/components/schemas/Ledgers" },
+          "status": { "$ref": "#/components/schemas/TokenStatus" },
+          "issuer_wallet": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Issuer Wallet"
+          },
+          "mapping": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Mapping"
+          }
+        },
+        "type": "object",
+        "required": ["id", "created_at", "asset_code", "ledger", "status"],
+        "title": "TokenDto"
+      },
+      "GetDataAttachmentPaginationSet": {
+        "properties": {
+          "total_records": { "type": "integer", "title": "Total Records" },
+          "current_page": { "type": "integer", "title": "Current Page" },
+          "total_pages": { "type": "integer", "title": "Total Pages" },
+          "content": {
+            "items": {
+              "$ref": "#/components/schemas/GetDataAttachmentResponse"
+            },
+            "type": "array",
+            "title": "Content",
+            "default": []
+          }
+        },
+        "type": "object",
+        "required": ["total_records", "current_page", "total_pages"],
+        "title": "GetDataAttachmentPaginationSet"
+      },
+      "GetDataAttachmentResponse": {
+        "properties": {
+          "id": { "type": "string", "format": "uuid", "title": "Id" },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "status": { "$ref": "#/components/schemas/DataAttachmentStatus" },
+          "presigned_url": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Presigned Url",
+            "default": ""
+          },
+          "token_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Token Id"
+          },
+          "filename": { "type": "string", "title": "Filename" },
+          "tx_hash": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Tx Hash"
+          },
+          "upload_as_zip": {
+            "type": "boolean",
+            "title": "Upload As Zip",
+            "default": false
+          },
+          "size": {
+            "anyOf": [{ "type": "integer" }, { "type": "null" }],
+            "title": "Size",
+            "default": 0
+          },
+          "token": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/TokenDto" },
+              { "type": "null" }
+            ]
+          },
+          "file_count": {
+            "anyOf": [{ "type": "integer" }, { "type": "null" }],
+            "title": "File Count",
+            "default": 0
+          },
+          "files": {
+            "anyOf": [
+              {
+                "items": { "$ref": "#/components/schemas/FileDto" },
+                "type": "array"
+              },
+              { "type": "null" }
+            ],
+            "title": "Files",
+            "default": []
+          }
+        },
+        "type": "object",
+        "required": ["id", "created_at", "status", "token_id", "filename"],
+        "title": "GetDataAttachmentResponse"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": { "$ref": "#/components/schemas/ValidationError" },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "ItemNotFoundMessage": {
+        "properties": {
+          "error": { "type": "string", "title": "Error" },
+          "message": { "type": "string", "title": "Message" }
+        },
+        "type": "object",
+        "required": ["error", "message"],
+        "title": "ItemNotFoundMessage"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": { "anyOf": [{ "type": "string" }, { "type": "integer" }] },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": { "type": "string", "title": "Message" },
+          "type": { "type": "string", "title": "Error Type" }
+        },
+        "type": "object",
+        "required": ["loc", "msg", "type"],
+        "title": "ValidationError"
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "description": "Every request will require a JWT Token. However for public sites it has the shape 'bearer public'",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [{ "bearerAuth": [] }]
+}

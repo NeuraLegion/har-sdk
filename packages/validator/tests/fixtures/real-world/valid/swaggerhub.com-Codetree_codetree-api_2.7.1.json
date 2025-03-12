@@ -1,0 +1,1692 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Codetree API",
+    "description": "This API allows complete interaction with Codetree",
+    "version": "2.7.1"
+  },
+  "paths": {
+    "/api/v2/projects/{projectId}/issues": {
+      "get": {
+        "summary": "Returns a list of issues for a given project",
+        "tags": ["Issues"],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          { "name": "status", "in": "query", "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of Issues",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "list": {
+                    "value": [
+                      {
+                        "id": 1,
+                        "publicId": "222-6666",
+                        "sortOrder": 5000000,
+                        "project": { "id": 1 }
+                      },
+                      {
+                        "id": 1,
+                        "publicId": "111-2222",
+                        "sortOrder": 2000000,
+                        "project": { "id": 1 }
+                      },
+                      {
+                        "id": 1,
+                        "publicId": "122-3333",
+                        "title": "test of backlog label",
+                        "sortOrder": 1000001,
+                        "project": { "id": 1 }
+                      },
+                      {
+                        "id": 1,
+                        "publicId": "111-4444",
+                        "title": "RM-445",
+                        "sortOrder": 1000000,
+                        "project": { "id": 1 }
+                      },
+                      {
+                        "id": 1,
+                        "publicId": "111-1111",
+                        "title": "Automation for issues and PR",
+                        "sortOrder": 1000000,
+                        "project": { "id": 1 }
+                      },
+                      {
+                        "id": 1,
+                        "publicId": "111-3333",
+                        "title": "Test-123",
+                        "sortOrder": 1000000,
+                        "project": { "id": 1 }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Creates an Issue",
+        "tags": ["Issues"],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "issue created",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Automation for issues and PR": {
+                    "value": {
+                      "id": 1,
+                      "publicId": "111-1111",
+                      "title": "Automation for issues and PR",
+                      "sortOrder": 1000000,
+                      "project": { "id": 1 }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": { "description": "Invalid request" }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "issue": {
+                    "type": "object",
+                    "properties": {
+                      "title": { "type": "string" },
+                      "body": { "type": "string" },
+                      "assignee_ids": {
+                        "type": "array",
+                        "items": { "type": "integer" }
+                      },
+                      "epic_id": { "type": "integer" },
+                      "label_ids": {
+                        "type": "array",
+                        "items": { "type": "integer" }
+                      },
+                      "milestone_id": { "type": "integer" },
+                      "repository_id": { "type": "integer" },
+                      "size": { "type": "integer" }
+                    }
+                  }
+                },
+                "required": ["title"]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/projects/{projectId}/issues/{id}": {
+      "get": {
+        "summary": "Retrieves a given Issue for a Project",
+        "tags": ["Issues"],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns an issue",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Automation for issues and PR": {
+                    "value": {
+                      "id": 1,
+                      "publicId": "111-1111",
+                      "title": "Automation for issues and PR",
+                      "sortOrder": 1000000,
+                      "project": { "id": 1 }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": { "description": "Issue not found" }
+        }
+      },
+      "patch": {
+        "summary": "Update an issue",
+        "tags": ["Issues"],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updates issue",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Automation for issues and PR": {
+                    "value": {
+                      "id": 1,
+                      "publicId": "111-1111",
+                      "title": "Automation for issues and PR",
+                      "sortOrder": 1000000,
+                      "project": { "id": 1 }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": { "description": "Issue not found" },
+          "422": { "description": "Invalid issue" }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "issue": {
+                    "type": "object",
+                    "properties": {
+                      "title": { "type": "string" },
+                      "body": { "type": "string" },
+                      "assignee_ids": {
+                        "type": "array",
+                        "items": { "type": "integer" }
+                      },
+                      "epic_id": { "type": "integer" },
+                      "label_ids": {
+                        "type": "array",
+                        "items": { "type": "integer" }
+                      },
+                      "milestone_id": { "type": "integer" },
+                      "repository_id": { "type": "integer" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/projects/{projectId}/labels": {
+      "get": {
+        "summary": "Returns a list of Labels for a given project",
+        "tags": ["Labels"],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of Labels",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "list": {
+                    "value": [
+                      {
+                        "id": 1,
+                        "name": "In Progress",
+                        "color": "eeeeee",
+                        "project": { "id": 1 }
+                      },
+                      {
+                        "id": 1,
+                        "name": "Review",
+                        "color": "dddddd",
+                        "project": { "id": 1 }
+                      },
+                      {
+                        "id": 1,
+                        "name": "backlog",
+                        "color": "eeeeee",
+                        "project": { "id": 1 }
+                      },
+                      {
+                        "id": 1,
+                        "name": "bug",
+                        "color": "ffffff",
+                        "project": { "id": 1 }
+                      },
+                      {
+                        "id": 1,
+                        "name": "deploy",
+                        "color": "fffffd",
+                        "project": { "id": 1 }
+                      },
+                      {
+                        "id": 1,
+                        "name": "gray label",
+                        "color": "cccccc",
+                        "project": { "id": 1 }
+                      },
+                      {
+                        "id": 1,
+                        "name": "size: 10",
+                        "color": "ededed",
+                        "project": { "id": 1 }
+                      },
+                      {
+                        "id": 1,
+                        "name": "size: 5",
+                        "color": "ededed",
+                        "project": { "id": 1 }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Creates an Label",
+        "tags": ["Labels"],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "201": { "description": "Label created" },
+          "422": { "description": "Invalid request" }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "label": {
+                    "type": "object",
+                    "properties": {
+                      "name": { "type": "string" },
+                      "color": { "type": "string" }
+                    }
+                  }
+                },
+                "required": ["name", "color"]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/projects/{projectId}/labels/{id}": {
+      "get": {
+        "summary": "Retrieves a given label for a Project",
+        "tags": ["Labels"],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a Label",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Review": {
+                    "value": {
+                      "id": 1,
+                      "name": "Review",
+                      "color": "dddddd",
+                      "project": { "id": 1 }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": { "description": "label not found" }
+        }
+      },
+      "patch": {
+        "summary": "Update a Label",
+        "tags": ["Labels"],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updates Label",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Review": {
+                    "value": {
+                      "id": 1,
+                      "name": "Review",
+                      "color": "ff0000",
+                      "project": {}
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": { "description": "Label not found" },
+          "422": { "description": "Invalid label" }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "label": {
+                    "type": "object",
+                    "properties": {
+                      "name": { "type": "string" },
+                      "label": { "type": "string" },
+                      "sort_order": { "type": "integer" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deletes a specific Label",
+        "tags": ["Labels"],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": { "200": { "description": "Returns a success" } }
+      }
+    },
+    "/api/v2/projects/{projectId}/milestones": {
+      "get": {
+        "summary": "Returns a list of milestones for a given project",
+        "tags": ["Milestones"],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of Milestones",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "list": {
+                    "value": [
+                      {
+                        "id": 1,
+                        "title": "2019-Q1",
+                        "status": "open",
+                        "sortOrder": 2000000,
+                        "startDate": "2019-01-01T00:00:00.000Z",
+                        "project": { "id": 1 }
+                      },
+                      {
+                        "id": 1,
+                        "title": "2018-Q4",
+                        "status": "open",
+                        "sortOrder": 1000000,
+                        "startDate": "2018-10-01T00:00:00.000Z",
+                        "project": { "id": 1 }
+                      },
+                      {
+                        "id": 1,
+                        "title": "Sprint-1",
+                        "status": "open",
+                        "sortOrder": 1000000,
+                        "startDate": "2019-02-25T00:00:00.000Z",
+                        "dueOn": "2019-03-15T00:00:00.000Z",
+                        "project": { "id": 1 }
+                      },
+                      {
+                        "id": 1,
+                        "title": "Invalid Date",
+                        "status": "open",
+                        "sortOrder": 1000000,
+                        "startDate": "2019-02-25T00:00:00.000Z",
+                        "dueOn": "2019-02-05T00:00:00.000Z",
+                        "project": { "id": 1 }
+                      },
+                      {
+                        "id": 1,
+                        "title": "Alpha",
+                        "status": "open",
+                        "sortOrder": 1000000,
+                        "startDate": "2019-04-01T00:00:00.000Z",
+                        "dueOn": "2019-04-30T00:00:00.000Z",
+                        "project": { "id": 1 }
+                      },
+                      {
+                        "id": 1,
+                        "title": "Delta",
+                        "status": "open",
+                        "sortOrder": 1000000,
+                        "startDate": "2019-04-01T00:00:00.000Z",
+                        "dueOn": "2019-04-30T00:00:00.000Z",
+                        "project": { "id": 1 }
+                      },
+                      {
+                        "id": 1,
+                        "title": "multi due on milestone",
+                        "status": "open",
+                        "sortOrder": 1000000,
+                        "startDate": "2019-10-01T00:00:00.000Z",
+                        "dueOn": "2019-10-30T00:00:00.000Z",
+                        "project": { "id": 1 }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Creates an milestone",
+        "tags": ["Milestones"],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "milestone created",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "2019-Q1": {
+                    "value": {
+                      "id": 1,
+                      "title": "2019-Q1",
+                      "status": "open",
+                      "sortOrder": 2000000,
+                      "startDate": "2019-01-01T00:00:00.000Z",
+                      "project": { "id": 1 }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": { "description": "Invalid request" }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "milestone": {
+                    "type": "object",
+                    "properties": {
+                      "title": { "type": "string" },
+                      "description": { "type": "string" },
+                      "startDate": { "type": "string" },
+                      "dueOn": { "type": "string" }
+                    }
+                  }
+                },
+                "required": ["name", "label"]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/projects/{projectId}/milestones/{id}": {
+      "get": {
+        "summary": "Retrieves a given milestone for a Project",
+        "tags": ["Milestones"],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a milestone",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "2019-Q1": {
+                    "value": {
+                      "id": 1,
+                      "title": "2019-Q1",
+                      "status": "open",
+                      "sortOrder": 2000000,
+                      "startDate": "2019-01-01T00:00:00.000Z",
+                      "project": { "id": 1 }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": { "description": "milestone not found" }
+        }
+      },
+      "patch": {
+        "summary": "Update a milestone",
+        "tags": ["Milestones"],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updates milestone",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "2019-Q1": {
+                    "value": {
+                      "id": 1,
+                      "title": "2019-Q1",
+                      "status": "open",
+                      "sortOrder": 2000000,
+                      "startDate": "2019-01-01T00:00:00.000Z",
+                      "project": { "id": 1 }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": { "description": "milestone not found" },
+          "422": { "description": "Invalid milestone" }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "milestone": {
+                    "type": "object",
+                    "properties": {
+                      "title": { "type": "string" },
+                      "description": { "type": "string" },
+                      "startDate": { "type": "integer" },
+                      "dueOn": { "type": "integer" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deletes a specific milestone",
+        "tags": ["Milestones"],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": { "200": { "description": "Returns the milestone" } }
+      }
+    },
+    "/api/v2/organizations": {
+      "get": {
+        "summary": "Returns a list of all organizations accessible to the user",
+        "tags": ["Organizations"],
+        "parameters": [
+          {
+            "name": "permission",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "owner",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "owner[id]",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of organizations",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "list": {
+                    "value": [
+                      {
+                        "id": 1,
+                        "publicId": "ACME",
+                        "name": "Acme Company",
+                        "status": "active",
+                        "subscription": { "id": 1 }
+                      },
+                      {
+                        "id": 1,
+                        "publicId": "ACME1",
+                        "name": "Acme Company 1",
+                        "status": "active",
+                        "subscription": { "id": 1 }
+                      },
+                      {
+                        "id": 1,
+                        "publicId": "BETA",
+                        "name": "Beta Company",
+                        "status": "active",
+                        "subscription": { "id": 1 }
+                      },
+                      {
+                        "id": 1,
+                        "publicId": "EMCA",
+                        "name": "EMCA Company",
+                        "status": "active",
+                        "subscription": { "id": 1 }
+                      },
+                      {
+                        "id": 1,
+                        "publicId": "PASTDUE",
+                        "name": "PastDue",
+                        "status": "active",
+                        "subscription": { "id": 1 }
+                      },
+                      {
+                        "id": 1,
+                        "publicId": "PNCL",
+                        "name": "Pinnacle",
+                        "status": "active",
+                        "subscription": { "id": 1 }
+                      },
+                      {
+                        "id": 1,
+                        "publicId": "TRIAL",
+                        "name": "TrialingOrg",
+                        "status": "active",
+                        "subscription": { "id": 1 }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Creates an organization",
+        "tags": ["Organizations"],
+        "parameters": [],
+        "responses": {
+          "201": { "description": "Organization created" },
+          "422": { "description": "Invalid request" }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "organization": {
+                    "type": "object",
+                    "properties": {
+                      "name": { "type": "string" },
+                      "subscription": {
+                        "type": "object",
+                        "properties": {
+                          "planId": { "type": "integer" },
+                          "type": { "type": "string" }
+                        }
+                      }
+                    }
+                  }
+                },
+                "required": ["name"]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/organizations/{id}": {
+      "get": {
+        "summary": "Retrieves an Organizaion",
+        "tags": ["Organizations"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns an organizations",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "ACME": {
+                    "value": {
+                      "id": 1,
+                      "publicId": "ACME",
+                      "name": "Acme Company",
+                      "status": "active",
+                      "subscription": { "id": 1 }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": { "description": "Organization not found" }
+        }
+      },
+      "patch": {
+        "summary": "Update an Organizaion",
+        "tags": ["Organizations"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updates Organization",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "ACME": {
+                    "value": {
+                      "id": 1,
+                      "publicId": "ACME",
+                      "name": "NewOrgName",
+                      "status": "active",
+                      "subscription": { "id": 1 }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": { "description": "Organization not found" },
+          "422": { "description": "Invalid organization" }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "organization": {
+                    "type": "object",
+                    "properties": { "name": { "type": "string" } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deletes a specific organization",
+        "tags": ["Organizations"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": { "200": { "description": "Returns the organization" } }
+      }
+    },
+    "/api/v2/plans": {
+      "get": {
+        "summary": "Returns a list of plans",
+        "tags": ["Plans"],
+        "parameters": [
+          {
+            "name": "ghmp_id",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of plans",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "list": {
+                    "value": [
+                      {
+                        "id": 1,
+                        "publicId": "solo",
+                        "name": "Solo",
+                        "amount": 900,
+                        "interval": "month",
+                        "default": false,
+                        "userLimit": 1,
+                        "projectLimit": 5
+                      },
+                      {
+                        "id": 1,
+                        "publicId": "small",
+                        "name": "Small Team",
+                        "amount": 2400,
+                        "interval": "month",
+                        "default": true,
+                        "userLimit": 3,
+                        "projectLimit": 15
+                      },
+                      {
+                        "id": 1,
+                        "publicId": "startup",
+                        "name": "Startup",
+                        "amount": 4900,
+                        "interval": "month",
+                        "default": false,
+                        "userLimit": 8,
+                        "projectLimit": 40
+                      },
+                      {
+                        "id": 1,
+                        "publicId": "business",
+                        "name": "Business",
+                        "amount": 9900,
+                        "interval": "month",
+                        "default": false,
+                        "userLimit": 20,
+                        "projectLimit": 100
+                      },
+                      {
+                        "id": 1,
+                        "publicId": "enterprise",
+                        "name": "Enterprise",
+                        "amount": 19900,
+                        "interval": "month",
+                        "default": false,
+                        "userLimit": 50,
+                        "projectLimit": 250
+                      },
+                      {
+                        "id": 1,
+                        "publicId": "solo_annual",
+                        "name": "Solo (Annual)",
+                        "amount": 9000,
+                        "interval": "year",
+                        "default": false,
+                        "userLimit": 1,
+                        "projectLimit": 5
+                      },
+                      {
+                        "id": 1,
+                        "publicId": "small_annual",
+                        "name": "Small Team (Annual)",
+                        "amount": 24000,
+                        "interval": "year",
+                        "default": true,
+                        "userLimit": 3,
+                        "projectLimit": 15
+                      },
+                      {
+                        "id": 1,
+                        "publicId": "startup_annual",
+                        "name": "Startup (Annual)",
+                        "amount": 49000,
+                        "interval": "year",
+                        "default": false,
+                        "userLimit": 8,
+                        "projectLimit": 40
+                      },
+                      {
+                        "id": 1,
+                        "publicId": "business_annual",
+                        "name": "Business (Annual)",
+                        "amount": 99000,
+                        "interval": "year",
+                        "default": false,
+                        "userLimit": 20,
+                        "projectLimit": 100
+                      },
+                      {
+                        "id": 1,
+                        "publicId": "enterprise_annual",
+                        "name": "Enterprise (Annual)",
+                        "amount": 199000,
+                        "interval": "year",
+                        "default": false,
+                        "userLimit": 50,
+                        "projectLimit": 250
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/projects/{id}": {
+      "get": {
+        "summary": "Returns a Project",
+        "tags": ["Projects"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "a specific project",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "abcd": {
+                    "value": {
+                      "id": 1,
+                      "publicId": "abcd",
+                      "name": "Active Project",
+                      "status": "active",
+                      "organization": { "id": 1 },
+                      "groupBy": "milestone",
+                      "branchingPattern": "^(\\d+)",
+                      "estimatesEnabled": true,
+                      "crossRepoBranching": false,
+                      "templatesEnabled": false,
+                      "multipleClosedStages": false
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update/sync a Project ",
+        "tags": ["Projects"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Update project",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "abcd": {
+                    "value": {
+                      "id": 1,
+                      "publicId": "abcd",
+                      "name": "Active Project",
+                      "status": "active",
+                      "organization": { "id": 1 },
+                      "groupBy": "milestone",
+                      "branchingPattern": "^(\\d+)",
+                      "estimatesEnabled": true,
+                      "crossRepoBranching": false,
+                      "templatesEnabled": false,
+                      "multipleClosedStages": false
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": { "description": "Project Not Found" },
+          "422": { "description": "Invalid project" }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "project": {
+                    "type": "object",
+                    "properties": {
+                      "name": { "type": "string" },
+                      "groupBy": { "type": "string" },
+                      "estimatesEnabled": { "type": "boolean" },
+                      "showRepositoryName": { "type": "boolean" },
+                      "backlogColumnName": { "type": "string" },
+                      "openColumnName": { "type": "string" },
+                      "closedColumnName": { "type": "string" },
+                      "defaultFormat": { "type": "string" },
+                      "createEpicCommentBlock": { "type": "string" },
+                      "templatesEnabled": { "type": "boolean" },
+                      "multipleClosedStages": { "type": "boolean" },
+                      "sync": { "type": "boolean" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/projects": {
+      "get": {
+        "summary": "Returns a list of projects",
+        "tags": ["Projects"],
+        "parameters": [
+          {
+            "name": "organizationId",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer" }
+          },
+          {
+            "name": "publicId",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of associated projects",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "list": {
+                    "value": [
+                      {
+                        "id": 1,
+                        "publicId": "88dp",
+                        "name": "Active Project",
+                        "status": "active",
+                        "organization": { "id": 1 },
+                        "groupBy": "milestone",
+                        "branchingPattern": "^(\\d+)",
+                        "estimatesEnabled": false,
+                        "crossRepoBranching": false,
+                        "templatesEnabled": false,
+                        "multipleClosedStages": false
+                      },
+                      {
+                        "id": 1,
+                        "publicId": "9dMj",
+                        "name": "Active Project",
+                        "status": "active",
+                        "organization": { "id": 1 },
+                        "groupBy": "milestone",
+                        "branchingPattern": "^(\\d+)",
+                        "estimatesEnabled": false,
+                        "crossRepoBranching": false,
+                        "templatesEnabled": false,
+                        "multipleClosedStages": false
+                      },
+                      {
+                        "id": 1,
+                        "publicId": "abcd",
+                        "name": "Active Project",
+                        "status": "active",
+                        "organization": { "id": 1 },
+                        "groupBy": "milestone",
+                        "branchingPattern": "^(\\d+)",
+                        "estimatesEnabled": true,
+                        "crossRepoBranching": false,
+                        "templatesEnabled": false,
+                        "multipleClosedStages": false
+                      },
+                      {
+                        "id": 1,
+                        "publicId": "efgh",
+                        "name": "Active Project",
+                        "status": "active",
+                        "organization": { "id": 1 },
+                        "groupBy": "milestone",
+                        "branchingPattern": "(\\d+)$",
+                        "estimatesEnabled": false,
+                        "crossRepoBranching": true,
+                        "templatesEnabled": false,
+                        "multipleClosedStages": false
+                      },
+                      {
+                        "id": 1,
+                        "publicId": "mnop",
+                        "name": "Active Project",
+                        "status": "building",
+                        "organization": { "id": 1 },
+                        "groupBy": "milestone",
+                        "defaultFormat": "board",
+                        "branchingPattern": "^(\\d+)",
+                        "estimatesEnabled": false,
+                        "crossRepoBranching": false,
+                        "templatesEnabled": false,
+                        "multipleClosedStages": false
+                      },
+                      {
+                        "id": 1,
+                        "publicId": "pwtr",
+                        "name": "Active Project",
+                        "status": "active",
+                        "organization": { "id": 1 },
+                        "groupBy": "milestone",
+                        "branchingPattern": "^(\\d+)",
+                        "estimatesEnabled": false,
+                        "crossRepoBranching": false,
+                        "templatesEnabled": true,
+                        "multipleClosedStages": false
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Creates a project",
+        "tags": ["Projects"],
+        "parameters": [],
+        "responses": {
+          "201": { "description": "Project created" },
+          "404": { "description": "Invalid organization" },
+          "422": { "description": "Invalid request" }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "project": {
+                    "type": "object",
+                    "properties": {
+                      "name": { "type": "string" },
+                      "groupBy": { "type": "string" },
+                      "repositoryIds": {
+                        "type": "array",
+                        "items": { "type": "string" }
+                      },
+                      "defaultRepoId": { "type": "string" },
+                      "organizationId": { "type": "string" }
+                    }
+                  }
+                },
+                "required": [
+                  "name",
+                  "groupBy",
+                  "repositoryIds",
+                  "organizationId",
+                  "defaultRepoId"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/projects/{projectId}/stages": {
+      "get": {
+        "summary": "Returns a list of stages for a given project",
+        "tags": ["Stages"],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of Stages",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "list": {
+                    "value": [
+                      {
+                        "id": 1,
+                        "publicId": "untriaged",
+                        "name": "Parking Lot",
+                        "sortOrder": 7500000,
+                        "fixed": true,
+                        "project": { "id": 1 }
+                      },
+                      {
+                        "id": 1,
+                        "publicId": "111-0000",
+                        "name": "Backlog",
+                        "label": "backlog",
+                        "sortOrder": 2500000,
+                        "fixed": false,
+                        "project": { "id": 1 }
+                      },
+                      {
+                        "id": 1,
+                        "publicId": "111-1111",
+                        "name": "In Progress",
+                        "label": "In Progress",
+                        "sortOrder": 2000000,
+                        "fixed": false,
+                        "project": { "id": 1 }
+                      },
+                      {
+                        "id": 1,
+                        "publicId": "111-1122",
+                        "name": "Review",
+                        "label": "Review",
+                        "sortOrder": 1500000,
+                        "fixed": false,
+                        "project": { "id": 1 }
+                      },
+                      {
+                        "id": 1,
+                        "publicId": "111-1124",
+                        "name": "Deploy",
+                        "label": "deploy",
+                        "sortOrder": 1000000,
+                        "fixed": false,
+                        "project": { "id": 1 }
+                      },
+                      {
+                        "id": 1,
+                        "publicId": "done",
+                        "name": "Released",
+                        "state": "closed",
+                        "sortOrder": -4000000,
+                        "fixed": true,
+                        "project": { "id": 1 }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Creates an Stage",
+        "tags": ["Stages"],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "201": { "description": "Stage created" },
+          "422": { "description": "Invalid request" }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "stage": {
+                    "type": "object",
+                    "properties": {
+                      "name": { "type": "string" },
+                      "label": { "type": "string" }
+                    }
+                  }
+                },
+                "required": ["name", "label"]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/projects/{projectId}/stages/{id}": {
+      "get": {
+        "summary": "Retrieves a given Stage for a Project",
+        "tags": ["Stages"],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns a stage",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "111-1122": {
+                    "value": {
+                      "id": 1,
+                      "publicId": "111-1122",
+                      "name": "Review",
+                      "label": "Review",
+                      "sortOrder": 1500000,
+                      "fixed": false,
+                      "project": { "id": 1 }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": { "description": "Stage not found" }
+        }
+      },
+      "patch": {
+        "summary": "Update a Stage",
+        "tags": ["Stages"],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updates Stage",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "111-1122": {
+                    "value": {
+                      "id": 1,
+                      "publicId": "111-1122",
+                      "name": "NewStageName",
+                      "label": "Review",
+                      "sortOrder": 1500000,
+                      "fixed": false,
+                      "project": { "id": 1 }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": { "description": "Stage not found" },
+          "422": { "description": "Invalid stage" }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "stage": {
+                    "type": "object",
+                    "properties": {
+                      "name": { "type": "string" },
+                      "label": { "type": "string" },
+                      "sort_order": { "type": "integer" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deletes a specific Stage",
+        "tags": ["Stages"],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": { "200": { "description": "Returns the stage" } }
+      }
+    },
+    "/api/v2/user": {
+      "get": {
+        "summary": "Returns a user",
+        "tags": ["Users"],
+        "responses": {
+          "200": {
+            "description": "Returns a user details",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "111-1111": {
+                    "value": {
+                      "id": 1,
+                      "name": "Primary Owner",
+                      "email": "owner@acme.com",
+                      "publicId": "111-1111",
+                      "displayName": "Primary Owner",
+                      "avatarUrl": "http://example.org/avatar.png",
+                      "preferences": {}
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update/sync user account",
+        "tags": ["Users"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Update user",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "111-1111": {
+                    "value": {
+                      "id": 1,
+                      "name": "Primary Owner",
+                      "email": "owner@acme.com",
+                      "publicId": "111-1111",
+                      "displayName": "Primary Owner",
+                      "avatarUrl": "http://example.org/avatar.png",
+                      "preferences": { "uiTheme": "light" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user": {
+                    "type": "object",
+                    "properties": {
+                      "name": { "type": "string" },
+                      "email": { "type": "string" },
+                      "sync": { "type": "boolean" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a user",
+        "tags": ["Users"],
+        "responses": {
+          "200": { "description": "Returns status ok and message" }
+        }
+      }
+    }
+  },
+  "components": {},
+  "servers": [{ "url": "https://staging.codetree.com" }]
+}

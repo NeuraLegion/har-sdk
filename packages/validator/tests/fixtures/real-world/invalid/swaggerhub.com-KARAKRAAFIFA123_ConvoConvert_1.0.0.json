@@ -1,0 +1,1193 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Swagger Inventory Management System(ConvoConvert) - OpenAPI 3.1",
+    "description": "This is a sample Inventory Management System based on the OpenAPI 3.1 specification.  You can find out more about\nSwagger at [https://swagger.io](https://swagger.io). In the third iteration of the Inventory Management System, we've switched to the design first approach!\nYou can now help us improve the API whether it's by making changes to the definition itself or to the code.\nThat way, with time, we can improve the API in general, and expose some of the new features in OAS3.\n\nSome useful links:\n- [The Inventory Management System repository](https://github.com/afefa-karakra/inventory-management-system.git)",
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "1.0.0"
+  },
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  },
+  "servers": [{ "url": "https://petstore3.swagger.io/api/v3" }],
+  "tags": [
+    {
+      "name": "Customer",
+      "description": "Everything about your Customers",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "http://swagger.io"
+      }
+    },
+    {
+      "name": "Employee",
+      "description": "Everything about your Employees",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "http://swagger.io"
+      }
+    },
+    {
+      "name": "Supervisors",
+      "description": "Everything about your Supervisors",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "http://swagger.io"
+      }
+    },
+    {
+      "name": "Calls",
+      "description": "Everything about your Calls",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "http://swagger.io"
+      }
+    }
+  ],
+  "paths": {
+    "/Customer": {
+      "put": {
+        "tags": ["Customer"],
+        "summary": "Update an existing Customer",
+        "description": "Update an existing Customer by Id",
+        "operationId": "updateCustomer",
+        "requestBody": {
+          "description": "Update an existent Customer in Inventory Management System",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "ID": { "type": "integer", "example": 3 },
+                    "username": { "type": "string", "example": "AfefaKarakra" },
+                    "PhoneNumber": {
+                      "type": "integer",
+                      "example": "0593348940"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "ID": { "type": "integer", "example": 3 },
+                      "username": {
+                        "type": "string",
+                        "example": "AfefaKarakra"
+                      },
+                      "PhoneNumber": {
+                        "type": "integer",
+                        "example": "0593348940"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "description": "Invalid ID supplied" },
+          "404": { "description": "customer not found" },
+          "405": { "description": "Validation exception" },
+          "201": { "description": "new resource has been created" },
+          "202": {
+            "description": "the request has been accepted for processing"
+          },
+          "304": { "description": "the response has not been modified" }
+        },
+        "security": [{ "petstore_auth": ["write:Customers", "read:Customers"] }]
+      },
+      "post": {
+        "tags": ["Customer"],
+        "summary": "Add a new Customer to the Inventory Management System",
+        "description": "Add a new Customer to the Inventory Management System",
+        "operationId": "addCustomer",
+        "requestBody": {
+          "description": "Create a new Customer in the store",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "ID": { "type": "integer", "example": 6 },
+                    "username": { "type": "string", "example": "zena" },
+                    "PhoneNumber": { "type": "integer", "example": "059838383" }
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "ID": { "type": "integer", "example": 6 },
+                      "username": { "type": "string", "example": "zena" },
+                      "PhoneNumber": {
+                        "type": "integer",
+                        "example": "059838383"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "405": { "description": "Invalid input" },
+          "404": {
+            "description": "the server cannot find the requested resource"
+          },
+          "201": {
+            "description": "the resources have been successfully created on the server"
+          },
+          "304": { "description": "Not modified" },
+          "510": {
+            "description": "extensions to the request are required for the server to fulfill it."
+          }
+        },
+        "security": [{ "petstore_auth": ["write:Customers", "read:Customers"] }]
+      }
+    },
+    "/Customer/findByUserName": {
+      "get": {
+        "tags": ["Customer"],
+        "summary": "Finds Customers by UserName",
+        "description": "Multiple UserName values can be provided with comma separated strings",
+        "operationId": "findCustomersByName",
+        "parameters": [
+          {
+            "name": "UserName",
+            "in": "query",
+            "description": "UserName values that need to be considered for filter",
+            "required": false,
+            "explode": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "ID": { "type": "integer", "example": 3 },
+                      "username": {
+                        "type": "string",
+                        "example": "AfefaKarakra"
+                      },
+                      "PhoneNumber": {
+                        "type": "integer",
+                        "example": "0593348940"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "description": "Invalid UserName" },
+          "202": {
+            "description": "the request has been accepted for processing"
+          }
+        },
+        "security": [{ "petstore_auth": ["write:Customers", "read:Customers"] }]
+      }
+    },
+    "/Customer/{CustomerId}": {
+      "get": {
+        "tags": ["Customer"],
+        "summary": "Find Customer by ID",
+        "description": "Returns a single Customer",
+        "operationId": "getCustomerById",
+        "parameters": [
+          {
+            "name": "CustomerId",
+            "in": "path",
+            "description": "ID of Customer to return",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "ID": { "type": "integer", "example": 3 },
+                      "username": {
+                        "type": "string",
+                        "example": "AfefaKarakra"
+                      },
+                      "PhoneNumber": {
+                        "type": "integer",
+                        "example": "0593348940"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "description": "Invalid ID supplied" },
+          "404": { "description": "Customer not found" },
+          "202": {
+            "description": "the request has been accepted for processing"
+          },
+          "302": {
+            "description": "the request has been accepted for processing"
+          },
+          "503": {
+            "description": "The server is not ready to handle the request"
+          }
+        },
+        "security": [
+          { "api_key": [] },
+          { "petstore_auth": ["write:pets", "read:pets"] }
+        ]
+      },
+      "patch": {
+        "tags": ["Customer"],
+        "summary": "Update Customer by ID",
+        "description": "Updates specific fields of a Customer identified by ID",
+        "operationId": "updateCustomerById",
+        "parameters": [
+          {
+            "name": "CustomerId",
+            "description": "ID of Customer to update",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": { "type": "string", "example": "Afefa" },
+                  "PhoneNumber": { "type": "integer", "example": "05922222" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully updated Customer",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ID": { "type": "integer", "example": 3 },
+                    "username": { "type": "string", "example": "Afefa" },
+                    "PhoneNumber": { "type": "integer", "example": "05922222" }
+                  }
+                }
+              }
+            }
+          },
+          "404": { "description": "Customer not found" },
+          "202": {
+            "description": "the request has been received but not completed yet"
+          },
+          "204": { "description": "No Content" },
+          "302": {
+            "description": "The URL of the requested resource has been changed temporarily"
+          },
+          "503": {
+            "description": "The server is not ready to handle the request"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Customer"],
+        "summary": "Deletes a Customer",
+        "description": "delete a Customer",
+        "operationId": "deleteCustomer",
+        "parameters": [
+          {
+            "name": "api_key",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "CustomertId",
+            "description": "Customer id to delete",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Successfully updated Customer" },
+          "202": {
+            "description": "the request has been received but not completed yet"
+          },
+          "405": { "description": "Invalid operation" },
+          "400": { "description": "Invalid ID supplied" },
+          "300": {
+            "description": "The request has more than one possible response"
+          },
+          "510": {
+            "description": "extensions to the request are required for the server to fulfill it"
+          }
+        }
+      }
+    },
+    "/Employee": {
+      "put": {
+        "tags": ["Employee"],
+        "summary": "Update an existing Employee",
+        "description": "Update an existing Employee by Id",
+        "operationId": "updateEmployees",
+        "requestBody": {
+          "description": "Update an existent Employee in Inventory Management System",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "ID": { "type": "integer", "example": 3 },
+                    "username": { "type": "string", "example": "Mostafaa" },
+                    "PhoneNumber": { "type": "integer", "example": "059876543" }
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "ID": { "type": "integer", "example": 3 },
+                      "username": { "type": "string", "example": "Mostafaa" },
+                      "PhoneNumber": {
+                        "type": "integer",
+                        "example": "059876543"
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "ID": { "type": "integer", "example": 3 },
+                      "username": {
+                        "type": "string",
+                        "example": "AfefaKarakra"
+                      },
+                      "PhoneNumber": {
+                        "type": "integer",
+                        "example": "0593348940"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "description": "Invalid ID supplied" },
+          "404": { "description": "customer not found" },
+          "405": { "description": "Validation exception" }
+        },
+        "security": [{ "petstore_auth": ["write:Customers", "read:Customers"] }]
+      },
+      "post": {
+        "tags": ["Employee"],
+        "summary": "Add a new Employee to the Inventory Management System",
+        "description": "Add a new Employee to the Inventory Management System",
+        "operationId": "addEmployee",
+        "requestBody": {
+          "description": "Create a new Employee",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "ID": { "type": "integer", "example": 8 },
+                    "username": { "type": "string", "example": "mohammad" },
+                    "PhoneNumber": {
+                      "type": "integer",
+                      "example": "0545218999"
+                    }
+                  }
+                }
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "ID": { "type": "integer", "example": 3 },
+                    "username": { "type": "string", "example": "momad" },
+                    "PhoneNumber": {
+                      "type": "integer",
+                      "example": "0593348940"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "ID": { "type": "integer", "example": 8 },
+                      "username": { "type": "string", "example": "mohammad" },
+                      "PhoneNumber": {
+                        "type": "integer",
+                        "example": "0545218999"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "405": { "description": "Invalid input" }
+        }
+      }
+    },
+    "/Employee/findByName": {
+      "get": {
+        "tags": ["Employee"],
+        "summary": "Finds Employee  by Name",
+        "description": "Multiple Name values can be provided with comma separated strings",
+        "operationId": "findEmployeeByName",
+        "parameters": [
+          {
+            "name": "Name",
+            "in": "query",
+            "description": "Names values that need to be considered for filter",
+            "required": false,
+            "explode": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "ID": { "type": "integer", "example": 100 },
+                      "username": { "type": "string", "example": "hassan" },
+                      "PhoneNumber": {
+                        "type": "integer",
+                        "example": "059323232"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "description": "Invalid Name value" }
+        }
+      }
+    },
+    "/Employee/{EmployeeId}": {
+      "get": {
+        "tags": ["Employee"],
+        "summary": "Find Employee by ID",
+        "description": "Returns a single Employee",
+        "operationId": "getEmployeeById",
+        "parameters": [
+          {
+            "name": "EmployeeId",
+            "in": "path",
+            "description": "ID of Employee to return",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "ID": { "type": "integer", "example": 8 },
+                      "username": { "type": "string", "example": "mohammad" },
+                      "PhoneNumber": {
+                        "type": "integer",
+                        "example": "0545218999"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "description": "Invalid ID supplied" },
+          "404": { "description": "Employee not found" }
+        }
+      },
+      "patch": {
+        "tags": ["Employee"],
+        "summary": "Update Employee by ID",
+        "description": "Updates specific fields of a Employee identified by ID",
+        "operationId": "updateEmployeeById",
+        "parameters": [
+          {
+            "name": "EmployeeId",
+            "description": "ID of Employee to update",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": { "type": "string", "example": "mohammad" },
+                  "PhoneNumber": { "type": "integer", "example": "05999999" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully updated Employee",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ID": { "type": "integer", "example": 3 },
+                    "username": { "type": "string", "example": "mohammad" },
+                    "PhoneNumber": { "type": "integer", "example": "05999999" }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "description": "Invalid ID supplied" },
+          "404": { "description": "Employee not found" }
+        }
+      },
+      "delete": {
+        "tags": ["Employee"],
+        "summary": "Deletes a Employee",
+        "description": "delete a Employee",
+        "operationId": "deleteEmployee",
+        "parameters": [
+          {
+            "name": "api_key",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "EmployeeId",
+            "description": "Employee id to delete",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "400": { "description": "Invalid ID supplied" },
+          "404": { "description": "Employee not found" }
+        }
+      }
+    },
+    "/Supervisors/SupervisorbyID": {
+      "get": {
+        "tags": ["Supervisors"],
+        "summary": "Find supervisor by ID",
+        "description": "Returns a single supervisor",
+        "operationId": "getsupervisorById",
+        "parameters": [
+          {
+            "name": "SupervisorId",
+            "description": "ID of Supervisor to return",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "ID": { "type": "integer", "example": 23 },
+                      "username": { "type": "string", "example": "khaled" },
+                      "PhoneNumber": {
+                        "type": "integer",
+                        "example": "0556782329"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "description": "Invalid ID supplied" },
+          "404": { "description": "Supervisore not found" }
+        }
+      },
+      "post": {
+        "tags": ["Supervisors"],
+        "summary": "Creates list of Supervisors with given input array",
+        "description": "Creates list of Supervisors with given input array",
+        "operationId": "createSupervisorsWithListInput",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "ID": { "type": "integer", "example": 23 },
+                    "username": { "type": "string", "example": "ruaa" },
+                    "PhoneNumber": {
+                      "type": "integer",
+                      "example": "0556782329"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "ID": { "type": "integer", "example": 23 },
+                      "username": { "type": "string", "example": "ruaa" },
+                      "PhoneNumber": {
+                        "type": "integer",
+                        "example": "0556782329"
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "ID": { "type": "integer", "example": 23 },
+                      "username": { "type": "string", "example": "ruaa" },
+                      "PhoneNumber": {
+                        "type": "integer",
+                        "example": "0556782329"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": { "description": "successful operation" }
+        }
+      }
+    },
+    "/Supervisors/{username}": {
+      "get": {
+        "tags": ["Supervisors"],
+        "summary": "Get Supervisors by user name",
+        "description": "",
+        "operationId": "getSupervisorsByUserName",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "The username that needs to be fetched. Use Supervisors1 for testing. ",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "ID": { "type": "integer", "example": 23 },
+                      "username": { "type": "string", "example": "ruaa" },
+                      "PhoneNumber": {
+                        "type": "integer",
+                        "example": "0556782329"
+                      }
+                    }
+                  }
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "ID": { "type": "integer", "example": 23 },
+                      "username": { "type": "string", "example": "ruaa" },
+                      "PhoneNumber": {
+                        "type": "integer",
+                        "example": "0556782329"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "description": "Invalid username supplied" },
+          "404": { "description": "UserName not found" }
+        }
+      },
+      "put": {
+        "tags": ["Supervisors"],
+        "summary": "Update Supervisors",
+        "operationId": "updateSupervisors",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "username that need to be deleted",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "description": "Update an existent Supervisors",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "ID": { "type": "integer", "example": 23 },
+                    "username": { "type": "string", "example": "ruaa" },
+                    "PhoneNumber": {
+                      "type": "integer",
+                      "example": "0556782329"
+                    }
+                  }
+                }
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "ID": { "type": "integer", "example": 23 },
+                    "username": { "type": "string", "example": "ruaa" },
+                    "PhoneNumber": {
+                      "type": "integer",
+                      "example": "0556782329"
+                    }
+                  }
+                }
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "ID": { "type": "integer", "example": 23 },
+                    "username": { "type": "string", "example": "ruaa" },
+                    "PhoneNumber": {
+                      "type": "integer",
+                      "example": "0556782329"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": { "default": { "description": "successful operation" } }
+      },
+      "delete": {
+        "tags": ["Supervisors"],
+        "summary": "Deletes a Supervisors",
+        "description": "delete a Supervisors",
+        "operationId": "deleteSupervisors",
+        "parameters": [
+          {
+            "name": "api_key",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "SupervisorsId",
+            "description": "Supervisors id to delete",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": { "400": { "description": "Invalid pet value" } }
+      }
+    },
+    "/Calls": {
+      "put": {
+        "tags": ["Calls"],
+        "summary": "Update an existing Calls",
+        "description": "Update an existing Calls by Id",
+        "operationId": "updateCalls",
+        "requestBody": {
+          "description": "Update an existent Calls in Inventory Management System",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "ID": { "type": "integer", "example": 200 },
+                    "audioText": { "type": "string", "example": "SalamAlekom" },
+                    "Time": { "type": "string", "format": "time" }
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "ID": { "type": "integer", "example": 200 },
+                      "audioText": {
+                        "type": "string",
+                        "example": "SalamAlekom"
+                      },
+                      "Time": { "type": "string", "format": "time" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "description": "Invalid ID supplied" },
+          "404": { "description": "Calls not found" },
+          "405": { "description": "Validation exception" }
+        }
+      },
+      "post": {
+        "tags": ["Calls"],
+        "summary": "Add a new Calls to the Inventory Management System",
+        "description": "Add a new Calls to the Inventory Management System",
+        "operationId": "addCalls",
+        "requestBody": {
+          "description": "Create a new Calls",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "ID": { "type": "integer", "example": 300 },
+                    "audioText": { "type": "string", "example": "RamdanKarem" },
+                    "Time": { "type": "string", "format": "time" }
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "ID": { "type": "integer", "example": 300 },
+                      "audioText": {
+                        "type": "string",
+                        "example": "RamdanKarem"
+                      },
+                      "Time": { "type": "string", "format": "time" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "405": { "description": "Invalid input" }
+        }
+      }
+    },
+    "/Calls/findById": {
+      "get": {
+        "tags": ["Calls"],
+        "summary": "Finds Calls by Id",
+        "description": "Multiple Calls values can be provided with comma separated strings",
+        "operationId": "findCallsById",
+        "parameters": [
+          {
+            "name": "Id",
+            "in": "query",
+            "description": "IDs values that need to be considered for filter",
+            "required": false,
+            "explode": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "ID": { "type": "integer", "example": 300 },
+                      "audioText": {
+                        "type": "string",
+                        "example": "RamdanKarem"
+                      },
+                      "Time": { "type": "string", "format": "time" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "description": "Invalid ID value" },
+          "404": { "description": "Call not found" }
+        }
+      },
+      "patch": {
+        "tags": ["Calls"],
+        "summary": "Update Calls by ID",
+        "description": "Updates specific fields of a Calls identified by ID",
+        "operationId": "updateCallsById",
+        "parameters": [
+          {
+            "name": "CallsId",
+            "description": "ID of Calls to update",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": { "type": "string", "example": "mohammad" },
+                  "PhoneNumber": { "type": "integer", "example": "05999999" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully updated Calls",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ID": { "type": "integer", "example": 3 },
+                    "username": { "type": "string", "example": "mohammad" },
+                    "PhoneNumber": { "type": "integer", "example": "05999999" }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "description": "Invalid ID supplied" },
+          "404": { "description": "Calls not found" }
+        }
+      },
+      "delete": {
+        "tags": ["Calls"],
+        "summary": "Deletes a Call",
+        "description": "delete a Call",
+        "operationId": "deleteCalls",
+        "parameters": [
+          {
+            "name": "api_key",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "CallID",
+            "description": "Call id to delete",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": { "400": { "description": "Invalid call value" } }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Customer": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int640000" },
+          "username": { "type": "string" },
+          "phoneNumber": { "type": "integer", "example": "05926287" }
+        }
+      },
+      "Employee": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int640000" },
+          "username": { "type": "string" },
+          "phoneNumber": { "type": "integer", "example": "0592687" }
+        }
+      },
+      "Supervisors": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int640000" },
+          "username": { "type": "string" },
+          "phoneNumber": { "type": "integer", "example": "0592687" }
+        }
+      },
+      "Calls": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int640000" },
+          "audioText": { "type": "string" },
+          "Time": { "type": "string", "format": "time" }
+        }
+      }
+    },
+    "securitySchemes": {
+      "petstore_auth": {
+        "type": "oauth2",
+        "flows": {
+          "implicit": {
+            "authorizationUrl": "https://petstore3.swagger.io/oauth/authorize",
+            "scopes": {
+              "write:pets": "modify pets in your account",
+              "read:pets": "read your pets"
+            }
+          }
+        }
+      },
+      "api_key": { "type": "apiKey", "name": "api_key", "in": "header" }
+    }
+  }
+}

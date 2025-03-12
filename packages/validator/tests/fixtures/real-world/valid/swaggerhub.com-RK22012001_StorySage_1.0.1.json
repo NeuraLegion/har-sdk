@@ -1,0 +1,376 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Story Sage",
+    "version": "1.0.1",
+    "description": "It is blog website where you can socially connect to share your views on a common platform."
+  },
+  "paths": {
+    "/blog/create": {
+      "post": {
+        "summary": "Create Blog",
+        "operationId": "create_blog_blog_create_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreateBlogRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/blog/user/{user_id}": {
+      "get": {
+        "summary": "Get User Post",
+        "operationId": "get_user_post_blog_user__user_id__get",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "User Id" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/blog/": {
+      "get": {
+        "summary": "Get All Blog",
+        "operationId": "get_all_blog_blog__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          }
+        }
+      }
+    },
+    "/blog/delete/{blog_id}": {
+      "delete": {
+        "summary": "Delete User Post",
+        "operationId": "delete_user_post_blog_delete__blog_id__delete",
+        "parameters": [
+          {
+            "name": "blog_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "Blog Id" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/blog/update/{user_id}": {
+      "put": {
+        "summary": "Update Blog",
+        "operationId": "update_blog_blog_update__user_id__put",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UpdateBlogRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/blog/comments/{blog_id}": {
+      "get": {
+        "summary": "Get Blog Comments",
+        "operationId": "get_blog_comments_blog_comments__blog_id__get",
+        "parameters": [
+          {
+            "name": "blog_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "Blog Id" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/blog/comment/{blog_id}": {
+      "patch": {
+        "summary": "Add Comment",
+        "operationId": "add_comment_blog_comment__blog_id__patch",
+        "parameters": [
+          {
+            "name": "blog_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "Blog Id" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UpdateCommentRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/signup": {
+      "post": {
+        "summary": "User Signup",
+        "operationId": "user_signup_user_signup_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [{ "$ref": "#/components/schemas/UserSchema" }],
+                "title": "User"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/UserSchema" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/login": {
+      "post": {
+        "summary": "User Login",
+        "operationId": "user_login_user_login_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [{ "$ref": "#/components/schemas/UserLoginSchema" }],
+                "title": "User"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/": {
+      "get": {
+        "summary": "Get All User",
+        "operationId": "get_all_user_user__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CreateBlogRequest": {
+        "properties": {
+          "userId": { "type": "string", "title": "Userid" },
+          "title": { "type": "string", "title": "Title" },
+          "image": { "$ref": "#/components/schemas/ImageSchema" },
+          "description": { "type": "string", "title": "Description" }
+        },
+        "type": "object",
+        "required": ["userId", "title", "image", "description"],
+        "title": "CreateBlogRequest"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": { "$ref": "#/components/schemas/ValidationError" },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "ImageSchema": {
+        "properties": {
+          "url": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Url"
+          },
+          "fileId": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Fileid"
+          }
+        },
+        "type": "object",
+        "required": ["url", "fileId"],
+        "title": "ImageSchema"
+      },
+      "UpdateBlogRequest": {
+        "properties": {
+          "image": { "$ref": "#/components/schemas/ImageSchema" },
+          "title": { "type": "string", "title": "Title" },
+          "description": { "type": "string", "title": "Description" }
+        },
+        "type": "object",
+        "required": ["image", "title", "description"],
+        "title": "UpdateBlogRequest"
+      },
+      "UpdateCommentRequest": {
+        "properties": {
+          "name": { "type": "string", "title": "Name" },
+          "comment": { "type": "string", "title": "Comment" }
+        },
+        "type": "object",
+        "required": ["name", "comment"],
+        "title": "UpdateCommentRequest"
+      },
+      "UserLoginSchema": {
+        "properties": {
+          "email": { "type": "string", "format": "email", "title": "Email" },
+          "password": { "type": "string", "title": "Password" }
+        },
+        "type": "object",
+        "title": "UserLoginSchema"
+      },
+      "UserSchema": {
+        "properties": {
+          "name": { "type": "string", "title": "Name" },
+          "email": { "type": "string", "title": "Email" },
+          "password": { "type": "string", "title": "Password" },
+          "image": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/ImageSchema" },
+              { "type": "null" }
+            ]
+          },
+          "about": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "About"
+          }
+        },
+        "type": "object",
+        "required": ["name", "email", "password", "image", "about"],
+        "title": "UserSchema"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": { "anyOf": [{ "type": "string" }, { "type": "integer" }] },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": { "type": "string", "title": "Message" },
+          "type": { "type": "string", "title": "Error Type" }
+        },
+        "type": "object",
+        "required": ["loc", "msg", "type"],
+        "title": "ValidationError"
+      }
+    }
+  }
+}

@@ -1,0 +1,1063 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Chzz-Market API",
+    "description": "Chzz-Market API",
+    "version": "1.0.0"
+  },
+  "servers": [{ "url": "https://chzz-store/api/v1" }],
+  "paths": {
+    "/users": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "POST users",
+        "operationId": "completeRegistration",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UserCreateRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "*/*": { "schema": { "type": "object" } } }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Users"],
+        "summary": "GET users",
+        "operationId": "getUserProfileById",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/UserProfileResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/profile": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "POST users/profile",
+        "operationId": "updateUserProfile",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserProfileRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateProfileResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/tokens/reissue": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "POST users/tokens/reissue",
+        "operationId": "reissue",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "*/*": { "schema": { "type": "object" } } }
+          }
+        }
+      }
+    },
+    "/users/logout": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "POST users/logout",
+        "operationId": "logout",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "*/*": { "schema": { "type": "object" } } }
+          }
+        }
+      }
+    },
+    "/users/customer-key": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "GET users/customer-key",
+        "operationId": "getCustomerKey",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "*/*": { "schema": { "type": "string" } } }
+          }
+        }
+      }
+    },
+    "/users/{nickname}": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "GET users/{nickname}",
+        "operationId": "getUserProfileByNickname",
+        "parameters": [
+          {
+            "name": "nickname",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/UserProfileResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/check/nickname/{nickname}": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "GET users/check/nickname/{nickname}",
+        "operationId": "checkNickname",
+        "parameters": [
+          {
+            "name": "nickname",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "*/*": { "schema": { "type": "object" } } }
+          }
+        }
+      }
+    },
+    "/bids/{bidId}/cancel": {
+      "patch": {
+        "tags": ["Bids"],
+        "summary": "PATCH bids/{bidId}/cancel",
+        "operationId": "cancelBid",
+        "parameters": [
+          {
+            "name": "bidId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "*/*": { "schema": { "type": "object" } } }
+          }
+        }
+      }
+    },
+    "/bids": {
+      "post": {
+        "tags": ["Bids"],
+        "summary": "POST bids",
+        "operationId": "createBid",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/BidCreateRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "*/*": { "schema": { "type": "object" } } }
+          }
+        }
+      },
+      "get": {
+        "summary": "GET bids",
+        "tags": ["Bids"],
+        "operationId": "findUsersBidHistory",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "*/*": { "schema": { "type": "object" } } }
+          }
+        }
+      }
+    },
+    "/addresses": {
+      "post": {
+        "tags": ["Addresses"],
+        "summary": "POST addresses",
+        "operationId": "addAddress",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/AddressDto" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "*/*": { "schema": { "type": "object" } } }
+          }
+        }
+      },
+      "get": {
+        "summary": "GET addresses",
+        "tags": ["Addresses"],
+        "operationId": "getAddresses",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "*/*": { "schema": { "type": "object" } } }
+          }
+        }
+      }
+    },
+    "/auctions": {
+      "post": {
+        "tags": ["Auctions"],
+        "summary": "POST auctions",
+        "operationId": "registerAuction",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": ["request", "images"],
+                "properties": {
+                  "request": {
+                    "$ref": "#/components/schemas/BaseRegisterRequest"
+                  },
+                  "images": {
+                    "type": "array",
+                    "items": { "$ref": "#/components/schemas/MultipartFile" }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/RegisterResponse" }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Auctions"],
+        "summary": "GET auctions",
+        "operationId": "getAuctionList",
+        "parameters": [
+          {
+            "name": "category",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ELECTRONICS",
+                "HOME_APPLIANCES",
+                "FASHION_AND_CLOTHING",
+                "FURNITURE_AND_INTERIOR",
+                "BOOKS_AND_MEDIA",
+                "SPORTS_AND_LEISURE",
+                "TOYS_AND_HOBBIES",
+                "OTHER"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "*/*": { "schema": { "type": "object" } } }
+          }
+        }
+      }
+    },
+    "/auctions/start": {
+      "post": {
+        "tags": ["Auctions"],
+        "summary": "POST auctions/start",
+        "operationId": "startAuction",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/StartAuctionRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/StartAuctionResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auctions/{auctionId}": {
+      "get": {
+        "tags": ["Auctions"],
+        "summary": "GET auctions/{auctionId}",
+        "operationId": "getAuctionDetails",
+        "parameters": [
+          {
+            "name": "auctionId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          },
+          {
+            "name": "viewType",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["FULL", "SIMPLE"],
+              "default": "FULL"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "*/*": { "schema": { "type": "object" } } }
+          }
+        }
+      }
+    },
+    "/auctions/history": {
+      "get": {
+        "tags": ["Auctions"],
+        "summary": "GET auctions/history",
+        "operationId": "getAuctionHistory",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "*/*": { "schema": { "type": "object" } } }
+          }
+        }
+      }
+    },
+    "/auctions/won": {
+      "get": {
+        "tags": ["Auctions"],
+        "summary": "GET auctions/won",
+        "operationId": "getWonAuctionHistory",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/WonAuctionResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auctions/lost": {
+      "get": {
+        "tags": ["Auctions"],
+        "summary": "GET auctions/lost",
+        "operationId": "getLostAuctionHistory",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/LostAuctionResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auctions/users/{nickname}": {
+      "get": {
+        "tags": ["Auctions"],
+        "summary": "GET auctions/users/{nickname}",
+        "operationId": "getUserAuctionList",
+        "parameters": [
+          {
+            "name": "nickname",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/UserAuctionResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auctions/best": {
+      "get": {
+        "tags": ["Auctions"],
+        "summary": "GET auctions/best",
+        "operationId": "bestAuctionList",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "*/*": { "schema": { "type": "object" } } }
+          }
+        }
+      }
+    },
+    "/auctions/imminent": {
+      "get": {
+        "tags": ["Auctions"],
+        "summary": "GET auctions/imminent",
+        "operationId": "imminentAuctionList",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "*/*": { "schema": { "type": "object" } } }
+          }
+        }
+      }
+    },
+    "/auctions/{auctionId}/bids": {
+      "get": {
+        "tags": ["Auctions"],
+        "summary": "GET auctions/{auctionId}/bids",
+        "operationId": "getBids",
+        "parameters": [
+          {
+            "name": "auctionId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "*/*": { "schema": { "type": "object" } } }
+          }
+        }
+      }
+    },
+    "/payments/approval": {
+      "post": {
+        "tags": ["Payments"],
+        "summary": "POST payments/approval",
+        "operationId": "approvePayment",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ApprovalRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "*/*": { "schema": { "type": "object" } } }
+          }
+        }
+      }
+    },
+    "/payments/order-id": {
+      "post": {
+        "tags": ["Payments"],
+        "summary": "POST payments/order-id",
+        "operationId": "createOrderId",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "*/*": { "schema": { "type": "object" } } }
+          }
+        }
+      }
+    },
+    "/products/{productId}": {
+      "patch": {
+        "tags": ["Products"],
+        "summary": "PATCH products/{productId}",
+        "operationId": "updateProduct",
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["request"],
+                "properties": {
+                  "request": {
+                    "$ref": "#/components/schemas/UpdateProductRequest"
+                  },
+                  "images": {
+                    "type": "array",
+                    "items": { "$ref": "#/components/schemas/MultipartFile" }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateProductResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Products"],
+        "summary": "DELETE products/{productId}",
+        "operationId": "deleteProduct",
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteProductResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Products"],
+        "summary": "GET products/{productId}",
+        "operationId": "getProductDetails",
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductDetailsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products/{productId}/likes": {
+      "post": {
+        "tags": ["Products"],
+        "summary": "POST products/{productId}/likes",
+        "operationId": "toggleProductLike",
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/LikeResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products": {
+      "get": {
+        "tags": ["Products"],
+        "summary": "GET products",
+        "operationId": "getProductList",
+        "parameters": [
+          {
+            "name": "category",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ELECTRONICS",
+                "HOME_APPLIANCES",
+                "FASHION_AND_CLOTHING",
+                "FURNITURE_AND_INTERIOR",
+                "BOOKS_AND_MEDIA",
+                "SPORTS_AND_LEISURE",
+                "TOYS_AND_HOBBIES",
+                "OTHER"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ProductResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products/categories": {
+      "get": {
+        "tags": ["Products"],
+        "summary": "GET products/categories",
+        "operationId": "getCategoryList",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/CategoryResponse" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products/users/{nickname}": {
+      "get": {
+        "tags": ["Products"],
+        "summary": "GET products/users/{nickname}",
+        "operationId": "getMyProductList",
+        "parameters": [
+          {
+            "name": "nickname",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ProductResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products/history": {
+      "get": {
+        "tags": ["Products"],
+        "summary": "GET products/history",
+        "operationId": "getLikedProductList",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ProductResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/notifications/{notificationId}/read": {
+      "post": {
+        "tags": ["Notifications"],
+        "summary": "POST notifications/{notificationId}/read",
+        "operationId": "readNotification",
+        "parameters": [
+          {
+            "name": "notificationId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "*/*": { "schema": { "type": "object" } } }
+          }
+        }
+      }
+    },
+    "/notifications/{notificationId}": {
+      "delete": {
+        "tags": ["Notifications"],
+        "summary": "DELETE notifications/{notificationId}",
+        "operationId": "deleteNotification",
+        "parameters": [
+          {
+            "name": "notificationId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "*/*": { "schema": { "type": "object" } } }
+          }
+        }
+      }
+    },
+    "/notifications": {
+      "get": {
+        "tags": ["Notifications"],
+        "summary": "GET notifications",
+        "operationId": "getNotifications",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "*/*": { "schema": { "type": "object" } } }
+          }
+        }
+      }
+    },
+    "/notifications/subscribe": {
+      "get": {
+        "tags": ["Notifications"],
+        "summary": "GET notifications/subscribe",
+        "operationId": "subscribe",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/event-stream": {
+                "schema": { "$ref": "#/components/schemas/SseEmitter" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "UserCreateRequest": {
+        "type": "object",
+        "properties": {
+          "nickname": { "type": "string" },
+          "bankName": { "type": "string" },
+          "accountNumber": { "type": "string" },
+          "bio": { "type": "string" },
+          "link": { "type": "string" }
+        }
+      },
+      "UpdateUserProfileRequest": {
+        "type": "object",
+        "properties": {
+          "nickname": { "type": "string" },
+          "bio": { "type": "string" },
+          "link": { "type": "string" }
+        }
+      },
+      "UpdateProfileResponse": {
+        "type": "object",
+        "properties": {
+          "nickname": { "type": "string" },
+          "bio": { "type": "string" },
+          "url": { "type": "string" }
+        }
+      },
+      "ParticipationCountsResponse": {
+        "type": "object",
+        "properties": {
+          "ongoingAuctionCount": { "type": "integer", "format": "int64" },
+          "successfulAuctionCount": { "type": "integer", "format": "int64" },
+          "failedAuctionCount": { "type": "integer", "format": "int64" }
+        }
+      },
+      "UserProfileResponse": {
+        "type": "object",
+        "properties": {
+          "nickname": { "type": "string" },
+          "bio": { "type": "string" },
+          "participationCount": {
+            "$ref": "#/components/schemas/ParticipationCountsResponse"
+          },
+          "preRegisterCount": { "type": "integer", "format": "int64" },
+          "registeredAuctionCount": { "type": "integer", "format": "int64" }
+        }
+      },
+      "BidCreateRequest": {
+        "type": "object",
+        "properties": {
+          "auctionId": { "type": "integer", "format": "int64" },
+          "amount": { "type": "integer", "format": "int64" }
+        }
+      },
+      "AddressDto": {
+        "type": "object",
+        "properties": {
+          "roadAddress": { "type": "string" },
+          "jibun": { "type": "string" },
+          "zipcode": { "type": "string" },
+          "detailAddress": { "type": "string" }
+        }
+      },
+      "BaseRegisterRequest": {
+        "type": "object",
+        "properties": {
+          "productName": { "type": "string" },
+          "description": { "type": "string" },
+          "category": {
+            "type": "string",
+            "enum": [
+              "ELECTRONICS",
+              "HOME_APPLIANCES",
+              "FASHION_AND_CLOTHING",
+              "FURNITURE_AND_INTERIOR",
+              "BOOKS_AND_MEDIA",
+              "SPORTS_AND_LEISURE",
+              "TOYS_AND_HOBBIES",
+              "OTHER"
+            ]
+          },
+          "minPrice": { "type": "integer", "format": "int32" },
+          "auctionRegisterType": {
+            "type": "string",
+            "enum": ["PRE_REGISTER", "REGISTER"]
+          }
+        }
+      },
+      "MultipartFile": { "type": "object", "properties": {} },
+      "RegisterResponse": { "type": "object", "properties": {} },
+      "StartAuctionRequest": {
+        "type": "object",
+        "properties": { "productId": { "type": "integer", "format": "int64" } }
+      },
+      "StartAuctionResponse": {
+        "type": "object",
+        "properties": {
+          "auctionId": { "type": "integer", "format": "int64" },
+          "productId": { "type": "integer", "format": "int64" },
+          "status": { "type": "string", "enum": ["PROCEEDING", "ENDED"] },
+          "endTime": { "type": "string", "format": "date-time" },
+          "message": { "type": "string" }
+        }
+      },
+      "WonAuctionResponse": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "name": { "type": "string" },
+          "cdnPath": { "type": "string" },
+          "minPrice": { "type": "integer", "format": "int32" },
+          "endDateTime": { "type": "string", "format": "date-time" },
+          "winningBid": { "type": "integer", "format": "int64" }
+        }
+      },
+      "LostAuctionResponse": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "name": { "type": "string" },
+          "cdnPath": { "type": "string" },
+          "minPrice": { "type": "integer", "format": "int32" },
+          "endDateTime": { "type": "string", "format": "date-time" },
+          "highestBid": { "type": "integer", "format": "int64" }
+        }
+      },
+      "UserAuctionResponse": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "status": { "type": "string", "enum": ["PROCEEDING", "ENDED"] },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "name": { "type": "string" },
+          "cdnPath": { "type": "string" },
+          "timeRemaining": { "type": "integer", "format": "int64" },
+          "minPrice": { "type": "integer", "format": "int64" },
+          "participantCount": { "type": "integer", "format": "int64" }
+        }
+      },
+      "ApprovalRequest": {
+        "type": "object",
+        "properties": {
+          "orderId": { "type": "string" },
+          "paymentKey": { "type": "string" },
+          "amount": { "type": "integer", "format": "int64" },
+          "auctionId": { "type": "integer", "format": "int64" }
+        }
+      },
+      "UpdateProductRequest": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "description": { "type": "string" },
+          "category": {
+            "type": "string",
+            "enum": [
+              "ELECTRONICS",
+              "HOME_APPLIANCES",
+              "FASHION_AND_CLOTHING",
+              "FURNITURE_AND_INTERIOR",
+              "BOOKS_AND_MEDIA",
+              "SPORTS_AND_LEISURE",
+              "TOYS_AND_HOBBIES",
+              "OTHER"
+            ]
+          },
+          "minPrice": { "type": "integer", "format": "int32" }
+        }
+      },
+      "UpdateProductResponse": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "name": { "type": "string" },
+          "description": { "type": "string" },
+          "category": {
+            "type": "string",
+            "enum": [
+              "ELECTRONICS",
+              "HOME_APPLIANCES",
+              "FASHION_AND_CLOTHING",
+              "FURNITURE_AND_INTERIOR",
+              "BOOKS_AND_MEDIA",
+              "SPORTS_AND_LEISURE",
+              "TOYS_AND_HOBBIES",
+              "OTHER"
+            ]
+          },
+          "minPrice": { "type": "integer", "format": "int32" },
+          "cdnPaths": { "type": "array", "items": { "type": "string" } }
+        }
+      },
+      "LikeResponse": {
+        "type": "object",
+        "properties": {
+          "isLiked": { "type": "boolean" },
+          "likeCount": { "type": "integer", "format": "int32" }
+        }
+      },
+      "DeleteProductResponse": {
+        "type": "object",
+        "properties": {
+          "productId": { "type": "integer", "format": "int64" },
+          "productName": { "type": "string" },
+          "likeCount": { "type": "integer", "format": "int32" },
+          "message": { "type": "string" }
+        }
+      },
+      "ProductResponse": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "isLiked": { "type": "boolean" },
+          "name": { "type": "string" },
+          "cdnPath": { "type": "string" },
+          "likeCount": { "type": "integer", "format": "int64" },
+          "minPrice": { "type": "integer", "format": "int32" }
+        }
+      },
+      "CategoryResponse": {
+        "type": "object",
+        "properties": {
+          "code": { "type": "string" },
+          "displayName": { "type": "string" }
+        }
+      },
+      "ProductDetailsResponse": {
+        "type": "object",
+        "properties": {
+          "productId": { "type": "integer", "format": "int64" },
+          "productName": { "type": "string" },
+          "sellerName": { "type": "string" },
+          "minPrice": { "type": "integer", "format": "int32" },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "description": { "type": "string" },
+          "likeCount": { "type": "integer", "format": "int64" },
+          "isLiked": { "type": "boolean" },
+          "imageUrls": { "type": "array", "items": { "type": "string" } }
+        }
+      },
+      "SseEmitter": {
+        "type": "object",
+        "properties": { "timeout": { "type": "integer", "format": "int64" } }
+      }
+    }
+  }
+}

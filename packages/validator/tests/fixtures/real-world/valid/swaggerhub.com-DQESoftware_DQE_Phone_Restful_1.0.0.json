@@ -1,0 +1,154 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Swagger Phone - RestFul",
+    "description": "RestFul Api of DQE Phone product\n\nSome useful links:\n- [DQE Helpcenter](https://helpcenter.dqe.tech/hc/en-gb/articles/19921823129361-Phone-Introduction)",
+    "termsOfService": "https://dqe.tech/privacy-policy/",
+    "contact": { "name": "DQE Support", "email": "support@dqe-software.com" },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://prod-swagger.dqe-software.net",
+      "description": "Swagger server, must be changed for the production environment (please contact the support)"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Phone validation",
+      "description": "Get the state of a phone number",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "https://helpcenter.dqe.tech/hc/en-gb/articles/19921823129361-Phone-Introduction"
+      }
+    }
+  ],
+  "paths": {
+    "/v1/phonelookup/": {
+      "get": {
+        "tags": ["Phone validation"],
+        "summary": "Get the state of a phone number",
+        "description": "By passing in the appropriate options, you can validate a phone number",
+        "parameters": [
+          {
+            "name": "Number",
+            "in": "query",
+            "description": "Pass the phone number",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "Country",
+            "in": "query",
+            "description": "Pass the ISO 3 code of the country",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "Licence",
+            "in": "query",
+            "description": "Pass your API key",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "Format",
+            "in": "query",
+            "description": "Pass the code format to reformate the phone number",
+            "required": false,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "Activity",
+            "in": "query",
+            "description": "Pass Y if you want to get the activity of the phone number",
+            "required": false,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get the phone number validation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/PhoneResponse" }
+              }
+            }
+          },
+          "400": {
+            "description": "bad request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "401": {
+            "description": "unauthorized_client",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "PhoneResponse": {
+        "type": "object",
+        "properties": {
+          "Found": { "type": "integer", "example": 1 },
+          "Phones": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Phone" }
+          }
+        }
+      },
+      "Phone": {
+        "type": "object",
+        "properties": {
+          "IdError": { "type": "string", "example": "1" },
+          "Ported": { "type": "string", "example": "" },
+          "InputNumber": { "type": "string", "example": "0606060606" },
+          "Carrier": {
+            "type": "string",
+            "example": "E*MESSAGE WIRELESS INFORMATION SERVICES FRANCE"
+          },
+          "Location": { "type": "string", "example": "METROPOLE" },
+          "OldCarrier": {
+            "type": "string",
+            "example": "E*MESSAGE WIRELESS INFORMATION SERVICES FRANCE"
+          },
+          "NumberFormatted": { "type": "string", "example": "0606060606" },
+          "Type": { "type": "string", "example": "MOBILE" }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "status": { "type": "integer", "example": 400 },
+          "message": { "type": "string", "example": "Missing parameters" },
+          "details": { "type": "string", "example": "Number" },
+          "error": { "type": "string", "example": "bad request" }
+        }
+      },
+      "UnauthorizedErrorResponse": {
+        "type": "object",
+        "properties": {
+          "status": { "type": "integer", "example": 401 },
+          "message": {
+            "type": "string",
+            "example": "Your licence is not allowed to cover this functionnality"
+          },
+          "details": { "type": "string", "example": "deded" },
+          "error": { "type": "string", "example": "unauthorized_client" }
+        }
+      }
+    }
+  }
+}

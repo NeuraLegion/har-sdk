@@ -1,0 +1,607 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "sila-app",
+    "description": "Документация к API проекта [sila-app](https://github.com/YuryVolynets/sila-app)",
+    "version": "1.0.0"
+  },
+  "tags": [
+    { "name": "user", "description": "Действия с пользователями" },
+    { "name": "folder", "description": "Действия с категориями" },
+    { "name": "product", "description": "Действия с товарами" },
+    { "name": "cart", "description": "Действия с корзиной" },
+    { "name": "order", "description": "Действия с заказами" }
+  ],
+  "paths": {
+    "/api/user/register": {
+      "post": {
+        "tags": ["user"],
+        "summary": "Регистрация пользователя",
+        "operationId": "userRegister",
+        "requestBody": { "$ref": "#/components/requestBodies/userRegiser" },
+        "responses": {
+          "200": { "$ref": "#/components/responses/user_200" },
+          "422": { "$ref": "#/components/responses/user_422" }
+        }
+      }
+    },
+    "/api/user/login": {
+      "post": {
+        "tags": ["user"],
+        "summary": "Авторизация пользователя",
+        "operationId": "userLogin",
+        "requestBody": { "$ref": "#/components/requestBodies/userLogin" },
+        "responses": {
+          "200": { "$ref": "#/components/responses/user_200" },
+          "401": { "$ref": "#/components/responses/401" },
+          "422": { "$ref": "#/components/responses/user_422" }
+        }
+      }
+    },
+    "/api/folder/tree": {
+      "get": {
+        "tags": ["folder"],
+        "summary": "Получить дерево категорий",
+        "operationId": "folderTree",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Folder" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/product/{slug}": {
+      "get": {
+        "tags": ["product"],
+        "summary": "Получить товар по ЧПУ",
+        "operationId": "productGet",
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "description": "ЧПУ товара",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Product" }
+              }
+            }
+          },
+          "404": { "$ref": "#/components/responses/404" }
+        }
+      }
+    },
+    "/api/product/filter": {
+      "post": {
+        "tags": ["product"],
+        "summary": "Отфильтровать товары",
+        "operationId": "productFilter",
+        "requestBody": { "$ref": "#/components/requestBodies/productFilter" },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Product" }
+                }
+              }
+            }
+          },
+          "422": { "$ref": "#/components/responses/user_422" }
+        }
+      }
+    },
+    "/api/cart/{uuid}": {
+      "get": {
+        "tags": ["cart"],
+        "summary": "Получить корзину",
+        "operationId": "cartGet",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "description": "UUID корзины",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Cart" }
+              }
+            }
+          },
+          "404": { "$ref": "#/components/responses/404" }
+        }
+      }
+    },
+    "/api/cart": {
+      "post": {
+        "tags": ["cart"],
+        "summary": "Изменить корзину",
+        "operationId": "cartEdit",
+        "requestBody": { "$ref": "#/components/requestBodies/cartEdit" },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "uuid": {
+                      "type": "string",
+                      "examples": ["ea0d648d-a3d7-4675-b983-5a9814382b83"]
+                    }
+                  },
+                  "required": ["uuid"]
+                }
+              }
+            }
+          },
+          "422": { "$ref": "#/components/responses/user_422" }
+        }
+      },
+      "delete": {
+        "tags": ["cart"],
+        "summary": "Удалить товар из корзины",
+        "operationId": "cartDelete",
+        "requestBody": { "$ref": "#/components/requestBodies/cartDelete" },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "uuid": {
+                      "type": "string",
+                      "examples": ["ea0d648d-a3d7-4675-b983-5a9814382b83"]
+                    }
+                  },
+                  "required": ["uuid"]
+                }
+              }
+            }
+          },
+          "422": { "$ref": "#/components/responses/user_422" }
+        }
+      }
+    },
+    "/api/order/{uuid}": {
+      "get": {
+        "tags": ["order"],
+        "summary": "Получить заказ",
+        "operationId": "orderGet",
+        "parameters": [
+          {
+            "name": "uuid",
+            "in": "path",
+            "description": "UUID заказа",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Order" }
+              }
+            }
+          },
+          "404": { "$ref": "#/components/responses/404" }
+        }
+      }
+    },
+    "/api/order": {
+      "get": {
+        "tags": ["order"],
+        "summary": "Получить заказы пользователя",
+        "operationId": "ordersGet",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Order" }
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/401" }
+        },
+        "security": [{ "bearerAuth": [] }]
+      },
+      "post": {
+        "tags": ["order"],
+        "summary": "Создать заказ",
+        "operationId": "orderMake",
+        "requestBody": { "$ref": "#/components/requestBodies/orderMake" },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "uuid": {
+                      "type": "string",
+                      "examples": ["ea0d648d-a3d7-4675-b983-5a9814382b83"]
+                    }
+                  },
+                  "required": ["uuid"]
+                }
+              }
+            }
+          },
+          "422": { "$ref": "#/components/responses/user_422" }
+        },
+        "security": [{ "bearerAuth": [] }]
+      }
+    }
+  },
+  "components": {
+    "examples": {
+      "Folder": {
+        "value": {
+          "id": 1,
+          "name": "folder_1",
+          "children": [{ "id": 2, "name": "folder_1_1", "children": [] }]
+        }
+      }
+    },
+    "requestBodies": {
+      "userRegiser": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": { "type": "string", "examples": ["username"] },
+                "email": {
+                  "type": "string",
+                  "format": "email",
+                  "examples": ["user@domain.com"]
+                },
+                "phone": { "type": "string", "examples": ["123456"] },
+                "password": {
+                  "type": "string",
+                  "format": "password",
+                  "examples": ["password"]
+                }
+              },
+              "required": ["name", "email", "password"]
+            }
+          }
+        }
+      },
+      "userLogin": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "format": "email",
+                  "examples": ["user@domain.com"]
+                },
+                "password": {
+                  "type": "string",
+                  "format": "password",
+                  "examples": ["password"]
+                }
+              },
+              "required": ["email", "password"]
+            }
+          }
+        }
+      },
+      "productFilter": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "folders": {
+                  "type": "array",
+                  "items": { "type": "integer", "examples": [1] }
+                },
+                "price": {
+                  "type": "object",
+                  "properties": {
+                    "min": { "type": "number", "examples": [123.45] },
+                    "max": { "type": "number", "examples": [543.21] }
+                  }
+                },
+                "param": {
+                  "type": "object",
+                  "properties": {
+                    "length": {
+                      "type": "object",
+                      "properties": {
+                        "min": { "type": "number", "examples": [123.45] },
+                        "max": { "type": "number", "examples": [543.21] }
+                      }
+                    },
+                    "width": {
+                      "type": "object",
+                      "properties": {
+                        "min": { "type": "number", "examples": [123.45] },
+                        "max": { "type": "number", "examples": [543.21] }
+                      }
+                    },
+                    "height": {
+                      "type": "object",
+                      "properties": {
+                        "min": { "type": "number", "examples": [123.45] },
+                        "max": { "type": "number", "examples": [543.21] }
+                      }
+                    },
+                    "weight": {
+                      "type": "object",
+                      "properties": {
+                        "min": { "type": "number", "examples": [123.45] },
+                        "max": { "type": "number", "examples": [543.21] }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "cartEdit": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "uuid": {
+                  "type": "string",
+                  "examples": ["ea0d648d-a3d7-4675-b983-5a9814382b83"]
+                },
+                "products": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": { "type": "integer", "examples": [1] },
+                      "number": { "type": "integer", "examples": [10] }
+                    },
+                    "required": ["id", "number"]
+                  }
+                }
+              },
+              "required": ["products"]
+            }
+          }
+        }
+      },
+      "cartDelete": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "uuid": {
+                  "type": "string",
+                  "examples": ["ea0d648d-a3d7-4675-b983-5a9814382b83"]
+                },
+                "products": {
+                  "type": "array",
+                  "items": { "type": "integer", "examples": [1] }
+                }
+              },
+              "required": ["uuid", "products"]
+            }
+          }
+        }
+      },
+      "orderMake": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "cart_uuid": {
+                  "type": "string",
+                  "examples": ["ea0d648d-a3d7-4675-b983-5a9814382b83"]
+                },
+                "email": { "type": "string", "examples": ["user@domain.com"] },
+                "phone": { "type": "string", "examples": ["123456"] }
+              },
+              "required": ["cart_uuid"]
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "401": {
+        "description": "Ошибка авторизации",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "examples": ["Unauthenticated."]
+                }
+              },
+              "required": ["message"]
+            }
+          }
+        }
+      },
+      "404": {
+        "description": "Не найдено",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": { "type": "string", "examples": ["Not found."] }
+              },
+              "required": ["message"]
+            }
+          }
+        }
+      },
+      "user_200": {
+        "description": "OK",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "boolean", "examples": [true] },
+                "message": {
+                  "type": "string",
+                  "examples": ["User registered"]
+                },
+                "token": {
+                  "type": "string",
+                  "examples": [
+                    "1|eN7LgcmBwLUElBtiELr9wF9xw4dOAKxID1M1AB5295dbeff1"
+                  ]
+                }
+              },
+              "required": ["status", "message", "token"]
+            }
+          }
+        }
+      },
+      "user_422": {
+        "description": "Ошибка валидации",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "boolean", "examples": [false] },
+                "message": {
+                  "type": "string",
+                  "examples": ["Validation error"]
+                },
+                "errors": {
+                  "type": "object",
+                  "examples": [{ "email": ["The selected email is invalid."] }]
+                }
+              },
+              "required": ["status", "message", "errors"]
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "Cart": {
+        "type": "object",
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "examples": ["ea0d648d-a3d7-4675-b983-5a9814382b83"]
+          },
+          "products": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": { "type": "integer", "examples": [1] },
+                "number": { "type": "integer", "examples": [10] }
+              }
+            }
+          }
+        },
+        "required": ["uuid", "products"]
+      },
+      "Folder": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "examples": [1] },
+          "name": { "type": "string", "examples": ["folder_1"] },
+          "children": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Folder" },
+            "examples": [[{ "id": 2, "name": "folder_1_1", "children": [] }]]
+          }
+        },
+        "required": ["id", "name", "children"]
+      },
+      "Order": {
+        "type": "object",
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "examples": ["ea0d648d-a3d7-4675-b983-5a9814382b83"]
+          },
+          "email": { "type": "string", "examples": ["user@domain.com"] },
+          "phone": { "type": "string", "examples": ["123456"] },
+          "products": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": { "type": "string", "examples": ["prod"] },
+                "price": { "type": "number", "examples": [123.45] },
+                "number": { "type": "integer", "examples": [10] }
+              }
+            }
+          }
+        },
+        "required": ["uuid", "products"]
+      },
+      "Product": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "examples": [1] },
+          "name": { "type": "string", "examples": ["prod 1"] },
+          "description": {
+            "type": "string",
+            "examples": ["description prod 1"]
+          },
+          "slug": { "type": "string", "examples": ["prod-1"] },
+          "folder_id": { "type": "integer", "examples": [1] },
+          "price": { "type": "number", "examples": [123.45] },
+          "length": { "type": "number", "examples": [123.45] },
+          "width": { "type": "number", "examples": [123.45] },
+          "height": { "type": "number", "examples": [123.45] },
+          "weight": { "type": "number", "examples": [123.45] }
+        },
+        "required": ["id", "name", "slug", "folder_id", "price"]
+      }
+    },
+    "securitySchemes": { "bearerAuth": { "type": "http", "scheme": "bearer" } }
+  }
+}

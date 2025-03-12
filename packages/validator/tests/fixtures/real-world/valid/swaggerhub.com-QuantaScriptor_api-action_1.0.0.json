@@ -1,0 +1,164 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "ChatGPT Actions Management API",
+    "description": "API for creating, updating, deleting, and listing API schemas for ChatGPT actions.",
+    "version": "1.0.0"
+  },
+  "servers": [{ "url": "https://api.chatgpt-actions.com/v1" }],
+  "paths": {
+    "/schemas": {
+      "get": {
+        "summary": "List all API schemas",
+        "operationId": "listSchemas",
+        "responses": {
+          "200": {
+            "description": "A list of API schemas",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": { "type": "string" },
+                      "name": { "type": "string" },
+                      "schema": { "type": "object" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new API schema",
+        "operationId": "createSchema",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string" },
+                  "schema": { "type": "object" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "API schema created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "string" },
+                    "name": { "type": "string" },
+                    "schema": { "type": "object" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/schemas/{id}": {
+      "get": {
+        "summary": "Get an API schema by ID",
+        "operationId": "getSchemaById",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "An API schema",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "string" },
+                    "name": { "type": "string" },
+                    "schema": { "type": "object" }
+                  }
+                }
+              }
+            }
+          },
+          "404": { "description": "Schema not found" }
+        }
+      },
+      "put": {
+        "summary": "Update an API schema by ID",
+        "operationId": "updateSchemaById",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string" },
+                  "schema": { "type": "object" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "API schema updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "string" },
+                    "name": { "type": "string" },
+                    "schema": { "type": "object" }
+                  }
+                }
+              }
+            }
+          },
+          "404": { "description": "Schema not found" }
+        }
+      },
+      "delete": {
+        "summary": "Delete an API schema by ID",
+        "operationId": "deleteSchemaById",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "204": { "description": "Schema deleted" },
+          "404": { "description": "Schema not found" }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,334 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "RapidSOS Workflow Update API",
+    "description": "An API to update requests for emergency services and send alarm updates. This endpoint is the same as the [RapidSOS Workflow API](https://rapidsos.portal.swaggerhub.com/tech_partners/default/rapidsos-workflow-api-v-1-0-0), but uses different schemas. <br /> <br /> <strong>In order to create a bearer token for an authenticated request, you must first make a request to the [Token Endpoint](https://developer.rapidsos.com/api-catalog/authentication-token-ingress-and-egress-apis)</strong>",
+    "termsOfService": "https://rapidsos.com/legal/terms-of-use/",
+    "contact": { "email": "integrations@rapidsos.com" },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://{environment}.rapidsos.com/v1/rem",
+      "description": "Environment for testing and developing a RapidSOS workflow integration.",
+      "variables": {
+        "environment": {
+          "enum": ["api-sandbox", "api"],
+          "default": "api-sandbox"
+        }
+      }
+    }
+  ],
+  "tags": [
+    {
+      "name": "Trigger Workflow",
+      "description": "Operations for alarm escalation"
+    }
+  ],
+  "paths": {
+    "/trigger": {
+      "post": {
+        "tags": ["Trigger Workflow"],
+        "summary": "Triggers a RapidSOS workflow",
+        "description": "Base payload for triggering your workflows. Retrieve token from the [Token Endpoint](https://developer.rapidsos.com/api-catalog/authentication-token-ingress-and-egress-apis). <br /> <br />",
+        "operationId": "triggerFlow",
+        "requestBody": {
+          "description": "Default schema. New fields can be added on a per customer basis. <br /> <br /> <strong>For location and data updates, the schemas documented [here](https://rapidsos.portal.swaggerhub.com/tech_partners/default/rapidsos-workflow-api-v-1-0-0) are enforced.</strong>",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/TriggerFlowSchema" },
+              "examples": {
+                "locationUpdate": {
+                  "value": {
+                    "callflow": "locationUpdate",
+                    "blocking": false,
+                    "live_call": false,
+                    "test_mode": false,
+                    "variables": {
+                      "alert_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                      "emergency_location": {
+                        "latitude": "33.22123123",
+                        "longitude": "-122.334243324"
+                      }
+                    }
+                  }
+                },
+                "dataUpdate": {
+                  "value": {
+                    "callflow": "dataUpdate",
+                    "blocking": false,
+                    "live_call": false,
+                    "test_mode": false,
+                    "variables": {
+                      "alert_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                      "basic_info": {
+                        "name": "RapidSOS Tester",
+                        "phone_number": "+15556768877",
+                        "language": "english",
+                        "client_id": "123455",
+                        "role": "Principal"
+                      },
+                      "video_media": [
+                        {
+                          "url": "https://[...your-string...].mp4",
+                          "type": "CLIP"
+                        }
+                      ]
+                    }
+                  }
+                },
+                "cancel": {
+                  "value": {
+                    "callflow": "cancel",
+                    "blocking": false,
+                    "live_call": false,
+                    "test_mode": false,
+                    "variables": {
+                      "alert_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful account creation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ResponseSchema" }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ResponseSchema" }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ResponseSchema" }
+              }
+            }
+          },
+          "404": {
+            "description": "Flow not found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ResponseSchema" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ResponseSchema" }
+              }
+            }
+          },
+          "503": {
+            "description": "Server is at capacity",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ResponseSchema" }
+              }
+            }
+          }
+        },
+        "security": [{ "bearerAuth": [] }]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": { "bearerAuth": { "type": "http", "scheme": "bearer" } },
+    "schemas": {
+      "TriggerFlowSchema": {
+        "properties": {
+          "blocking": {
+            "type": "boolean",
+            "description": "does the client expect an action to occur first before returning an API response",
+            "examples": [true],
+            "default": false
+          },
+          "callflow": {
+            "type": "string",
+            "description": "the RapidSOS provided callflow name to trigger",
+            "examples": ["BasicFlow"]
+          },
+          "live_call": {
+            "type": "boolean",
+            "description": "if 911 call routing used, must always be true in Production",
+            "examples": [true],
+            "default": false
+          },
+          "test_mode": {
+            "type": "boolean",
+            "description": "do not allow dispatch to 911",
+            "examples": [true],
+            "default": false
+          },
+          "variables": {
+            "properties": {
+              "alert_id": {
+                "type": "string",
+                "format": "uuid",
+                "description": "RapidSOS ID provided from the original workflow request"
+              }
+            },
+            "required": ["alert_id"],
+            "type": "object"
+          }
+        },
+        "required": [
+          "blocking",
+          "callflow",
+          "live_call",
+          "test_mode",
+          "variables"
+        ],
+        "type": "object"
+      },
+      "ResponseSchema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": ["integer", "null"],
+            "description": "0 for success, otherwise error-code"
+          },
+          "detail": {
+            "type": ["string", "null", "array", "object"],
+            "description": "Success or error message"
+          },
+          "id": {
+            "type": ["string", "null"],
+            "format": "uuid",
+            "description": "RapidSOS ID for the request"
+          }
+        }
+      },
+      "WebhookSchema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "RapidSOS ID for the request"
+          },
+          "eventId": {
+            "type": "string",
+            "description": "partners specific ID.",
+            "examples": ["asdfjewayfgwafe"]
+          },
+          "userId": {
+            "type": "string",
+            "description": "Equivalent of user URI when provided. Else defaults to eventId",
+            "examples": ["asdfjewayfgwafe"]
+          },
+          "verb": {
+            "type": "string",
+            "description": "action being taken",
+            "enum": [
+              "flow.status.triggerReceived",
+              "flow.status.duplicateRequest",
+              "flow.status.callingUser",
+              "flow.status.primaryConfirm",
+              "flow.status.primaryCancel",
+              "flow.status.primaryInvalidResponse",
+              "flow.status.primaryNoResponse",
+              "flow.status.primaryContactSupport",
+              "flow.status.callingContact",
+              "flow.status.contactConfirm",
+              "flow.status.contactCancel",
+              "flow.status.primaryContactInvalidResponse",
+              "flow.status.contactNoResponse",
+              "flow.status.noAnswer",
+              "flow.status.groupSms",
+              "flow.status.initiateSMS",
+              "flow.status.agentChatInitiated",
+              "flow.status.agentChatEnded",
+              "flow.status.smsNoResponse",
+              "flow.status.smsConfirm",
+              "flow.status.smsCancel",
+              "flow.status.smsFail",
+              "flow.status.monitoring",
+              "flow.status.monitoringFail",
+              "flow.status.monitoring_authorities_dispatched",
+              "flow.status.monitoring_event_canceled",
+              "flow.status.flowEnd",
+              "flow.update.location",
+              "flow.update.data",
+              "flow.update.media"
+            ],
+            "examples": ["flow.status.triggerReceived"]
+          },
+          "message": {
+            "type": ["string"],
+            "description": "comments about the action",
+            "enum": [
+              "RapidSOS received data.",
+              "Sending a text message to the user to give next steps.",
+              "Agent has made first contact with the user via text message",
+              "Agent has made first contact with the user via a call",
+              "Chat has initiated with user and agent.",
+              "Chat has been concluded.",
+              "Duplicate requests for the same user were received",
+              "RapidSOS made location and data updates",
+              "Signaling Monitoring",
+              "Attempts to signal monitoring have failed. Our team is investigating the issue. Please inform user to contact emergency services directly.",
+              "There was an issue sending text messages to the user. Please have user call emergency services directly.",
+              "RapidSOS flow ended."
+            ],
+            "examples": ["RapidSOS received data."]
+          },
+          "timestamp": {
+            "type": "number",
+            "format": null,
+            "description": "the time the event occurred. Unix timestamp",
+            "examples": [1722848079]
+          }
+        },
+        "required": ["id", "eventId", "userId", "verb", "message", "timestamp"]
+      }
+    }
+  },
+  "webhooks": {
+    "Standard": {
+      "post": {
+        "tags": ["Standard Webhooks"],
+        "summary": "Handles various webhook events",
+        "description": "Webhook to handle different events. The responses listed are expected to be supported by the Partner's site.",
+        "operationId": "standardWebhooks",
+        "requestBody": {
+          "description": "Webhook event data",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/WebhookSchema" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Return a 200 status to indicate that the data was received successfully"
+          },
+          "400": {
+            "description": "Return a 400 status to indicate that the data failed to send"
+          },
+          "401": {
+            "description": "Return a 401 status to indicate that the request is unauthorized"
+          },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" },
+          "503": { "description": "Server is at capacity" }
+        }
+      }
+    }
+  }
+}

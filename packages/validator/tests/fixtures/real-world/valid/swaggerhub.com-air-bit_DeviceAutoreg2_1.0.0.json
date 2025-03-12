@@ -1,0 +1,938 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "AIRBIT Device Auto-registration REST API",
+    "description": "This API is intended to work with the application **AIRBIT IoT Workspace** .",
+    "contact": { "name": "AIRBIT", "url": "https://air-bit.ru/" },
+    "version": "1.0.0"
+  },
+  "servers": [
+    { "url": "http://geo-api.air-bit.ru:8080/", "description": "Mock Server" }
+  ],
+  "paths": {
+    "/auto-registration/devices/": {
+      "post": {
+        "tags": ["Device auto-registration"],
+        "summary": "Adds device to the IoT platform",
+        "description": "Used to add a device to the IoT platform for further use. Should only be used after at least one log operation has been successfully completed.",
+        "operationId": "add_device_auto_registration_devices__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/DeviceNameScheme" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "403": {
+            "description": "No access",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/CommonError" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "HTTPBasic": [] }]
+      }
+    },
+    "/auto-registration/devices/log/": {
+      "post": {
+        "tags": ["Device auto-registration"],
+        "summary": "Log device information",
+        "description": "Used to periodically log device information. Sent automatically when the configuration software is connected to the device",
+        "operationId": "device_log_auto_registration_devices_log__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/DeviceInfoScheme" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "403": {
+            "description": "No access",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/CommonError" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "APIKeyHeader": [] }]
+      }
+    },
+    "/auto-registration/configs/": {
+      "get": {
+        "tags": ["Device auto-registration"],
+        "summary": "Get a list of device configurations",
+        "description": "Get a list of device configurations saved on the IoT platform",
+        "operationId": "get_configs_auto_registration_configs__get",
+        "security": [{ "HTTPBasic": [] }],
+        "parameters": [
+          {
+            "name": "model_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "device model identifier",
+              "title": "Model Id"
+            },
+            "description": "device model identifier",
+            "example": 98
+          },
+          {
+            "name": "firmware",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "device firmware version",
+              "title": "Firmware"
+            },
+            "description": "device firmware version",
+            "example": "1.6"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "the part of the device configuration name (search by name)",
+              "title": "Name"
+            },
+            "description": "the part of the device configuration name (search by name)",
+            "example": "config"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/ConfigScheme" },
+                  "title": "Response Get Configs Auto Registration Configs  Get"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "No access",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/CommonError" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Device auto-registration"],
+        "summary": "Saving device configuration on the IoT platform",
+        "description": "Used to back up user configurations on the IoT platform for future use",
+        "operationId": "add_config_auto_registration_configs__post",
+        "security": [{ "HTTPBasic": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ConfigCreateScheme" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ConfigScheme" }
+              }
+            }
+          },
+          "403": {
+            "description": "No access",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/CommonError" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auto-registration/configs/{id}/": {
+      "get": {
+        "tags": ["Device auto-registration"],
+        "summary": "Get a single device configuration",
+        "description": "Get a single device configuration saved on the IoT platform",
+        "operationId": "get_config_auto_registration_configs__id___get",
+        "security": [{ "HTTPBasic": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "unique config id",
+              "title": "Id"
+            },
+            "description": "unique config id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ConfigScheme" }
+              }
+            }
+          },
+          "403": {
+            "description": "No access",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/CommonError" }
+              }
+            }
+          },
+          "404": {
+            "description": "Config not found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/CommonError" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Device auto-registration"],
+        "summary": "Update device configuration on the IoT platform",
+        "description": "Used to back up user configurations on the IoT platform for future use",
+        "operationId": "update_config_auto_registration_configs__id___put",
+        "security": [{ "HTTPBasic": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "title": "Id" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ConfigCreateScheme" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ConfigScheme" }
+              }
+            }
+          },
+          "403": {
+            "description": "No access",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/CommonError" }
+              }
+            }
+          },
+          "404": {
+            "description": "Config not found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/CommonError" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auto-registration/firmwares/": {
+      "get": {
+        "tags": ["Device auto-registration"],
+        "summary": "Get a list of firmwares",
+        "description": "Get a list of firmware available on the IoT platform",
+        "operationId": "get_firmwares_auto_registration_firmwares__get",
+        "security": [{ "APIKeyHeader": [] }],
+        "parameters": [
+          {
+            "name": "model_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "device model identifier",
+              "title": "Model Id"
+            },
+            "description": "device model identifier",
+            "example": 98
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "the part of the firmware name (search by name)",
+              "title": "Name"
+            },
+            "description": "the part of the firmware name (search by name)",
+            "example": "pulse-14.05.01"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/FirmwareScheme" },
+                  "title": "Response Get Firmwares Auto Registration Firmwares  Get"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "No access",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/CommonError" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auto-registration/firmwares/{id}/": {
+      "get": {
+        "tags": ["Device auto-registration"],
+        "summary": "Get a firmware data",
+        "description": "Get a firmware data available on the IoT platform",
+        "operationId": "get_firmware_auto_registration_firmwares__id___get",
+        "security": [{ "APIKeyHeader": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "description": "unique firmware id",
+              "title": "Id"
+            },
+            "description": "unique firmware id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/FirmwareScheme" }
+              }
+            }
+          },
+          "403": {
+            "description": "No access",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/CommonError" }
+              }
+            }
+          },
+          "404": {
+            "description": "Firmware not found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/CommonError" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auto-registration/data/push/": {
+      "post": {
+        "tags": ["Device auto-registration"],
+        "summary": "Sending device measurement data to the IoT platform",
+        "description": "Used to send to the IoT platform measurements of accumulated by device for the period",
+        "operationId": "data_push_auto_registration_data_push__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/DeviceDataScheme" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          },
+          "403": {
+            "description": "No access",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/CommonError" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        },
+        "security": [{ "HTTPBasic": [] }]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CommonError": {
+        "properties": {
+          "detail": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "detail"
+          }
+        },
+        "type": "object",
+        "required": ["detail"],
+        "title": "CommonError"
+      },
+      "ConfigCreateScheme": {
+        "properties": {
+          "company_id": {
+            "anyOf": [{ "type": "integer" }, { "type": "null" }],
+            "title": "company_id",
+            "description": "unique identifier of the owner's company, returned only for Superadmin",
+            "examples": [1]
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "examples": ["My configuration name"]
+          },
+          "model_id": {
+            "type": "integer",
+            "title": "Model Id",
+            "description": "the device model identifier",
+            "examples": [98]
+          },
+          "firmware": {
+            "type": "string",
+            "title": "Firmware",
+            "description": "the device firmware version",
+            "examples": ["1.6"]
+          },
+          "config": {
+            "type": "string",
+            "format": "base64",
+            "title": "Config",
+            "description": "the device base64 encoded configuration",
+            "examples": ["U3dhZ2dlciByb2Nrcw=="]
+          }
+        },
+        "type": "object",
+        "required": ["name", "model_id", "firmware", "config"],
+        "title": "ConfigCreateScheme"
+      },
+      "ConfigScheme": {
+        "properties": {
+          "company_id": {
+            "anyOf": [{ "type": "integer" }, { "type": "null" }],
+            "title": "company_id",
+            "description": "unique identifier of the owner's company, returned only for Superadmin",
+            "examples": [1]
+          },
+          "created": {
+            "anyOf": [
+              { "type": "string", "format": "date-time" },
+              { "type": "null" }
+            ],
+            "title": "created",
+            "description": "object creation time",
+            "example": "2023-01-01T00:00:00Z"
+          },
+          "creator": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/UserAuditScheme" },
+              { "type": "null" }
+            ]
+          },
+          "updated": {
+            "anyOf": [
+              { "type": "string", "format": "date-time" },
+              { "type": "null" }
+            ],
+            "title": "updated",
+            "description": "user name",
+            "example": "2023-01-02T00:00:00Z"
+          },
+          "updater": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/UserAuditScheme" },
+              { "type": "null" }
+            ]
+          },
+          "id": {
+            "type": "integer",
+            "title": "Id",
+            "description": "configuration ID",
+            "examples": [145]
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "examples": ["My configuration name"]
+          },
+          "model_id": {
+            "type": "integer",
+            "title": "Model Id",
+            "description": "the device model identifier",
+            "examples": [98]
+          },
+          "firmware": {
+            "type": "string",
+            "title": "Firmware",
+            "description": "the device firmware version",
+            "examples": ["1.6"]
+          },
+          "config": {
+            "anyOf": [
+              { "type": "string", "format": "base64" },
+              { "type": "null" }
+            ],
+            "title": "Config",
+            "description": "the device base64 encoded configuration",
+            "examples": ["U3dhZ2dlciByb2Nrcw=="]
+          }
+        },
+        "type": "object",
+        "required": [
+          "company_id",
+          "created",
+          "creator",
+          "updated",
+          "updater",
+          "id",
+          "name",
+          "model_id",
+          "firmware",
+          "config"
+        ],
+        "title": "ConfigScheme"
+      },
+      "DeviceDataScheme": {
+        "properties": {
+          "model_id": {
+            "type": "integer",
+            "title": "Model Id",
+            "description": "the device model identifier",
+            "examples": [98]
+          },
+          "serial": {
+            "type": "string",
+            "title": "Serial",
+            "description": "the device serial number",
+            "examples": ["98000005"]
+          },
+          "data": {
+            "type": "string",
+            "format": "base64",
+            "title": "Data",
+            "description": "device measurements data",
+            "examples": ["U3dhZ2dlciByb2Nrcw=="]
+          }
+        },
+        "type": "object",
+        "required": ["model_id", "serial", "data"],
+        "title": "DeviceDataScheme"
+      },
+      "DeviceInfoScheme": {
+        "properties": {
+          "date_time": {
+            "anyOf": [
+              { "type": "string", "format": "date-time" },
+              { "type": "null" }
+            ],
+            "title": "Date Time",
+            "description": "the device date and time",
+            "examples": ["2020-01-01T00:00:00Z"]
+          },
+          "location": { "$ref": "#/components/schemas/LocationScheme" },
+          "model_id": {
+            "type": "integer",
+            "title": "Model Id",
+            "description": "the device model identifier",
+            "examples": [98]
+          },
+          "serial": {
+            "type": "string",
+            "title": "Serial",
+            "description": "the device serial number",
+            "examples": ["98000005"]
+          },
+          "firmware": {
+            "type": "string",
+            "title": "Firmware",
+            "description": "the device firmware version",
+            "examples": ["1.6"]
+          },
+          "slave_profile": {
+            "anyOf": [
+              { "type": "string", "format": "base64" },
+              { "type": "null" }
+            ],
+            "title": "Slave Profile",
+            "examples": ["U3dhZ2dlciByb2Nrcw=="]
+          },
+          "settings": {
+            "anyOf": [
+              { "type": "string", "format": "base64" },
+              { "type": "null" }
+            ],
+            "title": "Settings",
+            "description": "current device settings (base64 encoded)",
+            "examples": ["U3dhZ2dlciByb2Nrcw=="]
+          },
+          "state": {
+            "anyOf": [
+              { "type": "string", "format": "base64" },
+              { "type": "null" }
+            ],
+            "title": "State",
+            "description": "current device state (base64 encoded)",
+            "examples": ["U3dhZ2dlciByb2Nrcw=="]
+          },
+          "personalization": {
+            "anyOf": [
+              { "type": "string", "format": "base64" },
+              { "type": "null" }
+            ],
+            "title": "Personalization",
+            "description": "the device base64 encoded personalization data",
+            "examples": ["U3dhZ2dlciByb2Nrcw=="]
+          }
+        },
+        "type": "object",
+        "required": [
+          "date_time",
+          "location",
+          "model_id",
+          "serial",
+          "firmware",
+          "slave_profile",
+          "settings",
+          "state",
+          "personalization"
+        ],
+        "title": "DeviceInfoScheme"
+      },
+      "DeviceNameScheme": {
+        "properties": {
+          "date_time": {
+            "anyOf": [
+              { "type": "string", "format": "date-time" },
+              { "type": "null" }
+            ],
+            "title": "Date Time",
+            "description": "the device date and time",
+            "examples": ["2020-01-01T00:00:00Z"]
+          },
+          "serial": {
+            "type": "string",
+            "title": "Serial",
+            "description": "the device serial number",
+            "examples": ["98000005"]
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "the device firmware version",
+            "examples": ["My Device"]
+          },
+          "force": {
+            "anyOf": [{ "type": "boolean" }, { "type": "null" }],
+            "title": "Force",
+            "description": "Adds a device to the IoT platform, forcefully replacing existing device information",
+            "examples": [false]
+          }
+        },
+        "type": "object",
+        "required": ["date_time", "serial", "name", "force"],
+        "title": "DeviceNameScheme"
+      },
+      "FirmwareScheme": {
+        "properties": {
+          "company_id": {
+            "anyOf": [{ "type": "integer" }, { "type": "null" }],
+            "title": "company_id",
+            "description": "unique identifier of the owner's company, returned only for Superadmin",
+            "examples": [1]
+          },
+          "created": {
+            "anyOf": [
+              { "type": "string", "format": "date-time" },
+              { "type": "null" }
+            ],
+            "title": "created",
+            "description": "object creation time",
+            "example": "2023-01-01T00:00:00Z"
+          },
+          "creator": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/UserAuditScheme" },
+              { "type": "null" }
+            ]
+          },
+          "updated": {
+            "anyOf": [
+              { "type": "string", "format": "date-time" },
+              { "type": "null" }
+            ],
+            "title": "updated",
+            "description": "user name",
+            "example": "2023-01-02T00:00:00Z"
+          },
+          "updater": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/UserAuditScheme" },
+              { "type": "null" }
+            ]
+          },
+          "id": {
+            "type": "integer",
+            "title": "Id",
+            "description": "firmware ID",
+            "examples": [101]
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "examples": ["fw-pulse-14.05.01.img"]
+          },
+          "desc": {
+            "type": "string",
+            "title": "Desc",
+            "examples": ["description of the firmware"]
+          },
+          "model_id": {
+            "type": "integer",
+            "title": "Model Id",
+            "description": "the device model identifier",
+            "examples": [98]
+          },
+          "firmware": {
+            "type": "string",
+            "title": "Firmware",
+            "description": "the device firmware version",
+            "examples": ["1.6"]
+          },
+          "image": {
+            "type": "string",
+            "format": "base64",
+            "title": "Image",
+            "description": "the firmware base64 encoded image",
+            "examples": ["U3dhZ2dlciByb2Nrcw=="]
+          }
+        },
+        "type": "object",
+        "required": [
+          "company_id",
+          "created",
+          "creator",
+          "updated",
+          "updater",
+          "id",
+          "name",
+          "desc",
+          "model_id",
+          "firmware",
+          "image"
+        ],
+        "title": "FirmwareScheme"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": { "$ref": "#/components/schemas/ValidationError" },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "LocationScheme": {
+        "properties": {
+          "latitude": {
+            "anyOf": [{ "type": "number" }, { "type": "null" }],
+            "title": "Latitude",
+            "examples": [57.642882]
+          },
+          "longitude": {
+            "anyOf": [{ "type": "number" }, { "type": "null" }],
+            "title": "Longitude",
+            "examples": [39.954402]
+          },
+          "altitude": {
+            "anyOf": [{ "type": "integer" }, { "type": "null" }],
+            "title": "Altitude",
+            "examples": [98]
+          }
+        },
+        "type": "object",
+        "required": ["latitude", "longitude", "altitude"],
+        "title": "LocationScheme"
+      },
+      "UserAuditScheme": {
+        "properties": {
+          "email": {
+            "type": "string",
+            "maxLength": 128,
+            "title": "email",
+            "description": "user email",
+            "example": "ivan.ivanov@air-bit.eu"
+          },
+          "id": {
+            "type": "integer",
+            "title": "id",
+            "description": "unique user id",
+            "example": 654
+          },
+          "name": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "name",
+            "description": "user name",
+            "example": "Ivanov Ivan"
+          },
+          "role": { "$ref": "#/components/schemas/UserRole" }
+        },
+        "type": "object",
+        "required": ["email", "id", "name", "role"],
+        "title": "UserAuditScheme"
+      },
+      "UserRole": {
+        "type": "integer",
+        "enum": [0, 1, 2, 3, 4],
+        "title": "UserRole"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": { "anyOf": [{ "type": "string" }, { "type": "integer" }] },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": { "type": "string", "title": "Message" },
+          "type": { "type": "string", "title": "Error Type" }
+        },
+        "type": "object",
+        "required": ["loc", "msg", "type"],
+        "title": "ValidationError"
+      }
+    },
+    "securitySchemes": {
+      "HTTPBasic": {
+        "type": "http",
+        "description": "If there is a cookie session, it is not necessary to specify the authorization header.",
+        "scheme": "basic"
+      },
+      "APIKeyHeader": { "type": "apiKey", "in": "header", "name": "X-API-Key" }
+    }
+  }
+}

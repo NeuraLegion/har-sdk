@@ -1,0 +1,623 @@
+{
+  "openapi": "3.1.0",
+  "x-stoplight": { "id": "vbg1rx9w9tz4y" },
+  "info": {
+    "title": "UNIQREWARDS Client API v3",
+    "version": "3.0",
+    "contact": {
+      "email": "support.api@uniqrewards.com",
+      "url": "https://documentation.api.uniqrewards.com/apiv3",
+      "name": "UNIQREWARDS API Support"
+    },
+    "description": "The UNIQREWARDS Client API v3 enables our clients to issue digital vouchers. Retrieval of product details, catalogues, and vouchers status and details is also supported by this API.",
+    "summary": "UNIQREWARDS Client API v3 OpenAPI specification"
+  },
+  "tags": [
+    { "name": "Voucher", "description": "Voucher management endpoints" },
+    { "name": "Catalogue", "description": "Catalogue endpoints" }
+  ],
+  "paths": {
+    "/products": {
+      "get": {
+        "summary": "Retrieve catalogue of products",
+        "description": "Retrieve the catalogue of products, listing all configured products available for issuance. Can be used to discover available products and their codes.",
+        "tags": ["Catalogue"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "request_id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "description": "The request ID in UUID v4 format, assigned by the API to the request."
+                    },
+                    "products": {
+                      "type": "array",
+                      "description": "An array of product objects representing each product in the catalogue.",
+                      "items": { "$ref": "#/components/schemas/Product" }
+                    }
+                  }
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "request_id": "266ea41d-adf5-480b-af50-15b940c2b846",
+                      "products": [
+                        {
+                          "product_code": "MAMVDDMMYY01",
+                          "name": "$10 UNIQGIFT Value Based Test Voucher",
+                          "description": "UNIQGIFT Value Based Test Voucher",
+                          "is_value_based": true,
+                          "is_open_value": false,
+                          "is_status_available": true,
+                          "is_multiple_use": true,
+                          "currency": "SGD",
+                          "amount": 1000,
+                          "quantity": null,
+                          "expiry_scheme": "1 year from issuance",
+                          "valid_from": "2023-01-01T00:00:00+08:00",
+                          "valid_until": null,
+                          "image": "https://images.qa.uniqgift.com/voucher/750x288/MAMVDDMMYY01.jpg",
+                          "terms_and_conditions": "• This voucher may be used for multiple transactions in denominations of SGD1.00 until it runs out or expires.\n• This voucher is issued by Option Gift Pte Ltd which owns the registered trademark UNIQGIFT.\n• This voucher must be presented before payment.\n• This voucher cannot be exchanged for cash and any unused balance at expiry will not be refunded.\n• This voucher cannot be replaced if lost, damaged, stolen or expired.\n• Option Gift Pte Ltd reserves the right to vary these terms and conditions at any time without prior notice.\n• Option Gift Pte Ltd shall not be responsible for any issue that arises in connection with the redemption and/or use of this voucher and shall not be responsible or held liable for any loss, injury, damage or harm suffered or incurred by or in connection with the redemption or use of the voucher by any person."
+                        },
+                        {
+                          "product_code": "MAMPDDMMYY02",
+                          "name": "UNIQGIFT Product-Based Test Voucher",
+                          "description": "UNIQGIFT Product-Based Test Voucher",
+                          "is_value_based": false,
+                          "is_open_value": false,
+                          "is_status_available": true,
+                          "is_multiple_use": false,
+                          "currency": "",
+                          "amount": 1,
+                          "quantity": null,
+                          "expiry_scheme": "1 year from issuance",
+                          "valid_from": "2023-01-01T00:00:00+08:00",
+                          "valid_until": null,
+                          "image": "https://images.qa.uniqgift.com/voucher/750x288/MAMPDDMMYY02.jpg",
+                          "terms_and_conditions": "• voucher is not refundable and shall be forfeited.\n• This voucher is issued by Option Gift Pte Ltd which owns the registered trademark UNIQGIFT.\n• This voucher must be presented before payment.\n• This voucher cannot be exchanged for cash and any unused balance at expiry will not be refunded.\n• This voucher cannot be replaced if lost, damaged, stolen or expired.\n• Option Gift Pte Ltd reserves the right to vary these terms and conditions at any time without prior notice.\n• Option Gift Pte Ltd shall not be responsible for any issue that arises in connection with the redemption and/or use of this voucher and shall not be responsible or held liable for any loss, injury, damage or harm suffered or incurred by or in connection with the redemption or use of the voucher by any person."
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": { "$ref": "#/components/responses/Error" }
+        },
+        "operationId": "retrieve-products"
+      }
+    },
+    "/products/{code}": {
+      "parameters": [
+        {
+          "name": "code",
+          "in": "path",
+          "required": true,
+          "schema": { "type": "string" },
+          "description": "The product code of the product object to be retrieved."
+        }
+      ],
+      "get": {
+        "summary": "Retrieve product details",
+        "tags": ["Catalogue"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "request_id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "description": "The request ID in UUID v4 format, assigned by the API to the request."
+                    },
+                    "product": { "$ref": "#/components/schemas/Product" }
+                  }
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "request_id": "266ea41d-adf5-480b-af50-15b940c2b846",
+                      "product": {
+                        "product_code": "MAMVDDMMYY01",
+                        "name": "$10 UNIQGIFT Value Based Test Voucher",
+                        "description": "UNIQGIFT Value Based Test Voucher",
+                        "is_value_based": true,
+                        "is_open_value": false,
+                        "is_status_available": true,
+                        "is_multiple_use": true,
+                        "currency": "SGD",
+                        "amount": 1000,
+                        "quantity": null,
+                        "expiry_scheme": "1 year from issuance",
+                        "valid_from": "2023-01-01T00:00:00+08:00",
+                        "valid_until": null,
+                        "image": "https://images.qa.uniqgift.com/voucher/750x288/MAMVDDMMYY01.jpg",
+                        "terms_and_conditions": "• This voucher may be used for multiple transactions in denominations of SGD1.00 until it runs out or expires.\n• This voucher is issued by Option Gift Pte Ltd which owns the registered trademark UNIQGIFT.\n• This voucher must be presented before payment.\n• This voucher cannot be exchanged for cash and any unused balance at expiry will not be refunded.\n• This voucher cannot be replaced if lost, damaged, stolen or expired.\n• Option Gift Pte Ltd reserves the right to vary these terms and conditions at any time without prior notice.\n• Option Gift Pte Ltd shall not be responsible for any issue that arises in connection with the redemption and/or use of this voucher and shall not be responsible or held liable for any loss, injury, damage or harm suffered or incurred by or in connection with the redemption or use of the voucher by any person."
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": { "$ref": "#/components/responses/Error" }
+        },
+        "operationId": "retrieve-product",
+        "description": "Retrieve the details of the product from the path."
+      },
+      "post": {
+        "summary": "Issue vouchers",
+        "operationId": "issue-vouchers",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "request_id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "description": "The request ID in UUID v4 format, assigned by the API to the request."
+                    },
+                    "vouchers": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/Voucher" }
+                    }
+                  }
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "request_id": "266ea41d-adf5-480b-af50-15b940c2b846",
+                      "vouchers": [
+                        {
+                          "voucher_code": "UG1123456789",
+                          "voucher_id": "1b5a607b-e5eb-4b17-80b0-5739c041e81b",
+                          "name": "$10 UNIQGIFT Value Based Test Voucher",
+                          "status": "active",
+                          "expiration": "2029-10-31T23:59:59+08:00",
+                          "currency": "SGD",
+                          "remaining_amount": 1000,
+                          "product_code": "MAMVDDMMYY01",
+                          "product_name": "$10 UNIQGIFT Value Based Test Voucher",
+                          "is_value_based": true,
+                          "is_status_available": true,
+                          "is_multiple_use": true,
+                          "url": "https://_base_url_1b5a607b-e5eb-4b17-80b0-5739c041e81b",
+                          "short_url": "https://_base_url_short_/v/BMhgQhHigm7",
+                          "short_url_pin": 1234
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            },
+            "headers": {
+              "Idempotency-Record": {
+                "schema": { "type": "string", "enum": ["true"] },
+                "description": "This header is only provided in the response if obtained from the idempotency cache."
+              }
+            }
+          },
+          "500": { "$ref": "#/components/responses/Error" }
+        },
+        "description": "Issue vouchers from the requested product identified by its code specified in the path.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "quantity": {
+                    "type": "integer",
+                    "description": "Number of vouchers to be issued.",
+                    "example": 1,
+                    "minimum": 1,
+                    "maximum": 20,
+                    "multipleOf": 1
+                  },
+                  "face_value": {
+                    "type": "integer",
+                    "description": "The requested denomination of the vouchers, expressed in cents. If `is_open_value` is true only.",
+                    "example": 1050,
+                    "minimum": 100,
+                    "maximum": 100000,
+                    "multipleOf": 1
+                  }
+                },
+                "required": ["quantity"]
+              },
+              "examples": {
+                "Example 1": { "value": { "quantity": 1, "face_value": 1050 } }
+              }
+            }
+          },
+          "description": "Request parameters required to issue vouchers."
+        },
+        "parameters": [
+          {
+            "schema": { "type": "string", "format": "uuid" },
+            "in": "header",
+            "name": "Idempotency-Key",
+            "description": "The idempotency key in UUID v4 format to ensure issuing vouchers is idempotent.",
+            "required": true
+          }
+        ],
+        "tags": ["Voucher"]
+      }
+    },
+    "/vouchers/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": { "type": "string", "format": "uuid" },
+          "description": "The id of the voucher to be retrieved."
+        }
+      ],
+      "get": {
+        "summary": "Retrieve vouchers information",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "request_id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "description": "The request ID in UUID v4 format, assigned by the API to the request."
+                    },
+                    "voucher": { "$ref": "#/components/schemas/Voucher" }
+                  }
+                }
+              }
+            }
+          },
+          "404": { "$ref": "#/components/responses/Error" }
+        },
+        "operationId": "retrieve-voucher",
+        "description": "Retrieve the information and updated status of 1 voucher.",
+        "tags": ["Voucher"]
+      }
+    },
+    "/vouchers": {
+      "get": {
+        "summary": "Retrieve multiple vouchers information",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "request_id": {
+                      "type": "string",
+                      "description": "The request ID in UUID v4 format, assigned by the API to the request."
+                    },
+                    "vouchers": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/Voucher" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": { "$ref": "#/components/responses/Error" }
+        },
+        "operationId": "retrieve-vouchers",
+        "description": "Retrieve the details of multiple vouchers in a single request.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "id",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "format": "UUID",
+              "minItems": 1,
+              "maxItems": 20,
+              "uniqueItems": true,
+              "items": {},
+              "example": [
+                "33bc3524-fefe-415e-903d-196bc6dadb21,2b0969ee-7fcf-4e52-8e0a-4ddb608820b2"
+              ]
+            },
+            "required": true
+          }
+        ],
+        "tags": ["Voucher"]
+      }
+    }
+  },
+  "security": [{ "Authorization": ["client"] }],
+  "servers": [
+    { "url": "https://api.demo.uniqrewards.com/v3", "description": "DEMO" },
+    { "url": "https://api.uat.uniqrewards.com/v3", "description": "UAT" },
+    { "url": "https://api.uniqrewards.com/v3", "description": "PRODUCTION" }
+  ],
+  "components": {
+    "responses": {
+      "Error": {
+        "description": "Error response structure. Shared by all endpoints.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "request_id": {
+                  "type": "string",
+                  "format": "uuid",
+                  "description": "The request ID in UUID v4 format, assigned by the API to the request."
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "description": "A composite code formatted as {http_error_code}-{api_error_code} (e.g., 404-D4E). The HTTP error code indicates the type of error, while the second part specifies the exact issue."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "A brief error message, generally aligned with the HTTP status message."
+                    },
+                    "documentation": {
+                      "type": "string",
+                      "description": "An extended description providing more context and actions to resolve the issue."
+                    }
+                  }
+                }
+              }
+            },
+            "examples": {
+              "Retrieve voucher, voucher not found error": {
+                "value": {
+                  "request_id": "266ea41d-adf5-480b-af50-15b940c2b846",
+                  "error": {
+                    "code": "404-D4E",
+                    "message": "Voucher Not Found",
+                    "documentation": "Voucher not found in records, please verify the path parameter voucher id."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "Authorization": {
+        "type": "oauth2",
+        "flows": {
+          "clientCredentials": {
+            "refreshUrl": "",
+            "scopes": {
+              "read_vouchers": "Retrieve voucher information",
+              "read_catalogue": "Retrieve catalogue of products and product information",
+              "issue_vouchers": "Issue new vouchers"
+            },
+            "tokenUrl": "https://uniqgift.auth.ap-southeast-1.amazoncognito.com/oauth2/token"
+          }
+        },
+        "description": "Production authorization details."
+      }
+    },
+    "schemas": {
+      "Product": {
+        "title": "Product",
+        "x-stoplight": { "id": "iridon9h3twlh" },
+        "type": "object",
+        "description": "The product object. Serves as template from which vouchers are issued.",
+        "examples": [
+          {
+            "product_code": "MAMVDDMMYY01",
+            "name": "$10 UNIQGIFT Value Based Test Voucher",
+            "description": "UNIQGIFT Value Based Test Voucher",
+            "is_value_based": true,
+            "is_open_value": false,
+            "is_status_available": true,
+            "is_multiple_use": true,
+            "currency": "SGD",
+            "amount": 1000,
+            "quantity": null,
+            "expiry_scheme": "1 year from issuance",
+            "valid_from": "2023-01-01T00:00:00+08:00",
+            "valid_until": null,
+            "image": "https://images.qa.uniqgift.com/voucher/750x288/MAMVDDMMYY01.jpg",
+            "terms_and_conditions": "• This voucher may be used for multiple transactions in denominations of SGD1.00 until it runs out or expires.\n• This voucher is issued by Option Gift Pte Ltd which owns the registered trademark UNIQGIFT.\n• This voucher must be presented before payment.\n• This voucher cannot be exchanged for cash and any unused balance at expiry will not be refunded.\n• This voucher cannot be replaced if lost, damaged, stolen or expired.\n• Option Gift Pte Ltd reserves the right to vary these terms and conditions at any time without prior notice.\n• Option Gift Pte Ltd shall not be responsible for any issue that arises in connection with the redemption and/or use of this voucher and shall not be responsible or held liable for any loss, injury, damage or harm suffered or incurred by or in connection with the redemption or use of the voucher by any person."
+          }
+        ],
+        "properties": {
+          "product_code": {
+            "type": "string",
+            "description": "A unique set of alphanumeric characters assigned to the product within the product catalogue, serving as an SKU."
+          },
+          "name": { "type": "string", "description": "Name of the product." },
+          "description": {
+            "type": "string",
+            "description": "A brief description of the product."
+          },
+          "is_value_based": {
+            "x-stoplight": { "id": "p8s2dbfp59aut" },
+            "type": "boolean",
+            "description": "Indicates whether the product is value-based (true) or product-based (false)."
+          },
+          "is_open_value": {
+            "type": "boolean",
+            "x-stoplight": { "id": "xivimk1zkt66d" },
+            "description": "Allows for open denomination or quantity at issuance (true) or is a fixed denomination / quantity product (false)."
+          },
+          "is_status_available": {
+            "type": "boolean",
+            "x-stoplight": { "id": "f879tcnco7ng4" },
+            "description": "Indicates whether the status of vouchers issued from this product can be retrieved (true) or not (false)."
+          },
+          "is_multiple_use": {
+            "type": "boolean",
+            "x-stoplight": { "id": "67avsvhrmretf" },
+            "description": "Indicates whether the vouchers can be redeemed in multiple transactions or will be fully redeemed in a single transaction."
+          },
+          "currency": {
+            "type": "string",
+            "description": "Currency code (ISO 4217 format i.e. SGD) for the product's amount, or an empty string for product-based (is_value_based = false).",
+            "default": "SGD",
+            "pattern": "^([A-Z]{3})?$"
+          },
+          "amount": {
+            "type": "integer",
+            "description": "Face value in cents for value-based products, or number of items for product-based. null for open-value products."
+          },
+          "quantity": {
+            "type": "integer",
+            "description": "Quantity of this product in stock or null if stock is unlimited.",
+            "nullable": true
+          },
+          "expiry_scheme": {
+            "type": "string",
+            "description": "Specifies how the voucher's expiration date is determined upon issuance."
+          },
+          "valid_from": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The start date and time of the product validity."
+          },
+          "valid_until": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The end date and time of the product validity, if applicable.",
+            "nullable": true
+          },
+          "image": {
+            "type": "string",
+            "format": "uri",
+            "description": "A URL linking to the product's image."
+          },
+          "terms_and_conditions": {
+            "type": "string",
+            "description": "Terms and conditions of the product."
+          }
+        }
+      },
+      "Voucher": {
+        "title": "Voucher",
+        "x-stoplight": { "id": "qop5wp0sn4f9l" },
+        "type": "object",
+        "description": "The voucher object. Contains attributes specific to the voucher and others inherited from the product from which it is issued.",
+        "examples": [
+          {
+            "voucher_code": "UG1123456789",
+            "voucher_id": "1b5a607b-e5eb-4b17-80b0-5739c041e81b",
+            "name": "$10 UNIQGIFT Value Based Test Voucher",
+            "status": "active",
+            "expiration": "2029-10-31T23:59:59+08:00",
+            "currency": "SGD",
+            "remaining_amount": 1000,
+            "product_code": "MAMVDDMMYY01",
+            "product_name": "$10 UNIQGIFT Value Based Test Voucher",
+            "is_value_based": true,
+            "is_status_available": true,
+            "is_multiple_use": true,
+            "url": "https://<domain>/voucher/1b5a607b-e5eb-4b17-80b0-5739c041e81b",
+            "short_url": "https://<domain>/v/BMhgQhHigm7",
+            "short_url_pin": 1234
+          }
+        ],
+        "properties": {
+          "voucher_code": {
+            "type": "string",
+            "description": "The unique voucher code (also referred to as the voucher number) that is accepted by the merchant."
+          },
+          "voucher_id": {
+            "type": "string",
+            "description": "The unique technical reference for the voucher, used in Client API requests.",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the voucher as displayed to end-users, generally including its denomination."
+          },
+          "status": {
+            "type": "string",
+            "description": "The current status of the voucher.",
+            "enum": ["active", "inactive", "expired", "voided", "used"]
+          },
+          "expiration": {
+            "type": "string",
+            "description": "Expiration date and time of the voucher in ISO 8601 / RFC 3339 format (i.e. 2030-10-12T22:59:59+00:00).",
+            "format": "date-time"
+          },
+          "currency": {
+            "type": "string",
+            "description": "Currency code (ISO 4217 format i.e. SGD) for the voucher's amount, or an empty string for product-based (is_value_based = false).",
+            "default": "SGD",
+            "pattern": "^([A-Z]{3})?$"
+          },
+          "remaining_amount": {
+            "type": "integer",
+            "description": "Voucher remaining amount to spend in cents for value-based vouchers, or the number of items for product-based.",
+            "example": 1000,
+            "minimum": 0,
+            "maximum": 100000,
+            "multipleOf": 1
+          },
+          "product_code": {
+            "type": "string",
+            "description": "The product code identifying the product from which the voucher is issued."
+          },
+          "product_name": {
+            "type": "string",
+            "description": "The product name."
+          },
+          "is_value_based": {
+            "type": "boolean",
+            "x-stoplight": { "id": "5hd1rh9dnzw63" },
+            "description": "Indicates whether the voucher is value-based (true) or product-based (false)."
+          },
+          "is_status_available": {
+            "type": "boolean",
+            "x-stoplight": { "id": "pkbhxjlf52u6u" },
+            "description": "Indicates whether the status of the voucher can be retrieved (true) or not (false)."
+          },
+          "is_multiple_use": {
+            "type": "boolean",
+            "x-stoplight": { "id": "6znq38vlrfpd9" },
+            "description": "Indicates whether the vouchers can be redeemed in multiple transactions or will be fully redeemed in a single transaction."
+          },
+          "url": {
+            "type": "string",
+            "description": "Full URL providing direct access to the voucher.",
+            "format": "uri"
+          },
+          "short_url": {
+            "type": "string",
+            "description": "Shortened URL to access the voucher, used in combination with a PIN. ",
+            "format": "uri"
+          },
+          "short_url_pin": {
+            "type": "integer",
+            "description": "PIN code required to access the voucher via the short URL.",
+            "example": 1234
+          }
+        }
+      }
+    }
+  }
+}

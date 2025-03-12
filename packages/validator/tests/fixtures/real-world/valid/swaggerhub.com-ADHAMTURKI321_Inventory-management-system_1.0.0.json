@@ -1,0 +1,3482 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Last Mile Delivery API",
+    "description": "API for managing last mile delivery",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "description": "Local server",
+      "url": "https://virtserver.swaggerhub.com/ADHAMTURKI321/Inventory-management-system/1.0.0"
+    }
+  ],
+  "tags": [
+    { "name": "users" },
+    { "name": "employees" },
+    { "name": "consumers" },
+    { "name": "suppliers" },
+    { "name": "deliveries" },
+    { "name": "pickers" },
+    { "name": "loaders" },
+    { "name": "managers" },
+    { "name": "orders" },
+    { "name": "products" },
+    { "name": "vehicles" },
+    { "name": "warehouses" },
+    { "name": "routes" },
+    { "name": "orderlines" },
+    { "name": "transactions" },
+    { "name": "refunds" },
+    { "name": "feedbacks" },
+    { "name": "trackings" },
+    { "name": "categories" },
+    { "name": "profiles" },
+    { "name": "profiletypes" }
+  ],
+  "paths": {
+    "/users": {
+      "get": {
+        "tags": ["users"],
+        "summary": "Retrieve all users",
+        "parameters": [
+          {
+            "name": "address",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string" },
+            "description": "Filter users by address"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/users" }
+                }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      },
+      "post": {
+        "tags": ["users"],
+        "summary": "Create a new user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/users" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User created successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/users" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/users/{userId}": {
+      "get": {
+        "tags": ["users"],
+        "summary": "Retrieve a user by ID",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/users" }
+              }
+            }
+          },
+          "404": { "description": "not found" }
+        }
+      },
+      "put": {
+        "tags": ["users"],
+        "summary": "Update a user by ID",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/users" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User updated successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/users" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      },
+      "delete": {
+        "tags": ["users"],
+        "summary": "Delete a user by ID",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "204": { "description": "User deleted successfully" },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/employees": {
+      "get": {
+        "tags": ["employees"],
+        "summary": "Retrieve all employees",
+        "parameters": [
+          {
+            "name": "warehouseId",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer" },
+            "description": "Filter employees by warehouse id"
+          },
+          {
+            "name": "availability",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "boolean" },
+            "description": "Filter employees by availability"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/employees" }
+                }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      },
+      "post": {
+        "tags": ["employees"],
+        "summary": "Create a new employee",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/employees" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Employee created successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/employees" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/employees/{employeeId}": {
+      "get": {
+        "tags": ["employees"],
+        "summary": "Retrieve an employee by ID",
+        "parameters": [
+          {
+            "name": "employeeId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/employees" }
+              }
+            }
+          },
+          "404": { "description": "Employee not found" }
+        }
+      },
+      "put": {
+        "tags": ["employees"],
+        "summary": "Update an employee by ID",
+        "parameters": [
+          {
+            "name": "employeeId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/employees" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Employee updated successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/employees" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["employees"],
+        "summary": "Delete an employee by ID",
+        "parameters": [
+          {
+            "name": "employeeId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "204": { "description": "Employee deleted successfully" }
+        }
+      }
+    },
+    "/consumers": {
+      "get": {
+        "tags": ["consumers"],
+        "summary": "Retrieve all consumers",
+        "parameters": [
+          {
+            "name": "loyaltyPoints",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer" },
+            "description": "Filter consumers by loyaltyPoints"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/consumers" }
+                }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      },
+      "post": {
+        "tags": ["consumers"],
+        "summary": "Create a new consumer",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/consumers" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Consumer created successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/consumers" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/consumers/{consumerId}": {
+      "get": {
+        "tags": ["consumers"],
+        "summary": "Retrieve a consumer by ID",
+        "parameters": [
+          {
+            "name": "consumerId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/consumers" }
+              }
+            }
+          },
+          "404": { "description": "Consumer not found" }
+        }
+      },
+      "put": {
+        "tags": ["consumers"],
+        "summary": "Update a consumer by ID",
+        "parameters": [
+          {
+            "name": "consumerId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/consumers" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Consumer updated successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/consumers" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      },
+      "delete": {
+        "tags": ["consumers"],
+        "summary": "Delete a consumer by ID",
+        "parameters": [
+          {
+            "name": "consumerId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "204": { "description": "Consumer deleted successfully" },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/suppliers": {
+      "get": {
+        "tags": ["suppliers"],
+        "summary": "Retrieve all suppliers",
+        "parameters": [
+          {
+            "name": "productCatalog",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string" },
+            "description": "Filter suppliers by productCatalog"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/suppliers" }
+                }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      },
+      "post": {
+        "tags": ["suppliers"],
+        "summary": "Create a new supplier",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/suppliers" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Supplier created successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/suppliers" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/suppliers/{supplierId}": {
+      "get": {
+        "tags": ["suppliers"],
+        "summary": "Retrieve a supplier by ID",
+        "parameters": [
+          {
+            "name": "supplierId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/suppliers" }
+              }
+            }
+          },
+          "404": { "description": "Supplier not found" }
+        }
+      },
+      "put": {
+        "tags": ["suppliers"],
+        "summary": "Update a supplier by ID",
+        "parameters": [
+          {
+            "name": "supplierId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/suppliers" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Supplier updated successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/suppliers" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      },
+      "delete": {
+        "tags": ["suppliers"],
+        "summary": "Delete a supplier by ID",
+        "parameters": [
+          {
+            "name": "supplierId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "204": { "description": "Supplier deleted successfully" },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/deliveries": {
+      "get": {
+        "tags": ["deliveries"],
+        "summary": "Retrieve all deliveries",
+        "parameters": [
+          {
+            "name": "availability",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "boolean" },
+            "description": "Filter deliveries by availability"
+          },
+          {
+            "name": "warehouseId",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer" },
+            "description": "Filter deliveries by warehouseId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/deliveries" }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["deliveries"],
+        "summary": "Create a new delivery",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/deliveries" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Delivery created successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/deliveries" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/deliveries/{deliveryId}": {
+      "get": {
+        "tags": ["deliveries"],
+        "summary": "Retrieve a delivery by ID",
+        "parameters": [
+          {
+            "name": "deliveryId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/deliveries" }
+              }
+            }
+          },
+          "404": { "description": "Delivery not found" }
+        }
+      },
+      "put": {
+        "tags": ["deliveries"],
+        "summary": "Update a delivery by ID",
+        "parameters": [
+          {
+            "name": "deliveryId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/deliveries" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Delivery updated successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/deliveries" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      },
+      "delete": {
+        "tags": ["deliveries"],
+        "summary": "Delete a delivery by ID",
+        "parameters": [
+          {
+            "name": "deliveryId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "204": { "description": "Delivery deleted successfully" },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/pickers": {
+      "get": {
+        "tags": ["pickers"],
+        "summary": "Retrieve all pickers",
+        "parameters": [
+          {
+            "name": "availability",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "boolean" },
+            "description": "Filter pickers by availability"
+          },
+          {
+            "name": "warehouseId",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer" },
+            "description": "Filter pickers by warehouseId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/pickers" }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["pickers"],
+        "summary": "Create a new picker",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/pickers" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Picker created successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/pickers" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/pickers/{pickerId}": {
+      "get": {
+        "tags": ["pickers"],
+        "summary": "Retrieve a picker by ID",
+        "parameters": [
+          {
+            "name": "pickerId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Picker details",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/pickers" }
+              }
+            }
+          },
+          "404": { "description": "Picker not found" }
+        }
+      },
+      "put": {
+        "tags": ["pickers"],
+        "summary": "Update a picker by ID",
+        "parameters": [
+          {
+            "name": "pickerId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/pickers" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Picker updated successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/pickers" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      },
+      "delete": {
+        "tags": ["pickers"],
+        "summary": "Delete a picker by ID",
+        "parameters": [
+          {
+            "name": "pickerId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "204": { "description": "Picker deleted successfully" },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/loaders": {
+      "get": {
+        "tags": ["loaders"],
+        "summary": "Retrieve all loaders",
+        "parameters": [
+          {
+            "name": "loadingAbility",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string" },
+            "description": "Filter loaders by productCatalog"
+          },
+          {
+            "name": "warehouseId",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer" },
+            "description": "Filter loaders by warehouseId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/loaders" }
+                }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      },
+      "post": {
+        "tags": ["loaders"],
+        "summary": "Create a new loader",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/loaders" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Loader created successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/loaders" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/loaders/{loaderId}": {
+      "get": {
+        "tags": ["loaders"],
+        "summary": "Retrieve a loader by ID",
+        "parameters": [
+          {
+            "name": "loaderId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Loader details",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/loaders" }
+              }
+            }
+          },
+          "404": { "description": "Loader not found" }
+        }
+      },
+      "put": {
+        "tags": ["loaders"],
+        "summary": "Update a loader by ID",
+        "parameters": [
+          {
+            "name": "loaderId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/loaders" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Loader updated successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/loaders" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      },
+      "delete": {
+        "tags": ["loaders"],
+        "summary": "Delete a loader by ID",
+        "parameters": [
+          {
+            "name": "loaderId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "204": { "description": "Loader deleted successfully" },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/managers": {
+      "get": {
+        "tags": ["managers"],
+        "summary": "Retrieve all managers",
+        "parameters": [
+          {
+            "name": "department",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string" },
+            "description": "Filter managers by department"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/managers" }
+                }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      },
+      "post": {
+        "tags": ["managers"],
+        "summary": "Create a new manager",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/managers" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Manager created successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/managers" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/managers/{managerId}": {
+      "get": {
+        "tags": ["managers"],
+        "summary": "Retrieve a manager by ID",
+        "parameters": [
+          {
+            "name": "managerId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/managers" }
+              }
+            }
+          },
+          "404": { "description": "Manager not found" }
+        }
+      },
+      "put": {
+        "tags": ["managers"],
+        "summary": "Update a manager by ID",
+        "parameters": [
+          {
+            "name": "managerId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/managers" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Manager updated successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/managers" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      },
+      "delete": {
+        "tags": ["managers"],
+        "summary": "Delete a manager by ID",
+        "parameters": [
+          {
+            "name": "managerId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "204": { "description": "Manager deleted successfully" },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/orders": {
+      "get": {
+        "tags": ["orders"],
+        "summary": "Get all orders",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string" },
+            "description": "Filter orders by status"
+          },
+          {
+            "name": "vehicleId",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer" },
+            "description": "Filter orders by status"
+          },
+          {
+            "name": "transactionId",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer" },
+            "description": "Filter orders by transaction ID"
+          },
+          {
+            "name": "consumerId",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer" },
+            "description": "Filter orders by consumer ID"
+          },
+          {
+            "name": "orderDate",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string", "format": "date" },
+            "description": "Filter orders by order date"
+          },
+          {
+            "name": "vehicleId",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string", "format": "date" },
+            "description": "Filter orders by vehicle Id"
+          },
+          {
+            "name": "routeId",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string", "format": "date" },
+            "description": "Filter orders by route ID"
+          },
+          {
+            "name": "loaderId",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string", "format": "date" },
+            "description": "Filter orders by loader Id"
+          },
+          {
+            "name": "supplierId",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string", "format": "date" },
+            "description": "Filter orders by Supplier Id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/orders" }
+                },
+                "examples": {
+                  "orders": {
+                    "value": [
+                      {
+                        "orderId": 1,
+                        "consumerId": 2,
+                        "supplierId": 3,
+                        "vehicleId": 2,
+                        "routeId": 4,
+                        "loaderId": 4,
+                        "orderDate": "2024-07-27T12:00:00Z",
+                        "deliveryDate": "2024-07-30T12:00:00Z",
+                        "paymentStatus": "Pending",
+                        "totalPrice": 300.0
+                      },
+                      {
+                        "orderId": 2,
+                        "consumerId": 4,
+                        "supplierId": 2,
+                        "vehicleId": 3,
+                        "routeId": 5,
+                        "loaderId": 1,
+                        "orderDate": "2024-07-25T10:00:00Z",
+                        "deliveryDate": "2024-07-28T10:00:00Z",
+                        "paymentStatus": "Completed",
+                        "totalPrice": 450.0
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      },
+      "post": {
+        "tags": ["orders"],
+        "summary": "Create a new order",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/orders" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Order created successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/orders" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/orders/{orderId}": {
+      "get": {
+        "tags": ["orders"],
+        "summary": "Retrieve an order by ID",
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/orders" }
+              }
+            }
+          },
+          "404": { "description": "Order not found" }
+        }
+      },
+      "put": {
+        "tags": ["orders"],
+        "summary": "Update an order by ID",
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/orders" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Order updated successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/orders" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      },
+      "delete": {
+        "tags": ["orders"],
+        "summary": "Delete an order by ID",
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "204": { "description": "Order deleted successfully" },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/products": {
+      "get": {
+        "tags": ["products"],
+        "summary": "Retrieve all products",
+        "parameters": [
+          {
+            "name": "unitPrice",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "number", "format": "double" },
+            "description": "Filter products by unitPrice"
+          },
+          {
+            "name": "categoryId",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer" },
+            "description": "Filter products by categoryId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/products" }
+                }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      },
+      "post": {
+        "tags": ["products"],
+        "summary": "Create a new product",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/products" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Product created successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/products" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/products/{productId}": {
+      "get": {
+        "tags": ["products"],
+        "summary": "Retrieve a product by ID",
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Product details",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/products" }
+              }
+            }
+          },
+          "404": { "description": "Product not found" }
+        }
+      },
+      "put": {
+        "tags": ["products"],
+        "summary": "Update a product by ID",
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/products" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Product updated successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/products" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      },
+      "delete": {
+        "tags": ["products"],
+        "summary": "Delete a product by ID",
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "204": { "description": "Product deleted successfully" },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/vehicles": {
+      "get": {
+        "tags": ["vehicles"],
+        "summary": "Retrieve all vehicles",
+        "parameters": [
+          {
+            "name": "vehiclesType",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string" },
+            "description": "Filter vehicles by vehiclesType"
+          },
+          {
+            "name": "MaxWeightSpace",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer" },
+            "description": "Filter vehicles by MaxWeightSpace"
+          },
+          {
+            "name": "MaxLoadWeight",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer" },
+            "description": "Filter vehicles by MaxLoadWeight"
+          },
+          {
+            "name": "availabilityStatus",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string" },
+            "description": "Filter vehicles by availabilityStatus"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/vehicles" }
+                }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      },
+      "post": {
+        "tags": ["vehicles"],
+        "summary": "Create a new vehicle",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/vehicles" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Vehicle created successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/vehicles" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/vehicles/{vehicleId}": {
+      "get": {
+        "tags": ["vehicles"],
+        "summary": "Retrieve a vehicle by ID",
+        "parameters": [
+          {
+            "name": "vehicleId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Vehicle details",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/vehicles" }
+              }
+            }
+          },
+          "404": { "description": "Vehicle not found" }
+        }
+      },
+      "put": {
+        "tags": ["vehicles"],
+        "summary": "Update a vehicle by ID",
+        "parameters": [
+          {
+            "name": "vehicleId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/vehicles" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Vehicle updated successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/vehicles" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      },
+      "delete": {
+        "tags": ["vehicles"],
+        "summary": "Delete a vehicle by ID",
+        "parameters": [
+          {
+            "name": "vehicleId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "204": { "description": "Vehicle deleted successfully" },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/warehouses": {
+      "get": {
+        "tags": ["warehouses"],
+        "summary": "Retrieve all warehouses",
+        "parameters": [
+          {
+            "name": "capacity",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer" },
+            "description": "Filter warehouses by capacity"
+          },
+          {
+            "name": "numOfEmployees",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer" },
+            "description": "Filter warehouses by numOfEmployees"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/warehouses" }
+                }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      },
+      "post": {
+        "tags": ["warehouses"],
+        "summary": "Create a new warehouse",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/warehouses" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Warehouse created successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/warehouses" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/warehouses/{warehouseId}": {
+      "get": {
+        "tags": ["warehouses"],
+        "summary": "Retrieve a warehouse by ID",
+        "parameters": [
+          {
+            "name": "warehouseId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/warehouses" }
+              }
+            }
+          },
+          "404": { "description": "Warehouse not found" }
+        }
+      },
+      "put": {
+        "tags": ["warehouses"],
+        "summary": "Update a warehouse by ID",
+        "parameters": [
+          {
+            "name": "warehouseId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/warehouses" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Warehouse updated successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/warehouses" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      },
+      "delete": {
+        "tags": ["warehouses"],
+        "summary": "Delete a warehouse by ID",
+        "parameters": [
+          {
+            "name": "warehouseId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "204": { "description": "Warehouse deleted successfully" },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/routes": {
+      "get": {
+        "tags": ["routes"],
+        "summary": "Retrieve all routes",
+        "parameters": [
+          {
+            "name": "trafficConditions",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string" },
+            "description": "Filter routes by trafficConditions"
+          },
+          {
+            "name": "deliveryId",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer" },
+            "description": "Filter routes by deliveryId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/routes" }
+                },
+                "examples": {
+                  "routes": {
+                    "value": [
+                      {
+                        "routeId": 1,
+                        "deliveryId": 101,
+                        "source": "Warehouse A",
+                        "destination": "Customer B",
+                        "routeOrder": "First",
+                        "estimatedTime": "2 hours",
+                        "distance": 15.5,
+                        "trafficConditions": "Moderate",
+                        "expectedDelay": "30 minutes"
+                      },
+                      {
+                        "routeId": 2,
+                        "deliveryId": 102,
+                        "source": "Warehouse B",
+                        "destination": "Customer C",
+                        "routeOrder": "Second",
+                        "estimatedTime": "3 hours",
+                        "distance": 25.0,
+                        "trafficConditions": "Heavy",
+                        "expectedDelay": "1 hour"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      },
+      "post": {
+        "tags": ["routes"],
+        "summary": "Create a new route",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/routes" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Route created successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/routes" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/routes/{routeId}": {
+      "get": {
+        "tags": ["routes"],
+        "summary": "Retrieve a route by ID",
+        "parameters": [
+          {
+            "name": "routeId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/routes" }
+              }
+            }
+          },
+          "404": { "description": "Route not found" }
+        }
+      },
+      "put": {
+        "tags": ["routes"],
+        "summary": "Update a route by ID",
+        "parameters": [
+          {
+            "name": "routeId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/routes" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Route updated successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/routes" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      },
+      "delete": {
+        "tags": ["routes"],
+        "summary": "Delete a route by ID",
+        "parameters": [
+          {
+            "name": "routeId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "204": { "description": "Route deleted successfully" },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/orderlines": {
+      "get": {
+        "tags": ["orderlines"],
+        "summary": "Retrieve all order lines",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/orderlines" }
+                }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/orderlines/{orderId}": {
+      "get": {
+        "tags": ["orderlines"],
+        "summary": "Retrieve an order line by orderId",
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/orderlines" }
+                }
+              }
+            }
+          },
+          "404": { "description": "Order line not found" }
+        }
+      },
+      "post": {
+        "tags": ["orderlines"],
+        "summary": "Create a new order line",
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/orderlines" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Order line created successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/orderlines" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      },
+      "put": {
+        "tags": ["orderlines"],
+        "summary": "Update an order line by orderId",
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/orderlines" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Order line updated successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/orderlines" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      },
+      "delete": {
+        "tags": ["orderlines"],
+        "summary": "Delete an order line by orderId",
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "204": { "description": "Order line deleted successfully" },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/trackings": {
+      "get": {
+        "tags": ["trackings"],
+        "summary": "Retrieve all tracking records",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/trackings" }
+                }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      },
+      "post": {
+        "tags": ["trackings"],
+        "summary": "Create a new tracking record",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/trackings" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Tracking record created successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/trackings" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/trackings/{trackingId}": {
+      "get": {
+        "tags": ["trackings"],
+        "summary": "Get a tracking record by ID",
+        "parameters": [
+          {
+            "name": "trackingId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tracking record retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/trackings" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      },
+      "put": {
+        "tags": ["trackings"],
+        "summary": "Update a tracking record by ID",
+        "parameters": [
+          {
+            "name": "trackingId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/trackings" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Tracking record updated successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/trackings" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      },
+      "delete": {
+        "tags": ["trackings"],
+        "summary": "Delete a tracking record by ID",
+        "parameters": [
+          {
+            "name": "trackingId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "204": { "description": "Tracking record deleted successfully" },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/trackings/orders/{orderId}": {
+      "get": {
+        "tags": ["trackings"],
+        "summary": "Retrieve tracking information for a specific order",
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" },
+            "description": "The ID of the order to retrieve tracking information for"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tracking information retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/trackings" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/refunds": {
+      "get": {
+        "tags": ["refunds"],
+        "summary": "Retrieve a list of refunds",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/refunds" }
+                }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      },
+      "post": {
+        "tags": ["refunds"],
+        "summary": "Create a new refund",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/refunds" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Refund created successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/refunds" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/refunds/{refundId}": {
+      "get": {
+        "tags": ["refunds"],
+        "summary": "Retrieve a specific refund",
+        "parameters": [
+          {
+            "name": "refundId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Refund details",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/refunds" }
+              }
+            }
+          },
+          "404": { "description": "Refund not found" }
+        }
+      },
+      "put": {
+        "tags": ["refunds"],
+        "summary": "Update the status of a refund",
+        "parameters": [
+          {
+            "name": "refundId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": { "status": { "type": "string" } },
+                "required": ["status"],
+                "example": { "status": "Completed" }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Refund status updated successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/refunds" }
+              }
+            }
+          },
+          "404": { "description": "Refund not found" }
+        }
+      }
+    },
+    "/feedbacks": {
+      "get": {
+        "tags": ["feedbacks"],
+        "summary": "Retrieve all feedbacks entries",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/feedbacks" }
+                }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      },
+      "post": {
+        "tags": ["feedbacks"],
+        "summary": "Create new feedbacks",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/feedbacks" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "feedbacks created successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/feedbacks" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/feedbacks/{feedbacksId}": {
+      "get": {
+        "tags": ["feedbacks"],
+        "summary": "Retrieve feedbacks by ID",
+        "parameters": [
+          {
+            "name": "feedbacksId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "feedbacks retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/feedbacks" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      },
+      "put": {
+        "tags": ["feedbacks"],
+        "summary": "Update feedbacks by ID",
+        "parameters": [
+          {
+            "name": "feedbacksId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/feedbacks" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "feedbacks updated successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/feedbacks" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      },
+      "delete": {
+        "tags": ["feedbacks"],
+        "summary": "Delete feedbacks by ID",
+        "parameters": [
+          {
+            "name": "feedbacksId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "204": { "description": "feedbacks deleted successfully" },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/feedbacks/consumers/{consumerId}": {
+      "get": {
+        "tags": ["feedbacks"],
+        "summary": "Retrieve all feedbacks for a specific consumer",
+        "parameters": [
+          {
+            "name": "consumerId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" },
+            "description": "The ID of the consumer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/feedbacks" }
+                }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/transactions": {
+      "get": {
+        "tags": ["transactions"],
+        "summary": "Retrieve all transactions",
+        "parameters": [
+          {
+            "name": "fromUserId",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer" }
+          },
+          {
+            "name": "toUserId",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer" }
+          },
+          {
+            "name": "paymentMethod",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer" }
+          },
+          {
+            "name": "amount",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "number", "format": "double" }
+          },
+          {
+            "name": "currency",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "transactionType",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "transactionStatus",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/transactions" }
+                }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      },
+      "post": {
+        "tags": ["transactions"],
+        "summary": "Create a new transaction",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/transactions" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Transaction created successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/transactions" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/transactions/{transactionId}": {
+      "get": {
+        "tags": ["transactions"],
+        "summary": "Retrieve a transaction by ID",
+        "parameters": [
+          {
+            "name": "transactionId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Transaction retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/transactions" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/transactions/{orderId}": {
+      "get": {
+        "tags": ["transactions"],
+        "summary": "Retrieve a transaction by order ID",
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Transaction retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/transactions" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      },
+      "put": {
+        "tags": ["transactions"],
+        "summary": "Update a transaction by ID",
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/transactions" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Transaction updated successfully" },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      },
+      "delete": {
+        "tags": ["transactions"],
+        "summary": "Delete a transaction by ID",
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "204": { "description": "Transaction deleted successfully" },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/categories": {
+      "get": {
+        "tags": ["categories"],
+        "summary": "Retrieve all categories",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/categories" }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["categories"],
+        "summary": "Create a new category",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/categories" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Category created successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/categories" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/categories/{categoryId}": {
+      "get": {
+        "tags": ["categories"],
+        "summary": "Retrieve a category by ID",
+        "parameters": [
+          {
+            "name": "categoryId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Category retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/categories" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      },
+      "put": {
+        "tags": ["categories"],
+        "summary": "Update a category by ID",
+        "parameters": [
+          {
+            "name": "categoryId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/categories" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Category updated successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/categories" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      },
+      "delete": {
+        "tags": ["categories"],
+        "summary": "Delete a category by ID",
+        "parameters": [
+          {
+            "name": "categoryId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "204": { "description": "Category deleted successfully" }
+        }
+      }
+    },
+    "/profiles": {
+      "get": {
+        "tags": ["profiles"],
+        "summary": "Retrieve all profiles",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/profiles" }
+                }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      },
+      "post": {
+        "tags": ["profiles"],
+        "summary": "Create a new profile",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/profiles" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Profile created successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/profiles" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/profiles/{profileId}": {
+      "get": {
+        "tags": ["profiles"],
+        "summary": "Retrieve a profile by ID",
+        "parameters": [
+          {
+            "name": "profileId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Profile retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/profiles" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      },
+      "put": {
+        "tags": ["profiles"],
+        "summary": "Update a profile by ID",
+        "parameters": [
+          {
+            "name": "profileId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/profiles" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Profile updated successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/profiles" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      },
+      "delete": {
+        "tags": ["profiles"],
+        "summary": "Delete a profile by ID",
+        "parameters": [
+          {
+            "name": "profileId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "204": { "description": "Profile deleted successfully" },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/profiletypes": {
+      "get": {
+        "tags": ["profiletypes"],
+        "summary": "Retrieve all profile types",
+        "responses": {
+          "200": {
+            "description": "A list of profile types",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/profiletypes" }
+                }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      },
+      "post": {
+        "tags": ["profiletypes"],
+        "summary": "Create a new profile type",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/profiletypes" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Profile type created successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/profiletypes" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/profiletypes/{profileTypeId}": {
+      "get": {
+        "tags": ["profiletypes"],
+        "summary": "Retrieve a profile type by ID",
+        "parameters": [
+          {
+            "name": "profileTypeId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Profile type retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/profiletypes" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      },
+      "put": {
+        "tags": ["profiletypes"],
+        "summary": "Update a profile type by ID",
+        "parameters": [
+          {
+            "name": "profileTypeId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/profiletypes" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Profile type updated successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/profiletypes" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      },
+      "delete": {
+        "tags": ["profiletypes"],
+        "summary": "Delete a profile type by ID",
+        "parameters": [
+          {
+            "name": "profileTypeId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "204": { "description": "Profile type deleted successfully" },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "users": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "name": { "type": "string" },
+          "email": { "type": "string" },
+          "phone": { "type": "string" },
+          "address": { "type": "string" },
+          "dateOfBirth": { "type": "string", "format": "date" },
+          "bankId": { "type": "integer" }
+        },
+        "required": ["name", "email", "bankId"],
+        "example": {
+          "id": 1,
+          "name": "Adham Turki",
+          "email": "adhamturki321@gmail.com",
+          "phone": "+970-597936306",
+          "address": "Ramllah-AbuQash",
+          "dateOfBirth": "2003-04-25",
+          "bankId": 1433636
+        }
+      },
+      "suppliers": {
+        "allOf": [
+          { "$ref": "#/components/schemas/users" },
+          {
+            "type": "object",
+            "properties": { "productCatalog": { "type": "string" } }
+          },
+          {
+            "required": ["productCatalog"],
+            "example": {
+              "id": 1,
+              "name": "Ahmad Hamad",
+              "email": "ahmadhamad@gmail.com",
+              "phone": "+970-597936306",
+              "address": "ALBireh",
+              "dateOfBirth": "2003-04-25",
+              "productCatalog": "Cleaning materials"
+            }
+          }
+        ]
+      },
+      "consumers": {
+        "allOf": [
+          { "$ref": "#/components/schemas/users" },
+          {
+            "type": "object",
+            "properties": { "loyaltyPoints": { "type": "integer" } },
+            "example": {
+              "id": 1,
+              "name": "Noor Hamayel",
+              "email": "noor123@gmail.com",
+              "phone": "+9729732572",
+              "address": "Nablus",
+              "dateOfBirth": "2003-04-25",
+              "loyaltyPoints": 100
+            }
+          }
+        ]
+      },
+      "managers": {
+        "allOf": [
+          { "$ref": "#/components/schemas/users" },
+          {
+            "type": "object",
+            "properties": {
+              "department": { "type": "string" },
+              "warehouseId": { "type": "integer" },
+              "salary": { "type": "number", "format": "float" }
+            },
+            "required": ["department", "salary", "warehouseId"],
+            "example": {
+              "id": 1,
+              "name": "Munawwar Qamar",
+              "email": "munawwarqamar@gmail.com",
+              "phone": "+970-597936306",
+              "address": "Ramallah-AbuQash",
+              "dateOfBirth": "2003-04-25",
+              "department": "UI/UX department",
+              "warehouseId": 101,
+              "salary": 20000
+            }
+          }
+        ]
+      },
+      "employees": {
+        "allOf": [
+          { "$ref": "#/components/schemas/users" },
+          {
+            "type": "object",
+            "properties": {
+              "salary": { "type": "number", "format": "float" },
+              "warehouseId": { "type": "integer" },
+              "availability": { "type": "boolean" },
+              "productivity": {
+                "type": "string",
+                "enum": ["Low", "Medium", "High"]
+              }
+            },
+            "required": [
+              "salary",
+              "warehouseId",
+              "availability",
+              "productivity"
+            ],
+            "example": {
+              "id": 1,
+              "name": "nasser",
+              "email": "nasser3123@gmail.com",
+              "phone": "+970-597936306",
+              "address": "Jenin",
+              "dateOfBirth": "1999-05-15",
+              "salary": 3500.0,
+              "warehouseId": 101,
+              "availability": true,
+              "productivity": "High"
+            }
+          }
+        ]
+      },
+      "loaders": {
+        "allOf": [
+          { "$ref": "#/components/schemas/employees" },
+          {
+            "type": "object",
+            "properties": {
+              "loadingAbility": {
+                "type": "string",
+                "enum": ["Light", "Medium", "Heavy"]
+              }
+            },
+            "required": ["loadingAbility"],
+            "example": {
+              "id": 1,
+              "name": "Ahmed Abd",
+              "email": "ahmedAbd432@gmail.com",
+              "phone": "+970-597936306",
+              "address": "Ramllah-Irsal",
+              "dateOfBirth": "1992-07-19",
+              "salary": 3200.0,
+              "warehouseId": 102,
+              "availability": true,
+              "productivity": "Medium",
+              "loadingAbility": "Heavy"
+            }
+          }
+        ]
+      },
+      "pickers": {
+        "allOf": [
+          { "$ref": "#/components/schemas/employees" },
+          {
+            "type": "object",
+            "properties": { "orderPickedByDay": { "type": "integer" } },
+            "required": ["orderPickedByDay"],
+            "example": {
+              "id": 1,
+              "name": "Qais Njoom",
+              "email": "QaisN123@gmail.com",
+              "phone": "+970-597936306",
+              "address": "Ramllah-AbuQash",
+              "dateOfBirth": "1993-03-11",
+              "salary": 3100.0,
+              "warehouseId": 103,
+              "availability": true,
+              "productivity": "Medium",
+              "orderPickedByDay": 150
+            }
+          }
+        ]
+      },
+      "deliveries": {
+        "allOf": [
+          { "$ref": "#/components/schemas/employees" },
+          {
+            "type": "object",
+            "example": {
+              "id": 1,
+              "name": "Abdallah Ibraheem",
+              "email": "AbdallahIbraheem22@gmail.com",
+              "phone": "+970-597936306",
+              "address": "Ramllah-Bitunia",
+              "dateOfBirth": "1996-03-11",
+              "salary": 3100.0,
+              "warehouseId": 103,
+              "availability": true,
+              "productivity": "Low"
+            }
+          }
+        ]
+      },
+      "orders": {
+        "type": "object",
+        "properties": {
+          "orderId": { "type": "integer" },
+          "consumerId": { "type": "integer" },
+          "supplierId": { "type": "integer" },
+          "vehicleId": { "type": "integer" },
+          "routeId": { "type": "integer" },
+          "loaderId": { "type": "integer" },
+          "orderDate": { "type": "string", "format": "date-time" },
+          "deliveryDate": { "type": "string", "format": "date-time" },
+          "paymentStatus": {
+            "type": "string",
+            "enum": ["Pending", "Completed", "Refunded", "Failed"]
+          },
+          "totalPrice": { "type": "number", "format": "float" }
+        },
+        "required": [
+          "consumerId",
+          "supplierId",
+          "vehicleId",
+          "loaderId",
+          "orderDate",
+          "deliveryDate",
+          "paymentStatus",
+          "totalPrice"
+        ],
+        "example": {
+          "orderId": 1,
+          "consumerId": 2,
+          "supplierId": 3,
+          "vehicleId": 2,
+          "loaderId": 4,
+          "orderDate": "27-4-2024",
+          "deliveryDate": "30-4-2024",
+          "paymentStatus": "Pending",
+          "totalPrice": 300
+        }
+      },
+      "orderlines": {
+        "type": "object",
+        "properties": {
+          "orderId": { "type": "integer" },
+          "productId": { "type": "integer" },
+          "quantity": { "type": "integer" },
+          "price": { "type": "number", "format": "float" }
+        },
+        "required": ["orderId", "productId", "quantity", "price"],
+        "example": {
+          "id": 1,
+          "orderId": 1,
+          "productId": 1,
+          "quantity": 2,
+          "price": 40
+        }
+      },
+      "products": {
+        "type": "object",
+        "properties": {
+          "productId": { "type": "integer" },
+          "productName": { "type": "string" },
+          "description": { "type": "string" },
+          "unitPrice": { "type": "number", "format": "float" },
+          "quantity": { "type": "integer" },
+          "categoryId": { "type": "integer" }
+        },
+        "required": ["productName", "unitPrice", "quantity", "categoryId"],
+        "example": {
+          "productId": 1,
+          "productName": "Medicine A",
+          "description": "Pain relief medication",
+          "unitPrice": 9.99,
+          "quantity": 4,
+          "categoryId": 1
+        }
+      },
+      "vehicles": {
+        "type": "object",
+        "properties": {
+          "vehicleId": { "type": "integer" },
+          "licensePlate": { "type": "string" },
+          "vehiclesType": { "type": "string" },
+          "MaxWeightSpace": { "type": "integer" },
+          "MaxLoadWeight": { "type": "integer" },
+          "availabilityStatus": {
+            "type": "string",
+            "enum": ["Available", "Unavailable", "In_Maintenance"]
+          }
+        },
+        "required": [
+          "licensePlate",
+          "vehiclesType",
+          "MaxWeightSpace",
+          "MaxLoadWeight",
+          "availabilityStatus"
+        ],
+        "example": {
+          "vehicleId": 1,
+          "licensePlate": "XYZ-1234",
+          "vehiclesType": "Van",
+          "MaxWeightSpace": 500,
+          "MaxLoadWeight": 300,
+          "availabilityStatus": "available"
+        }
+      },
+      "warehouses": {
+        "type": "object",
+        "properties": {
+          "warehouseId": { "type": "integer" },
+          "warehousesName": { "type": "string" },
+          "location": { "type": "string" },
+          "capacity": { "type": "string" },
+          "numOfEmployees": { "type": "integer" }
+        },
+        "required": [
+          "warehousesName",
+          "location",
+          "capacity",
+          "numOfEmployees"
+        ],
+        "example": {
+          "warehouseId": 1,
+          "warehousesName": "Main Warehouse",
+          "location": "12 Surda, Ramallah City, Palestine",
+          "capacity": 1000,
+          "numOfEmployees": 50
+        }
+      },
+      "routes": {
+        "type": "object",
+        "properties": {
+          "routeId": { "type": "integer" },
+          "deliveryId": { "type": "integer" },
+          "source": { "type": "string" },
+          "destination": { "type": "string" },
+          "routeOrder": { "type": "string" },
+          "estimatedTime": { "type": "string" },
+          "distance": { "type": "number", "format": "float" },
+          "trafficConditions": {
+            "type": "string",
+            "enum": ["Light", "Moderate", "Heavy"]
+          },
+          "expectedDelay": { "type": "string" }
+        },
+        "required": [
+          "routeId",
+          "deliveryId",
+          "source",
+          "destination",
+          "routeOrder",
+          "estimatedTime",
+          "distance",
+          "trafficConditions",
+          "expectedDelay"
+        ],
+        "example": {
+          "routeId": 1,
+          "deliveryId": 101,
+          "source": "Warehouse A",
+          "destination": "Customer B",
+          "routeOrder": "First",
+          "estimatedTime": "2 hours",
+          "distance": 15.5,
+          "trafficConditions": "Moderate",
+          "expectedDelay": "30 minutes"
+        }
+      },
+      "trackings": {
+        "type": "object",
+        "properties": {
+          "trackingId": { "type": "integer" },
+          "orderId": { "type": "integer" },
+          "currentLocation": { "type": "string" },
+          "timeStamps": { "type": "string" },
+          "trackingStatusUpdate": {
+            "type": "string",
+            "enum": ["In_transit", "Pending", "Returned", "Out_For_Delivery"]
+          }
+        },
+        "required": [
+          "trackingId",
+          "orderId",
+          "currentLocation",
+          "timeStamps",
+          "trackingStatusUpdate"
+        ],
+        "example": {
+          "trackingId": 101,
+          "orderId": 201,
+          "currentLocation": "1234 Main St, Warehouse 5",
+          "timeStamps": "2024-05-20 14:45",
+          "trackingStatusUpdate": "In Transit"
+        }
+      },
+      "profiles": {
+        "type": "object",
+        "properties": {
+          "profileId": { "type": "integer" },
+          "userId": { "type": "integer" },
+          "profileType": { "type": "integer" }
+        },
+        "required": ["profileId", "userId", "profileType"],
+        "example": { "profileId": 1, "userId": 101, "profileType": 2 }
+      },
+      "profiletypes": {
+        "type": "object",
+        "properties": {
+          "profiletypeId": { "type": "integer" },
+          "typeName": { "type": "string" }
+        },
+        "required": ["profiletypeId", "typeName"],
+        "example": { "profiletypeId": 1, "typeName": "Manager" }
+      },
+      "transactions": {
+        "type": "object",
+        "properties": {
+          "transactionId": { "type": "integer" },
+          "orderId": { "type": "integer" },
+          "fromUserId": { "type": "integer" },
+          "toUserId": { "type": "integer" },
+          "paymentMethod": { "type": "string" },
+          "amount": { "type": "number", "format": "double" },
+          "currency": { "type": "string" },
+          "transactionType": { "type": "string" },
+          "transactionStatus": {
+            "type": "string",
+            "enum": ["Pending", "Completed", "Failed", "Refunded", "Cancelled"]
+          }
+        },
+        "required": [
+          "transactionId",
+          "orderId",
+          "fromUserId",
+          "toUserId",
+          "paymentMethod",
+          "amount",
+          "currency",
+          "transactionType",
+          "transactionStatus"
+        ],
+        "example": {
+          "transactionId": 1001,
+          "orderId": 500,
+          "fromUserId": 101,
+          "toUserId": 102,
+          "paymentMethod": "credit_card",
+          "amount": 150.0,
+          "currency": "USD",
+          "transactionType": "Payment",
+          "transactionStatus": "Completed"
+        }
+      },
+      "refunds": {
+        "type": "object",
+        "properties": {
+          "refundId": { "type": "integer" },
+          "transactionId": { "type": "integer" },
+          "amount": { "type": "number", "format": "double" },
+          "refundDate": { "type": "string", "format": "date" },
+          "estimatedTime": { "type": "string" },
+          "reason": { "type": "string" },
+          "refundStatus": {
+            "type": "string",
+            "enum": [
+              "Pending",
+              "Approved",
+              "Rejected",
+              "Processed",
+              "Cancelled"
+            ]
+          }
+        },
+        "required": [
+          "refundId",
+          "transactionId",
+          "amount",
+          "refundDate",
+          "reason",
+          "refundStatus"
+        ],
+        "example": {
+          "refundId": 2001,
+          "transactionId": 1001,
+          "amount": 50.0,
+          "refundDate": "2024-07-20",
+          "estimatedTime": "5 days",
+          "reason": "Product defect",
+          "refundStatus": "Pending"
+        }
+      },
+      "feedbacks": {
+        "type": "object",
+        "properties": {
+          "feedbacksId": { "type": "integer" },
+          "consumerId": { "type": "integer" },
+          "orderId": { "type": "integer" },
+          "rating": { "type": "number", "format": "double" },
+          "timestamps": { "type": "string" },
+          "comments": { "type": "string" }
+        },
+        "required": [
+          "feedbacksId",
+          "consumerId",
+          "orderId",
+          "rating",
+          "timestamps",
+          "comments"
+        ],
+        "example": {
+          "feedbacksId": 3001,
+          "consumerId": 201,
+          "orderId": 5001,
+          "rating": 4.5,
+          "timestamps": "2024-07-30 15:00",
+          "comments": "Excellent service and quick delivery!"
+        }
+      },
+      "categories": {
+        "type": "object",
+        "properties": {
+          "categoryId": { "type": "integer" },
+          "categorieName": { "type": "string" }
+        },
+        "required": ["categoryId", "categorieName"],
+        "example": { "categoryId": 1, "categorieName": "Electronics" }
+      }
+    }
+  }
+}

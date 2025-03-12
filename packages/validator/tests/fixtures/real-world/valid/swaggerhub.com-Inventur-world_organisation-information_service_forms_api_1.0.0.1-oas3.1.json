@@ -1,0 +1,810 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Organisation Information Service Forms Api",
+    "version": "1.0.0.1-oas3.1"
+  },
+  "paths": {
+    "/Forms": {
+      "post": {
+        "tags": ["Forms"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/PostFormRequest" }
+            },
+            "text/json": {
+              "schema": { "$ref": "#/components/schemas/PostFormRequest" }
+            },
+            "application/*+json": {
+              "schema": { "$ref": "#/components/schemas/PostFormRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreatedResourceResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreatedResourceResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreatedResourceResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": { "$ref": "#/components/schemas/InvalidRequest" }
+              },
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/InvalidRequest" }
+              },
+              "text/json": {
+                "schema": { "$ref": "#/components/schemas/InvalidRequest" }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Forms"],
+        "parameters": [
+          {
+            "name": "Filter",
+            "in": "query",
+            "style": "form",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "Skip",
+            "in": "query",
+            "style": "form",
+            "schema": { "type": "integer", "format": "int32" }
+          },
+          {
+            "name": "Limit",
+            "in": "query",
+            "style": "form",
+            "schema": { "type": "integer", "format": "int32" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": { "$ref": "#/components/schemas/GetFormsResponse" }
+              },
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/GetFormsResponse" }
+              },
+              "text/json": {
+                "schema": { "$ref": "#/components/schemas/GetFormsResponse" }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": { "$ref": "#/components/schemas/InvalidRequest" }
+              },
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/InvalidRequest" }
+              },
+              "text/json": {
+                "schema": { "$ref": "#/components/schemas/InvalidRequest" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Forms/{id}": {
+      "post": {
+        "tags": ["Forms"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": { "type": "integer", "format": "int32" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/PostFormRequest" }
+            },
+            "text/json": {
+              "schema": { "$ref": "#/components/schemas/PostFormRequest" }
+            },
+            "application/*+json": {
+              "schema": { "$ref": "#/components/schemas/PostFormRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreatedResourceResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreatedResourceResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreatedResourceResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": { "$ref": "#/components/schemas/InvalidRequest" }
+              },
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/InvalidRequest" }
+              },
+              "text/json": {
+                "schema": { "$ref": "#/components/schemas/InvalidRequest" }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Forms"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": { "type": "integer", "format": "int32" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": { "$ref": "#/components/schemas/GetFormResponse" }
+              },
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/GetFormResponse" }
+              },
+              "text/json": {
+                "schema": { "$ref": "#/components/schemas/GetFormResponse" }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": { "$ref": "#/components/schemas/InvalidRequest" }
+              },
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/InvalidRequest" }
+              },
+              "text/json": {
+                "schema": { "$ref": "#/components/schemas/InvalidRequest" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Forms"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": { "type": "integer", "format": "int32" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Success" },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": { "$ref": "#/components/schemas/InvalidRequest" }
+              },
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/InvalidRequest" }
+              },
+              "text/json": {
+                "schema": { "$ref": "#/components/schemas/InvalidRequest" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/supplier/form/{supplierFormId}": {
+      "put": {
+        "tags": ["Supplier Form"],
+        "parameters": [
+          {
+            "name": "supplierFormId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": { "200": { "description": "Success" } }
+      },
+      "get": {
+        "tags": ["Supplier Form"],
+        "parameters": [
+          {
+            "name": "supplierFormId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetSupplierFormResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetSupplierFormResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetSupplierFormResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": { "$ref": "#/components/schemas/InvalidRequest" }
+              },
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/InvalidRequest" }
+              },
+              "text/json": {
+                "schema": { "$ref": "#/components/schemas/InvalidRequest" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/supplier/{supplierFormId}/forms": {
+      "get": {
+        "tags": ["Supplier Form"],
+        "parameters": [
+          {
+            "name": "supplierFormId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetSupplierFormsResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetSupplierFormsResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetSupplierFormsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": { "$ref": "#/components/schemas/InvalidRequest" }
+              },
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/InvalidRequest" }
+              },
+              "text/json": {
+                "schema": { "$ref": "#/components/schemas/InvalidRequest" }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Supplier Form"],
+        "parameters": [
+          {
+            "name": "supplierFormId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PostSupplierFormRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PostSupplierFormRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PostSupplierFormRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreatedResourceResponseGuid"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreatedResourceResponseGuid"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreatedResourceResponseGuid"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": { "$ref": "#/components/schemas/InvalidRequest" }
+              },
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/InvalidRequest" }
+              },
+              "text/json": {
+                "schema": { "$ref": "#/components/schemas/InvalidRequest" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CreatedResourceResponse": {
+        "type": "object",
+        "properties": { "id": { "type": "integer", "format": "int32" } },
+        "additionalProperties": false
+      },
+      "CreatedResourceResponseGuid": {
+        "type": "object",
+        "properties": { "id": { "type": "string", "format": "uuid" } },
+        "additionalProperties": false
+      },
+      "DayOfWeek": {
+        "enum": [0, 1, 2, 3, 4, 5, 6],
+        "type": "integer",
+        "format": "int32"
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "property": { "type": "string", "nullable": true },
+          "messages": {
+            "type": "array",
+            "items": { "type": "string" },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "FormInfo": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int32" },
+          "name": { "type": "string", "nullable": true },
+          "description": { "type": "string", "nullable": true },
+          "isRequired": { "type": "boolean" },
+          "scope": { "$ref": "#/components/schemas/SubmissionScope" },
+          "type": { "$ref": "#/components/schemas/FormTypes" },
+          "currentVersion": { "type": "integer", "format": "int32" },
+          "currentVersionCreated": { "type": "string", "format": "date-time" },
+          "formVersionId": { "type": "integer", "format": "int32" }
+        },
+        "additionalProperties": false
+      },
+      "FormTypes": {
+        "enum": [0, 1, 2, 3],
+        "type": "integer",
+        "format": "int32"
+      },
+      "GetFormQuestion": {
+        "type": "object",
+        "properties": {
+          "type": { "$ref": "#/components/schemas/QuestionTypes" },
+          "name": { "type": "string", "nullable": true },
+          "text": { "type": "string", "nullable": true },
+          "isRequired": { "type": "boolean" },
+          "sectionName": { "type": "string", "nullable": true },
+          "options": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/GetFormQuestionOption" },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetFormQuestionOption": {
+        "type": "object",
+        "properties": { "value": { "type": "string", "nullable": true } },
+        "additionalProperties": false
+      },
+      "GetFormResponse": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string", "nullable": true },
+          "description": { "type": "string", "nullable": true },
+          "isRequired": { "type": "boolean" },
+          "scope": { "$ref": "#/components/schemas/SubmissionScope" },
+          "type": { "$ref": "#/components/schemas/FormTypes" },
+          "validFrom": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "validTo": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "validDays": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/DayOfWeek" },
+            "nullable": true
+          },
+          "triggersNotification": { "type": "boolean", "nullable": true },
+          "questions": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/GetFormQuestion" },
+            "nullable": true
+          },
+          "versions": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/GetFormVersion" },
+            "nullable": true
+          },
+          "sections": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/GetFormSection" },
+            "nullable": true
+          },
+          "venueId": { "type": "integer", "format": "int32", "nullable": true }
+        },
+        "additionalProperties": false
+      },
+      "GetFormSection": {
+        "type": "object",
+        "properties": { "name": { "type": "string", "nullable": true } },
+        "additionalProperties": false
+      },
+      "GetFormVersion": {
+        "type": "object",
+        "properties": {
+          "version": { "type": "integer", "format": "int32" },
+          "formVersionId": { "type": "integer", "format": "int32" },
+          "activeFrom": { "type": "string", "format": "date-time" },
+          "activeTo": { "type": "string", "format": "date-time" }
+        },
+        "additionalProperties": false
+      },
+      "GetFormsResponse": {
+        "type": "object",
+        "properties": {
+          "forms": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/FormInfo" },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetSupplierForm": {
+        "type": "object",
+        "properties": {
+          "submissionState": { "$ref": "#/components/schemas/SubmissionState" },
+          "dateSubmitted": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "organisationId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "supplierFormId": { "type": "string", "format": "uuid" },
+          "formVersionId": { "type": "integer", "format": "int32" },
+          "isRequired": { "type": "boolean" },
+          "scope": { "$ref": "#/components/schemas/SubmissionScope" },
+          "type": { "$ref": "#/components/schemas/FormTypes" },
+          "name": { "type": "string", "nullable": true },
+          "bookingReference": { "type": "string", "nullable": true }
+        },
+        "additionalProperties": false
+      },
+      "GetSupplierFormAnswer": {
+        "type": "object",
+        "properties": {
+          "questionName": { "type": "string", "nullable": true },
+          "boolValue": { "type": "boolean", "nullable": true },
+          "numericValue": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "startValue": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "endValue": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "textValue": { "type": "string", "nullable": true },
+          "optionValue": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetSupplierFormResponse": {
+        "type": "object",
+        "properties": {
+          "form": { "$ref": "#/components/schemas/GetSupplierForm" },
+          "answers": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/GetSupplierFormAnswer" },
+            "nullable": true
+          },
+          "questions": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/GetFormQuestion" },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetSupplierFormsResponse": {
+        "type": "object",
+        "properties": {
+          "forms": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/GetSupplierForm" },
+            "nullable": true
+          },
+          "venueId": { "type": "integer", "format": "int32" }
+        },
+        "additionalProperties": false
+      },
+      "InvalidRequest": {
+        "type": "object",
+        "properties": {
+          "errorCode": { "type": "string", "nullable": true },
+          "errors": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Error" },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PostFormRequest": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string", "nullable": true },
+          "description": { "type": "string", "nullable": true },
+          "isRequired": { "type": "boolean" },
+          "scope": { "$ref": "#/components/schemas/SubmissionScope" },
+          "questions": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/PostQuestion" },
+            "nullable": true
+          },
+          "sections": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/PostSection" },
+            "nullable": true
+          },
+          "type": { "$ref": "#/components/schemas/FormTypes" },
+          "validFrom": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "validTo": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "validDays": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/DayOfWeek" },
+            "nullable": true
+          },
+          "triggersNotification": { "type": "boolean", "nullable": true },
+          "venueId": { "type": "integer", "format": "int32", "nullable": true }
+        },
+        "additionalProperties": false
+      },
+      "PostQuestion": {
+        "type": "object",
+        "properties": {
+          "type": { "$ref": "#/components/schemas/QuestionTypes" },
+          "name": { "type": "string", "nullable": true },
+          "text": { "type": "string", "nullable": true },
+          "isRequired": { "type": "boolean" },
+          "sectionName": { "type": "string", "nullable": true },
+          "options": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/PostQuestionOption" },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PostQuestionOption": {
+        "type": "object",
+        "properties": { "value": { "type": "string", "nullable": true } },
+        "additionalProperties": false
+      },
+      "PostSection": {
+        "type": "object",
+        "properties": { "name": { "type": "string", "nullable": true } },
+        "additionalProperties": false
+      },
+      "PostSupplierFormRequest": {
+        "type": "object",
+        "properties": {
+          "formVersionId": { "type": "integer", "format": "int32" },
+          "SupplierId": { "type": "string", "format": "uuid", "nullable": true }
+        },
+        "additionalProperties": false
+      },
+      "PutSupplierAnswer": {
+        "type": "object",
+        "properties": {
+          "questionName": { "type": "string", "nullable": true },
+          "boolValue": { "type": "boolean", "nullable": true },
+          "numericValue": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "startValue": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "endValue": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "textValue": { "type": "string", "nullable": true },
+          "optionValue": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PutSupplierFormRequest": {
+        "type": "object",
+        "properties": {
+          "submissionState": { "$ref": "#/components/schemas/SubmissionState" },
+          "answers": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/PutSupplierAnswer" },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "QuestionTypes": { "enum": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, -1] },
+      "SubmissionScope": {
+        "enum": [0, 1],
+        "type": "integer",
+        "format": "int32"
+      },
+      "SubmissionState": {
+        "enum": [0, 1, 2, -1],
+        "type": "integer",
+        "format": "int32"
+      }
+    },
+    "securitySchemes": {
+      "apiKey": {
+        "type": "apiKey",
+        "description": "API Key auth using the Ocp-Apim-Subscription-Key header.",
+        "name": "Ocp-Apim-Subscription-Key",
+        "in": "header"
+      },
+      "bearerAuth": {
+        "type": "http",
+        "description": "JWT Authorization header using the Bearer scheme.",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [{ "apiKey": [] }, { "bearerAuth": [] }],
+  "servers": [
+    {
+      "description": "SwaggerHub API Auto Mocking",
+      "url": "https://virtserver.swaggerhub.com/CO-Digital/FormsApi/1.0.0"
+    }
+  ]
+}

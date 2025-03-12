@@ -1,0 +1,498 @@
+{
+  "openapi": "3.1.0",
+  "info": { "title": "API БД оператора связи", "version": "3.0" },
+  "servers": [
+    { "url": "https://api.mobile.com/v1", "description": "БД оператора связи" }
+  ],
+  "paths": {
+    "/authSendCode": {
+      "post": {
+        "summary": "Авторизация - запрос отправки кода подтверждения",
+        "description": "Отправка кода подтверждения",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "phone": { "type": "string", "example": 9006644555 }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiResponse" }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid filmShowId value",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/authCheckCode": {
+      "post": {
+        "summary": "Авторизация - проверка кода подтверждения",
+        "description": "При успешном вводе кода подтверждения в ответе отправляется токен авторизации",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": { "code": { "type": "string", "example": 1256 } }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "authToken": {
+                      "type": "string",
+                      "example": "6F9619FF-8B86-D011-B42D-00CF4FC964FF",
+                      "description": "Токен авторизации"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid auth code",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/getUserData": {
+      "get": {
+        "summary": "Полная информация о пользователе",
+        "description": "Получить информацию о пользователе для отображения на главном экране приложения",
+        "parameters": [
+          {
+            "name": "phone",
+            "in": "query",
+            "description": "номер телефона",
+            "required": true,
+            "schema": { "type": "string", "example": 9006644555 }
+          },
+          {
+            "name": "authToken",
+            "in": "query",
+            "description": "Токен авторизации",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "6F9619FF-8B86-D011-B42D-00CF4FC964FF"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "userId": {
+                      "type": "integer",
+                      "format": "int64",
+                      "example": 12457889,
+                      "description": "ID пользователя"
+                    },
+                    "lastName": {
+                      "type": "string",
+                      "example": "Иванов",
+                      "description": "Фамилия"
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "Иван",
+                      "description": "Имя"
+                    },
+                    "secondName": {
+                      "type": "string",
+                      "example": "Иванович",
+                      "description": "Отчество"
+                    },
+                    "balance": {
+                      "type": "number",
+                      "format": "float",
+                      "example": 150,
+                      "description": "Баланс"
+                    },
+                    "tarifId": {
+                      "type": "number",
+                      "format": "int64",
+                      "example": 1245,
+                      "description": "ID тарифа"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid params",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/getTarifList": {
+      "get": {
+        "summary": "Список тарифов",
+        "description": "Получить все тарифы оператора для отображения в списке",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "tarifList": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "number",
+                            "format": "int64",
+                            "example": 1245,
+                            "description": "ID тарифа"
+                          },
+                          "name": {
+                            "type": "string",
+                            "example": "МТС Проще",
+                            "description": "Название тарифа"
+                          },
+                          "desc": {
+                            "type": "string",
+                            "example": "Стартовый тариф с минимальным наполнением",
+                            "description": "Описание тарифа"
+                          },
+                          "trafic": {
+                            "type": "number",
+                            "format": "int64",
+                            "example": 5,
+                            "description": "Количество Гб в месяц"
+                          },
+                          "sms": {
+                            "type": "number",
+                            "format": "int64",
+                            "example": 300,
+                            "description": "Количество СМС в месяц"
+                          },
+                          "callTime": {
+                            "type": "number",
+                            "format": "int64",
+                            "example": 300,
+                            "description": "Количество минут в месяц"
+                          },
+                          "cost": {
+                            "type": "number",
+                            "format": "float",
+                            "example": 430,
+                            "description": "Стоимость в месяц (руб.)"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid params",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/setTarif": {
+      "post": {
+        "summary": "Установка тарифа",
+        "description": "Установить выбранный тариф пользователю",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "userId": {
+                    "type": "number",
+                    "format": "int64",
+                    "example": 12457889,
+                    "description": "ID пользователя"
+                  },
+                  "authToken": {
+                    "type": "string",
+                    "example": "6F9619FF-8B86-D011-B42D-00CF4FC964FF",
+                    "description": "Токен авторизации"
+                  },
+                  "tarifId": {
+                    "type": "number",
+                    "format": "int64",
+                    "example": 1245,
+                    "description": "ID тарифа"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiResponse" }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid params",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/getOptionsList": {
+      "get": {
+        "summary": "Полный список опций",
+        "description": "Получить все дополнительные опции оператора для отображения в списке",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "ID пользователя",
+            "required": true,
+            "schema": { "type": "string", "example": 12457889 }
+          },
+          {
+            "name": "authToken",
+            "in": "query",
+            "description": "Токен авторизации",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "6F9619FF-8B86-D011-B42D-00CF4FC964FF"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "optionsList": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "number",
+                            "format": "int64",
+                            "example": 1245,
+                            "description": "ID опции"
+                          },
+                          "name": {
+                            "type": "string",
+                            "example": "Уведомление о звонках",
+                            "description": "Название опции"
+                          },
+                          "desc": {
+                            "type": "string",
+                            "example": "Если кто-то позвонил, то приходит оповещение в СМС",
+                            "description": "Описание опции"
+                          },
+                          "cost": {
+                            "type": "number",
+                            "format": "float",
+                            "example": 430,
+                            "description": "Стоимость в месяц (руб.)"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid params",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/getUserOptions": {
+      "get": {
+        "summary": "Опции пользователя",
+        "description": "Получить все ID опций, подключенных у пользователя",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "ID пользователя",
+            "required": true,
+            "schema": { "type": "string", "example": 12457889 }
+          },
+          {
+            "name": "authToken",
+            "in": "query",
+            "description": "Токен авторизации",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "6F9619FF-8B86-D011-B42D-00CF4FC964FF"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "optionsList": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "number",
+                            "format": "int64",
+                            "example": 1245,
+                            "description": "ID опции"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid params",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/setOption": {
+      "post": {
+        "summary": "Установка опции пользователя",
+        "description": "Установить выбранную опцию пользователю",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "userId": {
+                    "type": "number",
+                    "format": "int64",
+                    "example": 12457889,
+                    "description": "ID пользователя"
+                  },
+                  "authToken": {
+                    "type": "string",
+                    "example": "6F9619FF-8B86-D011-B42D-00CF4FC964FF",
+                    "description": "Токен авторизации"
+                  },
+                  "optionId": {
+                    "type": "number",
+                    "format": "int64",
+                    "example": 1245,
+                    "description": "ID опции"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiResponse" }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid params",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ApiResponse" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ApiResponse": {
+        "type": "object",
+        "properties": {
+          "code": { "type": "integer", "format": "int32", "example": 200 },
+          "type": { "type": "string", "example": "success/error" },
+          "message": { "type": "string", "example": "Updated/Canceled" }
+        }
+      }
+    }
+  }
+}

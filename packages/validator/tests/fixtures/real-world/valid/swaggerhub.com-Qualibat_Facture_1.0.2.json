@@ -1,0 +1,356 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "version": "1.0.2",
+    "title": "API Facture Gescom",
+    "description": "Description des échanges entre le SI de Qualibat et la gestion commercial"
+  },
+  "servers": [
+    {
+      "description": "Environnement de Test",
+      "url": "https://test.serveurBLC.com/api/qualibat/"
+    },
+    {
+      "description": "Environement de production",
+      "url": "https://serveurBLC.com/api/qualibat/"
+    }
+  ],
+  "security": [{ "BearerAuth": ["BearerAuth"] }],
+  "paths": {
+    "/facture": {
+      "post": {
+        "tags": ["API BLC"],
+        "description": "Permet la transmission d'une facture",
+        "operationId": "PostFacture",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/facture" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Renvoie la facture enregistrée dans sage avec le numédo de facture",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/facture" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/400" },
+          "401": { "$ref": "#/components/responses/401" },
+          "403": { "$ref": "#/components/responses/403" },
+          "404": { "$ref": "#/components/responses/404" },
+          "406": { "$ref": "#/components/responses/406" },
+          "500": { "$ref": "#/components/responses/500" }
+        }
+      }
+    },
+    "/avoir": {
+      "post": {
+        "tags": ["API BLC"],
+        "description": "Permet la transmission d'un avoir",
+        "operationId": "PostAvoir",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/facture" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Renvoie la facture d'avoir définitive",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/facture" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/400" },
+          "401": { "$ref": "#/components/responses/401" },
+          "403": { "$ref": "#/components/responses/403" },
+          "404": { "$ref": "#/components/responses/404" },
+          "406": { "$ref": "#/components/responses/406" },
+          "500": { "$ref": "#/components/responses/500" }
+        }
+      }
+    },
+    "/pdf/{FactureSageId}": {
+      "get": {
+        "tags": ["API BLC"],
+        "description": "Demande le fichier pdf de la facture ou de l'avoir passé en paramètre",
+        "operationId": "GetFacturePdf",
+        "responses": {
+          "200": {
+            "description": "PDF encodé base 64 de la facture demandée.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/fichierPdf" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/400" },
+          "401": { "$ref": "#/components/responses/401" },
+          "403": { "$ref": "#/components/responses/403" },
+          "404": { "$ref": "#/components/responses/404" },
+          "406": { "$ref": "#/components/responses/406" },
+          "500": { "$ref": "#/components/responses/500" }
+        }
+      },
+      "parameters": [
+        {
+          "name": "FactureSageId",
+          "in": "path",
+          "description": "Numéro de facture définitive",
+          "required": true,
+          "schema": { "type": "integer" }
+        }
+      ]
+    }
+  },
+  "webhooks": {
+    "/api/blc/factures/definitive": {
+      "post": {
+        "description": "Notifie les factures qui ont été sécurisée dans sage.",
+        "operationId": "PostFactureQualibat",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/listeFacture" }
+            }
+          }
+        },
+        "responses": {
+          "204": { "$ref": "#/components/responses/204" },
+          "400": { "$ref": "#/components/responses/400" },
+          "401": { "$ref": "#/components/responses/401" },
+          "403": { "$ref": "#/components/responses/403" },
+          "404": { "$ref": "#/components/responses/404" },
+          "406": { "$ref": "#/components/responses/406" },
+          "500": { "$ref": "#/components/responses/500" }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": { "BearerAuth": { "type": "http", "scheme": "bearer" } },
+    "schemas": {
+      "article": {
+        "type": "object",
+        "properties": {
+          "categorieComptable": { "type": "string", "exemple": ["cat1"] },
+          "codePrestation": { "type": "string", "examples": ["CERTIFQ001"] },
+          "libelle": { "type": "string", "examples": ["Certificat EFF2A"] },
+          "familleArticle": { "$ref": "#/components/schemas/familleArticle" }
+        }
+      },
+      "erreur": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "Code de l'erreur, se référer aux réponses des webservices"
+          },
+          "titre": {
+            "type": "string",
+            "description": "Définition du code erreur http"
+          },
+          "detail": {
+            "type": "string",
+            "description": "Contenu détaillant l'erreur"
+          }
+        }
+      },
+      "enumModeReglement": {
+        "type": "string",
+        "enum": ["CB", "Prélèvement", "Virement", "Chèque", "Espece"],
+        "examples": ["CB"]
+      },
+      "facture": {
+        "type": "object",
+        "properties": {
+          "idFacture": {
+            "type": "string",
+            "examples": ["F202500005 / T2025000001"]
+          },
+          "dateFacture": { "type": "string", "examples": [20240921] },
+          "dateEcheance": { "type": "string", "examples": [20241021] },
+          "observation": {
+            "type": "string",
+            "examples": ["Suivant le bon de commande 2024-001245/000"]
+          },
+          "nature": { "type": "string", "examples": ["Facture certificat"] },
+          "codeAnalytique": { "type": "string", "examples": ["G05A210000"] },
+          "idBonCommande": {
+            "type": "string",
+            "examples": ["2024-0001245/000"]
+          },
+          "devise": { "type": "string", "examples": ["EUR"] },
+          "agence": { "$ref": "#/components/schemas/agence" },
+          "delegation": { "$ref": "#/components/schemas/delegation" },
+          "entreprise": { "$ref": "#/components/schemas/entreprise" },
+          "prestations": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/prestation" }
+          },
+          "reglement": { "$ref": "#/components/schemas/reglement" }
+        }
+      },
+      "reglement": {
+        "type": "object",
+        "properties": {
+          "dateReglement": { "type": "string", "examples": [20241101] },
+          "moyenPaiement": { "$ref": "#/components/schemas/enumModeReglement" },
+          "idTransactionMollie": {
+            "type": "string",
+            "examples": ["tr_124s54ds5d458"]
+          }
+        }
+      },
+      "prestation": {
+        "type": "object",
+        "properties": {
+          "codeTarif": { "type": "string", "examples": [1210] },
+          "anneeTarif": { "type": "string", "examples": [2024] },
+          "libelle": { "type": "string", "examples": ["Certificat EFF2A"] },
+          "prixUnitaire": { "type": "number", "examples": [122.5] },
+          "quantite": { "type": "number", "examples": [1.5] },
+          "categorieComptable": { "type": "string", "exemple": ["cat1"] },
+          "codePrestation": { "type": "string", "examples": ["CERTIFQ001"] },
+          "article": { "$ref": "#/components/schemas/article" }
+        }
+      },
+      "familleArticle": {
+        "type": "object",
+        "properties": {
+          "codeFamille": { "type": "string", "exemple": ["0123456789"] },
+          "libelle": { "type": "string", "exemple": ["lib famille article"] }
+        }
+      },
+      "entreprise": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "examples": [124578] },
+          "siret": { "type": "string", "examples": [99999999999999] },
+          "siren": { "type": "string", "examples": [999999999] },
+          "numTvaIntracommunautaire": {
+            "type": "string",
+            "examples": ["FR67999999999"]
+          },
+          "raisonSociale": {
+            "type": "string",
+            "examples": ["Les batisseurs bourguignon"]
+          },
+          "categorieComptable": { "type": "string", "exemple": ["cat1"] },
+          "adresse": { "$ref": "#/components/schemas/adresse" }
+        }
+      },
+      "adresse": {
+        "type": "object",
+        "properties": {
+          "adresse1": {
+            "type": "string",
+            "examples": ["15 rue de la liberté"]
+          },
+          "adresse2": { "type": "string", "examples": ["ZA les plates"] },
+          "adresse3": { "type": "string", "examples": ["CS 789547"] },
+          "adresse4": { "type": "string" },
+          "codePostal": { "type": "string", "examples": [21000] },
+          "ville": { "type": "string", "examples": ["Dijon"] },
+          "pays": { "type": "string", "examples": ["FR"] }
+        }
+      },
+      "agence": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "examples": ["A021"] },
+          "nom": { "type": "string", "examples": ["Agence de Dijon"] },
+          "adresseAgence": { "$ref": "#/components/schemas/adresse" }
+        }
+      },
+      "delegation": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "examples": [5] },
+          "nom": { "type": "string", "examples": ["CENTRE EST"] }
+        }
+      },
+      "fichierPdf": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "examples": ["F20240900145785"] },
+          "pdf": {
+            "type": "string",
+            "description": "PDF en base 64",
+            "examples": ["X4S5554DS4S54D5SD4SDSXS"]
+          }
+        }
+      },
+      "listeFacture": {
+        "type": "object",
+        "properties": {
+          "listeFactureSecurisee": {
+            "type": "array",
+            "items": { "type": "string", "examples": ["F202409001245"] }
+          }
+        }
+      }
+    },
+    "responses": {
+      "204": { "description": "<strong>Succès, pas de retour</strong>" },
+      "400": {
+        "description": "<strong>Erreur de requête</strong><br> 4001 - Erreur de requete<br> 4002 - Formatage json<br>",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/erreur" }
+          }
+        }
+      },
+      "401": {
+        "description": "<strong>Non autorisé</strong><BR> 4011 - Authentification absente ou refusée.<br>",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/erreur" }
+          }
+        }
+      },
+      "403": {
+        "description": "<strong>Ressource non autorisé</strong><br> 4031 - Entreprise non autorisée<br> 4032 - Auditeur non autorisé<br> 4033 - Compte auditeur non actif<br> 4034 - api non active",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/erreur" }
+          }
+        }
+      },
+      "404": {
+        "description": "<strong>Non trouvé</strong> <br> 4041 - Entreprise inconnu<br> 4042 - Ordre de mission inconnu<br> 4043 - Auditeur inconnu<br> 4044 - Facture auditeur inconnue<br> 4045 - Entreprise auditeur inconnue<br> 4046 - Fichier inexistant",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/erreur" }
+          }
+        }
+      },
+      "406": {
+        "description": "<strong>Non acceptable</strong><BR> 4061 - L'état de l'ordre de mission ne permet pas la modification<br> 4062 - Les qualifications de l'auditeur déclarée à Qualibat n'inclue pas le code nomenclature de l'ordre de mission<br> 4063 - La date de l'audit doit être spérieure à la date du jour<br> 4064 - L'auditeur est absent de l'ordre de mission<br> 4065 - L'état de la facture auditeur ne permet pas la modification",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/erreur" }
+          }
+        }
+      },
+      "500": {
+        "description": "<strong>Erreur interne</strong>",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/erreur" }
+          }
+        }
+      }
+    }
+  }
+}

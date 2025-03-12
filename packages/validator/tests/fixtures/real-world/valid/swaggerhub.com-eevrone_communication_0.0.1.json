@@ -1,0 +1,1355 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Customers Communications Service - OpenAPI 3.1.0",
+    "description": "Сервис, отвечающий за внешние коммуникации с клиентами компании.",
+    "version": "0.0.1"
+  },
+  "externalDocs": {
+    "description": "Описание вариантов использования, моделей.",
+    "url": "https://docs.google.com/document/d/1113SJE58yEL3KVyDt8qBP7ZH_B8TdFBRk-o3Ta93QoA"
+  },
+  "servers": [
+    {
+      "url": "https://x5-communications.wiremockapi.cloud/",
+      "description": "Test mock server"
+    }
+  ],
+  "tags": [
+    { "name": "channels", "description": "Каналы коммуникации с клиентами" },
+    { "name": "customers", "description": "Клиенты компании" },
+    {
+      "name": "users",
+      "description": "Пользователи сервиса: менеджеры, администраторы, поддержка"
+    },
+    {
+      "name": "communications",
+      "description": "Внешние коммуникации с клиентами: темы, сообщения, комментарии"
+    }
+  ],
+  "security": [{ "ApiKeyAuth": [] }],
+  "paths": {
+    "/channels": {
+      "get": {
+        "tags": ["channels"],
+        "summary": "Список каналов коммуникации, поддерживаемый сервисом",
+        "description": "email, SMS, Push-уведомления и т.д.",
+        "operationId": "getChannels",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommunicationChannels"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommunicationChannels"
+                }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "401": { "description": "Unauthorized" },
+          "5XX": { "description": "Unexpected server error" }
+        }
+      },
+      "post": {
+        "tags": ["channels"],
+        "summary": "Добавление нового канала коммуникации",
+        "operationId": "addChannel",
+        "requestBody": {
+          "description": "Данные нового канала",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CommunicationChannel" }
+            },
+            "application/xml": {
+              "schema": { "$ref": "#/components/schemas/CommunicationChannel" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommunicationChannel"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommunicationChannel"
+                }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "401": { "description": "Unauthorized" },
+          "404": { "description": "Not Found" },
+          "5XX": { "description": "Unexpected server error" }
+        }
+      }
+    },
+    "/channels/{channelId}": {
+      "put": {
+        "tags": ["channels"],
+        "summary": "Обновление канала коммуникации",
+        "operationId": "updateChannel",
+        "parameters": [
+          {
+            "name": "channelId",
+            "in": "path",
+            "description": "Идентификатор канала",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "requestBody": {
+          "description": "Данные канала",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CommunicationChannel" }
+            },
+            "application/xml": {
+              "schema": { "$ref": "#/components/schemas/CommunicationChannel" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommunicationChannel"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommunicationChannel"
+                }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "401": { "description": "Unauthorized" },
+          "404": { "description": "Not Found" },
+          "5XX": { "description": "Unexpected server error" }
+        }
+      },
+      "delete": {
+        "tags": ["channels"],
+        "summary": "Удаление канала коммуникации",
+        "operationId": "deleteChannel",
+        "parameters": [
+          {
+            "name": "channelId",
+            "in": "path",
+            "description": "Идентификатор канала",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "204": { "description": "OK" },
+          "400": { "description": "Bad Request" },
+          "401": { "description": "Unauthorized" },
+          "404": { "description": "Not Found" },
+          "5XX": { "description": "Unexpected server error" }
+        }
+      }
+    },
+    "/customers": {
+      "get": {
+        "tags": ["customers"],
+        "summary": "Список клиентов компании",
+        "operationId": "getCustomers",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Номер страницы (начиная с 1)",
+            "required": false,
+            "schema": { "type": "integer", "format": "int32" }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Размер страницы",
+            "required": false,
+            "schema": { "type": "integer", "format": "int32" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Customers" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/Customers" }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["customers"],
+        "summary": "Добавление нового клиента",
+        "operationId": "addCustomer",
+        "requestBody": {
+          "description": "Данные нового клиента",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Customer" }
+            },
+            "application/xml": {
+              "schema": { "$ref": "#/components/schemas/Customer" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Customer" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/Customer" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customers/{customerUuid}": {
+      "get": {
+        "tags": ["customers"],
+        "summary": "Информация о клиенте",
+        "description": "Информация о клиенте по его идентификатору",
+        "operationId": "getCustomer",
+        "parameters": [
+          {
+            "name": "customerUuid",
+            "in": "path",
+            "description": "Идентификатор клиента",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "5387cef3-bb2e-4508-92a5-6d41d987c963"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Customer" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/Customer" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "401": { "description": "Unauthorized" },
+          "404": { "description": "Not Found" },
+          "5XX": { "description": "Unexpected server error" }
+        }
+      },
+      "put": {
+        "tags": ["customers"],
+        "summary": "Обновление информации о клиенте",
+        "operationId": "updateCustomer",
+        "parameters": [
+          {
+            "name": "customerUuid",
+            "in": "path",
+            "description": "Идентификатор клиента",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "5387cef3-bb2e-4508-92a5-6d41d987c963"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Данные клиента",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Customer" }
+            },
+            "application/xml": {
+              "schema": { "$ref": "#/components/schemas/Customer" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Customer" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/Customer" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "401": { "description": "Unauthorized" },
+          "404": { "description": "Not Found" },
+          "5XX": { "description": "Unexpected server error" }
+        }
+      },
+      "delete": {
+        "tags": ["customers"],
+        "summary": "Удаление клиента",
+        "operationId": "deleteCustomer",
+        "parameters": [
+          {
+            "name": "customerUuid",
+            "in": "path",
+            "description": "Идентификатор клиента",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "5387cef3-bb2e-4508-92a5-6d41d987c963"
+            }
+          }
+        ],
+        "responses": {
+          "204": { "description": "OK" },
+          "400": { "description": "Bad Request" },
+          "401": { "description": "Unauthorized" },
+          "404": { "description": "Not Found" },
+          "5XX": { "description": "Unexpected server error" }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "tags": ["users"],
+        "summary": "Список пользователей",
+        "description": "Список пользователей сервиса",
+        "operationId": "getUsers",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Номер страницы (начиная с 1)",
+            "required": false,
+            "schema": { "type": "integer", "format": "int32" }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Размер страницы",
+            "required": false,
+            "schema": { "type": "integer", "format": "int32" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Users" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/Users" }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["users"],
+        "summary": "Добавление нового пользователя",
+        "operationId": "addUser",
+        "requestBody": {
+          "description": "Данные нового пользователя",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/User" }
+            },
+            "application/xml": {
+              "schema": { "$ref": "#/components/schemas/User" }
+            }
+          }
+        }
+      }
+    },
+    "/users/{userUuid}": {
+      "get": {
+        "tags": ["users"],
+        "summary": "Информация о пользователе",
+        "description": "Информация о пользователе по его идентификатору",
+        "operationId": "getUser",
+        "parameters": [
+          {
+            "name": "userUuid",
+            "in": "path",
+            "description": "Идентификатор пользователя",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "5387cef3-bb2e-4508-92a5-6d41d987c963"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/User" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/User" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "401": { "description": "Unauthorized" },
+          "404": { "description": "Not Found" },
+          "5XX": { "description": "Unexpected server error" }
+        }
+      },
+      "put": {
+        "tags": ["users"],
+        "summary": "Обновление информации о пользователе",
+        "operationId": "updateUser",
+        "parameters": [
+          {
+            "name": "userUuid",
+            "in": "path",
+            "description": "Идентификатор пользователя",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "5387cef3-bb2e-4508-92a5-6d41d987c963"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Данные пользователя",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/User" }
+            },
+            "application/xml": {
+              "schema": { "$ref": "#/components/schemas/User" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/User" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/User" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "401": { "description": "Unauthorized" },
+          "404": { "description": "Not Found" },
+          "5XX": { "description": "Unexpected server error" }
+        }
+      },
+      "delete": {
+        "tags": ["users"],
+        "summary": "Удаление пользователя",
+        "operationId": "deleteUser",
+        "parameters": [
+          {
+            "name": "userUuid",
+            "in": "path",
+            "description": "Идентификатор пользователя",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "5387cef3-bb2e-4508-92a5-6d41d987c963"
+            }
+          }
+        ]
+      }
+    },
+    "/customers/{customerUuid}/channels": {
+      "get": {
+        "tags": ["channels"],
+        "summary": "Список всех каналов коммуникации одного клиента",
+        "operationId": "getCustomerChannels",
+        "parameters": [
+          {
+            "name": "customerUuid",
+            "in": "path",
+            "description": "Идентификатор клиента",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "5387cef3-bb2e-4508-92a5-6d41d987c963"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/CustomerChannels" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/CustomerChannels" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "401": { "description": "Unauthorized" },
+          "404": { "description": "Not Found" },
+          "5XX": { "description": "Unexpected server error" }
+        }
+      },
+      "post": {
+        "tags": ["channels"],
+        "summary": "Добавление нового канала коммуникации для клиента",
+        "operationId": "addCustomerChannel",
+        "parameters": [
+          {
+            "name": "customerUuid",
+            "in": "path",
+            "description": "Идентификатор клиента",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "5387cef3-bb2e-4508-92a5-6d41d987c963"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Данные нового канала",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CustomerChannel" }
+            },
+            "application/xml": {
+              "schema": { "$ref": "#/components/schemas/CustomerChannel" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/CustomerChannel" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/CustomerChannel" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "401": { "description": "Unauthorized" },
+          "404": { "description": "Not Found" },
+          "5XX": { "description": "Unexpected server error" }
+        }
+      },
+      "delete": {
+        "tags": ["channels"],
+        "summary": "Удаление всех каналов коммуникации одного клиента",
+        "operationId": "deleteAllCustomerChannels",
+        "parameters": [
+          {
+            "name": "customerUuid",
+            "in": "path",
+            "description": "Идентификатор клиента",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "5387cef3-bb2e-4508-92a5-6d41d987c963"
+            }
+          }
+        ],
+        "responses": {
+          "204": { "description": "OK" },
+          "400": { "description": "Bad Request" },
+          "401": { "description": "Unauthorized" },
+          "404": { "description": "Not Found" },
+          "5XX": { "description": "Unexpected server error" }
+        }
+      }
+    },
+    "/customers/{customerUuid}/channels/{channelId}": {
+      "put": {
+        "tags": ["channels"],
+        "summary": "Обновление канала коммуникации для клиента",
+        "operationId": "updateCustomerChannel",
+        "parameters": [
+          {
+            "name": "customerUuid",
+            "in": "path",
+            "description": "Идентификатор клиента",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "5387cef3-bb2e-4508-92a5-6d41d987c963"
+            }
+          },
+          {
+            "name": "channelId",
+            "in": "path",
+            "description": "Идентификатор канала",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "requestBody": {
+          "description": "Данные канала",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CustomerChannel" }
+            },
+            "application/xml": {
+              "schema": { "$ref": "#/components/schemas/CustomerChannel" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/CustomerChannel" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/CustomerChannel" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "401": { "description": "Unauthorized" },
+          "404": { "description": "Not Found" },
+          "5XX": { "description": "Unexpected server error" }
+        }
+      },
+      "delete": {
+        "tags": ["channels"],
+        "summary": "Удаление канала коммуникации для клиента",
+        "operationId": "deleteCustomerChannel",
+        "parameters": [
+          {
+            "name": "customerUuid",
+            "in": "path",
+            "description": "Идентификатор клиента",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "5387cef3-bb2e-4508-92a5-6d41d987c963"
+            }
+          },
+          {
+            "name": "channelId",
+            "in": "path",
+            "description": "Идентификатор канала",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "204": { "description": "OK" },
+          "400": { "description": "Bad Request" },
+          "401": { "description": "Unauthorized" },
+          "404": { "description": "Not Found" },
+          "5XX": { "description": "Unexpected server error" }
+        }
+      }
+    },
+    "/customers/{customerUuid}/topics": {
+      "get": {
+        "tags": ["communications"],
+        "summary": "Список тем общения с конкретным клиентом",
+        "operationId": "getCustomerTopics",
+        "parameters": [
+          {
+            "name": "customerUuid",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "channelId",
+            "in": "query",
+            "description": "Фильтр по каналу коммуникации (опциональный)",
+            "schema": { "type": "integer", "format": "int64" }
+          },
+          {
+            "name": "fromDate",
+            "in": "query",
+            "description": "Фильтр по дате создания темы (включительно, опциональный)",
+            "schema": { "type": "string", "format": "date" }
+          },
+          {
+            "name": "toDate",
+            "in": "query",
+            "schema": { "type": "string", "format": "date" }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "description": "Поиск по теме и описанию",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Номер страницы (начиная с 1)",
+            "required": false,
+            "schema": { "type": "integer", "format": "int32" }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Число элементов на странице",
+            "required": false,
+            "schema": { "type": "integer", "format": "int32" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Topics" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/Topics" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "401": { "description": "Unauthorized" },
+          "404": { "description": "Not Found" },
+          "5XX": { "description": "Unexpected server error" }
+        }
+      },
+      "post": {
+        "tags": ["communications"],
+        "summary": "Создание новой темы общения",
+        "operationId": "addTopic",
+        "requestBody": {
+          "description": "Данные новой темы",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Topic" }
+            },
+            "application/xml": {
+              "schema": { "$ref": "#/components/schemas/Topic" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Topic" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/Topic" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "401": { "description": "Unauthorized" },
+          "404": { "description": "Not Found" },
+          "5XX": { "description": "Unexpected server error" }
+        }
+      }
+    },
+    "/customers/{customerUuid}/topics/{topicId}": {
+      "put": {
+        "tags": ["communications"],
+        "summary": "Обновление темы общения",
+        "operationId": "updateTopic",
+        "parameters": [
+          {
+            "name": "customerUuid",
+            "in": "path",
+            "description": "Идентификатор клиента",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "5387cef3-bb2e-4508-92a5-6d41d987c963"
+            }
+          },
+          {
+            "name": "topicId",
+            "in": "path",
+            "description": "Идентификатор темы",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "requestBody": {
+          "description": "Данные темы",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Topic" }
+            },
+            "application/xml": {
+              "schema": { "$ref": "#/components/schemas/Topic" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Topic" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/Topic" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "401": { "description": "Unauthorized" },
+          "404": { "description": "Not Found" },
+          "5XX": { "description": "Unexpected server error" }
+        }
+      },
+      "delete": {
+        "tags": ["communications"],
+        "summary": "Удаление темы общения и всех сообщений по этой теме",
+        "operationId": "deleteTopic",
+        "parameters": [
+          {
+            "name": "customerUuid",
+            "in": "path",
+            "description": "Идентификатор клиента",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "5387cef3-bb2e-4508-92a5-6d41d987c963"
+            }
+          },
+          {
+            "name": "topicId",
+            "in": "path",
+            "description": "Идентификатор темы",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "204": { "description": "OK" },
+          "400": { "description": "Bad Request" },
+          "401": { "description": "Unauthorized" },
+          "404": { "description": "Not Found" },
+          "5XX": { "description": "Unexpected server error" }
+        }
+      }
+    },
+    "/customers/{customerUuid}/topics/{topicId}/messages": {
+      "get": {
+        "tags": ["communications"],
+        "summary": "Список сообщений по теме",
+        "operationId": "getTopicMessages",
+        "parameters": [
+          {
+            "name": "customerUuid",
+            "in": "path",
+            "description": "Идентификатор клиента",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "5387cef3-bb2e-4508-92a5-6d41d987c963"
+            }
+          },
+          {
+            "name": "topicId",
+            "in": "path",
+            "description": "Идентификатор темы",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Номер страницы (начиная с 1)",
+            "required": false,
+            "schema": { "type": "integer", "format": "int32" }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Размер страницы",
+            "required": false,
+            "schema": { "type": "integer", "format": "int32" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Messages" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/Messages" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "401": { "description": "Unauthorized" },
+          "404": { "description": "Not Found" },
+          "5XX": { "description": "Unexpected server error" }
+        }
+      },
+      "post": {
+        "tags": ["communications"],
+        "summary": "Добавление нового сообщения",
+        "operationId": "addMessage",
+        "requestBody": {
+          "description": "Данные нового сообщения",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Message" }
+            },
+            "application/xml": {
+              "schema": { "$ref": "#/components/schemas/Message" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Message" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/Message" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "401": { "description": "Unauthorized" },
+          "404": { "description": "Not Found" },
+          "5XX": { "description": "Unexpected server error" }
+        }
+      }
+    },
+    "/customers/{customerUuid}/topics/{topicId}/comments": {
+      "get": {
+        "tags": ["communications"],
+        "summary": "Список комментариев по теме",
+        "operationId": "getTopicComments",
+        "parameters": [
+          {
+            "name": "customerUuid",
+            "in": "path",
+            "description": "Идентификатор клиента",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "5387cef3-bb2e-4508-92a5-6d41d987c963"
+            }
+          },
+          {
+            "name": "topicId",
+            "in": "path",
+            "description": "Идентификатор темы",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Номер страницы (начиная с 1)",
+            "required": false,
+            "schema": { "type": "integer", "format": "int32" }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Размер страницы",
+            "required": false,
+            "schema": { "type": "integer", "format": "int32" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Comments" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/Comments" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "401": { "description": "Unauthorized" },
+          "404": { "description": "Not Found" },
+          "5XX": { "description": "Unexpected server error" }
+        }
+      },
+      "post": {
+        "tags": ["communications"],
+        "summary": "Добавление нового комментария",
+        "operationId": "addComment",
+        "requestBody": {
+          "description": "Данные нового комментария",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Comment" }
+            },
+            "application/xml": {
+              "schema": { "$ref": "#/components/schemas/Comment" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Comment" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/Comment" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "401": { "description": "Unauthorized" },
+          "404": { "description": "Not Found" },
+          "5XX": { "description": "Unexpected server error" }
+        }
+      }
+    },
+    "/customers/{customerUuid}/topics/{topicId}/comments/{commentId}": {
+      "put": {
+        "tags": ["communications"],
+        "summary": "Обновление комментария",
+        "operationId": "updateComment",
+        "parameters": [
+          {
+            "name": "customerUuid",
+            "in": "path",
+            "description": "Идентификатор клиента",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "5387cef3-bb2e-4508-92a5-6d41d987c963"
+            }
+          },
+          {
+            "name": "topicId",
+            "in": "path",
+            "description": "Идентификатор темы",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          },
+          {
+            "name": "commentId",
+            "in": "path",
+            "description": "Идентификатор комментария",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "requestBody": {
+          "description": "Данные комментария",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Comment" }
+            },
+            "application/xml": {
+              "schema": { "$ref": "#/components/schemas/Comment" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Comment" }
+              },
+              "application/xml": {
+                "schema": { "$ref": "#/components/schemas/Comment" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" },
+          "401": { "description": "Unauthorized" },
+          "404": { "description": "Not Found" },
+          "5XX": { "description": "Unexpected server error" }
+        }
+      },
+      "delete": {
+        "tags": ["communications"],
+        "summary": "Удаление комментария",
+        "operationId": "deleteComment",
+        "parameters": [
+          {
+            "name": "customerUuid",
+            "in": "path",
+            "description": "Идентификатор клиента",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "5387cef3-bb2e-4508-92a5-6d41d987c963"
+            }
+          },
+          {
+            "name": "topicId",
+            "in": "path",
+            "description": "Идентификатор темы",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          },
+          {
+            "name": "commentId",
+            "in": "path",
+            "description": "Идентификатор комментария",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "204": { "description": "OK" },
+          "400": { "description": "Bad Request" },
+          "401": { "description": "Unauthorized" },
+          "404": { "description": "Not Found" },
+          "5XX": { "description": "Unexpected server error" }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Customer": {
+        "type": "object",
+        "required": ["name"],
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "example": "5387cef3-bb2e-4508-92a5-6d41d987c963"
+          },
+          "name": { "type": "string", "example": "Иванов Иван Иванович" },
+          "reservedByUserID": {
+            "type": "string",
+            "example": "5387cef3-bb2e-4508-92a5-6d41d987c963"
+          }
+        }
+      },
+      "Customers": {
+        "type": "array",
+        "items": { "$ref": "#/components/schemas/Customer" }
+      },
+      "User": {
+        "type": "object",
+        "required": ["name", "role"],
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "example": "5387cef3-bb2e-4508-92a5-6d41d987c963"
+          },
+          "name": { "type": "string", "example": "Иванов Иван Иванович" },
+          "role": { "type": "string", "enum": ["Admin", "Manager", "Support"] }
+        }
+      },
+      "Users": {
+        "type": "array",
+        "items": { "$ref": "#/components/schemas/User" }
+      },
+      "CommunicationChannel": {
+        "type": "object",
+        "required": ["type"],
+        "properties": {
+          "id": { "type": "integer", "format": "int64", "example": 42 },
+          "type": {
+            "type": "string",
+            "enum": ["SMS", "Phone", "Email", "Push", "Messenger"]
+          },
+          "description": {
+            "type": "string",
+            "example": "Текстовые СМС-сообщения (макс. 160 символов)"
+          }
+        }
+      },
+      "CommunicationChannels": {
+        "type": "array",
+        "items": { "$ref": "#/components/schemas/CommunicationChannel" }
+      },
+      "CustomerChannel": {
+        "type": "object",
+        "required": [
+          "customerUuid",
+          "channelId",
+          "optIn",
+          "channelContactInfo"
+        ],
+        "properties": {
+          "customerUuid": {
+            "type": "string",
+            "example": "5387cef3-bb2e-4508-92a5-6d41d987c963"
+          },
+          "channelId": { "type": "integer", "format": "int64", "example": 10 },
+          "optIn": { "type": "boolean", "example": true },
+          "channelContactInfo": {
+            "type": "string",
+            "example": "+7 999 123-45-67"
+          }
+        }
+      },
+      "CustomerChannels": {
+        "type": "array",
+        "items": { "$ref": "#/components/schemas/CustomerChannel" }
+      },
+      "Topic": {
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "description",
+          "customerUuid",
+          "channelId",
+          "createdAt"
+        ],
+        "properties": {
+          "id": { "type": "integer", "format": "int64", "example": 42 },
+          "title": {
+            "type": "string",
+            "example": "Весенняя акция - скидка 10% на все товары"
+          },
+          "description": {
+            "type": "string",
+            "example": "Скидка на все товары весенней коллекции"
+          },
+          "customerUuid": {
+            "type": "string",
+            "example": "5387cef3-bb2e-4508-92a5-6d41d987c963"
+          },
+          "channelId": { "type": "integer", "format": "int64", "example": 10 },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2020-01-01T00:00:00Z"
+          }
+        }
+      },
+      "Topics": {
+        "type": "array",
+        "items": { "$ref": "#/components/schemas/Topic" }
+      },
+      "TopicManager": {
+        "type": "object",
+        "required": [
+          "id",
+          "userUuid",
+          "topicId",
+          "unassignedSince",
+          "assignedSince"
+        ],
+        "properties": {
+          "id": { "type": "integer", "format": "int64", "example": 42 },
+          "userUuid": {
+            "type": "string",
+            "example": "5387cef3-bb2e-4508-92a5-6d41d987c963"
+          },
+          "topicId": { "type": "integer", "format": "int64", "example": 10 },
+          "unassignedSince": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2020-01-01T00:00:00Z"
+          },
+          "assignedSince": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2020-01-01T00:00:00Z"
+          }
+        }
+      },
+      "TopicManagers": {
+        "type": "array",
+        "items": { "$ref": "#/components/schemas/TopicManager" }
+      },
+      "Message": {
+        "type": "object",
+        "required": [
+          "id",
+          "text",
+          "topicId",
+          "senderUuid",
+          "status",
+          "timestamp"
+        ],
+        "properties": {
+          "id": { "type": "integer", "format": "int64", "example": 42 },
+          "text": {
+            "type": "string",
+            "example": "Здравствуйте! Как я могу помочь?"
+          },
+          "topicId": { "type": "integer", "format": "int64", "example": 10 },
+          "senderUuid": {
+            "type": "string",
+            "example": "5387cef3-bb2e-4508-92a5-6d41d987c963"
+          },
+          "status": { "type": "string", "enum": ["Sent", "Delivered", "Read"] },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2020-01-01T00:00:00Z"
+          }
+        }
+      },
+      "Messages": {
+        "type": "array",
+        "items": { "$ref": "#/components/schemas/Message" }
+      },
+      "Comment": {
+        "type": "object",
+        "required": ["id", "topicId", "text", "userUuid", "timestamp"],
+        "properties": {
+          "id": { "type": "integer", "format": "int64", "example": 42 },
+          "topicId": { "type": "integer", "format": "int64", "example": 10 },
+          "text": { "type": "string", "example": "Спасибо за помощь!" },
+          "userUuid": {
+            "type": "string",
+            "example": "5387cef3-bb2e-4508-92a5-6d41d987c963"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2020-01-01T00:00:00Z"
+          }
+        }
+      },
+      "Comments": {
+        "type": "array",
+        "items": { "$ref": "#/components/schemas/Comment" }
+      }
+    },
+    "securitySchemes": {
+      "ApiKeyAuth": { "type": "apiKey", "in": "header", "name": "X-API-Key" }
+    }
+  }
+}

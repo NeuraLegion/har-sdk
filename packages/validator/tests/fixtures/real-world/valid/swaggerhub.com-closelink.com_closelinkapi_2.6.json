@@ -1,0 +1,3183 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Closelink Public API",
+    "description": "This is the documentation of the public Closelink API. You are able to access the API via an API key you can create for your group. You are able to test on different environments using the different server options.",
+    "termsOfService": "https://www.closelink.com/terms-conditions",
+    "contact": {
+      "name": "Closelink GmbH",
+      "url": "https://www.closelink.com",
+      "email": "service@closelink.com"
+    },
+    "version": "2.6"
+  },
+  "servers": [
+    {
+      "url": "https://public-api.closelink.com",
+      "description": "Production Environment"
+    },
+    {
+      "url": "https://public-api-staging.closelink.com",
+      "description": "Staging Environment"
+    }
+  ],
+  "security": [{ "apikey": [] }],
+  "tags": [
+    {
+      "name": "Remaining On Board",
+      "description": "Manage remaining on board information"
+    },
+    { "name": "Port Calls", "description": "Manage port calls" },
+    { "name": "Ports", "description": "Manage ports" },
+    { "name": "Vessels", "description": "Manage vessels" },
+    { "name": "Vessel Tanks", "description": "Manage vessel tanks" },
+    {
+      "name": "Integration Event Messages",
+      "description": "Manage messages for the Integration Event Message Queue"
+    },
+    {
+      "name": "Order Messages",
+      "description": "Manage messages related to an order"
+    },
+    { "name": "Enquiries", "description": "Manage enquiries" },
+    { "name": "Customer Groups", "description": "Manage customer groups" },
+    { "name": "Enums", "description": "Manage enums" },
+    { "name": "Agents", "description": "Manage agents" }
+  ],
+  "paths": {
+    "/v1/enquiries/{enquiryId}": {
+      "get": {
+        "tags": ["Enquiries"],
+        "summary": "Find enquiry by ID",
+        "operationId": "findEnquiryById",
+        "parameters": [
+          {
+            "name": "enquiryId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {}
+          }
+        ],
+        "responses": {
+          "500": { "description": "Internal Server Error" },
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/EnquiryMessage" }
+              }
+            }
+          },
+          "403": { "description": "Unauthorized to access this enquiry" }
+        },
+        "security": [{ "apikey": [] }]
+      },
+      "put": {
+        "tags": ["Enquiries"],
+        "summary": "Update enquiry by ID",
+        "operationId": "updateEnquiryById",
+        "parameters": [
+          {
+            "name": "enquiryId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {}
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUpdateEnquiryMessage"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "500": { "description": "Internal Server Error" },
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/EnquiryMessage" }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation for this request failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "403": { "description": "Unauthorized to access this enquiry" }
+        },
+        "security": [{ "apikey": [] }]
+      },
+      "delete": {
+        "tags": ["Enquiries"],
+        "summary": "Delete enquiry by ID",
+        "operationId": "deleteEnquiryById",
+        "parameters": [
+          {
+            "name": "enquiryId",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {}
+          }
+        ],
+        "responses": {
+          "500": { "description": "Internal Server Error" },
+          "200": { "description": "Successful response" },
+          "403": { "description": "Unauthorized to access this enquiry" }
+        },
+        "security": [{ "apikey": [] }]
+      }
+    },
+    "/v1/agents/{id}": {
+      "get": {
+        "tags": ["Agents"],
+        "summary": "Find agent by ID",
+        "operationId": "get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Agent ID",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {},
+            "example": "572206b5e4b0d7441f638363"
+          }
+        ],
+        "responses": {
+          "500": { "description": "Internal Server Error" },
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AgentMessage" }
+              }
+            }
+          },
+          "404": { "description": "Agent could not be found" }
+        },
+        "security": [{ "apikey": [] }]
+      },
+      "put": {
+        "tags": ["Agents"],
+        "summary": "Update agent",
+        "operationId": "update",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Agent ID",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {},
+            "example": "572206b5e4b0d7441f638363"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/AgentMessage" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "500": { "description": "Internal Server Error" },
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AgentMessage" }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation for this request failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The user does not have access to update the specified agent"
+          },
+          "404": { "description": "Agent could not be found" }
+        },
+        "security": [{ "apikey": [] }]
+      }
+    },
+    "/v1/agents/external/{externalId}": {
+      "get": {
+        "tags": ["Agents"],
+        "summary": "Find agent by external ID",
+        "operationId": "getExternalAgent",
+        "parameters": [
+          {
+            "name": "externalId",
+            "in": "path",
+            "description": "External ID",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {},
+            "example": "AGENT-123-ID"
+          }
+        ],
+        "responses": {
+          "500": { "description": "Internal Server Error" },
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AgentMessage" }
+              }
+            }
+          },
+          "404": { "description": "Agent could not be found" }
+        },
+        "security": [{ "apikey": [] }]
+      },
+      "put": {
+        "tags": ["Agents"],
+        "summary": "Update agent by external ID",
+        "operationId": "updateExternalAgent",
+        "parameters": [
+          {
+            "name": "externalId",
+            "in": "path",
+            "description": "External ID",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {},
+            "example": "AGENT-123-ID"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/AgentMessage" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "500": { "description": "Internal Server Error" },
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AgentMessage" }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation for this request failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The user does not have access to update the specified agent"
+          },
+          "404": { "description": "Agent could not be found" }
+        },
+        "security": [{ "apikey": [] }]
+      }
+    },
+    "/v1/agents/bulk": {
+      "put": {
+        "tags": ["Agents"],
+        "summary": "Update multiple agents",
+        "operationId": "updateBulk",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/AgentsMessage" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "500": { "description": "Internal Server Error" },
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AgentsMessage" }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation for this request failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The user does not have access to update at least one agent"
+          },
+          "404": { "description": "Not found if agent does not exist" }
+        },
+        "security": [{ "apikey": [] }]
+      },
+      "post": {
+        "tags": ["Agents"],
+        "summary": "Create multiple agents",
+        "operationId": "createBulk",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/AgentsMessage" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "500": { "description": "Internal Server Error" },
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AgentsMessage" }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation for this request failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The user does not have access to create at least one agent"
+          }
+        },
+        "security": [{ "apikey": [] }]
+      }
+    },
+    "/v1/remaining-on-board": {
+      "post": {
+        "tags": ["Remaining On Board"],
+        "summary": "Update remaining on board information",
+        "operationId": "createRemainingOnBoard",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RemainingOnBoardListRequestMessage"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "500": { "description": "Internal Server Error" },
+          "200": { "description": "Successful response" },
+          "400": {
+            "description": "Bad request message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Unauthorized to update remaining on board information"
+          }
+        },
+        "security": [{ "apikey": [] }]
+      }
+    },
+    "/v1/orders/{closelinkOrderId}/message": {
+      "post": {
+        "tags": ["Order Messages"],
+        "summary": "Create a message",
+        "operationId": "createMessage",
+        "parameters": [
+          {
+            "name": "closelinkOrderId",
+            "in": "path",
+            "description": "Closelink order ID",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {},
+            "example": "64ac0134382cde7aa41132c2"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreateMessageRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "500": { "description": "Internal Server Error" },
+          "200": { "description": "Successful response" },
+          "400": {
+            "description": "Bad request message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "403": { "description": "Unauthorized to send message to this order" }
+        },
+        "security": [{ "apikey": [] }]
+      }
+    },
+    "/v1/integration-events": {
+      "post": {
+        "tags": ["Integration Event Messages"],
+        "summary": "Send an integration event",
+        "operationId": "sendMessage",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateIntegrationMessageRequestMessage"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "500": { "description": "Internal Server Error" },
+          "200": { "description": "Successful response" },
+          "400": {
+            "description": "Bad request message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "403": { "description": "Unauthorized to send message" }
+        },
+        "security": [{ "apikey": [] }]
+      }
+    },
+    "/v1/enquiries": {
+      "post": {
+        "tags": ["Enquiries"],
+        "summary": "Create enquiry",
+        "operationId": "createEnquiry",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUpdateEnquiryMessage"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "500": { "description": "Internal Server Error" },
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/EnquiryMessage" }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation for this request failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          },
+          "403": { "description": "Unauthorized to create enquiry" }
+        },
+        "security": [{ "apikey": [] }]
+      }
+    },
+    "/v1/agents": {
+      "get": {
+        "tags": ["Agents"],
+        "summary": "Query for agents",
+        "operationId": "findList",
+        "parameters": [
+          {
+            "name": "ids",
+            "in": "query",
+            "description": "List of agent IDs",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": { "items": {} }
+          },
+          {
+            "name": "customerIds",
+            "in": "query",
+            "description": "List of customer IDs",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": { "items": {} }
+          },
+          {
+            "name": "searchQuery",
+            "in": "query",
+            "description": "Search query",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {},
+            "example": "Agent Name XYZ"
+          },
+          {
+            "name": "portIds",
+            "in": "query",
+            "description": "List of port IDs",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": { "items": {} }
+          },
+          {
+            "name": "externalIds",
+            "in": "query",
+            "description": "List of external IDs",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": { "items": {} }
+          }
+        ],
+        "responses": {
+          "500": { "description": "Internal Server Error" },
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AgentsMessage" }
+              }
+            }
+          }
+        },
+        "security": [{ "apikey": [] }]
+      },
+      "post": {
+        "tags": ["Agents"],
+        "summary": "Create agent",
+        "operationId": "create",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/AgentMessage" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "500": { "description": "Internal Server Error" },
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AgentMessage" }
+              }
+            }
+          },
+          "403": {
+            "description": "The user does not have access to create the specified agent"
+          },
+          "400": {
+            "description": "Validation for this request failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [{ "apikey": [] }]
+      }
+    },
+    "/v1/port-calls": {
+      "post": {
+        "tags": ["Port Calls"],
+        "summary": "Update future port calls (Overrides all future port calls)",
+        "operationId": "updatePortCalls",
+        "requestBody": {
+          "description": "List of port calls",
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/PortCallMessages" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/PortCallMessages" }
+              }
+            }
+          },
+          "403": { "description": "Forbidden" }
+        },
+        "security": [{ "apikey": [] }]
+      }
+    },
+    "/v1/vessel-tanks/{vesselId}": {
+      "put": {
+        "tags": ["Vessel Tanks"],
+        "summary": "Create or update vessel tanks",
+        "operationId": "updateVesselTanks",
+        "parameters": [
+          {
+            "name": "vesselId",
+            "in": "path",
+            "description": "Vessel ID",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {},
+            "example": "572206b5e4b0d7441f638363"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VesselTanksRequestMessage"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/VesselTanksMessage" }
+              }
+            }
+          },
+          "403": {
+            "description": "The user does not have access to create or update the specified vessel tanks"
+          },
+          "400": {
+            "description": "Validation for this request failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [{ "apikey": [] }]
+      }
+    },
+    "/v1/vessels": {
+      "get": {
+        "tags": ["Vessels"],
+        "summary": "Query for multiple vessels",
+        "operationId": "getVessels",
+        "parameters": [
+          {
+            "name": "customerIds",
+            "in": "query",
+            "description": "Customer ids",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": { "uniqueItems": true, "items": {} },
+            "example": ["5fc4f3b053e79838873f72e9", "6fc4f3b053e79838873f72e9"]
+          },
+          {
+            "name": "active",
+            "in": "query",
+            "description": "Vessel active",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {},
+            "example": true
+          },
+          {
+            "name": "imo",
+            "in": "query",
+            "description": "IMO ship identification number",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {},
+            "example": 231292
+          },
+          {
+            "name": "imos",
+            "in": "query",
+            "description": "List of IMOs",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": { "uniqueItems": true, "items": {} },
+            "example": ["231292", "232334"]
+          },
+          {
+            "name": "vesselIds",
+            "in": "query",
+            "description": "Vessel ids",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": { "uniqueItems": true, "items": {} },
+            "example": ["5fc4f3b053e79838873f72e9", "6fc4f3b053e79838873f72e9"]
+          },
+          {
+            "name": "searchQuery",
+            "in": "query",
+            "description": "Search query",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {},
+            "example": "Some ship name"
+          },
+          {
+            "name": "searchCustomerIds",
+            "in": "query",
+            "description": "Customer ids for the search query",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": { "uniqueItems": true, "items": {} },
+            "example": ["5fc4f3b053e79838873f72e9", "6fc4f3b053e79838873f72e9"]
+          },
+          {
+            "name": "searchDefaultSupplierIds",
+            "in": "query",
+            "description": "Default supplier ids for the search query",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": { "uniqueItems": true, "items": {} },
+            "example": ["5fc4f3b053e79838873f72e9", "6fc4f3b053e79838873f72e9"]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VesselsMessageVesselMessageV2"
+                }
+              }
+            }
+          }
+        },
+        "security": [{ "apikey": [] }]
+      }
+    },
+    "/v1/vessels/{vesselId}": {
+      "get": {
+        "tags": ["Vessels"],
+        "summary": "Find vessel by ID",
+        "operationId": "getVessel",
+        "parameters": [
+          {
+            "name": "vesselId",
+            "in": "path",
+            "description": "Vessel id",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {},
+            "example": "5fc4f3b053e79838873f72e9"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/VesselMessageV2" }
+              }
+            }
+          },
+          "404": { "description": "Not found if vessel does not exist" }
+        },
+        "security": [{ "apikey": [] }]
+      }
+    },
+    "/v1/vessel-tanks": {
+      "get": {
+        "tags": ["Vessel Tanks"],
+        "summary": "Find vessel tanks",
+        "operationId": "getVesselTanksByVesselId",
+        "parameters": [
+          {
+            "name": "vesselIds",
+            "in": "query",
+            "description": "List of vessel IDs",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": { "items": {} },
+            "example": ["5fc4f3b053e79838873f72e9", "6fc4f3b053e79838873f72e9"]
+          },
+          {
+            "name": "ids",
+            "in": "query",
+            "description": "List of vessel tank IDs",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": { "items": {} },
+            "example": ["5fc4f3b053e79838873f72e9", "6fc4f3b053e79838873f72e9"]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/VesselTanksMessage" }
+              }
+            }
+          }
+        },
+        "security": [{ "apikey": [] }]
+      }
+    },
+    "/v1/customer-groups": {
+      "get": {
+        "tags": ["Customer Groups"],
+        "summary": "Find customer groups by ID",
+        "description": "Fetches a list of customer groups based on the set of parameters",
+        "operationId": "getCustomerGroups",
+        "parameters": [
+          {
+            "name": "ids",
+            "in": "query",
+            "description": "A list of customer group IDs",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "example": ["572206b5e4b0d7441f638363", "6149a1fb52faff0001e87d44"]
+          }
+        ],
+        "responses": {
+          "403": { "description": "Forbidden" },
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerGroupsMessageV2"
+                }
+              }
+            }
+          }
+        },
+        "security": [{ "apikey": [] }]
+      }
+    },
+    "/v1/customer-groups/{id}": {
+      "get": {
+        "tags": ["Customer Groups"],
+        "summary": "Find customer group by ID",
+        "description": "Fetches a single customer group based on the provided ID",
+        "operationId": "getCustomerGroup",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Customer Group ID",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": { "type": "string" },
+            "example": "572206b5e4b0d7441f638363"
+          }
+        ],
+        "responses": {
+          "404": { "description": "Not found" },
+          "403": { "description": "Forbidden" },
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerGroupMessageV2"
+                }
+              }
+            }
+          }
+        },
+        "security": [{ "apikey": [] }]
+      }
+    },
+    "/v1/ports/locode": {
+      "get": {
+        "tags": ["Ports"],
+        "summary": "Find port by locode",
+        "description": "Fetches a port based on the locode",
+        "operationId": "getPortByLocode",
+        "parameters": [
+          {
+            "name": "locode",
+            "in": "query",
+            "description": "Official UN locode",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": { "type": "string" },
+            "example": "DEHAM"
+          }
+        ],
+        "responses": {
+          "403": { "description": "Forbidden" },
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/PortMessageV2" }
+              }
+            }
+          }
+        },
+        "security": [{ "apikey": [] }]
+      }
+    },
+    "/v1/enums": {
+      "get": {
+        "tags": ["Enums"],
+        "summary": "Query for enums",
+        "operationId": "getAllEnums",
+        "responses": {
+          "403": { "description": "Forbidden" },
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/EnumMessage" }
+              }
+            }
+          }
+        },
+        "security": [{ "apikey": [] }]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CreateOrderItemMessage": {
+        "required": ["deleted"],
+        "properties": {
+          "productId": {
+            "description": "The product ID of the item",
+            "example": "572206b5e4b0d7441f638364"
+          },
+          "packType": {
+            "description": "The pack type of the item",
+            "example": "DRUMS"
+          },
+          "unitSize": {
+            "description": "The unit size of the pack type",
+            "example": 208
+          },
+          "units": {
+            "description": "The number of units of the item",
+            "example": 10
+          },
+          "unit": { "description": "The unit of the item", "example": "L" },
+          "deleted": {
+            "description": "Lubes only: Whether the item was deleted",
+            "example": false
+          },
+          "isoSpec": {
+            "description": "Fuel only: The ISO specification of the item",
+            "example": "ISO_8217_2024"
+          },
+          "energyContent": {
+            "$ref": "#/components/schemas/EnergyContentMessage"
+          }
+        },
+        "description": "Create order Item model"
+      },
+      "CreateSamplekitMessage": {
+        "required": ["deleted"],
+        "properties": {
+          "name": {
+            "description": "The name of the sample kit",
+            "example": "Sample Kit A"
+          },
+          "quantity": {
+            "description": "The quantity of the sample kit",
+            "format": "int64",
+            "example": 10
+          },
+          "deleted": {
+            "description": "Whether the sample kit was deleted",
+            "example": false
+          }
+        }
+      },
+      "CreateUpdateEnquiryMessage": {
+        "required": ["spot"],
+        "properties": {
+          "vesselId": {
+            "description": "The vessel ID associated with the enquiry",
+            "example": "572206b5e4b0d7441f638364"
+          },
+          "portId": {
+            "description": "The port ID associated with the enquiry",
+            "example": "572206b5e4b0d7441f638365"
+          },
+          "buyerReference": {
+            "description": "The buyer reference for the enquiry",
+            "example": "123-XYZ"
+          },
+          "agentId": {
+            "description": "The agent ID associated with the enquiry",
+            "example": "572206b5e4b0d7441f638368"
+          },
+          "comment": {
+            "description": "The comment on the enquiry",
+            "example": "Urgent delivery required"
+          },
+          "items": {
+            "description": "The list of items in the enquiry",
+            "items": { "$ref": "#/components/schemas/CreateOrderItemMessage" }
+          },
+          "receiverSupplierIds": {
+            "description": "The list of receiver supplier IDs",
+            "items": {}
+          },
+          "samplekits": {
+            "description": "The list of sample kits in the enquiry",
+            "items": { "$ref": "#/components/schemas/CreateSamplekitMessage" }
+          },
+          "spot": {
+            "description": "Whether the enquiry is a spot enquiry",
+            "example": true
+          },
+          "state": {
+            "description": "The state of the enquiry",
+            "example": "OPEN",
+            "enum": ["DRAFT", "OPEN", "CLOSED", "CANCELED"]
+          },
+          "chosenOrderId": {
+            "description": "The chosen order ID for the enquiry",
+            "example": "572206b5e4b0d7441f638367"
+          },
+          "type": {
+            "description": "The type of the enquiry",
+            "example": "LUBES"
+          },
+          "cancelReason": {
+            "description": "The reason for cancellation",
+            "example": "Chose a different supplier"
+          },
+          "creationComment": {
+            "description": "The creation comment for the enquiry",
+            "example": "Initial creation"
+          },
+          "attributes": {
+            "additionalProperties": {},
+            "description": "The attributes of the enquiry"
+          },
+          "source": {
+            "description": "The source of the enquiry",
+            "example": "PUBLIC_API"
+          },
+          "dateDelivery": {
+            "description": "Lubes only: The delivery date of the enquiry",
+            "example": "2023-10-10T12:00:00Z"
+          },
+          "contractId": {
+            "description": "Fuel only: The contract ID associated with the enquiry",
+            "example": "572206b5e4b0d7441f638369"
+          },
+          "eta": {
+            "description": "Fuel only: The estimated time of arrival",
+            "example": "2023-10-10T12:00:00Z"
+          },
+          "etd": {
+            "description": "Fuel only: The estimated time of departure",
+            "example": "2023-10-11T12:00:00Z"
+          },
+          "validityTime": {
+            "description": "Fuel only: The validity time of the enquiry in milliseconds",
+            "format": "int64",
+            "example": 3600000
+          },
+          "validUntil": {
+            "description": "Fuel only: The date until the enquiry is valid",
+            "example": "2023-10-10T12:00:00Z"
+          },
+          "fileIds": {
+            "description": "The list of file IDs associated with the enquiry",
+            "items": {}
+          }
+        },
+        "description": "Create or update enquiry model"
+      },
+      "EnergyContentMessage": {
+        "properties": {
+          "unit": {
+            "description": "The unit of the energy content",
+            "example": "MJ/kg"
+          },
+          "value": {
+            "description": "The value of the energy content",
+            "example": 42.7
+          }
+        },
+        "description": "Energy content model"
+      },
+      "Error": {
+        "required": ["code", "path"],
+        "properties": {
+          "code": {
+            "description": "The error code of the error that was thrown",
+            "example": "REQUIRED"
+          },
+          "path": {
+            "description": "The JSON path where the error occurred",
+            "example": "vessel.imo"
+          }
+        },
+        "description": "Model for a single error"
+      },
+      "ValidationErrorResponse": {
+        "required": ["code", "errors"],
+        "properties": {
+          "code": {
+            "description": "The error code of the error that was thrown",
+            "readOnly": true,
+            "example": "VALIDATION_FAILED"
+          },
+          "errors": {
+            "description": "The list of all errors",
+            "items": { "$ref": "#/components/schemas/Error" }
+          }
+        },
+        "description": "Model for all cases of errors"
+      },
+      "EnquiryMessage": {
+        "properties": {
+          "id": {
+            "description": "The ID of the enquiry",
+            "example": "5fc4f3b053e79838873f72e9"
+          },
+          "dateCreated": {
+            "description": "The date the enquiry was created",
+            "example": "2023-10-01T12:00:00Z"
+          },
+          "dateUpdated": {
+            "description": "The date the enquiry was last updated",
+            "example": "2023-10-02T12:00:00Z"
+          },
+          "version": {
+            "description": "The version of the enquiry",
+            "format": "int64",
+            "example": 1
+          },
+          "customerId": {
+            "description": "The customer ID associated with the enquiry",
+            "example": "572206b5e4b0d7441f638363"
+          },
+          "vesselId": {
+            "description": "The vessel ID associated with the enquiry",
+            "example": "572206b5e4b0d7441f638364"
+          },
+          "portId": {
+            "description": "The port ID associated with the enquiry",
+            "example": "572206b5e4b0d7441f638365"
+          },
+          "state": {
+            "description": "The state of the enquiry",
+            "example": "OPEN"
+          },
+          "dateDelivery": {
+            "description": "Lubes only: The delivery date of the enquiry",
+            "example": "2023-10-10T12:00:00Z"
+          },
+          "dateCanceled": {
+            "description": "The cancellation date of the enquiry",
+            "example": "2023-10-05T12:00:00Z"
+          },
+          "dateStarted": {
+            "description": "The start date of the enquiry",
+            "example": "2023-10-01T12:00:00Z"
+          },
+          "dateOrdered": {
+            "description": "The order date of the enquiry",
+            "example": "2023-10-01T12:00:00Z"
+          },
+          "buyerReference": {
+            "description": "The buyer reference for the enquiry",
+            "example": "123-XYZ"
+          },
+          "enquiryNumber": {
+            "description": "The enquiry number",
+            "example": "CL-123"
+          },
+          "cancelReason": {
+            "description": "The reason for cancellation",
+            "example": "Chose a different supplier"
+          },
+          "items": {
+            "description": "The list of items in the enquiry",
+            "items": { "$ref": "#/components/schemas/ItemMessage" }
+          },
+          "samplekits": {
+            "description": "The list of sample kits in the enquiry",
+            "items": { "$ref": "#/components/schemas/SamplekitMessage" }
+          },
+          "createdBy": {
+            "description": "The ID of the user who created the enquiry",
+            "example": "572206b5e4b0d7441f638366"
+          },
+          "updatedBy": {
+            "description": "The ID of the user who last updated the enquiry",
+            "example": "572206b5e4b0d7441f638367"
+          },
+          "comment": {
+            "description": "The comment on the enquiry",
+            "example": "Urgent delivery required"
+          },
+          "chosenOrderId": {
+            "description": "The chosen order ID for the enquiry",
+            "example": "572206b5e4b0d7441f638367"
+          },
+          "spot": {
+            "description": "Whether the enquiry is a spot enquiry",
+            "example": true
+          },
+          "receiverSupplierIds": {
+            "description": "The list of receiver supplier IDs",
+            "items": {}
+          },
+          "assignedSupplierIds": {
+            "description": "The list of assigned supplier IDs",
+            "items": {}
+          },
+          "excludeSupplierGroupIds": {
+            "description": "The list of excluded supplier group IDs",
+            "items": {}
+          },
+          "attributes": {
+            "additionalProperties": {},
+            "description": "The attributes of the enquiry"
+          },
+          "creationComment": {
+            "description": "The creation comment for the enquiry",
+            "example": "Initial creation"
+          },
+          "agentId": {
+            "description": "The agent ID associated with the enquiry",
+            "example": "572206b5e4b0d7441f638368"
+          },
+          "source": {
+            "description": "The source of the enquiry",
+            "example": "ERP_SYSTEM"
+          },
+          "type": {
+            "description": "The type of the enquiry",
+            "example": "LUBES"
+          },
+          "contractId": {
+            "description": "Fuel only: The contract ID associated with the enquiry",
+            "example": "572206b5e4b0d7441f638369"
+          },
+          "eta": {
+            "description": "Fuel only: The estimated time of arrival",
+            "example": "2023-10-10T12:00:00Z"
+          },
+          "etd": {
+            "description": "Fuel only: The estimated time of departure",
+            "example": "2023-10-11T12:00:00Z"
+          },
+          "validityTime": {
+            "description": "Fuel only: The validity time of the enquiry in milliseconds",
+            "format": "int64",
+            "example": 3600000
+          },
+          "validUntil": {
+            "description": "Fuel only: The date until the enquiry is valid",
+            "example": "2023-10-10T12:00:00Z"
+          },
+          "fileIds": {
+            "description": "The list of file IDs associated with the enquiry",
+            "items": {}
+          },
+          "approvalRequestState": {
+            "description": "The approval request state of the enquiry",
+            "example": "PENDING"
+          }
+        },
+        "description": "Enquiry model"
+      },
+      "ItemChangesMessage": {
+        "required": [
+          "energyContentChanged",
+          "isoSpecChanged",
+          "packTypeChanged",
+          "physicalSupplierNameChanged",
+          "priceChanged",
+          "productIdChanged",
+          "unitChanged",
+          "unitSizeChanged",
+          "unitsChanged"
+        ],
+        "properties": {
+          "productIdChanged": {
+            "description": "Whether the product ID was changed",
+            "example": true
+          },
+          "unitSizeChanged": {
+            "description": "Whether the unit size was changed",
+            "example": false
+          },
+          "unitsChanged": {
+            "description": "Whether the number of units was changed",
+            "example": true
+          },
+          "priceChanged": {
+            "description": "Whether the price was changed",
+            "example": false
+          },
+          "packTypeChanged": {
+            "description": "Whether the pack type was changed",
+            "example": true
+          },
+          "unitChanged": {
+            "description": "Whether the unit was changed",
+            "example": false
+          },
+          "physicalSupplierNameChanged": {
+            "description": "Fuel only: Whether the physical supplier name was changed",
+            "example": true
+          },
+          "isoSpecChanged": {
+            "description": "Fuel only: Whether the ISO specification was changed",
+            "example": false
+          },
+          "energyContentChanged": {
+            "description": "Fuel only: Whether the energy content was changed",
+            "example": true
+          }
+        },
+        "description": "Model for item changes"
+      },
+      "ItemMessage": {
+        "properties": {
+          "index": {
+            "description": "The index of the item",
+            "format": "int32",
+            "example": 1
+          },
+          "productId": {
+            "description": "The product ID of the item",
+            "example": "572206b5e4b0d7441f638364"
+          },
+          "packType": {
+            "description": "The pack type of the item",
+            "example": "DRUMS"
+          },
+          "unitSize": {
+            "description": "The unit size of the item",
+            "example": 208
+          },
+          "units": {
+            "description": "The number of units of the item",
+            "example": 10
+          },
+          "unit": { "description": "The unit of the item", "example": "L" },
+          "volume": {
+            "description": "The volume of the item",
+            "example": 15.0
+          },
+          "added": {
+            "description": "Whether the item was added",
+            "example": true
+          },
+          "deleted": {
+            "description": "Whether the item was deleted",
+            "example": false
+          },
+          "changes": { "$ref": "#/components/schemas/ItemChangesMessage" },
+          "physicalSupplierName": {
+            "description": "Fuel only: The name of the physical supplier",
+            "example": "Supplier A"
+          },
+          "isoSpec": {
+            "description": "Fuel only: The ISO specification of the item",
+            "example": "ISO_8217_2024"
+          },
+          "energyContent": {
+            "$ref": "#/components/schemas/EnergyContentMessage"
+          }
+        },
+        "description": "Item model"
+      },
+      "MoneyMessage": {
+        "type": "object",
+        "properties": {
+          "value": { "type": "number" },
+          "currency": { "type": "string" }
+        }
+      },
+      "SamplekitChanges": {
+        "required": ["nameChanged", "quantityChanged", "valueChanged"],
+        "properties": {
+          "nameChanged": {
+            "description": "Whether the name was changed",
+            "example": true
+          },
+          "valueChanged": {
+            "description": "Whether the value was changed",
+            "example": false
+          },
+          "quantityChanged": {
+            "description": "Whether the quantity was changed",
+            "example": true
+          }
+        },
+        "description": "Model for sample kit changes"
+      },
+      "SamplekitMessage": {
+        "properties": {
+          "name": {
+            "description": "The name of the sample kit",
+            "example": "Sample Kit A"
+          },
+          "quantity": {
+            "description": "The quantity of the sample kit",
+            "format": "int64",
+            "example": 10
+          },
+          "value": { "$ref": "#/components/schemas/MoneyMessage" },
+          "changes": { "$ref": "#/components/schemas/SamplekitChanges" },
+          "added": {
+            "description": "Whether the sample kit was added",
+            "example": true
+          },
+          "deleted": {
+            "description": "Whether the sample kit was deleted",
+            "example": false
+          }
+        },
+        "description": "Sample kit model"
+      },
+      "AddressMessage": {
+        "type": "object",
+        "properties": {
+          "companyName": {
+            "type": "string",
+            "description": "Name of the company",
+            "example": "Closelink GmbH"
+          },
+          "street": {
+            "type": "string",
+            "description": "Street of the company",
+            "example": "Axel-Springer-Platz"
+          },
+          "streetNumber": {
+            "type": "string",
+            "description": "Street number of the company",
+            "example": "3"
+          },
+          "zipcode": {
+            "type": "string",
+            "description": "Zip code of the company",
+            "example": "20354"
+          },
+          "city": {
+            "type": "string",
+            "description": "City of the company",
+            "example": "Hamburg"
+          },
+          "countryCode": {
+            "type": "string",
+            "description": "Country code of the company",
+            "example": "DE",
+            "enum": ["DE"]
+          },
+          "country": {
+            "type": "string",
+            "description": "Country of the company",
+            "example": "Germany"
+          }
+        },
+        "description": "Address Message"
+      },
+      "AgentMessage": {
+        "properties": {
+          "id": {
+            "description": "The ID of the agent",
+            "example": "5fc4f3b053e79838873f72e9"
+          },
+          "name": {
+            "description": "The name of the agency",
+            "example": "Port Agent Closelink GmbH"
+          },
+          "address": { "$ref": "#/components/schemas/AddressMessage" },
+          "contact": { "$ref": "#/components/schemas/ContactMessage" },
+          "loCodes": {
+            "description": "List of loCodes for an agency",
+            "items": {}
+          },
+          "note": {
+            "description": "Additional notes for an agent",
+            "example": "Super important note!"
+          },
+          "customerId": {
+            "description": "The customer ID of an agent",
+            "example": "572206b5e4b0d7441f638363"
+          },
+          "externalId": {
+            "description": "The external ID of an agent",
+            "example": "AGENT-123-ID"
+          }
+        },
+        "description": "Agent model"
+      },
+      "ContactMessage": {
+        "properties": {
+          "name": {
+            "description": "The name of the contact",
+            "example": "Jane Doe"
+          },
+          "phoneNumber": {
+            "description": "The phone number of the contact",
+            "example": "+1 234 567 890"
+          },
+          "emailAddress": {
+            "description": "The email address of the contact",
+            "example": "jane.doe@closelink.net"
+          },
+          "faxNumber": {
+            "description": "The fax number of the contact",
+            "example": "+1 987 654 321"
+          }
+        },
+        "description": "Model for contact details"
+      },
+      "AgentsMessage": {
+        "required": ["agents"],
+        "properties": {
+          "agents": {
+            "description": "List of agents",
+            "items": { "$ref": "#/components/schemas/AgentMessage" }
+          }
+        },
+        "description": "List request model of AgentMessage"
+      },
+      "RemainingOnBoardListRequestMessage": {
+        "required": ["remainingOnBoard"],
+        "properties": {
+          "remainingOnBoard": {
+            "description": "List of remaining on board information",
+            "items": {
+              "$ref": "#/components/schemas/RemainingOnBoardRequestMessage"
+            }
+          }
+        },
+        "description": "List request model of RemainingOnBoardRequestMessage"
+      },
+      "RemainingOnBoardRequestMessage": {
+        "required": ["dateMeasured", "imo", "quantity", "vesselTankId"],
+        "properties": {
+          "imo": {
+            "description": "The IMO of the vessel reporting the remaining on board information",
+            "example": 9776171
+          },
+          "dateMeasured": {
+            "description": "The date when the remaining on board information were measured",
+            "example": "2024-03-01T00:00:00.000Z"
+          },
+          "quantity": {
+            "description": "The quantity in liters",
+            "format": "int32",
+            "example": 15000
+          },
+          "vesselTankId": {
+            "description": "The vessel tank ID",
+            "example": "5fc4f3b053e12538873f72e9"
+          }
+        },
+        "description": "Remaining on board request model"
+      },
+      "CreateMessageRequest": {
+        "required": ["displayName", "messageText"],
+        "properties": {
+          "messageText": {
+            "description": "Plaintext message content",
+            "example": "Hello Jane, how are you?"
+          },
+          "displayName": {
+            "description": "The display name of the sender",
+            "example": "John Doe"
+          }
+        },
+        "description": "Create message request"
+      },
+      "CreateIntegrationMessageRequestMessage": {
+        "required": ["integrationType", "logLevel", "message", "userType"],
+        "properties": {
+          "logLevel": {
+            "description": "Log Level",
+            "example": "INFO",
+            "enum": ["INFO", "WARN", "ERROR"]
+          },
+          "integrationType": {
+            "description": "Type of message",
+            "example": "ROB"
+          },
+          "userType": {
+            "description": "Type of user",
+            "example": "CUSTOMER",
+            "enum": ["CUSTOMER", "SUPPLIER", "ADMIN", "SYSTEM"]
+          },
+          "message": {
+            "description": "Message content",
+            "example": "Successfully imported ROBs for IMO 23928112"
+          },
+          "companyId": {
+            "description": "Company ID",
+            "example": "65f2ccf7fbe730fe9c66d568"
+          },
+          "additionalFields": {
+            "additionalProperties": {},
+            "description": "Additional custom values",
+            "example": { "firstKey": "firstValue", "secondKey": "secondValue" }
+          }
+        },
+        "description": "Request model of the IntegrationEventMessage"
+      },
+      "ScheduleMessage": {
+        "required": ["eta", "etd", "imo", "locode"],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Internal ID",
+            "readOnly": true,
+            "example": "5cb6cfc92a8bc367aeec923b"
+          },
+          "dateCreated": {
+            "type": "string",
+            "description": "The date-time the object was created",
+            "format": "date-time",
+            "readOnly": true,
+            "example": "2019-04-17T07:03:37.947Z"
+          },
+          "dateUpdated": {
+            "type": "string",
+            "description": "The date-time the object was last updated",
+            "format": "date-time",
+            "readOnly": true,
+            "example": "2019-04-17T07:03:37.947Z"
+          },
+          "customerGroupId": {
+            "type": "string",
+            "description": "Internal customerGroupId",
+            "readOnly": true,
+            "example": "5cb6cfc92a8bc367aeec923b"
+          },
+          "imo": {
+            "type": "string",
+            "description": "The imo of the vessel",
+            "example": "9776171"
+          },
+          "eta": {
+            "type": "string",
+            "description": "The estimated time of arrival",
+            "format": "date-time",
+            "example": "2019-03-01T00:00:00Z"
+          },
+          "etd": {
+            "type": "string",
+            "description": "The estimated time of departure",
+            "format": "date-time",
+            "example": "2019-03-05T00:00:00Z"
+          },
+          "locode": {
+            "type": "string",
+            "description": "The locode of the port",
+            "example": "DEHAM"
+          },
+          "agentIds": {
+            "type": "array",
+            "description": "A list of internal IDs of agents for a stop",
+            "example": "[5cb6cfc92a8bc367aeec923b]",
+            "items": {
+              "type": "string",
+              "description": "A list of internal IDs of agents for a stop",
+              "example": "[5cb6cfc92a8bc367aeec923b]"
+            }
+          }
+        },
+        "description": "Schedule Entry for a vessel"
+      },
+      "PortCallMessage": {
+        "required": ["eta", "etd", "imo", "locode"],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Internal ID",
+            "readOnly": true,
+            "example": "5cb6cfc92a8bc367aeec923b"
+          },
+          "dateCreated": {
+            "type": "string",
+            "description": "The date-time the object was created",
+            "format": "date-time",
+            "readOnly": true,
+            "example": "2024-04-17T07:03:37.947Z"
+          },
+          "dateUpdated": {
+            "type": "string",
+            "description": "The date-time the object was last updated",
+            "format": "date-time",
+            "readOnly": true,
+            "example": "2024-04-17T07:03:37.947Z"
+          },
+          "customerGroupId": {
+            "type": "string",
+            "description": "Internal customerGroupId",
+            "readOnly": true,
+            "example": "5cb6cfc92a8bc367aeec923b"
+          },
+          "imo": {
+            "type": "string",
+            "description": "The imo of the vessel",
+            "example": "9776171"
+          },
+          "eta": {
+            "type": "string",
+            "description": "The estimated time of arrival",
+            "format": "date-time",
+            "example": "2024-03-01T00:00:00Z"
+          },
+          "etd": {
+            "type": "string",
+            "description": "The estimated time of departure",
+            "format": "date-time",
+            "example": "2024-03-05T00:00:00Z"
+          },
+          "locode": {
+            "type": "string",
+            "description": "The locode of the port",
+            "example": "DEHAM"
+          },
+          "agentIds": {
+            "type": "array",
+            "description": "A list of internal IDs of agents for a stop",
+            "example": ["5cb6cfc92a8bc367aeec923b"],
+            "items": {
+              "type": "string",
+              "description": "A list of internal IDs of agents for a stop",
+              "example": "[\"5cb6cfc92a8bc367aeec923b\"]"
+            }
+          }
+        },
+        "description": "Port call entry for a vessel"
+      },
+      "PortCallMessages": {
+        "required": ["portCalls"],
+        "type": "object",
+        "properties": {
+          "portCalls": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/PortCallMessage" }
+          }
+        },
+        "description": "List of Port Call Messages"
+      },
+      "Pageable": {
+        "type": "object",
+        "properties": {
+          "page": { "type": "integer", "format": "int32" },
+          "size": { "type": "integer", "format": "int32" }
+        }
+      },
+      "PresetMessage": {
+        "required": [
+          "consumptionCalculationBase",
+          "excludePortCalls",
+          "vesselTankCategory"
+        ],
+        "properties": {
+          "vesselTankCategory": {
+            "enum": [
+              "ME_CYL_HS",
+              "ME_CYL_HS_140_BN",
+              "ME_CYL_HS_100_BN",
+              "ME_CYL_HS_70_BN",
+              "ME_CYL_LS",
+              "ME_CYL_ULS_17_BN",
+              "ME_CYL_ULS_25_BN",
+              "ME_CIRC",
+              "AE_CIRC",
+              "AE_CIRC_20_BN",
+              "AE_CIRC_30_BN",
+              "AE_CIRC_40_BN",
+              "AE_CIRC_50_BN",
+              "STERNTUBE",
+              "RED_GEAR",
+              "ST_GEAR",
+              "BOW_THRUST",
+              "CPP",
+              "GEAR_OIL",
+              "HYDR_OIL",
+              "THERM_OIL",
+              "ME_CYL_ULS",
+              "AE_CIRC_ULS",
+              "BOB",
+              "OTHER"
+            ]
+          },
+          "consumptionCalculationBase": { "enum": ["STATIC", "DYNAMIC"] },
+          "excludePortCalls": {},
+          "fixedAverageDailyConsumption": {}
+        }
+      },
+      "VesselTankMessage": {
+        "required": ["category", "customerId", "name"],
+        "properties": {
+          "id": {
+            "description": "ID of the vessel tank",
+            "example": "5fc4f3b053e79838873f72e9"
+          },
+          "name": {
+            "description": "Name of the vessel tank",
+            "example": "Tank 1"
+          },
+          "category": {
+            "description": "Category of the vessel tank",
+            "example": "ME_CYL_HS",
+            "enum": [
+              "ME_CYL_HS",
+              "ME_CYL_HS_140_BN",
+              "ME_CYL_HS_100_BN",
+              "ME_CYL_HS_70_BN",
+              "ME_CYL_LS",
+              "ME_CYL_ULS_17_BN",
+              "ME_CYL_ULS_25_BN",
+              "ME_CIRC",
+              "AE_CIRC",
+              "AE_CIRC_20_BN",
+              "AE_CIRC_30_BN",
+              "AE_CIRC_40_BN",
+              "AE_CIRC_50_BN",
+              "STERNTUBE",
+              "RED_GEAR",
+              "ST_GEAR",
+              "BOW_THRUST",
+              "CPP",
+              "GEAR_OIL",
+              "HYDR_OIL",
+              "THERM_OIL",
+              "ME_CYL_ULS",
+              "AE_CIRC_ULS",
+              "BOB",
+              "OTHER"
+            ]
+          },
+          "customerId": {
+            "description": "Customer ID associated with the vessel tank",
+            "example": "5fc4f3b053e79838873f72e9"
+          },
+          "threshold": {
+            "description": "Threshold of the vessel tank",
+            "format": "int64",
+            "example": 5000
+          },
+          "maxVolume": {
+            "description": "Maximum volume of the vessel tank",
+            "format": "int64",
+            "example": 10000
+          },
+          "defaultProductId": {
+            "description": "Default product ID for the vessel tank",
+            "example": "5fc4f3b053e79838873f72e9"
+          },
+          "safetyReserve": {
+            "description": "Safety reserve of the vessel tank",
+            "example": 2000
+          }
+        },
+        "description": "Details about a vessel tank request"
+      },
+      "VesselTanksRequestMessage": {
+        "required": ["vesselTanks"],
+        "properties": {
+          "vesselTanks": {
+            "description": "List of vessel tank requests",
+            "items": { "$ref": "#/components/schemas/VesselTankMessage" }
+          }
+        },
+        "description": "VesselTanksRequestMessage"
+      },
+      "VesselTanksMessage": {
+        "required": ["vesselTanks"],
+        "properties": {
+          "vesselTanks": {
+            "description": "List of vessel tanks",
+            "items": { "$ref": "#/components/schemas/VesselTankMessage" }
+          }
+        },
+        "description": "VesselTanksMessage"
+      },
+      "LubricationChartMessage": {
+        "properties": {
+          "name": {
+            "description": "Name of the chart",
+            "example": "Lubrication Chart A123"
+          },
+          "downloadUrl": {
+            "description": "Download url",
+            "example": "https://test.example.com/lube-chart.pdf"
+          }
+        },
+        "description": "Lubrication Chart Model"
+      },
+      "MailNotificationSettingsMessage": {
+        "required": [
+          "keyPortCallSettings",
+          "orderUpdateSettings",
+          "safetyReserveSettings",
+          "stockWarningSettings"
+        ],
+        "properties": {
+          "orderUpdateSettings": {
+            "$ref": "#/components/schemas/NotificationSettingsMessage"
+          },
+          "stockWarningSettings": {
+            "$ref": "#/components/schemas/NotificationSettingsMessage"
+          },
+          "safetyReserveSettings": {
+            "$ref": "#/components/schemas/NotificationSettingsMessage"
+          },
+          "keyPortCallSettings": {
+            "$ref": "#/components/schemas/NotificationSettingsMessage"
+          }
+        },
+        "description": "Email notification settings"
+      },
+      "NotificationSettingsMessage": {
+        "required": ["enabled", "recipients", "sendToOthers", "sendToVessel"],
+        "properties": {
+          "enabled": { "description": "Enabled", "example": true },
+          "sendToVessel": {
+            "description": "Send notifications to the vessel",
+            "example": true
+          },
+          "sendToOthers": {
+            "description": "Send notifications to other recipients",
+            "example": true
+          },
+          "recipients": {
+            "description": "List of additional recipients",
+            "example": ["test1@test.com", "test2@test.com"],
+            "items": {}
+          }
+        },
+        "description": "Settings for a single type of notification"
+      },
+      "VesselMessage": {
+        "required": [
+          "active",
+          "directOrderAllowed",
+          "imo",
+          "mailNotificationSettings",
+          "name",
+          "paying",
+          "transactionEmailAddresses"
+        ],
+        "properties": {
+          "dateCreated": {
+            "description": "The date the vessel was created as a unix timestamp",
+            "format": "int64",
+            "example": 1711372413
+          },
+          "dateUpdated": {
+            "description": "The date the vessel was last updated as a unix timestamp",
+            "format": "int64",
+            "example": 1711372413
+          },
+          "dateActiveUpdated": {
+            "description": "The date the active status of the vessel was last updated",
+            "format": "date-time",
+            "example": "2023-07-04T19:53:42.172Z"
+          },
+          "id": {
+            "description": "The ID of the Vessel",
+            "example": "5fc4f3b053e79838873f72e9"
+          },
+          "version": {
+            "description": "Version of the model",
+            "format": "int64",
+            "example": 2
+          },
+          "customerId": {
+            "description": "ID of the customer this vessel belongs to",
+            "example": "61c9c86346e0fb0001fe4df6"
+          },
+          "name": { "description": "Vessel name", "example": "Rio Bravo" },
+          "imo": {
+            "description": "The IMO ship identification number",
+            "example": 923012
+          },
+          "email": {
+            "description": "Vessel email address",
+            "example": "vessel@company.com"
+          },
+          "invoiceVAT": {
+            "description": "VAT number for invoices",
+            "example": "DE123456789"
+          },
+          "invoiceAddress": { "$ref": "#/components/schemas/AddressMessage" },
+          "directOrderAllowed": {
+            "description": "Are direct orders allowed for this vessel",
+            "example": true
+          },
+          "paying": {
+            "description": "Is this a paying vessel",
+            "example": true
+          },
+          "active": { "description": "Is this vessel active", "example": true },
+          "defaultSupplierId": {
+            "description": "Default supplier id",
+            "example": "61e694d1c9e77c00013dd46e"
+          },
+          "transactionEmailAddresses": {
+            "description": "Transaction email addresses",
+            "example": ["vessel@company.com"],
+            "items": {}
+          },
+          "lubricationChart": {
+            "$ref": "#/components/schemas/LubricationChartMessage"
+          },
+          "services": {
+            "description": "Services",
+            "example": ["HFO", "LNG"],
+            "items": {}
+          },
+          "types": {
+            "description": "Types",
+            "example": ["Container", "Panamax"],
+            "items": {}
+          },
+          "mailNotificationSettings": {
+            "$ref": "#/components/schemas/MailNotificationSettingsMessage"
+          }
+        },
+        "description": "Vessel Model"
+      },
+      "CompanyAccess": {
+        "type": "object",
+        "properties": {
+          "companyId": { "type": "string" },
+          "accessLevel": {
+            "type": "string",
+            "enum": ["READ", "WRITE", "ADMIN"]
+          }
+        }
+      },
+      "GrantedAuthority": {
+        "type": "object",
+        "properties": { "authority": { "type": "string" } }
+      },
+      "VesselMessageV2": {
+        "required": [
+          "active",
+          "directOrderAllowed",
+          "imo",
+          "mailNotificationSettings",
+          "name",
+          "paying",
+          "transactionEmailAddresses"
+        ],
+        "properties": {
+          "dateCreated": {
+            "description": "The date the vessel was created",
+            "format": "date-time",
+            "example": "2023-07-04T19:53:42.172Z"
+          },
+          "dateUpdated": {
+            "description": "The date the vessel was last updated",
+            "format": "date-time",
+            "example": "2023-07-04T19:53:42.172Z"
+          },
+          "dateActiveUpdated": {
+            "description": "The date the active status of the vessel was last updated",
+            "format": "date-time",
+            "example": "2023-07-04T19:53:42.172Z"
+          },
+          "id": {
+            "description": "The ID of the Vessel",
+            "example": "5fc4f3b053e79838873f72e9"
+          },
+          "version": {
+            "description": "Version of the model",
+            "format": "int64",
+            "example": 2
+          },
+          "customerId": {
+            "description": "ID of the customer this vessel belongs to",
+            "example": "61c9c86346e0fb0001fe4df6"
+          },
+          "name": { "description": "Vessel name", "example": "Rio Bravo" },
+          "imo": {
+            "description": "The IMO ship identification number",
+            "example": 923012
+          },
+          "email": {
+            "description": "Vessel email address",
+            "example": "vessel@company.com"
+          },
+          "invoiceVAT": {
+            "description": "VAT number for invoices",
+            "example": "DE123456789"
+          },
+          "invoiceAddress": { "$ref": "#/components/schemas/AddressMessage" },
+          "directOrderAllowed": {
+            "description": "Are direct orders allowed for this vessel",
+            "example": true
+          },
+          "paying": {
+            "description": "Is this a paying vessel",
+            "example": true
+          },
+          "active": { "description": "Is this vessel active", "example": true },
+          "defaultSupplierId": {
+            "description": "Default supplier id",
+            "example": "61e694d1c9e77c00013dd46e"
+          },
+          "transactionEmailAddresses": {
+            "description": "Transaction email addresses",
+            "example": ["vessel@company.com"],
+            "items": {}
+          },
+          "lubricationChart": {
+            "$ref": "#/components/schemas/LubricationChartMessage"
+          },
+          "services": {
+            "description": "Services",
+            "example": ["HFO", "LNG"],
+            "items": {}
+          },
+          "types": {
+            "description": "Types",
+            "example": ["Container", "Panamax"],
+            "items": {}
+          },
+          "mailNotificationSettings": {
+            "$ref": "#/components/schemas/MailNotificationSettingsMessage"
+          }
+        },
+        "description": "Vessel Model"
+      },
+      "VesselsMessageVesselMessageV2": {
+        "required": ["vessels"],
+        "properties": {
+          "vessels": {
+            "description": "List of Vessels",
+            "items": { "$ref": "#/components/schemas/VesselMessageV2" }
+          }
+        },
+        "description": "List response model for VesselMessage"
+      },
+      "MessageSettingsMessage": {
+        "type": "object",
+        "properties": {
+          "quotationMessage": { "type": "string" },
+          "orderConfirmationMessage": { "type": "string" }
+        }
+      },
+      "SupplierEmailCategorySettings": {
+        "type": "object",
+        "properties": {
+          "offerUpdate": { "type": "boolean" },
+          "newChatMessage": { "type": "boolean" },
+          "offerStateChange": { "type": "boolean" },
+          "systemReminder": { "type": "boolean" }
+        }
+      },
+      "MailSettingsMessage": {
+        "required": ["newsletter", "transactional"],
+        "type": "object",
+        "properties": {
+          "newsletter": {
+            "type": "boolean",
+            "description": "Flag that indicates if the company is subscribed to the Closelink newsletter",
+            "example": true
+          },
+          "transactional": {
+            "type": "boolean",
+            "description": "Flag that indicates if the company is receiving messages of the tool in general",
+            "example": true
+          }
+        },
+        "description": "Mail Settings Message"
+      },
+      "PictureMessage": {
+        "type": "object",
+        "properties": {
+          "url": { "type": "string" },
+          "thumbUrl": { "type": "string" }
+        }
+      },
+      "SpotSettings": {
+        "type": "object",
+        "properties": {
+          "spotSupplierId": { "type": "string" },
+          "spotAllowed": { "type": "boolean" },
+          "availabilityCountryCodes": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      },
+      "SupplierGroupMessage": {
+        "required": ["email", "gtcAccepted", "name", "testCompany", "trial"],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Internal ID",
+            "readOnly": true,
+            "example": "5cb6cfc92a8bc367aeec923b"
+          },
+          "dateCreated": {
+            "type": "integer",
+            "description": "The timestamp the object was created",
+            "format": "int64",
+            "readOnly": true,
+            "example": 1710952113807
+          },
+          "dateUpdated": {
+            "type": "integer",
+            "description": "The timestamp the object was last updated",
+            "format": "int64",
+            "readOnly": true,
+            "example": 1710952113807
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the company",
+            "example": "Closelink GmbH"
+          },
+          "address": { "$ref": "#/components/schemas/AddressMessage" },
+          "phone": {
+            "type": "string",
+            "description": "Phone number of the company",
+            "example": "+49 40 1234567-0"
+          },
+          "fax": {
+            "type": "string",
+            "description": "Fax number of the company",
+            "example": "+49 40 1234567-98"
+          },
+          "email": {
+            "type": "string",
+            "description": "Email address of the company",
+            "example": "hello@closelink.com"
+          },
+          "invoiceMail": {
+            "type": "string",
+            "description": "Email address for invoicing",
+            "example": "financial-department@closelink.com"
+          },
+          "additionalReceiver": {
+            "type": "array",
+            "description": "A list of additional email addresses to receive emails",
+            "example": "[cc@closelink.com,bcc@closelink.com]",
+            "items": {
+              "type": "string",
+              "description": "A list of additional email addresses to receive emails",
+              "example": "[cc@closelink.com,bcc@closelink.com]"
+            }
+          },
+          "testCompany": {
+            "type": "boolean",
+            "description": "Flag that indicates if a company is a test company",
+            "example": false
+          },
+          "gtcAccepted": {
+            "type": "boolean",
+            "description": "Flag that indicates if the company has accepted the terms and conditions of Closelink",
+            "example": true
+          },
+          "invoiceVAT": {
+            "type": "string",
+            "description": "Invoice VAT number",
+            "example": "9776171"
+          },
+          "trial": {
+            "type": "boolean",
+            "description": "Flag that indicates if a company is on trial time",
+            "example": true
+          },
+          "mailSettings": {
+            "$ref": "#/components/schemas/MailSettingsMessage"
+          },
+          "gtcUrl": { "type": "string" },
+          "logo": { "$ref": "#/components/schemas/PictureMessage" },
+          "description": { "type": "string" },
+          "headquarter": { "type": "string" },
+          "emailQuote": { "type": "boolean" },
+          "anonymousQuote": { "type": "boolean" },
+          "supplierProductGroups": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "translationSupplierProductGroup": { "type": "string" },
+          "type": { "type": "string" },
+          "lubesSettings": { "$ref": "#/components/schemas/SpotSettings" },
+          "fuelSettings": { "$ref": "#/components/schemas/SpotSettings" },
+          "spotSupplierId": { "type": "string", "deprecated": true },
+          "spotAllowed": { "type": "boolean", "deprecated": true },
+          "availabilityCountryCodes": {
+            "type": "array",
+            "deprecated": true,
+            "items": { "type": "string", "deprecated": true }
+          }
+        }
+      },
+      "SupplierMessage": {
+        "required": ["email", "gtcAccepted", "name", "testCompany", "trial"],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Internal ID",
+            "readOnly": true,
+            "example": "5cb6cfc92a8bc367aeec923b"
+          },
+          "dateCreated": {
+            "type": "integer",
+            "description": "The timestamp the object was created",
+            "format": "int64",
+            "readOnly": true,
+            "example": 1710952113807
+          },
+          "dateUpdated": {
+            "type": "integer",
+            "description": "The timestamp the object was last updated",
+            "format": "int64",
+            "readOnly": true,
+            "example": 1710952113807
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the company",
+            "example": "Closelink GmbH"
+          },
+          "address": { "$ref": "#/components/schemas/AddressMessage" },
+          "phone": {
+            "type": "string",
+            "description": "Phone number of the company",
+            "example": "+49 40 1234567-0"
+          },
+          "fax": {
+            "type": "string",
+            "description": "Fax number of the company",
+            "example": "+49 40 1234567-98"
+          },
+          "email": {
+            "type": "string",
+            "description": "Email address of the company",
+            "example": "hello@closelink.com"
+          },
+          "invoiceMail": {
+            "type": "string",
+            "description": "Email address for invoicing",
+            "example": "financial-department@closelink.com"
+          },
+          "additionalReceiver": {
+            "type": "array",
+            "description": "A list of additional email addresses to receive emails",
+            "example": "[cc@closelink.com,bcc@closelink.com]",
+            "items": {
+              "type": "string",
+              "description": "A list of additional email addresses to receive emails",
+              "example": "[cc@closelink.com,bcc@closelink.com]"
+            }
+          },
+          "testCompany": {
+            "type": "boolean",
+            "description": "Flag that indicates if a company is a test company",
+            "example": false
+          },
+          "gtcAccepted": {
+            "type": "boolean",
+            "description": "Flag that indicates if the company has accepted the terms and conditions of Closelink",
+            "example": true
+          },
+          "invoiceVAT": {
+            "type": "string",
+            "description": "Invoice VAT number",
+            "example": "9776171"
+          },
+          "trial": {
+            "type": "boolean",
+            "description": "Flag that indicates if a company is on trial time",
+            "example": true
+          },
+          "mailSettings": {
+            "$ref": "#/components/schemas/MailSettingsMessage"
+          },
+          "invoiceAddress": { "$ref": "#/components/schemas/AddressMessage" },
+          "supplierGroupId": { "type": "string" },
+          "showGtc": { "type": "boolean" },
+          "type": { "type": "string", "enum": ["LUBES", "FUEL"] }
+        }
+      },
+      "AdditionalApproverLimit": {
+        "type": "object",
+        "properties": {
+          "approvalLimit": { "$ref": "#/components/schemas/MoneyMessage" },
+          "approvers": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Approver" }
+          }
+        }
+      },
+      "ApprovalSettingsMessage": {
+        "type": "object",
+        "properties": {
+          "activated": { "type": "boolean" },
+          "required": { "type": "boolean" },
+          "defaultControllerEmailAddress": { "type": "string" },
+          "preventMultipleApprovers": { "type": "boolean" },
+          "minimumThreshold": { "$ref": "#/components/schemas/MoneyMessage" },
+          "additionalApprovers": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/AdditionalApproverLimit" }
+          }
+        }
+      },
+      "Approver": {
+        "type": "object",
+        "properties": { "emailAddress": { "type": "string" } }
+      },
+      "CustomerEmailCategorySettings": {
+        "type": "object",
+        "properties": {
+          "offerUpdate": { "type": "boolean" },
+          "newChatMessage": { "type": "boolean" },
+          "offerStateChange": { "type": "boolean" },
+          "stockWarningLevelReminder": { "type": "boolean" },
+          "safetyReserveLevelReminder": { "type": "boolean" },
+          "keyPortCallReminder": { "type": "boolean" },
+          "orderDeliveryReminder": { "type": "boolean" },
+          "openEnquiryReminder": { "type": "boolean" },
+          "systemReminder": { "type": "boolean" }
+        }
+      },
+      "CustomerGroupMessage": {
+        "required": ["email", "gtcAccepted", "name", "testCompany", "trial"],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Internal ID",
+            "readOnly": true,
+            "example": "5cb6cfc92a8bc367aeec923b"
+          },
+          "dateCreated": {
+            "type": "integer",
+            "description": "The timestamp the object was created",
+            "format": "int64",
+            "readOnly": true,
+            "example": 1710952113807
+          },
+          "dateUpdated": {
+            "type": "integer",
+            "description": "The timestamp the object was last updated",
+            "format": "int64",
+            "readOnly": true,
+            "example": 1710952113807
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the company",
+            "example": "Closelink GmbH"
+          },
+          "address": { "$ref": "#/components/schemas/AddressMessage" },
+          "phone": {
+            "type": "string",
+            "description": "Phone number of the company",
+            "example": "+49 40 1234567-0"
+          },
+          "fax": {
+            "type": "string",
+            "description": "Fax number of the company",
+            "example": "+49 40 1234567-98"
+          },
+          "email": {
+            "type": "string",
+            "description": "Email address of the company",
+            "example": "hello@closelink.com"
+          },
+          "invoiceMail": {
+            "type": "string",
+            "description": "Email address for invoicing",
+            "example": "financial-department@closelink.com"
+          },
+          "additionalReceiver": {
+            "type": "array",
+            "description": "A list of additional email addresses to receive emails",
+            "example": "[cc@closelink.com,bcc@closelink.com]",
+            "items": {
+              "type": "string",
+              "description": "A list of additional email addresses to receive emails",
+              "example": "[cc@closelink.com,bcc@closelink.com]"
+            }
+          },
+          "testCompany": {
+            "type": "boolean",
+            "description": "Flag that indicates if a company is a test company",
+            "example": false
+          },
+          "gtcAccepted": {
+            "type": "boolean",
+            "description": "Flag that indicates if the company has accepted the terms and conditions of Closelink",
+            "example": true
+          },
+          "invoiceVAT": {
+            "type": "string",
+            "description": "Invoice VAT number",
+            "example": "9776171"
+          },
+          "trial": {
+            "type": "boolean",
+            "description": "Flag that indicates if a company is on trial time",
+            "example": true
+          },
+          "mailSettings": {
+            "$ref": "#/components/schemas/MailSettingsMessage"
+          },
+          "headquarter": {
+            "type": "string",
+            "description": "Headquarter of the company",
+            "example": "Copenhagen, Denmark"
+          },
+          "closelinkLite": {
+            "type": "boolean",
+            "description": "Flag that indicates if a customer group is a Closelink Lite customer",
+            "example": false
+          },
+          "gtcUrl": {
+            "type": "string",
+            "description": "URL of the terms and conditions of a customer",
+            "example": "https://www.closelink.com/terms-conditions"
+          }
+        },
+        "description": "Customer Group Message"
+      },
+      "CustomerMessage": {
+        "required": ["email", "gtcAccepted", "name", "testCompany", "trial"],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Internal ID",
+            "readOnly": true,
+            "example": "5cb6cfc92a8bc367aeec923b"
+          },
+          "dateCreated": {
+            "type": "integer",
+            "description": "The timestamp the object was created",
+            "format": "int64",
+            "readOnly": true,
+            "example": 1710952113807
+          },
+          "dateUpdated": {
+            "type": "integer",
+            "description": "The timestamp the object was last updated",
+            "format": "int64",
+            "readOnly": true,
+            "example": 1710952113807
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the company",
+            "example": "Closelink GmbH"
+          },
+          "address": { "$ref": "#/components/schemas/AddressMessage" },
+          "phone": {
+            "type": "string",
+            "description": "Phone number of the company",
+            "example": "+49 40 1234567-0"
+          },
+          "fax": {
+            "type": "string",
+            "description": "Fax number of the company",
+            "example": "+49 40 1234567-98"
+          },
+          "email": {
+            "type": "string",
+            "description": "Email address of the company",
+            "example": "hello@closelink.com"
+          },
+          "invoiceMail": {
+            "type": "string",
+            "description": "Email address for invoicing",
+            "example": "financial-department@closelink.com"
+          },
+          "additionalReceiver": {
+            "type": "array",
+            "description": "A list of additional email addresses to receive emails",
+            "example": "[cc@closelink.com,bcc@closelink.com]",
+            "items": {
+              "type": "string",
+              "description": "A list of additional email addresses to receive emails",
+              "example": "[cc@closelink.com,bcc@closelink.com]"
+            }
+          },
+          "testCompany": {
+            "type": "boolean",
+            "description": "Flag that indicates if a company is a test company",
+            "example": false
+          },
+          "gtcAccepted": {
+            "type": "boolean",
+            "description": "Flag that indicates if the company has accepted the terms and conditions of Closelink",
+            "example": true
+          },
+          "invoiceVAT": {
+            "type": "string",
+            "description": "Invoice VAT number",
+            "example": "9776171"
+          },
+          "trial": {
+            "type": "boolean",
+            "description": "Flag that indicates if a company is on trial time",
+            "example": true
+          },
+          "mailSettings": {
+            "$ref": "#/components/schemas/MailSettingsMessage"
+          },
+          "spotAllowed": { "type": "boolean" },
+          "customerGroupId": { "type": "string" },
+          "type": { "type": "string", "enum": ["LUBES", "FUEL"] },
+          "premiumFeaturesAllowed": { "type": "boolean", "deprecated": true }
+        }
+      },
+      "AssignmentMessage": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "dateCreated": { "type": "integer", "format": "int64" },
+          "dateUpdated": { "type": "integer", "format": "int64" },
+          "supplierId": { "type": "string" },
+          "customerId": { "type": "string" },
+          "status": {
+            "type": "string",
+            "enum": ["REQUESTED", "CONFIRMED", "CANCELED", "DECLINED"]
+          },
+          "inviteMail": { "type": "string" },
+          "inviteCompany": {
+            "type": "string",
+            "enum": [
+              "CASTROL",
+              "SHELL",
+              "LUBMARINE",
+              "LUKOIL",
+              "EXXON",
+              "CHEVRON",
+              "GULF",
+              "OTHER"
+            ]
+          },
+          "dateLastUploaded": { "type": "integer", "format": "int64" },
+          "dateAdminLastUploaded": { "type": "integer", "format": "int64" },
+          "attributes": {
+            "type": "object",
+            "additionalProperties": { "type": "string" }
+          },
+          "portLimitations": { "type": "array", "items": { "type": "string" } },
+          "defaultPaymentTermReference": { "type": "string" },
+          "defaultPaymentTermReferenceDays": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "CustomerGroupMessageV2": {
+        "required": [
+          "closelinkLite",
+          "email",
+          "gtcAccepted",
+          "name",
+          "testCompany",
+          "trial"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Internal ID",
+            "readOnly": true,
+            "example": "5cb6cfc92a8bc367aeec923b"
+          },
+          "dateCreated": {
+            "type": "string",
+            "description": "The timestamp the object was created",
+            "format": "date-time",
+            "readOnly": true,
+            "example": "2023-07-04T19:53:42.172Z"
+          },
+          "dateUpdated": {
+            "type": "string",
+            "description": "The timestamp the object was last updated",
+            "format": "date-time",
+            "readOnly": true,
+            "example": "2023-07-04T19:53:42.172Z"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the company",
+            "example": "Closelink GmbH"
+          },
+          "address": { "$ref": "#/components/schemas/AddressMessage" },
+          "phone": {
+            "type": "string",
+            "description": "Phone number of the company",
+            "example": "+49 40 1234567-0"
+          },
+          "fax": {
+            "type": "string",
+            "description": "Fax number of the company",
+            "example": "+49 40 1234567-98"
+          },
+          "email": {
+            "type": "string",
+            "description": "Email address of the company",
+            "example": "hello@closelink.com"
+          },
+          "invoiceMail": {
+            "type": "string",
+            "description": "Email address for invoicing",
+            "example": "financial-department@closelink.com"
+          },
+          "additionalReceiver": {
+            "type": "array",
+            "description": "A list of additional email addresses to receive emails",
+            "example": "[cc@closelink.com,bcc@closelink.com]",
+            "items": {
+              "type": "string",
+              "description": "A list of additional email addresses to receive emails",
+              "example": "[cc@closelink.com,bcc@closelink.com]"
+            }
+          },
+          "testCompany": {
+            "type": "boolean",
+            "description": "Flag that indicates if the customer group is a test group",
+            "example": false
+          },
+          "gtcAccepted": {
+            "type": "boolean",
+            "description": "Flag that indicates if the customer group has accepted the terms and conditions of Closelink",
+            "example": true
+          },
+          "invoiceVAT": {
+            "type": "string",
+            "description": "Invoice VAT number",
+            "example": "9776171"
+          },
+          "trial": {
+            "type": "boolean",
+            "description": "Flag that indicates if a company is on trial",
+            "example": true
+          },
+          "mailSettings": {
+            "$ref": "#/components/schemas/MailSettingsMessage"
+          },
+          "headquarter": {
+            "type": "string",
+            "description": "Headquarter of the company",
+            "example": "Copenhagen, Denmark"
+          },
+          "closelinkLite": {
+            "type": "boolean",
+            "description": "Flag that indicates if a customer group is a Closelink Lite customer",
+            "example": false
+          },
+          "gtcUrl": {
+            "type": "string",
+            "description": "URL of the terms and conditions of a customer",
+            "example": "https://www.closelink.com/terms-conditions"
+          }
+        }
+      },
+      "CustomerGroupsMessageV2": {
+        "required": ["customerGroups"],
+        "type": "object",
+        "properties": {
+          "customerGroups": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/CustomerGroupMessageV2" }
+          }
+        },
+        "description": "Company Groups Message"
+      },
+      "CountryMessage": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "dateCreated": { "type": "integer", "format": "int64" },
+          "dateUpdated": { "type": "integer", "format": "int64" },
+          "name": { "type": "string" },
+          "code": { "type": "string" },
+          "aliases": { "type": "array", "items": { "type": "string" } },
+          "region": {
+            "type": "string",
+            "enum": [
+              "NORTH_AMERICA",
+              "CENTRAL_AMERICA_CARIBBEAN",
+              "SOUTH_AMERICA",
+              "EUROPE",
+              "AFRICA",
+              "MIDDLE_EAST",
+              "EAST_ASIA",
+              "SOUTH_ASIA",
+              "SOUTHEAST_ASIA",
+              "OCEANIA"
+            ]
+          }
+        }
+      },
+      "PortMessage": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "dateCreated": { "type": "integer", "format": "int64" },
+          "dateUpdated": { "type": "integer", "format": "int64" },
+          "name": { "type": "string" },
+          "country": { "$ref": "#/components/schemas/CountryMessage" },
+          "latitude": { "type": "number", "format": "double" },
+          "longitude": { "type": "number", "format": "double" },
+          "locCode": { "type": "string" },
+          "aliases": { "type": "array", "items": { "type": "string" } },
+          "locCodeAliases": { "type": "array", "items": { "type": "string" } },
+          "timeZoneId": { "type": "string" }
+        }
+      },
+      "CountryMessageV2": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "code": { "type": "string" },
+          "aliases": { "type": "array", "items": { "type": "string" } },
+          "region": {
+            "type": "string",
+            "enum": [
+              "NORTH_AMERICA",
+              "CENTRAL_AMERICA_CARIBBEAN",
+              "SOUTH_AMERICA",
+              "EUROPE",
+              "AFRICA",
+              "MIDDLE_EAST",
+              "EAST_ASIA",
+              "SOUTH_ASIA",
+              "SOUTHEAST_ASIA",
+              "OCEANIA"
+            ]
+          }
+        },
+        "description": "Country entry"
+      },
+      "PortMessageV2": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "dateCreated": { "type": "string" },
+          "dateUpdated": { "type": "string" },
+          "name": { "type": "string" },
+          "country": { "$ref": "#/components/schemas/CountryMessageV2" },
+          "latitude": { "type": "number", "format": "double" },
+          "longitude": { "type": "number", "format": "double" },
+          "locode": { "type": "string" },
+          "aliases": { "type": "array", "items": { "type": "string" } },
+          "locodeAliases": { "type": "array", "items": { "type": "string" } },
+          "timeZoneId": { "type": "string" }
+        },
+        "description": "Port entry"
+      },
+      "PageableMessage": {
+        "type": "object",
+        "properties": {
+          "page": { "type": "integer", "format": "int32" },
+          "size": { "type": "integer", "format": "int32" }
+        }
+      },
+      "DetailEnumMessage": {
+        "type": "object",
+        "properties": {
+          "humanReadableValue": {
+            "type": "string",
+            "description": "The human readable value of an enum",
+            "readOnly": true,
+            "example": "Barge & Truck"
+          },
+          "defaultUnitSize": {
+            "type": "integer",
+            "description": "The default unit size for a pack type",
+            "format": "int32",
+            "readOnly": true,
+            "example": 208
+          },
+          "applicableTypes": {
+            "uniqueItems": true,
+            "type": "array",
+            "description": "The list of types for which the property is applicable, e.g. only for LUBES",
+            "readOnly": true,
+            "example": "LUBES",
+            "items": {
+              "type": "string",
+              "description": "The list of types for which the property is applicable, e.g. only for LUBES",
+              "readOnly": true,
+              "example": "LUBES",
+              "enum": ["LUBES", "FUEL"]
+            }
+          }
+        }
+      },
+      "EnumMessage": {
+        "type": "object",
+        "properties": {
+          "supplierProductGroup": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/DetailEnumMessage"
+            }
+          },
+          "packType": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/DetailEnumMessage"
+            }
+          },
+          "productGroup": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/DetailEnumMessage"
+            }
+          },
+          "vesselTankCategory": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/DetailEnumMessage"
+            }
+          },
+          "region": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/DetailEnumMessage"
+            }
+          },
+          "orderState": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/DetailEnumMessage"
+            }
+          },
+          "portDirectoryMinNotes": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/DetailEnumMessage"
+            }
+          },
+          "oilType": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/DetailEnumMessage"
+            }
+          },
+          "role": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/DetailEnumMessage"
+            }
+          },
+          "userType": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/DetailEnumMessage"
+            }
+          },
+          "status": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/DetailEnumMessage"
+            }
+          },
+          "accessLevel": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/DetailEnumMessage"
+            }
+          },
+          "supplyMode": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/DetailEnumMessage"
+            }
+          },
+          "assignmentInviteCompany": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/DetailEnumMessage"
+            }
+          },
+          "assignmentStatus": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/DetailEnumMessage"
+            }
+          },
+          "productUnit": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/DetailEnumMessage"
+            }
+          },
+          "supplierGroupType": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/DetailEnumMessage"
+            }
+          },
+          "approvalRequestState": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/DetailEnumMessage"
+            }
+          },
+          "companyType": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/DetailEnumMessage"
+            }
+          },
+          "contractBasis": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/DetailEnumMessage"
+            }
+          },
+          "pricingDate": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/DetailEnumMessage"
+            }
+          },
+          "sulphurContent": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/DetailEnumMessage"
+            }
+          },
+          "priceCodeSource": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/DetailEnumMessage"
+            }
+          },
+          "surchargeType": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/DetailEnumMessage"
+            }
+          },
+          "paymentTermReference": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/DetailEnumMessage"
+            }
+          },
+          "fuelIsoSpec": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/DetailEnumMessage"
+            }
+          },
+          "pricingDateMonthType": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/DetailEnumMessage"
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "apikey": { "type": "apiKey", "name": "ApiKey", "in": "header" }
+    }
+  }
+}

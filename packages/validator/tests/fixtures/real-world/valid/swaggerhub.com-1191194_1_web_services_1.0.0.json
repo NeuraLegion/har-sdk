@@ -1,0 +1,542 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Inventory Management System API",
+    "description": "API for managing customers, orders, products, and categories in an Inventory Management System.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.InventoryManagementSysteminventory.com/v1",
+      "description": "Main production server"
+    }
+  ],
+  "paths": {
+    "/customers": {
+      "get": {
+        "summary": "List all customers",
+        "responses": {
+          "200": {
+            "description": "A list of customers is returned",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/CustomerArray" }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new customer",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Customer" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The customer was created successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Customer" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customers/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": { "type": "integer" }
+        }
+      ],
+      "get": {
+        "summary": "Get a customer by ID",
+        "responses": {
+          "200": {
+            "description": "Detailed customer information is returned",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Customer" }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a customer's information by ID",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Customer" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "The customer was updated successfully" }
+        }
+      },
+      "patch": {
+        "summary": "Partially update a customer's information by ID",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string" },
+                  "email": { "type": "string", "format": "email" }
+                },
+                "required": ["email"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The customer's information was partially updated"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a customer by ID",
+        "responses": {
+          "200": { "description": "The customer was deleted successfully" }
+        }
+      }
+    },
+    "/orders": {
+      "get": {
+        "summary": "List all orders",
+        "responses": {
+          "200": {
+            "description": "A list of orders is returned",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/OrderArray" }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new order",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/OrderCreate" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The order was created successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Order" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": { "type": "integer" }
+        }
+      ],
+      "get": {
+        "summary": "Get an order by ID",
+        "responses": {
+          "200": {
+            "description": "Detailed order information is returned",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Order" }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update an order's information by ID",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/OrderCreate" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "The order was updated successfully" }
+        }
+      },
+      "patch": {
+        "summary": "Partially update an order's information by ID",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "TotalPrice": { "type": "number" },
+                  "ProductIDs": {
+                    "type": "array",
+                    "items": { "type": "integer" }
+                  }
+                },
+                "required": ["ProductIDs"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The order's information was partially updated"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete an order by ID",
+        "responses": {
+          "200": { "description": "The order was deleted successfully" }
+        }
+      }
+    },
+    "/products": {
+      "get": {
+        "summary": "List all products",
+        "responses": {
+          "200": {
+            "description": "A list of products is returned",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ProductArray" }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new product",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Product" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The product was created successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Product" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": { "type": "integer" }
+        }
+      ],
+      "get": {
+        "summary": "Get a product by ID",
+        "responses": {
+          "200": {
+            "description": "Detailed product information is returned",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Product" }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a product's information by ID",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Product" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "The product was updated successfully" }
+        }
+      },
+      "patch": {
+        "summary": "Partially update a product's information by ID",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "Price": { "type": "number" },
+                  "Description": { "type": "string" }
+                },
+                "required": ["Price"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The product's information was partially updated"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a product by ID",
+        "responses": {
+          "200": { "description": "The product was deleted successfully" }
+        }
+      }
+    },
+    "/categories": {
+      "get": {
+        "summary": "List all categories",
+        "responses": {
+          "200": {
+            "description": "A list of categories is returned",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/CategoryArray" }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new category",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Category" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The category was created successfully",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Category" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/categories/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": { "type": "integer" }
+        }
+      ],
+      "get": {
+        "summary": "Get a category by ID",
+        "responses": {
+          "200": {
+            "description": "Detailed category information is returned",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Category" }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a category's information by ID",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/Category" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "The category was updated successfully" }
+        }
+      },
+      "patch": {
+        "summary": "Partially update a category's information by ID",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": { "Description": { "type": "string" } },
+                "required": ["Description"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The category's information was partially updated"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a category by ID",
+        "responses": {
+          "200": { "description": "The category was deleted successfully" }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Customer": {
+        "type": "object",
+        "properties": {
+          "CustomerID": {
+            "type": "integer",
+            "description": "Unique identifier for the customer"
+          },
+          "Name": { "type": "string", "description": "Customer's name" },
+          "Email": {
+            "type": "string",
+            "format": "email",
+            "description": "Customer's email address"
+          }
+        },
+        "required": ["Name", "Email"]
+      },
+      "CustomerArray": {
+        "type": "array",
+        "items": { "$ref": "#/components/schemas/Customer" }
+      },
+      "Order": {
+        "type": "object",
+        "properties": {
+          "OrderID": {
+            "type": "integer",
+            "description": "Unique identifier for the order"
+          },
+          "Date": {
+            "type": "string",
+            "format": "date",
+            "description": "Date when the order was placed"
+          },
+          "TotalPrice": {
+            "type": "number",
+            "description": "Total price of the order"
+          },
+          "CustomerID": {
+            "type": "integer",
+            "description": "Identifier for the customer who placed the order"
+          }
+        },
+        "required": ["CustomerID", "TotalPrice"]
+      },
+      "OrderCreate": {
+        "type": "object",
+        "properties": {
+          "CustomerID": {
+            "type": "integer",
+            "description": "Identifier for the customer who is placing the order"
+          },
+          "ProductIDs": {
+            "type": "array",
+            "items": { "type": "integer" },
+            "description": "List of product identifiers for the order"
+          },
+          "Date": {
+            "type": "string",
+            "format": "date",
+            "description": "Date when the order is placed"
+          },
+          "TotalPrice": {
+            "type": "number",
+            "description": "Total price of the order"
+          }
+        },
+        "required": ["CustomerID", "ProductIDs", "TotalPrice"]
+      },
+      "OrderArray": {
+        "type": "array",
+        "items": { "$ref": "#/components/schemas/Order" }
+      },
+      "Product": {
+        "type": "object",
+        "properties": {
+          "ProductID": {
+            "type": "integer",
+            "description": "Unique identifier for the product"
+          },
+          "Name": { "type": "string", "description": "Name of the product" },
+          "Description": {
+            "type": "string",
+            "description": "Description of the product"
+          },
+          "Price": { "type": "number", "description": "Price of the product" },
+          "CategoryID": {
+            "type": "integer",
+            "description": "Identifier for the category to which the product belongs"
+          }
+        },
+        "required": ["Name", "Description", "Price", "CategoryID"]
+      },
+      "ProductArray": {
+        "type": "array",
+        "items": { "$ref": "#/components/schemas/Product" }
+      },
+      "Category": {
+        "type": "object",
+        "properties": {
+          "CategoryID": {
+            "type": "integer",
+            "description": "Unique identifier for the category"
+          },
+          "Name": { "type": "string", "description": "Name of the category" },
+          "Description": {
+            "type": "string",
+            "description": "Description of the category"
+          }
+        },
+        "required": ["Name", "Description"]
+      },
+      "CategoryArray": {
+        "type": "array",
+        "items": { "$ref": "#/components/schemas/Category" }
+      }
+    }
+  }
+}

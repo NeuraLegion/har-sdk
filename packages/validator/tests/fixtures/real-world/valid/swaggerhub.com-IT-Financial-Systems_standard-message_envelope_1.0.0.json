@@ -1,0 +1,164 @@
+{
+  "openapi": "3.1.0",
+  "info": { "version": "1.0.0", "title": "Standard Message Envelope" },
+  "paths": {
+    "/messageEnvelope": {
+      "post": {
+        "summary": "Create a Standard Message Envelope",
+        "operationId": "createStandardMessageEnvelope",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/MessageEnvelope" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "MessageEnvelope was successfully created",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/MessageEnvelope" }
+              }
+            }
+          },
+          "400": { "description": "Bad Request" }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "MessageEnvelope": {
+        "type": "object",
+        "description": "Standard MessageEnvelope for message based event driven system interactions",
+        "properties": {
+          "messageHeader": { "$ref": "#/components/schemas/MessageHeader" },
+          "augmentationPoint": {
+            "$ref": "#/components/schemas/AugmentationPoint"
+          },
+          "payload": { "$ref": "#/components/schemas/Payload" }
+        },
+        "required": ["messageHeader", "payload"]
+      },
+      "MessageHeader": {
+        "type": "object",
+        "description": "Message Header capture details of the source of message.",
+        "properties": {
+          "headerVersion": {
+            "type": "string",
+            "description": "The Universal MessageHeaderType version. Version should be check by processing nodes to ensure compatability. [Major_Version.Minor_Version]",
+            "examples": ["1.0.0"]
+          },
+          "timestamp": {
+            "type": "string",
+            "description": "ISO Data Time Format.",
+            "format": "date-time",
+            "examples": ["2000-10-31T01:30:00.000-05:00"]
+          },
+          "sourceContext": { "$ref": "#/components/schemas/SourceContext" },
+          "messageContext": { "$ref": "#/components/schemas/MessageContext" },
+          "MultiPartMessageContextType": {
+            "$ref": "#/components/schemas/MultiPartMessageContextType"
+          }
+        },
+        "required": [
+          "headerVersion",
+          "timestamp",
+          "sourceContext",
+          "messageContext"
+        ]
+      },
+      "AugmentationPoint": {
+        "type": "object",
+        "description": "Augmentation within the messages are undefined elements which allow any Implementer to add any structure within the message for any defined purpose."
+      },
+      "Payload": {
+        "type": "object",
+        "description": "payload within the messages are domain specific elements which allow any Implementer to add any structure within the message for any business/technical purpose."
+      },
+      "SourceContext": {
+        "type": "object",
+        "properties": {
+          "sourceId": {
+            "description": "Meta information providing context about the client of this message. A client context represents the absolute originator of a distributed business transaction (e.g. sales channel in context of payment services transaction processing.)",
+            "type": "string",
+            "examples": ["CCRECON"]
+          },
+          "applicationId": {
+            "description": "Provides the information about the application that created the message.",
+            "type": "string",
+            "examples": ["itfacs-pmt-ccrecon-composite-builder"]
+          },
+          "transactionId": {
+            "description": "Unique transaction identifier generated and provided by the absolute client. If the absolute client did not provide a transaction Id then the first intermediate processing node might produce on client's behalf. Various uses include - track, correlate, idempotency and troubleshoot transaction instances.",
+            "type": "string",
+            "examples": ["f81d4fae-7dec-11d0-a765-00a0c91e6bf6"]
+          }
+        },
+        "required": ["sourceId", "applicationId", "transactionId"]
+      },
+      "MultiPartMessageContextType": {
+        "type": "object",
+        "description": "Meta information providing context about a multi part message exchange.",
+        "properties": {
+          "messageCorrelationId": {
+            "description": "Used to correlate two or more messages.",
+            "type": "string",
+            "examples": ["f81d4fae-7dec-11d0-a765-00a0c88e8bf8"]
+          },
+          "messageSequenceNumber": {
+            "description": "Used to sequence a group of messages in messageSequenceSize.",
+            "type": "number",
+            "examples": [2]
+          },
+          "messageSequenceSize": {
+            "description": "The number of messages within a group of correlated messages.",
+            "type": "number",
+            "examples": ["1/2"]
+          }
+        },
+        "required": [
+          "messageCorrelationId",
+          "messageSequenceNumber",
+          "messageSequenceSize"
+        ]
+      },
+      "MessageContext": {
+        "type": "object",
+        "properties": {
+          "messageContentType": {
+            "description": "Indicates the format of message payload.",
+            "type": "string",
+            "examples": ["application/json"]
+          },
+          "messageContentEncoding": {
+            "description": "Indicates the content encoding of message payload.",
+            "type": "string",
+            "examples": ["base64"]
+          },
+          "payloadHashValue": {
+            "description": "Indicates the hash value of the below payload",
+            "type": "string",
+            "examples": [
+              "08bed7be3f5bfbb24583f6f53c45a30e32cc4c76189f662b73bd686ddddf9707"
+            ]
+          },
+          "hashingAlgorithm": {
+            "description": "Indicates hashing algorithm",
+            "type": "string",
+            "examples": ["SHA-256"]
+          }
+        },
+        "required": ["messageContentType", "messageContentEncoding"]
+      }
+    }
+  },
+  "servers": [
+    {
+      "description": "SwaggerHub API Auto Mocking",
+      "url": "https://virtserver.swaggerhub.com/IT-Financial-Systems/composite-model/1.0.0"
+    }
+  ]
+}

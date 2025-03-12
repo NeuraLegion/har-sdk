@@ -1,6 +1,5 @@
 module.exports = {
   displayName: 'validator',
-
   transform: {
     '^.+\\.[tj]s$': 'ts-jest'
   },

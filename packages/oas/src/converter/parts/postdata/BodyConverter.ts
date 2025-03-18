@@ -50,6 +50,8 @@ export abstract class BodyConverter<T extends OpenAPI.Document>
     };
   }
 
+  // TODO: move the logic that receives the content type from the encoding object
+  //  to the {@link Oas3RequestBodyConverter} class.
   // eslint-disable-next-line complexity
   protected encodeValue({
     value,
@@ -77,7 +79,19 @@ export abstract class BodyConverter<T extends OpenAPI.Document>
         return this.encodeXml(value, schema);
       case 'multipart/form-data':
       case 'multipart/mixed':
-        return this.encodeMultipartFormData(value, fields, schema);
+      case 'multipart/alternative':
+      case 'multipart/related':
+        return this.encodeMultipart(
+          Object.entries(value || {}).map(([key, val]: [string, unknown]) =>
+            this.createPart({
+              key,
+              schema,
+              fields,
+              value: val,
+              formData: mime.startsWith('multipart/form-data')
+            })
+          )
+        );
       case 'image/x-icon':
       case 'image/ico':
       case 'image/vnd.microsoft.icon':
@@ -106,41 +120,70 @@ export abstract class BodyConverter<T extends OpenAPI.Document>
       : encoded;
   }
 
-  // TODO: move the logic that receives the content type from the encoding object
-  //  to the {@link Oas3RequestBodyConverter} class.
-  private encodeMultipartFormData(
-    value: unknown,
-    fields?: Record<string, OpenAPIV3.EncodingObject>,
-    schema?: OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject
+  private encodeMultipart(
+    parts: {
+      content: unknown;
+      contentType?: string;
+      base64Encoded?: boolean;
+      rawHeaders?: string[];
+    }[]
   ): string {
     const EOL = '\r\n';
 
-    return Object.entries(value || {})
-      .map(([key, val]: [string, unknown]) => {
-        const propertySchema = this.getPropertySchema(key, schema);
-        const contentType =
-          fields?.[key]?.contentType ??
-          this.inferContentType(val, propertySchema);
-
-        const headers = [
-          `Content-Disposition: form-data; name="${key}"${
-            this.filenameRequired(contentType) ? `; filename="${key}"` : ''
-          }`,
+    return parts
+      .map(({ content, contentType, base64Encoded, rawHeaders }) => {
+        const headers: string[] = [
+          ...(rawHeaders ?? []),
           ...(contentType !== 'text/plain'
             ? [`Content-Type: ${contentType}`]
             : []),
-          ...(this.BASE64_FORMATS.includes(propertySchema?.format)
-            ? ['Content-Transfer-Encoding: base64']
-            : [])
+          ...(base64Encoded ? ['Content-Transfer-Encoding: base64'] : [])
         ];
-        const body = this.encodeOther(val);
 
         return `--${this.BOUNDARY}${EOL}${headers.join(
           EOL
-        )}${EOL}${EOL}${body}`;
+        )}${EOL}${EOL}${content}`;
       })
       .join(EOL)
       .concat(`${EOL}--${this.BOUNDARY}--`);
+  }
+
+  private createPart({
+    key,
+    value,
+    schema,
+    fields,
+    formData
+  }: {
+    key: string;
+    value: unknown;
+    schema?: OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject;
+    fields?: Record<string, OpenAPIV3.EncodingObject>;
+    formData?: boolean;
+  }): {
+    content: string;
+    rawHeaders?: string[];
+    base64Encoded?: boolean;
+    contentType?: string;
+  } {
+    const propertySchema = this.getPropertySchema(key, schema);
+    const contentType =
+      fields?.[key]?.contentType ??
+      this.inferContentType(value, propertySchema);
+    const content = this.encodeOther(value);
+
+    return {
+      content,
+      contentType,
+      rawHeaders: formData
+        ? [
+            `Content-Disposition: form-data; name="${key}"${
+              this.filenameRequired(contentType) ? `; filename="${key}"` : ''
+            }`
+          ]
+        : [],
+      base64Encoded: this.BASE64_FORMATS.includes(propertySchema?.format)
+    };
   }
 
   private getPropertySchema(

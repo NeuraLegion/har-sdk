@@ -77,4 +77,27 @@ describe('Objects', () => {
     expect(typeof result.property1).toBe('number');
     expect(typeof result.property2).toBe('number');
   });
+
+  it.each([
+    {
+      input: {
+        type: ['object', 'null'],
+        properties: { foo: { type: 'string' } }
+      },
+      expected: { foo: 'lorem' }
+    },
+    {
+      input: {
+        type: ['null', 'object'],
+        properties: { foo: { type: 'string' } }
+      },
+      expected: { foo: 'lorem' }
+    }
+  ])('should correctly handle nullable %j', ({ input, expected }) => {
+    //act
+    const result = sample(input);
+
+    // assert
+    expect(result).toEqual(expected);
+  });
 });

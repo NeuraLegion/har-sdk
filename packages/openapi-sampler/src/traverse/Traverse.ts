@@ -1,4 +1,10 @@
-import { IJsonSchema, OpenAPI, OpenAPIV2, OpenAPIV3 } from '@har-sdk/core';
+import {
+  IJsonSchema,
+  OpenAPI,
+  OpenAPIV2,
+  OpenAPIV3,
+  OpenAPIV3_1
+} from '@har-sdk/core';
 
 export interface Options {
   skipReadOnly?: boolean;
@@ -17,8 +23,10 @@ export interface Sample {
 }
 
 export type Schema =
+  | OpenAPIV3_1.ReferenceObject
   | OpenAPIV3.ReferenceObject
   | OpenAPIV2.ReferenceObject
+  | OpenAPIV3_1.SchemaObject
   | OpenAPIV3.SchemaObject
   | OpenAPIV2.SchemaObject
   | IJsonSchema;

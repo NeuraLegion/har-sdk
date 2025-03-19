@@ -147,11 +147,11 @@ export class DefaultTraverse implements Traverse {
     );
   }
   private tryTraverseAllOf(
-    schema: Schema,
+    schema: IJsonSchema,
     options?: Options,
     spec?: Specification
   ): Sample | undefined {
-    if (this.hasAllOf(schema)) {
+    if (schema.allOf) {
       this.popSchemaStack();
 
       return this.allOfSample(
@@ -350,16 +350,5 @@ export class DefaultTraverse implements Traverse {
     }
 
     return res;
-  }
-
-  private hasAllOf(schema: unknown): schema is {
-    allOf: Schema[];
-  } {
-    return (
-      !!schema &&
-      typeof schema === 'object' &&
-      'allOf' in schema &&
-      !!schema['allOf']
-    );
   }
 }

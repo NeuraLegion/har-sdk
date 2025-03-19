@@ -83,7 +83,7 @@ export class DefaultTraverse implements Traverse {
 
     return (
       this.findSchemaExample(schema, options) ??
-      this.tryTraverseSubSchema(schema, options, spec) ??
+      this.tryTraverseSubSchema(schema as IJsonSchema, options, spec) ??
       this.createSchemaExample(schema, options, spec)
     );
   }
@@ -147,11 +147,11 @@ export class DefaultTraverse implements Traverse {
     );
   }
   private tryTraverseAllOf(
-    schema: IJsonSchema,
+    schema: Schema,
     options?: Options,
     spec?: Specification
   ): Sample | undefined {
-    if (schema.allOf) {
+    if ('allOf' in schema && schema.allOf) {
       this.popSchemaStack();
 
       return this.allOfSample(
@@ -178,11 +178,7 @@ export class DefaultTraverse implements Traverse {
 
       this.popSchemaStack();
 
-      return this.traverse(
-        firstArrayElement(schema.oneOf as Exclude<Schema, IJsonSchema>),
-        options,
-        spec
-      );
+      return this.traverse(firstArrayElement(schema.oneOf), options, spec);
     }
   }
 
@@ -194,11 +190,7 @@ export class DefaultTraverse implements Traverse {
     if (schema.anyOf && schema.anyOf.length) {
       this.popSchemaStack();
 
-      return this.traverse(
-        firstArrayElement(schema.anyOf as Exclude<Schema, IJsonSchema>),
-        options,
-        spec
-      );
+      return this.traverse(firstArrayElement(schema.anyOf), options, spec);
     }
   }
 
@@ -305,17 +297,8 @@ export class DefaultTraverse implements Traverse {
 
   // eslint-disable-next-line complexity
   private allOfSample(
-    into:
-      | OpenAPIV3.ReferenceObject
-      | OpenAPIV2.ReferenceObject
-      | OpenAPIV3.SchemaObject
-      | OpenAPIV2.SchemaObject,
-    children: (
-      | OpenAPIV3.ReferenceObject
-      | OpenAPIV2.ReferenceObject
-      | OpenAPIV3.SchemaObject
-      | OpenAPIV2.SchemaObject
-    )[],
+    into: Exclude<Schema, IJsonSchema>,
+    children: Exclude<Schema, IJsonSchema>[],
     options: Options,
     spec: Specification
   ): Sample {

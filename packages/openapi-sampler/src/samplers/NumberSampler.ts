@@ -6,9 +6,9 @@ type Boundary = {
 };
 
 type Options = {
-  schema: OpenAPISchema;
-  minimum?: Boundary;
-  maximum?: Boundary;
+  readonly schema: OpenAPISchema;
+  readonly minimum?: Boundary;
+  readonly maximum?: Boundary;
 };
 
 export class NumberSampler implements Sampler {

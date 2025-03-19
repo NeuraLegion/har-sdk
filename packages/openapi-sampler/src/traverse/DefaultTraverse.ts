@@ -151,7 +151,7 @@ export class DefaultTraverse implements Traverse {
     options?: Options,
     spec?: Specification
   ): Sample | undefined {
-    if ('allOf' in schema && schema.allOf) {
+    if (this.hasAllOf(schema)) {
       this.popSchemaStack();
 
       return this.allOfSample(
@@ -350,5 +350,16 @@ export class DefaultTraverse implements Traverse {
     }
 
     return res;
+  }
+
+  private hasAllOf(schema: unknown): schema is {
+    allOf: Schema[];
+  } {
+    return (
+      !!schema &&
+      typeof schema === 'object' &&
+      'allOf' in schema &&
+      !!schema['allOf']
+    );
   }
 }

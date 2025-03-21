@@ -1,0 +1,29 @@
+openapi: 3.1.0
+info:
+  title: Sample API
+  version: 1.0.0
+servers:
+  - url: 'https://example.com'
+paths:
+  '/api/v1/user':
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  examples:
+                    - Alice
+                    - Bob
+                age:
+                  type: integer
+                  examples:
+                    - 1
+                    - 2
+                    - 3
+      responses:
+        '200':
+          description: ''

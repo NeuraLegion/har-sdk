@@ -1,0 +1,21 @@
+[
+  {
+    "bodySize": 0,
+    "cookies": [],
+    "headers": [
+      {
+        "name": "content-type",
+        "value": "application/json"
+      }
+    ],
+    "headersSize": 0,
+    "httpVersion": "HTTP/1.1",
+    "method": "POST",
+    "postData": {
+      "mimeType": "application/json",
+      "text": "{\"name\":\"Alice\",\"age\":1}"
+    },
+    "queryString": [],
+    "url": "https://example.com/api/v1/user"
+  }
+]

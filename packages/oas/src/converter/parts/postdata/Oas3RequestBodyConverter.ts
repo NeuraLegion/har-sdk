@@ -20,6 +20,22 @@ export class Oas3RequestBodyConverter extends BodyConverter<OpenAPIV3.Document> 
 
     const content = pathObj.requestBody?.content ?? {};
     const mediaTypeObject = content[contentType] as OpenAPIV3.MediaTypeObject;
+    const isSchemaNullOrEmpty =
+      !mediaTypeObject?.schema ||
+      Object.keys(mediaTypeObject.schema).length === 0;
+
+    if (isSchemaNullOrEmpty && this.isBinaryMediaType(contentType)) {
+      return this.sampleAndEncodeRequestBody({
+        media: {
+          schema: {
+            type: 'string',
+            format: 'binary'
+          }
+        },
+        tokens,
+        contentType
+      });
+    }
 
     if (!mediaTypeObject?.schema) {
       return null;
@@ -96,6 +112,15 @@ export class Oas3RequestBodyConverter extends BodyConverter<OpenAPIV3.Document> 
     );
 
     return Object.assign({}, data, encoded);
+  }
+
+  private isBinaryMediaType(mediaType?: unknown): boolean {
+    return (
+      typeof mediaType === 'string' &&
+      ['application/octet-stream', 'image/', 'audio/', 'video/', 'font/'].some(
+        (prefix) => mediaType.startsWith(prefix)
+      )
+    );
   }
 
   private sampleRequestBody(

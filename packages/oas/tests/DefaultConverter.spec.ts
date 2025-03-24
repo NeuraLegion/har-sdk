@@ -205,7 +205,13 @@ describe('DefaultConverter', () => {
       {
         input: 'examples.oas.yaml',
         expected: 'examples.oas.result.json',
-        message: 'should pick up the the sample value from examples node'
+        message: 'should pick the sample value from examples node'
+      },
+      {
+        input: 'examples.oas31.yaml',
+        expected: 'examples.oas31.result.json',
+        message:
+          'should pick the sample value from schema object "examples" array'
       }
     ].forEach(({ input: inputFile, expected: expectedFile, message }) => {
       it(message, async () => {

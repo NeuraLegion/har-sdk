@@ -37,6 +37,7 @@ const schemaKeywordTypes = {
 };
 
 export class DefaultTraverse implements Traverse {
+  private readonly NULL = 'null';
   private refCache: Record<string, boolean> = {};
   private schemasStack: Schema[] = [];
 
@@ -119,13 +120,18 @@ export class DefaultTraverse implements Traverse {
     options?: Options,
     spec?: Specification
   ): unknown {
-    let type = (schema as any).type as string;
+    let type = (schema as any).type;
+
+    if (Array.isArray(type)) {
+      type =
+        type.find((x) => x !== this.NULL) ?? type.find((x) => x === this.NULL);
+    }
 
     if (!type) {
       type = this.inferType(schema as OpenAPISchema);
     }
 
-    const sampler = this.samplers.get(type || 'null');
+    const sampler = this.samplers.get(type || this.NULL);
 
     let value;
     if (sampler) {
@@ -277,10 +283,6 @@ export class DefaultTraverse implements Traverse {
   private inferType(
     schema: OpenAPIV3.SchemaObject | OpenAPIV2.SchemaObject
   ): string {
-    if (schema.type) {
-      return schema.type as string;
-    }
-
     const keywords = Object.keys(schemaKeywordTypes);
 
     for (let i = 0; i < keywords.length; i++) {

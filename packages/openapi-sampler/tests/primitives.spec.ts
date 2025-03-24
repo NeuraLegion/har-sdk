@@ -31,4 +31,33 @@ describe('Primitives', () => {
     const result = sample(schema);
     expect(!result).toBe(true);
   });
+
+  it.each([
+    {
+      input: { type: ['string', 'null'] },
+      expected: 'lorem'
+    },
+    {
+      input: { type: ['null', 'string'] },
+      expected: 'lorem'
+    },
+    {
+      input: { type: ['null'] },
+      expected: null
+    },
+    {
+      input: { type: [''] },
+      expected: null
+    },
+    {
+      input: {},
+      expected: null
+    }
+  ])('should correctly handle nullable %j', ({ input, expected }) => {
+    //act
+    const result = sample(input);
+
+    // assert
+    expect(result).toEqual(expected);
+  });
 });

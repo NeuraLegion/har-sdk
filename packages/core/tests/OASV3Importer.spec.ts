@@ -59,24 +59,27 @@ describe('OASV3Importer', () => {
       expect(importer.getErrorDetails('yaml')).not.toBeNull();
     });
 
-    it('should return the spec with expected type', async () => {
-      // act
-      const result = await importer.import(
-        `{ "openapi": "3.0.1", "info": { "version": "v1", "title": "example" }, "servers": [{"url": "http://example.com/"}],"paths": {}}`
-      );
+    it.each(['3.0.1', '3.1.1'])(
+      'should return the %s spec with expected type',
+      async (input) => {
+        // act
+        const result = await importer.import(
+          `{ "openapi": "${input}", "info": { "version": "v1", "title": "example" }, "servers": [{"url": "http://example.com/"}],"paths": {}}`
+        );
 
-      // assert
-      expect(result).toEqual({
-        type: ImporterType.OASV3,
-        name: 'example v1.json',
-        format: 'json',
-        doc: {
-          openapi: '3.0.1',
-          info: { version: 'v1', title: 'example' },
-          servers: [{ url: 'http://example.com/' }],
-          paths: {}
-        }
-      });
-    });
+        // assert
+        expect(result).toEqual({
+          type: ImporterType.OASV3,
+          name: 'example v1.json',
+          format: 'json',
+          doc: {
+            openapi: input,
+            info: { version: 'v1', title: 'example' },
+            servers: [{ url: 'http://example.com/' }],
+            paths: {}
+          }
+        });
+      }
+    );
   });
 });

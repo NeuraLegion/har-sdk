@@ -1,0 +1,45 @@
+openapi: 3.1.0
+info:
+  title: Binary Body Data API
+  version: 1.0.0
+servers:
+  - url: https://example.com
+paths:
+  # see ../../../validator/tests/fixtures/real-world/valid/apis.guru-vercel.com_0.0.1_openapi.yaml
+  /binary-body-1:
+    post:
+      requestBody:
+        content:
+          application/octet-stream:
+            schema: {}
+      responses:
+        '200':
+          description: ''
+
+  /binary-body-2:
+    post:
+      requestBody:
+        content:
+          application/octet-stream: {}
+      responses:
+        '200':
+          description: ''
+
+  /binary-body-image-1:
+    post:
+      requestBody:
+        content:
+          image/png:
+            schema: {}
+      responses:
+        '200':
+          description: ''
+
+  /binary-body-image-2:
+    post:
+      requestBody:
+        content:
+          image/png: {}
+      responses:
+        '200':
+          description: ''

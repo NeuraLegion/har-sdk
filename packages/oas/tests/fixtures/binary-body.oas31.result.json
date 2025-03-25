@@ -1,0 +1,78 @@
+[
+  {
+    "bodySize": 0,
+    "cookies": [],
+    "headers": [
+      {
+        "name": "content-type",
+        "value": "application/octet-stream"
+      }
+    ],
+    "headersSize": 0,
+    "httpVersion": "HTTP/1.1",
+    "method": "POST",
+    "postData": {
+      "mimeType": "application/octet-stream",
+      "text": "\u0001\u0002\u0003\u0004\u0005"
+    },
+    "queryString": [],
+    "url": "https://example.com/binary-body-1"
+  },
+  {
+    "bodySize": 0,
+    "cookies": [],
+    "headers": [
+      {
+        "name": "content-type",
+        "value": "application/octet-stream"
+      }
+    ],
+    "headersSize": 0,
+    "httpVersion": "HTTP/1.1",
+    "method": "POST",
+    "postData": {
+      "mimeType": "application/octet-stream",
+      "text": "\u0001\u0002\u0003\u0004\u0005"
+    },
+    "queryString": [],
+    "url": "https://example.com/binary-body-2"
+  },
+  {
+    "bodySize": 0,
+    "cookies": [],
+    "headers": [
+      {
+        "name": "content-type",
+        "value": "image/png"
+      }
+    ],
+    "headersSize": 0,
+    "httpVersion": "HTTP/1.1",
+    "method": "POST",
+    "postData": {
+      "mimeType": "image/png",
+      "text": "PNG\r\n\u001a\n"
+    },
+    "queryString": [],
+    "url": "https://example.com/binary-body-image-1"
+  },
+  {
+    "bodySize": 0,
+    "cookies": [],
+    "headers": [
+      {
+        "name": "content-type",
+        "value": "image/png"
+      }
+    ],
+    "headersSize": 0,
+    "httpVersion": "HTTP/1.1",
+    "method": "POST",
+    "postData": {
+      "mimeType": "image/png",
+      "text": "PNG\r\n\u001a\n"
+    },
+    "queryString": [],
+    "url": "https://example.com/binary-body-image-2"
+  }
+]

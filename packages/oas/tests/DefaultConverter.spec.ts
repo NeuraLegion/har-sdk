@@ -198,6 +198,11 @@ describe('DefaultConverter', () => {
         message: 'should properly serialize binary types (oas)'
       },
       {
+        input: 'binary-body.oas31.yaml',
+        expected: 'binary-body.oas31.result.json',
+        message: 'should properly serialize binary types (oas31)'
+      },
+      {
         input: 'cookies.oas.yaml',
         expected: 'cookies.oas.result.json',
         message: 'should properly serialize cookies (oas)'

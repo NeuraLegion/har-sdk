@@ -1,11 +1,20 @@
 import { BodyConverter } from './BodyConverter';
 import type { Sampler } from '../../Sampler';
-import type { OpenAPIV3, PostData } from '@har-sdk/core';
+import { DefaultEncodingHandler } from './DefaultEncodingHandler';
+import { Oas31EncodingHandler } from './Oas31EncodingHandler';
+import { SchemaObject } from './EncodingHandler';
+import { OpenAPIV3, PostData } from '@har-sdk/core';
 import pointer from 'json-pointer';
 
 export class Oas3RequestBodyConverter extends BodyConverter<OpenAPIV3.Document> {
   constructor(spec: OpenAPIV3.Document, sampler: Sampler) {
-    super(spec, sampler);
+    super(
+      spec,
+      sampler,
+      spec.openapi.startsWith('3.0')
+        ? new DefaultEncodingHandler()
+        : new Oas31EncodingHandler()
+    );
   }
 
   public convert(path: string, method: string): PostData | null {
@@ -20,11 +29,13 @@ export class Oas3RequestBodyConverter extends BodyConverter<OpenAPIV3.Document> 
 
     const content = pathObj.requestBody?.content ?? {};
     const mediaTypeObject = content[contentType] as OpenAPIV3.MediaTypeObject;
-    const isSchemaNullOrEmpty =
-      !mediaTypeObject?.schema ||
-      Object.keys(mediaTypeObject.schema).length === 0;
 
-    if (isSchemaNullOrEmpty && this.isBinaryMediaType(contentType)) {
+    if (
+      this.encodingHandler.isArbitraryBinary(
+        contentType,
+        mediaTypeObject?.schema as OpenAPIV3.SchemaObject
+      )
+    ) {
       return this.sampleAndEncodeRequestBody({
         media: {
           schema: {
@@ -73,7 +84,7 @@ export class Oas3RequestBodyConverter extends BodyConverter<OpenAPIV3.Document> 
       contentType
     });
 
-    if (this.shouldApplyEncoding(contentType) && media.encoding) {
+    if (this.encodingHandler.shouldEncodeProperties(contentType, media)) {
       value = this.encodeProperties(value, media);
     }
 
@@ -85,42 +96,51 @@ export class Oas3RequestBodyConverter extends BodyConverter<OpenAPIV3.Document> 
     });
   }
 
-  private shouldApplyEncoding(contentType: string): boolean {
-    return (
-      contentType.startsWith('multipart/') ||
-      contentType === 'application/x-www-form-urlencoded'
-    );
-  }
-
   private encodeProperties(
     data: unknown,
-    mediaType: OpenAPIV3.MediaTypeObject
+    media: OpenAPIV3.MediaTypeObject
   ): unknown {
+    const { schema, value: obj } = this.findObject({
+      schema: media.schema,
+      value: data
+    });
+
     const encoded = Object.fromEntries(
-      Object.entries(mediaType.encoding ?? {}).map(
-        ([property, encoding]: [string, OpenAPIV3.EncodingObject]) => [
-          property,
-          this.encodeValue({
-            value: data[property],
-            contentType: encoding.contentType,
-            schema: (mediaType.schema as OpenAPIV3.SchemaObject).properties[
-              property
+      Object.entries(media.encoding ?? {})
+        .map(
+          ([property, encoding]: [string, OpenAPIV3.EncodingObject]) =>
+            [
+              property,
+              encoding,
+              (schema as OpenAPIV3.SchemaObject).properties[property]
+            ] as [
+              string,
+              OpenAPIV3.EncodingObject,
+              OpenAPIV3.SchemaObject | undefined
             ]
-          })
-        ]
-      )
+        )
+        .map(
+          ([property, encoding, propertySchema]: [
+            string,
+            OpenAPIV3.EncodingObject,
+            OpenAPIV3.SchemaObject | undefined
+          ]) => [
+            property,
+            this.encodePropertyValue({
+              value: obj[property],
+              contentType:
+                encoding.contentType ??
+                this.encodingHandler.resolvePropertyContentType(
+                  obj[property],
+                  propertySchema
+                ),
+              schema: propertySchema
+            })
+          ]
+        )
     );
 
-    return Object.assign({}, data, encoded);
-  }
-
-  private isBinaryMediaType(mediaType?: unknown): boolean {
-    return (
-      typeof mediaType === 'string' &&
-      ['application/octet-stream', 'image/', 'audio/', 'video/', 'font/'].some(
-        (prefix) => mediaType.startsWith(prefix)
-      )
-    );
+    return Object.assign({}, obj, encoded);
   }
 
   private sampleRequestBody(
@@ -169,5 +189,34 @@ export class Oas3RequestBodyConverter extends BodyConverter<OpenAPIV3.Document> 
     const example = examples[exampleKey]?.value;
 
     return example !== undefined ? example : schema.example;
+  }
+
+  private findObject({
+    schema,
+    value
+  }: {
+    schema?: SchemaObject;
+    value: unknown;
+  }): { schema?: SchemaObject; value?: unknown } {
+    if (!schema?.type || value === undefined) {
+      return { schema: undefined, value: undefined };
+    }
+
+    const inferredType = this.inferSchemaType(schema);
+    if (inferredType === 'array' && Array.isArray(value)) {
+      return this.findObject({
+        schema: (schema as OpenAPIV3.ArraySchemaObject).items,
+        value: value.at(0)
+      });
+    }
+
+    return { schema, value };
+  }
+
+  private inferSchemaType(schema?: SchemaObject): string {
+    return !Array.isArray(schema.type)
+      ? schema.type
+      : schema.type.find((x) => x !== 'null') ??
+          schema.type.find((x) => x === 'null');
   }
 }

@@ -1,0 +1,21 @@
+[
+  {
+    "bodySize": 0,
+    "cookies": [],
+    "headers": [
+      {
+        "name": "content-type",
+        "value": "multipart/form-data"
+      }
+    ],
+    "headersSize": 0,
+    "httpVersion": "HTTP/1.1",
+    "method": "POST",
+    "postData": {
+      "mimeType": "multipart/form-data; boundary=956888039105887155673143",
+      "text": "--956888039105887155673143\r\nContent-Disposition: form-data; name=\"file\"; filename=\"file\"\r\nContent-Type: application/octet-stream\r\n\r\n\u0001\u0002\u0003\u0004\u0005\r\n--956888039105887155673143--"
+    },
+    "queryString": [],
+    "url": "https://example.com/v1/upload"
+  }
+]

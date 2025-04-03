@@ -29,6 +29,7 @@ export class StringSampler implements Sampler {
     'byte': () => 'ZHVtbXkgYmluYXJ5IHNhbXBsZQA=',
     'binary': () => '\x01\x02\x03\x04\x05',
     'base64': () => 'ZHVtbXkgYmluYXJ5IHNhbXBsZQA=',
+    'base64url': () => 'bG9yZW0',
     'uuid': () => 'fbdf5a53-161e-4460-98ad-0e39408d8689',
     'json-pointer': () => '/json/pointer',
     'relative-json-pointer': () => '1/relative/json/pointer',
@@ -43,7 +44,16 @@ export class StringSampler implements Sampler {
   };
 
   public sample(schema: OpenAPISchema): any {
-    const format = schema.pattern ? 'pattern' : schema.format || 'default';
+    const encoding = ['base64', 'base64url'].includes(
+      (schema as any).contentEncoding
+    )
+      ? (schema as any).contentEncoding
+      : (schema as any).contentMediaType === 'application/octet-stream'
+      ? 'binary'
+      : schema.format;
+
+    const format = schema.pattern ? 'pattern' : encoding || 'default';
+
     const sampler = this.stringFormats[format] || this.stringFormats['default'];
 
     const { minLength: min, maxLength: max } = schema;

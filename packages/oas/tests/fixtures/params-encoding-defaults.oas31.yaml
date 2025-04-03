@@ -1,0 +1,100 @@
+openapi: 3.1.0
+info:
+  title: Sample API
+  version: 1.0.0
+servers:
+  - url: https://example.com
+paths:
+  /v1/string-no-encoding:
+    post:
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+      responses:
+        '200':
+          description: OK
+  /v1/string-array-no-encoding:
+    post:
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: array
+                  items:
+                    type: string
+      responses:
+        '200':
+          description: OK
+  /v1/string-binary-with-format:
+    post:
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+            encoding:
+              file:
+                style: form
+      responses:
+        '200':
+          description: OK
+  /v1/string-base64-with-content-encoding:
+    post:
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                metadata:
+                  type: string
+                  contentEncoding: base64
+      responses:
+        '200':
+          description: OK
+  /v1/string-binary-with-application-octet-stream:
+    post:
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                metadata:
+                  type:
+                    - string
+                    - 'null'
+                  contentMediaType: application/octet-stream
+      responses:
+        '200':
+          description: OK
+  /v1/string-array-with-application-octet-stream:
+    post:
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                files:
+                  type:
+                    - 'null'
+                    - array
+                  items:
+                    type: string
+                    format: binary
+      responses:
+        '200':
+          description: OK

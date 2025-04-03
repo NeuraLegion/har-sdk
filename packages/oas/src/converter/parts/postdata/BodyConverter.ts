@@ -1,3 +1,4 @@
+import { EncodingHandler } from './EncodingHandler';
 import type { Sampler } from '../../Sampler';
 import type { SubConverter } from '../../SubConverter';
 import { XmlSerializer } from '../../serializers';
@@ -20,15 +21,16 @@ export abstract class BodyConverter<T extends OpenAPI.Document>
   private readonly ICO_IMAGE = '\x00\x00\x01\x00';
   private readonly GIF_IMAGE = '\x47\x49\x46\x38\x37\x61';
   private readonly BOUNDARY = '956888039105887155673143';
-  private readonly BASE64_FORMATS: readonly string[] = ['byte', 'base64'];
-  private readonly BINARY_FORMATS: readonly string[] = [
-    'binary',
-    ...this.BASE64_FORMATS
+  private readonly BASE64_FORMATS: readonly string[] = [
+    'byte',
+    'base64',
+    'base64url'
   ];
 
   protected constructor(
     protected readonly spec: T,
-    protected readonly sampler: Sampler
+    protected readonly sampler: Sampler,
+    protected readonly encodingHandler: EncodingHandler
   ) {}
 
   public abstract convert(path: string, method: string): PostData | null;
@@ -43,7 +45,7 @@ export abstract class BodyConverter<T extends OpenAPI.Document>
       mimeType: contentType.includes('multipart')
         ? `${contentType}; boundary=${this.BOUNDARY}`
         : contentType,
-      text: this.encodeValue({
+      text: this.encodePropertyValue({
         contentType,
         ...options
       })
@@ -51,7 +53,7 @@ export abstract class BodyConverter<T extends OpenAPI.Document>
   }
 
   // eslint-disable-next-line complexity
-  protected encodeValue({
+  protected encodePropertyValue({
     value,
     contentType,
     schema,
@@ -101,7 +103,9 @@ export abstract class BodyConverter<T extends OpenAPI.Document>
   ): string {
     const encoded = this.encodeOther(value);
 
-    return this.BASE64_FORMATS.includes(schema?.format)
+    return this.BASE64_FORMATS.includes(
+      (schema as any).contentEncoding ?? schema?.format
+    )
       ? btoa(encoded)
       : encoded;
   }
@@ -120,7 +124,17 @@ export abstract class BodyConverter<T extends OpenAPI.Document>
         const propertySchema = this.getPropertySchema(key, schema);
         const contentType =
           fields?.[key]?.contentType ??
-          this.inferContentType(val, propertySchema);
+          this.encodingHandler.resolvePropertyContentType(val, propertySchema);
+
+        const propertyEncoding =
+          (propertySchema as any)?.contentEncoding ?? propertySchema?.format;
+
+        const base64 = this.BASE64_FORMATS.includes(propertyEncoding);
+
+        // ADHOC: array encoded as a series of parts with same name
+        const [data]: [unknown] = (Array.isArray(val) ? val : [val]) as [
+          unknown
+        ];
 
         const headers = [
           `Content-Disposition: form-data; name="${key}"${
@@ -129,11 +143,10 @@ export abstract class BodyConverter<T extends OpenAPI.Document>
           ...(contentType !== 'text/plain'
             ? [`Content-Type: ${contentType}`]
             : []),
-          ...(this.BASE64_FORMATS.includes(propertySchema?.format)
-            ? ['Content-Transfer-Encoding: base64']
-            : [])
+          ...(base64 ? ['Content-Transfer-Encoding: base64'] : [])
         ];
-        const body = this.encodeOther(val);
+
+        const body = this.encodeOther(data);
 
         return `--${this.BOUNDARY}${EOL}${headers.join(
           EOL
@@ -160,28 +173,6 @@ export abstract class BodyConverter<T extends OpenAPI.Document>
 
   private filenameRequired(contentType: string): boolean {
     return 'application/octet-stream' === contentType;
-  }
-
-  private inferContentType(
-    value: unknown,
-    schema?: OpenAPIV2.SchemaObject | OpenAPIV3.SchemaObject
-  ): string {
-    switch (typeof value) {
-      case 'object':
-        return 'application/json';
-      case 'string':
-        return this.BINARY_FORMATS.includes(schema?.format)
-          ? 'application/octet-stream'
-          : 'text/plain';
-      case 'number':
-      case 'boolean':
-      case 'bigint':
-      case 'symbol':
-      case 'undefined':
-        return 'text/plain';
-      default:
-        return 'application/octet-stream';
-    }
   }
 
   private encodeJson(value: unknown): string {

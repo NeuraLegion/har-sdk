@@ -30,6 +30,19 @@ describe('DefaultConverter', () => {
   describe('convert', () => {
     [
       {
+        input: 'params-encoding-defaults.oas31.yaml',
+        expected: 'params-encoding-defaults.oas31.result.json',
+        message:
+          'should correctly convert OAS v3.1 with multipart, inferring default encoding'
+      },
+      {
+        input: 'params-encoding-defaults.oas.yaml',
+        expected: 'params-encoding-defaults.oas.result.json',
+        message:
+          'should correctly convert OAS v3 with multipart, inferring default encoding'
+      },
+
+      {
         input: 'github.swagger.json',
         expected: 'github.swagger.result.json',
         message: 'should convert GitHub OAS v2 (JSON) to HAR'

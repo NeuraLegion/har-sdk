@@ -1,0 +1,23 @@
+openapi: 3.0.0
+info:
+  title: Sample API
+servers:
+  - url: https://example.com
+paths:
+  /v1/upload:
+    post:
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+            encoding:
+              file:
+                style: form
+      responses:
+        '200':
+          description: OK

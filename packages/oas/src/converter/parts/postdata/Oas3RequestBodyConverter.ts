@@ -205,7 +205,7 @@ export class Oas3RequestBodyConverter extends BodyConverter<OpenAPIV3.Document> 
     const inferredType = this.inferSchemaType(schema);
     if (inferredType === 'array' && Array.isArray(value)) {
       return this.findObject({
-        schema: (schema as any).items,
+        schema: (schema as OpenAPIV3.ArraySchemaObject).items,
         value: value.at(0)
       });
     }

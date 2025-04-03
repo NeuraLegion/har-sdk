@@ -1,4 +1,4 @@
-import { EncodingHandler } from './EncodingHandler';
+import { EncodingHandler, SchemaObject } from './EncodingHandler';
 import type { Sampler } from '../../Sampler';
 import type { SubConverter } from '../../SubConverter';
 import { XmlSerializer } from '../../serializers';
@@ -97,14 +97,11 @@ export abstract class BodyConverter<T extends OpenAPI.Document>
     }
   }
 
-  private encodeBinary(
-    value: unknown,
-    schema?: OpenAPIV2.SchemaObject | OpenAPIV3.SchemaObject
-  ): string {
+  private encodeBinary(value: unknown, schema?: SchemaObject): string {
     const encoded = this.encodeOther(value);
 
     return this.BASE64_FORMATS.includes(
-      (schema as any).contentEncoding ?? schema?.format
+      schema.contentEncoding ?? schema?.format
     )
       ? btoa(encoded)
       : encoded;
@@ -127,7 +124,8 @@ export abstract class BodyConverter<T extends OpenAPI.Document>
           this.encodingHandler.resolvePropertyContentType(val, propertySchema);
 
         const propertyEncoding =
-          (propertySchema as any)?.contentEncoding ?? propertySchema?.format;
+          (propertySchema as SchemaObject)?.contentEncoding ??
+          propertySchema?.format;
 
         const base64 = this.BASE64_FORMATS.includes(propertyEncoding);
 

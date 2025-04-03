@@ -3,6 +3,7 @@ import {
   MediaTypeObject,
   SchemaObject
 } from './EncodingHandler';
+import { OpenAPIV3_1 } from '@har-sdk/core';
 
 export class Oas31EncodingHandler implements EncodingHandler {
   private readonly NULL = 'null';
@@ -51,7 +52,7 @@ export class Oas31EncodingHandler implements EncodingHandler {
     value: unknown,
     schema?: SchemaObject
   ): string {
-    const contentMediaType = (schema as any)?.contentMediaType;
+    const contentMediaType = schema?.contentMediaType;
 
     if (contentMediaType) {
       return contentMediaType;
@@ -60,7 +61,7 @@ export class Oas31EncodingHandler implements EncodingHandler {
     // ADHOC: infer content type based on the schema type and contentEncoding
     // see https://spec.openapis.org/oas/v3.1.1.html#common-fixed-fields-0
 
-    const contentEncoding = (schema as any)?.contentEncoding;
+    const contentEncoding = schema?.contentEncoding;
 
     switch (this.inferType(schema)) {
       case 'object':
@@ -68,7 +69,7 @@ export class Oas31EncodingHandler implements EncodingHandler {
       case 'array':
         return this.resolvePropertyContentType(
           value,
-          ((schema as any).items ?? {}) as SchemaObject
+          ((schema ?? {}) as OpenAPIV3_1.ArraySchemaObject).items
         );
       case 'string':
         // ADHOC: take the contentEncoding first and preserve handling

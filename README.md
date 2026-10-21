@@ -1,7 +1,7 @@
 # HAR SDK
 
-[![Maintainability](https://api.codeclimate.com/v1/badges/4acaec95c82465cb2c3d/maintainability)](https://codeclimate.com/github/BrightSec/har-sdk/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/4acaec95c82465cb2c3d/test_coverage)](https://codeclimate.com/github/BrightSec/har-sdk/test_coverage)
+[![Maintainability](https://qlty.sh/gh/BrightSec/projects/har-sdk/maintainability.svg)](https://qlty.sh/gh/BrightSec/projects/har-sdk)
+[![Code Coverage](https://qlty.sh/gh/BrightSec/projects/har-sdk/coverage.svg)](https://qlty.sh/gh/BrightSec/projects/har-sdk)
 ![Build Status](https://github.com/BrightSec/har-sdk/actions/workflows/auto-build.yml/badge.svg?branch=master)
 ![NPM Downloads](https://img.shields.io/npm/dw/@har-sdk/core)
 

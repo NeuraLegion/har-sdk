@@ -65,11 +65,12 @@ jobs:
       - run: npm run build
       - run: npm run coverage:all
 
-      - uses: paambaati/codeclimate-action@v9.0.0
-        env:
-          CC_TEST_REPORTER_ID: 8f03df35249169ee1488314f32a347bf3eba5ad0decfa9b999d04f74df71b415
-        with:
-          coverageLocations: ${{ github.workspace }}/coverage/lcov.info:lcov
+#      - uses: paambaati/codeclimate-action@v3.0.0
+#        if: ${{ hashFiles('coverage/lcov.info') }}
+#        env:
+#          CC_TEST_REPORTER_ID: 8f03df35249169ee1488314f32a347bf3eba5ad0decfa9b999d04f74df71b415
+#        with:
+#          coverageLocations: coverage/lcov.info:lcov
 
   release:
     if: ${{ github.ref == 'refs/heads/master' }}

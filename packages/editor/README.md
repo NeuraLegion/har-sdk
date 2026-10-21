@@ -40,11 +40,11 @@ openApiEditor.setup(jsonOrYamlSourceString).then(() => {
 
 ### Available editors
 
-- [`OasV2Editor`](https://github.com/NeuraLegion/har-sdk/blob/master/packages/editor/src/editor/oas/v2/OasV2Editor.ts)
-- [`OasV3Editor`](https://github.com/NeuraLegion/har-sdk/blob/master/packages/editor/src/editor/oas/v3/OasV3Editor.ts)
-- [`PostmanEditor`](https://github.com/NeuraLegion/har-sdk/blob/master/packages/editor/src/editor/postman/PostmanEditor.ts)
+- [`OasV2Editor`](https://github.com/BrightSec/har-sdk/blob/master/packages/editor/src/editor/oas/v2/OasV2Editor.ts)
+- [`OasV3Editor`](https://github.com/BrightSec/har-sdk/blob/master/packages/editor/src/editor/oas/v3/OasV3Editor.ts)
+- [`PostmanEditor`](https://github.com/BrightSec/har-sdk/blob/master/packages/editor/src/editor/postman/PostmanEditor.ts)
 
-All of them implement both [`TreeParser`](https://github.com/NeuraLegion/har-sdk/blob/master/packages/editor/src/editor/TreeParser.ts) and [`Editor`](https://github.com/NeuraLegion/har-sdk/blob/master/packages/editor/src/editor/Editor.ts) interfaces.
+All of them implement both [`TreeParser`](https://github.com/BrightSec/har-sdk/blob/master/packages/editor/src/editor/TreeParser.ts) and [`Editor`](https://github.com/BrightSec/har-sdk/blob/master/packages/editor/src/editor/Editor.ts) interfaces.
 
 ### API interfaces
 

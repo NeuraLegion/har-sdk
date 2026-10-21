@@ -4,15 +4,15 @@
   "private": false,
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/NeuraLegion/har-sdk.git"
+    "url": "git+https://github.com/BrightSec/har-sdk.git"
   },
   "author": {
     "name": "Artem Derevnjuk",
-    "email": "artem.derevnjuk@neuralegion.com"
+    "email": "artem.derevnjuk@brightsec.com"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/NeuraLegion/har-sdk/issues"
+    "url": "https://github.com/BrightSec/har-sdk/issues"
   },
   "publishConfig": {
     "access": "public"
@@ -29,7 +29,7 @@
   "module": "./dist/bundle.esm5.js",
   "es2015": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "homepage": "https://github.com/NeuraLegion/har-sdk/tree/master/packages/postman#readme",
+  "homepage": "https://github.com/BrightSec/har-sdk/tree/master/packages/postman#readme",
   "scripts": {
     "prebuild": "npm run compile -- --clean",
     "build": "npm run compile && npm run bundle",

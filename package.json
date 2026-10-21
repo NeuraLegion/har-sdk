@@ -4,7 +4,7 @@
   "private": true,
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/NeuraLegion/har-sdk.git"
+    "url": "git+https://github.com/BrightSec/har-sdk.git"
   },
   "engines": {
     "node": ">=16.x",
@@ -15,11 +15,11 @@
   ],
   "author": {
     "name": "Artem Derevnjuk",
-    "email": "artem.derevnjuk@neuralegion.com"
+    "email": "artem.derevnjuk@brightsec.com"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/NeuraLegion/har-sdk/issues"
+    "url": "https://github.com/BrightSec/har-sdk/issues"
   },
   "commitlint": {
     "extends": [
@@ -52,7 +52,7 @@
     "format:changed": "lerna run --since origin/master format",
     "prepare": "is-ci || husky install"
   },
-  "homepage": "https://github.com/NeuraLegion/har-sdk#readme",
+  "homepage": "https://github.com/BrightSec/har-sdk#readme",
   "devDependencies": {
     "@commitlint/cli": "^16.2.1",
     "@commitlint/config-conventional": "^16.2.1",

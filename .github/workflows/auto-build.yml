@@ -69,7 +69,7 @@ jobs:
         if: ${{ hashFiles('coverage/lcov.info') }}
         with:
           token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
-          coverageLocations: coverage/lcov.info:lcov
+          files: coverage/**/lcov.info
 
   release:
     if: ${{ github.ref == 'refs/heads/master' }}

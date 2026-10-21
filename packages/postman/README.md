@@ -1,8 +1,8 @@
 # @har-sdk/postman
 
-[![Maintainability](https://api.codeclimate.com/v1/badges/4acaec95c82465cb2c3d/maintainability)](https://codeclimate.com/github/NeuraLegion/har-sdk/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/4acaec95c82465cb2c3d/test_coverage)](https://codeclimate.com/github/NeuraLegion/har-sdk/test_coverage)
-[![Build Status](https://github.com/NeuraLegion/har-sdk/actions/workflows/auto-build.yml/badge.svg?branch=master)](https://github.com/NeuraLegion/har-sdk/actions/workflows/auto-build.yml?query=branch%3Amaster+event%3Apush)
+[![Maintainability](https://api.codeclimate.com/v1/badges/4acaec95c82465cb2c3d/maintainability)](https://codeclimate.com/github/BrightSec/har-sdk/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/4acaec95c82465cb2c3d/test_coverage)](https://codeclimate.com/github/BrightSec/har-sdk/test_coverage)
+[![Build Status](https://github.com/BrightSec/har-sdk/actions/workflows/auto-build.yml/badge.svg?branch=master)](https://github.com/BrightSec/har-sdk/actions/workflows/auto-build.yml?query=branch%3Amaster+event%3Apush)
 [![NPM Downloads](https://img.shields.io/npm/dw/@har-sdk/oas?label=NPM%20Downloads)](https://www.npmjs.com/package/@har-sdk/postman)
 
 Transform your [Postman collection](https://blog.postman.com/postman-essentials-exploring-the-collection-format/) into a series of [HAR request objects](http://www.softwareishard.com/blog/har-12-spec/#request). This can be useful for a variety of purposes, such as analyzing network performance and debugging web applications.
@@ -47,4 +47,4 @@ console.log(requests);
 
 Copyright © 2023 [Bright Security](https://brightsec.com/).
 
-This project is licensed under the MIT License - see the [LICENSE file](https://github.com/NeuraLegion/har-sdk/blob/master/LICENSE) for details.
+This project is licensed under the MIT License - see the [LICENSE file](https://github.com/BrightSec/har-sdk/blob/master/LICENSE) for details.
